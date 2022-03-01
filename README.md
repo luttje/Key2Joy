@@ -6,4 +6,7 @@ This is an early version so I can play the game ['Aperture Desk Job'](https://st
 ## 😍
 
 This exists only because of this awesome NuGet package
-([DavidRieman/SimWinInput](https://github.com/DavidRieman/SimWinInput)) which allows simulation of gamepads.
+([DavidRieman/SimWinInput](https://github.com/DavidRieman/SimWinInput)) which allows simulation of
+gamepads.
+
+Inspired by: [JoyToKey](https://joytokey.net/en/)
