@@ -8,10 +8,17 @@ using System.Windows.Forms;
 
 namespace KeyToJoy
 {
+    internal enum AxisDirection
+    {
+        Up, Right, Down, Left
+    }
+
     internal class GamePadInputSetting
     {
         public TextBox TargetSettingInput;
         public GamePadControl Control;
-        public Keys DefaultBind;
+        public Keys? DefaultKeyBind = null;
+        //public MouseButtons? DefaultMouseBind = null;
+        public AxisDirection? DefaultAxisBind = null;
     }
 }

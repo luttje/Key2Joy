@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.txtShoulderLeft = new System.Windows.Forms.TextBox();
             this.txtTriggerLeft = new System.Windows.Forms.TextBox();
@@ -52,6 +53,9 @@
             this.txtStickLClick = new System.Windows.Forms.TextBox();
             this.txtStickRClick = new System.Windows.Forms.TextBox();
             this.chkEnabled = new System.Windows.Forms.CheckBox();
+            this.dbgLabel = new System.Windows.Forms.Label();
+            this.timerAxisTimeout = new System.Windows.Forms.Timer(this.components);
+            this.btnOpenTest = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -71,199 +75,199 @@
             // txtShoulderLeft
             // 
             this.txtShoulderLeft.Enabled = false;
-            this.txtShoulderLeft.Font = new System.Drawing.Font("Consolas", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtShoulderLeft.Location = new System.Drawing.Point(185, 92);
+            this.txtShoulderLeft.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtShoulderLeft.Location = new System.Drawing.Point(185, 73);
             this.txtShoulderLeft.Name = "txtShoulderLeft";
-            this.txtShoulderLeft.Size = new System.Drawing.Size(32, 18);
+            this.txtShoulderLeft.Size = new System.Drawing.Size(32, 20);
             this.txtShoulderLeft.TabIndex = 2;
             // 
             // txtTriggerLeft
             // 
             this.txtTriggerLeft.Enabled = false;
-            this.txtTriggerLeft.Font = new System.Drawing.Font("Consolas", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtTriggerLeft.Location = new System.Drawing.Point(202, 56);
+            this.txtTriggerLeft.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtTriggerLeft.Location = new System.Drawing.Point(227, 29);
             this.txtTriggerLeft.Name = "txtTriggerLeft";
-            this.txtTriggerLeft.Size = new System.Drawing.Size(32, 18);
+            this.txtTriggerLeft.Size = new System.Drawing.Size(32, 20);
             this.txtTriggerLeft.TabIndex = 3;
             // 
             // txtShoulderRight
             // 
             this.txtShoulderRight.Enabled = false;
-            this.txtShoulderRight.Font = new System.Drawing.Font("Consolas", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtShoulderRight.Location = new System.Drawing.Point(493, 92);
+            this.txtShoulderRight.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtShoulderRight.Location = new System.Drawing.Point(488, 73);
             this.txtShoulderRight.Name = "txtShoulderRight";
-            this.txtShoulderRight.Size = new System.Drawing.Size(32, 18);
+            this.txtShoulderRight.Size = new System.Drawing.Size(32, 20);
             this.txtShoulderRight.TabIndex = 4;
             // 
             // txtTriggerRight
             // 
             this.txtTriggerRight.Enabled = false;
-            this.txtTriggerRight.Font = new System.Drawing.Font("Consolas", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtTriggerRight.Location = new System.Drawing.Point(471, 56);
+            this.txtTriggerRight.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtTriggerRight.Location = new System.Drawing.Point(443, 29);
             this.txtTriggerRight.Name = "txtTriggerRight";
-            this.txtTriggerRight.Size = new System.Drawing.Size(32, 18);
+            this.txtTriggerRight.Size = new System.Drawing.Size(32, 20);
             this.txtTriggerRight.TabIndex = 5;
             // 
             // txtStickLUp
             // 
             this.txtStickLUp.Enabled = false;
-            this.txtStickLUp.Font = new System.Drawing.Font("Consolas", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtStickLUp.Location = new System.Drawing.Point(237, 136);
+            this.txtStickLUp.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtStickLUp.Location = new System.Drawing.Point(237, 140);
             this.txtStickLUp.Name = "txtStickLUp";
-            this.txtStickLUp.Size = new System.Drawing.Size(32, 18);
+            this.txtStickLUp.Size = new System.Drawing.Size(32, 20);
             this.txtStickLUp.TabIndex = 6;
             // 
             // txtStickLLeft
             // 
             this.txtStickLLeft.Enabled = false;
-            this.txtStickLLeft.Font = new System.Drawing.Font("Consolas", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtStickLLeft.Location = new System.Drawing.Point(207, 155);
+            this.txtStickLLeft.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtStickLLeft.Location = new System.Drawing.Point(199, 166);
             this.txtStickLLeft.Name = "txtStickLLeft";
-            this.txtStickLLeft.Size = new System.Drawing.Size(32, 18);
+            this.txtStickLLeft.Size = new System.Drawing.Size(32, 20);
             this.txtStickLLeft.TabIndex = 7;
             // 
             // txtStickLRight
             // 
             this.txtStickLRight.Enabled = false;
-            this.txtStickLRight.Font = new System.Drawing.Font("Consolas", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtStickLRight.Location = new System.Drawing.Point(268, 155);
+            this.txtStickLRight.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtStickLRight.Location = new System.Drawing.Point(275, 166);
             this.txtStickLRight.Name = "txtStickLRight";
-            this.txtStickLRight.Size = new System.Drawing.Size(32, 18);
+            this.txtStickLRight.Size = new System.Drawing.Size(32, 20);
             this.txtStickLRight.TabIndex = 8;
             // 
             // txtStickLDown
             // 
             this.txtStickLDown.Enabled = false;
-            this.txtStickLDown.Font = new System.Drawing.Font("Consolas", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtStickLDown.Location = new System.Drawing.Point(237, 175);
+            this.txtStickLDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtStickLDown.Location = new System.Drawing.Point(237, 192);
             this.txtStickLDown.Name = "txtStickLDown";
-            this.txtStickLDown.Size = new System.Drawing.Size(32, 18);
+            this.txtStickLDown.Size = new System.Drawing.Size(32, 20);
             this.txtStickLDown.TabIndex = 9;
             // 
             // txtDpadDown
             // 
             this.txtDpadDown.Enabled = false;
-            this.txtDpadDown.Font = new System.Drawing.Font("Consolas", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtDpadDown.Location = new System.Drawing.Point(286, 238);
+            this.txtDpadDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtDpadDown.Location = new System.Drawing.Point(286, 247);
             this.txtDpadDown.Name = "txtDpadDown";
-            this.txtDpadDown.Size = new System.Drawing.Size(32, 18);
+            this.txtDpadDown.Size = new System.Drawing.Size(32, 20);
             this.txtDpadDown.TabIndex = 13;
             // 
             // txtDpadRight
             // 
             this.txtDpadRight.Enabled = false;
-            this.txtDpadRight.Font = new System.Drawing.Font("Consolas", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtDpadRight.Location = new System.Drawing.Point(317, 218);
+            this.txtDpadRight.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtDpadRight.Location = new System.Drawing.Point(319, 221);
             this.txtDpadRight.Name = "txtDpadRight";
-            this.txtDpadRight.Size = new System.Drawing.Size(32, 18);
+            this.txtDpadRight.Size = new System.Drawing.Size(32, 20);
             this.txtDpadRight.TabIndex = 12;
             // 
             // txtDpadLeft
             // 
             this.txtDpadLeft.Enabled = false;
-            this.txtDpadLeft.Font = new System.Drawing.Font("Consolas", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtDpadLeft.Location = new System.Drawing.Point(256, 218);
+            this.txtDpadLeft.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtDpadLeft.Location = new System.Drawing.Point(255, 221);
             this.txtDpadLeft.Name = "txtDpadLeft";
-            this.txtDpadLeft.Size = new System.Drawing.Size(32, 18);
+            this.txtDpadLeft.Size = new System.Drawing.Size(32, 20);
             this.txtDpadLeft.TabIndex = 11;
             // 
             // txtDpadUp
             // 
             this.txtDpadUp.Enabled = false;
-            this.txtDpadUp.Font = new System.Drawing.Font("Consolas", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtDpadUp.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtDpadUp.Location = new System.Drawing.Point(286, 199);
             this.txtDpadUp.Name = "txtDpadUp";
-            this.txtDpadUp.Size = new System.Drawing.Size(32, 18);
+            this.txtDpadUp.Size = new System.Drawing.Size(32, 20);
             this.txtDpadUp.TabIndex = 10;
             // 
             // txtStickRDown
             // 
             this.txtStickRDown.Enabled = false;
-            this.txtStickRDown.Font = new System.Drawing.Font("Consolas", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtStickRDown.Location = new System.Drawing.Point(392, 238);
+            this.txtStickRDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtStickRDown.Location = new System.Drawing.Point(392, 244);
             this.txtStickRDown.Name = "txtStickRDown";
-            this.txtStickRDown.Size = new System.Drawing.Size(32, 18);
+            this.txtStickRDown.Size = new System.Drawing.Size(32, 20);
             this.txtStickRDown.TabIndex = 17;
             // 
             // txtStickRRight
             // 
             this.txtStickRRight.Enabled = false;
-            this.txtStickRRight.Font = new System.Drawing.Font("Consolas", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtStickRRight.Location = new System.Drawing.Point(423, 218);
+            this.txtStickRRight.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtStickRRight.Location = new System.Drawing.Point(426, 221);
             this.txtStickRRight.Name = "txtStickRRight";
-            this.txtStickRRight.Size = new System.Drawing.Size(32, 18);
+            this.txtStickRRight.Size = new System.Drawing.Size(32, 20);
             this.txtStickRRight.TabIndex = 16;
             // 
             // txtStickRLeft
             // 
             this.txtStickRLeft.Enabled = false;
-            this.txtStickRLeft.Font = new System.Drawing.Font("Consolas", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtStickRLeft.Location = new System.Drawing.Point(362, 218);
+            this.txtStickRLeft.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtStickRLeft.Location = new System.Drawing.Point(357, 221);
             this.txtStickRLeft.Name = "txtStickRLeft";
-            this.txtStickRLeft.Size = new System.Drawing.Size(32, 18);
+            this.txtStickRLeft.Size = new System.Drawing.Size(32, 20);
             this.txtStickRLeft.TabIndex = 15;
             // 
             // txtStickRUp
             // 
             this.txtStickRUp.Enabled = false;
-            this.txtStickRUp.Font = new System.Drawing.Font("Consolas", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtStickRUp.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtStickRUp.Location = new System.Drawing.Point(392, 199);
             this.txtStickRUp.Name = "txtStickRUp";
-            this.txtStickRUp.Size = new System.Drawing.Size(32, 18);
+            this.txtStickRUp.Size = new System.Drawing.Size(32, 20);
             this.txtStickRUp.TabIndex = 14;
             // 
             // txtA
             // 
             this.txtA.Enabled = false;
-            this.txtA.Font = new System.Drawing.Font("Consolas", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtA.Location = new System.Drawing.Point(443, 169);
+            this.txtA.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtA.Location = new System.Drawing.Point(443, 161);
             this.txtA.Name = "txtA";
-            this.txtA.Size = new System.Drawing.Size(32, 18);
+            this.txtA.Size = new System.Drawing.Size(32, 20);
             this.txtA.TabIndex = 21;
             // 
             // txtB
             // 
             this.txtB.Enabled = false;
-            this.txtB.Font = new System.Drawing.Font("Consolas", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtB.Location = new System.Drawing.Point(473, 151);
+            this.txtB.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtB.Location = new System.Drawing.Point(471, 135);
             this.txtB.Name = "txtB";
-            this.txtB.Size = new System.Drawing.Size(32, 18);
+            this.txtB.Size = new System.Drawing.Size(32, 20);
             this.txtB.TabIndex = 20;
             // 
             // txtX
             // 
             this.txtX.Enabled = false;
-            this.txtX.Font = new System.Drawing.Font("Consolas", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtX.Location = new System.Drawing.Point(413, 150);
+            this.txtX.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtX.Location = new System.Drawing.Point(413, 135);
             this.txtX.Name = "txtX";
-            this.txtX.Size = new System.Drawing.Size(32, 18);
+            this.txtX.Size = new System.Drawing.Size(32, 20);
             this.txtX.TabIndex = 19;
             // 
             // txtY
             // 
             this.txtY.Enabled = false;
-            this.txtY.Font = new System.Drawing.Font("Consolas", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtY.Location = new System.Drawing.Point(443, 131);
+            this.txtY.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtY.Location = new System.Drawing.Point(443, 109);
             this.txtY.Name = "txtY";
-            this.txtY.Size = new System.Drawing.Size(32, 18);
+            this.txtY.Size = new System.Drawing.Size(32, 20);
             this.txtY.TabIndex = 18;
             // 
             // txtStickLClick
             // 
             this.txtStickLClick.Enabled = false;
-            this.txtStickLClick.Font = new System.Drawing.Font("Consolas", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtStickLClick.Location = new System.Drawing.Point(237, 155);
+            this.txtStickLClick.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtStickLClick.Location = new System.Drawing.Point(237, 166);
             this.txtStickLClick.Name = "txtStickLClick";
-            this.txtStickLClick.Size = new System.Drawing.Size(32, 18);
+            this.txtStickLClick.Size = new System.Drawing.Size(32, 20);
             this.txtStickLClick.TabIndex = 23;
             // 
             // txtStickRClick
             // 
             this.txtStickRClick.Enabled = false;
-            this.txtStickRClick.Font = new System.Drawing.Font("Consolas", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtStickRClick.Location = new System.Drawing.Point(392, 218);
+            this.txtStickRClick.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtStickRClick.Location = new System.Drawing.Point(392, 221);
             this.txtStickRClick.Name = "txtStickRClick";
-            this.txtStickRClick.Size = new System.Drawing.Size(32, 18);
+            this.txtStickRClick.Size = new System.Drawing.Size(32, 20);
             this.txtStickRClick.TabIndex = 25;
             // 
             // chkEnabled
@@ -277,6 +281,32 @@
             this.chkEnabled.TabIndex = 26;
             this.chkEnabled.Text = "Enable Virtual Controller";
             this.chkEnabled.UseVisualStyleBackColor = true;
+            this.chkEnabled.CheckedChanged += new System.EventHandler(this.chkEnabled_CheckedChanged);
+            // 
+            // dbgLabel
+            // 
+            this.dbgLabel.AutoSize = true;
+            this.dbgLabel.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.dbgLabel.Location = new System.Drawing.Point(569, 29);
+            this.dbgLabel.Name = "dbgLabel";
+            this.dbgLabel.Size = new System.Drawing.Size(0, 13);
+            this.dbgLabel.TabIndex = 27;
+            // 
+            // timerAxisTimeout
+            // 
+            this.timerAxisTimeout.Interval = 500;
+            this.timerAxisTimeout.Tick += new System.EventHandler(this.timerAxisTimeout_Tick);
+            // 
+            // btnOpenTest
+            // 
+            this.btnOpenTest.Enabled = false;
+            this.btnOpenTest.Location = new System.Drawing.Point(569, 311);
+            this.btnOpenTest.Name = "btnOpenTest";
+            this.btnOpenTest.Size = new System.Drawing.Size(132, 48);
+            this.btnOpenTest.TabIndex = 28;
+            this.btnOpenTest.Text = "Open Test Tool in Browser";
+            this.btnOpenTest.UseVisualStyleBackColor = true;
+            this.btnOpenTest.Click += new System.EventHandler(this.btnOpenTest_Click);
             // 
             // SettingsForm
             // 
@@ -284,6 +314,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(713, 371);
+            this.Controls.Add(this.btnOpenTest);
+            this.Controls.Add(this.dbgLabel);
             this.Controls.Add(this.chkEnabled);
             this.Controls.Add(this.txtStickRClick);
             this.Controls.Add(this.txtStickLClick);
@@ -310,7 +342,7 @@
             this.Controls.Add(this.pictureBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Name = "SettingsForm";
-            this.Text = "KeyToJoy - Early Version";
+            this.Text = "KeyToJoy - Prototype";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -342,6 +374,9 @@
         private System.Windows.Forms.TextBox txtStickLClick;
         private System.Windows.Forms.TextBox txtStickRClick;
         private System.Windows.Forms.CheckBox chkEnabled;
+        private System.Windows.Forms.Label dbgLabel;
+        private System.Windows.Forms.Timer timerAxisTimeout;
+        private System.Windows.Forms.Button btnOpenTest;
     }
 }
 
