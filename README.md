@@ -20,12 +20,8 @@ Virtual Bus Driver and restarting. Worse may happen to you.
 
 ## Uninstalling
 
-1. Simply remove all files you downloaded
-2. Go to Device Manager (Windows + R > `devmgmt.msc`)
-3. Open the `System Devices` category
-4. Right click and uninstall `Scp Virtual Bus Driver`: ![ScpVBus driver
-properties showing version 1.0.0.103 from 5-5-2013 by driver provider
-Scarlet.Crush Productions](.github/device-manager-details.jpg)
+Use `ScpDriverInstaller.exe` to uninstall the driver! Do not uninstall it through Device manager or
+you'll have trouble reinstalling it! (Like I have now)
 
 
 ## Credits 😍
