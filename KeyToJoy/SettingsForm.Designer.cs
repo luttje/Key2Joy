@@ -294,7 +294,7 @@
             // 
             // timerAxisTimeout
             // 
-            this.timerAxisTimeout.Interval = 500;
+            this.timerAxisTimeout.Interval = 250;
             this.timerAxisTimeout.Tick += new System.EventHandler(this.timerAxisTimeout_Tick);
             // 
             // btnOpenTest
@@ -341,8 +341,11 @@
             this.Controls.Add(this.txtShoulderLeft);
             this.Controls.Add(this.pictureBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.KeyPreview = true;
+            this.MaximizeBox = false;
             this.Name = "SettingsForm";
             this.Text = "KeyToJoy - Prototype";
+            this.TopMost = true;
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

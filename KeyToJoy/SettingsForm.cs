@@ -8,23 +8,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Linearstar.Windows.RawInput;
 
 namespace KeyToJoy
 {
     public partial class SettingsForm : Form
     {
-        const double SENSITIVITY = 100;
+        const double SENSITIVITY = 0.05;
 
         private List<GamePadInputSetting> allSettings;
         private Dictionary<Keys, GamePadInputSetting> binds = new Dictionary<Keys, GamePadInputSetting>();
         private Dictionary<AxisDirection, GamePadInputSetting> mouseAxisBinds = new Dictionary<AxisDirection, GamePadInputSetting>();
 
         private GlobalInputHook _globalKeyboardHook;
-        private Point? oldMousePosition = null;
+        private string debug = string.Empty;
 
         public SettingsForm()
         {
             InitializeComponent();
+
+            RawInputDevice.RegisterDevice(HidUsageAndPage.Mouse, RawInputDeviceFlags.InputSink, Handle);
 
             SetupKeyboardHooks();
             SimGamePad.Instance.PlugIn();
@@ -195,43 +198,46 @@ namespace KeyToJoy
         {
             _globalKeyboardHook = new GlobalInputHook();
             _globalKeyboardHook.KeyboardInputEvent += OnKeyInputEvent;
-            _globalKeyboardHook.MouseInputEvent += OnMouseInputEvent;
         }
 
-        private void OnMouseInputEvent(object sender, GlobalMouseHookEventArgs e)
+        protected override void WndProc(ref Message m)
         {
-            if (!chkEnabled.Checked)
-                return;
+            const int WM_INPUT = 0x00FF;
 
-            if (mouseAxisBinds.Count == 0)
-                return;
-
-            if (e.MouseState == GlobalInputHook.MouseState.Move)
+            if (m.Msg == WM_INPUT)
             {
-                var position = e.MouseData.Position;
+                var data = RawInputData.FromHandle(m.LParam);
+
+                // The data will be an instance of either RawInputMouseData, RawInputKeyboardData, or RawInputHidData.
+                // They contain the raw input data in their properties.
+                if (!(data is RawInputMouseData mouse))
+                    return;
+
+                debug = mouse.Mouse.ToString();
+
+                if (!chkEnabled.Checked)
+                    return;
+
+                if (mouseAxisBinds.Count == 0)
+                    return;
 
                 timerAxisTimeout.Stop();
                 timerAxisTimeout.Start();
-
-                if (oldMousePosition == null)
-                    oldMousePosition = position;
 
                 var controllerId = 0;
                 var state = SimGamePad.Instance.State[controllerId];
 
                 var screen = Screen.FromPoint(Cursor.Position);
-                var rawChangeX = (double) (position.X - ((Point)oldMousePosition).X) / screen.WorkingArea.Width;
-                var rawChangeY = (double) (position.Y - ((Point)oldMousePosition).Y) / screen.WorkingArea.Height;
-                var deltaX = (short) Math.Min(Math.Max(rawChangeX * short.MaxValue * SENSITIVITY, short.MinValue), short.MaxValue);
-                var deltaY = (short) -Math.Min(Math.Max(rawChangeY * short.MaxValue * SENSITIVITY, short.MinValue), short.MaxValue);
+                var deltaX = (short)Math.Min(Math.Max(mouse.Mouse.LastX * short.MaxValue * SENSITIVITY, short.MinValue), short.MaxValue);
+                var deltaY = (short)-Math.Min(Math.Max(mouse.Mouse.LastY * short.MaxValue * SENSITIVITY, short.MinValue), short.MaxValue);
                 GamePadInputSetting inputSetting;
 
                 if (
                     (
-                        deltaX > 0 
+                        deltaX > 0
                         && mouseAxisBinds.TryGetValue(AxisDirection.Right, out inputSetting)
                     )
-                    || 
+                    ||
                     (
                         deltaX < 0
                         && mouseAxisBinds.TryGetValue(AxisDirection.Left, out inputSetting)
@@ -240,7 +246,7 @@ namespace KeyToJoy
                 {
                     if (inputSetting.Control == GamePadControl.RightStickRight
                         || inputSetting.Control == GamePadControl.RightStickLeft) // TODO: The rest (LeftStick, DPad, etc)
-                        state.RightStickX = deltaX;
+                        state.RightStickX = (short)((deltaX + state.RightStickX) / 2);
                 }
                 if (
                     (
@@ -256,19 +262,18 @@ namespace KeyToJoy
                 {
                     if (inputSetting.Control == GamePadControl.RightStickUp
                         || inputSetting.Control == GamePadControl.RightStickDown) // TODO: The rest (LeftStick, DPad, etc)
-                        state.RightStickY = deltaY;
+                        state.RightStickY = (short)((deltaY + state.RightStickY) / 2);
                 }
 
                 SimGamePad.Instance.Update(controllerId);
 
                 dbgLabel.Text = $"{deltaX}, {deltaY} " +
-                    $"\n(raw: {rawChangeX}, {rawChangeY}) " +
+                    $"\n(raw: {mouse.Mouse.LastX}, {mouse.Mouse.LastY}) " +
                     $"\n(screen: {screen.WorkingArea.Width}, {screen.WorkingArea.Height}) " +
-                    $"\n(old = {((Point)oldMousePosition).X}, {((Point)oldMousePosition).Y})" +
-                    $"\n(new = {((Point)position).X}, {((Point)position).Y})";
-
-                oldMousePosition = position;
+                    $"\n{debug}";
             }
+
+            base.WndProc(ref m);
         }
 
         private void OnKeyInputEvent(object sender, GlobalKeyboardHookEventArgs e)
@@ -297,7 +302,6 @@ namespace KeyToJoy
 
         private void timerAxisTimeout_Tick(object sender, EventArgs e)
         {
-            oldMousePosition = null;
             var controllerId = 0;
             var state = SimGamePad.Instance.State[controllerId];
             state.RightStickX = 0;
