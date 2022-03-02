@@ -1,4 +1,5 @@
 ﻿using SimWinInput;
+using SimGamePad = KeyToJoy.DavidRieman.SimGamePad;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -23,7 +24,6 @@ namespace KeyToJoy
         {
             InitializeComponent();
 
-            SimGamePad.Instance.Initialize();
             SetupKeyboardHooks();
             SimGamePad.Instance.PlugIn();
 

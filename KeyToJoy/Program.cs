@@ -8,6 +8,8 @@ namespace KeyToJoy
 {
     internal static class Program
     {
+        internal static Form NextForm { get; set; }
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -16,7 +18,21 @@ namespace KeyToJoy
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new SettingsForm());
+
+            NextForm = new InitForm();
+
+            while(NextForm != null && !NextForm.IsDisposed)
+            {
+                Application.Run(NextForm);
+            }
+        }
+
+        internal static void GoToNextForm(Form form)
+        {
+            var oldForm = NextForm;
+            NextForm = form;
+
+            oldForm.Close();
         }
     }
 }
