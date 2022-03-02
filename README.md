@@ -5,6 +5,9 @@ This is an early version so I can play the game ['Aperture Desk
 Job'](https://store.steampowered.com/app/1902490/Aperture_Desk_Job/).
 
 
+**⚠ Use at own risk!** I got a blue screen after uninstalling the Scp
+Virtual Bus Driver and restarting. Worse may happen to you.
+
 ## Usage
 
 1. Download a binary from the [releases of this
