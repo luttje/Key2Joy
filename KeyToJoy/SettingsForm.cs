@@ -13,6 +13,8 @@ namespace KeyToJoy
 {
     public partial class SettingsForm : Form
     {
+        const double SENSITIVITY = 100;
+
         private List<GamePadInputSetting> allSettings;
         private Dictionary<Keys, GamePadInputSetting> binds = new Dictionary<Keys, GamePadInputSetting>();
         private Dictionary<AxisDirection, GamePadInputSetting> mouseAxisBinds = new Dictionary<AxisDirection, GamePadInputSetting>();
@@ -117,29 +119,29 @@ namespace KeyToJoy
             {
                 Control = GamePadControl.RightStickUp,
                 TargetSettingInput = txtStickRUp,
-                DefaultKeyBind = Keys.I,
-                //DefaultAxisBind = AxisDirection.Up
+                //DefaultKeyBind = Keys.I,
+                DefaultAxisBind = AxisDirection.Up
             });
             allSettings.Add(new GamePadInputSetting
             {
                 Control = GamePadControl.RightStickRight,
                 TargetSettingInput = txtStickRRight,
-                DefaultKeyBind = Keys.L,
-                //DefaultAxisBind = AxisDirection.Right
+                //DefaultKeyBind = Keys.L,
+                DefaultAxisBind = AxisDirection.Right
             });
             allSettings.Add(new GamePadInputSetting
             {
                 Control = GamePadControl.RightStickDown,
                 TargetSettingInput = txtStickRDown,
-                DefaultKeyBind = Keys.K,
-                //DefaultAxisBind = AxisDirection.Down
+                //DefaultKeyBind = Keys.K,
+                DefaultAxisBind = AxisDirection.Down
             });
             allSettings.Add(new GamePadInputSetting
             {
                 Control = GamePadControl.RightStickLeft,
                 TargetSettingInput = txtStickRLeft,
-                DefaultKeyBind = Keys.J,
-                //DefaultAxisBind = AxisDirection.Left
+                //DefaultKeyBind = Keys.J,
+                DefaultAxisBind = AxisDirection.Left
             });
             allSettings.Add(new GamePadInputSetting
             {
@@ -214,30 +216,58 @@ namespace KeyToJoy
                 if (oldMousePosition == null)
                     oldMousePosition = position;
 
-                // TODO: This doesnt work properly at all. I'm too tired for this.
-                // TODO: React to slow movements better
-                short deltaX = (short)(((Point)oldMousePosition).X - position.X);
-                short deltaY = (short)(((Point)oldMousePosition).Y - position.Y);
-
-                if (deltaX > 0)
-                    deltaX = short.MaxValue;
-                if (deltaX < 0)
-                    deltaX = short.MinValue;
-                if (deltaY > 0)
-                    deltaY = short.MaxValue;
-                if (deltaY < 0)
-                    deltaY = short.MinValue;
-
                 var controllerId = 0;
                 var state = SimGamePad.Instance.State[controllerId];
 
-                state.RightStickX = deltaX;
-                state.RightStickY = deltaY;
+                var screen = Screen.FromPoint(Cursor.Position);
+                var rawChangeX = (double) (position.X - ((Point)oldMousePosition).X) / screen.WorkingArea.Width;
+                var rawChangeY = (double) (position.Y - ((Point)oldMousePosition).Y) / screen.WorkingArea.Height;
+                var deltaX = (short) Math.Min(Math.Max(rawChangeX * short.MaxValue * SENSITIVITY, short.MinValue), short.MaxValue);
+                var deltaY = (short) -Math.Min(Math.Max(rawChangeY * short.MaxValue * SENSITIVITY, short.MinValue), short.MaxValue);
+                GamePadInputSetting inputSetting;
+
+                if (
+                    (
+                        deltaX > 0 
+                        && mouseAxisBinds.TryGetValue(AxisDirection.Right, out inputSetting)
+                    )
+                    || 
+                    (
+                        deltaX < 0
+                        && mouseAxisBinds.TryGetValue(AxisDirection.Left, out inputSetting)
+                    )
+                )
+                {
+                    if (inputSetting.Control == GamePadControl.RightStickRight
+                        || inputSetting.Control == GamePadControl.RightStickLeft) // TODO: The rest (LeftStick, DPad, etc)
+                        state.RightStickX = deltaX;
+                }
+                if (
+                    (
+                        deltaY > 0
+                        && mouseAxisBinds.TryGetValue(AxisDirection.Up, out inputSetting)
+                    )
+                    ||
+                    (
+                        deltaY < 0
+                        && mouseAxisBinds.TryGetValue(AxisDirection.Down, out inputSetting)
+                    )
+                )
+                {
+                    if (inputSetting.Control == GamePadControl.RightStickUp
+                        || inputSetting.Control == GamePadControl.RightStickDown) // TODO: The rest (LeftStick, DPad, etc)
+                        state.RightStickY = deltaY;
+                }
+
                 SimGamePad.Instance.Update(controllerId);
 
                 dbgLabel.Text = $"{deltaX}, {deltaY} " +
+                    $"\n(raw: {rawChangeX}, {rawChangeY}) " +
+                    $"\n(screen: {screen.WorkingArea.Width}, {screen.WorkingArea.Height}) " +
                     $"\n(old = {((Point)oldMousePosition).X}, {((Point)oldMousePosition).Y})" +
                     $"\n(new = {((Point)position).X}, {((Point)position).Y})";
+
+                oldMousePosition = position;
             }
         }
 

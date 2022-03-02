@@ -287,7 +287,7 @@
             // 
             this.dbgLabel.AutoSize = true;
             this.dbgLabel.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.dbgLabel.Location = new System.Drawing.Point(569, 29);
+            this.dbgLabel.Location = new System.Drawing.Point(12, 228);
             this.dbgLabel.Name = "dbgLabel";
             this.dbgLabel.Size = new System.Drawing.Size(0, 13);
             this.dbgLabel.TabIndex = 27;
