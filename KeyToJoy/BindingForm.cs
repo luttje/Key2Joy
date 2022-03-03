@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Linearstar.Windows.RawInput;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,6 +14,7 @@ namespace KeyToJoy
     public partial class BindingForm : Form
     {
         private List<RadioButton> radioButtonGroup = new List<RadioButton>();
+        private GlobalInputHook globalKeyboardHook;
 
         public BindingForm()
         {
@@ -25,21 +27,11 @@ namespace KeyToJoy
             {
                 radioButton.CheckedChanged += RadioButton_CheckedChanged;
             }
-        }
 
-        private void BindingForm_Load(object sender, EventArgs e)
-        {
-        }
+            cmbMouseDirection.DataSource = Enum.GetNames(typeof(AxisDirection));
 
-        private void txtKeyBind_Leave(object sender, EventArgs e)
-        {
-            if (radKeyBind.Checked)
-                txtKeyBind.Focus();
-        }
-
-        private void BindingForm_Activated(object sender, EventArgs e)
-        {
-            txtKeyBind.Focus();
+            RawInputDevice.RegisterDevice(HidUsageAndPage.Keyboard, RawInputDeviceFlags.InputSink, Handle);
+            RawInputDevice.RegisterDevice(HidUsageAndPage.Mouse, RawInputDeviceFlags.InputSink, Handle);
         }
 
         private void RadioButton_CheckedChanged(object sender, EventArgs e)
@@ -55,6 +47,36 @@ namespace KeyToJoy
                     other.Checked = false;
                 }
             }
+        }
+
+        protected override void WndProc(ref Message m)
+        {
+            const int WM_INPUT = 0x00FF;
+
+            if (m.Msg == WM_INPUT)
+            {
+                var data = RawInputData.FromHandle(m.LParam);
+
+                if (!radKeyBind.Checked)
+                    return;
+
+                //if (data is RawInputMouseData mouse)
+                //{
+                //    if (mouse.Mouse.Buttons == Linearstar.Windows.RawInput.Native.RawMouseButtonFlags.None)
+                //        return;
+
+                //    txtKeyBind.Text = $"(mouse) {mouse.Mouse.Buttons} (TODO)";
+                //    throw new NotImplementedException("TODO!");
+                //}
+                //else 
+                if (data is RawInputKeyboardData keyboard)
+                {
+                    var keys = VirtualKeyConverter.KeysFromVirtual(keyboard.Keyboard.VirutalKey);
+                    txtKeyBind.Text = $"(keyboard) {keys}";
+                }
+            }
+
+            base.WndProc(ref m);
         }
     }
 }

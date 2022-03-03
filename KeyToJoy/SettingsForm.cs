@@ -20,7 +20,7 @@ namespace KeyToJoy
         private Dictionary<Keys, BindingSetting> bindsLookup;
         private Dictionary<AxisDirection, BindingSetting> mouseAxisBindsLookup;
 
-        private GlobalInputHook _globalKeyboardHook;
+        private GlobalInputHook globalKeyboardHook;
         private string debug = string.Empty;
         private Image defaultControllerImage;
 
@@ -114,8 +114,8 @@ namespace KeyToJoy
         {
             RawInputDevice.RegisterDevice(HidUsageAndPage.Mouse, RawInputDeviceFlags.InputSink, Handle);
 
-            _globalKeyboardHook = new GlobalInputHook();
-            _globalKeyboardHook.KeyboardInputEvent += OnKeyInputEvent;
+            globalKeyboardHook = new GlobalInputHook();
+            globalKeyboardHook.KeyboardInputEvent += OnKeyInputEvent;
         }
 
         protected override void WndProc(ref Message m)
@@ -215,7 +215,7 @@ namespace KeyToJoy
 
         public void Dispose()
         {
-            _globalKeyboardHook?.Dispose();
+            globalKeyboardHook?.Dispose();
         }
 
         private void timerAxisTimeout_Tick(object sender, EventArgs e)
