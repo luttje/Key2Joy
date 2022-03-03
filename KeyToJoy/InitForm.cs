@@ -1,5 +1,5 @@
-﻿using System;
-using SimGamePad = KeyToJoy.DavidRieman.SimGamePad;
+﻿using SimWinInput;
+using System;
 using System.Data;
 using System.Drawing;
 using System.Linq;

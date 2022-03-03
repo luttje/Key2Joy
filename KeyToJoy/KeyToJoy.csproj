@@ -41,8 +41,8 @@
     <Reference Include="RawInput.Sharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\RawInput.Sharp.0.0.4\lib\netstandard1.1\RawInput.Sharp.dll</HintPath>
     </Reference>
-    <Reference Include="SimWinGamePad, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\SimWinGamePad.1.1.0\lib\net40\SimWinGamePad.dll</HintPath>
+    <Reference Include="SimWinGamePad, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SimWinGamePad.1.1.1\lib\net40\SimWinGamePad.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.AppContext, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -243,7 +243,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="ThirdParty\DavidRieman.SimGamePad.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
