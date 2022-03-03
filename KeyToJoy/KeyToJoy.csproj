@@ -182,6 +182,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BindingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BindingForm.Designer.cs">
+      <DependentUpon>BindingForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BindingPreset.cs" />
     <Compile Include="InitForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -195,17 +202,25 @@
     <Compile Include="LowLevelInput\LowLevelMouseInputEvent.cs" />
     <Compile Include="LowLevelInput\MouseState.cs" />
     <Compile Include="LowLevelInput\Point.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="SettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="SettingsForm.Designer.cs">
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="GamePadInputSetting.cs" />
+    <Compile Include="BindingSetting.cs" />
     <Compile Include="LowLevelInput\GlobalInputHook.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LowLevelInput\VirtualKeyConverter.cs" />
+    <EmbeddedResource Include="BindingForm.resx">
+      <DependentUpon>BindingForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="InitForm.resx">
       <DependentUpon>InitForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -214,14 +229,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <None Include="Graphics\Vector Source.fla" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -306,6 +316,30 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Graphics\XboxSeriesX_Y.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Graphics\XboxSeriesX_Left_Stick_Down.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Graphics\XboxSeriesX_Left_Stick_Left.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Graphics\XboxSeriesX_Left_Stick_Right.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Graphics\XboxSeriesX_Left_Stick_Up.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Graphics\XboxSeriesX_Right_Stick_Down.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Graphics\XboxSeriesX_Right_Stick_Left.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Graphics\XboxSeriesX_Right_Stick_Right.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Graphics\XboxSeriesX_Right_Stick_Up.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

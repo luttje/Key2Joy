@@ -1,6 +1,7 @@
 ﻿using SimWinInput;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,9 +14,9 @@ namespace KeyToJoy
         Up, Right, Down, Left
     }
 
-    internal class GamePadInputSetting
+    internal class BindingSetting
     {
-        public TextBox TargetSettingInput;
+        public Bitmap HighlightImage;
         public GamePadControl Control;
         public Keys? DefaultKeyBind = null;
         //public MouseButtons? DefaultMouseBind = null;

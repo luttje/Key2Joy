@@ -9,6 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Linearstar.Windows.RawInput;
+using System.Drawing;
+using KeyToJoy.Properties;
 
 namespace KeyToJoy
 {
@@ -16,186 +18,103 @@ namespace KeyToJoy
     {
         const double SENSITIVITY = 0.05;
 
-        private List<GamePadInputSetting> allSettings;
-        private Dictionary<Keys, GamePadInputSetting> binds = new Dictionary<Keys, GamePadInputSetting>();
-        private Dictionary<AxisDirection, GamePadInputSetting> mouseAxisBinds = new Dictionary<AxisDirection, GamePadInputSetting>();
+        private Dictionary<Keys, BindingSetting> bindsLookup;
+        private Dictionary<AxisDirection, BindingSetting> mouseAxisBindsLookup;
 
         private GlobalInputHook _globalKeyboardHook;
         private string debug = string.Empty;
+        private Image defaultControllerImage;
+
+        private BindingList<BindingPreset> presets = new BindingList<BindingPreset>();
 
         public SettingsForm()
         {
             InitializeComponent();
+            defaultControllerImage = pctController.Image;
 
-            RawInputDevice.RegisterDevice(HidUsageAndPage.Mouse, RawInputDeviceFlags.InputSink, Handle);
-
-            SetupKeyboardHooks();
+            SetupInputHooks();
             SimGamePad.Instance.PlugIn();
 
-            allSettings = new List<GamePadInputSetting>();
+            presets.Add(BindingPreset.Default);
 
-            // Top of controller
-            allSettings.Add(new GamePadInputSetting
-            {
-                Control = GamePadControl.LeftShoulder,
-                TargetSettingInput = txtShoulderLeft,
-                DefaultKeyBind = Keys.Q
-            });
-            allSettings.Add(new GamePadInputSetting
-            {
-                Control = GamePadControl.LeftTrigger,
-                TargetSettingInput = txtTriggerLeft,
-                DefaultKeyBind = Keys.D1
-            });
-            allSettings.Add(new GamePadInputSetting
-            {
-                Control = GamePadControl.RightShoulder,
-                TargetSettingInput = txtShoulderRight,
-                DefaultKeyBind = Keys.E
-            });
-            allSettings.Add(new GamePadInputSetting
-            {
-                Control = GamePadControl.RightTrigger,
-                TargetSettingInput = txtTriggerRight,
-                DefaultKeyBind = Keys.D2
-            });
+            cmbPreset.DisplayMember = "Name";
+            cmbPreset.DataSource = presets;
 
-            // Left half of controller
-            allSettings.Add(new GamePadInputSetting
-            {
-                Control = GamePadControl.LeftStickUp,
-                TargetSettingInput = txtStickLUp,
-                DefaultKeyBind = Keys.W
-            });
-            allSettings.Add(new GamePadInputSetting
-            {
-                Control = GamePadControl.LeftStickRight,
-                TargetSettingInput = txtStickLRight,
-                DefaultKeyBind = Keys.D
-            });
-            allSettings.Add(new GamePadInputSetting
-            {
-                Control = GamePadControl.LeftStickDown,
-                TargetSettingInput = txtStickLDown,
-                DefaultKeyBind = Keys.S
-            });
-            allSettings.Add(new GamePadInputSetting
-            {
-                Control = GamePadControl.LeftStickLeft,
-                TargetSettingInput = txtStickLLeft,
-                DefaultKeyBind = Keys.A
-            });
-            allSettings.Add(new GamePadInputSetting
-            {
-                Control = GamePadControl.LeftStickClick,
-                TargetSettingInput = txtStickLClick,
-                DefaultKeyBind = Keys.LControlKey
-            });
+            LoadPreset(presets[0]);
+        }
 
-            allSettings.Add(new GamePadInputSetting
-            {
-                Control = GamePadControl.DPadUp,
-                TargetSettingInput = txtDpadUp,
-                DefaultKeyBind = Keys.Up
-            });
-            allSettings.Add(new GamePadInputSetting
-            {
-                Control = GamePadControl.DPadRight,
-                TargetSettingInput = txtDpadRight,
-                DefaultKeyBind = Keys.Right
-            });
-            allSettings.Add(new GamePadInputSetting
-            {
-                Control = GamePadControl.DPadDown,
-                TargetSettingInput = txtDpadDown,
-                DefaultKeyBind = Keys.Down
-            });
-            allSettings.Add(new GamePadInputSetting
-            {
-                Control = GamePadControl.DPadLeft,
-                TargetSettingInput = txtDpadLeft,
-                DefaultKeyBind = Keys.Left
-            });
+        private void LoadPreset(BindingPreset preset)
+        {
+            dgvBinds.DataSource = preset.Bindings;
 
-            // Right half of controller
-            allSettings.Add(new GamePadInputSetting
-            {
-                Control = GamePadControl.RightStickUp,
-                TargetSettingInput = txtStickRUp,
-                //DefaultKeyBind = Keys.I,
-                DefaultAxisBind = AxisDirection.Up
-            });
-            allSettings.Add(new GamePadInputSetting
-            {
-                Control = GamePadControl.RightStickRight,
-                TargetSettingInput = txtStickRRight,
-                //DefaultKeyBind = Keys.L,
-                DefaultAxisBind = AxisDirection.Right
-            });
-            allSettings.Add(new GamePadInputSetting
-            {
-                Control = GamePadControl.RightStickDown,
-                TargetSettingInput = txtStickRDown,
-                //DefaultKeyBind = Keys.K,
-                DefaultAxisBind = AxisDirection.Down
-            });
-            allSettings.Add(new GamePadInputSetting
-            {
-                Control = GamePadControl.RightStickLeft,
-                TargetSettingInput = txtStickRLeft,
-                //DefaultKeyBind = Keys.J,
-                DefaultAxisBind = AxisDirection.Left
-            });
-            allSettings.Add(new GamePadInputSetting
-            {
-                Control = GamePadControl.RightStickClick,
-                TargetSettingInput = txtStickRClick,
-                DefaultKeyBind = Keys.RControlKey
-            });
+            bindsLookup = new Dictionary<Keys, BindingSetting>();
+            mouseAxisBindsLookup = new Dictionary<AxisDirection, BindingSetting>();
 
-            allSettings.Add(new GamePadInputSetting
+            foreach (var bindingSetting in preset.Bindings)
             {
-                Control = GamePadControl.X,
-                TargetSettingInput = txtX,
-                DefaultKeyBind = Keys.X
-            });
-            allSettings.Add(new GamePadInputSetting
-            {
-                Control = GamePadControl.Y,
-                TargetSettingInput = txtY,
-                DefaultKeyBind = Keys.Y
-            });
-            allSettings.Add(new GamePadInputSetting
-            {
-                Control = GamePadControl.A,
-                TargetSettingInput = txtA,
-                DefaultKeyBind = Keys.F
-            });
-            allSettings.Add(new GamePadInputSetting
-            {
-                Control = GamePadControl.B,
-                TargetSettingInput = txtB,
-                DefaultKeyBind = Keys.Z
-            });
-
-            foreach (var inputSetting in allSettings)
-            {
-                if (inputSetting.DefaultKeyBind != null)
-                {
-                    inputSetting.TargetSettingInput.Text = VirtualKeyConverter.KeysToString((Keys)inputSetting.DefaultKeyBind);
-
-                    binds.Add((Keys)inputSetting.DefaultKeyBind, inputSetting);
-                }else if(inputSetting.DefaultAxisBind != null)
-                {
-                    inputSetting.TargetSettingInput.Text = "Mouse " + Enum.GetName(typeof(AxisDirection), inputSetting.DefaultAxisBind);
-
-                    mouseAxisBinds.Add((AxisDirection)inputSetting.DefaultAxisBind, inputSetting);
-                }
+                if (bindingSetting.DefaultKeyBind != null)
+                    bindsLookup.Add((Keys)bindingSetting.DefaultKeyBind, bindingSetting);
+                else if (bindingSetting.DefaultAxisBind != null)
+                    mouseAxisBindsLookup.Add((AxisDirection)bindingSetting.DefaultAxisBind, bindingSetting);
             }
         }
 
-        public void SetupKeyboardHooks()
+        private void SettingsForm_Load(object sender, EventArgs e)
         {
+            dgvBinds.ClearSelection();
+            pctController.Image = defaultControllerImage;
+        }
+
+        private void dgvBinds_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            var row = dgvBinds.Rows[e.RowIndex];
+            var bindingSetting = row.DataBoundItem as BindingSetting;
+
+            if (bindingSetting == null)
+                return;
+
+            new BindingForm().ShowDialog();
+        }
+
+        private void dgvBinds_SelectionChanged(object sender, EventArgs e)
+        {
+            var rowsCount = dgvBinds.SelectedRows.Count;
+
+            if (rowsCount == 0 || rowsCount > 1) 
+                return;
+
+            var row = dgvBinds.SelectedRows[0];
+
+            if (!row.Selected)
+            {
+                pctController.Image = defaultControllerImage;
+                return;
+            }
+
+            var bindingSetting = row.DataBoundItem as BindingSetting;
+
+            if (bindingSetting == null)
+                return;
+
+            pctController.Image = bindingSetting.HighlightImage;
+        }
+
+        private void DgvBinds_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            var bindingSetting = dgvBinds.Rows[e.RowIndex].DataBoundItem as BindingSetting;
+
+            dgvBinds.Rows[e.RowIndex].Cells["colControl"].Value = bindingSetting.Control;
+
+            if (bindingSetting.DefaultKeyBind != null)
+                dgvBinds.Rows[e.RowIndex].Cells["colBind"].Value = bindingSetting.DefaultKeyBind;
+            else if (bindingSetting.DefaultAxisBind != null)
+                dgvBinds.Rows[e.RowIndex].Cells["colBind"].Value = "Mouse " + Enum.GetName(typeof(AxisDirection), bindingSetting.DefaultAxisBind);
+        }
+
+        public void SetupInputHooks()
+        {
+            RawInputDevice.RegisterDevice(HidUsageAndPage.Mouse, RawInputDeviceFlags.InputSink, Handle);
+
             _globalKeyboardHook = new GlobalInputHook();
             _globalKeyboardHook.KeyboardInputEvent += OnKeyInputEvent;
         }
@@ -218,7 +137,7 @@ namespace KeyToJoy
                 if (!chkEnabled.Checked)
                     return;
 
-                if (mouseAxisBinds.Count == 0)
+                if (mouseAxisBindsLookup.Count == 0)
                     return;
 
                 timerAxisTimeout.Stop();
@@ -230,38 +149,38 @@ namespace KeyToJoy
                 var screen = Screen.FromPoint(Cursor.Position);
                 var deltaX = (short)Math.Min(Math.Max(mouse.Mouse.LastX * short.MaxValue * SENSITIVITY, short.MinValue), short.MaxValue);
                 var deltaY = (short)-Math.Min(Math.Max(mouse.Mouse.LastY * short.MaxValue * SENSITIVITY, short.MinValue), short.MaxValue);
-                GamePadInputSetting inputSetting;
+                BindingSetting bindingSetting;
 
                 if (
                     (
                         deltaX > 0
-                        && mouseAxisBinds.TryGetValue(AxisDirection.Right, out inputSetting)
+                        && mouseAxisBindsLookup.TryGetValue(AxisDirection.Right, out bindingSetting)
                     )
                     ||
                     (
                         deltaX < 0
-                        && mouseAxisBinds.TryGetValue(AxisDirection.Left, out inputSetting)
+                        && mouseAxisBindsLookup.TryGetValue(AxisDirection.Left, out bindingSetting)
                     )
                 )
                 {
-                    if (inputSetting.Control == GamePadControl.RightStickRight
-                        || inputSetting.Control == GamePadControl.RightStickLeft) // TODO: The rest (LeftStick, DPad, etc)
+                    if (bindingSetting.Control == GamePadControl.RightStickRight
+                        || bindingSetting.Control == GamePadControl.RightStickLeft) // TODO: The rest (LeftStick, DPad, etc)
                         state.RightStickX = (short)((deltaX + state.RightStickX) / 2);
                 }
                 if (
                     (
                         deltaY > 0
-                        && mouseAxisBinds.TryGetValue(AxisDirection.Up, out inputSetting)
+                        && mouseAxisBindsLookup.TryGetValue(AxisDirection.Up, out bindingSetting)
                     )
                     ||
                     (
                         deltaY < 0
-                        && mouseAxisBinds.TryGetValue(AxisDirection.Down, out inputSetting)
+                        && mouseAxisBindsLookup.TryGetValue(AxisDirection.Down, out bindingSetting)
                     )
                 )
                 {
-                    if (inputSetting.Control == GamePadControl.RightStickUp
-                        || inputSetting.Control == GamePadControl.RightStickDown) // TODO: The rest (LeftStick, DPad, etc)
+                    if (bindingSetting.Control == GamePadControl.RightStickUp
+                        || bindingSetting.Control == GamePadControl.RightStickDown) // TODO: The rest (LeftStick, DPad, etc)
                         state.RightStickY = (short)((deltaY + state.RightStickY) / 2);
                 }
 
@@ -284,13 +203,13 @@ namespace KeyToJoy
             //https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
             var keys = VirtualKeyConverter.KeysFromVirtual(e.KeyboardData.VirtualCode);
 
-            if (!binds.TryGetValue(keys, out var inputSetting))
+            if (!bindsLookup.TryGetValue(keys, out var bindingSetting))
                 return;
 
             if (e.KeyboardState == GlobalInputHook.KeyboardState.KeyDown)
-                SimGamePad.Instance.SetControl(inputSetting.Control);
+                SimGamePad.Instance.SetControl(bindingSetting.Control);
             else if (e.KeyboardState == GlobalInputHook.KeyboardState.KeyUp)
-                SimGamePad.Instance.ReleaseControl(inputSetting.Control);
+                SimGamePad.Instance.ReleaseControl(bindingSetting.Control);
 
             e.Handled = true;
         }
@@ -317,6 +236,14 @@ namespace KeyToJoy
         private void chkEnabled_CheckedChanged(object sender, EventArgs e)
         {
             btnOpenTest.Enabled = chkEnabled.Checked;
+        }
+
+        private void btnCreate_Click(object sender, EventArgs e)
+        {
+            var preset = new BindingPreset(cmbPreset.Text);
+
+            presets.Add(preset);
+            cmbPreset.SelectedIndex = cmbPreset.Items.Count - 1;
         }
     }
 }

@@ -29,357 +29,234 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.txtShoulderLeft = new System.Windows.Forms.TextBox();
-            this.txtTriggerLeft = new System.Windows.Forms.TextBox();
-            this.txtShoulderRight = new System.Windows.Forms.TextBox();
-            this.txtTriggerRight = new System.Windows.Forms.TextBox();
-            this.txtStickLUp = new System.Windows.Forms.TextBox();
-            this.txtStickLLeft = new System.Windows.Forms.TextBox();
-            this.txtStickLRight = new System.Windows.Forms.TextBox();
-            this.txtStickLDown = new System.Windows.Forms.TextBox();
-            this.txtDpadDown = new System.Windows.Forms.TextBox();
-            this.txtDpadRight = new System.Windows.Forms.TextBox();
-            this.txtDpadLeft = new System.Windows.Forms.TextBox();
-            this.txtDpadUp = new System.Windows.Forms.TextBox();
-            this.txtStickRDown = new System.Windows.Forms.TextBox();
-            this.txtStickRRight = new System.Windows.Forms.TextBox();
-            this.txtStickRLeft = new System.Windows.Forms.TextBox();
-            this.txtStickRUp = new System.Windows.Forms.TextBox();
-            this.txtA = new System.Windows.Forms.TextBox();
-            this.txtB = new System.Windows.Forms.TextBox();
-            this.txtX = new System.Windows.Forms.TextBox();
-            this.txtY = new System.Windows.Forms.TextBox();
-            this.txtStickLClick = new System.Windows.Forms.TextBox();
-            this.txtStickRClick = new System.Windows.Forms.TextBox();
-            this.chkEnabled = new System.Windows.Forms.CheckBox();
-            this.dbgLabel = new System.Windows.Forms.Label();
             this.timerAxisTimeout = new System.Windows.Forms.Timer(this.components);
+            this.splitContainer = new System.Windows.Forms.SplitContainer();
+            this.dgvBinds = new System.Windows.Forms.DataGridView();
+            this.pnlPreset = new System.Windows.Forms.Panel();
+            this.cmbPreset = new System.Windows.Forms.ComboBox();
+            this.btnCreate = new System.Windows.Forms.Button();
+            this.lblPreset = new System.Windows.Forms.Label();
+            this.chkEnabled = new System.Windows.Forms.CheckBox();
             this.btnOpenTest = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.dbgLabel = new System.Windows.Forms.Label();
+            this.lblPresetInfo = new System.Windows.Forms.Label();
+            this.colControl = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colBind = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.pctController = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
+            this.splitContainer.Panel1.SuspendLayout();
+            this.splitContainer.Panel2.SuspendLayout();
+            this.splitContainer.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvBinds)).BeginInit();
+            this.pnlPreset.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pctController)).BeginInit();
             this.SuspendLayout();
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox1.Image = global::KeyToJoy.Properties.Resources.XboxSeriesX_Diagram;
-            this.pictureBox1.Location = new System.Drawing.Point(143, 9);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(420, 350);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 1;
-            this.pictureBox1.TabStop = false;
-            // 
-            // txtShoulderLeft
-            // 
-            this.txtShoulderLeft.Enabled = false;
-            this.txtShoulderLeft.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtShoulderLeft.Location = new System.Drawing.Point(185, 73);
-            this.txtShoulderLeft.Name = "txtShoulderLeft";
-            this.txtShoulderLeft.Size = new System.Drawing.Size(32, 20);
-            this.txtShoulderLeft.TabIndex = 2;
-            // 
-            // txtTriggerLeft
-            // 
-            this.txtTriggerLeft.Enabled = false;
-            this.txtTriggerLeft.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtTriggerLeft.Location = new System.Drawing.Point(227, 29);
-            this.txtTriggerLeft.Name = "txtTriggerLeft";
-            this.txtTriggerLeft.Size = new System.Drawing.Size(32, 20);
-            this.txtTriggerLeft.TabIndex = 3;
-            // 
-            // txtShoulderRight
-            // 
-            this.txtShoulderRight.Enabled = false;
-            this.txtShoulderRight.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtShoulderRight.Location = new System.Drawing.Point(488, 73);
-            this.txtShoulderRight.Name = "txtShoulderRight";
-            this.txtShoulderRight.Size = new System.Drawing.Size(32, 20);
-            this.txtShoulderRight.TabIndex = 4;
-            // 
-            // txtTriggerRight
-            // 
-            this.txtTriggerRight.Enabled = false;
-            this.txtTriggerRight.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtTriggerRight.Location = new System.Drawing.Point(443, 29);
-            this.txtTriggerRight.Name = "txtTriggerRight";
-            this.txtTriggerRight.Size = new System.Drawing.Size(32, 20);
-            this.txtTriggerRight.TabIndex = 5;
-            // 
-            // txtStickLUp
-            // 
-            this.txtStickLUp.Enabled = false;
-            this.txtStickLUp.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtStickLUp.Location = new System.Drawing.Point(237, 140);
-            this.txtStickLUp.Name = "txtStickLUp";
-            this.txtStickLUp.Size = new System.Drawing.Size(32, 20);
-            this.txtStickLUp.TabIndex = 6;
-            // 
-            // txtStickLLeft
-            // 
-            this.txtStickLLeft.Enabled = false;
-            this.txtStickLLeft.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtStickLLeft.Location = new System.Drawing.Point(199, 166);
-            this.txtStickLLeft.Name = "txtStickLLeft";
-            this.txtStickLLeft.Size = new System.Drawing.Size(32, 20);
-            this.txtStickLLeft.TabIndex = 7;
-            // 
-            // txtStickLRight
-            // 
-            this.txtStickLRight.Enabled = false;
-            this.txtStickLRight.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtStickLRight.Location = new System.Drawing.Point(275, 166);
-            this.txtStickLRight.Name = "txtStickLRight";
-            this.txtStickLRight.Size = new System.Drawing.Size(32, 20);
-            this.txtStickLRight.TabIndex = 8;
-            // 
-            // txtStickLDown
-            // 
-            this.txtStickLDown.Enabled = false;
-            this.txtStickLDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtStickLDown.Location = new System.Drawing.Point(237, 192);
-            this.txtStickLDown.Name = "txtStickLDown";
-            this.txtStickLDown.Size = new System.Drawing.Size(32, 20);
-            this.txtStickLDown.TabIndex = 9;
-            // 
-            // txtDpadDown
-            // 
-            this.txtDpadDown.Enabled = false;
-            this.txtDpadDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtDpadDown.Location = new System.Drawing.Point(286, 247);
-            this.txtDpadDown.Name = "txtDpadDown";
-            this.txtDpadDown.Size = new System.Drawing.Size(32, 20);
-            this.txtDpadDown.TabIndex = 13;
-            // 
-            // txtDpadRight
-            // 
-            this.txtDpadRight.Enabled = false;
-            this.txtDpadRight.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtDpadRight.Location = new System.Drawing.Point(319, 221);
-            this.txtDpadRight.Name = "txtDpadRight";
-            this.txtDpadRight.Size = new System.Drawing.Size(32, 20);
-            this.txtDpadRight.TabIndex = 12;
-            // 
-            // txtDpadLeft
-            // 
-            this.txtDpadLeft.Enabled = false;
-            this.txtDpadLeft.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtDpadLeft.Location = new System.Drawing.Point(255, 221);
-            this.txtDpadLeft.Name = "txtDpadLeft";
-            this.txtDpadLeft.Size = new System.Drawing.Size(32, 20);
-            this.txtDpadLeft.TabIndex = 11;
-            // 
-            // txtDpadUp
-            // 
-            this.txtDpadUp.Enabled = false;
-            this.txtDpadUp.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtDpadUp.Location = new System.Drawing.Point(286, 199);
-            this.txtDpadUp.Name = "txtDpadUp";
-            this.txtDpadUp.Size = new System.Drawing.Size(32, 20);
-            this.txtDpadUp.TabIndex = 10;
-            // 
-            // txtStickRDown
-            // 
-            this.txtStickRDown.Enabled = false;
-            this.txtStickRDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtStickRDown.Location = new System.Drawing.Point(392, 244);
-            this.txtStickRDown.Name = "txtStickRDown";
-            this.txtStickRDown.Size = new System.Drawing.Size(32, 20);
-            this.txtStickRDown.TabIndex = 17;
-            // 
-            // txtStickRRight
-            // 
-            this.txtStickRRight.Enabled = false;
-            this.txtStickRRight.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtStickRRight.Location = new System.Drawing.Point(426, 221);
-            this.txtStickRRight.Name = "txtStickRRight";
-            this.txtStickRRight.Size = new System.Drawing.Size(32, 20);
-            this.txtStickRRight.TabIndex = 16;
-            // 
-            // txtStickRLeft
-            // 
-            this.txtStickRLeft.Enabled = false;
-            this.txtStickRLeft.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtStickRLeft.Location = new System.Drawing.Point(357, 221);
-            this.txtStickRLeft.Name = "txtStickRLeft";
-            this.txtStickRLeft.Size = new System.Drawing.Size(32, 20);
-            this.txtStickRLeft.TabIndex = 15;
-            // 
-            // txtStickRUp
-            // 
-            this.txtStickRUp.Enabled = false;
-            this.txtStickRUp.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtStickRUp.Location = new System.Drawing.Point(392, 199);
-            this.txtStickRUp.Name = "txtStickRUp";
-            this.txtStickRUp.Size = new System.Drawing.Size(32, 20);
-            this.txtStickRUp.TabIndex = 14;
-            // 
-            // txtA
-            // 
-            this.txtA.Enabled = false;
-            this.txtA.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtA.Location = new System.Drawing.Point(443, 161);
-            this.txtA.Name = "txtA";
-            this.txtA.Size = new System.Drawing.Size(32, 20);
-            this.txtA.TabIndex = 21;
-            // 
-            // txtB
-            // 
-            this.txtB.Enabled = false;
-            this.txtB.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtB.Location = new System.Drawing.Point(471, 135);
-            this.txtB.Name = "txtB";
-            this.txtB.Size = new System.Drawing.Size(32, 20);
-            this.txtB.TabIndex = 20;
-            // 
-            // txtX
-            // 
-            this.txtX.Enabled = false;
-            this.txtX.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtX.Location = new System.Drawing.Point(413, 135);
-            this.txtX.Name = "txtX";
-            this.txtX.Size = new System.Drawing.Size(32, 20);
-            this.txtX.TabIndex = 19;
-            // 
-            // txtY
-            // 
-            this.txtY.Enabled = false;
-            this.txtY.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtY.Location = new System.Drawing.Point(443, 109);
-            this.txtY.Name = "txtY";
-            this.txtY.Size = new System.Drawing.Size(32, 20);
-            this.txtY.TabIndex = 18;
-            // 
-            // txtStickLClick
-            // 
-            this.txtStickLClick.Enabled = false;
-            this.txtStickLClick.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtStickLClick.Location = new System.Drawing.Point(237, 166);
-            this.txtStickLClick.Name = "txtStickLClick";
-            this.txtStickLClick.Size = new System.Drawing.Size(32, 20);
-            this.txtStickLClick.TabIndex = 23;
-            // 
-            // txtStickRClick
-            // 
-            this.txtStickRClick.Enabled = false;
-            this.txtStickRClick.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtStickRClick.Location = new System.Drawing.Point(392, 221);
-            this.txtStickRClick.Name = "txtStickRClick";
-            this.txtStickRClick.Size = new System.Drawing.Size(32, 20);
-            this.txtStickRClick.TabIndex = 25;
-            // 
-            // chkEnabled
-            // 
-            this.chkEnabled.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.chkEnabled.AutoSize = true;
-            this.chkEnabled.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.chkEnabled.Location = new System.Drawing.Point(569, 9);
-            this.chkEnabled.Name = "chkEnabled";
-            this.chkEnabled.Size = new System.Drawing.Size(138, 17);
-            this.chkEnabled.TabIndex = 26;
-            this.chkEnabled.Text = "Enable Virtual Controller";
-            this.chkEnabled.UseVisualStyleBackColor = true;
-            this.chkEnabled.CheckedChanged += new System.EventHandler(this.chkEnabled_CheckedChanged);
-            // 
-            // dbgLabel
-            // 
-            this.dbgLabel.AutoSize = true;
-            this.dbgLabel.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.dbgLabel.Location = new System.Drawing.Point(12, 228);
-            this.dbgLabel.Name = "dbgLabel";
-            this.dbgLabel.Size = new System.Drawing.Size(0, 13);
-            this.dbgLabel.TabIndex = 27;
             // 
             // timerAxisTimeout
             // 
             this.timerAxisTimeout.Interval = 250;
-            this.timerAxisTimeout.Tick += new System.EventHandler(this.timerAxisTimeout_Tick);
+            // 
+            // splitContainer
+            // 
+            this.splitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer.Name = "splitContainer";
+            // 
+            // splitContainer.Panel1
+            // 
+            this.splitContainer.Panel1.Controls.Add(this.dgvBinds);
+            this.splitContainer.Panel1.Controls.Add(this.pnlPreset);
+            this.splitContainer.Panel1.Controls.Add(this.chkEnabled);
+            this.splitContainer.Panel1.Controls.Add(this.btnOpenTest);
+            // 
+            // splitContainer.Panel2
+            // 
+            this.splitContainer.Panel2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.splitContainer.Panel2.Controls.Add(this.dbgLabel);
+            this.splitContainer.Panel2.Controls.Add(this.pctController);
+            this.splitContainer.Size = new System.Drawing.Size(876, 485);
+            this.splitContainer.SplitterDistance = 274;
+            this.splitContainer.TabIndex = 56;
+            // 
+            // dgvBinds
+            // 
+            this.dgvBinds.AllowUserToAddRows = false;
+            this.dgvBinds.AllowUserToDeleteRows = false;
+            this.dgvBinds.AllowUserToResizeRows = false;
+            this.dgvBinds.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvBinds.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.colControl,
+            this.colBind});
+            this.dgvBinds.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvBinds.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.dgvBinds.Location = new System.Drawing.Point(0, 78);
+            this.dgvBinds.Name = "dgvBinds";
+            this.dgvBinds.ReadOnly = true;
+            this.dgvBinds.RowHeadersVisible = false;
+            this.dgvBinds.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvBinds.Size = new System.Drawing.Size(274, 309);
+            this.dgvBinds.TabIndex = 84;
+            this.dgvBinds.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.DgvBinds_CellFormatting);
+            this.dgvBinds.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvBinds_CellMouseDoubleClick);
+            this.dgvBinds.SelectionChanged += new System.EventHandler(this.dgvBinds_SelectionChanged);
+            // 
+            // pnlPreset
+            // 
+            this.pnlPreset.Controls.Add(this.lblPresetInfo);
+            this.pnlPreset.Controls.Add(this.cmbPreset);
+            this.pnlPreset.Controls.Add(this.btnCreate);
+            this.pnlPreset.Controls.Add(this.lblPreset);
+            this.pnlPreset.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlPreset.Location = new System.Drawing.Point(0, 0);
+            this.pnlPreset.Name = "pnlPreset";
+            this.pnlPreset.Padding = new System.Windows.Forms.Padding(5);
+            this.pnlPreset.Size = new System.Drawing.Size(274, 78);
+            this.pnlPreset.TabIndex = 80;
+            // 
+            // cmbPreset
+            // 
+            this.cmbPreset.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbPreset.FormattingEnabled = true;
+            this.cmbPreset.Location = new System.Drawing.Point(88, 52);
+            this.cmbPreset.Name = "cmbPreset";
+            this.cmbPreset.Size = new System.Drawing.Size(133, 21);
+            this.cmbPreset.TabIndex = 84;
+            // 
+            // btnCreate
+            // 
+            this.btnCreate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCreate.Location = new System.Drawing.Point(221, 52);
+            this.btnCreate.Name = "btnCreate";
+            this.btnCreate.Size = new System.Drawing.Size(48, 21);
+            this.btnCreate.TabIndex = 80;
+            this.btnCreate.Text = "Create";
+            this.btnCreate.UseVisualStyleBackColor = true;
+            this.btnCreate.Click += new System.EventHandler(this.btnCreate_Click);
+            // 
+            // lblPreset
+            // 
+            this.lblPreset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblPreset.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.lblPreset.Location = new System.Drawing.Point(5, 52);
+            this.lblPreset.Name = "lblPreset";
+            this.lblPreset.Size = new System.Drawing.Size(83, 21);
+            this.lblPreset.TabIndex = 82;
+            this.lblPreset.Text = "Bindings Preset:";
+            this.lblPreset.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // chkEnabled
+            // 
+            this.chkEnabled.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.chkEnabled.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.chkEnabled.Location = new System.Drawing.Point(0, 387);
+            this.chkEnabled.Name = "chkEnabled";
+            this.chkEnabled.Padding = new System.Windows.Forms.Padding(5);
+            this.chkEnabled.Size = new System.Drawing.Size(274, 50);
+            this.chkEnabled.TabIndex = 81;
+            this.chkEnabled.Text = "Pretend keyboard and mouse input is game controller (using the binds configured a" +
+    "bove)";
+            this.chkEnabled.UseVisualStyleBackColor = true;
             // 
             // btnOpenTest
             // 
+            this.btnOpenTest.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.btnOpenTest.Enabled = false;
-            this.btnOpenTest.Location = new System.Drawing.Point(569, 311);
+            this.btnOpenTest.Location = new System.Drawing.Point(0, 437);
             this.btnOpenTest.Name = "btnOpenTest";
-            this.btnOpenTest.Size = new System.Drawing.Size(132, 48);
-            this.btnOpenTest.TabIndex = 28;
-            this.btnOpenTest.Text = "Open Test Tool in Browser";
+            this.btnOpenTest.Size = new System.Drawing.Size(274, 48);
+            this.btnOpenTest.TabIndex = 79;
+            this.btnOpenTest.Text = "Test input translation using \'devicetests.com\'";
             this.btnOpenTest.UseVisualStyleBackColor = true;
-            this.btnOpenTest.Click += new System.EventHandler(this.btnOpenTest_Click);
+            // 
+            // dbgLabel
+            // 
+            this.dbgLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.dbgLabel.AutoSize = true;
+            this.dbgLabel.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.dbgLabel.Location = new System.Drawing.Point(316, 359);
+            this.dbgLabel.Name = "dbgLabel";
+            this.dbgLabel.Size = new System.Drawing.Size(0, 13);
+            this.dbgLabel.TabIndex = 78;
+            // 
+            // lblPresetInfo
+            // 
+            this.lblPresetInfo.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblPresetInfo.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.lblPresetInfo.Location = new System.Drawing.Point(5, 5);
+            this.lblPresetInfo.Name = "lblPresetInfo";
+            this.lblPresetInfo.Size = new System.Drawing.Size(264, 43);
+            this.lblPresetInfo.TabIndex = 80;
+            this.lblPresetInfo.Text = "Select a preset or type the name for a custom preset and click \'Create\'. Presets " +
+    "are saved to the KeyToJoy folder in your documents automatically.";
+            // 
+            // colControl
+            // 
+            this.colControl.HeaderText = "Control";
+            this.colControl.Name = "colControl";
+            this.colControl.ReadOnly = true;
+            // 
+            // colBind
+            // 
+            this.colBind.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colBind.HeaderText = "Bind";
+            this.colBind.Name = "colBind";
+            this.colBind.ReadOnly = true;
+            // 
+            // pctController
+            // 
+            this.pctController.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.pctController.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pctController.ErrorImage = null;
+            this.pctController.Image = global::KeyToJoy.Properties.Resources.XboxSeriesX_Diagram;
+            this.pctController.InitialImage = null;
+            this.pctController.Location = new System.Drawing.Point(0, 0);
+            this.pctController.Name = "pctController";
+            this.pctController.Size = new System.Drawing.Size(598, 485);
+            this.pctController.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pctController.TabIndex = 79;
+            this.pctController.TabStop = false;
             // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
-            this.ClientSize = new System.Drawing.Size(713, 371);
-            this.Controls.Add(this.btnOpenTest);
-            this.Controls.Add(this.dbgLabel);
-            this.Controls.Add(this.chkEnabled);
-            this.Controls.Add(this.txtStickRClick);
-            this.Controls.Add(this.txtStickLClick);
-            this.Controls.Add(this.txtA);
-            this.Controls.Add(this.txtB);
-            this.Controls.Add(this.txtX);
-            this.Controls.Add(this.txtY);
-            this.Controls.Add(this.txtStickRDown);
-            this.Controls.Add(this.txtStickRRight);
-            this.Controls.Add(this.txtStickRLeft);
-            this.Controls.Add(this.txtStickRUp);
-            this.Controls.Add(this.txtDpadDown);
-            this.Controls.Add(this.txtDpadRight);
-            this.Controls.Add(this.txtDpadLeft);
-            this.Controls.Add(this.txtDpadUp);
-            this.Controls.Add(this.txtStickLDown);
-            this.Controls.Add(this.txtStickLRight);
-            this.Controls.Add(this.txtStickLLeft);
-            this.Controls.Add(this.txtStickLUp);
-            this.Controls.Add(this.txtTriggerRight);
-            this.Controls.Add(this.txtShoulderRight);
-            this.Controls.Add(this.txtTriggerLeft);
-            this.Controls.Add(this.txtShoulderLeft);
-            this.Controls.Add(this.pictureBox1);
+            this.ClientSize = new System.Drawing.Size(876, 485);
+            this.Controls.Add(this.splitContainer);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.KeyPreview = true;
             this.MaximizeBox = false;
             this.Name = "SettingsForm";
             this.Text = "KeyToJoy - Prototype";
-            this.TopMost = true;
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.Load += new System.EventHandler(this.SettingsForm_Load);
+            this.splitContainer.Panel1.ResumeLayout(false);
+            this.splitContainer.Panel2.ResumeLayout(false);
+            this.splitContainer.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).EndInit();
+            this.splitContainer.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvBinds)).EndInit();
+            this.pnlPreset.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pctController)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
-        private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.TextBox txtShoulderLeft;
-        private System.Windows.Forms.TextBox txtTriggerLeft;
-        private System.Windows.Forms.TextBox txtShoulderRight;
-        private System.Windows.Forms.TextBox txtTriggerRight;
-        private System.Windows.Forms.TextBox txtStickLUp;
-        private System.Windows.Forms.TextBox txtStickLLeft;
-        private System.Windows.Forms.TextBox txtStickLRight;
-        private System.Windows.Forms.TextBox txtStickLDown;
-        private System.Windows.Forms.TextBox txtDpadDown;
-        private System.Windows.Forms.TextBox txtDpadRight;
-        private System.Windows.Forms.TextBox txtDpadLeft;
-        private System.Windows.Forms.TextBox txtDpadUp;
-        private System.Windows.Forms.TextBox txtStickRDown;
-        private System.Windows.Forms.TextBox txtStickRRight;
-        private System.Windows.Forms.TextBox txtStickRLeft;
-        private System.Windows.Forms.TextBox txtStickRUp;
-        private System.Windows.Forms.TextBox txtA;
-        private System.Windows.Forms.TextBox txtB;
-        private System.Windows.Forms.TextBox txtX;
-        private System.Windows.Forms.TextBox txtY;
-        private System.Windows.Forms.TextBox txtStickLClick;
-        private System.Windows.Forms.TextBox txtStickRClick;
+        private System.Windows.Forms.Timer timerAxisTimeout;
+        private System.Windows.Forms.SplitContainer splitContainer;
+        private System.Windows.Forms.Button btnOpenTest;
         private System.Windows.Forms.CheckBox chkEnabled;
         private System.Windows.Forms.Label dbgLabel;
-        private System.Windows.Forms.Timer timerAxisTimeout;
-        private System.Windows.Forms.Button btnOpenTest;
+        private System.Windows.Forms.PictureBox pctController;
+        private System.Windows.Forms.DataGridView dgvBinds;
+        private System.Windows.Forms.Panel pnlPreset;
+        private System.Windows.Forms.Label lblPreset;
+        private System.Windows.Forms.ComboBox cmbPreset;
+        private System.Windows.Forms.Button btnCreate;
+        private System.Windows.Forms.Label lblPresetInfo;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colControl;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colBind;
     }
 }
 
