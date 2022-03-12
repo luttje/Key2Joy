@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace KeyToJoy
+namespace KeyToJoy.Input
 {
     // Source: https://stackoverflow.com/a/2934866
     internal class VirtualKeyConverter

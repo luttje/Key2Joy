@@ -19,7 +19,7 @@ namespace KeyToJoy
         private void InitForm_Load(object sender, EventArgs e)
         {
             SimGamePad.Instance.Initialize();
-            Program.GoToNextForm(new SettingsForm());
+            Program.GoToNextForm(new MainForm());
         }
     }
 }

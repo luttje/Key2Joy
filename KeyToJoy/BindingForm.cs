@@ -1,22 +1,31 @@
-﻿using Linearstar.Windows.RawInput;
+﻿using KeyToJoy.Input;
+using Linearstar.Windows.RawInput;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using RawKeyboardFlags = Linearstar.Windows.RawInput.Native.RawKeyboardFlags;
 using System.Windows.Forms;
 
 namespace KeyToJoy
 {
     public partial class BindingForm : Form
     {
-        private List<RadioButton> radioButtonGroup = new List<RadioButton>();
-        private GlobalInputHook globalKeyboardHook;
+        internal BindingSetting BindingSetting { get; set; }
 
-        public BindingForm()
+        private List<RadioButton> radioButtonGroup = new List<RadioButton>();
+
+        internal BindingForm(BindingSetting bindingSetting)
+            :this()
+        {
+            this.BindingSetting = bindingSetting;
+
+            pctController.Image = bindingSetting.HighlightImage;
+
+            lblInfo.Text = $"Pretend the {bindingSetting.GetControlDisplay()} button is pressed when...";
+
+            SetConfirmBindButtonText();
+        }
+
+        private BindingForm()
         {
             InitializeComponent();
 
@@ -47,6 +56,38 @@ namespace KeyToJoy
                     other.Checked = false;
                 }
             }
+
+            if (!radMouseBind.Checked)
+            {
+                cmbMouseDirection.Enabled = false;
+                return;
+            }
+
+            UpdateMouseAxisBind();
+            cmbMouseDirection.Enabled = true;
+        }
+
+        private void cmbMouseDirection_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (radMouseBind.Checked)
+                UpdateMouseAxisBind();
+        }
+
+        private void UpdateMouseAxisBind()
+        {
+            if (BindingSetting == null)
+                return;
+
+            BindingSetting.DefaultAxisBind = (AxisDirection?)Enum.Parse(typeof(AxisDirection), cmbMouseDirection.Text);
+            SetConfirmBindButtonText($"Mouse {cmbMouseDirection.Text}");
+        }
+
+        private void SetConfirmBindButtonText(string bind = null)
+        {
+            btnConfirm.Text = $"Confirm binding {BindingSetting.GetControlDisplay()} to {bind ?? "..."}";
+
+            if (bind != null)
+                btnConfirm.Enabled = true;
         }
 
         protected override void WndProc(ref Message m)
@@ -60,23 +101,39 @@ namespace KeyToJoy
                 if (!radKeyBind.Checked)
                     return;
 
-                //if (data is RawInputMouseData mouse)
-                //{
-                //    if (mouse.Mouse.Buttons == Linearstar.Windows.RawInput.Native.RawMouseButtonFlags.None)
-                //        return;
-
-                //    txtKeyBind.Text = $"(mouse) {mouse.Mouse.Buttons} (TODO)";
-                //    throw new NotImplementedException("TODO!");
-                //}
-                //else 
                 if (data is RawInputKeyboardData keyboard)
                 {
                     var keys = VirtualKeyConverter.KeysFromVirtual(keyboard.Keyboard.VirutalKey);
-                    txtKeyBind.Text = $"(keyboard) {keys}";
+                    BindingSetting.DefaultKeyBind = keys;
+
+
+                    if ((keyboard.Keyboard.Flags & RawKeyboardFlags.KeyE0) == RawKeyboardFlags.KeyE0)
+                    {
+                        if (BindingSetting.DefaultKeyBind == Keys.ControlKey)
+                            BindingSetting.DefaultKeyBind = Keys.RControlKey;
+                        if (BindingSetting.DefaultKeyBind == Keys.ShiftKey)
+                            BindingSetting.DefaultKeyBind = Keys.RShiftKey;
+                    }
+                    else
+                    {
+                        if (BindingSetting.DefaultKeyBind == Keys.ControlKey)
+                            BindingSetting.DefaultKeyBind = Keys.LControlKey;
+                        if (BindingSetting.DefaultKeyBind == Keys.ShiftKey)
+                            BindingSetting.DefaultKeyBind = Keys.LShiftKey;
+                    }
+
+                    txtKeyBind.Text = $"(keyboard) {BindingSetting.DefaultKeyBind}";
+
+                    SetConfirmBindButtonText(BindingSetting.DefaultKeyBind.ToString());
                 }
             }
 
             base.WndProc(ref m);
+        }
+
+        private void btnConfirm_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

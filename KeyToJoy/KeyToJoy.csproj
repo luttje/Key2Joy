@@ -188,44 +188,37 @@
     <Compile Include="BindingForm.Designer.cs">
       <DependentUpon>BindingForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="BindingPreset.cs" />
+    <Compile Include="Input\AxisDirection.cs" />
+    <Compile Include="Input\BindingPreset.cs" />
     <Compile Include="InitForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="InitForm.Designer.cs">
       <DependentUpon>InitForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="LowLevelInput\GlobalKeyboardHookEventArgs.cs" />
-    <Compile Include="LowLevelInput\GlobalMouseHookEventArgs.cs" />
-    <Compile Include="LowLevelInput\KeyboardState.cs" />
-    <Compile Include="LowLevelInput\LowLevelKeyboardInputEvent.cs" />
-    <Compile Include="LowLevelInput\LowLevelMouseInputEvent.cs" />
-    <Compile Include="LowLevelInput\MouseState.cs" />
-    <Compile Include="LowLevelInput\Point.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="SettingsForm.cs">
+    <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SettingsForm.Designer.cs">
-      <DependentUpon>SettingsForm.cs</DependentUpon>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="BindingSetting.cs" />
-    <Compile Include="LowLevelInput\GlobalInputHook.cs" />
+    <Compile Include="Input\BindingSetting.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="LowLevelInput\VirtualKeyConverter.cs" />
+    <Compile Include="Input\VirtualKeyConverter.cs" />
     <EmbeddedResource Include="BindingForm.resx">
       <DependentUpon>BindingForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InitForm.resx">
       <DependentUpon>InitForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SettingsForm.resx">
-      <DependentUpon>SettingsForm.cs</DependentUpon>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

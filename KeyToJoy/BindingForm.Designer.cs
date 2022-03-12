@@ -77,6 +77,7 @@
             this.btnConfirm.TabIndex = 8;
             this.btnConfirm.Text = "Confirm binding X to Y";
             this.btnConfirm.UseVisualStyleBackColor = true;
+            this.btnConfirm.Click += new System.EventHandler(this.btnConfirm_Click);
             // 
             // pnlContent
             // 
@@ -104,11 +105,13 @@
             // 
             this.cmbMouseDirection.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cmbMouseDirection.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbMouseDirection.Enabled = false;
             this.cmbMouseDirection.FormattingEnabled = true;
             this.cmbMouseDirection.Location = new System.Drawing.Point(127, 5);
             this.cmbMouseDirection.Name = "cmbMouseDirection";
             this.cmbMouseDirection.Size = new System.Drawing.Size(322, 21);
             this.cmbMouseDirection.TabIndex = 6;
+            this.cmbMouseDirection.SelectedIndexChanged += new System.EventHandler(this.cmbMouseDirection_SelectedIndexChanged);
             // 
             // radMouseBind
             // 

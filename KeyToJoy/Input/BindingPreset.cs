@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace KeyToJoy
+namespace KeyToJoy.Input
 {
     internal class BindingPreset
     {

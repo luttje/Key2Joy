@@ -1,6 +1,6 @@
 ﻿namespace KeyToJoy
 {
-    partial class SettingsForm
+    partial class MainForm
     {
         /// <summary>
         /// Required designer variable.
@@ -32,16 +32,16 @@
             this.timerAxisTimeout = new System.Windows.Forms.Timer(this.components);
             this.splitContainer = new System.Windows.Forms.SplitContainer();
             this.dgvBinds = new System.Windows.Forms.DataGridView();
+            this.colControl = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colBind = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pnlPreset = new System.Windows.Forms.Panel();
+            this.lblPresetInfo = new System.Windows.Forms.Label();
             this.cmbPreset = new System.Windows.Forms.ComboBox();
             this.btnCreate = new System.Windows.Forms.Button();
             this.lblPreset = new System.Windows.Forms.Label();
             this.chkEnabled = new System.Windows.Forms.CheckBox();
             this.btnOpenTest = new System.Windows.Forms.Button();
             this.dbgLabel = new System.Windows.Forms.Label();
-            this.lblPresetInfo = new System.Windows.Forms.Label();
-            this.colControl = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colBind = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pctController = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
@@ -100,6 +100,19 @@
             this.dgvBinds.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvBinds_CellMouseDoubleClick);
             this.dgvBinds.SelectionChanged += new System.EventHandler(this.dgvBinds_SelectionChanged);
             // 
+            // colControl
+            // 
+            this.colControl.HeaderText = "Control";
+            this.colControl.Name = "colControl";
+            this.colControl.ReadOnly = true;
+            // 
+            // colBind
+            // 
+            this.colBind.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colBind.HeaderText = "Bind";
+            this.colBind.Name = "colBind";
+            this.colBind.ReadOnly = true;
+            // 
             // pnlPreset
             // 
             this.pnlPreset.Controls.Add(this.lblPresetInfo);
@@ -112,6 +125,17 @@
             this.pnlPreset.Padding = new System.Windows.Forms.Padding(5);
             this.pnlPreset.Size = new System.Drawing.Size(274, 78);
             this.pnlPreset.TabIndex = 80;
+            // 
+            // lblPresetInfo
+            // 
+            this.lblPresetInfo.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblPresetInfo.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.lblPresetInfo.Location = new System.Drawing.Point(5, 5);
+            this.lblPresetInfo.Name = "lblPresetInfo";
+            this.lblPresetInfo.Size = new System.Drawing.Size(264, 43);
+            this.lblPresetInfo.TabIndex = 80;
+            this.lblPresetInfo.Text = "Select a preset or type the name for a custom preset and click \'Create\'. Presets " +
+    "are saved to the KeyToJoy folder in your documents automatically.";
             // 
             // cmbPreset
             // 
@@ -157,6 +181,7 @@
             this.chkEnabled.Text = "Pretend keyboard and mouse input is game controller (using the binds configured a" +
     "bove)";
             this.chkEnabled.UseVisualStyleBackColor = true;
+            this.chkEnabled.CheckedChanged += new System.EventHandler(this.chkEnabled_CheckedChanged);
             // 
             // btnOpenTest
             // 
@@ -168,6 +193,7 @@
             this.btnOpenTest.TabIndex = 79;
             this.btnOpenTest.Text = "Test input translation using \'devicetests.com\'";
             this.btnOpenTest.UseVisualStyleBackColor = true;
+            this.btnOpenTest.Click += new System.EventHandler(this.btnOpenTest_Click);
             // 
             // dbgLabel
             // 
@@ -178,30 +204,6 @@
             this.dbgLabel.Name = "dbgLabel";
             this.dbgLabel.Size = new System.Drawing.Size(0, 13);
             this.dbgLabel.TabIndex = 78;
-            // 
-            // lblPresetInfo
-            // 
-            this.lblPresetInfo.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lblPresetInfo.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.lblPresetInfo.Location = new System.Drawing.Point(5, 5);
-            this.lblPresetInfo.Name = "lblPresetInfo";
-            this.lblPresetInfo.Size = new System.Drawing.Size(264, 43);
-            this.lblPresetInfo.TabIndex = 80;
-            this.lblPresetInfo.Text = "Select a preset or type the name for a custom preset and click \'Create\'. Presets " +
-    "are saved to the KeyToJoy folder in your documents automatically.";
-            // 
-            // colControl
-            // 
-            this.colControl.HeaderText = "Control";
-            this.colControl.Name = "colControl";
-            this.colControl.ReadOnly = true;
-            // 
-            // colBind
-            // 
-            this.colBind.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colBind.HeaderText = "Bind";
-            this.colBind.Name = "colBind";
-            this.colBind.ReadOnly = true;
             // 
             // pctController
             // 
@@ -217,7 +219,7 @@
             this.pctController.TabIndex = 79;
             this.pctController.TabStop = false;
             // 
-            // SettingsForm
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -227,7 +229,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.KeyPreview = true;
             this.MaximizeBox = false;
-            this.Name = "SettingsForm";
+            this.Name = "MainForm";
             this.Text = "KeyToJoy - Prototype";
             this.Load += new System.EventHandler(this.SettingsForm_Load);
             this.splitContainer.Panel1.ResumeLayout(false);
