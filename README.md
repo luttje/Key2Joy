@@ -1,9 +1,11 @@
 # KeyToJoy
 Simulate a GameController/Joystick using your keyboard and mouse.
 
+![Screenshot showing the key binding process. A controller is visible along a list of configured binds.](.github/screenshot.jpg)
+
 This is a quick prototype so I can play the game ['Aperture Desk
 Job'](https://store.steampowered.com/app/1902490/Aperture_Desk_Job/)
-without a Steam Deck.
+without the use of a Steam Deck or controller.
 
 
 ## Usage
