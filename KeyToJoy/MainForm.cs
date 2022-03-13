@@ -7,6 +7,7 @@ using Linearstar.Windows.RawInput;
 using RawKeyboardFlags = Linearstar.Windows.RawInput.Native.RawKeyboardFlags;
 using System.Drawing;
 using KeyToJoy.Input;
+using KeyToJoy.Properties;
 
 namespace KeyToJoy
 {
@@ -14,42 +15,30 @@ namespace KeyToJoy
     {
         const double SENSITIVITY = 0.05;
 
-        private Dictionary<Keys, BindingSetting> bindsLookup;
-        private Dictionary<AxisDirection, BindingSetting> mouseAxisBindsLookup;
-        private BindingList<BindingPreset> presets = new BindingList<BindingPreset>();
+        private BindingPreset selectedPreset;
 
         private Image defaultControllerImage;
 
         public MainForm()
         {
             InitializeComponent();
+
             defaultControllerImage = pctController.Image;
 
             SetupInputHooks();
             SimGamePad.Instance.PlugIn();
 
-            presets.Add(BindingPreset.Default);
-
-            cmbPreset.DisplayMember = "Name";
-            cmbPreset.DataSource = presets;
-
-            LoadPreset(presets[0]);
+            cmbPreset.DisplayMember = "Display";
+            cmbPreset.DataSource = BindingPreset.All;
+            
+            ReloadSelectedPreset();
         }
 
-        private void LoadPreset(BindingPreset preset)
+        private void ReloadSelectedPreset()
         {
-            dgvBinds.DataSource = preset.Bindings;
-
-            bindsLookup = new Dictionary<Keys, BindingSetting>();
-            mouseAxisBindsLookup = new Dictionary<AxisDirection, BindingSetting>();
-
-            foreach (var bindingSetting in preset.Bindings)
-            {
-                if (bindingSetting.DefaultKeyBind != null)
-                    bindsLookup.Add((Keys)bindingSetting.DefaultKeyBind, bindingSetting);
-                else if (bindingSetting.DefaultAxisBind != null)
-                    mouseAxisBindsLookup.Add((AxisDirection)bindingSetting.DefaultAxisBind, bindingSetting);
-            }
+            selectedPreset = cmbPreset.SelectedItem as BindingPreset;
+            dgvBinds.DataSource = selectedPreset.Bindings;
+            txtPresetName.Text = selectedPreset.Name;
         }
 
         private void SettingsForm_Load(object sender, EventArgs e)
@@ -58,20 +47,44 @@ namespace KeyToJoy
             pctController.Image = defaultControllerImage;
         }
 
-        private void dgvBinds_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        private void CmbPreset_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var row = dgvBinds.Rows[e.RowIndex];
-            var bindingSetting = row.DataBoundItem as BindingSetting;
-
-            if (bindingSetting == null)
-                return;
-
-            new BindingForm(bindingSetting).ShowDialog();
-
-            dgvBinds.Update();
+            ReloadSelectedPreset();
         }
 
-        private void dgvBinds_SelectionChanged(object sender, EventArgs e)
+        private void ChangeBinding(BindingOption bindingOption)
+        {
+            new BindingForm(bindingOption).ShowDialog();
+
+            foreach (var option in selectedPreset.Bindings)
+            {
+                if (option == bindingOption)
+                    continue;
+
+                if (option.Binding == bindingOption.Binding)
+                {
+                    MessageBox.Show($"This binding is already in use for {option.Control}! Change {option.Control} to something else.");
+                    ChangeBinding(option);
+                    break;
+                }
+            }
+
+            dgvBinds.Update();
+            selectedPreset.Save();
+        }
+
+        private void DgvBinds_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            var row = dgvBinds.Rows[e.RowIndex];
+            var bindingOption = row.DataBoundItem as BindingOption;
+
+            if (bindingOption == null)
+                return;
+
+            ChangeBinding(bindingOption);
+        }
+
+        private void DgvBinds_SelectionChanged(object sender, EventArgs e)
         {
             var rowsCount = dgvBinds.SelectedRows.Count;
 
@@ -86,20 +99,20 @@ namespace KeyToJoy
                 return;
             }
 
-            var bindingSetting = row.DataBoundItem as BindingSetting;
+            var bindingOption = row.DataBoundItem as BindingOption;
 
-            if (bindingSetting == null)
+            if (bindingOption == null)
                 return;
 
-            pctController.Image = bindingSetting.HighlightImage;
+            pctController.Image = BindingOption.GetControllerImage(bindingOption.Control);
         }
 
         private void DgvBinds_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            var bindingSetting = dgvBinds.Rows[e.RowIndex].DataBoundItem as BindingSetting;
+            var bindingOption = dgvBinds.Rows[e.RowIndex].DataBoundItem as BindingOption;
 
-            dgvBinds.Rows[e.RowIndex].Cells["colControl"].Value = bindingSetting.GetControlDisplay();
-            dgvBinds.Rows[e.RowIndex].Cells["colBind"].Value = bindingSetting.GetBindDisplay();
+            dgvBinds.Rows[e.RowIndex].Cells["colControl"].Value = bindingOption.GetControlDisplay();
+            dgvBinds.Rows[e.RowIndex].Cells["colBind"].Value = bindingOption.GetBindDisplay();
         }
 
         public void SetupInputHooks()
@@ -113,13 +126,13 @@ namespace KeyToJoy
             if (!chkEnabled.Checked)
                 return false;
 
-            if (!bindsLookup.TryGetValue(keys, out var bindingSetting))
+            if (!selectedPreset.TryGetBinding(new KeyboardBinding(keys), out var bindingOption))
                 return false;
 
             if (isPressed)
-                SimGamePad.Instance.SetControl(bindingSetting.Control);
+                SimGamePad.Instance.SetControl(bindingOption.Control);
             else
-                SimGamePad.Instance.ReleaseControl(bindingSetting.Control);
+                SimGamePad.Instance.ReleaseControl(bindingOption.Control);
 
             return true;
         }
@@ -129,50 +142,46 @@ namespace KeyToJoy
             if (!chkEnabled.Checked)
                 return false;
 
-            if (mouseAxisBindsLookup.Count == 0)
-                return false;
-
             timerAxisTimeout.Stop();
             timerAxisTimeout.Start();
 
             var controllerId = 0;
             var state = SimGamePad.Instance.State[controllerId];
 
-            var screen = Screen.FromPoint(Cursor.Position);
             var deltaX = (short)Math.Min(Math.Max(lastX * short.MaxValue * SENSITIVITY, short.MinValue), short.MaxValue);
             var deltaY = (short)-Math.Min(Math.Max(lastY * short.MaxValue * SENSITIVITY, short.MinValue), short.MaxValue);
-            BindingSetting bindingSetting;
+            BindingOption bindingOption;
 
             if (
                 (
                     deltaX > 0
-                    && mouseAxisBindsLookup.TryGetValue(AxisDirection.Right, out bindingSetting)
+                    && selectedPreset.TryGetBinding(new MouseAxisBinding(AxisDirection.Right), out bindingOption)
                 )
                 ||
                 (
                     deltaX < 0
-                    && mouseAxisBindsLookup.TryGetValue(AxisDirection.Left, out bindingSetting)
+                    && selectedPreset.TryGetBinding(new MouseAxisBinding(AxisDirection.Left), out bindingOption)
                 )
             )
             {
-                if (bindingSetting.Control == GamePadControl.RightStickRight
-                    || bindingSetting.Control == GamePadControl.RightStickLeft) // TODO: The rest (LeftStick, DPad, etc)
+                if (bindingOption.Control == GamePadControl.RightStickRight
+                    || bindingOption.Control == GamePadControl.RightStickLeft) // TODO: The rest (LeftStick, DPad, etc)
                     state.RightStickX = (short)((deltaX + state.RightStickX) / 2);
             }
             if (
                 (
                     deltaY > 0
-                    && mouseAxisBindsLookup.TryGetValue(AxisDirection.Up, out bindingSetting)
+                    && selectedPreset.TryGetBinding(new MouseAxisBinding(AxisDirection.Up), out bindingOption)
                 )
                 ||
                 (
                     deltaY < 0
-                    && mouseAxisBindsLookup.TryGetValue(AxisDirection.Down, out bindingSetting)
+                    && selectedPreset.TryGetBinding(new MouseAxisBinding(AxisDirection.Down), out bindingOption)
                 )
             )
             {
-                if (bindingSetting.Control == GamePadControl.RightStickUp
-                    || bindingSetting.Control == GamePadControl.RightStickDown) // TODO: The rest (LeftStick, DPad, etc)
+                if (bindingOption.Control == GamePadControl.RightStickUp
+                    || bindingOption.Control == GamePadControl.RightStickDown) // TODO: The rest (LeftStick, DPad, etc)
                     state.RightStickY = (short)((deltaY + state.RightStickY) / 2);
             }
 
@@ -183,9 +192,10 @@ namespace KeyToJoy
         const int WM_INPUT = 0x00FF;
         protected override void WndProc(ref Message m)
         {
+            base.WndProc(ref m);
+
             if (m.Msg != WM_INPUT) 
             { 
-                base.WndProc(ref m);
                 return;
             }
 
@@ -197,11 +207,10 @@ namespace KeyToJoy
 
                 if (TryOverrideKeyboardInput(keys, (keyboard.Keyboard.Flags & RawKeyboardFlags.Up) != RawKeyboardFlags.Up))
                 {
-                    return;
+                    return; // TODO: OVerride default input
                 }
                 else
                 {
-                    base.WndProc(ref m);
                     return;
                 }
             }
@@ -210,17 +219,16 @@ namespace KeyToJoy
             {
                 if (TryOverrideMouseInput(mouse.Mouse.LastX, mouse.Mouse.LastY))
                 {
-                    return;
+                    return; // TODO: OVerride default input
                 }
                 else
                 {
-                    base.WndProc(ref m);
                     return;
                 }
             }
         }
 
-        private void timerAxisTimeout_Tick(object sender, EventArgs e)
+        private void TimerAxisTimeout_Tick(object sender, EventArgs e)
         {
             var controllerId = 0;
             var state = SimGamePad.Instance.State[controllerId];
@@ -229,25 +237,32 @@ namespace KeyToJoy
             SimGamePad.Instance.Update(controllerId);
         }
 
-        private void btnOpenTest_Click(object sender, EventArgs e)
+        private void BtnOpenTest_Click(object sender, EventArgs e)
         {
             System.Diagnostics.Process.Start("https://devicetests.com/controller-tester");
         }
 
-        private void chkEnabled_CheckedChanged(object sender, EventArgs e)
+        private void ChkEnabled_CheckedChanged(object sender, EventArgs e)
         {
             btnOpenTest.Enabled = chkEnabled.Checked;
         }
 
-        private void btnCreate_Click(object sender, EventArgs e)
+        private void TxtPresetName_TextChanged(object sender, EventArgs e)
         {
-            var preset = new BindingPreset(cmbPreset.Text);
+            selectedPreset.Name = txtPresetName.Text;
+            selectedPreset.Save();
+            BindingPreset.All.ResetBindings();
+        }
 
-            presets.Add(preset);
+        private void BtnCreate_Click(object sender, EventArgs e)
+        {
+            var preset = new BindingPreset(txtPresetName.Text, selectedPreset.Bindings);
+
+            BindingPreset.Add(preset);
             cmbPreset.SelectedIndex = cmbPreset.Items.Count - 1;
         }
 
-        private void btnAbout_Click(object sender, EventArgs e)
+        private void BtnAbout_Click(object sender, EventArgs e)
         {
             new AboutForm().ShowDialog();
         }

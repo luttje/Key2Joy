@@ -2,25 +2,24 @@
 using Linearstar.Windows.RawInput;
 using System;
 using System.Collections.Generic;
-using RawKeyboardFlags = Linearstar.Windows.RawInput.Native.RawKeyboardFlags;
 using System.Windows.Forms;
 
 namespace KeyToJoy
 {
     public partial class BindingForm : Form
     {
-        internal BindingSetting BindingSetting { get; set; }
+        internal BindingOption BindingSetting { get; set; }
 
         private List<RadioButton> radioButtonGroup = new List<RadioButton>();
 
-        internal BindingForm(BindingSetting bindingSetting)
+        internal BindingForm(BindingOption bindingOption)
             :this()
         {
-            this.BindingSetting = bindingSetting;
+            this.BindingSetting = bindingOption;
 
-            pctController.Image = bindingSetting.HighlightImage;
+            pctController.Image = BindingOption.GetControllerImage(bindingOption.Control);
 
-            lblInfo.Text = $"Pretend the {bindingSetting.GetControlDisplay()} button is pressed when...";
+            lblInfo.Text = $"Pretend the {bindingOption.GetControlDisplay()} button is pressed when...";
 
             SetConfirmBindButtonText();
         }
@@ -78,7 +77,7 @@ namespace KeyToJoy
             if (BindingSetting == null)
                 return;
 
-            BindingSetting.DefaultAxisBind = (AxisDirection?)Enum.Parse(typeof(AxisDirection), cmbMouseDirection.Text);
+            BindingSetting.Binding = new MouseAxisBinding((AxisDirection)Enum.Parse(typeof(AxisDirection), cmbMouseDirection.Text));
             SetConfirmBindButtonText($"Mouse {cmbMouseDirection.Text}");
         }
 
@@ -104,27 +103,12 @@ namespace KeyToJoy
                 if (data is RawInputKeyboardData keyboard)
                 {
                     var keys = VirtualKeyConverter.KeysFromVirtual(keyboard.Keyboard.VirutalKey);
-                    BindingSetting.DefaultKeyBind = keys;
+                    BindingSetting.Binding = new KeyboardBinding(keys, keyboard.Keyboard.Flags);
 
 
-                    if ((keyboard.Keyboard.Flags & RawKeyboardFlags.KeyE0) == RawKeyboardFlags.KeyE0)
-                    {
-                        if (BindingSetting.DefaultKeyBind == Keys.ControlKey)
-                            BindingSetting.DefaultKeyBind = Keys.RControlKey;
-                        if (BindingSetting.DefaultKeyBind == Keys.ShiftKey)
-                            BindingSetting.DefaultKeyBind = Keys.RShiftKey;
-                    }
-                    else
-                    {
-                        if (BindingSetting.DefaultKeyBind == Keys.ControlKey)
-                            BindingSetting.DefaultKeyBind = Keys.LControlKey;
-                        if (BindingSetting.DefaultKeyBind == Keys.ShiftKey)
-                            BindingSetting.DefaultKeyBind = Keys.LShiftKey;
-                    }
+                    txtKeyBind.Text = $"(keyboard) {BindingSetting.Binding}";
 
-                    txtKeyBind.Text = $"(keyboard) {BindingSetting.DefaultKeyBind}";
-
-                    SetConfirmBindButtonText(BindingSetting.DefaultKeyBind.ToString());
+                    SetConfirmBindButtonText(BindingSetting.Binding.ToString());
                 }
             }
 

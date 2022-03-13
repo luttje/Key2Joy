@@ -35,6 +35,7 @@
             this.dgvBinds = new System.Windows.Forms.DataGridView();
             this.colControl = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colBind = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.txtPresetName = new System.Windows.Forms.TextBox();
             this.pnlPreset = new System.Windows.Forms.Panel();
             this.lblPresetInfo = new System.Windows.Forms.Label();
             this.cmbPreset = new System.Windows.Forms.ComboBox();
@@ -43,8 +44,10 @@
             this.chkEnabled = new System.Windows.Forms.CheckBox();
             this.btnOpenTest = new System.Windows.Forms.Button();
             this.dbgLabel = new System.Windows.Forms.Label();
-            this.btnAbout = new System.Windows.Forms.Button();
             this.pctController = new System.Windows.Forms.PictureBox();
+            this.btnAbout = new System.Windows.Forms.Button();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.lblInfoName = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
             this.splitContainer.Panel2.SuspendLayout();
@@ -52,6 +55,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvBinds)).BeginInit();
             this.pnlPreset.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pctController)).BeginInit();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // timerAxisTimeout
@@ -67,6 +71,7 @@
             // splitContainer.Panel1
             // 
             this.splitContainer.Panel1.Controls.Add(this.dgvBinds);
+            this.splitContainer.Panel1.Controls.Add(this.panel1);
             this.splitContainer.Panel1.Controls.Add(this.pnlPreset);
             this.splitContainer.Panel1.Controls.Add(this.chkEnabled);
             this.splitContainer.Panel1.Controls.Add(this.btnOpenTest);
@@ -91,16 +96,16 @@
             this.colBind});
             this.dgvBinds.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvBinds.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dgvBinds.Location = new System.Drawing.Point(0, 78);
+            this.dgvBinds.Location = new System.Drawing.Point(0, 108);
             this.dgvBinds.Name = "dgvBinds";
             this.dgvBinds.ReadOnly = true;
             this.dgvBinds.RowHeadersVisible = false;
             this.dgvBinds.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvBinds.Size = new System.Drawing.Size(274, 309);
-            this.dgvBinds.TabIndex = 84;
+            this.dgvBinds.Size = new System.Drawing.Size(274, 279);
+            this.dgvBinds.TabIndex = 86;
             this.dgvBinds.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.DgvBinds_CellFormatting);
-            this.dgvBinds.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvBinds_CellMouseDoubleClick);
-            this.dgvBinds.SelectionChanged += new System.EventHandler(this.dgvBinds_SelectionChanged);
+            this.dgvBinds.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.DgvBinds_CellMouseDoubleClick);
+            this.dgvBinds.SelectionChanged += new System.EventHandler(this.DgvBinds_SelectionChanged);
             // 
             // colControl
             // 
@@ -114,6 +119,15 @@
             this.colBind.HeaderText = "Bind";
             this.colBind.Name = "colBind";
             this.colBind.ReadOnly = true;
+            // 
+            // txtPresetName
+            // 
+            this.txtPresetName.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtPresetName.Location = new System.Drawing.Point(82, 5);
+            this.txtPresetName.Name = "txtPresetName";
+            this.txtPresetName.Size = new System.Drawing.Size(187, 20);
+            this.txtPresetName.TabIndex = 85;
+            this.txtPresetName.TextChanged += new System.EventHandler(this.TxtPresetName_TextChanged);
             // 
             // pnlPreset
             // 
@@ -143,11 +157,13 @@
             // 
             this.cmbPreset.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbPreset.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbPreset.FormattingEnabled = true;
             this.cmbPreset.Location = new System.Drawing.Point(88, 52);
             this.cmbPreset.Name = "cmbPreset";
             this.cmbPreset.Size = new System.Drawing.Size(133, 21);
             this.cmbPreset.TabIndex = 84;
+            this.cmbPreset.SelectedIndexChanged += new System.EventHandler(this.CmbPreset_SelectedIndexChanged);
             // 
             // btnCreate
             // 
@@ -158,11 +174,12 @@
             this.btnCreate.TabIndex = 80;
             this.btnCreate.Text = "Create";
             this.btnCreate.UseVisualStyleBackColor = true;
-            this.btnCreate.Click += new System.EventHandler(this.btnCreate_Click);
+            this.btnCreate.Click += new System.EventHandler(this.BtnCreate_Click);
             // 
             // lblPreset
             // 
             this.lblPreset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblPreset.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblPreset.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.lblPreset.Location = new System.Drawing.Point(5, 52);
             this.lblPreset.Name = "lblPreset";
@@ -183,7 +200,7 @@
             this.chkEnabled.Text = "Pretend keyboard and mouse input is game controller (using the binds configured a" +
     "bove)";
             this.chkEnabled.UseVisualStyleBackColor = true;
-            this.chkEnabled.CheckedChanged += new System.EventHandler(this.chkEnabled_CheckedChanged);
+            this.chkEnabled.CheckedChanged += new System.EventHandler(this.ChkEnabled_CheckedChanged);
             // 
             // btnOpenTest
             // 
@@ -195,7 +212,7 @@
             this.btnOpenTest.TabIndex = 79;
             this.btnOpenTest.Text = "Test input translation using \'devicetests.com\'";
             this.btnOpenTest.UseVisualStyleBackColor = true;
-            this.btnOpenTest.Click += new System.EventHandler(this.btnOpenTest_Click);
+            this.btnOpenTest.Click += new System.EventHandler(this.BtnOpenTest_Click);
             // 
             // dbgLabel
             // 
@@ -206,17 +223,6 @@
             this.dbgLabel.Name = "dbgLabel";
             this.dbgLabel.Size = new System.Drawing.Size(0, 13);
             this.dbgLabel.TabIndex = 78;
-            // 
-            // btnAbout
-            // 
-            this.btnAbout.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAbout.Location = new System.Drawing.Point(786, 458);
-            this.btnAbout.Name = "btnAbout";
-            this.btnAbout.Size = new System.Drawing.Size(90, 27);
-            this.btnAbout.TabIndex = 80;
-            this.btnAbout.Text = "Credits";
-            this.btnAbout.UseVisualStyleBackColor = true;
-            this.btnAbout.Click += new System.EventHandler(this.btnAbout_Click);
             // 
             // pctController
             // 
@@ -231,6 +237,40 @@
             this.pctController.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pctController.TabIndex = 79;
             this.pctController.TabStop = false;
+            // 
+            // btnAbout
+            // 
+            this.btnAbout.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAbout.Location = new System.Drawing.Point(786, 458);
+            this.btnAbout.Name = "btnAbout";
+            this.btnAbout.Size = new System.Drawing.Size(90, 27);
+            this.btnAbout.TabIndex = 80;
+            this.btnAbout.Text = "Credits";
+            this.btnAbout.UseVisualStyleBackColor = true;
+            this.btnAbout.Click += new System.EventHandler(this.BtnAbout_Click);
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.txtPresetName);
+            this.panel1.Controls.Add(this.lblInfoName);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(0, 78);
+            this.panel1.Name = "panel1";
+            this.panel1.Padding = new System.Windows.Forms.Padding(5);
+            this.panel1.Size = new System.Drawing.Size(274, 30);
+            this.panel1.TabIndex = 80;
+            // 
+            // lblInfoName
+            // 
+            this.lblInfoName.Dock = System.Windows.Forms.DockStyle.Left;
+            this.lblInfoName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblInfoName.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.lblInfoName.Location = new System.Drawing.Point(5, 5);
+            this.lblInfoName.Name = "lblInfoName";
+            this.lblInfoName.Size = new System.Drawing.Size(77, 20);
+            this.lblInfoName.TabIndex = 88;
+            this.lblInfoName.Text = "Preset Name:";
+            this.lblInfoName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // MainForm
             // 
@@ -255,6 +295,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvBinds)).EndInit();
             this.pnlPreset.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pctController)).EndInit();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -266,15 +308,18 @@
         private System.Windows.Forms.CheckBox chkEnabled;
         private System.Windows.Forms.Label dbgLabel;
         private System.Windows.Forms.PictureBox pctController;
-        private System.Windows.Forms.DataGridView dgvBinds;
         private System.Windows.Forms.Panel pnlPreset;
         private System.Windows.Forms.Label lblPreset;
         private System.Windows.Forms.ComboBox cmbPreset;
         private System.Windows.Forms.Button btnCreate;
         private System.Windows.Forms.Label lblPresetInfo;
+        private System.Windows.Forms.Button btnAbout;
+        private System.Windows.Forms.TextBox txtPresetName;
+        private System.Windows.Forms.DataGridView dgvBinds;
         private System.Windows.Forms.DataGridViewTextBoxColumn colControl;
         private System.Windows.Forms.DataGridViewTextBoxColumn colBind;
-        private System.Windows.Forms.Button btnAbout;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label lblInfoName;
     }
 }
 

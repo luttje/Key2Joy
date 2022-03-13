@@ -41,6 +41,9 @@
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="RawInput.Sharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\RawInput.Sharp.0.0.4\lib\netstandard1.1\RawInput.Sharp.dll</HintPath>
     </Reference>
@@ -198,6 +201,7 @@
       <DependentUpon>BindingForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Input\AxisDirection.cs" />
+    <Compile Include="Input\Binding.cs" />
     <Compile Include="Input\BindingPreset.cs" />
     <Compile Include="InitForm.cs">
       <SubType>Form</SubType>
@@ -205,6 +209,8 @@
     <Compile Include="InitForm.Designer.cs">
       <DependentUpon>InitForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Input\KeyboardBinding.cs" />
+    <Compile Include="Input\MouseAxisBinding.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -216,7 +222,7 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Input\BindingSetting.cs" />
+    <Compile Include="Input\BindingOption.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Input\VirtualKeyConverter.cs" />

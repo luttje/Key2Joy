@@ -1,7 +1,11 @@
 ﻿using KeyToJoy.Properties;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using SimWinInput;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,16 +13,139 @@ using System.Windows.Forms;
 
 namespace KeyToJoy.Input
 {
+    [JsonObject(MemberSerialization.OptIn)]
     internal class BindingPreset
     {
-        public List<BindingSetting> Bindings { get; set; } = new List<BindingSetting>();
+        const string SAVE_DIR = "Key2Joy Presets";
+        public static BindingList<BindingPreset> All { get; } = new BindingList<BindingPreset>();
+
+        [JsonProperty]
+        public List<BindingOption> Bindings { get; set; } = new List<BindingOption>();
+
+        [JsonProperty]
         public string Name { get; set; }
 
-        public BindingPreset(string name)
+        public string Display => $"{Name} ({Path.GetFileName(filePath)})";
+
+        private string filePath;
+        private Dictionary<string, BindingOption> lookup = new Dictionary<string, BindingOption>();
+
+        [JsonConstructor]
+        internal BindingPreset(string name, List<BindingOption> bindings = null)
         {
             Name = name;
+
+            var directory = GetSaveDirectory();
+
+            if (filePath == null)
+            {
+                int version = 1;
+                do
+                {
+                    filePath = Path.Combine(directory, $"profile-{version}.key2joy.json");
+                    version++;
+                } while (File.Exists(filePath));
+            }
+
+            if (bindings != null)
+            {
+                foreach (var binding in bindings)
+                {
+                    Bindings.Add((BindingOption)binding.Clone());
+                }
+            }
         }
 
+        internal static void Add(BindingPreset preset, bool blockSave = false)
+        {
+            All.Add(preset);
+
+            if (!blockSave)
+                preset.Save();
+        }
+
+        internal void AddOption(BindingOption bindingOption)
+        {
+            Bindings.Add(bindingOption);
+            CacheLookup(bindingOption);
+        }
+
+        private void CacheLookup(BindingOption bindingOption)
+        {
+            lookup.Add(bindingOption.Binding.GetUniqueBindingKey(), bindingOption);
+        }
+
+        private void CacheAllLookup()
+        {
+            foreach (var bindingOption in Bindings)
+            {
+                CacheLookup(bindingOption);
+            }
+        }
+
+        internal bool TryGetBinding(Binding binding, out BindingOption bindingOption)
+        {
+            return lookup.TryGetValue(binding.GetUniqueBindingKey(), out bindingOption);
+        }
+
+        internal void Save()
+        {
+            var serializer = GetSerializer();
+
+            using (var sw = new StreamWriter(filePath))
+            using (var writer = new JsonTextWriter(sw))
+            {
+                serializer.Serialize(writer, this);
+            }
+        }
+
+        internal static List<BindingPreset> LoadAll()
+        {
+            var presets = new List<BindingPreset>();
+            var serializer = GetSerializer();
+
+            foreach (var filePath in Directory.EnumerateFiles(GetSaveDirectory(), "*.key2joy.json"))
+            {
+                using (var sr = new StreamReader(filePath))
+                using (var reader = new JsonTextReader(sr))
+                {
+                    var preset = serializer.Deserialize<BindingPreset>(reader);
+                    preset.PostLoad(filePath);
+                    presets.Add(preset);
+                }
+            }
+
+            return presets;
+        }
+
+        private void PostLoad(string filePath)
+        {
+            this.filePath = filePath;
+
+            CacheAllLookup();
+        }
+
+        private static JsonSerializer GetSerializer()
+        {
+            var serializer = new JsonSerializer();
+            serializer.Converters.Add(new StringEnumConverter());
+            serializer.Formatting = Formatting.Indented;
+
+            return serializer;
+        }
+
+        private static string GetSaveDirectory()
+        {
+            var directory = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                SAVE_DIR);
+
+            Directory.CreateDirectory(directory);
+
+            return directory;
+        }
+
+        #region Default Binding Preset
         internal static BindingPreset Default
         {
             get
@@ -26,151 +153,127 @@ namespace KeyToJoy.Input
                 var defaultPreset = new BindingPreset("Default");
 
                 // Top of controller
-                defaultPreset.Bindings.Add(new BindingSetting
+                defaultPreset.AddOption(new BindingOption
                 {
                     Control = GamePadControl.LeftShoulder,
-                    HighlightImage = Resources.XboxSeriesX_LB,
-                    DefaultKeyBind = Keys.Q
+                    Binding = new KeyboardBinding(Keys.Q)
                 });
-                defaultPreset.Bindings.Add(new BindingSetting
+                defaultPreset.AddOption(new BindingOption
                 {
                     Control = GamePadControl.LeftTrigger,
-                    HighlightImage = Resources.XboxSeriesX_LT,
-                    DefaultKeyBind = Keys.D1
+                    Binding = new KeyboardBinding(Keys.D1)
                 });
-                defaultPreset.Bindings.Add(new BindingSetting
+                defaultPreset.AddOption(new BindingOption
                 {
                     Control = GamePadControl.RightShoulder,
-                    HighlightImage = Resources.XboxSeriesX_RB,
-                    DefaultKeyBind = Keys.E
+                    Binding = new KeyboardBinding(Keys.E)
                 });
-                defaultPreset.Bindings.Add(new BindingSetting
+                defaultPreset.AddOption(new BindingOption
                 {
                     Control = GamePadControl.RightTrigger,
-                    HighlightImage = Resources.XboxSeriesX_RT,
-                    DefaultKeyBind = Keys.D2
+                    Binding = new KeyboardBinding(Keys.D2)
                 });
 
                 // Left half of controller
-                defaultPreset.Bindings.Add(new BindingSetting
+                defaultPreset.AddOption(new BindingOption
                 {
                     Control = GamePadControl.LeftStickUp,
-                    HighlightImage = Resources.XboxSeriesX_Left_Stick_Up,
-                    DefaultKeyBind = Keys.W
+                    Binding = new KeyboardBinding(Keys.W)
                 });
-                defaultPreset.Bindings.Add(new BindingSetting
+                defaultPreset.AddOption(new BindingOption
                 {
                     Control = GamePadControl.LeftStickRight,
-                    HighlightImage = Resources.XboxSeriesX_Left_Stick_Right,
-                    DefaultKeyBind = Keys.D
+                    Binding = new KeyboardBinding(Keys.D)
                 });
-                defaultPreset.Bindings.Add(new BindingSetting
+                defaultPreset.AddOption(new BindingOption
                 {
                     Control = GamePadControl.LeftStickDown,
-                    HighlightImage = Resources.XboxSeriesX_Left_Stick_Down,
-                    DefaultKeyBind = Keys.S
+                    Binding = new KeyboardBinding(Keys.S)
                 });
-                defaultPreset.Bindings.Add(new BindingSetting
+                defaultPreset.AddOption(new BindingOption
                 {
                     Control = GamePadControl.LeftStickLeft,
-                    HighlightImage = Resources.XboxSeriesX_Left_Stick_Left,
-                    DefaultKeyBind = Keys.A
+                    Binding = new KeyboardBinding(Keys.A)
                 });
-                defaultPreset.Bindings.Add(new BindingSetting
+                defaultPreset.AddOption(new BindingOption
                 {
                     Control = GamePadControl.LeftStickClick,
-                    HighlightImage = Resources.XboxSeriesX_Left_Stick_Click,
-                    DefaultKeyBind = Keys.LControlKey
+                    Binding = new KeyboardBinding(Keys.LControlKey)
                 });
 
-                defaultPreset.Bindings.Add(new BindingSetting
+                defaultPreset.AddOption(new BindingOption
                 {
                     Control = GamePadControl.DPadUp,
-                    HighlightImage = Resources.XboxSeriesX_Dpad_Up,
-                    DefaultKeyBind = Keys.Up
+                    Binding = new KeyboardBinding(Keys.Up)
                 });
-                defaultPreset.Bindings.Add(new BindingSetting
+                defaultPreset.AddOption(new BindingOption
                 {
                     Control = GamePadControl.DPadRight,
-                    HighlightImage = Resources.XboxSeriesX_Dpad_Right,
-                    DefaultKeyBind = Keys.Right
+                    Binding = new KeyboardBinding(Keys.Right)
                 });
-                defaultPreset.Bindings.Add(new BindingSetting
+                defaultPreset.AddOption(new BindingOption
                 {
                     Control = GamePadControl.DPadDown,
-                    HighlightImage = Resources.XboxSeriesX_Dpad_Down,
-                    DefaultKeyBind = Keys.Down
+                    Binding = new KeyboardBinding(Keys.Down)
                 });
-                defaultPreset.Bindings.Add(new BindingSetting
+                defaultPreset.AddOption(new BindingOption
                 {
                     Control = GamePadControl.DPadLeft,
-                    HighlightImage = Resources.XboxSeriesX_Dpad_Left,
-                    DefaultKeyBind = Keys.Left
+                    Binding = new KeyboardBinding(Keys.Left)
                 });
 
                 // Right half of controller
-                defaultPreset.Bindings.Add(new BindingSetting
+                defaultPreset.AddOption(new BindingOption
                 {
                     Control = GamePadControl.RightStickUp,
-                    HighlightImage = Resources.XboxSeriesX_Right_Stick_Up,
-                    //DefaultKeyBind = Keys.I,
-                    DefaultAxisBind = AxisDirection.Up
+                    Binding = new MouseAxisBinding(AxisDirection.Up)
                 });
-                defaultPreset.Bindings.Add(new BindingSetting
+                defaultPreset.AddOption(new BindingOption
                 {
                     Control = GamePadControl.RightStickRight,
-                    HighlightImage = Resources.XboxSeriesX_Right_Stick_Right,
-                    //DefaultKeyBind = Keys.L,
-                    DefaultAxisBind = AxisDirection.Right
+                    Binding = new MouseAxisBinding(AxisDirection.Right)
                 });
-                defaultPreset.Bindings.Add(new BindingSetting
+                defaultPreset.AddOption(new BindingOption
                 {
                     Control = GamePadControl.RightStickDown,
-                    HighlightImage = Resources.XboxSeriesX_Right_Stick_Down,
-                    //DefaultKeyBind = Keys.K,
-                    DefaultAxisBind = AxisDirection.Down
+                    Binding = new MouseAxisBinding(AxisDirection.Down)
                 });
-                defaultPreset.Bindings.Add(new BindingSetting
+                defaultPreset.AddOption(new BindingOption
                 {
                     Control = GamePadControl.RightStickLeft,
-                    HighlightImage = Resources.XboxSeriesX_Right_Stick_Left,
-                    //DefaultKeyBind = Keys.J,
-                    DefaultAxisBind = AxisDirection.Left
+                    Binding = new MouseAxisBinding(AxisDirection.Left)
                 });
-                defaultPreset.Bindings.Add(new BindingSetting
+                defaultPreset.AddOption(new BindingOption
                 {
                     Control = GamePadControl.RightStickClick,
-                    HighlightImage = Resources.XboxSeriesX_Right_Stick_Click,
-                    DefaultKeyBind = Keys.RControlKey
+                    Binding = new KeyboardBinding(Keys.RControlKey)
                 });
 
-                defaultPreset.Bindings.Add(new BindingSetting
+                defaultPreset.AddOption(new BindingOption
                 {
                     Control = GamePadControl.X,
-                    HighlightImage = Resources.XboxSeriesX_X,
-                    DefaultKeyBind = Keys.X
+                    Binding = new KeyboardBinding(Keys.X)
                 });
-                defaultPreset.Bindings.Add(new BindingSetting
+                defaultPreset.AddOption(new BindingOption
                 {
                     Control = GamePadControl.Y,
-                    HighlightImage = Resources.XboxSeriesX_Y,
-                    DefaultKeyBind = Keys.Y
+                    Binding = new KeyboardBinding(Keys.Y)
                 });
-                defaultPreset.Bindings.Add(new BindingSetting
+                defaultPreset.AddOption(new BindingOption
                 {
                     Control = GamePadControl.A,
-                    HighlightImage = Resources.XboxSeriesX_A,
-                    DefaultKeyBind = Keys.F
+                    Binding = new KeyboardBinding(Keys.F)
                 });
-                defaultPreset.Bindings.Add(new BindingSetting
+                defaultPreset.AddOption(new BindingOption
                 {
                     Control = GamePadControl.B,
-                    HighlightImage = Resources.XboxSeriesX_B,
-                    DefaultKeyBind = Keys.Z
+                    Binding = new KeyboardBinding(Keys.Z)
                 });
 
                 return defaultPreset;
             }
         }
+        #endregion
+
     }
 }
