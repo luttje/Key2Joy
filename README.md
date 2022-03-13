@@ -1,7 +1,7 @@
 # KeyToJoy
 Simulate a GameController/Joystick using your keyboard and mouse.
 
-![Screenshot showing the key binding process. A controller is visible along a list of configured binds.](.github/screenshot.jpg)
+![Screenshot showing the key binding process. A controller has one highlighted button and a textbox shows the W button is currently bound to it.](.github/screenshot.png)
 
 This is a quick prototype so I can play the game ['Aperture Desk
 Job'](https://store.steampowered.com/app/1902490/Aperture_Desk_Job/)
