@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.timerAxisTimeout = new System.Windows.Forms.Timer(this.components);
             this.splitContainer = new System.Windows.Forms.SplitContainer();
             this.dgvBinds = new System.Windows.Forms.DataGridView();
@@ -42,6 +43,7 @@
             this.chkEnabled = new System.Windows.Forms.CheckBox();
             this.btnOpenTest = new System.Windows.Forms.Button();
             this.dbgLabel = new System.Windows.Forms.Label();
+            this.btnAbout = new System.Windows.Forms.Button();
             this.pctController = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
@@ -205,6 +207,17 @@
             this.dbgLabel.Size = new System.Drawing.Size(0, 13);
             this.dbgLabel.TabIndex = 78;
             // 
+            // btnAbout
+            // 
+            this.btnAbout.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAbout.Location = new System.Drawing.Point(786, 458);
+            this.btnAbout.Name = "btnAbout";
+            this.btnAbout.Size = new System.Drawing.Size(90, 27);
+            this.btnAbout.TabIndex = 80;
+            this.btnAbout.Text = "Credits";
+            this.btnAbout.UseVisualStyleBackColor = true;
+            this.btnAbout.Click += new System.EventHandler(this.btnAbout_Click);
+            // 
             // pctController
             // 
             this.pctController.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
@@ -225,8 +238,10 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(876, 485);
+            this.Controls.Add(this.btnAbout);
             this.Controls.Add(this.splitContainer);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.MaximizeBox = false;
             this.Name = "MainForm";
@@ -259,6 +274,7 @@
         private System.Windows.Forms.Label lblPresetInfo;
         private System.Windows.Forms.DataGridViewTextBoxColumn colControl;
         private System.Windows.Forms.DataGridViewTextBoxColumn colBind;
+        private System.Windows.Forms.Button btnAbout;
     }
 }
 

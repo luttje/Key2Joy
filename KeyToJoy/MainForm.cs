@@ -246,5 +246,10 @@ namespace KeyToJoy
             presets.Add(preset);
             cmbPreset.SelectedIndex = cmbPreset.Items.Count - 1;
         }
+
+        private void btnAbout_Click(object sender, EventArgs e)
+        {
+            new AboutForm().ShowDialog();
+        }
     }
 }
