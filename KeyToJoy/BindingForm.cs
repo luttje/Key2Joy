@@ -10,7 +10,7 @@ namespace KeyToJoy
     {
         internal BindingOption BindingSetting { get; set; }
 
-        private List<RadioButton> radioButtonGroup = new List<RadioButton>();
+        private readonly List<RadioButton> radioButtonGroup = new List<RadioButton>();
 
         internal BindingForm(BindingOption bindingOption)
             :this()

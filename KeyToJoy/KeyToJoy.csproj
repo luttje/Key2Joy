@@ -209,8 +209,19 @@
     <Compile Include="InitForm.Designer.cs">
       <DependentUpon>InitForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Input\GlobalInputHook.cs" />
     <Compile Include="Input\KeyboardBinding.cs" />
+    <Compile Include="Input\LowLevel\GlobalKeyboardHookEventArgs.cs" />
+    <Compile Include="Input\LowLevel\GlobalMouseHookEventArgs.cs" />
+    <Compile Include="Input\LowLevel\KeyboardState.cs" />
+    <Compile Include="Input\LowLevel\LowLevelKeyboardInputEvent.cs" />
+    <Compile Include="Input\LowLevel\LowLevelMouseInputEvent.cs" />
+    <Compile Include="Input\LowLevel\MouseState.cs" />
+    <Compile Include="Input\LowLevel\Point.cs" />
     <Compile Include="Input\MouseAxisBinding.cs" />
+    <Compile Include="MainForm.Input.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -267,12 +278,6 @@
     <None Include="Graphics\XboxSeriesX_Diagram.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Graphics\XboxSeriesX_Diagram_Simple.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Graphics\XboxSeriesX_Dpad.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Graphics\XboxSeriesX_Dpad_Down.png" />
   </ItemGroup>
   <ItemGroup>
@@ -288,34 +293,19 @@
     <None Include="Graphics\XboxSeriesX_LB.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Graphics\XboxSeriesX_Left_Stick.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Graphics\XboxSeriesX_Left_Stick_Click.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Graphics\XboxSeriesX_LT.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Graphics\XboxSeriesX_Menu.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Graphics\XboxSeriesX_RB.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Graphics\XboxSeriesX_Right_Stick.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Graphics\XboxSeriesX_Right_Stick_Click.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Graphics\XboxSeriesX_RT.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Graphics\XboxSeriesX_Share.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Graphics\XboxSeriesX_View.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Graphics\XboxSeriesX_X.png" />

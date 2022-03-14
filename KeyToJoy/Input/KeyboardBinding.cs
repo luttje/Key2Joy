@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using RawKeyboardFlags = Linearstar.Windows.RawInput.Native.RawKeyboardFlags;
+using Linearstar.Windows.RawInput.Native;
 using System.Windows.Forms;
 using Newtonsoft.Json;
 
