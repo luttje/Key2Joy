@@ -10,15 +10,39 @@ namespace KeyToJoy
 {
     public partial class MainForm
     {
-        const double SENSITIVITY = 0.05;
-        const int WM_INPUT = 0x00FF;
+        private const double SENSITIVITY = 0.05;
+        private const int WM_INPUT = 0x00FF;
+        private readonly Keys[] KEYS_ABORT = new[] { Keys.LControlKey, Keys.LShiftKey, Keys.Escape };
 
-        private bool TryOverrideKeyboardInput(Keys keys, bool isPressedDown)
+        private Keys abortKeysMask; // On load this is set to the bitwise or of all in KEYS_ABORT
+        private Keys currentAbortKeysDown = Keys.None;
+
+        private void Init()
+        {
+            abortKeysMask = Keys.None;
+
+            for (int i = 0; i < KEYS_ABORT.Length; i++)
+            {
+                abortKeysMask |= KEYS_ABORT[i];
+            }
+        }
+
+        private bool TryOverrideKeyboardInput(BindingOption bindingOption, bool isPressedDown)
         {
             if (!chkEnabled.Checked)
                 return false;
 
-            if (!selectedPreset.TryGetBinding(new KeyboardBinding(keys), out var bindingOption))
+            if (isPressedDown)
+                SimGamePad.Instance.SetControl(bindingOption.Control);
+            else
+                SimGamePad.Instance.ReleaseControl(bindingOption.Control);
+
+            return true;
+        }
+
+        private bool TryOverrideMouseButtonInput(BindingOption bindingOption, bool isPressedDown)
+        {
+            if (!chkEnabled.Checked)
                 return false;
 
             if (isPressedDown)
@@ -31,7 +55,7 @@ namespace KeyToJoy
 
         // TODO: Needs to be cleaned up
         // TODO: Sensitivity should be tweakable by user
-        private bool TryOverrideMouseInput(int lastX, int lastY)
+        private bool TryOverrideMouseMoveInput(int lastX, int lastY)
         {
             if (!chkEnabled.Checked)
                 return false;
@@ -95,7 +119,7 @@ namespace KeyToJoy
             if (!(data is RawInputMouseData mouse))
                 return;
 
-            if (TryOverrideMouseInput(mouse.Mouse.LastX, mouse.Mouse.LastY))
+            if (TryOverrideMouseMoveInput(mouse.Mouse.LastX, mouse.Mouse.LastY))
                 return;
         }
 
@@ -106,13 +130,58 @@ namespace KeyToJoy
 
             // Test if this is a bound key, if so halt default input behaviour
             var keys = VirtualKeyConverter.KeysFromVirtual(e.KeyboardData.VirtualCode);
-            if (!selectedPreset.TryGetBinding(new KeyboardBinding(keys), out var _))
+
+            // Check early if we want to abort
+            for (int i = 0; i < KEYS_ABORT.Length; i++)
+            {
+                var abortKey = KEYS_ABORT[i];
+
+                if((keys & abortKey) == abortKey)
+                {
+                    if (e.KeyboardState == KeyboardState.KeyDown)
+                        currentAbortKeysDown |= abortKey;
+                    else
+                        currentAbortKeysDown &= ~abortKey;
+                }
+            }
+
+            if (currentAbortKeysDown == abortKeysMask)
+            {
+                currentAbortKeysDown = Keys.None;
+                chkEnabled.Checked = false;
+                return;
+            }
+
+            if (!selectedPreset.TryGetBinding(new KeyboardBinding(keys), out var bindingOption))
                 return;
 
-            if (!TryOverrideKeyboardInput(keys, e.KeyboardState == KeyboardState.KeyDown))
+            if (!TryOverrideKeyboardInput(bindingOption, e.KeyboardState == KeyboardState.KeyDown))
                 return;
 
             e.Handled = true;
+        }
+
+        private void OnMouseButtonInputEvent(object sender, GlobalMouseHookEventArgs e)
+        {
+            if (!chkEnabled.Checked)
+                return;
+
+            // Mouse movement is handled through WndProc and TryOverrideMouseMoveInput
+            if (e.MouseState == MouseState.Move)
+                return;
+
+            try
+            {
+                // Test if this is a bound mouse button, if so halt default input behaviour
+                if (!selectedPreset.TryGetBinding(new MouseBinding(e.MouseState), out var bindingOption))
+                    return;
+
+                if (!TryOverrideMouseButtonInput(bindingOption, e.AreButtonsDown()))
+                    return;
+
+                e.Handled = true;
+            }
+            catch (ArgumentOutOfRangeException _) { }
         }
     }
 }

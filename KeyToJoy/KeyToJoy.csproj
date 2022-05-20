@@ -210,6 +210,7 @@
       <DependentUpon>InitForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Input\GlobalInputHook.cs" />
+    <Compile Include="Input\MouseBinding.cs" />
     <Compile Include="Input\KeyboardBinding.cs" />
     <Compile Include="Input\LowLevel\GlobalKeyboardHookEventArgs.cs" />
     <Compile Include="Input\LowLevel\GlobalMouseHookEventArgs.cs" />

@@ -20,6 +20,7 @@ namespace KeyToJoy
 
             defaultControllerImage = pctController.Image;
 
+            Init();
             SetupInputHooks();
             SimGamePad.Instance.PlugIn();
 
@@ -31,12 +32,13 @@ namespace KeyToJoy
 
         public void SetupInputHooks()
         {
-            // The mouse input is captured globally here
+            // The mouse movement is captured globally here
             RawInputDevice.RegisterDevice(HidUsageAndPage.Mouse, RawInputDeviceFlags.InputSink, Handle);
 
             // This captures global keyboard input and blocks default behaviour by setting e.Handled
             globalKeyboardHook = new GlobalInputHook();
             globalKeyboardHook.KeyboardInputEvent += OnKeyInputEvent;
+            globalKeyboardHook.MouseInputEvent += OnMouseButtonInputEvent;
         }
 
         private void ReloadSelectedPreset()
@@ -60,11 +62,19 @@ namespace KeyToJoy
                 if (option.Binding == bindingOption.Binding)
                 {
                     MessageBox.Show($"This binding is already in use for {option.Control}! Change {option.Control} to something else.");
+
+                    selectedPreset.PruneCacheKey(option.Binding.GetUniqueBindingKey());
+                    selectedPreset.CacheLookup(bindingOption);
+                    dgvBinds.Update();
+
                     ChangeBinding(option);
-                    break;
+
+                    return;
                 }
             }
 
+            selectedPreset.PruneCacheKey(bindingOption.Binding.GetUniqueBindingKey());
+            selectedPreset.CacheLookup(bindingOption);
             dgvBinds.Update();
             selectedPreset.Save();
         }
@@ -139,6 +149,7 @@ namespace KeyToJoy
         private void ChkEnabled_CheckedChanged(object sender, EventArgs e)
         {
             btnOpenTest.Enabled = chkEnabled.Checked;
+            lblAbortInfo.Visible = chkEnabled.Checked;
         }
 
         private void TxtPresetName_TextChanged(object sender, EventArgs e)

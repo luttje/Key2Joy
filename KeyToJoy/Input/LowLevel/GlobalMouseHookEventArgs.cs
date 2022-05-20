@@ -17,5 +17,18 @@ namespace KeyToJoy.Input.LowLevel
             MouseData = mouseData;
             MouseState = mouseState;
         }
+
+        public bool AreButtonsDown()
+        {
+            switch (MouseState)
+            {
+                case MouseState.LeftButtonDown:
+                case MouseState.RightButtonDown:
+                case MouseState.MiddleButtonDown:
+                    return true;
+            }
+
+            return false;
+        }
     }
 }

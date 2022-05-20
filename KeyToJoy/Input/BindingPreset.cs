@@ -12,6 +12,8 @@ namespace KeyToJoy.Input
     [JsonObject(MemberSerialization.OptIn)]
     internal class BindingPreset
     {
+        const int NO_VERSION = 0;
+
         const string SAVE_DIR = "Key2Joy Presets";
         public static BindingList<BindingPreset> All { get; } = new BindingList<BindingPreset>();
 
@@ -20,6 +22,9 @@ namespace KeyToJoy.Input
 
         [JsonProperty]
         public string Name { get; set; }
+
+        [JsonProperty]
+        public int Version { get; set; } = NO_VERSION; // Version is set on save
 
         public string Display => $"{Name} ({Path.GetFileName(filePath)})";
 
@@ -35,11 +40,11 @@ namespace KeyToJoy.Input
 
             if (filePath == null)
             {
-                int version = 1;
+                int alt = 1;
                 do
                 {
-                    filePath = Path.Combine(directory, $"profile-{version}.key2joy.json");
-                    version++;
+                    filePath = Path.Combine(directory, $"profile-{alt}.key2joy.json");
+                    alt++;
                 } while (File.Exists(filePath));
             }
 
@@ -66,7 +71,12 @@ namespace KeyToJoy.Input
             CacheLookup(bindingOption);
         }
 
-        private void CacheLookup(BindingOption bindingOption)
+        internal void PruneCacheKey(string oldBindingKey)
+        {
+            lookup.Remove(oldBindingKey);
+        }
+
+        internal void CacheLookup(BindingOption bindingOption)
         {
             lookup.Add(bindingOption.Binding.GetUniqueBindingKey(), bindingOption);
         }
@@ -91,6 +101,7 @@ namespace KeyToJoy.Input
             using (var sw = new StreamWriter(filePath))
             using (var writer = new JsonTextWriter(sw))
             {
+                this.Version = 2;
                 serializer.Serialize(writer, this);
             }
         }

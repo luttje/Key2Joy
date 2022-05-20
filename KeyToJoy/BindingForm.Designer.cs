@@ -144,7 +144,7 @@
             this.txtKeyBind.Name = "txtKeyBind";
             this.txtKeyBind.Size = new System.Drawing.Size(274, 20);
             this.txtKeyBind.TabIndex = 5;
-            this.txtKeyBind.Text = "(press any key\r\n)";
+            this.txtKeyBind.Text = "(press any key or click this field with a mouse button\r\n)";
             // 
             // radKeyBind
             // 

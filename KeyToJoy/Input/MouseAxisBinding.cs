@@ -5,13 +5,22 @@ namespace KeyToJoy.Input
 {
     internal class MouseAxisBinding : Binding
     {
-        const string PREFIX = "Mouse ";
+        const string PREFIX = "Mouse Move ";
         private AxisDirection axisBinding;
 
         [JsonConstructor]
         internal MouseAxisBinding(string name)
         {
-            this.axisBinding = (AxisDirection)Enum.Parse(typeof(AxisDirection), name.Replace(PREFIX, ""));
+            try
+            {
+                this.axisBinding = (AxisDirection)Enum.Parse(typeof(AxisDirection), name.Replace(PREFIX, ""));
+            }
+            catch(ArgumentException ex)
+            {
+                // Handle profile file versions before 2
+                var oldPrefix = "Mouse ";
+                this.axisBinding = (AxisDirection)Enum.Parse(typeof(AxisDirection), name.Replace(oldPrefix, ""));
+            }
         }
 
         internal MouseAxisBinding(AxisDirection axisBinding)

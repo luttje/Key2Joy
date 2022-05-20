@@ -3,6 +3,8 @@ using Linearstar.Windows.RawInput;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using Linearstar.Windows.RawInput.Native;
+using System.Drawing;
 
 namespace KeyToJoy
 {
@@ -109,6 +111,23 @@ namespace KeyToJoy
                     txtKeyBind.Text = $"(keyboard) {BindingSetting.Binding}";
 
                     SetConfirmBindButtonText(BindingSetting.Binding.ToString());
+                }
+                else if (data is RawInputMouseData mouse 
+                    && mouse.Mouse.Buttons != RawMouseButtonFlags.None
+                    && txtKeyBind.ClientRectangle.Contains(txtKeyBind.PointToClient(MousePosition)))
+                {
+                    try
+                    {
+                        BindingSetting.Binding = new MouseBinding(mouse.Mouse.Buttons);
+
+                        txtKeyBind.Text = $"{BindingSetting.Binding}";
+
+                        SetConfirmBindButtonText(BindingSetting.Binding.ToString());
+                    }
+                    catch (ArgumentOutOfRangeException ex)
+                    {
+                        MessageBox.Show($"Unknown mouse button pressed ({ex.Message}). Can't bind this (yet).", "Unknown mouse button!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
 
