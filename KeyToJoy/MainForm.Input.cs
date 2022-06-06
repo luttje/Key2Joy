@@ -13,9 +13,8 @@ namespace KeyToJoy
         private const double SENSITIVITY = 0.05;
         private const int WM_INPUT = 0x00FF;
 
-        public void Init()
+        public void RefreshInputCaptures()
         {
-            // The mouse movement is captured globally here
             RawInputDevice.RegisterDevice(HidUsageAndPage.Mouse, RawInputDeviceFlags.InputSink, Handle);
 
             // This captures global keyboard input and blocks default behaviour by setting e.Handled
@@ -73,11 +72,9 @@ namespace KeyToJoy
                 )
             )
             {
-                System.Diagnostics.Debug.WriteLine($"{state.RightStickX} bef!!!!");
                 if(bindingOption != null)
                     // TODO: The rest (LeftStick, DPad, etc)
                     state.RightStickX = bindingOption.Action.PerformMoveBind(deltaX, state.RightStickX);
-                System.Diagnostics.Debug.WriteLine($"{state.RightStickX} after!!!!");
             }
             if (
                 (

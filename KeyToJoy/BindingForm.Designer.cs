@@ -185,6 +185,7 @@
             this.MaximizeBox = false;
             this.Name = "BindingForm";
             this.Text = "Press a key or select a mouse direction to bind...";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.BindingForm_FormClosed);
             this.pnlHeader.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pctController)).EndInit();
             this.pnlContent.ResumeLayout(false);

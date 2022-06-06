@@ -139,5 +139,12 @@ namespace KeyToJoy
         {
             this.Close();
         }
+
+        private void BindingForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            // Relieve input capturing by this binding form and return it to the main form
+            RawInputDevice.UnregisterDevice(HidUsageAndPage.Keyboard);
+            RawInputDevice.UnregisterDevice(HidUsageAndPage.Mouse);
+        }
     }
 }

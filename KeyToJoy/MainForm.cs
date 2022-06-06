@@ -20,7 +20,7 @@ namespace KeyToJoy
 
             defaultControllerImage = pctController.Image;
 
-            Init();
+            RefreshInputCaptures();
 
             cmbPreset.DisplayMember = "Display";
             cmbPreset.DataSource = BindingPreset.All;
@@ -40,6 +40,7 @@ namespace KeyToJoy
             chkEnabled.Checked = false;
 
             new BindingForm(bindingOption).ShowDialog();
+            RefreshInputCaptures();
 
             foreach (var option in selectedPreset.Bindings)
             {
