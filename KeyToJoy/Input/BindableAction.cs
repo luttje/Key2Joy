@@ -12,6 +12,8 @@ namespace KeyToJoy.Input
     [JsonObject(MemberSerialization.OptIn)]
     internal abstract class BindableAction
     {
+        internal static List<BindableAction> All = new List<BindableAction>();
+
         internal Image Image
         {
             get
@@ -32,7 +34,24 @@ namespace KeyToJoy.Input
             this.ResourceName = resourceName;
         }
 
+        public static BindableAction Register(BindableAction bindableAction)
+        {
+            All.Add(bindableAction);
+
+            return bindableAction;
+        }
+
         internal abstract void PerformPressBind(bool inputKeyDown);
         internal abstract short PerformMoveBind(short inputMouseDelta, short currentAxisDelta);
+
+
+        public static bool operator ==(BindableAction a, BindableAction b)
+        {
+            if (System.Object.ReferenceEquals(a, b))
+                return true;
+
+            return a.Equals(b);
+        }
+        public static bool operator !=(BindableAction a, BindableAction b) => !(a == b);
     }
 }

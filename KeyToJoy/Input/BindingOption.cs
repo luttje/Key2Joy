@@ -22,6 +22,9 @@ namespace KeyToJoy.Input
 
         internal object GetBindDisplay()
         {
+            if (Binding == null)
+                return "<not bound to key>";
+
             return Binding.ToString();
         }
 
@@ -29,7 +32,7 @@ namespace KeyToJoy.Input
         {
             return new BindingOption()
             {
-                Binding = (Binding)Binding.Clone(),
+                Binding = Binding != null ? (Binding)Binding.Clone() : null,
                 Action = Action,
             };
         }

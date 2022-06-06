@@ -13,11 +13,14 @@ namespace KeyToJoy.Input
         // Must return an input value unique in the preset. Like a Keys combination or an AxisDirection.
         internal abstract string GetUniqueBindingKey();
 
-        public static bool operator ==(Binding obj1, Binding obj2)
+        public static bool operator ==(Binding a, Binding b)
         {
-            return obj1.Equals(obj2);
+            if (System.Object.ReferenceEquals(a, b))
+                return true;
+
+            return a.Equals(b);
         }
-        public static bool operator !=(Binding obj1, Binding obj2) => !(obj1 == obj2);
+        public static bool operator !=(Binding a, Binding b) => !(a == b);
 
         public abstract object Clone();
     }

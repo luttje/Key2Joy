@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace KeyToJoy.Input
@@ -60,6 +61,21 @@ namespace KeyToJoy.Input
 
         internal static void Add(BindingPreset preset, bool blockSave = false)
         {
+            if (preset.Bindings.Count < BindableAction.All.Count)
+            {
+                // Find missing binding options and list them as unbound in this preset
+                var missingBindables = BindableAction.All.Where(l2 => !preset.Bindings.Any(l1 => l1.Action == l2));
+
+                foreach (var bindableAction in missingBindables)
+                {
+                    preset.Bindings.Add(new BindingOption
+                    {
+                        Action = bindableAction,
+                        Binding = null
+                    });
+                }
+            }
+
             All.Add(preset);
 
             if (!blockSave)
@@ -79,6 +95,9 @@ namespace KeyToJoy.Input
 
         internal void CacheLookup(BindingOption bindingOption)
         {
+            if (bindingOption.Binding == null)
+                return;
+
             lookup.Add(bindingOption.Binding.GetUniqueBindingKey(), bindingOption);
         }
 
@@ -155,136 +174,5 @@ namespace KeyToJoy.Input
 
             return directory;
         }
-
-        #region Default Binding Preset
-        internal static BindingPreset Default
-        {
-            get
-            {
-                var defaultPreset = new BindingPreset("Default");
-
-                // Top of controller
-                defaultPreset.AddOption(new BindingOption
-                {
-                    Action = GamePadAction.LeftShoulder,
-                    Binding = new KeyboardBinding(Keys.Q)
-                });
-                defaultPreset.AddOption(new BindingOption
-                {
-                    Action = GamePadAction.LeftTrigger,
-                    Binding = new KeyboardBinding(Keys.D1)
-                });
-                defaultPreset.AddOption(new BindingOption
-                {
-                    Action = GamePadAction.RightShoulder,
-                    Binding = new KeyboardBinding(Keys.E)
-                });
-                defaultPreset.AddOption(new BindingOption
-                {
-                    Action = GamePadAction.RightTrigger,
-                    Binding = new KeyboardBinding(Keys.D2)
-                });
-
-                // Left half of controller
-                defaultPreset.AddOption(new BindingOption
-                {
-                    Action = GamePadAction.LeftStickUp,
-                    Binding = new KeyboardBinding(Keys.W)
-                });
-                defaultPreset.AddOption(new BindingOption
-                {
-                    Action = GamePadAction.LeftStickRight,
-                    Binding = new KeyboardBinding(Keys.D)
-                });
-                defaultPreset.AddOption(new BindingOption
-                {
-                    Action = GamePadAction.LeftStickDown,
-                    Binding = new KeyboardBinding(Keys.S)
-                });
-                defaultPreset.AddOption(new BindingOption
-                {
-                    Action = GamePadAction.LeftStickLeft,
-                    Binding = new KeyboardBinding(Keys.A)
-                });
-                defaultPreset.AddOption(new BindingOption
-                {
-                    Action = GamePadAction.LeftStickClick,
-                    Binding = new KeyboardBinding(Keys.LControlKey)
-                });
-
-                defaultPreset.AddOption(new BindingOption
-                {
-                    Action = GamePadAction.DPadUp,
-                    Binding = new KeyboardBinding(Keys.Up)
-                });
-                defaultPreset.AddOption(new BindingOption
-                {
-                    Action = GamePadAction.DPadRight,
-                    Binding = new KeyboardBinding(Keys.Right)
-                });
-                defaultPreset.AddOption(new BindingOption
-                {
-                    Action = GamePadAction.DPadDown,
-                    Binding = new KeyboardBinding(Keys.Down)
-                });
-                defaultPreset.AddOption(new BindingOption
-                {
-                    Action = GamePadAction.DPadLeft,
-                    Binding = new KeyboardBinding(Keys.Left)
-                });
-
-                // Right half of controller
-                defaultPreset.AddOption(new BindingOption
-                {
-                    Action = GamePadAction.RightStickUp,
-                    Binding = new MouseAxisBinding(AxisDirection.Up)
-                });
-                defaultPreset.AddOption(new BindingOption
-                {
-                    Action = GamePadAction.RightStickRight,
-                    Binding = new MouseAxisBinding(AxisDirection.Right)
-                });
-                defaultPreset.AddOption(new BindingOption
-                {
-                    Action = GamePadAction.RightStickDown,
-                    Binding = new MouseAxisBinding(AxisDirection.Down)
-                });
-                defaultPreset.AddOption(new BindingOption
-                {
-                    Action = GamePadAction.RightStickLeft,
-                    Binding = new MouseAxisBinding(AxisDirection.Left)
-                });
-                defaultPreset.AddOption(new BindingOption
-                {
-                    Action = GamePadAction.RightStickClick,
-                    Binding = new KeyboardBinding(Keys.RControlKey)
-                });
-
-                defaultPreset.AddOption(new BindingOption
-                {
-                    Action = GamePadAction.X,
-                    Binding = new KeyboardBinding(Keys.X)
-                });
-                defaultPreset.AddOption(new BindingOption
-                {
-                    Action = GamePadAction.Y,
-                    Binding = new KeyboardBinding(Keys.Y)
-                });
-                defaultPreset.AddOption(new BindingOption
-                {
-                    Action = GamePadAction.A,
-                    Binding = new KeyboardBinding(Keys.F)
-                });
-                defaultPreset.AddOption(new BindingOption
-                {
-                    Action = GamePadAction.B,
-                    Binding = new KeyboardBinding(Keys.Z)
-                });
-
-                return defaultPreset;
-            }
-        }
-        #endregion
-
     }
 }

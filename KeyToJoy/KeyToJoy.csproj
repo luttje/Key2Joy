@@ -200,7 +200,9 @@
     <Compile Include="BindingForm.Designer.cs">
       <DependentUpon>BindingForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="IAcceptAppCommands.cs" />
     <Compile Include="Input\AxisDirection.cs" />
+    <Compile Include="Input\AppCommandAction.cs" />
     <Compile Include="Input\GamePadAction.cs" />
     <Compile Include="Input\BindableAction.cs" />
     <Compile Include="Input\Binding.cs" />

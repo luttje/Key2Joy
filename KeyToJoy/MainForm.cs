@@ -7,7 +7,7 @@ using KeyToJoy.Input;
 
 namespace KeyToJoy
 {
-    public partial class MainForm : Form
+    public partial class MainForm : Form, IAcceptAppCommands
     {
         private BindingPreset selectedPreset;
 
@@ -163,6 +163,18 @@ namespace KeyToJoy
         private void BtnAbout_Click(object sender, EventArgs e)
         {
             new AboutForm().ShowDialog();
+        }
+
+        public bool RunAppCommand(string command)
+        {
+            switch (command)
+            {
+                case "abort":
+                    chkEnabled.Checked = false;
+                    return true;
+                default:
+                    return false;
+            }
         }
     }
 }

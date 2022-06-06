@@ -9,7 +9,7 @@ namespace KeyToJoy
 {
     internal static class Program
     {
-        internal static Form NextForm { get; set; }
+        internal static Form ActiveForm { get; set; }
 
         /// <summary>
         /// The main entry point for the application.
@@ -22,11 +22,11 @@ namespace KeyToJoy
 
             try
             {
-                NextForm = new InitForm();
+                ActiveForm = new InitForm();
 
-                while (NextForm != null && !NextForm.IsDisposed)
+                while (ActiveForm != null && !ActiveForm.IsDisposed)
                 {
-                    Application.Run(NextForm);
+                    Application.Run(ActiveForm);
                 }
             }
             finally
@@ -37,10 +37,20 @@ namespace KeyToJoy
 
         internal static void GoToNextForm(Form form)
         {
-            var oldForm = NextForm;
-            NextForm = form;
+            var oldForm = ActiveForm;
+            ActiveForm = form;
 
             oldForm.Close();
+        }
+
+        internal static bool RunAppCommand(string command)
+        {
+            if(ActiveForm is IAcceptAppCommands form)
+            {
+                return form.RunAppCommand(command);
+            }
+
+            return false;
         }
     }
 }

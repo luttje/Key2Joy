@@ -38,31 +38,12 @@ namespace KeyToJoy.Input
             return (short)((inputMouseDelta + currentAxisDelta) / 2);
         }
 
-        public static GamePadAction LeftShoulder = new GamePadAction("XboxSeriesX_LB", GamePadControl.LeftShoulder);
-        public static GamePadAction LeftTrigger = new GamePadAction("XboxSeriesX_LT", GamePadControl.LeftTrigger);
-        public static GamePadAction RightShoulder = new GamePadAction("XboxSeriesX_RB", GamePadControl.RightShoulder);
-        public static GamePadAction RightTrigger = new GamePadAction("XboxSeriesX_RT", GamePadControl.RightTrigger);
+        public override bool Equals(object obj)
+        {
+            if (!(obj is GamePadAction action))
+                return false;
 
-        public static GamePadAction LeftStickUp = new GamePadAction("XboxSeriesX_Left_Stick_Up", GamePadControl.LeftStickUp);
-        public static GamePadAction LeftStickRight = new GamePadAction("XboxSeriesX_Left_Stick_Right", GamePadControl.LeftStickRight);
-        public static GamePadAction LeftStickDown = new GamePadAction("XboxSeriesX_Left_Stick_Down", GamePadControl.LeftStickDown);
-        public static GamePadAction LeftStickLeft = new GamePadAction("XboxSeriesX_Left_Stick_Left", GamePadControl.LeftStickLeft);
-        public static GamePadAction LeftStickClick = new GamePadAction("XboxSeriesX_Left_Stick_Click", GamePadControl.LeftStickClick);
-        public static GamePadAction DPadUp = new GamePadAction("XboxSeriesX_Dpad_Up", GamePadControl.DPadUp);
-        public static GamePadAction DPadRight = new GamePadAction("XboxSeriesX_Dpad_Right", GamePadControl.DPadRight);
-        public static GamePadAction DPadDown = new GamePadAction("XboxSeriesX_Dpad_Down", GamePadControl.DPadDown);
-        public static GamePadAction DPadLeft = new GamePadAction("XboxSeriesX_Dpad_Left", GamePadControl.DPadLeft);
-
-        public static GamePadAction RightStickUp = new GamePadAction("XboxSeriesX_Right_Stick_Up", GamePadControl.RightStickUp);
-        public static GamePadAction RightStickRight = new GamePadAction("XboxSeriesX_Right_Stick_Right", GamePadControl.RightStickRight);
-        public static GamePadAction RightStickDown = new GamePadAction("XboxSeriesX_Right_Stick_Down", GamePadControl.RightStickDown);
-        public static GamePadAction RightStickLeft = new GamePadAction("XboxSeriesX_Right_Stick_Left", GamePadControl.RightStickLeft);
-        public static GamePadAction RightStickClick = new GamePadAction("XboxSeriesX_Right_Stick_Click", GamePadControl.RightStickClick);
-
-        public static GamePadAction X = new GamePadAction("XboxSeriesX_X", GamePadControl.X);
-        public static GamePadAction Y = new GamePadAction("XboxSeriesX_Y", GamePadControl.Y);
-        public static GamePadAction A = new GamePadAction("XboxSeriesX_A", GamePadControl.A);
-        public static GamePadAction B = new GamePadAction("XboxSeriesX_B", GamePadControl.B);
-
+            return action.Control == Control;
+        }
     }
 }
