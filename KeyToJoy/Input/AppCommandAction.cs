@@ -26,7 +26,7 @@ namespace KeyToJoy.Input
 
         public override string ToString()
         {
-            return Command.ToString();
+            return Description.ToString();
         }
 
         internal override void PerformPressBind(bool inputKeyDown)

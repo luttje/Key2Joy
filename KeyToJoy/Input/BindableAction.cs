@@ -18,20 +18,19 @@ namespace KeyToJoy.Input
         {
             get
             {
-                return ResourceName != null 
-                    ? (Bitmap)Resources.ResourceManager.GetObject(ResourceName) 
+                return resourceName != null 
+                    ? (Bitmap)Resources.ResourceManager.GetObject(resourceName) 
                     : null;
             }
         }
 
         internal string DisplayName => ToString();
 
-        [JsonProperty]
-        internal string ResourceName;
+        private string resourceName;
 
         public BindableAction(string resourceName)
         {
-            this.ResourceName = resourceName;
+            this.resourceName = resourceName;
         }
 
         public static BindableAction Register(BindableAction bindableAction)
@@ -49,6 +48,10 @@ namespace KeyToJoy.Input
         {
             if (System.Object.ReferenceEquals(a, b))
                 return true;
+
+            if (System.Object.ReferenceEquals(a, null)
+                || System.Object.ReferenceEquals(b, null))
+                return false;
 
             return a.Equals(b);
         }

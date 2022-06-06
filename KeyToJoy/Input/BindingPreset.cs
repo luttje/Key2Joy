@@ -61,19 +61,20 @@ namespace KeyToJoy.Input
 
         internal static void Add(BindingPreset preset, bool blockSave = false)
         {
-            if (preset.Bindings.Count < BindableAction.All.Count)
+            // Ensure all actions in presets are loaded from the available actions in this app
+            foreach (var bindableAction in BindableAction.All)
             {
-                // Find missing binding options and list them as unbound in this preset
-                var missingBindables = BindableAction.All.Where(l2 => !preset.Bindings.Any(l1 => l1.Action == l2));
+                var binding = preset.Bindings.Where(b => b.Action == bindableAction).FirstOrDefault();
 
-                foreach (var bindableAction in missingBindables)
-                {
+                if(binding == null) { 
                     preset.Bindings.Add(new BindingOption
                     {
                         Action = bindableAction,
                         Binding = null
                     });
                 }
+                else 
+                    binding.Action = bindableAction;
             }
 
             All.Add(preset);

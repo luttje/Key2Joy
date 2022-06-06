@@ -260,7 +260,7 @@
             // 
             // colControl
             // 
-            this.colControl.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.colControl.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.colControl.HeaderText = "Action";
             this.colControl.Name = "colControl";
             this.colControl.ReadOnly = true;

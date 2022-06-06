@@ -18,6 +18,10 @@ namespace KeyToJoy.Input
             if (System.Object.ReferenceEquals(a, b))
                 return true;
 
+            if (System.Object.ReferenceEquals(a, null)
+                || System.Object.ReferenceEquals(b, null))
+                return false;
+
             return a.Equals(b);
         }
         public static bool operator !=(Binding a, Binding b) => !(a == b);
