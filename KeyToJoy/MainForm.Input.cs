@@ -12,19 +12,16 @@ namespace KeyToJoy
     {
         private const double SENSITIVITY = 0.05;
         private const int WM_INPUT = 0x00FF;
-        private readonly Keys[] KEYS_ABORT = new[] { Keys.LControlKey, Keys.LShiftKey, Keys.Escape };
 
-        private Keys abortKeysMask; // On load this is set to the bitwise or of all in KEYS_ABORT
-        private Keys currentAbortKeysDown = Keys.None;
-
-        private void Init()
+        public void Init()
         {
-            abortKeysMask = Keys.None;
+            // The mouse movement is captured globally here
+            RawInputDevice.RegisterDevice(HidUsageAndPage.Mouse, RawInputDeviceFlags.InputSink, Handle);
 
-            for (int i = 0; i < KEYS_ABORT.Length; i++)
-            {
-                abortKeysMask |= KEYS_ABORT[i];
-            }
+            // This captures global keyboard input and blocks default behaviour by setting e.Handled
+            globalKeyboardHook = new GlobalInputHook();
+            globalKeyboardHook.KeyboardInputEvent += OnKeyInputEvent;
+            globalKeyboardHook.MouseInputEvent += OnMouseButtonInputEvent;
         }
 
         private bool TryOverrideKeyboardInput(BindingOption bindingOption, bool isPressedDown)
@@ -32,10 +29,7 @@ namespace KeyToJoy
             if (!chkEnabled.Checked)
                 return false;
 
-            if (isPressedDown)
-                SimGamePad.Instance.SetControl(bindingOption.Control);
-            else
-                SimGamePad.Instance.ReleaseControl(bindingOption.Control);
+            bindingOption.Action.PerformPressBind(isPressedDown);
 
             return true;
         }
@@ -45,10 +39,7 @@ namespace KeyToJoy
             if (!chkEnabled.Checked)
                 return false;
 
-            if (isPressedDown)
-                SimGamePad.Instance.SetControl(bindingOption.Control);
-            else
-                SimGamePad.Instance.ReleaseControl(bindingOption.Control);
+            bindingOption.Action.PerformPressBind(isPressedDown);
 
             return true;
         }
@@ -82,9 +73,11 @@ namespace KeyToJoy
                 )
             )
             {
-                if (bindingOption.Control == GamePadControl.RightStickRight
-                    || bindingOption.Control == GamePadControl.RightStickLeft) // TODO: The rest (LeftStick, DPad, etc)
-                    state.RightStickX = (short)((deltaX + state.RightStickX) / 2);
+                System.Diagnostics.Debug.WriteLine($"{state.RightStickX} bef!!!!");
+                if(bindingOption != null)
+                    // TODO: The rest (LeftStick, DPad, etc)
+                    state.RightStickX = bindingOption.Action.PerformMoveBind(deltaX, state.RightStickX);
+                System.Diagnostics.Debug.WriteLine($"{state.RightStickX} after!!!!");
             }
             if (
                 (
@@ -98,9 +91,9 @@ namespace KeyToJoy
                 )
             )
             {
-                if (bindingOption.Control == GamePadControl.RightStickUp
-                    || bindingOption.Control == GamePadControl.RightStickDown) // TODO: The rest (LeftStick, DPad, etc)
-                    state.RightStickY = (short)((deltaY + state.RightStickY) / 2);
+                if (bindingOption != null)
+                    // TODO: The rest (LeftStick, DPad, etc)
+                    state.RightStickY = bindingOption.Action.PerformMoveBind(deltaY, state.RightStickY);
             }
 
             SimGamePad.Instance.Update(controllerId);
@@ -130,27 +123,6 @@ namespace KeyToJoy
 
             // Test if this is a bound key, if so halt default input behaviour
             var keys = VirtualKeyConverter.KeysFromVirtual(e.KeyboardData.VirtualCode);
-
-            // Check early if we want to abort
-            for (int i = 0; i < KEYS_ABORT.Length; i++)
-            {
-                var abortKey = KEYS_ABORT[i];
-
-                if((keys & abortKey) == abortKey)
-                {
-                    if (e.KeyboardState == KeyboardState.KeyDown)
-                        currentAbortKeysDown |= abortKey;
-                    else
-                        currentAbortKeysDown &= ~abortKey;
-                }
-            }
-
-            if (currentAbortKeysDown == abortKeysMask)
-            {
-                currentAbortKeysDown = Keys.None;
-                chkEnabled.Checked = false;
-                return;
-            }
 
             if (!selectedPreset.TryGetBinding(new KeyboardBinding(keys), out var bindingOption))
                 return;

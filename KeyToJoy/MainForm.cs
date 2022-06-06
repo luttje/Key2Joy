@@ -21,23 +21,11 @@ namespace KeyToJoy
             defaultControllerImage = pctController.Image;
 
             Init();
-            SetupInputHooks();
 
             cmbPreset.DisplayMember = "Display";
             cmbPreset.DataSource = BindingPreset.All;
             
             ReloadSelectedPreset();
-        }
-
-        public void SetupInputHooks()
-        {
-            // The mouse movement is captured globally here
-            RawInputDevice.RegisterDevice(HidUsageAndPage.Mouse, RawInputDeviceFlags.InputSink, Handle);
-
-            // This captures global keyboard input and blocks default behaviour by setting e.Handled
-            globalKeyboardHook = new GlobalInputHook();
-            globalKeyboardHook.KeyboardInputEvent += OnKeyInputEvent;
-            globalKeyboardHook.MouseInputEvent += OnMouseButtonInputEvent;
         }
 
         private void ReloadSelectedPreset()
@@ -60,7 +48,7 @@ namespace KeyToJoy
 
                 if (option.Binding == bindingOption.Binding)
                 {
-                    MessageBox.Show($"This binding is already in use for {option.Control}! Change {option.Control} to something else.");
+                    MessageBox.Show($"This binding is already in use for {option.Action}! Change {option.Action} to something else.");
 
                     selectedPreset.PruneCacheKey(option.Binding.GetUniqueBindingKey());
                     selectedPreset.CacheLookup(bindingOption);
@@ -120,14 +108,15 @@ namespace KeyToJoy
             if (bindingOption == null)
                 return;
 
-            pctController.Image = BindingOption.GetControllerImage(bindingOption.Control);
+            if(bindingOption.Action.Image != null)
+                pctController.Image = bindingOption.Action.Image;
         }
 
         private void DgvBinds_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             var bindingOption = dgvBinds.Rows[e.RowIndex].DataBoundItem as BindingOption;
 
-            dgvBinds.Rows[e.RowIndex].Cells["colControl"].Value = bindingOption.GetControlDisplay();
+            dgvBinds.Rows[e.RowIndex].Cells["colControl"].Value = bindingOption.GetActionDisplay();
             dgvBinds.Rows[e.RowIndex].Cells["colBind"].Value = bindingOption.GetBindDisplay();
         }
 
@@ -153,8 +142,6 @@ namespace KeyToJoy
                 SimGamePad.Instance.PlugIn();
             else
                 SimGamePad.Instance.Unplug();
-
-            lblAbortInfo.Visible = isEnabled;
         }
 
         private void TxtPresetName_TextChanged(object sender, EventArgs e)

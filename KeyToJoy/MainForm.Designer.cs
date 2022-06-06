@@ -33,8 +33,6 @@
             this.timerAxisTimeout = new System.Windows.Forms.Timer(this.components);
             this.splitContainer = new System.Windows.Forms.SplitContainer();
             this.dgvBinds = new System.Windows.Forms.DataGridView();
-            this.colControl = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colBind = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel1 = new System.Windows.Forms.Panel();
             this.txtPresetName = new System.Windows.Forms.TextBox();
             this.lblInfoName = new System.Windows.Forms.Label();
@@ -44,11 +42,12 @@
             this.btnCreate = new System.Windows.Forms.Button();
             this.lblPreset = new System.Windows.Forms.Label();
             this.chkEnabled = new System.Windows.Forms.CheckBox();
-            this.lblAbortInfo = new System.Windows.Forms.Label();
             this.btnOpenTest = new System.Windows.Forms.Button();
             this.dbgLabel = new System.Windows.Forms.Label();
             this.pctController = new System.Windows.Forms.PictureBox();
             this.btnAbout = new System.Windows.Forms.Button();
+            this.colControl = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colBind = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
             this.splitContainer.Panel2.SuspendLayout();
@@ -75,7 +74,6 @@
             this.splitContainer.Panel1.Controls.Add(this.panel1);
             this.splitContainer.Panel1.Controls.Add(this.pnlPreset);
             this.splitContainer.Panel1.Controls.Add(this.chkEnabled);
-            this.splitContainer.Panel1.Controls.Add(this.lblAbortInfo);
             this.splitContainer.Panel1.Controls.Add(this.btnOpenTest);
             // 
             // splitContainer.Panel2
@@ -83,8 +81,8 @@
             this.splitContainer.Panel2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.splitContainer.Panel2.Controls.Add(this.dbgLabel);
             this.splitContainer.Panel2.Controls.Add(this.pctController);
-            this.splitContainer.Size = new System.Drawing.Size(876, 485);
-            this.splitContainer.SplitterDistance = 274;
+            this.splitContainer.Size = new System.Drawing.Size(880, 557);
+            this.splitContainer.SplitterDistance = 533;
             this.splitContainer.TabIndex = 56;
             // 
             // dgvBinds
@@ -103,24 +101,11 @@
             this.dgvBinds.ReadOnly = true;
             this.dgvBinds.RowHeadersVisible = false;
             this.dgvBinds.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvBinds.Size = new System.Drawing.Size(274, 239);
+            this.dgvBinds.Size = new System.Drawing.Size(533, 357);
             this.dgvBinds.TabIndex = 86;
             this.dgvBinds.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.DgvBinds_CellFormatting);
             this.dgvBinds.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.DgvBinds_CellMouseDoubleClick);
             this.dgvBinds.SelectionChanged += new System.EventHandler(this.DgvBinds_SelectionChanged);
-            // 
-            // colControl
-            // 
-            this.colControl.HeaderText = "Control";
-            this.colControl.Name = "colControl";
-            this.colControl.ReadOnly = true;
-            // 
-            // colBind
-            // 
-            this.colBind.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colBind.HeaderText = "Bind";
-            this.colBind.Name = "colBind";
-            this.colBind.ReadOnly = true;
             // 
             // panel1
             // 
@@ -130,7 +115,7 @@
             this.panel1.Location = new System.Drawing.Point(0, 78);
             this.panel1.Name = "panel1";
             this.panel1.Padding = new System.Windows.Forms.Padding(5);
-            this.panel1.Size = new System.Drawing.Size(274, 30);
+            this.panel1.Size = new System.Drawing.Size(533, 30);
             this.panel1.TabIndex = 80;
             // 
             // txtPresetName
@@ -138,7 +123,7 @@
             this.txtPresetName.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtPresetName.Location = new System.Drawing.Point(82, 5);
             this.txtPresetName.Name = "txtPresetName";
-            this.txtPresetName.Size = new System.Drawing.Size(187, 20);
+            this.txtPresetName.Size = new System.Drawing.Size(446, 20);
             this.txtPresetName.TabIndex = 85;
             this.txtPresetName.TextChanged += new System.EventHandler(this.TxtPresetName_TextChanged);
             // 
@@ -164,7 +149,7 @@
             this.pnlPreset.Location = new System.Drawing.Point(0, 0);
             this.pnlPreset.Name = "pnlPreset";
             this.pnlPreset.Padding = new System.Windows.Forms.Padding(5);
-            this.pnlPreset.Size = new System.Drawing.Size(274, 78);
+            this.pnlPreset.Size = new System.Drawing.Size(533, 78);
             this.pnlPreset.TabIndex = 80;
             // 
             // lblPresetInfo
@@ -173,7 +158,7 @@
             this.lblPresetInfo.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.lblPresetInfo.Location = new System.Drawing.Point(5, 5);
             this.lblPresetInfo.Name = "lblPresetInfo";
-            this.lblPresetInfo.Size = new System.Drawing.Size(264, 43);
+            this.lblPresetInfo.Size = new System.Drawing.Size(523, 43);
             this.lblPresetInfo.TabIndex = 80;
             this.lblPresetInfo.Text = "Select a preset or type the name for a custom preset and click \'Create\'. Presets " +
     "are saved to the KeyToJoy folder in your documents automatically.";
@@ -186,14 +171,14 @@
             this.cmbPreset.FormattingEnabled = true;
             this.cmbPreset.Location = new System.Drawing.Point(88, 52);
             this.cmbPreset.Name = "cmbPreset";
-            this.cmbPreset.Size = new System.Drawing.Size(133, 21);
+            this.cmbPreset.Size = new System.Drawing.Size(392, 21);
             this.cmbPreset.TabIndex = 84;
             this.cmbPreset.SelectedIndexChanged += new System.EventHandler(this.CmbPreset_SelectedIndexChanged);
             // 
             // btnCreate
             // 
             this.btnCreate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCreate.Location = new System.Drawing.Point(221, 52);
+            this.btnCreate.Location = new System.Drawing.Point(480, 52);
             this.btnCreate.Name = "btnCreate";
             this.btnCreate.Size = new System.Drawing.Size(48, 21);
             this.btnCreate.TabIndex = 80;
@@ -217,36 +202,22 @@
             // 
             this.chkEnabled.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.chkEnabled.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.chkEnabled.Location = new System.Drawing.Point(0, 347);
+            this.chkEnabled.Location = new System.Drawing.Point(0, 465);
             this.chkEnabled.Name = "chkEnabled";
             this.chkEnabled.Padding = new System.Windows.Forms.Padding(5);
-            this.chkEnabled.Size = new System.Drawing.Size(274, 44);
+            this.chkEnabled.Size = new System.Drawing.Size(533, 44);
             this.chkEnabled.TabIndex = 81;
             this.chkEnabled.Text = "Pretend keyboard and mouse input is game controller (using the binds configured a" +
     "bove)";
             this.chkEnabled.UseVisualStyleBackColor = true;
             this.chkEnabled.CheckedChanged += new System.EventHandler(this.ChkEnabled_CheckedChanged);
             // 
-            // lblAbortInfo
-            // 
-            this.lblAbortInfo.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.lblAbortInfo.ForeColor = System.Drawing.Color.IndianRed;
-            this.lblAbortInfo.Location = new System.Drawing.Point(0, 391);
-            this.lblAbortInfo.Name = "lblAbortInfo";
-            this.lblAbortInfo.Padding = new System.Windows.Forms.Padding(5);
-            this.lblAbortInfo.Size = new System.Drawing.Size(274, 46);
-            this.lblAbortInfo.TabIndex = 80;
-            this.lblAbortInfo.Text = "To quickly stop pretending to be a controller use Left Ctrl + Left Shift + Escape" +
-    " to abort.";
-            this.lblAbortInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblAbortInfo.Visible = false;
-            // 
             // btnOpenTest
             // 
             this.btnOpenTest.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.btnOpenTest.Location = new System.Drawing.Point(0, 437);
+            this.btnOpenTest.Location = new System.Drawing.Point(0, 509);
             this.btnOpenTest.Name = "btnOpenTest";
-            this.btnOpenTest.Size = new System.Drawing.Size(274, 48);
+            this.btnOpenTest.Size = new System.Drawing.Size(533, 48);
             this.btnOpenTest.TabIndex = 79;
             this.btnOpenTest.Text = "Test input translation using \'devicetests.com\'";
             this.btnOpenTest.UseVisualStyleBackColor = true;
@@ -257,7 +228,7 @@
             this.dbgLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.dbgLabel.AutoSize = true;
             this.dbgLabel.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.dbgLabel.Location = new System.Drawing.Point(316, 359);
+            this.dbgLabel.Location = new System.Drawing.Point(61, 431);
             this.dbgLabel.Name = "dbgLabel";
             this.dbgLabel.Size = new System.Drawing.Size(0, 13);
             this.dbgLabel.TabIndex = 78;
@@ -271,7 +242,7 @@
             this.pctController.InitialImage = null;
             this.pctController.Location = new System.Drawing.Point(0, 0);
             this.pctController.Name = "pctController";
-            this.pctController.Size = new System.Drawing.Size(598, 485);
+            this.pctController.Size = new System.Drawing.Size(343, 557);
             this.pctController.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pctController.TabIndex = 79;
             this.pctController.TabStop = false;
@@ -279,7 +250,7 @@
             // btnAbout
             // 
             this.btnAbout.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAbout.Location = new System.Drawing.Point(786, 458);
+            this.btnAbout.Location = new System.Drawing.Point(790, 530);
             this.btnAbout.Name = "btnAbout";
             this.btnAbout.Size = new System.Drawing.Size(90, 27);
             this.btnAbout.TabIndex = 80;
@@ -287,12 +258,27 @@
             this.btnAbout.UseVisualStyleBackColor = true;
             this.btnAbout.Click += new System.EventHandler(this.BtnAbout_Click);
             // 
+            // colControl
+            // 
+            this.colControl.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.colControl.HeaderText = "Action";
+            this.colControl.Name = "colControl";
+            this.colControl.ReadOnly = true;
+            this.colControl.Width = 62;
+            // 
+            // colBind
+            // 
+            this.colBind.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colBind.HeaderText = "Bind";
+            this.colBind.Name = "colBind";
+            this.colBind.ReadOnly = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
-            this.ClientSize = new System.Drawing.Size(876, 485);
+            this.ClientSize = new System.Drawing.Size(880, 557);
             this.Controls.Add(this.btnAbout);
             this.Controls.Add(this.splitContainer);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
@@ -331,11 +317,10 @@
         private System.Windows.Forms.Button btnAbout;
         private System.Windows.Forms.TextBox txtPresetName;
         private System.Windows.Forms.DataGridView dgvBinds;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colControl;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colBind;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label lblInfoName;
-        private System.Windows.Forms.Label lblAbortInfo;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colControl;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colBind;
     }
 }
 

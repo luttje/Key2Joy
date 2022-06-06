@@ -17,11 +17,12 @@ namespace KeyToJoy
         internal BindingForm(BindingOption bindingOption)
             :this()
         {
-            this.BindingSetting = bindingOption;
+            BindingSetting = bindingOption;
 
-            pctController.Image = BindingOption.GetControllerImage(bindingOption.Control);
+            if(bindingOption.Action.Image != null)
+                pctController.Image = bindingOption.Action.Image;
 
-            lblInfo.Text = $"Pretend the {bindingOption.GetControlDisplay()} button is pressed when...";
+            lblInfo.Text = $"Pretend the {bindingOption.GetActionDisplay()} button is pressed when...";
 
             SetConfirmBindButtonText();
         }
@@ -85,7 +86,7 @@ namespace KeyToJoy
 
         private void SetConfirmBindButtonText(string bind = null)
         {
-            btnConfirm.Text = $"Confirm binding {BindingSetting.GetControlDisplay()} to {bind ?? "..."}";
+            btnConfirm.Text = $"Confirm binding {BindingSetting.GetActionDisplay()} to {bind ?? "..."}";
 
             if (bind != null)
                 btnConfirm.Enabled = true;

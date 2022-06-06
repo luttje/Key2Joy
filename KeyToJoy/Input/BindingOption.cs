@@ -10,16 +10,14 @@ namespace KeyToJoy.Input
     [JsonObject(MemberSerialization.OptIn)]
     internal class BindingOption : ICloneable
     {
-        [JsonProperty]
-        public GamePadControl Control;
+        [JsonProperty(TypeNameHandling = TypeNameHandling.All)]
+        public BindableAction Action;
         [JsonProperty(TypeNameHandling = TypeNameHandling.All)]
         public Binding Binding;
 
-        public static Dictionary<GamePadControl, string> ControllerImages = new Dictionary<GamePadControl, string>();
-
-        public string GetControlDisplay()
+        public string GetActionDisplay()
         {
-            return Control.ToString();
+            return Action.ToString();
         }
 
         internal object GetBindDisplay()
@@ -32,20 +30,8 @@ namespace KeyToJoy.Input
             return new BindingOption()
             {
                 Binding = (Binding)Binding.Clone(),
-                Control = Control,
+                Action = Action,
             };
-        }
-
-        internal static void AddControllerImage(GamePadControl control, string resourceName)
-        {
-            ControllerImages.Add(control, resourceName);
-        }
-
-        internal static Image GetControllerImage(GamePadControl control)
-        {
-            if (!ControllerImages.TryGetValue(control, out var resourceName))
-                throw new ArgumentException("This control has no connected image!");
-            return (Bitmap)Resources.ResourceManager.GetObject(resourceName);
         }
     }
 }
