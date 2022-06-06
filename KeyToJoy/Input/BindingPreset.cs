@@ -138,22 +138,29 @@ namespace KeyToJoy.Input
                 using (var reader = new JsonTextReader(sr))
                 {
                     var preset = serializer.Deserialize<BindingPreset>(reader);
-                    preset.PostLoad(filePath);
-                    presets.Add(preset);
+                    if(preset.PostLoad(filePath))
+                        presets.Add(preset);
                 }
             }
 
             return presets;
         }
 
-        private void PostLoad(string filePath)
+        private bool PostLoad(string filePath)
         {
             this.filePath = filePath;
 
-            if (this.Version != CURRENT_VERSION)
-                MessageBox.Show($"Preset @ {filePath} was version {this.Version} whilst current application version is {CURRENT_VERSION}! Some features may be missing because of this. It's best to just remove the preset and create a new one.", "Outdated preset loaded!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            if(this.Version == 2)
+            {
+                MessageBox.Show($"Preset @ {filePath} was version {this.Version} whilst current application version is {CURRENT_VERSION}! \n\nThis old version is no longer supported. You will have to create a new preset. \n\nThis error will keep appearing until you remove the preset from your Documents/Key2Joy Presets folder", "Outdated preset failed to load!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            else if (this.Version != CURRENT_VERSION)
+                MessageBox.Show($"Preset @ {filePath} was version {this.Version} whilst current application version is {CURRENT_VERSION}! \n\nSome features may be missing because of this. \n\nIt's best to just remove the preset and create a new one.", "Outdated preset loaded!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
             CacheAllLookup();
+
+            return true;
         }
 
         private static JsonSerializer GetSerializer()
