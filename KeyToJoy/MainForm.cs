@@ -22,7 +22,6 @@ namespace KeyToJoy
 
             Init();
             SetupInputHooks();
-            SimGamePad.Instance.PlugIn();
 
             cmbPreset.DisplayMember = "Display";
             cmbPreset.DataSource = BindingPreset.All;
@@ -148,8 +147,14 @@ namespace KeyToJoy
 
         private void ChkEnabled_CheckedChanged(object sender, EventArgs e)
         {
-            btnOpenTest.Enabled = chkEnabled.Checked;
-            lblAbortInfo.Visible = chkEnabled.Checked;
+            bool isEnabled = chkEnabled.Checked;
+
+            if(isEnabled)
+                SimGamePad.Instance.PlugIn();
+            else
+                SimGamePad.Instance.Unplug();
+
+            lblAbortInfo.Visible = isEnabled;
         }
 
         private void TxtPresetName_TextChanged(object sender, EventArgs e)

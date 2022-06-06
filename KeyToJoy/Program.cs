@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SimWinInput;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,11 +20,18 @@ namespace KeyToJoy
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            NextForm = new InitForm();
-
-            while(NextForm != null && !NextForm.IsDisposed)
+            try
             {
-                Application.Run(NextForm);
+                NextForm = new InitForm();
+
+                while (NextForm != null && !NextForm.IsDisposed)
+                {
+                    Application.Run(NextForm);
+                }
+            }
+            finally
+            {
+                SimGamePad.Instance.ShutDown();
             }
         }
 

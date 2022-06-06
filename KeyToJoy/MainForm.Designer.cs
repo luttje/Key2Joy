@@ -244,7 +244,6 @@
             // btnOpenTest
             // 
             this.btnOpenTest.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.btnOpenTest.Enabled = false;
             this.btnOpenTest.Location = new System.Drawing.Point(0, 437);
             this.btnOpenTest.Name = "btnOpenTest";
             this.btnOpenTest.Size = new System.Drawing.Size(274, 48);
