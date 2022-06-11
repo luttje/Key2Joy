@@ -57,6 +57,9 @@ namespace KeyToJoy
             BindingOption.AddControllerImage(GamePadControl.A, "XboxSeriesX_A");
             BindingOption.AddControllerImage(GamePadControl.B, "XboxSeriesX_B");
 
+            BindingOption.AddControllerImage(GamePadControl.Start, "XboxSeriesX_Start");
+            BindingOption.AddControllerImage(GamePadControl.Back, "XboxSeriesX_Select");
+
             SimGamePad.Instance.Initialize();
             Program.GoToNextForm(new MainForm());
         }

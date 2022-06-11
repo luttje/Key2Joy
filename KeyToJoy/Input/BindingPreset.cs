@@ -277,6 +277,18 @@ namespace KeyToJoy.Input
                     Binding = new KeyboardBinding(Keys.Z)
                 });
 
+                // Start and select
+                defaultPreset.AddOption(new BindingOption
+                {
+                    Control = GamePadControl.Start,
+                    Binding = new KeyboardBinding(Keys.F1)
+                });
+                defaultPreset.AddOption(new BindingOption
+                {
+                    Control = GamePadControl.Back,
+                    Binding = new KeyboardBinding(Keys.F2)
+                });
+
                 return defaultPreset;
             }
         }
