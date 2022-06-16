@@ -8,13 +8,13 @@ using KeyToJoy.Mapping;
 
 namespace KeyToJoy
 {
-    public partial class BindingForm : Form
+    public partial class MappingForm : Form
     {
         internal MappedOption BindingSetting { get; set; }
 
         private readonly List<RadioButton> radioButtonGroup = new List<RadioButton>();
 
-        internal BindingForm(MappedOption bindingOption)
+        internal MappingForm(MappedOption bindingOption)
             :this()
         {
             BindingSetting = bindingOption;
@@ -27,7 +27,7 @@ namespace KeyToJoy
             SetConfirmBindButtonText();
         }
 
-        private BindingForm()
+        private MappingForm()
         {
             InitializeComponent();
 
@@ -86,7 +86,7 @@ namespace KeyToJoy
 
         private void SetConfirmBindButtonText(string bind = null)
         {
-            btnConfirm.Text = $"Confirm binding {BindingSetting.GetActionDisplay()} to {bind ?? "..."}";
+            btnConfirm.Text = $"Confirm mapping {BindingSetting.GetActionDisplay()} to {bind ?? "..."}";
 
             if (bind != null)
                 btnConfirm.Enabled = true;
@@ -127,7 +127,7 @@ namespace KeyToJoy
                     }
                     catch (ArgumentOutOfRangeException ex)
                     {
-                        MessageBox.Show($"Unknown mouse button pressed ({ex.Message}). Can't bind this (yet).", "Unknown mouse button!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show($"Unknown mouse button pressed ({ex.Message}). Can't map this (yet).", "Unknown mouse button!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }

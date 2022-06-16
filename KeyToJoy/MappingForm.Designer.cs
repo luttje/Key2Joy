@@ -1,6 +1,6 @@
 ﻿namespace KeyToJoy
 {
-    partial class BindingForm
+    partial class MappingForm
     {
         /// <summary>
         /// Required designer variable.
@@ -75,7 +75,7 @@
             this.btnConfirm.Name = "btnConfirm";
             this.btnConfirm.Size = new System.Drawing.Size(454, 33);
             this.btnConfirm.TabIndex = 8;
-            this.btnConfirm.Text = "Confirm binding X to Y";
+            this.btnConfirm.Text = "Confirm mapping X to Y";
             this.btnConfirm.UseVisualStyleBackColor = true;
             this.btnConfirm.Click += new System.EventHandler(this.btnConfirm_Click);
             // 
@@ -170,7 +170,7 @@
             this.lblInfo.Text = "Pretend the X button is pressed when...";
             this.lblInfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // BindingForm
+            // MappingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -183,8 +183,8 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.KeyPreview = true;
             this.MaximizeBox = false;
-            this.Name = "BindingForm";
-            this.Text = "Press a key or select a mouse direction to bind...";
+            this.Name = "MappingForm";
+            this.Text = "Select a trigger to map this action to...";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.BindingForm_FormClosed);
             this.pnlHeader.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pctController)).EndInit();

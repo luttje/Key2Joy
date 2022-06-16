@@ -34,7 +34,7 @@
             this.splitContainer = new System.Windows.Forms.SplitContainer();
             this.dgvBinds = new System.Windows.Forms.DataGridView();
             this.colControl = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colBind = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colTrigger = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel1 = new System.Windows.Forms.Panel();
             this.txtPresetName = new System.Windows.Forms.TextBox();
             this.lblPresetName = new System.Windows.Forms.Label();
@@ -96,7 +96,7 @@
             this.dgvBinds.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvBinds.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colControl,
-            this.colBind});
+            this.colTrigger});
             this.dgvBinds.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvBinds.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvBinds.Location = new System.Drawing.Point(0, 100);
@@ -118,12 +118,12 @@
             this.colControl.ReadOnly = true;
             this.colControl.Width = 62;
             // 
-            // colBind
+            // colTrigger
             // 
-            this.colBind.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colBind.HeaderText = "Bind";
-            this.colBind.Name = "colBind";
-            this.colBind.ReadOnly = true;
+            this.colTrigger.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colTrigger.HeaderText = "Trigger";
+            this.colTrigger.Name = "colTrigger";
+            this.colTrigger.ReadOnly = true;
             // 
             // panel1
             // 
@@ -226,8 +226,8 @@
             this.chkEnabled.Padding = new System.Windows.Forms.Padding(5);
             this.chkEnabled.Size = new System.Drawing.Size(533, 44);
             this.chkEnabled.TabIndex = 81;
-            this.chkEnabled.Text = "Pretend keyboard and mouse input is game controller (using the binds configured a" +
-    "bove)";
+            this.chkEnabled.Text = "Pretend keyboard and mouse input is game controller (using the key mappings confi" +
+    "gured above)";
             this.chkEnabled.UseVisualStyleBackColor = true;
             this.chkEnabled.CheckedChanged += new System.EventHandler(this.ChkEnabled_CheckedChanged);
             // 
@@ -238,7 +238,7 @@
             this.btnOpenTest.Name = "btnOpenTest";
             this.btnOpenTest.Size = new System.Drawing.Size(533, 48);
             this.btnOpenTest.TabIndex = 79;
-            this.btnOpenTest.Text = "Test input translation using \'devicetests.com\'";
+            this.btnOpenTest.Text = "Test mapping using \'devicetests.com\'";
             this.btnOpenTest.UseVisualStyleBackColor = true;
             this.btnOpenTest.Click += new System.EventHandler(this.BtnOpenTest_Click);
             // 
@@ -247,7 +247,9 @@
             this.lblPresetInfo.Dock = System.Windows.Forms.DockStyle.Top;
             this.lblPresetInfo.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.lblPresetInfo.Location = new System.Drawing.Point(0, 0);
+            this.lblPresetInfo.Margin = new System.Windows.Forms.Padding(3);
             this.lblPresetInfo.Name = "lblPresetInfo";
+            this.lblPresetInfo.Padding = new System.Windows.Forms.Padding(5);
             this.lblPresetInfo.Size = new System.Drawing.Size(533, 40);
             this.lblPresetInfo.TabIndex = 83;
             this.lblPresetInfo.Text = "Select a preset or type the name for a custom preset and click \'Create\'. Presets " +
@@ -327,8 +329,6 @@
         private System.Windows.Forms.Button btnAbout;
         private System.Windows.Forms.Panel pnlPresetName;
         private System.Windows.Forms.DataGridView dgvBinds;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colControl;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colBind;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.TextBox txtPresetName;
         private System.Windows.Forms.Label lblPresetName;
@@ -338,6 +338,8 @@
         private System.Windows.Forms.Button btnOpenTest;
         private System.Windows.Forms.Label lblPresetInfo;
         private System.Windows.Forms.Button btnOpenFolder;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colControl;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colTrigger;
     }
 }
 

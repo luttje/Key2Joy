@@ -41,7 +41,7 @@ namespace KeyToJoy
         {
             chkEnabled.Checked = false;
 
-            new BindingForm(bindingOption).ShowDialog();
+            new MappingForm(bindingOption).ShowDialog();
             RefreshInputCaptures();
 
             foreach (var option in selectedPreset.Bindings)
@@ -119,8 +119,8 @@ namespace KeyToJoy
         {
             var bindingOption = dgvBinds.Rows[e.RowIndex].DataBoundItem as MappedOption;
 
-            dgvBinds.Rows[e.RowIndex].Cells["colControl"].Value = bindingOption.GetActionDisplay();
-            dgvBinds.Rows[e.RowIndex].Cells["colBind"].Value = bindingOption.GetBindDisplay();
+            dgvBinds.Rows[e.RowIndex].Cells[colControl.Name].Value = bindingOption.GetActionDisplay();
+            dgvBinds.Rows[e.RowIndex].Cells[colTrigger.Name].Value = bindingOption.GetBindDisplay();
         }
 
         private void tmrAxisTimeout_Tick(object sender, EventArgs e)
