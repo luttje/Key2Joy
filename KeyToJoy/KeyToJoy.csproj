@@ -345,6 +345,8 @@
   <ItemGroup>
     <Content Include="Graphics\Icons\app-icons.ico" />
     <Content Include="Graphics\Icons\icon256.png" />
+    <None Include="Graphics\XboxSeriesX_Select.png" />
+    <None Include="Graphics\XboxSeriesX_Start.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -160,6 +160,18 @@ namespace KeyToJoy
                 Binding = new KeyboardBinding(Keys.Z)
             });
 
+            // Start and select
+            defaultPreset.AddOption(new BindingOption
+            {
+                Action = BindableAction.Register(new GamePadAction("XboxSeriesX_Start", GamePadControl.Start)),
+                Binding = new KeyboardBinding(Keys.F1)
+            });
+            defaultPreset.AddOption(new BindingOption
+            {
+                Action = BindableAction.Register(new GamePadAction("XboxSeriesX_Select", GamePadControl.Back)),
+                Binding = new KeyboardBinding(Keys.F2)
+            });
+
             return defaultPreset;
         }
     }
