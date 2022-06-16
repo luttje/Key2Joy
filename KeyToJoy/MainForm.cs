@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using Linearstar.Windows.RawInput;
 using System.Drawing;
 using KeyToJoy.Input;
+using System.Diagnostics;
 
 namespace KeyToJoy
 {
@@ -121,7 +122,7 @@ namespace KeyToJoy
             dgvBinds.Rows[e.RowIndex].Cells["colBind"].Value = bindingOption.GetBindDisplay();
         }
 
-        private void TimerAxisTimeout_Tick(object sender, EventArgs e)
+        private void tmrAxisTimeout_Tick(object sender, EventArgs e)
         {
             var controllerId = 0;
             var state = SimGamePad.Instance.State[controllerId];
@@ -175,6 +176,11 @@ namespace KeyToJoy
                 default:
                     return false;
             }
+        }
+
+        private void btnOpenFolder_Click(object sender, EventArgs e)
+        {
+            Process.Start(BindingPreset.GetSaveDirectory());
         }
     }
 }

@@ -50,8 +50,8 @@ namespace KeyToJoy
             if (!chkEnabled.Checked)
                 return false;
 
-            timerAxisTimeout.Stop();
-            timerAxisTimeout.Start();
+            tmrAxisTimeout.Stop();
+            tmrAxisTimeout.Start();
 
             var controllerId = 0;
             var state = SimGamePad.Instance.State[controllerId];

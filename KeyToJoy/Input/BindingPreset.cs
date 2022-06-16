@@ -171,7 +171,7 @@ namespace KeyToJoy.Input
             return serializer;
         }
 
-        private static string GetSaveDirectory()
+        internal static string GetSaveDirectory()
         {
             var directory = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
