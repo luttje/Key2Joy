@@ -283,6 +283,26 @@ namespace KeyToJoy.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap XboxSeriesX_Select {
+            get {
+                object obj = ResourceManager.GetObject("XboxSeriesX_Select", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap XboxSeriesX_Start {
+            get {
+                object obj = ResourceManager.GetObject("XboxSeriesX_Start", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap XboxSeriesX_X {
             get {
                 object obj = ResourceManager.GetObject("XboxSeriesX_X", resourceCulture);

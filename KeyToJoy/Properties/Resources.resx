@@ -181,6 +181,12 @@
   <data name="XboxSeriesX_B" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Graphics\XboxSeriesX_B.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="XboxSeriesX_Start" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Graphics\XboxSeriesX_Start.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="XboxSeriesX_Select" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Graphics\XboxSeriesX_Select.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="XboxSeriesX_Right_Stick_Left" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Graphics\XboxSeriesX_Right_Stick_Left.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
