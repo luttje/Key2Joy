@@ -15,12 +15,17 @@ namespace KeyToJoy.Mapping
         [JsonProperty(TypeNameHandling = TypeNameHandling.All)]
         public BaseTrigger Binding;
 
+        public string GetContextDisplay()
+        {
+            return Action.GetContextDisplay();
+        }
+        
         public string GetActionDisplay()
         {
-            return Action.ToString();
+            return Action.GetNameDisplay();
         }
 
-        internal object GetBindDisplay()
+        internal object GetTriggerDisplay()
         {
             if (Binding == null)
                 return "<not bound to key>";

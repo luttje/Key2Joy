@@ -8,18 +8,10 @@ namespace KeyToJoy.Mapping
         [JsonProperty]
         private string Command;
 
-        private string Description;
-
-        public AppCommandAction(string imagePath, string command, string description)
-            : base(imagePath)
+        public AppCommandAction(string name, string imagePath, string command)
+            : base(name, imagePath)
         {
             this.Command = command;
-            this.Description = description;
-        }
-
-        public override string ToString()
-        {
-            return Description.ToString();
         }
 
         internal override void PerformPressBind(bool inputKeyDown)
@@ -39,6 +31,11 @@ namespace KeyToJoy.Mapping
             this.PerformPressBind(true);
 
             return 0;
+        }
+        
+        public override string GetContextDisplay()
+        {
+            return "App";
         }
 
         public override bool Equals(object obj)

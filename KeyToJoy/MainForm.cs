@@ -111,16 +111,18 @@ namespace KeyToJoy
             if (bindingOption == null)
                 return;
 
-            if(bindingOption.Action.Image != null)
-                pctController.Image = bindingOption.Action.Image;
+            var image = bindingOption.Action.GetImage();
+            if (image != null)
+                pctController.Image = image;
         }
 
         private void DgvBinds_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             var bindingOption = dgvBinds.Rows[e.RowIndex].DataBoundItem as MappedOption;
 
+            dgvBinds.Rows[e.RowIndex].Cells[colContext.Name].Value = bindingOption.GetContextDisplay();
             dgvBinds.Rows[e.RowIndex].Cells[colControl.Name].Value = bindingOption.GetActionDisplay();
-            dgvBinds.Rows[e.RowIndex].Cells[colTrigger.Name].Value = bindingOption.GetBindDisplay();
+            dgvBinds.Rows[e.RowIndex].Cells[colTrigger.Name].Value = bindingOption.GetTriggerDisplay();
         }
 
         private void tmrAxisTimeout_Tick(object sender, EventArgs e)

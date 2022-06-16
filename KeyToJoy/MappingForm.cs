@@ -19,8 +19,9 @@ namespace KeyToJoy
         {
             BindingSetting = bindingOption;
 
-            if(bindingOption.Action.Image != null)
-                pctController.Image = bindingOption.Action.Image;
+            var image = bindingOption.Action.GetImage();
+            if(image != null)
+                pctController.Image = image;
 
             lblInfo.Text = $"Pretend the {bindingOption.GetActionDisplay()} button is pressed when...";
 

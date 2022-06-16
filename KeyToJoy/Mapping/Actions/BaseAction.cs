@@ -14,23 +14,13 @@ namespace KeyToJoy.Mapping
     {
         internal static List<BaseAction> All = new List<BaseAction>();
 
-        internal Image Image
+        private string name;
+        private string imageResource;
+
+        public BaseAction(string name, string imageResource)
         {
-            get
-            {
-                return resourceName != null 
-                    ? (Bitmap)Resources.ResourceManager.GetObject(resourceName) 
-                    : null;
-            }
-        }
-
-        internal string DisplayName => ToString();
-
-        private string resourceName;
-
-        public BaseAction(string resourceName)
-        {
-            this.resourceName = resourceName;
+            this.name = name;
+            this.imageResource = imageResource;
         }
 
         public static BaseAction Register(BaseAction bindableAction)
@@ -43,6 +33,22 @@ namespace KeyToJoy.Mapping
         internal abstract void PerformPressBind(bool inputKeyDown);
         internal abstract short PerformMoveBind(short inputMouseDelta, short currentAxisDelta);
 
+        public virtual string GetNameDisplay()
+        {
+            return name;
+        }
+
+        public virtual string GetContextDisplay()
+        {
+            return ToString();
+        }
+
+        public virtual Image GetImage()
+        {
+            return imageResource != null
+                ? (Bitmap)Resources.ResourceManager.GetObject(imageResource)
+                : null;            
+        }
 
         public static bool operator ==(BaseAction a, BaseAction b)
         {

@@ -33,8 +33,6 @@
             this.tmrAxisTimeout = new System.Windows.Forms.Timer(this.components);
             this.splitContainer = new System.Windows.Forms.SplitContainer();
             this.dgvBinds = new System.Windows.Forms.DataGridView();
-            this.colControl = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colTrigger = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel1 = new System.Windows.Forms.Panel();
             this.txtPresetName = new System.Windows.Forms.TextBox();
             this.lblPresetName = new System.Windows.Forms.Label();
@@ -49,6 +47,9 @@
             this.dbgLabel = new System.Windows.Forms.Label();
             this.pctController = new System.Windows.Forms.PictureBox();
             this.btnAbout = new System.Windows.Forms.Button();
+            this.colContext = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colControl = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colTrigger = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
             this.splitContainer.Panel2.SuspendLayout();
@@ -95,6 +96,7 @@
             this.dgvBinds.AllowUserToResizeRows = false;
             this.dgvBinds.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvBinds.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.colContext,
             this.colControl,
             this.colTrigger});
             this.dgvBinds.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -109,21 +111,6 @@
             this.dgvBinds.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.DgvBinds_CellFormatting);
             this.dgvBinds.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.DgvBinds_CellMouseDoubleClick);
             this.dgvBinds.SelectionChanged += new System.EventHandler(this.DgvBinds_SelectionChanged);
-            // 
-            // colControl
-            // 
-            this.colControl.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.colControl.HeaderText = "Action";
-            this.colControl.Name = "colControl";
-            this.colControl.ReadOnly = true;
-            this.colControl.Width = 62;
-            // 
-            // colTrigger
-            // 
-            this.colTrigger.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colTrigger.HeaderText = "Trigger";
-            this.colTrigger.Name = "colTrigger";
-            this.colTrigger.ReadOnly = true;
             // 
             // panel1
             // 
@@ -290,6 +277,32 @@
             this.btnAbout.UseVisualStyleBackColor = true;
             this.btnAbout.Click += new System.EventHandler(this.BtnAbout_Click);
             // 
+            // colContext
+            // 
+            this.colContext.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colContext.HeaderText = "Context";
+            this.colContext.Name = "colContext";
+            this.colContext.ReadOnly = true;
+            this.colContext.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colContext.Width = 49;
+            // 
+            // colControl
+            // 
+            this.colControl.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colControl.HeaderText = "Action";
+            this.colControl.Name = "colControl";
+            this.colControl.ReadOnly = true;
+            this.colControl.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colControl.Width = 43;
+            // 
+            // colTrigger
+            // 
+            this.colTrigger.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colTrigger.HeaderText = "Trigger";
+            this.colTrigger.Name = "colTrigger";
+            this.colTrigger.ReadOnly = true;
+            this.colTrigger.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -338,6 +351,7 @@
         private System.Windows.Forms.Button btnOpenTest;
         private System.Windows.Forms.Label lblPresetInfo;
         private System.Windows.Forms.Button btnOpenFolder;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colContext;
         private System.Windows.Forms.DataGridViewTextBoxColumn colControl;
         private System.Windows.Forms.DataGridViewTextBoxColumn colTrigger;
     }

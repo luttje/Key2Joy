@@ -14,15 +14,10 @@ namespace KeyToJoy.Mapping
         [JsonProperty]
         private GamePadControl Control;
 
-        public GamePadAction(string imagePath, GamePadControl control)
-            : base(imagePath)
+        public GamePadAction(string name, string imagePath, GamePadControl control)
+            : base(name, imagePath)
         {
-            this.Control = control;
-        }
-
-        public override string ToString()
-        {
-            return Control.ToString();
+            Control = control;
         }
 
         internal override void PerformPressBind(bool inputKeyDown)
@@ -36,6 +31,11 @@ namespace KeyToJoy.Mapping
         internal override short PerformMoveBind(short inputMouseDelta, short currentAxisDelta)
         {
             return (short)((inputMouseDelta + currentAxisDelta) / 2);
+        }
+
+        public override string GetContextDisplay()
+        {
+            return "GamePad";
         }
 
         public override bool Equals(object obj)
