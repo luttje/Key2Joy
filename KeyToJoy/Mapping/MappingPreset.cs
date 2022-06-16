@@ -8,19 +8,20 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace KeyToJoy.Input
+namespace KeyToJoy.Mapping
 {
     [JsonObject(MemberSerialization.OptIn)]
-    internal class BindingPreset
+    internal class MappingPreset
     {
         const int NO_VERSION = 0;
-        const int CURRENT_VERSION = 3;
+        const int CURRENT_VERSION = 4;
 
+        const string EXTENSION = "k2j";
         const string SAVE_DIR = "Key2Joy Presets";
-        public static BindingList<BindingPreset> All { get; } = new BindingList<BindingPreset>();
+        public static BindingList<MappingPreset> All { get; } = new BindingList<MappingPreset>();
 
         [JsonProperty]
-        public List<BindingOption> Bindings { get; set; } = new List<BindingOption>();
+        public List<MappedOption> Bindings { get; set; } = new List<MappedOption>();
 
         [JsonProperty]
         public string Name { get; set; }
@@ -31,36 +32,36 @@ namespace KeyToJoy.Input
         public string Display => $"{Name} ({Path.GetFileName(filePath)})";
 
         private string filePath;
-        private Dictionary<string, BindingOption> lookup = new Dictionary<string, BindingOption>();
+        private Dictionary<string, MappedOption> lookup = new Dictionary<string, MappedOption>();
 
         [JsonConstructor]
-        internal BindingPreset(string name, List<BindingOption> bindings = null)
+        internal MappingPreset(string name, List<MappedOption> bindings = null)
         {
             Name = name;
 
             var directory = GetSaveDirectory();
 
             if (filePath == null)
-                filePath = Util.FileSystem.FindNonExistingFile(Path.Combine(directory, $"profile-%VERSION%.key2joy.json"));
+                filePath = Util.FileSystem.FindNonExistingFile(Path.Combine(directory, $"profile-%VERSION%.{EXTENSION}.json"));
 
             if (bindings != null)
             {
                 foreach (var binding in bindings)
                 {
-                    Bindings.Add((BindingOption)binding.Clone());
+                    Bindings.Add((MappedOption)binding.Clone());
                 }
             }
         }
 
-        internal static void Add(BindingPreset preset, bool blockSave = false)
+        internal static void Add(MappingPreset preset, bool blockSave = false)
         {
             // Ensure all actions in presets are loaded from the available actions in this app
-            foreach (var bindableAction in BindableAction.All)
+            foreach (var bindableAction in BaseAction.All)
             {
                 var binding = preset.Bindings.Where(b => b.Action == bindableAction).FirstOrDefault();
 
                 if(binding == null) { 
-                    preset.Bindings.Add(new BindingOption
+                    preset.Bindings.Add(new MappedOption
                     {
                         Action = bindableAction,
                         Binding = null
@@ -76,7 +77,7 @@ namespace KeyToJoy.Input
                 preset.Save();
         }
 
-        internal void AddOption(BindingOption bindingOption)
+        internal void AddOption(MappedOption bindingOption)
         {
             Bindings.Add(bindingOption);
             CacheLookup(bindingOption);
@@ -87,7 +88,7 @@ namespace KeyToJoy.Input
             lookup.Remove(oldBindingKey);
         }
 
-        internal void CacheLookup(BindingOption bindingOption)
+        internal void CacheLookup(MappedOption bindingOption)
         {
             if (bindingOption.Binding == null)
                 return;
@@ -103,7 +104,7 @@ namespace KeyToJoy.Input
             }
         }
 
-        internal bool TryGetBinding(Binding binding, out BindingOption bindingOption)
+        internal bool TryGetBinding(BaseTrigger binding, out MappedOption bindingOption)
         {
             return lookup.TryGetValue(binding.GetUniqueBindingKey(), out bindingOption);
         }
@@ -120,19 +121,19 @@ namespace KeyToJoy.Input
             }
         }
 
-        internal static List<BindingPreset> LoadAll()
+        internal static List<MappingPreset> LoadAll()
         {
-            var presets = new List<BindingPreset>();
+            var presets = new List<MappingPreset>();
             var serializer = GetSerializer();
 
-            foreach (var filePath in Directory.EnumerateFiles(GetSaveDirectory(), "*.key2joy.json"))
+            foreach (var filePath in Directory.EnumerateFiles(GetSaveDirectory(), $"*.{EXTENSION}.json"))
             {
-                BindingPreset preset;
+                MappingPreset preset;
 
                 using (var sr = new StreamReader(filePath))
                 using (var reader = new JsonTextReader(sr))
                 {
-                    preset = serializer.Deserialize<BindingPreset>(reader);
+                    preset = serializer.Deserialize<MappingPreset>(reader);
                 }
 
                 if (preset.PostLoad(filePath))
@@ -145,17 +146,6 @@ namespace KeyToJoy.Input
         private bool PostLoad(string filePath)
         {
             this.filePath = filePath;
-
-            if(this.Version == 2)
-            {
-                this.filePath = Util.FileSystem.FindNonExistingFile($"{filePath}.%VERSION%.bak");
-                Save();
-                File.Delete(filePath);
-                MessageBox.Show($"Preset @ {filePath} was version {this.Version} whilst current application version is {CURRENT_VERSION}! \n\nThis old version is no longer supported. You will have to create a new preset. \n\nA backup of this outdated preset has been made in the Documents/Key2Joy Presets folder.", "Outdated preset failed to load!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
-            }
-            else if (this.Version != CURRENT_VERSION)
-                MessageBox.Show($"Preset @ {filePath} was version {this.Version} whilst current application version is {CURRENT_VERSION}! \n\nSome features may be missing because of this. \n\nIt's best to just remove the preset and create a new one.", "Outdated preset loaded!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
             CacheAllLookup();
 

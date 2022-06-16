@@ -4,16 +4,16 @@ using KeyToJoy.Input.LowLevel;
 using Linearstar.Windows.RawInput.Native;
 using Newtonsoft.Json;
 
-namespace KeyToJoy.Input
+namespace KeyToJoy.Mapping
 {
-    internal class MouseBinding : Binding, IEquatable<MouseBinding>
+    internal class MouseButtonTrigger : BaseTrigger, IEquatable<MouseButtonTrigger>
     {
         private const string MOUSE_SERIALIZE_PREFIX = "Mouse_";
 
         private MouseButtons mouseButtons;
 
         [JsonConstructor]
-        internal MouseBinding(string name)
+        internal MouseButtonTrigger(string name)
         {
             name = name.Substring(MOUSE_SERIALIZE_PREFIX.Length);
             this.mouseButtons = (MouseButtons)Enum.Parse(typeof(MouseButtons), name);
@@ -21,7 +21,7 @@ namespace KeyToJoy.Input
 
         // TODO: Clean up (currently very prone to human error when adding buttons)
         // Note: Also add the other constructor: MouseBinding(MouseState mouseState) 
-        internal MouseBinding(RawMouseButtonFlags mouseButton)
+        internal MouseButtonTrigger(RawMouseButtonFlags mouseButton)
         {
             // TODO: Support up and down states seperately
             switch (mouseButton)
@@ -53,7 +53,7 @@ namespace KeyToJoy.Input
 
         // TODO: Clean up (currently very prone to human error when adding buttons)
         // Note: Also add the other constructor: MouseBinding(RawMouseButtonFlags mouseButton) 
-        public MouseBinding(MouseState mouseState)
+        public MouseButtonTrigger(MouseState mouseState)
         {
             // TODO: Support up and down states seperately
             switch (mouseState)
@@ -81,13 +81,13 @@ namespace KeyToJoy.Input
 
         public override bool Equals(object obj)
         {
-            if(!(obj is MouseBinding other)) 
+            if(!(obj is MouseButtonTrigger other)) 
                 return false;
 
             return Equals(other);
         }
 
-        public bool Equals(MouseBinding other)
+        public bool Equals(MouseButtonTrigger other)
         {
             return mouseButtons == other.mouseButtons;
         }

@@ -1,15 +1,15 @@
 ﻿using Newtonsoft.Json;
 using System;
 
-namespace KeyToJoy.Input
+namespace KeyToJoy.Mapping
 {
-    internal class MouseAxisBinding : Binding
+    internal class MouseMoveTrigger : BaseTrigger
     {
         const string PREFIX = "Mouse Move ";
         private AxisDirection axisBinding;
 
         [JsonConstructor]
-        internal MouseAxisBinding(string name)
+        internal MouseMoveTrigger(string name)
         {
             try
             {
@@ -23,7 +23,7 @@ namespace KeyToJoy.Input
             }
         }
 
-        internal MouseAxisBinding(AxisDirection axisBinding)
+        internal MouseMoveTrigger(AxisDirection axisBinding)
         {
             this.axisBinding = axisBinding;
         }
@@ -35,7 +35,7 @@ namespace KeyToJoy.Input
 
         public override bool Equals(object obj)
         {
-            if (!(obj is MouseAxisBinding other)) return false;
+            if (!(obj is MouseMoveTrigger other)) return false;
 
             return axisBinding == other.axisBinding;
         }

@@ -3,21 +3,21 @@ using Linearstar.Windows.RawInput.Native;
 using System.Windows.Forms;
 using Newtonsoft.Json;
 
-namespace KeyToJoy.Input
+namespace KeyToJoy.Mapping
 {
-    internal class KeyboardBinding : Binding, IEquatable<KeyboardBinding>
+    internal class KeyboardTrigger : BaseTrigger, IEquatable<KeyboardTrigger>
     {
-        private Keys keyBinding;
+        private Keys keys;
 
         [JsonConstructor]
-        internal KeyboardBinding(string name)
+        internal KeyboardTrigger(string name)
         {
-            this.keyBinding = (Keys)Enum.Parse(typeof(Keys), name);
+            this.keys = (Keys)Enum.Parse(typeof(Keys), name);
         }
 
-        internal KeyboardBinding(Keys keys, RawKeyboardFlags? flags = null)
+        internal KeyboardTrigger(Keys keys, RawKeyboardFlags? flags = null)
         {
-            keyBinding = keys;
+            this.keys = keys;
 
             if (flags == null)
                 return;
@@ -25,16 +25,16 @@ namespace KeyToJoy.Input
             if ((flags & RawKeyboardFlags.KeyE0) == RawKeyboardFlags.KeyE0)
             {
                 if (keys == Keys.ControlKey)
-                    keyBinding = Keys.RControlKey;
+                    this.keys = Keys.RControlKey;
                 if (keys == Keys.ShiftKey)
-                    keyBinding = Keys.RShiftKey;
+                    this.keys = Keys.RShiftKey;
             }
             else
             {
                 if (keys == Keys.ControlKey)
-                    keyBinding = Keys.LControlKey;
+                    this.keys = Keys.LControlKey;
                 if (keys == Keys.ShiftKey)
-                    keyBinding = Keys.LShiftKey;
+                    this.keys = Keys.LShiftKey;
             }
         }
 
@@ -45,20 +45,20 @@ namespace KeyToJoy.Input
 
         public override bool Equals(object obj)
         {
-            if(!(obj is KeyboardBinding other)) 
+            if(!(obj is KeyboardTrigger other)) 
                 return false;
 
             return Equals(other);
         }
 
-        public bool Equals(KeyboardBinding other)
+        public bool Equals(KeyboardTrigger other)
         {
-            return keyBinding == other.keyBinding;
+            return keys == other.keys;
         }
 
         public override string ToString()
         {
-            return keyBinding.ToString();
+            return keys.ToString();
         }
 
         public override object Clone()

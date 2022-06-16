@@ -5,15 +5,15 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 
-namespace KeyToJoy.Input
+namespace KeyToJoy.Mapping
 {
     [JsonObject(MemberSerialization.OptIn)]
-    internal class BindingOption : ICloneable
+    internal class MappedOption : ICloneable
     {
         [JsonProperty(TypeNameHandling = TypeNameHandling.All)]
-        public BindableAction Action;
+        public BaseAction Action;
         [JsonProperty(TypeNameHandling = TypeNameHandling.All)]
-        public Binding Binding;
+        public BaseTrigger Binding;
 
         public string GetActionDisplay()
         {
@@ -30,9 +30,9 @@ namespace KeyToJoy.Input
 
         public object Clone()
         {
-            return new BindingOption()
+            return new MappedOption()
             {
-                Binding = Binding != null ? (Binding)Binding.Clone() : null,
+                Binding = Binding != null ? (BaseTrigger)Binding.Clone() : null,
                 Action = Action,
             };
         }

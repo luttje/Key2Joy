@@ -4,17 +4,17 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using Linearstar.Windows.RawInput.Native;
-using System.Drawing;
+using KeyToJoy.Mapping;
 
 namespace KeyToJoy
 {
     public partial class BindingForm : Form
     {
-        internal BindingOption BindingSetting { get; set; }
+        internal MappedOption BindingSetting { get; set; }
 
         private readonly List<RadioButton> radioButtonGroup = new List<RadioButton>();
 
-        internal BindingForm(BindingOption bindingOption)
+        internal BindingForm(MappedOption bindingOption)
             :this()
         {
             BindingSetting = bindingOption;
@@ -80,7 +80,7 @@ namespace KeyToJoy
             if (BindingSetting == null)
                 return;
 
-            BindingSetting.Binding = new MouseAxisBinding((AxisDirection)Enum.Parse(typeof(AxisDirection), cmbMouseDirection.Text));
+            BindingSetting.Binding = new MouseMoveTrigger((AxisDirection)Enum.Parse(typeof(AxisDirection), cmbMouseDirection.Text));
             SetConfirmBindButtonText($"Mouse {cmbMouseDirection.Text}");
         }
 
@@ -106,7 +106,7 @@ namespace KeyToJoy
                 if (data is RawInputKeyboardData keyboard)
                 {
                     var keys = VirtualKeyConverter.KeysFromVirtual(keyboard.Keyboard.VirutalKey);
-                    BindingSetting.Binding = new KeyboardBinding(keys, keyboard.Keyboard.Flags);
+                    BindingSetting.Binding = new KeyboardTrigger(keys, keyboard.Keyboard.Flags);
 
 
                     txtKeyBind.Text = $"(keyboard) {BindingSetting.Binding}";
@@ -119,7 +119,7 @@ namespace KeyToJoy
                 {
                     try
                     {
-                        BindingSetting.Binding = new MouseBinding(mouse.Mouse.Buttons);
+                        BindingSetting.Binding = new MouseButtonTrigger(mouse.Mouse.Buttons);
 
                         txtKeyBind.Text = $"{BindingSetting.Binding}";
 

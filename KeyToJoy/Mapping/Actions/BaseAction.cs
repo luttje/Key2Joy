@@ -7,12 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KeyToJoy.Input
+namespace KeyToJoy.Mapping
 {
     [JsonObject(MemberSerialization.OptIn)]
-    internal abstract class BindableAction
+    internal abstract class BaseAction
     {
-        internal static List<BindableAction> All = new List<BindableAction>();
+        internal static List<BaseAction> All = new List<BaseAction>();
 
         internal Image Image
         {
@@ -28,12 +28,12 @@ namespace KeyToJoy.Input
 
         private string resourceName;
 
-        public BindableAction(string resourceName)
+        public BaseAction(string resourceName)
         {
             this.resourceName = resourceName;
         }
 
-        public static BindableAction Register(BindableAction bindableAction)
+        public static BaseAction Register(BaseAction bindableAction)
         {
             All.Add(bindableAction);
 
@@ -44,7 +44,7 @@ namespace KeyToJoy.Input
         internal abstract short PerformMoveBind(short inputMouseDelta, short currentAxisDelta);
 
 
-        public static bool operator ==(BindableAction a, BindableAction b)
+        public static bool operator ==(BaseAction a, BaseAction b)
         {
             if (System.Object.ReferenceEquals(a, b))
                 return true;
@@ -55,6 +55,6 @@ namespace KeyToJoy.Input
 
             return a.Equals(b);
         }
-        public static bool operator !=(BindableAction a, BindableAction b) => !(a == b);
+        public static bool operator !=(BaseAction a, BaseAction b) => !(a == b);
     }
 }

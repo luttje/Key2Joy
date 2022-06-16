@@ -5,12 +5,13 @@ using Linearstar.Windows.RawInput;
 using System.Drawing;
 using KeyToJoy.Input;
 using System.Diagnostics;
+using KeyToJoy.Mapping;
 
 namespace KeyToJoy
 {
     public partial class MainForm : Form, IAcceptAppCommands
     {
-        private BindingPreset selectedPreset;
+        private MappingPreset selectedPreset;
 
         private Image defaultControllerImage;
         private GlobalInputHook globalKeyboardHook;
@@ -24,19 +25,19 @@ namespace KeyToJoy
             RefreshInputCaptures();
 
             cmbPreset.DisplayMember = "Display";
-            cmbPreset.DataSource = BindingPreset.All;
+            cmbPreset.DataSource = MappingPreset.All;
             
             ReloadSelectedPreset();
         }
 
         private void ReloadSelectedPreset()
         {
-            selectedPreset = cmbPreset.SelectedItem as BindingPreset;
+            selectedPreset = cmbPreset.SelectedItem as MappingPreset;
             dgvBinds.DataSource = selectedPreset.Bindings;
             txtPresetName.Text = selectedPreset.Name;
         }
 
-        private void ChangeBinding(BindingOption bindingOption)
+        private void ChangeBinding(MappedOption bindingOption)
         {
             chkEnabled.Checked = false;
 
@@ -82,7 +83,7 @@ namespace KeyToJoy
         private void DgvBinds_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             var row = dgvBinds.Rows[e.RowIndex];
-            var bindingOption = row.DataBoundItem as BindingOption;
+            var bindingOption = row.DataBoundItem as MappedOption;
 
             if (bindingOption == null)
                 return;
@@ -105,7 +106,7 @@ namespace KeyToJoy
                 return;
             }
 
-            var bindingOption = row.DataBoundItem as BindingOption;
+            var bindingOption = row.DataBoundItem as MappedOption;
 
             if (bindingOption == null)
                 return;
@@ -116,7 +117,7 @@ namespace KeyToJoy
 
         private void DgvBinds_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            var bindingOption = dgvBinds.Rows[e.RowIndex].DataBoundItem as BindingOption;
+            var bindingOption = dgvBinds.Rows[e.RowIndex].DataBoundItem as MappedOption;
 
             dgvBinds.Rows[e.RowIndex].Cells["colControl"].Value = bindingOption.GetActionDisplay();
             dgvBinds.Rows[e.RowIndex].Cells["colBind"].Value = bindingOption.GetBindDisplay();
@@ -150,14 +151,14 @@ namespace KeyToJoy
         {
             selectedPreset.Name = txtPresetName.Text;
             selectedPreset.Save();
-            BindingPreset.All.ResetBindings();
+            MappingPreset.All.ResetBindings();
         }
 
         private void BtnCreate_Click(object sender, EventArgs e)
         {
-            var preset = new BindingPreset(txtPresetName.Text, selectedPreset.Bindings);
+            var preset = new MappingPreset(txtPresetName.Text, selectedPreset.Bindings);
 
-            BindingPreset.Add(preset);
+            MappingPreset.Add(preset);
             cmbPreset.SelectedIndex = cmbPreset.Items.Count - 1;
         }
 
@@ -180,7 +181,7 @@ namespace KeyToJoy
 
         private void btnOpenFolder_Click(object sender, EventArgs e)
         {
-            Process.Start(BindingPreset.GetSaveDirectory());
+            Process.Start(MappingPreset.GetSaveDirectory());
         }
     }
 }

@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KeyToJoy.Input
+namespace KeyToJoy.Mapping
 {
-    internal class GamePadAction : BindableAction
+    internal class GamePadAction : BaseAction
     {
         [JsonProperty]
         private GamePadControl Control;

@@ -201,12 +201,12 @@
       <DependentUpon>BindingForm.cs</DependentUpon>
     </Compile>
     <Compile Include="IAcceptAppCommands.cs" />
-    <Compile Include="Input\AxisDirection.cs" />
-    <Compile Include="Input\AppCommandAction.cs" />
-    <Compile Include="Input\GamePadAction.cs" />
-    <Compile Include="Input\BindableAction.cs" />
-    <Compile Include="Input\Binding.cs" />
-    <Compile Include="Input\BindingPreset.cs" />
+    <Compile Include="Mapping\AxisDirection.cs" />
+    <Compile Include="Mapping\Actions\AppCommandAction.cs" />
+    <Compile Include="Mapping\Actions\GamePadAction.cs" />
+    <Compile Include="Mapping\Actions\BaseAction.cs" />
+    <Compile Include="Mapping\Triggers\BaseTrigger.cs" />
+    <Compile Include="Mapping\MappingPreset.cs" />
     <Compile Include="InitForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -214,8 +214,8 @@
       <DependentUpon>InitForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Input\GlobalInputHook.cs" />
-    <Compile Include="Input\MouseBinding.cs" />
-    <Compile Include="Input\KeyboardBinding.cs" />
+    <Compile Include="Mapping\Triggers\MouseButtonTrigger.cs" />
+    <Compile Include="Mapping\Triggers\KeyboardTrigger.cs" />
     <Compile Include="Input\LowLevel\GlobalKeyboardHookEventArgs.cs" />
     <Compile Include="Input\LowLevel\GlobalMouseHookEventArgs.cs" />
     <Compile Include="Input\LowLevel\KeyboardState.cs" />
@@ -223,7 +223,7 @@
     <Compile Include="Input\LowLevel\LowLevelMouseInputEvent.cs" />
     <Compile Include="Input\LowLevel\MouseState.cs" />
     <Compile Include="Input\LowLevel\Point.cs" />
-    <Compile Include="Input\MouseAxisBinding.cs" />
+    <Compile Include="Mapping\Triggers\MouseMoveTrigger.cs" />
     <Compile Include="MainForm.Input.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -238,7 +238,7 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Input\BindingOption.cs" />
+    <Compile Include="Mapping\MappedOption.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Input\VirtualKeyConverter.cs" />
@@ -349,5 +349,6 @@
     <None Include="Graphics\XboxSeriesX_Select.png" />
     <None Include="Graphics\XboxSeriesX_Start.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

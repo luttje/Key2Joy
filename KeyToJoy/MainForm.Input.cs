@@ -1,5 +1,6 @@
 ﻿using KeyToJoy.Input;
 using KeyToJoy.Input.LowLevel;
+using KeyToJoy.Mapping;
 using Linearstar.Windows.RawInput;
 using Linearstar.Windows.RawInput.Native;
 using SimWinInput;
@@ -23,7 +24,7 @@ namespace KeyToJoy
             globalKeyboardHook.MouseInputEvent += OnMouseButtonInputEvent;
         }
 
-        private bool TryOverrideKeyboardInput(BindingOption bindingOption, bool isPressedDown)
+        private bool TryOverrideKeyboardInput(MappedOption bindingOption, bool isPressedDown)
         {
             if (!chkEnabled.Checked)
                 return false;
@@ -33,7 +34,7 @@ namespace KeyToJoy
             return true;
         }
 
-        private bool TryOverrideMouseButtonInput(BindingOption bindingOption, bool isPressedDown)
+        private bool TryOverrideMouseButtonInput(MappedOption bindingOption, bool isPressedDown)
         {
             if (!chkEnabled.Checked)
                 return false;
@@ -58,17 +59,17 @@ namespace KeyToJoy
 
             var deltaX = (short)Math.Min(Math.Max(lastX * short.MaxValue * SENSITIVITY, short.MinValue), short.MaxValue);
             var deltaY = (short)-Math.Min(Math.Max(lastY * short.MaxValue * SENSITIVITY, short.MinValue), short.MaxValue);
-            BindingOption bindingOption;
+            MappedOption bindingOption;
 
             if (
                 (
                     deltaX > 0
-                    && selectedPreset.TryGetBinding(new MouseAxisBinding(AxisDirection.Right), out bindingOption)
+                    && selectedPreset.TryGetBinding(new MouseMoveTrigger(AxisDirection.Right), out bindingOption)
                 )
                 ||
                 (
                     deltaX < 0
-                    && selectedPreset.TryGetBinding(new MouseAxisBinding(AxisDirection.Left), out bindingOption)
+                    && selectedPreset.TryGetBinding(new MouseMoveTrigger(AxisDirection.Left), out bindingOption)
                 )
             )
             {
@@ -79,12 +80,12 @@ namespace KeyToJoy
             if (
                 (
                     deltaY > 0
-                    && selectedPreset.TryGetBinding(new MouseAxisBinding(AxisDirection.Up), out bindingOption)
+                    && selectedPreset.TryGetBinding(new MouseMoveTrigger(AxisDirection.Up), out bindingOption)
                 )
                 ||
                 (
                     deltaY < 0
-                    && selectedPreset.TryGetBinding(new MouseAxisBinding(AxisDirection.Down), out bindingOption)
+                    && selectedPreset.TryGetBinding(new MouseMoveTrigger(AxisDirection.Down), out bindingOption)
                 )
             )
             {
@@ -121,7 +122,7 @@ namespace KeyToJoy
             // Test if this is a bound key, if so halt default input behaviour
             var keys = VirtualKeyConverter.KeysFromVirtual(e.KeyboardData.VirtualCode);
 
-            if (!selectedPreset.TryGetBinding(new KeyboardBinding(keys), out var bindingOption))
+            if (!selectedPreset.TryGetBinding(new KeyboardTrigger(keys), out var bindingOption))
                 return;
 
             if (!TryOverrideKeyboardInput(bindingOption, e.KeyboardState == KeyboardState.KeyDown))
@@ -142,7 +143,7 @@ namespace KeyToJoy
             try
             {
                 // Test if this is a bound mouse button, if so halt default input behaviour
-                if (!selectedPreset.TryGetBinding(new MouseBinding(e.MouseState), out var bindingOption))
+                if (!selectedPreset.TryGetBinding(new MouseButtonTrigger(e.MouseState), out var bindingOption))
                     return;
 
                 if (!TryOverrideMouseButtonInput(bindingOption, e.AreButtonsDown()))
