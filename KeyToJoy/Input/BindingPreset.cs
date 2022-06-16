@@ -41,14 +41,7 @@ namespace KeyToJoy.Input
             var directory = GetSaveDirectory();
 
             if (filePath == null)
-            {
-                int alt = 1;
-                do
-                {
-                    filePath = Path.Combine(directory, $"profile-{alt}.key2joy.json");
-                    alt++;
-                } while (File.Exists(filePath));
-            }
+                filePath = Util.FileSystem.FindNonExistingFile(Path.Combine(directory, $"profile-%VERSION%.key2joy.json"));
 
             if (bindings != null)
             {
@@ -134,13 +127,16 @@ namespace KeyToJoy.Input
 
             foreach (var filePath in Directory.EnumerateFiles(GetSaveDirectory(), "*.key2joy.json"))
             {
+                BindingPreset preset;
+
                 using (var sr = new StreamReader(filePath))
                 using (var reader = new JsonTextReader(sr))
                 {
-                    var preset = serializer.Deserialize<BindingPreset>(reader);
-                    if(preset.PostLoad(filePath))
-                        presets.Add(preset);
+                    preset = serializer.Deserialize<BindingPreset>(reader);
                 }
+
+                if (preset.PostLoad(filePath))
+                    presets.Add(preset);
             }
 
             return presets;
@@ -152,7 +148,10 @@ namespace KeyToJoy.Input
 
             if(this.Version == 2)
             {
-                MessageBox.Show($"Preset @ {filePath} was version {this.Version} whilst current application version is {CURRENT_VERSION}! \n\nThis old version is no longer supported. You will have to create a new preset. \n\nThis error will keep appearing until you remove the preset from your Documents/Key2Joy Presets folder", "Outdated preset failed to load!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.filePath = Util.FileSystem.FindNonExistingFile($"{filePath}.%VERSION%.bak");
+                Save();
+                File.Delete(filePath);
+                MessageBox.Show($"Preset @ {filePath} was version {this.Version} whilst current application version is {CURRENT_VERSION}! \n\nThis old version is no longer supported. You will have to create a new preset. \n\nA backup of this outdated preset has been made in the Documents/Key2Joy Presets folder.", "Outdated preset failed to load!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             else if (this.Version != CURRENT_VERSION)
