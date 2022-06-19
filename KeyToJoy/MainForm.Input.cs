@@ -123,7 +123,7 @@ namespace KeyToJoy
 
             if (!TryOverrideKeyboardInput(mappedOption, new KeyboardInputBag
             {
-                State = KeyboardState.KeyDown,
+                State = e.KeyboardState,
                 Keys = keys
             }))
                 return;
