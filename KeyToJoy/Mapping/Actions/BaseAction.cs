@@ -30,8 +30,7 @@ namespace KeyToJoy.Mapping
             return bindableAction;
         }
 
-        internal abstract void PerformPressBind(bool inputKeyDown);
-        internal abstract short PerformMoveBind(short inputMouseDelta, short currentAxisDelta);
+        internal abstract void Execute(InputBag inputBag);
 
         public virtual string GetNameDisplay()
         {

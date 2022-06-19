@@ -20,17 +20,47 @@ namespace KeyToJoy.Mapping
             Control = control;
         }
 
-        internal override void PerformPressBind(bool inputKeyDown)
+        internal override void Execute(InputBag inputBag)
         {
-            if (inputKeyDown)
+            if (inputBag is MouseMoveInputBag mouseMoveInputBag)
+            {
+                // TODO: Sensitivity should be tweakable by user
+                // TODO: Support non axis buttons when delta is over a threshold?
+                var controllerId = 0;
+                var state = SimGamePad.Instance.State[controllerId];
+
+                switch (Control)
+                {
+                    case GamePadControl.LeftStickLeft:
+                    case GamePadControl.LeftStickRight:
+                        state.LeftStickX = (short)((mouseMoveInputBag.DeltaX + state.LeftStickX) / 2);
+                        break;
+                    case GamePadControl.LeftStickUp:
+                    case GamePadControl.LeftStickDown:
+                        state.LeftStickY = (short)((mouseMoveInputBag.DeltaY + state.LeftStickY) / 2);
+                        break;
+                    case GamePadControl.RightStickLeft:
+                    case GamePadControl.RightStickRight:
+                        state.RightStickX = (short)((mouseMoveInputBag.DeltaX + state.RightStickX) / 2);
+                        break;
+                    case GamePadControl.RightStickUp:
+                    case GamePadControl.RightStickDown:
+                        state.RightStickY = (short)((mouseMoveInputBag.DeltaY + state.RightStickY) / 2);
+                        break;
+                    default:
+                        throw new NotImplementedException("This control does not (yet) support mouse axis input");
+                }
+
+                SimGamePad.Instance.Update(controllerId);
+                
+                return;
+            }
+
+            if ((inputBag is KeyboardInputBag keyboardInputBag && keyboardInputBag.State == Input.LowLevel.KeyboardState.KeyDown)
+                || inputBag is MouseButtonInputBag)
                 SimGamePad.Instance.SetControl(Control);
             else
                 SimGamePad.Instance.ReleaseControl(Control);
-        }
-
-        internal override short PerformMoveBind(short inputMouseDelta, short currentAxisDelta)
-        {
-            return (short)((inputMouseDelta + currentAxisDelta) / 2);
         }
 
         public override string GetContextDisplay()

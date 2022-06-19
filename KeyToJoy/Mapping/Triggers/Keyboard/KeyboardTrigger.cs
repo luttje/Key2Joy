@@ -38,7 +38,7 @@ namespace KeyToJoy.Mapping
             }
         }
 
-        internal override string GetUniqueBindingKey()
+        internal override string GetUniqueKey()
         {
             return ToString();
         }

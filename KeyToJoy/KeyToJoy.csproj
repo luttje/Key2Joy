@@ -214,8 +214,11 @@
       <DependentUpon>InitForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Input\GlobalInputHook.cs" />
-    <Compile Include="Mapping\Triggers\MouseButtonTrigger.cs" />
-    <Compile Include="Mapping\Triggers\KeyboardTrigger.cs" />
+    <Compile Include="Mapping\Triggers\InputBag.cs" />
+    <Compile Include="Mapping\Triggers\Keyboard\KeyboardInputBag.cs" />
+    <Compile Include="Mapping\Triggers\Mouse\MouseMoveInputBag.cs" />
+    <Compile Include="Mapping\Triggers\Mouse\MouseButtonTrigger.cs" />
+    <Compile Include="Mapping\Triggers\Keyboard\KeyboardTrigger.cs" />
     <Compile Include="Input\LowLevel\GlobalKeyboardHookEventArgs.cs" />
     <Compile Include="Input\LowLevel\GlobalMouseHookEventArgs.cs" />
     <Compile Include="Input\LowLevel\KeyboardState.cs" />
@@ -223,7 +226,8 @@
     <Compile Include="Input\LowLevel\LowLevelMouseInputEvent.cs" />
     <Compile Include="Input\LowLevel\MouseState.cs" />
     <Compile Include="Input\LowLevel\Point.cs" />
-    <Compile Include="Mapping\Triggers\MouseMoveTrigger.cs" />
+    <Compile Include="Mapping\Triggers\Mouse\MouseButtonInputBag.cs" />
+    <Compile Include="Mapping\Triggers\Mouse\MouseMoveTrigger.cs" />
     <Compile Include="MainForm.Input.cs">
       <SubType>Form</SubType>
     </Compile>

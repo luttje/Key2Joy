@@ -37,14 +37,14 @@ namespace KeyToJoy
             var defaultPreset = new MappingPreset("Default");
 
             // Commands for this application
-            defaultPreset.AddOption(new MappedOption
+            defaultPreset.AddMapping(new MappedOption
             {
                 Action = BaseAction.Register(new AppCommandAction("Stop Mapping Keys", null, "abort")),
-                Binding = new KeyboardTrigger(Keys.Escape)
+                Trigger = new KeyboardTrigger(Keys.Escape)
             });
 
             // Top of controller
-            defaultPreset.AddOption(new MappedOption
+            defaultPreset.AddMapping(new MappedOption
             {
                 Action = BaseAction.Register(
                     new GamePadAction(
@@ -53,9 +53,9 @@ namespace KeyToJoy
                         GamePadControl.LeftShoulder
                         )
                     ),
-                Binding = new KeyboardTrigger(Keys.Q)
+                Trigger = new KeyboardTrigger(Keys.Q)
             });
-            defaultPreset.AddOption(new MappedOption
+            defaultPreset.AddMapping(new MappedOption
             {
                 Action = BaseAction.Register(
                     new GamePadAction(
@@ -64,9 +64,9 @@ namespace KeyToJoy
                         GamePadControl.LeftTrigger
                         )
                     ),
-                Binding = new KeyboardTrigger(Keys.D1)
+                Trigger = new KeyboardTrigger(Keys.D1)
             });
-            defaultPreset.AddOption(new MappedOption
+            defaultPreset.AddMapping(new MappedOption
             {
                 Action = BaseAction.Register(
                     new GamePadAction(
@@ -75,9 +75,9 @@ namespace KeyToJoy
                         GamePadControl.RightShoulder
                         )
                     ),
-                Binding = new KeyboardTrigger(Keys.E)
+                Trigger = new KeyboardTrigger(Keys.E)
             });
-            defaultPreset.AddOption(new MappedOption
+            defaultPreset.AddMapping(new MappedOption
             {
                 Action = BaseAction.Register(
                     new GamePadAction(
@@ -86,11 +86,11 @@ namespace KeyToJoy
                         GamePadControl.RightTrigger
                         )
                     ),
-                Binding = new KeyboardTrigger(Keys.D2)
+                Trigger = new KeyboardTrigger(Keys.D2)
             });
 
             // Left half of controller
-            defaultPreset.AddOption(new MappedOption
+            defaultPreset.AddMapping(new MappedOption
             {
                 Action = BaseAction.Register(
                     new GamePadAction(
@@ -99,9 +99,9 @@ namespace KeyToJoy
                         GamePadControl.LeftStickUp
                         )
                     ),
-                Binding = new KeyboardTrigger(Keys.W)
+                Trigger = new KeyboardTrigger(Keys.W)
             });
-            defaultPreset.AddOption(new MappedOption
+            defaultPreset.AddMapping(new MappedOption
             {
                 Action = BaseAction.Register(
                     new GamePadAction(
@@ -110,9 +110,9 @@ namespace KeyToJoy
                         GamePadControl.LeftStickRight
                         )
                     ),
-                Binding = new KeyboardTrigger(Keys.D)
+                Trigger = new KeyboardTrigger(Keys.D)
             });
-            defaultPreset.AddOption(new MappedOption
+            defaultPreset.AddMapping(new MappedOption
             {
                 Action = BaseAction.Register(
                     new GamePadAction(
@@ -121,9 +121,9 @@ namespace KeyToJoy
                         GamePadControl.LeftStickDown
                         )
                     ),
-                Binding = new KeyboardTrigger(Keys.S)
+                Trigger = new KeyboardTrigger(Keys.S)
             });
-            defaultPreset.AddOption(new MappedOption
+            defaultPreset.AddMapping(new MappedOption
             {
                 Action = BaseAction.Register(
                     new GamePadAction(
@@ -132,9 +132,9 @@ namespace KeyToJoy
                         GamePadControl.LeftStickLeft
                         )
                     ),
-                Binding = new KeyboardTrigger(Keys.A)
+                Trigger = new KeyboardTrigger(Keys.A)
             });
-            defaultPreset.AddOption(new MappedOption
+            defaultPreset.AddMapping(new MappedOption
             {
                 Action = BaseAction.Register(
                     new GamePadAction(
@@ -143,10 +143,10 @@ namespace KeyToJoy
                         GamePadControl.LeftStickClick
                         )
                     ),
-                Binding = new KeyboardTrigger(Keys.LControlKey)
+                Trigger = new KeyboardTrigger(Keys.LControlKey)
             });
 
-            defaultPreset.AddOption(new MappedOption
+            defaultPreset.AddMapping(new MappedOption
             {
                 Action = BaseAction.Register(
                     new GamePadAction(
@@ -155,9 +155,9 @@ namespace KeyToJoy
                         GamePadControl.DPadUp
                         )
                     ),
-                Binding = new KeyboardTrigger(Keys.Up)
+                Trigger = new KeyboardTrigger(Keys.Up)
             });
-            defaultPreset.AddOption(new MappedOption
+            defaultPreset.AddMapping(new MappedOption
             {
                 Action = BaseAction.Register(
                     new GamePadAction(
@@ -166,9 +166,9 @@ namespace KeyToJoy
                         GamePadControl.DPadRight
                         )
                     ),
-                Binding = new KeyboardTrigger(Keys.Right)
+                Trigger = new KeyboardTrigger(Keys.Right)
             });
-            defaultPreset.AddOption(new MappedOption
+            defaultPreset.AddMapping(new MappedOption
             {
                 Action = BaseAction.Register(
                     new GamePadAction(
@@ -177,9 +177,9 @@ namespace KeyToJoy
                         GamePadControl.DPadDown
                         )
                     ),
-                Binding = new KeyboardTrigger(Keys.Down)
+                Trigger = new KeyboardTrigger(Keys.Down)
             });
-            defaultPreset.AddOption(new MappedOption
+            defaultPreset.AddMapping(new MappedOption
             {
                 Action = BaseAction.Register(
                     new GamePadAction(
@@ -188,11 +188,11 @@ namespace KeyToJoy
                         GamePadControl.DPadLeft
                         )
                     ),
-                Binding = new KeyboardTrigger(Keys.Left)
+                Trigger = new KeyboardTrigger(Keys.Left)
             });
 
             // Right half of controller
-            defaultPreset.AddOption(new MappedOption
+            defaultPreset.AddMapping(new MappedOption
             {
                 Action = BaseAction.Register(
                     new GamePadAction(
@@ -201,9 +201,9 @@ namespace KeyToJoy
                         GamePadControl.RightStickUp
                         )
                     ),
-                Binding = new MouseMoveTrigger(AxisDirection.Up)
+                Trigger = new MouseMoveTrigger(AxisDirection.Up)
             });
-            defaultPreset.AddOption(new MappedOption
+            defaultPreset.AddMapping(new MappedOption
             {
                 Action = BaseAction.Register(
                     new GamePadAction(
@@ -212,9 +212,9 @@ namespace KeyToJoy
                         GamePadControl.RightStickRight
                         )
                     ),
-                Binding = new MouseMoveTrigger(AxisDirection.Right)
+                Trigger = new MouseMoveTrigger(AxisDirection.Right)
             });
-            defaultPreset.AddOption(new MappedOption
+            defaultPreset.AddMapping(new MappedOption
             {
                 Action = BaseAction.Register(
                     new GamePadAction(
@@ -223,9 +223,9 @@ namespace KeyToJoy
                         GamePadControl.RightStickDown
                         )
                     ),
-                Binding = new MouseMoveTrigger(AxisDirection.Down)
+                Trigger = new MouseMoveTrigger(AxisDirection.Down)
             });
-            defaultPreset.AddOption(new MappedOption
+            defaultPreset.AddMapping(new MappedOption
             {
                 Action = BaseAction.Register(
                     new GamePadAction(
@@ -234,9 +234,9 @@ namespace KeyToJoy
                         GamePadControl.RightStickLeft
                         )
                     ),
-                Binding = new MouseMoveTrigger(AxisDirection.Left)
+                Trigger = new MouseMoveTrigger(AxisDirection.Left)
             });
-            defaultPreset.AddOption(new MappedOption
+            defaultPreset.AddMapping(new MappedOption
             {
                 Action = BaseAction.Register(
                     new GamePadAction(
@@ -245,10 +245,10 @@ namespace KeyToJoy
                         GamePadControl.RightStickClick
                         )
                     ),
-                Binding = new KeyboardTrigger(Keys.RControlKey)
+                Trigger = new KeyboardTrigger(Keys.RControlKey)
             });
 
-            defaultPreset.AddOption(new MappedOption
+            defaultPreset.AddMapping(new MappedOption
             {
                 Action = BaseAction.Register(
                     new GamePadAction(
@@ -257,9 +257,9 @@ namespace KeyToJoy
                         GamePadControl.X
                         )
                     ),
-                Binding = new KeyboardTrigger(Keys.X)
+                Trigger = new KeyboardTrigger(Keys.X)
             });
-            defaultPreset.AddOption(new MappedOption
+            defaultPreset.AddMapping(new MappedOption
             {
                 Action = BaseAction.Register(
                     new GamePadAction(
@@ -268,9 +268,9 @@ namespace KeyToJoy
                         GamePadControl.Y
                         )
                     ),
-                Binding = new KeyboardTrigger(Keys.Y)
+                Trigger = new KeyboardTrigger(Keys.Y)
             });
-            defaultPreset.AddOption(new MappedOption
+            defaultPreset.AddMapping(new MappedOption
             {
                 Action = BaseAction.Register(
                     new GamePadAction(
@@ -279,9 +279,9 @@ namespace KeyToJoy
                         GamePadControl.A
                         )
                     ),
-                Binding = new KeyboardTrigger(Keys.F)
+                Trigger = new KeyboardTrigger(Keys.F)
             });
-            defaultPreset.AddOption(new MappedOption
+            defaultPreset.AddMapping(new MappedOption
             {
                 Action = BaseAction.Register(
                     new GamePadAction(
@@ -290,11 +290,11 @@ namespace KeyToJoy
                         GamePadControl.B
                         )
                     ),
-                Binding = new KeyboardTrigger(Keys.Z)
+                Trigger = new KeyboardTrigger(Keys.Z)
             });
 
             // Start and select
-            defaultPreset.AddOption(new MappedOption
+            defaultPreset.AddMapping(new MappedOption
             {
                 Action = BaseAction.Register(
                     new GamePadAction(
@@ -303,9 +303,9 @@ namespace KeyToJoy
                         GamePadControl.Start
                         )
                     ),
-                Binding = new KeyboardTrigger(Keys.F1)
+                Trigger = new KeyboardTrigger(Keys.F1)
             });
-            defaultPreset.AddOption(new MappedOption
+            defaultPreset.AddMapping(new MappedOption
             {
                 Action = BaseAction.Register(
                     new GamePadAction(
@@ -314,7 +314,7 @@ namespace KeyToJoy
                         GamePadControl.Back
                         )
                     ),
-                Binding = new KeyboardTrigger(Keys.F2)
+                Trigger = new KeyboardTrigger(Keys.F2)
             });
 
             return defaultPreset;

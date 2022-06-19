@@ -14,18 +14,18 @@ namespace KeyToJoy
 
         private readonly List<RadioButton> radioButtonGroup = new List<RadioButton>();
 
-        internal MappingForm(MappedOption bindingOption)
+        internal MappingForm(MappedOption mappedOption)
             :this()
         {
-            BindingSetting = bindingOption;
+            BindingSetting = mappedOption;
 
-            var image = bindingOption.Action.GetImage();
+            var image = mappedOption.Action.GetImage();
             if(image != null)
                 pctController.Image = image;
 
-            lblInfo.Text = $"Pretend the {bindingOption.GetActionDisplay()} button is pressed when...";
+            lblInfo.Text = $"Pretend the {mappedOption.GetActionDisplay()} button is pressed when...";
 
-            SetConfirmBindButtonText();
+            SetConfirmMappingButtonText();
         }
 
         private MappingForm()
@@ -81,15 +81,15 @@ namespace KeyToJoy
             if (BindingSetting == null)
                 return;
 
-            BindingSetting.Binding = new MouseMoveTrigger((AxisDirection)Enum.Parse(typeof(AxisDirection), cmbMouseDirection.Text));
-            SetConfirmBindButtonText($"Mouse {cmbMouseDirection.Text}");
+            BindingSetting.Trigger = new MouseMoveTrigger((AxisDirection)Enum.Parse(typeof(AxisDirection), cmbMouseDirection.Text));
+            SetConfirmMappingButtonText($"Mouse {cmbMouseDirection.Text}");
         }
 
-        private void SetConfirmBindButtonText(string bind = null)
+        private void SetConfirmMappingButtonText(string trigger = null)
         {
-            btnConfirm.Text = $"Confirm mapping {BindingSetting.GetActionDisplay()} to {bind ?? "..."}";
+            btnConfirm.Text = $"Confirm mapping {BindingSetting.GetActionDisplay()} to {trigger ?? "..."}";
 
-            if (bind != null)
+            if (trigger != null)
                 btnConfirm.Enabled = true;
         }
 
@@ -107,12 +107,12 @@ namespace KeyToJoy
                 if (data is RawInputKeyboardData keyboard)
                 {
                     var keys = VirtualKeyConverter.KeysFromVirtual(keyboard.Keyboard.VirutalKey);
-                    BindingSetting.Binding = new KeyboardTrigger(keys, keyboard.Keyboard.Flags);
+                    BindingSetting.Trigger = new KeyboardTrigger(keys, keyboard.Keyboard.Flags);
 
 
-                    txtKeyBind.Text = $"(keyboard) {BindingSetting.Binding}";
+                    txtKeyBind.Text = $"(keyboard) {BindingSetting.Trigger}";
 
-                    SetConfirmBindButtonText(BindingSetting.Binding.ToString());
+                    SetConfirmMappingButtonText(BindingSetting.Trigger.ToString());
                 }
                 else if (data is RawInputMouseData mouse 
                     && mouse.Mouse.Buttons != RawMouseButtonFlags.None
@@ -120,11 +120,11 @@ namespace KeyToJoy
                 {
                     try
                     {
-                        BindingSetting.Binding = new MouseButtonTrigger(mouse.Mouse.Buttons);
+                        BindingSetting.Trigger = new MouseButtonTrigger(mouse.Mouse.Buttons);
 
-                        txtKeyBind.Text = $"{BindingSetting.Binding}";
+                        txtKeyBind.Text = $"{BindingSetting.Trigger}";
 
-                        SetConfirmBindButtonText(BindingSetting.Binding.ToString());
+                        SetConfirmMappingButtonText(BindingSetting.Trigger.ToString());
                     }
                     catch (ArgumentOutOfRangeException ex)
                     {
@@ -143,7 +143,7 @@ namespace KeyToJoy
 
         private void BindingForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            // Relieve input capturing by this binding form and return it to the main form
+            // Relieve input capturing by this mapping form and return it to the main form
             RawInputDevice.UnregisterDevice(HidUsageAndPage.Keyboard);
             RawInputDevice.UnregisterDevice(HidUsageAndPage.Mouse);
         }

@@ -32,10 +32,12 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.tmrAxisTimeout = new System.Windows.Forms.Timer(this.components);
             this.splitContainer = new System.Windows.Forms.SplitContainer();
-            this.dgvBinds = new System.Windows.Forms.DataGridView();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.txtPresetName = new System.Windows.Forms.TextBox();
-            this.lblPresetName = new System.Windows.Forms.Label();
+            this.pnlActionManagement = new System.Windows.Forms.Panel();
+            this.btnAddAction = new System.Windows.Forms.Button();
+            this.dgvMappings = new System.Windows.Forms.DataGridView();
+            this.colContext = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colControl = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colTrigger = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pnlPresetName = new System.Windows.Forms.Panel();
             this.cmbPreset = new System.Windows.Forms.ComboBox();
             this.btnCreate = new System.Windows.Forms.Button();
@@ -47,17 +49,18 @@
             this.dbgLabel = new System.Windows.Forms.Label();
             this.pctController = new System.Windows.Forms.PictureBox();
             this.btnAbout = new System.Windows.Forms.Button();
-            this.colContext = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colControl = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colTrigger = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.lblPresetName = new System.Windows.Forms.Label();
+            this.txtPresetName = new System.Windows.Forms.TextBox();
+            this.panel1 = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
             this.splitContainer.Panel2.SuspendLayout();
             this.splitContainer.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvBinds)).BeginInit();
-            this.panel1.SuspendLayout();
+            this.pnlActionManagement.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvMappings)).BeginInit();
             this.pnlPresetName.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pctController)).BeginInit();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tmrAxisTimeout
@@ -73,7 +76,8 @@
             // 
             // splitContainer.Panel1
             // 
-            this.splitContainer.Panel1.Controls.Add(this.dgvBinds);
+            this.splitContainer.Panel1.Controls.Add(this.pnlActionManagement);
+            this.splitContainer.Panel1.Controls.Add(this.dgvMappings);
             this.splitContainer.Panel1.Controls.Add(this.panel1);
             this.splitContainer.Panel1.Controls.Add(this.pnlPresetName);
             this.splitContainer.Panel1.Controls.Add(this.chkEnabled);
@@ -89,60 +93,74 @@
             this.splitContainer.SplitterDistance = 533;
             this.splitContainer.TabIndex = 56;
             // 
+            // pnlActionManagement
+            // 
+            this.pnlActionManagement.Controls.Add(this.btnAddAction);
+            this.pnlActionManagement.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.pnlActionManagement.Location = new System.Drawing.Point(0, 431);
+            this.pnlActionManagement.Name = "pnlActionManagement";
+            this.pnlActionManagement.Size = new System.Drawing.Size(533, 34);
+            this.pnlActionManagement.TabIndex = 0;
+            // 
+            // btnAddAction
+            // 
+            this.btnAddAction.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnAddAction.Location = new System.Drawing.Point(451, 0);
+            this.btnAddAction.Name = "btnAddAction";
+            this.btnAddAction.Size = new System.Drawing.Size(82, 34);
+            this.btnAddAction.TabIndex = 0;
+            this.btnAddAction.Text = "Add Action";
+            this.btnAddAction.UseVisualStyleBackColor = true;
+            this.btnAddAction.Click += new System.EventHandler(this.btnAddAction_Click);
+            // 
             // dgvBinds
             // 
-            this.dgvBinds.AllowUserToAddRows = false;
-            this.dgvBinds.AllowUserToDeleteRows = false;
-            this.dgvBinds.AllowUserToResizeRows = false;
-            this.dgvBinds.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvBinds.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dgvMappings.AllowUserToAddRows = false;
+            this.dgvMappings.AllowUserToDeleteRows = false;
+            this.dgvMappings.AllowUserToResizeRows = false;
+            this.dgvMappings.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvMappings.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colContext,
             this.colControl,
             this.colTrigger});
-            this.dgvBinds.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvBinds.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dgvBinds.Location = new System.Drawing.Point(0, 100);
-            this.dgvBinds.Name = "dgvBinds";
-            this.dgvBinds.ReadOnly = true;
-            this.dgvBinds.RowHeadersVisible = false;
-            this.dgvBinds.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvBinds.Size = new System.Drawing.Size(533, 365);
-            this.dgvBinds.TabIndex = 88;
-            this.dgvBinds.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.DgvBinds_CellFormatting);
-            this.dgvBinds.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.DgvBinds_CellMouseDoubleClick);
-            this.dgvBinds.SelectionChanged += new System.EventHandler(this.DgvBinds_SelectionChanged);
+            this.dgvMappings.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvMappings.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.dgvMappings.Location = new System.Drawing.Point(0, 100);
+            this.dgvMappings.Name = "dgvBinds";
+            this.dgvMappings.ReadOnly = true;
+            this.dgvMappings.RowHeadersVisible = false;
+            this.dgvMappings.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvMappings.Size = new System.Drawing.Size(533, 365);
+            this.dgvMappings.TabIndex = 88;
+            this.dgvMappings.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.DgvMappings_CellFormatting);
+            this.dgvMappings.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.DgvMappings_CellMouseDoubleClick);
+            this.dgvMappings.SelectionChanged += new System.EventHandler(this.DgvMappings_SelectionChanged);
             // 
-            // panel1
+            // colContext
             // 
-            this.panel1.Controls.Add(this.txtPresetName);
-            this.panel1.Controls.Add(this.lblPresetName);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 70);
-            this.panel1.Name = "panel1";
-            this.panel1.Padding = new System.Windows.Forms.Padding(5);
-            this.panel1.Size = new System.Drawing.Size(533, 30);
-            this.panel1.TabIndex = 82;
+            this.colContext.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colContext.HeaderText = "Context";
+            this.colContext.Name = "colContext";
+            this.colContext.ReadOnly = true;
+            this.colContext.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colContext.Width = 49;
             // 
-            // txtPresetName
+            // colControl
             // 
-            this.txtPresetName.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtPresetName.Location = new System.Drawing.Point(82, 5);
-            this.txtPresetName.Name = "txtPresetName";
-            this.txtPresetName.Size = new System.Drawing.Size(446, 20);
-            this.txtPresetName.TabIndex = 85;
-            this.txtPresetName.TextChanged += new System.EventHandler(this.TxtPresetName_TextChanged);
+            this.colControl.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colControl.HeaderText = "Action";
+            this.colControl.Name = "colControl";
+            this.colControl.ReadOnly = true;
+            this.colControl.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colControl.Width = 43;
             // 
-            // lblPresetName
+            // colTrigger
             // 
-            this.lblPresetName.Dock = System.Windows.Forms.DockStyle.Left;
-            this.lblPresetName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPresetName.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.lblPresetName.Location = new System.Drawing.Point(5, 5);
-            this.lblPresetName.Name = "lblPresetName";
-            this.lblPresetName.Size = new System.Drawing.Size(77, 20);
-            this.lblPresetName.TabIndex = 88;
-            this.lblPresetName.Text = "Preset Name:";
-            this.lblPresetName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.colTrigger.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colTrigger.HeaderText = "Trigger";
+            this.colTrigger.Name = "colTrigger";
+            this.colTrigger.ReadOnly = true;
+            this.colTrigger.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // pnlPresetName
             // 
@@ -277,31 +295,37 @@
             this.btnAbout.UseVisualStyleBackColor = true;
             this.btnAbout.Click += new System.EventHandler(this.BtnAbout_Click);
             // 
-            // colContext
+            // lblPresetName
             // 
-            this.colContext.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.colContext.HeaderText = "Context";
-            this.colContext.Name = "colContext";
-            this.colContext.ReadOnly = true;
-            this.colContext.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.colContext.Width = 49;
+            this.lblPresetName.Dock = System.Windows.Forms.DockStyle.Left;
+            this.lblPresetName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPresetName.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.lblPresetName.Location = new System.Drawing.Point(5, 5);
+            this.lblPresetName.Name = "lblPresetName";
+            this.lblPresetName.Size = new System.Drawing.Size(77, 20);
+            this.lblPresetName.TabIndex = 88;
+            this.lblPresetName.Text = "Preset Name:";
+            this.lblPresetName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // colControl
+            // txtPresetName
             // 
-            this.colControl.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.colControl.HeaderText = "Action";
-            this.colControl.Name = "colControl";
-            this.colControl.ReadOnly = true;
-            this.colControl.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.colControl.Width = 43;
+            this.txtPresetName.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtPresetName.Location = new System.Drawing.Point(82, 5);
+            this.txtPresetName.Name = "txtPresetName";
+            this.txtPresetName.Size = new System.Drawing.Size(446, 20);
+            this.txtPresetName.TabIndex = 85;
+            this.txtPresetName.TextChanged += new System.EventHandler(this.TxtPresetName_TextChanged);
             // 
-            // colTrigger
+            // panel1
             // 
-            this.colTrigger.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colTrigger.HeaderText = "Trigger";
-            this.colTrigger.Name = "colTrigger";
-            this.colTrigger.ReadOnly = true;
-            this.colTrigger.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.panel1.Controls.Add(this.txtPresetName);
+            this.panel1.Controls.Add(this.lblPresetName);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(0, 70);
+            this.panel1.Name = "panel1";
+            this.panel1.Padding = new System.Windows.Forms.Padding(5);
+            this.panel1.Size = new System.Drawing.Size(533, 30);
+            this.panel1.TabIndex = 82;
             // 
             // MainForm
             // 
@@ -323,12 +347,13 @@
             this.splitContainer.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).EndInit();
             this.splitContainer.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvBinds)).EndInit();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            this.pnlActionManagement.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvMappings)).EndInit();
             this.pnlPresetName.ResumeLayout(false);
             this.pnlPresetName.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pctController)).EndInit();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -341,10 +366,7 @@
         private System.Windows.Forms.PictureBox pctController;
         private System.Windows.Forms.Button btnAbout;
         private System.Windows.Forms.Panel pnlPresetName;
-        private System.Windows.Forms.DataGridView dgvBinds;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.TextBox txtPresetName;
-        private System.Windows.Forms.Label lblPresetName;
+        private System.Windows.Forms.DataGridView dgvMappings;
         private System.Windows.Forms.ComboBox cmbPreset;
         private System.Windows.Forms.Button btnCreate;
         private System.Windows.Forms.Label lblPreset;
@@ -354,6 +376,11 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colContext;
         private System.Windows.Forms.DataGridViewTextBoxColumn colControl;
         private System.Windows.Forms.DataGridViewTextBoxColumn colTrigger;
+        private System.Windows.Forms.Panel pnlActionManagement;
+        private System.Windows.Forms.Button btnAddAction;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.TextBox txtPresetName;
+        private System.Windows.Forms.Label lblPresetName;
     }
 }
 

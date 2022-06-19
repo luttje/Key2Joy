@@ -22,7 +22,7 @@ namespace KeyToJoy.Mapping
         public static BindingList<MappingPreset> All { get; } = new BindingList<MappingPreset>();
 
         [JsonProperty]
-        public List<MappedOption> Bindings { get; set; } = new List<MappedOption>();
+        public List<MappedOption> MappedOptions { get; set; } = new List<MappedOption>();
 
         [JsonProperty]
         public string Name { get; set; }
@@ -36,7 +36,7 @@ namespace KeyToJoy.Mapping
         private Dictionary<string, MappedOption> lookup = new Dictionary<string, MappedOption>();
 
         [JsonConstructor]
-        internal MappingPreset(string name, List<MappedOption> bindings = null)
+        internal MappingPreset(string name, List<MappedOption> mappedOptions = null)
         {
             Name = name;
 
@@ -45,11 +45,11 @@ namespace KeyToJoy.Mapping
             if (filePath == null)
                 filePath = Util.FileSystem.FindNonExistingFile(Path.Combine(directory, $"profile-%VERSION%.{EXTENSION}.json"));
 
-            if (bindings != null)
+            if (mappedOptions != null)
             {
-                foreach (var binding in bindings)
+                foreach (var mappedOption in mappedOptions)
                 {
-                    Bindings.Add((MappedOption)binding.Clone());
+                    MappedOptions.Add((MappedOption)mappedOption.Clone());
                 }
             }
         }
@@ -57,19 +57,19 @@ namespace KeyToJoy.Mapping
         internal static void Add(MappingPreset preset, bool blockSave = false)
         {
             // Ensure all actions in presets are loaded from the available actions in this app
-            foreach (var bindableAction in BaseAction.All)
+            foreach (var action in BaseAction.All)
             {
-                var binding = preset.Bindings.Where(b => b.Action == bindableAction).FirstOrDefault();
+                var mappedOption = preset.MappedOptions.Where(b => b.Action == action).FirstOrDefault();
 
-                if(binding == null) { 
-                    preset.Bindings.Add(new MappedOption
+                if(mappedOption == null) { 
+                    preset.MappedOptions.Add(new MappedOption
                     {
-                        Action = bindableAction,
-                        Binding = null
+                        Action = action,
+                        Trigger = null
                     });
                 }
                 else 
-                    binding.Action = bindableAction;
+                    mappedOption.Action = action;
             }
 
             All.Add(preset);
@@ -78,36 +78,36 @@ namespace KeyToJoy.Mapping
                 preset.Save();
         }
 
-        internal void AddOption(MappedOption bindingOption)
+        internal void AddMapping(MappedOption mappedOption)
         {
-            Bindings.Add(bindingOption);
-            CacheLookup(bindingOption);
+            MappedOptions.Add(mappedOption);
+            CacheLookup(mappedOption);
         }
 
-        internal void PruneCacheKey(string oldBindingKey)
+        internal void PruneCacheKey(string oldMappingKey)
         {
-            lookup.Remove(oldBindingKey);
+            lookup.Remove(oldMappingKey);
         }
 
-        internal void CacheLookup(MappedOption bindingOption)
+        internal void CacheLookup(MappedOption mappedOption)
         {
-            if (bindingOption.Binding == null)
+            if (mappedOption.Trigger == null)
                 return;
 
-            lookup.Add(bindingOption.Binding.GetUniqueBindingKey(), bindingOption);
+            lookup.Add(mappedOption.Trigger.GetUniqueKey(), mappedOption);
         }
 
         private void CacheAllLookup()
         {
-            foreach (var bindingOption in Bindings)
+            foreach (var mappedOption in MappedOptions)
             {
-                CacheLookup(bindingOption);
+                CacheLookup(mappedOption);
             }
         }
 
-        internal bool TryGetBinding(BaseTrigger binding, out MappedOption bindingOption)
+        internal bool TryGetMappedOption(BaseTrigger trigger, out MappedOption mappedOption)
         {
-            return lookup.TryGetValue(binding.GetUniqueBindingKey(), out bindingOption);
+            return lookup.TryGetValue(trigger.GetUniqueKey(), out mappedOption);
         }
 
         internal void Save()

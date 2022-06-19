@@ -2,8 +2,6 @@
 using KeyToJoy.Input.LowLevel;
 using KeyToJoy.Mapping;
 using Linearstar.Windows.RawInput;
-using Linearstar.Windows.RawInput.Native;
-using SimWinInput;
 using System;
 using System.Windows.Forms;
 
@@ -24,28 +22,26 @@ namespace KeyToJoy
             globalKeyboardHook.MouseInputEvent += OnMouseButtonInputEvent;
         }
 
-        private bool TryOverrideKeyboardInput(MappedOption bindingOption, bool isPressedDown)
+        private bool TryOverrideKeyboardInput(MappedOption mappedOption, KeyboardInputBag inputBag)
         {
             if (!chkEnabled.Checked)
                 return false;
 
-            bindingOption.Action.PerformPressBind(isPressedDown);
+            mappedOption.Action.Execute(inputBag);
 
             return true;
         }
 
-        private bool TryOverrideMouseButtonInput(MappedOption bindingOption, bool isPressedDown)
+        private bool TryOverrideMouseButtonInput(MappedOption mappedOption, MouseButtonInputBag inputBag)
         {
             if (!chkEnabled.Checked)
                 return false;
 
-            bindingOption.Action.PerformPressBind(isPressedDown);
+            mappedOption.Action.Execute(inputBag);
 
             return true;
         }
 
-        // TODO: Needs to be cleaned up
-        // TODO: Sensitivity should be tweakable by user
         private bool TryOverrideMouseMoveInput(int lastX, int lastY)
         {
             if (!chkEnabled.Checked)
@@ -54,47 +50,47 @@ namespace KeyToJoy
             tmrAxisTimeout.Stop();
             tmrAxisTimeout.Start();
 
-            var controllerId = 0;
-            var state = SimGamePad.Instance.State[controllerId];
-
             var deltaX = (short)Math.Min(Math.Max(lastX * short.MaxValue * SENSITIVITY, short.MinValue), short.MaxValue);
             var deltaY = (short)-Math.Min(Math.Max(lastY * short.MaxValue * SENSITIVITY, short.MinValue), short.MaxValue);
-            MappedOption bindingOption;
+            MappedOption mappedOption;
 
             if (
                 (
                     deltaX > 0
-                    && selectedPreset.TryGetBinding(new MouseMoveTrigger(AxisDirection.Right), out bindingOption)
+                    && selectedPreset.TryGetMappedOption(new MouseMoveTrigger(AxisDirection.Right), out mappedOption)
                 )
                 ||
                 (
                     deltaX < 0
-                    && selectedPreset.TryGetBinding(new MouseMoveTrigger(AxisDirection.Left), out bindingOption)
+                    && selectedPreset.TryGetMappedOption(new MouseMoveTrigger(AxisDirection.Left), out mappedOption)
                 )
             )
             {
-                if(bindingOption != null)
-                    // TODO: The rest (LeftStick, DPad, etc)
-                    state.RightStickX = bindingOption.Action.PerformMoveBind(deltaX, state.RightStickX);
+                if (mappedOption != null)
+                    mappedOption.Action.Execute(new MouseMoveInputBag
+                    {
+                        DeltaX = deltaX,
+                    });      
             }
             if (
                 (
                     deltaY > 0
-                    && selectedPreset.TryGetBinding(new MouseMoveTrigger(AxisDirection.Up), out bindingOption)
+                    && selectedPreset.TryGetMappedOption(new MouseMoveTrigger(AxisDirection.Up), out mappedOption)
                 )
                 ||
                 (
                     deltaY < 0
-                    && selectedPreset.TryGetBinding(new MouseMoveTrigger(AxisDirection.Down), out bindingOption)
+                    && selectedPreset.TryGetMappedOption(new MouseMoveTrigger(AxisDirection.Down), out mappedOption)
                 )
             )
             {
-                if (bindingOption != null)
-                    // TODO: The rest (LeftStick, DPad, etc)
-                    state.RightStickY = bindingOption.Action.PerformMoveBind(deltaY, state.RightStickY);
+                if (mappedOption != null)
+                    mappedOption.Action.Execute(new MouseMoveInputBag
+                    {
+                        DeltaY = deltaY,
+                    });
             }
 
-            SimGamePad.Instance.Update(controllerId);
             return true;
         }
 
@@ -122,10 +118,14 @@ namespace KeyToJoy
             // Test if this is a bound key, if so halt default input behaviour
             var keys = VirtualKeyConverter.KeysFromVirtual(e.KeyboardData.VirtualCode);
 
-            if (!selectedPreset.TryGetBinding(new KeyboardTrigger(keys), out var bindingOption))
+            if (!selectedPreset.TryGetMappedOption(new KeyboardTrigger(keys), out var mappedOption))
                 return;
 
-            if (!TryOverrideKeyboardInput(bindingOption, e.KeyboardState == KeyboardState.KeyDown))
+            if (!TryOverrideKeyboardInput(mappedOption, new KeyboardInputBag
+            {
+                State = KeyboardState.KeyDown,
+                Keys = keys
+            }))
                 return;
 
             e.Handled = true;
@@ -143,10 +143,15 @@ namespace KeyToJoy
             try
             {
                 // Test if this is a bound mouse button, if so halt default input behaviour
-                if (!selectedPreset.TryGetBinding(new MouseButtonTrigger(e.MouseState), out var bindingOption))
+                if (!selectedPreset.TryGetMappedOption(new MouseButtonTrigger(e.MouseState), out var mappedOption))
                     return;
 
-                if (!TryOverrideMouseButtonInput(bindingOption, e.AreButtonsDown()))
+                if (!TryOverrideMouseButtonInput(mappedOption, new MouseButtonInputBag
+                {
+                    State = e.MouseState,
+                    LastX = e.MouseData.Position.X,
+                    LastY = e.MouseData.Position.Y,
+                }))
                     return;
 
                 e.Handled = true;

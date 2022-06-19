@@ -14,25 +14,14 @@ namespace KeyToJoy.Mapping
             this.Command = command;
         }
 
-        internal override void PerformPressBind(bool inputKeyDown)
+        internal override void Execute(InputBag inputBag)
         {
-            if (!inputKeyDown)
-                return;
-
             if (!Program.RunAppCommand(Command))
             {
                 MessageBox.Show("This app command is invalid or could not be run at this time!", "Invalid command!", MessageBoxButtons.OK, MessageBoxIcon.Hand);
             }
         }
 
-        // TODO: Should we even support mouse input for app commands?
-        internal override short PerformMoveBind(short inputMouseDelta, short currentAxisDelta)
-        {
-            this.PerformPressBind(true);
-
-            return 0;
-        }
-        
         public override string GetContextDisplay()
         {
             return "App";

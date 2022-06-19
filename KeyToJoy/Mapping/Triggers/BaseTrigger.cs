@@ -8,10 +8,11 @@ namespace KeyToJoy.Mapping
     {
 
         [JsonProperty]
-        public string Name => GetUniqueBindingKey();
+        public string Name => GetUniqueKey();
 
         // Must return an input value unique in the preset. Like a Keys combination or an AxisDirection.
-        internal abstract string GetUniqueBindingKey();
+        // Will be used to quickly lookup input triggers and their corresponding action
+        internal abstract string GetUniqueKey();
 
         public static bool operator ==(BaseTrigger a, BaseTrigger b)
         {

@@ -33,45 +33,45 @@ namespace KeyToJoy
         private void ReloadSelectedPreset()
         {
             selectedPreset = cmbPreset.SelectedItem as MappingPreset;
-            dgvBinds.DataSource = selectedPreset.Bindings;
+            dgvMappings.DataSource = selectedPreset.MappedOptions;
             txtPresetName.Text = selectedPreset.Name;
         }
 
-        private void ChangeBinding(MappedOption bindingOption)
+        private void ChangeMappedOption(MappedOption mappedOption)
         {
             chkEnabled.Checked = false;
 
-            new MappingForm(bindingOption).ShowDialog();
+            new MappingForm(mappedOption).ShowDialog();
             RefreshInputCaptures();
 
-            foreach (var option in selectedPreset.Bindings)
+            foreach (var option in selectedPreset.MappedOptions)
             {
-                if (option == bindingOption)
+                if (option == mappedOption)
                     continue;
 
-                if (option.Binding == bindingOption.Binding)
+                if (option.Trigger == mappedOption.Trigger)
                 {
-                    MessageBox.Show($"This binding is already in use for {option.Action}! Change {option.Action} to something else.");
+                    MessageBox.Show($"This trigger is already in use for {option.Action}! Change {option.Action} to something else.");
 
-                    selectedPreset.PruneCacheKey(option.Binding.GetUniqueBindingKey());
-                    selectedPreset.CacheLookup(bindingOption);
-                    dgvBinds.Update();
+                    selectedPreset.PruneCacheKey(option.Trigger.GetUniqueKey());
+                    selectedPreset.CacheLookup(mappedOption);
+                    dgvMappings.Update();
 
-                    ChangeBinding(option);
+                    ChangeMappedOption(option);
 
                     return;
                 }
             }
 
-            selectedPreset.PruneCacheKey(bindingOption.Binding.GetUniqueBindingKey());
-            selectedPreset.CacheLookup(bindingOption);
-            dgvBinds.Update();
+            selectedPreset.PruneCacheKey(mappedOption.Trigger.GetUniqueKey());
+            selectedPreset.CacheLookup(mappedOption);
+            dgvMappings.Update();
             selectedPreset.Save();
         }
 
         private void SettingsForm_Load(object sender, EventArgs e)
         {
-            dgvBinds.ClearSelection();
+            dgvMappings.ClearSelection();
             pctController.Image = defaultControllerImage;
         }
 
@@ -80,25 +80,25 @@ namespace KeyToJoy
             ReloadSelectedPreset();
         }
 
-        private void DgvBinds_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        private void DgvMappings_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            var row = dgvBinds.Rows[e.RowIndex];
-            var bindingOption = row.DataBoundItem as MappedOption;
+            var row = dgvMappings.Rows[e.RowIndex];
+            var mappedOption = row.DataBoundItem as MappedOption;
 
-            if (bindingOption == null)
+            if (mappedOption == null)
                 return;
 
-            ChangeBinding(bindingOption);
+            ChangeMappedOption(mappedOption);
         }
 
-        private void DgvBinds_SelectionChanged(object sender, EventArgs e)
+        private void DgvMappings_SelectionChanged(object sender, EventArgs e)
         {
-            var rowsCount = dgvBinds.SelectedRows.Count;
+            var rowsCount = dgvMappings.SelectedRows.Count;
 
             if (rowsCount == 0 || rowsCount > 1) 
                 return;
 
-            var row = dgvBinds.SelectedRows[0];
+            var row = dgvMappings.SelectedRows[0];
 
             if (!row.Selected)
             {
@@ -106,23 +106,23 @@ namespace KeyToJoy
                 return;
             }
 
-            var bindingOption = row.DataBoundItem as MappedOption;
+            var mappedOption = row.DataBoundItem as MappedOption;
 
-            if (bindingOption == null)
+            if (mappedOption == null)
                 return;
 
-            var image = bindingOption.Action.GetImage();
+            var image = mappedOption.Action.GetImage();
             if (image != null)
                 pctController.Image = image;
         }
 
-        private void DgvBinds_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        private void DgvMappings_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            var bindingOption = dgvBinds.Rows[e.RowIndex].DataBoundItem as MappedOption;
+            var mappedOption = dgvMappings.Rows[e.RowIndex].DataBoundItem as MappedOption;
 
-            dgvBinds.Rows[e.RowIndex].Cells[colContext.Name].Value = bindingOption.GetContextDisplay();
-            dgvBinds.Rows[e.RowIndex].Cells[colControl.Name].Value = bindingOption.GetActionDisplay();
-            dgvBinds.Rows[e.RowIndex].Cells[colTrigger.Name].Value = bindingOption.GetTriggerDisplay();
+            dgvMappings.Rows[e.RowIndex].Cells[colContext.Name].Value = mappedOption.GetContextDisplay();
+            dgvMappings.Rows[e.RowIndex].Cells[colControl.Name].Value = mappedOption.GetActionDisplay();
+            dgvMappings.Rows[e.RowIndex].Cells[colTrigger.Name].Value = mappedOption.GetTriggerDisplay();
         }
 
         private void tmrAxisTimeout_Tick(object sender, EventArgs e)
@@ -158,7 +158,7 @@ namespace KeyToJoy
 
         private void BtnCreate_Click(object sender, EventArgs e)
         {
-            var preset = new MappingPreset(txtPresetName.Text, selectedPreset.Bindings);
+            var preset = new MappingPreset(txtPresetName.Text, selectedPreset.MappedOptions);
 
             MappingPreset.Add(preset);
             cmbPreset.SelectedIndex = cmbPreset.Items.Count - 1;
@@ -184,6 +184,11 @@ namespace KeyToJoy
         private void btnOpenFolder_Click(object sender, EventArgs e)
         {
             Process.Start(MappingPreset.GetSaveDirectory());
+        }
+
+        private void btnAddAction_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

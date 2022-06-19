@@ -13,7 +13,7 @@ namespace KeyToJoy.Mapping
         [JsonProperty(TypeNameHandling = TypeNameHandling.All)]
         public BaseAction Action;
         [JsonProperty(TypeNameHandling = TypeNameHandling.All)]
-        public BaseTrigger Binding;
+        public BaseTrigger Trigger;
 
         public string GetContextDisplay()
         {
@@ -27,17 +27,17 @@ namespace KeyToJoy.Mapping
 
         internal object GetTriggerDisplay()
         {
-            if (Binding == null)
+            if (Trigger == null)
                 return "<not bound to key>";
 
-            return Binding.ToString();
+            return Trigger.ToString();
         }
 
         public object Clone()
         {
             return new MappedOption()
             {
-                Binding = Binding != null ? (BaseTrigger)Binding.Clone() : null,
+                Trigger = Trigger != null ? (BaseTrigger)Trigger.Clone() : null,
                 Action = Action,
             };
         }

@@ -28,7 +28,7 @@ namespace KeyToJoy.Mapping
             this.axisBinding = axisBinding;
         }
 
-        internal override string GetUniqueBindingKey()
+        internal override string GetUniqueKey()
         {
             return ToString();
         }
