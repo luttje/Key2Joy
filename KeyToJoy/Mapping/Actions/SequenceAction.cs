@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace KeyToJoy.Mapping
@@ -15,10 +16,10 @@ namespace KeyToJoy.Mapping
             this.ChildActions = childActions;
         }
 
-        internal override void Execute(InputBag inputBag)
+        internal override async Task Execute(InputBag inputBag)
         {
             foreach (var childAction in ChildActions)
-                childAction.Execute(inputBag);
+                await childAction.Execute(inputBag);
         }
 
         public override string GetContextDisplay()

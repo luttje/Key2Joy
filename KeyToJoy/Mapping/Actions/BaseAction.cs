@@ -32,7 +32,7 @@ namespace KeyToJoy.Mapping
             return bindableAction;
         }
 
-        internal abstract void Execute(InputBag inputBag);
+        internal abstract Task Execute(InputBag inputBag);
 
         public virtual string GetNameDisplay()
         {

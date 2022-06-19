@@ -47,6 +47,11 @@ namespace KeyToJoy
                         "XboxSeriesX_LB",
                         GamePadControl.LeftShoulder
                     ),
+                    new WaitAction(
+                        "Wait",
+                        null,
+                        TimeSpan.FromSeconds(1)
+                    ),
                     new GamePadAction(
                         "Right Shoulder",
                         "XboxSeriesX_RB",

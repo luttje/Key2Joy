@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace KeyToJoy.Mapping
@@ -14,7 +15,7 @@ namespace KeyToJoy.Mapping
             this.Command = command;
         }
 
-        internal override void Execute(InputBag inputBag)
+        internal override async Task Execute(InputBag inputBag)
         {
             if (!Program.RunAppCommand(Command))
             {

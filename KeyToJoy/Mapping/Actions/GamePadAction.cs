@@ -20,7 +20,7 @@ namespace KeyToJoy.Mapping
             Control = control;
         }
 
-        internal override void Execute(InputBag inputBag)
+        internal override async Task Execute(InputBag inputBag)
         {
             if (inputBag is MouseMoveInputBag mouseMoveInputBag)
             {

@@ -201,6 +201,7 @@
       <DependentUpon>MappingForm.cs</DependentUpon>
     </Compile>
     <Compile Include="IAcceptAppCommands.cs" />
+    <Compile Include="Mapping\Actions\WaitAction.cs" />
     <Compile Include="Mapping\Actions\SequenceAction.cs" />
     <Compile Include="Mapping\AxisDirection.cs" />
     <Compile Include="Mapping\Actions\AppCommandAction.cs" />
