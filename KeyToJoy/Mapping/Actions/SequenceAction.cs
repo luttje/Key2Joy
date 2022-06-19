@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -20,6 +21,21 @@ namespace KeyToJoy.Mapping
         {
             foreach (var childAction in ChildActions)
                 await childAction.Execute(inputBag);
+        }
+
+        public override string GetNameDisplay()
+        {
+            var actions = new StringBuilder();
+
+            for (int i = 0; i < ChildActions.Count; i++)
+            {
+                if (i > 0)
+                    actions.Append(", ");
+
+                actions.Append(ChildActions[i].GetNameDisplay());
+            }
+            
+            return $"Sequence: {actions}";
         }
 
         public override string GetContextDisplay()

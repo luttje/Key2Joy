@@ -23,6 +23,11 @@ namespace KeyToJoy.Mapping
             return Task.Delay(WaitTime);
         }
 
+        public override string GetNameDisplay()
+        {
+            return $"{Name} for {WaitTime.TotalMilliseconds}ms";
+        }
+
         public override string GetContextDisplay()
         {
             return "Logic";

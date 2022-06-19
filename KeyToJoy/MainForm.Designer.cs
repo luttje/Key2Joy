@@ -35,9 +35,9 @@
             this.pnlActionManagement = new System.Windows.Forms.Panel();
             this.btnAddAction = new System.Windows.Forms.Button();
             this.dgvMappings = new System.Windows.Forms.DataGridView();
-            this.colContext = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colControl = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colTrigger = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.txtPresetName = new System.Windows.Forms.TextBox();
+            this.lblPresetName = new System.Windows.Forms.Label();
             this.pnlPresetName = new System.Windows.Forms.Panel();
             this.cmbPreset = new System.Windows.Forms.ComboBox();
             this.btnCreate = new System.Windows.Forms.Button();
@@ -49,18 +49,18 @@
             this.dbgLabel = new System.Windows.Forms.Label();
             this.pctController = new System.Windows.Forms.PictureBox();
             this.btnAbout = new System.Windows.Forms.Button();
-            this.lblPresetName = new System.Windows.Forms.Label();
-            this.txtPresetName = new System.Windows.Forms.TextBox();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.colContext = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colTrigger = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colControl = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
             this.splitContainer.Panel2.SuspendLayout();
             this.splitContainer.SuspendLayout();
             this.pnlActionManagement.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMappings)).BeginInit();
+            this.panel1.SuspendLayout();
             this.pnlPresetName.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pctController)).BeginInit();
-            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tmrAxisTimeout
@@ -113,7 +113,7 @@
             this.btnAddAction.UseVisualStyleBackColor = true;
             this.btnAddAction.Click += new System.EventHandler(this.btnAddAction_Click);
             // 
-            // dgvBinds
+            // dgvMappings
             // 
             this.dgvMappings.AllowUserToAddRows = false;
             this.dgvMappings.AllowUserToDeleteRows = false;
@@ -121,12 +121,12 @@
             this.dgvMappings.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvMappings.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colContext,
-            this.colControl,
-            this.colTrigger});
+            this.colTrigger,
+            this.colControl});
             this.dgvMappings.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvMappings.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvMappings.Location = new System.Drawing.Point(0, 100);
-            this.dgvMappings.Name = "dgvBinds";
+            this.dgvMappings.Name = "dgvMappings";
             this.dgvMappings.ReadOnly = true;
             this.dgvMappings.RowHeadersVisible = false;
             this.dgvMappings.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
@@ -136,31 +136,37 @@
             this.dgvMappings.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.DgvMappings_CellMouseDoubleClick);
             this.dgvMappings.SelectionChanged += new System.EventHandler(this.DgvMappings_SelectionChanged);
             // 
-            // colContext
+            // panel1
             // 
-            this.colContext.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.colContext.HeaderText = "Context";
-            this.colContext.Name = "colContext";
-            this.colContext.ReadOnly = true;
-            this.colContext.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.colContext.Width = 49;
+            this.panel1.Controls.Add(this.txtPresetName);
+            this.panel1.Controls.Add(this.lblPresetName);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(0, 70);
+            this.panel1.Name = "panel1";
+            this.panel1.Padding = new System.Windows.Forms.Padding(5);
+            this.panel1.Size = new System.Drawing.Size(533, 30);
+            this.panel1.TabIndex = 82;
             // 
-            // colControl
+            // txtPresetName
             // 
-            this.colControl.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.colControl.HeaderText = "Action";
-            this.colControl.Name = "colControl";
-            this.colControl.ReadOnly = true;
-            this.colControl.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.colControl.Width = 43;
+            this.txtPresetName.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtPresetName.Location = new System.Drawing.Point(82, 5);
+            this.txtPresetName.Name = "txtPresetName";
+            this.txtPresetName.Size = new System.Drawing.Size(446, 20);
+            this.txtPresetName.TabIndex = 85;
+            this.txtPresetName.TextChanged += new System.EventHandler(this.TxtPresetName_TextChanged);
             // 
-            // colTrigger
+            // lblPresetName
             // 
-            this.colTrigger.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colTrigger.HeaderText = "Trigger";
-            this.colTrigger.Name = "colTrigger";
-            this.colTrigger.ReadOnly = true;
-            this.colTrigger.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.lblPresetName.Dock = System.Windows.Forms.DockStyle.Left;
+            this.lblPresetName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPresetName.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.lblPresetName.Location = new System.Drawing.Point(5, 5);
+            this.lblPresetName.Name = "lblPresetName";
+            this.lblPresetName.Size = new System.Drawing.Size(77, 20);
+            this.lblPresetName.TabIndex = 88;
+            this.lblPresetName.Text = "Preset Name:";
+            this.lblPresetName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // pnlPresetName
             // 
@@ -295,37 +301,31 @@
             this.btnAbout.UseVisualStyleBackColor = true;
             this.btnAbout.Click += new System.EventHandler(this.BtnAbout_Click);
             // 
-            // lblPresetName
+            // colContext
             // 
-            this.lblPresetName.Dock = System.Windows.Forms.DockStyle.Left;
-            this.lblPresetName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPresetName.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.lblPresetName.Location = new System.Drawing.Point(5, 5);
-            this.lblPresetName.Name = "lblPresetName";
-            this.lblPresetName.Size = new System.Drawing.Size(77, 20);
-            this.lblPresetName.TabIndex = 88;
-            this.lblPresetName.Text = "Preset Name:";
-            this.lblPresetName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.colContext.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colContext.HeaderText = "Context";
+            this.colContext.Name = "colContext";
+            this.colContext.ReadOnly = true;
+            this.colContext.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colContext.Width = 49;
             // 
-            // txtPresetName
+            // colTrigger
             // 
-            this.txtPresetName.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtPresetName.Location = new System.Drawing.Point(82, 5);
-            this.txtPresetName.Name = "txtPresetName";
-            this.txtPresetName.Size = new System.Drawing.Size(446, 20);
-            this.txtPresetName.TabIndex = 85;
-            this.txtPresetName.TextChanged += new System.EventHandler(this.TxtPresetName_TextChanged);
+            this.colTrigger.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colTrigger.HeaderText = "Trigger";
+            this.colTrigger.Name = "colTrigger";
+            this.colTrigger.ReadOnly = true;
+            this.colTrigger.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colTrigger.Width = 46;
             // 
-            // panel1
+            // colControl
             // 
-            this.panel1.Controls.Add(this.txtPresetName);
-            this.panel1.Controls.Add(this.lblPresetName);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 70);
-            this.panel1.Name = "panel1";
-            this.panel1.Padding = new System.Windows.Forms.Padding(5);
-            this.panel1.Size = new System.Drawing.Size(533, 30);
-            this.panel1.TabIndex = 82;
+            this.colControl.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colControl.HeaderText = "Action";
+            this.colControl.Name = "colControl";
+            this.colControl.ReadOnly = true;
+            this.colControl.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // MainForm
             // 
@@ -349,11 +349,11 @@
             this.splitContainer.ResumeLayout(false);
             this.pnlActionManagement.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvMappings)).EndInit();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.pnlPresetName.ResumeLayout(false);
             this.pnlPresetName.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pctController)).EndInit();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -373,14 +373,14 @@
         private System.Windows.Forms.Button btnOpenTest;
         private System.Windows.Forms.Label lblPresetInfo;
         private System.Windows.Forms.Button btnOpenFolder;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colContext;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colControl;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colTrigger;
         private System.Windows.Forms.Panel pnlActionManagement;
         private System.Windows.Forms.Button btnAddAction;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.TextBox txtPresetName;
         private System.Windows.Forms.Label lblPresetName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colContext;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colTrigger;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colControl;
     }
 }
 
