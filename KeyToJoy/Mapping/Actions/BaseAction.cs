@@ -14,12 +14,14 @@ namespace KeyToJoy.Mapping
     {
         internal static List<BaseAction> All = new List<BaseAction>();
 
-        private string name;
+        [JsonProperty]
+        public string Name { get; set; }
+        
         private string imageResource;
 
         public BaseAction(string name, string imageResource)
         {
-            this.name = name;
+            this.Name = name;
             this.imageResource = imageResource;
         }
 
@@ -34,7 +36,7 @@ namespace KeyToJoy.Mapping
 
         public virtual string GetNameDisplay()
         {
-            return name;
+            return Name;
         }
 
         public virtual string GetContextDisplay()

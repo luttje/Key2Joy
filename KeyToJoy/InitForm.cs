@@ -2,6 +2,7 @@
 using KeyToJoy.Mapping;
 using SimWinInput;
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace KeyToJoy
@@ -36,6 +37,25 @@ namespace KeyToJoy
         {
             var defaultPreset = new MappingPreset("Default");
 
+            // Test complex logic
+            defaultPreset.AddMapping(new MappedOption
+            {
+                Action = BaseAction.Register(new SequenceAction("Sequence of Actions", null, new List<BaseAction>
+                {
+                    new GamePadAction(
+                        "Left Shoulder",
+                        "XboxSeriesX_LB",
+                        GamePadControl.LeftShoulder
+                    ),
+                    new GamePadAction(
+                        "Right Shoulder",
+                        "XboxSeriesX_RB",
+                        GamePadControl.RightShoulder
+                    )
+            })),
+                Trigger = new KeyboardTrigger(Keys.F12)
+            });
+            
             // Commands for this application
             defaultPreset.AddMapping(new MappedOption
             {
