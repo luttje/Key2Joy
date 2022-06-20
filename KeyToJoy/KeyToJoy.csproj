@@ -44,6 +44,9 @@
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="NodeEditor, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NodeEditor.1.0.0\lib\net40\NodeEditor.dll</HintPath>
+    </Reference>
     <Reference Include="RawInput.Sharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\RawInput.Sharp.0.0.4\lib\netstandard1.1\RawInput.Sharp.dll</HintPath>
     </Reference>
@@ -194,6 +197,14 @@
     <Compile Include="AboutForm.Designer.cs">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ComplexMappingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ComplexMappingForm.Designer.cs">
+      <DependentUpon>ComplexMappingForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Mapping\Triggers\Keyboard\KeyboardMappingContext.cs" />
+    <Compile Include="Mapping\BaseMappingContext.cs" />
     <Compile Include="MappingForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -251,6 +262,9 @@
     <Compile Include="Util\FileSystem.cs" />
     <EmbeddedResource Include="AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ComplexMappingForm.resx">
+      <DependentUpon>ComplexMappingForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MappingForm.resx">
       <DependentUpon>MappingForm.cs</DependentUpon>

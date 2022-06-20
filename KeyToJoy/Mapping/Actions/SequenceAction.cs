@@ -42,5 +42,13 @@ namespace KeyToJoy.Mapping
         {
             return "Logic";
         }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is SequenceAction action))
+                return false;
+
+            return action.Name == Name;
+        }
     }
 }

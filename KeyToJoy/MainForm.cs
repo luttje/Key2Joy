@@ -188,7 +188,7 @@ namespace KeyToJoy
 
         private void btnAddAction_Click(object sender, EventArgs e)
         {
-
+            (new ComplexMappingForm()).ShowDialog();
         }
     }
 }
