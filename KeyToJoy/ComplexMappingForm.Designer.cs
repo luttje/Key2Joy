@@ -28,18 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.ndcLogic = new NodeEditor.NodesControl();
             this.btnExecute = new System.Windows.Forms.Button();
             this.SuspendLayout();
-            // 
-            // ndcLogic
-            // 
-            this.ndcLogic.Context = null;
-            this.ndcLogic.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ndcLogic.Location = new System.Drawing.Point(0, 0);
-            this.ndcLogic.Name = "ndcLogic";
-            this.ndcLogic.Size = new System.Drawing.Size(800, 450);
-            this.ndcLogic.TabIndex = 0;
             // 
             // btnExecute
             // 
@@ -58,7 +48,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.btnExecute);
-            this.Controls.Add(this.ndcLogic);
             this.Name = "ComplexMappingForm";
             this.Text = "Map triggers to actions with complex logic";
             this.Load += new System.EventHandler(this.ComplexMappingForm_Load);
@@ -68,7 +57,6 @@
 
         #endregion
 
-        private NodeEditor.NodesControl ndcLogic;
         private System.Windows.Forms.Button btnExecute;
     }
 }
