@@ -9,6 +9,10 @@ using System.Threading.Tasks;
 
 namespace KeyToJoy.Mapping
 {
+    [Action(
+        Name = "GamePad/Controller Simulation",
+        OptionsUserControl = typeof(GamePadActionControl)
+    )]
     internal class GamePadAction : BaseAction
     {
         [JsonProperty]

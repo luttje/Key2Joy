@@ -28,187 +28,177 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.pnlHeader = new System.Windows.Forms.Panel();
-            this.pctController = new System.Windows.Forms.PictureBox();
-            this.btnConfirm = new System.Windows.Forms.Button();
-            this.pnlContent = new System.Windows.Forms.Panel();
-            this.pnlChkMouseMove = new System.Windows.Forms.Panel();
-            this.cmbMouseDirection = new System.Windows.Forms.ComboBox();
-            this.radMouseBind = new System.Windows.Forms.RadioButton();
-            this.pnlCheckKeyBind = new System.Windows.Forms.Panel();
-            this.txtKeyBind = new System.Windows.Forms.TextBox();
-            this.radKeyBind = new System.Windows.Forms.RadioButton();
-            this.lblInfo = new System.Windows.Forms.Label();
-            this.pnlHeader.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pctController)).BeginInit();
-            this.pnlContent.SuspendLayout();
-            this.pnlChkMouseMove.SuspendLayout();
-            this.pnlCheckKeyBind.SuspendLayout();
+            this.pnlAction = new System.Windows.Forms.Panel();
+            this.grpAction = new System.Windows.Forms.GroupBox();
+            this.actionControl = new KeyToJoy.ActionControl();
+            this.btnSaveMapping = new System.Windows.Forms.Button();
+            this.grpTrigger = new System.Windows.Forms.GroupBox();
+            this.pnlTriggerOptions = new System.Windows.Forms.Panel();
+            this.pnlTrigger = new System.Windows.Forms.Panel();
+            this.pnlPadding = new System.Windows.Forms.Panel();
+            this.cmbTrigger = new System.Windows.Forms.ComboBox();
+            this.pnlAction.SuspendLayout();
+            this.grpAction.SuspendLayout();
+            this.grpTrigger.SuspendLayout();
+            this.pnlTrigger.SuspendLayout();
+            this.pnlPadding.SuspendLayout();
             this.SuspendLayout();
             // 
-            // pnlHeader
+            // pnlAction
             // 
-            this.pnlHeader.Controls.Add(this.pctController);
-            this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlHeader.Location = new System.Drawing.Point(0, 0);
-            this.pnlHeader.Name = "pnlHeader";
-            this.pnlHeader.Size = new System.Drawing.Size(454, 168);
-            this.pnlHeader.TabIndex = 5;
+            this.pnlAction.AutoSize = true;
+            this.pnlAction.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.pnlAction.Controls.Add(this.grpAction);
+            this.pnlAction.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlAction.Location = new System.Drawing.Point(5, 69);
+            this.pnlAction.Name = "pnlAction";
+            this.pnlAction.Padding = new System.Windows.Forms.Padding(5, 5, 5, 10);
+            this.pnlAction.Size = new System.Drawing.Size(469, 70);
+            this.pnlAction.TabIndex = 90;
             // 
-            // pctController
+            // grpAction
             // 
-            this.pctController.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pctController.Image = global::KeyToJoy.Properties.Resources.XboxSeriesX_Diagram;
-            this.pctController.Location = new System.Drawing.Point(0, 0);
-            this.pctController.Name = "pctController";
-            this.pctController.Size = new System.Drawing.Size(454, 168);
-            this.pctController.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pctController.TabIndex = 0;
-            this.pctController.TabStop = false;
+            this.grpAction.AutoSize = true;
+            this.grpAction.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.grpAction.Controls.Add(this.actionControl);
+            this.grpAction.Dock = System.Windows.Forms.DockStyle.Top;
+            this.grpAction.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.grpAction.Location = new System.Drawing.Point(5, 5);
+            this.grpAction.Name = "grpAction";
+            this.grpAction.Padding = new System.Windows.Forms.Padding(5);
+            this.grpAction.Size = new System.Drawing.Size(459, 55);
+            this.grpAction.TabIndex = 88;
+            this.grpAction.TabStop = false;
+            this.grpAction.Text = "Actions that start at the trigger";
             // 
-            // btnConfirm
+            // actionControl
             // 
-            this.btnConfirm.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.btnConfirm.Enabled = false;
-            this.btnConfirm.ForeColor = System.Drawing.Color.Black;
-            this.btnConfirm.Location = new System.Drawing.Point(0, 258);
-            this.btnConfirm.Name = "btnConfirm";
-            this.btnConfirm.Size = new System.Drawing.Size(454, 33);
-            this.btnConfirm.TabIndex = 8;
-            this.btnConfirm.Text = "Confirm mapping X to Y";
-            this.btnConfirm.UseVisualStyleBackColor = true;
-            this.btnConfirm.Click += new System.EventHandler(this.btnConfirm_Click);
+            this.actionControl.AutoSize = true;
+            this.actionControl.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.actionControl.BackColor = System.Drawing.Color.Black;
+            this.actionControl.Dock = System.Windows.Forms.DockStyle.Top;
+            this.actionControl.Location = new System.Drawing.Point(5, 18);
+            this.actionControl.MinimumSize = new System.Drawing.Size(300, 32);
+            this.actionControl.Name = "actionControl";
+            this.actionControl.Padding = new System.Windows.Forms.Padding(5);
+            this.actionControl.Size = new System.Drawing.Size(449, 32);
+            this.actionControl.TabIndex = 0;
             // 
-            // pnlContent
+            // btnSaveMapping
             // 
-            this.pnlContent.Controls.Add(this.pnlChkMouseMove);
-            this.pnlContent.Controls.Add(this.pnlCheckKeyBind);
-            this.pnlContent.Controls.Add(this.lblInfo);
-            this.pnlContent.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlContent.Location = new System.Drawing.Point(0, 168);
-            this.pnlContent.Name = "pnlContent";
-            this.pnlContent.Size = new System.Drawing.Size(454, 90);
-            this.pnlContent.TabIndex = 9;
+            this.btnSaveMapping.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnSaveMapping.Enabled = false;
+            this.btnSaveMapping.Location = new System.Drawing.Point(5, 139);
+            this.btnSaveMapping.Name = "btnSaveMapping";
+            this.btnSaveMapping.Size = new System.Drawing.Size(469, 44);
+            this.btnSaveMapping.TabIndex = 91;
+            this.btnSaveMapping.Text = "Save Mapping";
+            this.btnSaveMapping.UseVisualStyleBackColor = true;
             // 
-            // pnlChkMouseMove
+            // grpTrigger
             // 
-            this.pnlChkMouseMove.Controls.Add(this.cmbMouseDirection);
-            this.pnlChkMouseMove.Controls.Add(this.radMouseBind);
-            this.pnlChkMouseMove.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlChkMouseMove.Location = new System.Drawing.Point(0, 59);
-            this.pnlChkMouseMove.Name = "pnlChkMouseMove";
-            this.pnlChkMouseMove.Padding = new System.Windows.Forms.Padding(5);
-            this.pnlChkMouseMove.Size = new System.Drawing.Size(454, 30);
-            this.pnlChkMouseMove.TabIndex = 4;
+            this.grpTrigger.AutoSize = true;
+            this.grpTrigger.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.grpTrigger.Controls.Add(this.pnlTriggerOptions);
+            this.grpTrigger.Controls.Add(this.pnlPadding);
+            this.grpTrigger.Dock = System.Windows.Forms.DockStyle.Top;
+            this.grpTrigger.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.grpTrigger.Location = new System.Drawing.Point(5, 5);
+            this.grpTrigger.Name = "grpTrigger";
+            this.grpTrigger.Padding = new System.Windows.Forms.Padding(5);
+            this.grpTrigger.Size = new System.Drawing.Size(459, 54);
+            this.grpTrigger.TabIndex = 86;
+            this.grpTrigger.TabStop = false;
+            this.grpTrigger.Text = "Trigger that starts the action(s)";
             // 
-            // cmbMouseDirection
+            // pnlTriggerOptions
             // 
-            this.cmbMouseDirection.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cmbMouseDirection.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbMouseDirection.Enabled = false;
-            this.cmbMouseDirection.FormattingEnabled = true;
-            this.cmbMouseDirection.Location = new System.Drawing.Point(127, 5);
-            this.cmbMouseDirection.Name = "cmbMouseDirection";
-            this.cmbMouseDirection.Size = new System.Drawing.Size(322, 21);
-            this.cmbMouseDirection.TabIndex = 6;
-            this.cmbMouseDirection.SelectedIndexChanged += new System.EventHandler(this.cmbMouseDirection_SelectedIndexChanged);
+            this.pnlTriggerOptions.AutoSize = true;
+            this.pnlTriggerOptions.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.pnlTriggerOptions.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlTriggerOptions.Location = new System.Drawing.Point(5, 49);
+            this.pnlTriggerOptions.Name = "pnlTriggerOptions";
+            this.pnlTriggerOptions.Size = new System.Drawing.Size(449, 0);
+            this.pnlTriggerOptions.TabIndex = 1;
             // 
-            // radMouseBind
+            // pnlTrigger
             // 
-            this.radMouseBind.AutoSize = true;
-            this.radMouseBind.Dock = System.Windows.Forms.DockStyle.Left;
-            this.radMouseBind.Location = new System.Drawing.Point(5, 5);
-            this.radMouseBind.Name = "radMouseBind";
-            this.radMouseBind.Size = new System.Drawing.Size(122, 20);
-            this.radMouseBind.TabIndex = 5;
-            this.radMouseBind.TabStop = true;
-            this.radMouseBind.Text = "the mouse is moved:";
-            this.radMouseBind.UseVisualStyleBackColor = true;
+            this.pnlTrigger.AutoSize = true;
+            this.pnlTrigger.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.pnlTrigger.Controls.Add(this.grpTrigger);
+            this.pnlTrigger.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlTrigger.Location = new System.Drawing.Point(5, 5);
+            this.pnlTrigger.Name = "pnlTrigger";
+            this.pnlTrigger.Padding = new System.Windows.Forms.Padding(5);
+            this.pnlTrigger.Size = new System.Drawing.Size(469, 64);
+            this.pnlTrigger.TabIndex = 89;
             // 
-            // pnlCheckKeyBind
+            // pnlPadding
             // 
-            this.pnlCheckKeyBind.Controls.Add(this.txtKeyBind);
-            this.pnlCheckKeyBind.Controls.Add(this.radKeyBind);
-            this.pnlCheckKeyBind.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlCheckKeyBind.Location = new System.Drawing.Point(0, 29);
-            this.pnlCheckKeyBind.Name = "pnlCheckKeyBind";
-            this.pnlCheckKeyBind.Padding = new System.Windows.Forms.Padding(5);
-            this.pnlCheckKeyBind.Size = new System.Drawing.Size(454, 30);
-            this.pnlCheckKeyBind.TabIndex = 3;
+            this.pnlPadding.AutoSize = true;
+            this.pnlPadding.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.pnlPadding.Controls.Add(this.cmbTrigger);
+            this.pnlPadding.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlPadding.Location = new System.Drawing.Point(5, 18);
+            this.pnlPadding.Name = "pnlPadding";
+            this.pnlPadding.Padding = new System.Windows.Forms.Padding(5);
+            this.pnlPadding.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.pnlPadding.Size = new System.Drawing.Size(449, 31);
+            this.pnlPadding.TabIndex = 2;
             // 
-            // txtKeyBind
+            // cmbTrigger
             // 
-            this.txtKeyBind.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtKeyBind.Enabled = false;
-            this.txtKeyBind.Location = new System.Drawing.Point(175, 5);
-            this.txtKeyBind.Name = "txtKeyBind";
-            this.txtKeyBind.Size = new System.Drawing.Size(274, 20);
-            this.txtKeyBind.TabIndex = 5;
-            this.txtKeyBind.Text = "(press any key or click this field with a mouse button\r\n)";
-            // 
-            // radKeyBind
-            // 
-            this.radKeyBind.AutoSize = true;
-            this.radKeyBind.Checked = true;
-            this.radKeyBind.Dock = System.Windows.Forms.DockStyle.Left;
-            this.radKeyBind.Location = new System.Drawing.Point(5, 5);
-            this.radKeyBind.Name = "radKeyBind";
-            this.radKeyBind.Size = new System.Drawing.Size(170, 20);
-            this.radKeyBind.TabIndex = 4;
-            this.radKeyBind.TabStop = true;
-            this.radKeyBind.Text = "the following button is pressed:";
-            this.radKeyBind.UseVisualStyleBackColor = true;
-            // 
-            // lblInfo
-            // 
-            this.lblInfo.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lblInfo.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.lblInfo.Location = new System.Drawing.Point(0, 0);
-            this.lblInfo.Name = "lblInfo";
-            this.lblInfo.Size = new System.Drawing.Size(454, 29);
-            this.lblInfo.TabIndex = 0;
-            this.lblInfo.Text = "Pretend the X button is pressed when...";
-            this.lblInfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.cmbTrigger.Dock = System.Windows.Forms.DockStyle.Top;
+            this.cmbTrigger.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbTrigger.FormattingEnabled = true;
+            this.cmbTrigger.Location = new System.Drawing.Point(5, 5);
+            this.cmbTrigger.Name = "cmbTrigger";
+            this.cmbTrigger.Size = new System.Drawing.Size(439, 21);
+            this.cmbTrigger.TabIndex = 1;
+            this.cmbTrigger.SelectedIndexChanged += new System.EventHandler(this.cmbTrigger_SelectedIndexChanged);
             // 
             // MappingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScroll = true;
+            this.AutoSize = true;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.Black;
-            this.ClientSize = new System.Drawing.Size(454, 291);
-            this.Controls.Add(this.pnlContent);
-            this.Controls.Add(this.btnConfirm);
-            this.Controls.Add(this.pnlHeader);
-            this.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.KeyPreview = true;
-            this.MaximizeBox = false;
+            this.ClientSize = new System.Drawing.Size(496, 169);
+            this.Controls.Add(this.btnSaveMapping);
+            this.Controls.Add(this.pnlAction);
+            this.Controls.Add(this.pnlTrigger);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximumSize = new System.Drawing.Size(1024, 1024);
+            this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(512, 39);
             this.Name = "MappingForm";
-            this.Text = "Select a trigger to map this action to...";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.BindingForm_FormClosed);
-            this.pnlHeader.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pctController)).EndInit();
-            this.pnlContent.ResumeLayout(false);
-            this.pnlChkMouseMove.ResumeLayout(false);
-            this.pnlChkMouseMove.PerformLayout();
-            this.pnlCheckKeyBind.ResumeLayout(false);
-            this.pnlCheckKeyBind.PerformLayout();
+            this.Padding = new System.Windows.Forms.Padding(5);
+            this.Text = "Map triggers to actions";
+            this.pnlAction.ResumeLayout(false);
+            this.pnlAction.PerformLayout();
+            this.grpAction.ResumeLayout(false);
+            this.grpAction.PerformLayout();
+            this.grpTrigger.ResumeLayout(false);
+            this.grpTrigger.PerformLayout();
+            this.pnlTrigger.ResumeLayout(false);
+            this.pnlTrigger.PerformLayout();
+            this.pnlPadding.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Panel pnlHeader;
-        private System.Windows.Forms.PictureBox pctController;
-        private System.Windows.Forms.Button btnConfirm;
-        private System.Windows.Forms.Panel pnlContent;
-        private System.Windows.Forms.Label lblInfo;
-        private System.Windows.Forms.Panel pnlCheckKeyBind;
-        private System.Windows.Forms.Panel pnlChkMouseMove;
-        private System.Windows.Forms.RadioButton radKeyBind;
-        private System.Windows.Forms.RadioButton radMouseBind;
-        private System.Windows.Forms.TextBox txtKeyBind;
-        private System.Windows.Forms.ComboBox cmbMouseDirection;
+        private System.Windows.Forms.Panel pnlAction;
+        private System.Windows.Forms.Button btnSaveMapping;
+        private System.Windows.Forms.GroupBox grpTrigger;
+        private System.Windows.Forms.Panel pnlTriggerOptions;
+        private System.Windows.Forms.Panel pnlTrigger;
+        private System.Windows.Forms.GroupBox grpAction;
+        private ActionControl actionControl;
+        private System.Windows.Forms.Panel pnlPadding;
+        private System.Windows.Forms.ComboBox cmbTrigger;
     }
 }

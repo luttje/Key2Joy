@@ -41,32 +41,33 @@ namespace KeyToJoy
         {
             chkEnabled.Checked = false;
 
-            new MappingForm(mappedOption).ShowDialog();
-            RefreshInputCaptures();
+            // TODO: Open MappingForm relevant for this option.
+            //new InputMappingForm(mappedOption).ShowDialog();
+            //RefreshInputCaptures();
 
-            foreach (var option in selectedPreset.MappedOptions)
-            {
-                if (option == mappedOption)
-                    continue;
+            //foreach (var option in selectedPreset.MappedOptions)
+            //{
+            //    if (option == mappedOption)
+            //        continue;
 
-                if (option.Trigger == mappedOption.Trigger)
-                {
-                    MessageBox.Show($"This trigger is already in use for {option.Action}! Change {option.Action} to something else.");
+            //    if (option.Trigger == mappedOption.Trigger)
+            //    {
+            //        MessageBox.Show($"This trigger is already in use for {option.Action}! Change {option.Action} to something else.");
 
-                    selectedPreset.PruneCacheKey(option.Trigger.GetUniqueKey());
-                    selectedPreset.CacheLookup(mappedOption);
-                    dgvMappings.Update();
+            //        selectedPreset.PruneCacheKey(option.Trigger.GetUniqueKey());
+            //        selectedPreset.CacheLookup(mappedOption);
+            //        dgvMappings.Update();
 
-                    ChangeMappedOption(option);
+            //        ChangeMappedOption(option);
 
-                    return;
-                }
-            }
+            //        return;
+            //    }
+            //}
 
-            selectedPreset.PruneCacheKey(mappedOption.Trigger.GetUniqueKey());
-            selectedPreset.CacheLookup(mappedOption);
-            dgvMappings.Update();
-            selectedPreset.Save();
+            //selectedPreset.PruneCacheKey(mappedOption.Trigger.GetUniqueKey());
+            //selectedPreset.CacheLookup(mappedOption);
+            //dgvMappings.Update();
+            //selectedPreset.Save();
         }
 
         private void SettingsForm_Load(object sender, EventArgs e)
@@ -188,7 +189,7 @@ namespace KeyToJoy
 
         private void btnAddAction_Click(object sender, EventArgs e)
         {
-            (new ComplexMappingForm()).ShowDialog();
+            (new MappingForm()).ShowDialog();
         }
     }
 }

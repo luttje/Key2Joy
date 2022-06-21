@@ -5,6 +5,10 @@ using Newtonsoft.Json;
 
 namespace KeyToJoy.Mapping
 {
+    [Trigger(
+        Name = "Keyboard Event",
+        OptionsUserControl = typeof(KeyboardTriggerOptionsControl)
+    )]
     internal class KeyboardTrigger : BaseTrigger, IEquatable<KeyboardTrigger>
     {
         private Keys keys;

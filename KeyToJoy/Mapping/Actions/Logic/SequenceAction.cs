@@ -6,6 +6,10 @@ using System.Windows.Forms;
 
 namespace KeyToJoy.Mapping
 {
+    [Action(
+        Name = "Multiple Actions in Sequence",
+        OptionsUserControl = typeof(SequenceActionControl)
+    )]
     internal class SequenceAction : BaseAction
     {
         [JsonProperty(ItemTypeNameHandling = TypeNameHandling.All)]

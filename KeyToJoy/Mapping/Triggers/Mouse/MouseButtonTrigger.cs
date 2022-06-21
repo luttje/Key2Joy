@@ -6,6 +6,10 @@ using Newtonsoft.Json;
 
 namespace KeyToJoy.Mapping
 {
+    [Trigger(
+        Name = "Mouse Button Event",
+        OptionsUserControl = typeof(MouseButtonTriggerOptionsControl)
+    )]
     internal class MouseButtonTrigger : BaseTrigger, IEquatable<MouseButtonTrigger>
     {
         private const string MOUSE_SERIALIZE_PREFIX = "Mouse_";

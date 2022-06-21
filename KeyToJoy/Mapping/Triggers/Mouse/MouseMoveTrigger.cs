@@ -3,6 +3,10 @@ using System;
 
 namespace KeyToJoy.Mapping
 {
+    [Trigger(
+        Name = "Mouse Move Event",
+        OptionsUserControl = typeof(MouseMoveTriggerOptionsControl)
+    )]
     internal class MouseMoveTrigger : BaseTrigger
     {
         const string PREFIX = "Mouse Move ";

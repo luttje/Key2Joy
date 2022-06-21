@@ -4,6 +4,9 @@ using System.Windows.Forms;
 
 namespace KeyToJoy.Mapping
 {
+    [Action(
+        Name = "App Commands"
+    )]
     internal class AppCommandAction : BaseAction
     {
         [JsonProperty]

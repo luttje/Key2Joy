@@ -63,9 +63,29 @@ namespace KeyToJoy.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Arrows_Diagonal {
+            get {
+                object obj = ResourceManager.GetObject("Arrows_Diagonal", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icon256 {
             get {
                 object obj = ResourceManager.GetObject("icon256", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Mouse {
+            get {
+                object obj = ResourceManager.GetObject("Mouse", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

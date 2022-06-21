@@ -7,6 +7,10 @@ using System.Windows.Forms;
 
 namespace KeyToJoy.Mapping
 {
+    [Action(
+        Name = "Wait for a specified duration",
+        IsTopLevel = false
+    )]
     internal class WaitAction : BaseAction
     {
         [JsonProperty]

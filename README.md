@@ -71,6 +71,9 @@ Simulation is made possible through installation and usage of the
 Inspired by [JoyToKey](https://joytokey.net/en/) which does the inverse
 (simulate keyboard with gamepad).
 
+This project uses slightly modified images of the [Controllers & Keyboard
+Prompts by Nicolae (Xelu) Berbece](https://thoseawesomeguys.com/prompts/)
+
 ---
 
 ## License

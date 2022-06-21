@@ -12,32 +12,36 @@ using System.Windows.Forms;
 
 namespace KeyToJoy
 {
-    public partial class MappingForm : Form
+    public partial class ActionControl : UserControl
     {
         private bool isLoaded = false;
         
-        public MappingForm()
+        public ActionControl()
         {
             InitializeComponent();
 
-            LoadTriggers();
+            LoadActions();
         }
-
-        private void LoadTriggers()
+        
+        private void LoadActions()
         {
-            var triggerTypes = Assembly.GetExecutingAssembly()
+            var actionTypes = Assembly.GetExecutingAssembly()
                 .GetTypes()
-                .Where(t => t.GetCustomAttribute(typeof(TriggerAttribute), false) != null)
-                .ToDictionary(t => t, t => t.GetCustomAttribute(typeof(TriggerAttribute), false) as MappingAttribute);
+                .Where(t =>
+                {
+                    var actionAttribute = t.GetCustomAttributes(typeof(ActionAttribute), false).FirstOrDefault() as ActionAttribute;
+                    return actionAttribute != null && actionAttribute.IsTopLevel;
+                })
+                .ToDictionary(t => t, t => t.GetCustomAttribute(typeof(ActionAttribute), false) as MappingAttribute);
 
-            cmbTrigger.DataSource = new BindingSource(triggerTypes, null);
-            cmbTrigger.DisplayMember = "Value";
-            cmbTrigger.ValueMember = "Key";
-            cmbTrigger.SelectedIndex = -1;
+            cmbAction.DataSource = new BindingSource(actionTypes, null);
+            cmbAction.DisplayMember = "Value";
+            cmbAction.ValueMember = "Key";
+            cmbAction.SelectedIndex = -1;
 
             isLoaded = true;
         }
-
+        
         private void HandleComboBox(ComboBox comboBox, Panel optionsPanel)
         {
             optionsPanel.Controls.Clear();
@@ -53,18 +57,17 @@ namespace KeyToJoy
             {
                 var optionsUserControl = (UserControl)Activator.CreateInstance(attribute.OptionsUserControl);
                 optionsPanel.Controls.Add(optionsUserControl);
-                optionsUserControl.Dock = DockStyle.Top;
             }
 
             PerformLayout();
         }
 
-        private void cmbTrigger_SelectedIndexChanged(object sender, EventArgs e)
+        private void cmbAction_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (!isLoaded)
                 return;
             
-            HandleComboBox(cmbTrigger, pnlTriggerOptions);
+            HandleComboBox(cmbAction, pnlActionOptions);
         }
     }
 }

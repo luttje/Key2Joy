@@ -36,15 +36,6 @@
     <ApplicationIcon>Graphics\Icons\app-icons.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutomaticGraphLayout, Version=0.0.0.0, Culture=neutral, PublicKeyToken=6baa2c1345e83b6e, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutomaticGraphLayout.1.1.12\lib\netstandard2.0\AutomaticGraphLayout.dll</HintPath>
-    </Reference>
-    <Reference Include="AutomaticGraphLayout.Drawing, Version=0.0.0.0, Culture=neutral, PublicKeyToken=6baa2c1345e83b6e, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutomaticGraphLayout.Drawing.1.1.12\lib\netstandard2.0\AutomaticGraphLayout.Drawing.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Msagl.GraphViewerGdi, Version=0.0.0.0, Culture=neutral, PublicKeyToken=6baa2c1345e83b6e, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutomaticGraphLayout.GraphViewerGDI.1.1.12\lib\net472\Microsoft.Msagl.GraphViewerGdi.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Win32.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Win32.Primitives.4.3.0\lib\net46\Microsoft.Win32.Primitives.dll</HintPath>
       <Private>True</Private>
@@ -203,11 +194,11 @@
     <Compile Include="AboutForm.Designer.cs">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ComplexMappingForm.cs">
-      <SubType>Form</SubType>
+    <Compile Include="ActionControl.cs">
+      <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ComplexMappingForm.Designer.cs">
-      <DependentUpon>ComplexMappingForm.cs</DependentUpon>
+    <Compile Include="ActionControl.Designer.cs">
+      <DependentUpon>ActionControl.cs</DependentUpon>
     </Compile>
     <Compile Include="MappingForm.cs">
       <SubType>Form</SubType>
@@ -216,12 +207,32 @@
       <DependentUpon>MappingForm.cs</DependentUpon>
     </Compile>
     <Compile Include="IAcceptAppCommands.cs" />
-    <Compile Include="Mapping\Actions\WaitAction.cs" />
-    <Compile Include="Mapping\Actions\SequenceAction.cs" />
+    <Compile Include="Mapping\Actions\ActionAttribute.cs" />
+    <Compile Include="Mapping\Actions\GamePad\GamePadActionControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Mapping\Actions\GamePad\GamePadActionControl.Designer.cs">
+      <DependentUpon>GamePadActionControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Mapping\Actions\Logic\SequenceActionControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Mapping\Actions\Logic\SequenceActionControl.Designer.cs">
+      <DependentUpon>SequenceActionControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Mapping\Actions\Logic\WaitAction.cs" />
+    <Compile Include="Mapping\Actions\Logic\SequenceAction.cs" />
+    <Compile Include="Mapping\Actions\Logic\WaitActionControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Mapping\Actions\Logic\WaitActionControl.Designer.cs">
+      <DependentUpon>WaitActionControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Mapping\AxisDirection.cs" />
     <Compile Include="Mapping\Actions\AppCommandAction.cs" />
-    <Compile Include="Mapping\Actions\GamePadAction.cs" />
+    <Compile Include="Mapping\Actions\GamePad\GamePadAction.cs" />
     <Compile Include="Mapping\Actions\BaseAction.cs" />
+    <Compile Include="Mapping\MappingAttribute.cs" />
     <Compile Include="Mapping\Triggers\BaseTrigger.cs" />
     <Compile Include="Mapping\MappingPreset.cs" />
     <Compile Include="InitForm.cs">
@@ -232,7 +243,25 @@
     </Compile>
     <Compile Include="Input\GlobalInputHook.cs" />
     <Compile Include="Mapping\Triggers\InputBag.cs" />
+    <Compile Include="Mapping\Triggers\Keyboard\KeyboardTriggerOptionsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Mapping\Triggers\Keyboard\KeyboardTriggerOptionsControl.Designer.cs">
+      <DependentUpon>KeyboardTriggerOptionsControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Mapping\Triggers\Keyboard\KeyboardInputBag.cs" />
+    <Compile Include="Mapping\Triggers\Mouse\MouseMoveTriggerOptionsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Mapping\Triggers\Mouse\MouseMoveTriggerOptionsControl.Designer.cs">
+      <DependentUpon>MouseMoveTriggerOptionsControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Mapping\Triggers\Mouse\MouseButtonTriggerOptionsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Mapping\Triggers\Mouse\MouseButtonTriggerOptionsControl.Designer.cs">
+      <DependentUpon>MouseButtonTriggerOptionsControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Mapping\Triggers\Mouse\MouseMoveInputBag.cs" />
     <Compile Include="Mapping\Triggers\Mouse\MouseButtonTrigger.cs" />
     <Compile Include="Mapping\Triggers\Keyboard\KeyboardTrigger.cs" />
@@ -248,6 +277,7 @@
     <Compile Include="MainForm.Input.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Mapping\Triggers\TriggerAttribute.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -267,8 +297,8 @@
     <EmbeddedResource Include="AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ComplexMappingForm.resx">
-      <DependentUpon>ComplexMappingForm.cs</DependentUpon>
+    <EmbeddedResource Include="ActionControl.resx">
+      <DependentUpon>ActionControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MappingForm.resx">
       <DependentUpon>MappingForm.cs</DependentUpon>
@@ -278,6 +308,24 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Mapping\Actions\GamePad\GamePadActionControl.resx">
+      <DependentUpon>GamePadActionControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Mapping\Actions\Logic\SequenceActionControl.resx">
+      <DependentUpon>SequenceActionControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Mapping\Actions\Logic\WaitActionControl.resx">
+      <DependentUpon>WaitActionControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Mapping\Triggers\Keyboard\KeyboardTriggerOptionsControl.resx">
+      <DependentUpon>KeyboardTriggerOptionsControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Mapping\Triggers\Mouse\MouseMoveTriggerOptionsControl.resx">
+      <DependentUpon>MouseMoveTriggerOptionsControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Mapping\Triggers\Mouse\MouseButtonTriggerOptionsControl.resx">
+      <DependentUpon>MouseButtonTriggerOptionsControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -368,6 +416,8 @@
     <None Include="Graphics\XboxSeriesX_Right_Stick_Up.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Graphics\Mouse.png" />
+    <None Include="Graphics\Arrows_Diagonal.png" />
     <Content Include="Graphics\Icons\app-icons.ico" />
     <Content Include="Graphics\Icons\icon256.png" />
     <None Include="Graphics\XboxSeriesX_Select.png" />
