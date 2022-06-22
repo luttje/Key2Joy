@@ -85,7 +85,7 @@ namespace KeyToJoy.Mapping
 
                 e.Handled = true;
             }
-            catch (ArgumentOutOfRangeException _) { }
+            catch (ArgumentOutOfRangeException) { }
         }
         
         private bool TryOverrideMouseButtonInput(BaseAction action, MouseButtonInputBag inputBag)

@@ -16,15 +16,16 @@ namespace KeyToJoy.Mapping
     )]
     internal class GamePadAction : BaseAction
     {
-        private GamePadControl _control;
+        private static bool isPluggedIn = false;
+        private GamePadControl control;
 
         [JsonProperty]
         public GamePadControl Control
         {
-            get { return _control; }
+            get { return control; }
             set
             {
-                _control = value;
+                control = value;
                 OnControlChanged();
             }
         }
@@ -37,13 +38,23 @@ namespace KeyToJoy.Mapping
         internal override void OnStartListening()
         {
             base.OnStartListening();
+
+            if (isPluggedIn)
+                return;
+            
             SimGamePad.Instance.PlugIn();
+            isPluggedIn = true;
         }
 
         internal override void OnStopListening()
         {
             base.OnStopListening();
+
+            if (!isPluggedIn)
+                return;
+            
             SimGamePad.Instance.Unplug();
+            isPluggedIn = false;
         }
 
         private void OnControlChanged()
