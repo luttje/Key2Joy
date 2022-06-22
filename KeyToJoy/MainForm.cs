@@ -43,7 +43,22 @@ namespace KeyToJoy
 
         private void btnAddAction_Click(object sender, EventArgs e)
         {
+            if (selectedPreset == null)
+            {
+                CreateNewPreset();
+            }
+
             EditMappedOption();
+        }
+
+        private void CreateNewPreset()
+        {
+            var preset = new MappingPreset(txtPresetName.Text, selectedPreset?.MappedOptions);
+
+            MappingPreset.Add(preset);
+
+            cmbPreset.SelectedIndex = cmbPreset.Items.Count - 1;
+            ReloadSelectedPreset();
         }
         
         private void EditMappedOption(MappedOption existingMappedOption = null)
@@ -157,6 +172,7 @@ namespace KeyToJoy
                     wndProcListeners.Add(listener);
                 }
 
+                listener.StartIfNotStarted();
                 listener.AddMappedOption(mappedOption);
             }
         }
@@ -192,12 +208,7 @@ namespace KeyToJoy
 
         private void BtnCreate_Click(object sender, EventArgs e)
         {
-            var preset = new MappingPreset(txtPresetName.Text, selectedPreset?.MappedOptions);
-
-            MappingPreset.Add(preset);
-            
-            cmbPreset.SelectedIndex = cmbPreset.Items.Count - 1;
-            ReloadSelectedPreset();
+            CreateNewPreset();
         }
 
         private void BtnAbout_Click(object sender, EventArgs e)

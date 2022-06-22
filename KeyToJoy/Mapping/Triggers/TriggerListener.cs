@@ -11,8 +11,22 @@ namespace KeyToJoy.Mapping
     {
         internal virtual bool HasWndProcHandle { get; } = false;
         internal IntPtr Handle { get; set; }
-        
-        internal abstract void Start();
+
+        internal bool IsStarted { get; private set; }
+
+        internal void StartIfNotStarted()
+        {
+            if (IsStarted)
+                return;
+
+            Start();
+        }
+
+        protected virtual void Start()
+        {
+            IsStarted = true;    
+        }
+
         internal abstract void Stop();
         internal abstract void AddMappedOption(MappedOption mappedOption);
 

@@ -27,18 +27,17 @@ namespace KeyToJoy.Mapping
         private Dictionary<Keys, BaseAction> lookup;
         
         private KeyboardTriggerListener()
-        {
-            Start();
-        }
+        { }
 
-        internal override void Start()
+        protected override void Start()
         {
             lookup = new Dictionary<Keys, BaseAction>();
             
             // This captures global keyboard input and blocks default behaviour by setting e.Handled
             globalKeyboardHook = new GlobalInputHook();
             globalKeyboardHook.KeyboardInputEvent += OnKeyInputEvent;
-            // TODO: Move to mouse: globalKeyboardHook.MouseInputEvent += OnMouseButtonInputEvent;
+
+            base.Start();
         }
 
         internal override void Stop()

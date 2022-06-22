@@ -1,9 +1,7 @@
-﻿using KeyToJoy.Input;
-using Linearstar.Windows.RawInput;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
-using Linearstar.Windows.RawInput.Native;
 using KeyToJoy.Mapping;
 
 namespace KeyToJoy
@@ -14,7 +12,15 @@ namespace KeyToJoy
         {
             InitializeComponent();
 
-            cmbMouseDirection.DataSource = Enum.GetNames(typeof(AxisDirection));
+            var directions = new List<AxisDirection>();
+                
+            foreach(AxisDirection direction in Enum.GetValues(typeof(AxisDirection)))
+            {
+                if (direction != AxisDirection.None)
+                    directions.Add((AxisDirection)direction);
+            }
+
+            cmbMouseDirection.DataSource = directions;
         }
 
         public void Select(BaseTrigger trigger)
