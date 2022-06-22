@@ -14,14 +14,14 @@ namespace KeyToJoy.Mapping
 
         internal bool IsStarted { get; private set; }
 
-        internal void StartIfNotStarted()
+        internal void StartListening()
         {
             if (IsStarted)
                 return;
 
             Start();
         }
-        internal void StopIfNotStopped()
+        internal void StopListening()
         {
             if (!IsStarted)
                 return;

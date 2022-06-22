@@ -29,6 +29,7 @@ namespace KeyToJoy
             var thisTrigger = (MouseButtonTrigger)trigger;
 
             this.mouseButtons = thisTrigger.MouseButtons;
+            chkDown.Checked = thisTrigger.PressedDown;
             txtKeyBind.Text = $"{mouseButtons}";
         }
 
@@ -37,6 +38,7 @@ namespace KeyToJoy
             var thisTrigger = (MouseButtonTrigger)trigger;
 
             thisTrigger.MouseButtons = mouseButtons;
+            thisTrigger.PressedDown = chkDown.Checked;
         }
 
         protected override void WndProc(ref Message m)
@@ -66,6 +68,11 @@ namespace KeyToJoy
             }
 
             base.WndProc(ref m);
+        }
+
+        private void chkDown_CheckedChanged(object sender, EventArgs e)
+        {
+            OptionsChanged?.Invoke();
         }
     }
 }

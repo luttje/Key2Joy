@@ -17,6 +17,8 @@ namespace KeyToJoy.Mapping
         [JsonProperty]
         public Mouse.Buttons MouseButtons { get; set; }
 
+        [JsonProperty]
+        public bool PressedDown { get; set; }
 
         [JsonConstructor]
         public MouseButtonTrigger(string name, string description)
@@ -43,7 +45,8 @@ namespace KeyToJoy.Mapping
 
         public bool Equals(MouseButtonTrigger other)
         {
-            return MouseButtons == other.MouseButtons;
+            return MouseButtons == other.MouseButtons 
+                && PressedDown == other.PressedDown;
         }
 
         public override string ToString()

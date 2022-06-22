@@ -24,11 +24,13 @@ namespace KeyToJoy.Mapping
         }
 
         private GlobalInputHook globalMouseButtonHook;
-        private Dictionary<Mouse.Buttons, BaseAction> lookup;
+        private Dictionary<Mouse.Buttons, BaseAction> lookupDown;
+        private Dictionary<Mouse.Buttons, BaseAction> lookupReleased;
         
         private MouseButtonTriggerListener()
         {
-            lookup = new Dictionary<Mouse.Buttons, BaseAction>();
+            lookupDown = new Dictionary<Mouse.Buttons, BaseAction>();
+            lookupReleased = new Dictionary<Mouse.Buttons, BaseAction>();
         }
 
         protected override void Start()
@@ -52,43 +54,48 @@ namespace KeyToJoy.Mapping
         internal override void AddMappedOption(MappedOption mappedOption)
         {
             var trigger = mappedOption.Trigger as MouseButtonTrigger;
+            var dictionary = lookupReleased;
             
-            lookup.Add(trigger.MouseButtons, mappedOption.Action);
+            if (trigger.PressedDown)
+                dictionary = lookupDown;
+            
+            dictionary.Add(trigger.MouseButtons, mappedOption.Action);
         }
 
         private void OnMouseButtonInputEvent(object sender, GlobalMouseHookEventArgs e)
         {
-            // Mouse movement is handled through WndProc and TryOverrideMouseMoveInput
+            // Mouse movement is handled through WndProc and TryOverrideMouseMoveInput in MouseMoveTriggerListener
             if (e.MouseState == MouseState.Move)
                 return;
 
+            var buttons = Mouse.Buttons.None;
+            var isDown = false;
+                
             try
             {
-                var buttons = Mouse.Buttons.None;
-                var isDown = false;
-                
-                try
-                {
-                    buttons = Mouse.ButtonsFromState(e.MouseState, out isDown);
-                }
-                catch (NotImplementedException) { }
-                
-                // Test if this is a bound mouse button, if so halt default input behaviour
-                if (!lookup.TryGetValue(buttons, out var action))
-                    return;
-                
-                if (!TryOverrideMouseButtonInput(action, new MouseButtonInputBag
-                {
-                    State = e.MouseState,
-                    IsDown = isDown,
-                    LastX = e.MouseData.Position.X,
-                    LastY = e.MouseData.Position.Y,
-                }))
-                    return;
-
-                e.Handled = true;
+                buttons = Mouse.ButtonsFromState(e.MouseState, out isDown);
             }
-            catch (ArgumentOutOfRangeException) { }
+            catch (NotImplementedException) { }
+
+            var dictionary = lookupReleased;
+
+            if (isDown)
+                dictionary = lookupDown;
+                
+            // Test if this is a bound mouse button, if so halt default input behaviour
+            if (!dictionary.TryGetValue(buttons, out var action))
+                return;
+                
+            if (!TryOverrideMouseButtonInput(action, new MouseButtonInputBag
+            {
+                State = e.MouseState,
+                IsDown = isDown,
+                LastX = e.MouseData.Position.X,
+                LastY = e.MouseData.Position.Y,
+            }))
+                return;
+
+            e.Handled = true;
         }
         
         private bool TryOverrideMouseButtonInput(BaseAction action, MouseButtonInputBag inputBag)
