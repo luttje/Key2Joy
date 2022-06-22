@@ -34,8 +34,7 @@ namespace KeyToJoy.Mapping
         public override string ToString()
         {
             var axis = Enum.GetName(typeof(AxisDirection), AxisBinding);
-
-            return axis;
+            return $"(mouse) Move {axis}";
         }
 
         public override object Clone()

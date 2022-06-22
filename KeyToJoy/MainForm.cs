@@ -43,8 +43,13 @@ namespace KeyToJoy
 
         private void btnAddAction_Click(object sender, EventArgs e)
         {
+            EditMappedOption();
+        }
+        
+        private void EditMappedOption(MappedOption existingMappedOption = null)
+        {
             chkEnabled.Checked = false;
-            var mappingForm = new MappingForm();
+            var mappingForm = new MappingForm(existingMappedOption);
             var result = mappingForm.ShowDialog();
             RefreshInputCaptures();
 
@@ -52,43 +57,25 @@ namespace KeyToJoy
                 return;
 
             var mappedOption = mappingForm.MappedOption;
-            selectedPreset.AddMapping(mappedOption);
-            
+            bool createNewMapping = true;
+
+            if(selectedPreset.TryGetMappedOption(mappedOption.Trigger, out var otherMappedOption))
+            {
+                if (existingMappedOption == null)
+                {
+                    MessageBox.Show($"This trigger is already mapped to {otherMappedOption.Action.GetNameDisplay()}. Remap that first!", "Trigger already in use.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                if (existingMappedOption.Equals(otherMappedOption))
+                    createNewMapping = false;
+            }
+
+            if (createNewMapping)
+                selectedPreset.AddMapping(mappedOption);
+
             dgvMappings.Update();
             selectedPreset.Save();
-        }
-
-        private void ChangeMappedOption(MappedOption mappedOption)
-        {
-            chkEnabled.Checked = false;
-
-            // TODO: Open MappingForm relevant for this option.
-            //new InputMappingForm(mappedOption).ShowDialog();
-            //RefreshInputCaptures();
-
-            //foreach (var option in selectedPreset.MappedOptions)
-            //{
-            //    if (option == mappedOption)
-            //        continue;
-
-            //    if (option.Trigger == mappedOption.Trigger)
-            //    {
-            //        MessageBox.Show($"This trigger is already in use for {option.Action}! Change {option.Action} to something else.");
-
-            //        selectedPreset.PruneCacheKey(option.Trigger.GetUniqueKey());
-            //        selectedPreset.CacheLookup(mappedOption);
-            //        dgvMappings.Update();
-
-            //        ChangeMappedOption(option);
-
-            //        return;
-            //    }
-            //}
-
-            //selectedPreset.PruneCacheKey(mappedOption.Trigger.GetUniqueKey());
-            //selectedPreset.CacheLookup(mappedOption);
-            //dgvMappings.Update();
-            //selectedPreset.Save();
         }
 
         private void SettingsForm_Load(object sender, EventArgs e)
@@ -110,7 +97,7 @@ namespace KeyToJoy
             if (mappedOption == null)
                 return;
 
-            ChangeMappedOption(mappedOption);
+            EditMappedOption(mappedOption);
         }
 
         private void DgvMappings_SelectionChanged(object sender, EventArgs e)
@@ -142,7 +129,6 @@ namespace KeyToJoy
         {
             var mappedOption = dgvMappings.Rows[e.RowIndex].DataBoundItem as MappedOption;
 
-            dgvMappings.Rows[e.RowIndex].Cells[colContext.Name].Value = mappedOption.GetContextDisplay();
             dgvMappings.Rows[e.RowIndex].Cells[colControl.Name].Value = mappedOption.GetActionDisplay();
             dgvMappings.Rows[e.RowIndex].Cells[colTrigger.Name].Value = mappedOption.GetTriggerDisplay();
         }

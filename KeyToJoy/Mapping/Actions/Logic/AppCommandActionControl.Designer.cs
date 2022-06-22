@@ -1,6 +1,6 @@
 ﻿namespace KeyToJoy.Mapping
 {
-    partial class WaitActionControl
+    partial class AppCommandActionControl
     {
         /// <summary> 
         /// Required designer variable.
@@ -28,53 +28,47 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.cmbAppCommand = new System.Windows.Forms.ComboBox();
             this.lblInfo = new System.Windows.Forms.Label();
-            this.nudWaitTime = new System.Windows.Forms.NumericUpDown();
-            ((System.ComponentModel.ISupportInitialize)(this.nudWaitTime)).BeginInit();
             this.SuspendLayout();
+            // 
+            // cmbAppCommand
+            // 
+            this.cmbAppCommand.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cmbAppCommand.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbAppCommand.FormattingEnabled = true;
+            this.cmbAppCommand.Location = new System.Drawing.Point(84, 0);
+            this.cmbAppCommand.Name = "cmbAppCommand";
+            this.cmbAppCommand.Size = new System.Drawing.Size(221, 21);
+            this.cmbAppCommand.TabIndex = 9;
             // 
             // lblInfo
             // 
             this.lblInfo.Dock = System.Windows.Forms.DockStyle.Left;
             this.lblInfo.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.lblInfo.Location = new System.Drawing.Point(5, 5);
+            this.lblInfo.Location = new System.Drawing.Point(0, 0);
             this.lblInfo.Name = "lblInfo";
-            this.lblInfo.Size = new System.Drawing.Size(140, 15);
-            this.lblInfo.TabIndex = 12;
-            this.lblInfo.Text = "Time to wait in milliseconds:";
+            this.lblInfo.Size = new System.Drawing.Size(84, 21);
+            this.lblInfo.TabIndex = 10;
+            this.lblInfo.Text = "App Command:";
             this.lblInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // nudWaitTime
-            // 
-            this.nudWaitTime.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.nudWaitTime.Location = new System.Drawing.Point(145, 5);
-            this.nudWaitTime.Name = "nudWaitTime";
-            this.nudWaitTime.Size = new System.Drawing.Size(169, 20);
-            this.nudWaitTime.TabIndex = 11;
-            this.nudWaitTime.Value = new decimal(new int[] {
-            100,
-            0,
-            0,
-            0});
-            this.nudWaitTime.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtKeyBind_KeyPress);
-            // 
-            // WaitActionControl
+            // AppCommandActionControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
-            this.Controls.Add(this.nudWaitTime);
+            this.Controls.Add(this.cmbAppCommand);
             this.Controls.Add(this.lblInfo);
-            this.Name = "WaitActionControl";
-            this.Padding = new System.Windows.Forms.Padding(5);
-            this.Size = new System.Drawing.Size(319, 25);
-            ((System.ComponentModel.ISupportInitialize)(this.nudWaitTime)).EndInit();
+            this.Name = "AppCommandActionControl";
+            this.Size = new System.Drawing.Size(305, 21);
             this.ResumeLayout(false);
 
         }
 
         #endregion
+
+        private System.Windows.Forms.ComboBox cmbAppCommand;
         private System.Windows.Forms.Label lblInfo;
-        private System.Windows.Forms.NumericUpDown nudWaitTime;
     }
 }

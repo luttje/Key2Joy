@@ -41,7 +41,7 @@ namespace KeyToJoy.Mapping
 
         public override string ToString()
         {
-            return Keys.ToString();
+            return $"(keyboard) Move {Keys}";
         }
 
         public override object Clone()

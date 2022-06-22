@@ -5,18 +5,17 @@ using System.Windows.Forms;
 namespace KeyToJoy.Mapping
 {
     [Action(
-        Name = "App Commands"
+        Name = "App Commands",
+        OptionsUserControl = typeof(AppCommandActionControl)
     )]
     internal class AppCommandAction : BaseAction
     {
         [JsonProperty]
-        private string Command;
+        public string Command { get; set; }
 
-        public AppCommandAction(string name, string imagePath, string command)
+        public AppCommandAction(string name, string imagePath)
             : base(name, imagePath)
-        {
-            this.Command = command;
-        }
+        { }
 
         internal override async Task Execute(InputBag inputBag)
         {

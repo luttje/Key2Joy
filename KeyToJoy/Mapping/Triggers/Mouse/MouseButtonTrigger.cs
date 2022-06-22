@@ -44,7 +44,7 @@ namespace KeyToJoy.Mapping
 
         public override string ToString()
         {
-            return "(mouse) " + MouseButtons.ToString();
+            return $"(mouse) {MouseButtons}";
         }
 
         public override object Clone()

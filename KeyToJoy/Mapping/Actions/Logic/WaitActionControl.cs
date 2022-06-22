@@ -11,11 +11,18 @@ using System.Windows.Forms;
 
 namespace KeyToJoy.Mapping
 {
-    public partial class WaitActionControl : UserControl, ISetupAction
+    public partial class WaitActionControl : UserControl, ISelectAndSetupAction
     {
         public WaitActionControl()
         {
             InitializeComponent();
+        }
+
+        public void Select(BaseAction action)
+        {
+            var thisAction = (WaitAction)action;
+
+            nudWaitTime.Value = (decimal)thisAction.WaitTime.TotalMilliseconds;
         }
 
         public void Setup(BaseAction action)

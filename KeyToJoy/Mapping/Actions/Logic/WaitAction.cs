@@ -22,12 +22,6 @@ namespace KeyToJoy.Mapping
         {
         }
 
-        //public WaitAction(string name, string imagePath, TimeSpan waitTime)
-        //    : base(name, imagePath)
-        //{
-        //    this.WaitTime = waitTime;
-        //}
-
         internal override Task Execute(InputBag inputBag)
         {
             return Task.Delay(WaitTime);

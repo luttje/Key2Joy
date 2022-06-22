@@ -66,6 +66,11 @@ namespace KeyToJoy.Mapping
                 SimGamePad.Instance.ReleaseControl(Control);
         }
 
+        public override string GetNameDisplay()
+        {
+            return $"{Name}: {Control}";
+        }
+
         public override string GetContextDisplay()
         {
             return "GamePad";

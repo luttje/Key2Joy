@@ -9,7 +9,7 @@ using EnumMouseButtons = KeyToJoy.Mapping.MouseButtons;
 
 namespace KeyToJoy
 {
-    public partial class MouseButtonTriggerOptionsControl : UserControl, ISetupTrigger
+    public partial class MouseButtonTriggerOptionsControl : UserControl, ISelectAndSetupTrigger
     {
         private EnumMouseButtons mouseButtons;
 
@@ -21,6 +21,14 @@ namespace KeyToJoy
             
             // Relieve input capturing by this mapping form and return it to the main form
             this.Disposed += (s, e) => RawInputDevice.UnregisterDevice(HidUsageAndPage.Mouse);
+        }
+
+        public void Select(BaseTrigger trigger)
+        {
+            var thisTrigger = (MouseButtonTrigger)trigger;
+
+            this.mouseButtons = thisTrigger.MouseButtons;
+            txtKeyBind.Text = $"{mouseButtons}";
         }
 
         public void Setup(BaseTrigger trigger)

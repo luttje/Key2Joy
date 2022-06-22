@@ -24,6 +24,18 @@ namespace KeyToJoy
             actionControl.IsTopLevel = true;
         }
 
+        public MappingForm(MappedOption mappedOption)
+            :this()
+        {
+            if (mappedOption == null)
+                return;
+            
+            MappedOption = mappedOption;
+
+            triggerControl.SelectTrigger(mappedOption.Trigger);
+            actionControl.SelectAction(mappedOption.Action);
+        }
+
         public static UserControl BuildOptionsForComboBox<TAttribute>(ComboBox comboBox, Panel optionsPanel)
             where TAttribute : MappingAttribute
         {
@@ -69,11 +81,10 @@ namespace KeyToJoy
                 return;
             }
 
-            MappedOption = new MappedOption()
-            {
-                Trigger = trigger,
-                Action = action
-            };
+            MappedOption = MappedOption ?? new MappedOption();
+            MappedOption.Trigger = trigger;
+            MappedOption.Action = action;
+            
             DialogResult = DialogResult.OK;
 
             Close();

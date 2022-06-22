@@ -8,7 +8,7 @@ using KeyToJoy.Mapping;
 
 namespace KeyToJoy
 {
-    public partial class KeyboardTriggerOptionsControl : UserControl, ISetupTrigger
+    public partial class KeyboardTriggerOptionsControl : UserControl, ISelectAndSetupTrigger
     {
         private Keys keys;
 
@@ -22,11 +22,42 @@ namespace KeyToJoy
             this.Disposed += (s,e) => RawInputDevice.UnregisterDevice(HidUsageAndPage.Keyboard);
         }
 
+        public void Select(BaseTrigger trigger)
+        {
+            var thisTrigger = (KeyboardTrigger)trigger;
+
+            this.keys = thisTrigger.Keys;
+            UpdateKeys();
+        }
+
         public void Setup(BaseTrigger trigger)
         {
-            var thisTrigger = (KeyboardTrigger) trigger;
+            var thisTrigger = (KeyboardTrigger)trigger;
 
             thisTrigger.Keys = this.keys;
+        }
+
+        private void UpdateKeys(RawKeyboardFlags? flags = null)
+        {
+            if (flags != null)
+            {
+                if ((flags & RawKeyboardFlags.KeyE0) == RawKeyboardFlags.KeyE0)
+                {
+                    if (keys == Keys.ControlKey)
+                        keys = Keys.RControlKey;
+                    if (keys == Keys.ShiftKey)
+                        keys = Keys.RShiftKey;
+                }
+                else
+                {
+                    if (keys == Keys.ControlKey)
+                        keys = Keys.LControlKey;
+                    if (keys == Keys.ShiftKey)
+                        keys = Keys.LShiftKey;
+                }
+            }
+
+            txtKeyBind.Text = keys.ToString();
         }
 
         protected override void WndProc(ref Message m)
@@ -40,24 +71,7 @@ namespace KeyToJoy
                 if (data is RawInputKeyboardData keyboard)
                 {
                     keys = VirtualKeyConverter.KeysFromVirtual(keyboard.Keyboard.VirutalKey);
-                    var flags = keyboard.Keyboard.Flags;
-
-                    if ((flags & RawKeyboardFlags.KeyE0) == RawKeyboardFlags.KeyE0)
-                    {
-                        if (keys == Keys.ControlKey)
-                            keys = Keys.RControlKey;
-                        if (keys == Keys.ShiftKey)
-                            keys = Keys.RShiftKey;
-                    }
-                    else
-                    {
-                        if (keys == Keys.ControlKey)
-                            keys = Keys.LControlKey;
-                        if (keys == Keys.ShiftKey)
-                            keys = Keys.LShiftKey;
-                    }
-                    
-                    txtKeyBind.Text = keys.ToString();
+                    UpdateKeys(keyboard.Keyboard.Flags);
                 }
             }
 

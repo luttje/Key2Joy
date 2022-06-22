@@ -18,8 +18,10 @@ namespace KeyToJoy.Mapping
         public bool IsTopLevel { get; set; }
 
         private bool isLoaded = false;
-        private ISetupAction options;
-        
+        private ISelectAndSetupAction options;
+        private BaseAction selectedAction = null;
+
+
         public ActionControl()
         {
             InitializeComponent();
@@ -44,6 +46,19 @@ namespace KeyToJoy.Mapping
                 options.Setup(action);
 
             return action;
+        }
+
+        internal void SelectAction(BaseAction action)
+        {
+            if (!isLoaded)
+            {
+                selectedAction = action;
+                return;
+            }
+
+            var selected = cmbAction.Items.Cast<KeyValuePair<Type, ActionAttribute>>();
+            var selectedType = selected.FirstOrDefault(x => x.Key == action.GetType());
+            cmbAction.SelectedItem = selectedType;
         }
 
         private void LoadActions()
@@ -72,6 +87,9 @@ namespace KeyToJoy.Mapping
             cmbAction.SelectedIndex = -1;
 
             isLoaded = true;
+
+            if(selectedAction != null)
+                SelectAction(selectedAction);
         }
         
         private void cmbAction_SelectedIndexChanged(object sender, EventArgs e)
@@ -84,7 +102,10 @@ namespace KeyToJoy.Mapping
             if (options == null)
                 return;
 
-            this.options = options as ISetupAction;
+            this.options = options as ISelectAndSetupAction;
+
+            if (this.options != null && selectedAction != null)
+                this.options.Select(selectedAction);
 
             PerformLayout();
         }

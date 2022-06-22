@@ -15,7 +15,9 @@ namespace KeyToJoy.Mapping
     {
         public BaseTrigger Trigger => BuildTrigger();
         private bool isLoaded = false;
-        private ISetupTrigger options;
+        private ISelectAndSetupTrigger options;
+
+        private BaseTrigger selectedTrigger = null;
         
         public TriggerControl()
         {
@@ -43,6 +45,19 @@ namespace KeyToJoy.Mapping
             return trigger;
         }
 
+        internal void SelectTrigger(BaseTrigger trigger)
+        {
+            if (!isLoaded)
+            {
+                selectedTrigger = trigger;
+                return;
+            }
+            
+            var selected = cmbTrigger.Items.Cast<KeyValuePair<Type, TriggerAttribute>>();
+            var selectedType = selected.FirstOrDefault(x => x.Key == trigger.GetType());
+            cmbTrigger.SelectedItem = selectedType;
+        }
+
         private void LoadTriggers()
         {
             var triggerTypes = Assembly.GetExecutingAssembly()
@@ -56,6 +71,9 @@ namespace KeyToJoy.Mapping
             cmbTrigger.SelectedIndex = -1;
 
             isLoaded = true;
+
+            if (selectedTrigger != null)
+                SelectTrigger(selectedTrigger);
         }
         
         private void cmbTrigger_SelectedIndexChanged(object sender, EventArgs e)
@@ -68,7 +86,10 @@ namespace KeyToJoy.Mapping
             if (options == null)
                 return;
 
-            this.options = options as ISetupTrigger;
+            this.options = options as ISelectAndSetupTrigger;
+
+            if (this.options != null && selectedTrigger != null)
+                this.options.Select(selectedTrigger);
 
             PerformLayout();
         }

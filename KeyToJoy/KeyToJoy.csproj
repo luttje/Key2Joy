@@ -215,7 +215,13 @@
     <Compile Include="Mapping\Actions\GamePad\GamePadActionControl.Designer.cs">
       <DependentUpon>GamePadActionControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Mapping\Actions\ISetupAction.cs" />
+    <Compile Include="Mapping\Actions\ISelectAndSetupAction.cs" />
+    <Compile Include="Mapping\Actions\Logic\AppCommandActionControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Mapping\Actions\Logic\AppCommandActionControl.Designer.cs">
+      <DependentUpon>AppCommandActionControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Mapping\Actions\Logic\SequenceActionControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -231,12 +237,12 @@
       <DependentUpon>WaitActionControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Mapping\AxisDirection.cs" />
-    <Compile Include="Mapping\Actions\AppCommandAction.cs" />
+    <Compile Include="Mapping\Actions\Logic\AppCommandAction.cs" />
     <Compile Include="Mapping\Actions\GamePad\GamePadAction.cs" />
     <Compile Include="Mapping\Actions\BaseAction.cs" />
     <Compile Include="Mapping\MappingAttribute.cs" />
     <Compile Include="Mapping\MappingPresetSerializationBinder.cs" />
-    <Compile Include="Mapping\Triggers\ISetupTrigger.cs" />
+    <Compile Include="Mapping\Triggers\ISelectAndSetupTrigger.cs" />
     <Compile Include="Mapping\Triggers\Mouse\MouseButtons.cs" />
     <Compile Include="Mapping\Triggers\TriggerControl.cs">
       <SubType>UserControl</SubType>
@@ -322,6 +328,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Mapping\Actions\GamePad\GamePadActionControl.resx">
       <DependentUpon>GamePadActionControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Mapping\Actions\Logic\AppCommandActionControl.resx">
+      <DependentUpon>AppCommandActionControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Mapping\Actions\Logic\SequenceActionControl.resx">
       <DependentUpon>SequenceActionControl.cs</DependentUpon>
