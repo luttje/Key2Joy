@@ -39,7 +39,7 @@
             this.cmbMouseDirection.FormattingEnabled = true;
             this.cmbMouseDirection.Location = new System.Drawing.Point(127, 5);
             this.cmbMouseDirection.Name = "cmbMouseDirection";
-            this.cmbMouseDirection.Size = new System.Drawing.Size(322, 21);
+            this.cmbMouseDirection.Size = new System.Drawing.Size(118, 21);
             this.cmbMouseDirection.TabIndex = 7;
             // 
             // lblInfo
@@ -63,7 +63,7 @@
             this.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.Name = "MouseMoveTriggerOptionsControl";
             this.Padding = new System.Windows.Forms.Padding(5);
-            this.Size = new System.Drawing.Size(454, 27);
+            this.Size = new System.Drawing.Size(250, 27);
             this.ResumeLayout(false);
 
         }

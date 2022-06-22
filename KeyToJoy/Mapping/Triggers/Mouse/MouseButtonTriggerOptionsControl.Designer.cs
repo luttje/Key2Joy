@@ -38,7 +38,7 @@
             this.txtKeyBind.Enabled = false;
             this.txtKeyBind.Location = new System.Drawing.Point(87, 5);
             this.txtKeyBind.Name = "txtKeyBind";
-            this.txtKeyBind.Size = new System.Drawing.Size(362, 20);
+            this.txtKeyBind.Size = new System.Drawing.Size(302, 20);
             this.txtKeyBind.TabIndex = 6;
             this.txtKeyBind.Text = "(click this field with any mouse button to select it as the trigger)";
             // 
@@ -64,7 +64,7 @@
             this.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.Name = "MouseButtonTriggerOptionsControl";
             this.Padding = new System.Windows.Forms.Padding(5);
-            this.Size = new System.Drawing.Size(454, 26);
+            this.Size = new System.Drawing.Size(394, 26);
             this.ControlRemoved += new System.Windows.Forms.ControlEventHandler(this.MouseButtonTriggerOptionsControl_ControlRemoved);
             this.ResumeLayout(false);
             this.PerformLayout();

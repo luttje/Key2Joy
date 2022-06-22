@@ -34,14 +34,14 @@
             this.btnSaveMapping = new System.Windows.Forms.Button();
             this.grpTrigger = new System.Windows.Forms.GroupBox();
             this.pnlTriggerOptions = new System.Windows.Forms.Panel();
-            this.pnlTrigger = new System.Windows.Forms.Panel();
             this.pnlPadding = new System.Windows.Forms.Panel();
             this.cmbTrigger = new System.Windows.Forms.ComboBox();
+            this.pnlTrigger = new System.Windows.Forms.Panel();
             this.pnlAction.SuspendLayout();
             this.grpAction.SuspendLayout();
             this.grpTrigger.SuspendLayout();
-            this.pnlTrigger.SuspendLayout();
             this.pnlPadding.SuspendLayout();
+            this.pnlTrigger.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnlAction
@@ -53,7 +53,7 @@
             this.pnlAction.Location = new System.Drawing.Point(5, 69);
             this.pnlAction.Name = "pnlAction";
             this.pnlAction.Padding = new System.Windows.Forms.Padding(5, 5, 5, 10);
-            this.pnlAction.Size = new System.Drawing.Size(469, 70);
+            this.pnlAction.Size = new System.Drawing.Size(486, 70);
             this.pnlAction.TabIndex = 90;
             // 
             // grpAction
@@ -66,7 +66,7 @@
             this.grpAction.Location = new System.Drawing.Point(5, 5);
             this.grpAction.Name = "grpAction";
             this.grpAction.Padding = new System.Windows.Forms.Padding(5);
-            this.grpAction.Size = new System.Drawing.Size(459, 55);
+            this.grpAction.Size = new System.Drawing.Size(476, 55);
             this.grpAction.TabIndex = 88;
             this.grpAction.TabStop = false;
             this.grpAction.Text = "Actions that start at the trigger";
@@ -81,7 +81,7 @@
             this.actionControl.MinimumSize = new System.Drawing.Size(300, 32);
             this.actionControl.Name = "actionControl";
             this.actionControl.Padding = new System.Windows.Forms.Padding(5);
-            this.actionControl.Size = new System.Drawing.Size(449, 32);
+            this.actionControl.Size = new System.Drawing.Size(466, 32);
             this.actionControl.TabIndex = 0;
             // 
             // btnSaveMapping
@@ -90,7 +90,7 @@
             this.btnSaveMapping.Enabled = false;
             this.btnSaveMapping.Location = new System.Drawing.Point(5, 139);
             this.btnSaveMapping.Name = "btnSaveMapping";
-            this.btnSaveMapping.Size = new System.Drawing.Size(469, 44);
+            this.btnSaveMapping.Size = new System.Drawing.Size(486, 44);
             this.btnSaveMapping.TabIndex = 91;
             this.btnSaveMapping.Text = "Save Mapping";
             this.btnSaveMapping.UseVisualStyleBackColor = true;
@@ -106,7 +106,7 @@
             this.grpTrigger.Location = new System.Drawing.Point(5, 5);
             this.grpTrigger.Name = "grpTrigger";
             this.grpTrigger.Padding = new System.Windows.Forms.Padding(5);
-            this.grpTrigger.Size = new System.Drawing.Size(459, 54);
+            this.grpTrigger.Size = new System.Drawing.Size(476, 54);
             this.grpTrigger.TabIndex = 86;
             this.grpTrigger.TabStop = false;
             this.grpTrigger.Text = "Trigger that starts the action(s)";
@@ -118,20 +118,8 @@
             this.pnlTriggerOptions.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlTriggerOptions.Location = new System.Drawing.Point(5, 49);
             this.pnlTriggerOptions.Name = "pnlTriggerOptions";
-            this.pnlTriggerOptions.Size = new System.Drawing.Size(449, 0);
+            this.pnlTriggerOptions.Size = new System.Drawing.Size(466, 0);
             this.pnlTriggerOptions.TabIndex = 1;
-            // 
-            // pnlTrigger
-            // 
-            this.pnlTrigger.AutoSize = true;
-            this.pnlTrigger.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.pnlTrigger.Controls.Add(this.grpTrigger);
-            this.pnlTrigger.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlTrigger.Location = new System.Drawing.Point(5, 5);
-            this.pnlTrigger.Name = "pnlTrigger";
-            this.pnlTrigger.Padding = new System.Windows.Forms.Padding(5);
-            this.pnlTrigger.Size = new System.Drawing.Size(469, 64);
-            this.pnlTrigger.TabIndex = 89;
             // 
             // pnlPadding
             // 
@@ -143,7 +131,7 @@
             this.pnlPadding.Name = "pnlPadding";
             this.pnlPadding.Padding = new System.Windows.Forms.Padding(5);
             this.pnlPadding.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.pnlPadding.Size = new System.Drawing.Size(449, 31);
+            this.pnlPadding.Size = new System.Drawing.Size(466, 31);
             this.pnlPadding.TabIndex = 2;
             // 
             // cmbTrigger
@@ -153,9 +141,21 @@
             this.cmbTrigger.FormattingEnabled = true;
             this.cmbTrigger.Location = new System.Drawing.Point(5, 5);
             this.cmbTrigger.Name = "cmbTrigger";
-            this.cmbTrigger.Size = new System.Drawing.Size(439, 21);
+            this.cmbTrigger.Size = new System.Drawing.Size(456, 21);
             this.cmbTrigger.TabIndex = 1;
             this.cmbTrigger.SelectedIndexChanged += new System.EventHandler(this.cmbTrigger_SelectedIndexChanged);
+            // 
+            // pnlTrigger
+            // 
+            this.pnlTrigger.AutoSize = true;
+            this.pnlTrigger.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.pnlTrigger.Controls.Add(this.grpTrigger);
+            this.pnlTrigger.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlTrigger.Location = new System.Drawing.Point(5, 5);
+            this.pnlTrigger.Name = "pnlTrigger";
+            this.pnlTrigger.Padding = new System.Windows.Forms.Padding(5);
+            this.pnlTrigger.Size = new System.Drawing.Size(486, 64);
+            this.pnlTrigger.TabIndex = 89;
             // 
             // MappingForm
             // 
@@ -165,7 +165,7 @@
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.Black;
-            this.ClientSize = new System.Drawing.Size(496, 169);
+            this.ClientSize = new System.Drawing.Size(496, 188);
             this.Controls.Add(this.btnSaveMapping);
             this.Controls.Add(this.pnlAction);
             this.Controls.Add(this.pnlTrigger);
@@ -182,9 +182,9 @@
             this.grpAction.PerformLayout();
             this.grpTrigger.ResumeLayout(false);
             this.grpTrigger.PerformLayout();
+            this.pnlPadding.ResumeLayout(false);
             this.pnlTrigger.ResumeLayout(false);
             this.pnlTrigger.PerformLayout();
-            this.pnlPadding.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -57,6 +57,7 @@ namespace KeyToJoy
             {
                 var optionsUserControl = (UserControl)Activator.CreateInstance(attribute.OptionsUserControl);
                 optionsPanel.Controls.Add(optionsUserControl);
+                optionsUserControl.Dock = DockStyle.Top;
             }
 
             PerformLayout();
