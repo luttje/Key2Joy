@@ -35,9 +35,6 @@ namespace KeyToJoy.Mapping
         private Timer tmrAxisTimeout;
 
         private MouseMoveTriggerListener()
-        {}
-
-        protected override void Start()
         {
             lookup = new Dictionary<AxisDirection, BaseAction>();
 
@@ -45,7 +42,10 @@ namespace KeyToJoy.Mapping
             tmrAxisTimeout = new Timer(components);
             tmrAxisTimeout.Interval = 250;
             tmrAxisTimeout.Tick += this.tmrAxisTimeout_Tick;
+        }
 
+        protected override void Start()
+        {
             RawInputDevice.RegisterDevice(HidUsageAndPage.Mouse, RawInputDeviceFlags.InputSink, Handle);
 
             base.Start();

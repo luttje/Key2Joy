@@ -161,9 +161,11 @@ namespace KeyToJoy
 
         private void ArmMappings()
         {
+            TriggerListener listener = null;
+            
             foreach (var mappedOption in selectedPreset.MappedOptions)
             {
-                var listener = mappedOption.Trigger.GetTriggerListener();
+                listener = mappedOption.Trigger.GetTriggerListener();
 
                 if (listener.HasWndProcHandle)
                 {
@@ -171,23 +173,28 @@ namespace KeyToJoy
                     wndProcListeners.Add(listener);
                 }
 
-                listener.StartIfNotStarted();
                 mappedOption.Action.OnStartListening();
-
                 listener.AddMappedOption(mappedOption);                
             }
+
+            if (listener != null)
+                listener.StartIfNotStarted();
         }
 
         private void DisarmMappings()
         {
             wndProcListeners.Clear();
+
+            TriggerListener listener = null;
             
             foreach (var mappedOption in selectedPreset.MappedOptions)
             {
-                var listener = mappedOption.Trigger.GetTriggerListener();
-                mappedOption.Action.OnStopListening();                
-                listener.StopIfNotStopped();
+                listener = mappedOption.Trigger.GetTriggerListener();
+                mappedOption.Action.OnStopListening();
             }
+
+            if (listener != null)
+                listener.StopIfNotStopped();
         }
 
         protected override void WndProc(ref Message m)

@@ -29,6 +29,27 @@ namespace KeyToJoy.Mapping
                 await childAction.Execute(inputBag);
         }
 
+        internal override void OnStartListening()
+        {
+            base.OnStartListening();
+
+            foreach (var childAction in ChildActions)
+            {
+                childAction.OnStartListening();
+            }
+        }
+
+        internal override void OnStopListening()
+        {
+            base.OnStopListening();
+
+            foreach (var childAction in ChildActions)
+            {
+                childAction.OnStopListening();
+            }
+        }
+
+
         public override string GetNameDisplay()
         {
             var actions = new StringBuilder();

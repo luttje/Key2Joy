@@ -27,12 +27,12 @@ namespace KeyToJoy.Mapping
         private Dictionary<Mouse.Buttons, BaseAction> lookup;
         
         private MouseButtonTriggerListener()
-        { }
+        {
+            lookup = new Dictionary<Mouse.Buttons, BaseAction>();
+        }
 
         protected override void Start()
         {
-            lookup = new Dictionary<Mouse.Buttons, BaseAction>();
-            
             // This captures global mouse input and blocks default behaviour by setting e.Handled
             globalMouseButtonHook = new GlobalInputHook();
             globalMouseButtonHook.MouseInputEvent += OnMouseButtonInputEvent;
@@ -43,6 +43,7 @@ namespace KeyToJoy.Mapping
         protected override void Stop()
         {
             instance = null;
+            globalMouseButtonHook.MouseInputEvent -= OnMouseButtonInputEvent;
             globalMouseButtonHook.Dispose();
 
             base.Stop();
