@@ -140,6 +140,7 @@ namespace KeyToJoy.Mapping
         private static JsonSerializer GetSerializer()
         {
             var serializer = new JsonSerializer();
+            serializer.SerializationBinder = new MappingPresetSerializationBinder();
             serializer.Converters.Add(new StringEnumConverter());
             serializer.Formatting = Formatting.Indented;
 
