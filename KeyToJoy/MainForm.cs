@@ -7,6 +7,7 @@ using KeyToJoy.Input;
 using System.Diagnostics;
 using KeyToJoy.Mapping;
 using KeyToJoy.Properties;
+using System.Collections.Generic;
 
 namespace KeyToJoy
 {
@@ -15,15 +16,13 @@ namespace KeyToJoy
         private MappingPreset selectedPreset;
 
         private Image defaultControllerImage;
-        private GlobalInputHook globalKeyboardHook;
+        private List<TriggerListener> wndProcListeners = new List<TriggerListener>();
 
         public MainForm()
         {
             InitializeComponent();
 
             defaultControllerImage = pctController.Image;
-
-            RefreshInputCaptures();
 
             cmbPreset.DisplayMember = "Display";
             cmbPreset.DataSource = MappingPreset.All;
@@ -52,7 +51,6 @@ namespace KeyToJoy
             chkEnabled.Checked = false;
             var mappingForm = new MappingForm(existingMappedOption);
             var result = mappingForm.ShowDialog();
-            RefreshInputCaptures();
 
             if (result == DialogResult.Cancel)
                 return;
@@ -116,9 +114,7 @@ namespace KeyToJoy
                 return;
             }
 
-            var mappedOption = row.DataBoundItem as MappedOption;
-
-            if (mappedOption == null)
+            if (!(row.DataBoundItem is MappedOption mappedOption))
                 return;
 
             var image = mappedOption.Action.GetImage();
@@ -133,15 +129,6 @@ namespace KeyToJoy
             dgvMappings.Rows[e.RowIndex].Cells[colTrigger.Name].Value = mappedOption.GetTriggerDisplay();
         }
 
-        private void tmrAxisTimeout_Tick(object sender, EventArgs e)
-        {
-            var controllerId = 0;
-            var state = SimGamePad.Instance.State[controllerId];
-            state.RightStickX = 0;
-            state.RightStickY = 0;
-            SimGamePad.Instance.Update(controllerId);
-        }
-
         private void BtnOpenTest_Click(object sender, EventArgs e)
         {
             System.Diagnostics.Process.Start("https://devicetests.com/controller-tester");
@@ -151,10 +138,49 @@ namespace KeyToJoy
         {
             bool isEnabled = chkEnabled.Checked;
 
-            if(isEnabled)
-                SimGamePad.Instance.PlugIn();
+            if (isEnabled)
+                ArmMappings();
             else
-                SimGamePad.Instance.Unplug();
+                DisarmMappings();
+        }
+
+        private void ArmMappings()
+        {
+            foreach (var mappedOption in selectedPreset.MappedOptions)
+            {
+                var listener = mappedOption.Trigger.GetTriggerListener();
+                mappedOption.Action.OnStartListening();
+
+                if (listener.HasWndProcHandle)
+                {
+                    listener.Handle = Handle;
+                    wndProcListeners.Add(listener);
+                }
+
+                listener.AddMappedOption(mappedOption);
+            }
+        }
+
+        private void DisarmMappings()
+        {
+            wndProcListeners.Clear();
+            
+            foreach (var mappedOption in selectedPreset.MappedOptions)
+            {
+                var listener = mappedOption.Trigger.GetTriggerListener();
+                mappedOption.Action.OnStopListening();                
+                listener.Stop();
+            }
+        }
+
+        protected override void WndProc(ref Message m)
+        {
+            base.WndProc(ref m);
+
+            foreach (var wndProcListener in wndProcListeners)
+            {
+                wndProcListener.WndProc(ref m);
+            }
         }
 
         private void TxtPresetName_TextChanged(object sender, EventArgs e)

@@ -49,11 +49,10 @@ namespace KeyToJoy.Mapping
 
         internal void SelectAction(BaseAction action)
         {
+            selectedAction = action;
+            
             if (!isLoaded)
-            {
-                selectedAction = action;
                 return;
-            }
 
             var selected = cmbAction.Items.Cast<KeyValuePair<Type, ActionAttribute>>();
             var selectedType = selected.FirstOrDefault(x => x.Key == action.GetType());
@@ -106,6 +105,7 @@ namespace KeyToJoy.Mapping
             if (this.options != null && selectedAction != null)
                 this.options.Select(selectedAction);
 
+            selectedAction = null;
             PerformLayout();
         }
 

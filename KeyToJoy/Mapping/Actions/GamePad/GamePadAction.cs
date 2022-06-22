@@ -34,6 +34,18 @@ namespace KeyToJoy.Mapping
         {
         }
 
+        internal override void OnStartListening()
+        {
+            base.OnStartListening();
+            SimGamePad.Instance.PlugIn();
+        }
+
+        internal override void OnStopListening()
+        {
+            base.OnStopListening();
+            SimGamePad.Instance.Unplug();
+        }
+
         private void OnControlChanged()
         {
             switch (Control)
@@ -150,7 +162,7 @@ namespace KeyToJoy.Mapping
             }
 
             if ((inputBag is KeyboardInputBag keyboardInputBag && keyboardInputBag.State == Input.LowLevel.KeyboardState.KeyDown)
-                || inputBag is MouseButtonInputBag)
+                || (inputBag is MouseButtonInputBag mouseInputBag && mouseInputBag.IsDown))
                 SimGamePad.Instance.SetControl(Control);
             else
                 SimGamePad.Instance.ReleaseControl(Control);

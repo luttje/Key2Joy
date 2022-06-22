@@ -10,6 +10,7 @@ namespace KeyToJoy.Mapping
     internal class MouseButtonInputBag : InputBag
     {
         public MouseState State { get; set; }
+        public bool IsDown { get; set; }
         public int LastX { get; set; }
         public int LastY { get; set; }
     }

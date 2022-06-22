@@ -15,6 +15,14 @@ namespace KeyToJoy.Mapping
         // Will be used to quickly lookup input triggers and their corresponding action
         internal abstract string GetUniqueKey();
 
+        /// <summary>
+        /// Must return a singleton listener that will listen for triggers.
+        /// 
+        /// When the user starts their mappings, this listener will be given each relevant mapping to look for.
+        /// </summary>
+        /// <returns>Singleton trigger listener</returns>
+        internal abstract TriggerListener GetTriggerListener();
+
         public string ImageResource { get; set; }
 
         internal BaseTrigger(string name)

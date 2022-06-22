@@ -3,7 +3,6 @@ using System.Windows.Forms;
 using KeyToJoy.Input.LowLevel;
 using Linearstar.Windows.RawInput.Native;
 using Newtonsoft.Json;
-using MouseButtons = KeyToJoy.Mapping.MouseButtons;
 
 namespace KeyToJoy.Mapping
 {
@@ -16,14 +15,19 @@ namespace KeyToJoy.Mapping
         public const string PREFIX_UNIQUE = nameof(MouseButtonTrigger);
 
         [JsonProperty]
-        public MouseButtons MouseButtons { get; set; }
+        public Mouse.Buttons MouseButtons { get; set; }
 
 
         [JsonConstructor]
         public MouseButtonTrigger(string name)
             :base(name)
         { }
-        
+
+        internal override TriggerListener GetTriggerListener()
+        {
+            return MouseButtonTriggerListener.Instance;
+        }
+
         internal override string GetUniqueKey()
         {
             return $"{PREFIX_UNIQUE}_{MouseButtons}";

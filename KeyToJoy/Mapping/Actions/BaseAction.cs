@@ -24,6 +24,11 @@ namespace KeyToJoy.Mapping
 
         internal abstract Task Execute(InputBag inputBag);
 
+        internal virtual void OnStartListening()
+        { }
+        internal virtual void OnStopListening()
+        { }
+
         public virtual string GetNameDisplay()
         {
             return Name;

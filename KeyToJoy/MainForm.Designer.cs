@@ -28,9 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.tmrAxisTimeout = new System.Windows.Forms.Timer(this.components);
             this.splitContainer = new System.Windows.Forms.SplitContainer();
             this.pnlActionManagement = new System.Windows.Forms.Panel();
             this.btnAddAction = new System.Windows.Forms.Button();
@@ -61,11 +59,6 @@
             this.pnlPresetName.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pctController)).BeginInit();
             this.SuspendLayout();
-            // 
-            // tmrAxisTimeout
-            // 
-            this.tmrAxisTimeout.Interval = 250;
-            this.tmrAxisTimeout.Tick += new System.EventHandler(this.tmrAxisTimeout_Tick);
             // 
             // splitContainer
             // 
@@ -347,7 +340,6 @@
         }
 
         #endregion
-        private System.Windows.Forms.Timer tmrAxisTimeout;
         private System.Windows.Forms.SplitContainer splitContainer;
         private System.Windows.Forms.CheckBox chkEnabled;
         private System.Windows.Forms.Label dbgLabel;

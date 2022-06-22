@@ -31,7 +31,6 @@ namespace KeyToJoy.Mapping
         public string Display => $"{Name} ({Path.GetFileName(filePath)})";
 
         private string filePath;
-        private Dictionary<string, MappedOption> lookup = new Dictionary<string, MappedOption>();
 
         [JsonConstructor]
         internal MappingPreset(string name, BindingList<MappedOption> mappedOptions = null)
@@ -55,35 +54,12 @@ namespace KeyToJoy.Mapping
         internal void AddMapping(MappedOption mappedOption)
         {
             MappedOptions.Add(mappedOption);
-            CacheLookup(mappedOption);
-        }
-
-        internal void PruneCacheKey(string oldMappingKey)
-        {
-            lookup.Remove(oldMappingKey);
-        }
-
-        internal void CacheLookup(MappedOption mappedOption)
-        {
-            var key = mappedOption.Trigger.GetUniqueKey();
-
-            if (lookup.ContainsKey(key))
-                lookup[key] = mappedOption;
-            else
-                lookup.Add(key, mappedOption);
-        }
-
-        private void CacheAllLookup()
-        {
-            foreach (var mappedOption in MappedOptions)
-            {
-                CacheLookup(mappedOption);
-            }
         }
 
         internal bool TryGetMappedOption(BaseTrigger trigger, out MappedOption mappedOption)
         {
-            return lookup.TryGetValue(trigger.GetUniqueKey(), out mappedOption);
+            mappedOption = MappedOptions.FirstOrDefault(mo => mo.Trigger == trigger);
+            return mappedOption != null;
         }
 
         internal void Save()
@@ -101,8 +77,6 @@ namespace KeyToJoy.Mapping
         private bool PostLoad(string filePath)
         {
             this.filePath = filePath;
-
-            CacheAllLookup();
 
             return true;
         }

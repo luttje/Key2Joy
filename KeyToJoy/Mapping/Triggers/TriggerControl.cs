@@ -46,11 +46,10 @@ namespace KeyToJoy.Mapping
 
         internal void SelectTrigger(BaseTrigger trigger)
         {
+            selectedTrigger = trigger;
+            
             if (!isLoaded)
-            {
-                selectedTrigger = trigger;
                 return;
-            }
             
             var selected = cmbTrigger.Items.Cast<KeyValuePair<Type, TriggerAttribute>>();
             var selectedType = selected.FirstOrDefault(x => x.Key == trigger.GetType());
@@ -90,6 +89,7 @@ namespace KeyToJoy.Mapping
             if (this.options != null && selectedTrigger != null)
                 this.options.Select(selectedTrigger);
 
+            selectedTrigger = null;
             PerformLayout();
         }
 

@@ -5,13 +5,12 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using Linearstar.Windows.RawInput.Native;
 using KeyToJoy.Mapping;
-using EnumMouseButtons = KeyToJoy.Mapping.MouseButtons;
 
 namespace KeyToJoy
 {
     public partial class MouseButtonTriggerOptionsControl : UserControl, ISelectAndSetupTrigger
     {
-        private EnumMouseButtons mouseButtons;
+        private Mouse.Buttons mouseButtons;
 
         public MouseButtonTriggerOptionsControl()
         {
@@ -50,41 +49,13 @@ namespace KeyToJoy
                     && mouse.Mouse.Buttons != RawMouseButtonFlags.None
                     && txtKeyBind.ClientRectangle.Contains(txtKeyBind.PointToClient(MousePosition)))
                 {
-                    var flags = mouse.Mouse.Buttons;
-
-                    // TODO: Support up and down states seperately
-                    switch (flags)
+                    try
                     {
-                        case RawMouseButtonFlags.LeftButtonUp:
-                        case RawMouseButtonFlags.LeftButtonDown:
-                            mouseButtons = EnumMouseButtons.Left;
-                            break;
-                        case RawMouseButtonFlags.RightButtonUp:
-                        case RawMouseButtonFlags.RightButtonDown:
-                            mouseButtons = EnumMouseButtons.Right;
-                            break;
-                        case RawMouseButtonFlags.MiddleButtonUp:
-                        case RawMouseButtonFlags.MiddleButtonDown:
-                            mouseButtons = EnumMouseButtons.Middle;
-                            break;
-                        case RawMouseButtonFlags.MouseWheel:
-                            if (mouse.Mouse.ButtonData >= 0)
-                                mouseButtons = EnumMouseButtons.WheelUp;
-                            else
-                                mouseButtons = EnumMouseButtons.WheelDown;
-                            break;
-                        // TODO: Support these
-                        //case RawMouseButtonFlags.Button4Up:
-                        //case RawMouseButtonFlags.Button4Down:
-                        //    this.mouseButtons = MouseButtons.XButton1;
-                        //    break;
-                        //case RawMouseButtonFlags.Button5Up:
-                        //case RawMouseButtonFlags.Button5Down:
-                        //    this.mouseButtons = MouseButtons.XButton2;
-                        //    break;
-                        default:
-                            MessageBox.Show($"Unknown mouse button pressed ({flags}). Can't map this (yet).", "Unknown mouse button!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            break;
+                        mouseButtons = Mouse.ButtonsFromRaw(mouse.Mouse, out var isDown);
+                    }
+                    catch (NotImplementedException ex)
+                    {
+                        MessageBox.Show($"{ex.Message}. Can't map this (yet).", "Unknown mouse button!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
 
                     txtKeyBind.Text = $"{mouseButtons}";

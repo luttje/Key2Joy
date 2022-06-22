@@ -19,6 +19,11 @@ namespace KeyToJoy.Mapping
             : base(name)
         { }
 
+        internal override TriggerListener GetTriggerListener()
+        {
+            return MouseMoveTriggerListener.Instance;
+        }
+
         internal override string GetUniqueKey()
         {
             return $"{PREFIX_UNIQUE}_{AxisBinding}";

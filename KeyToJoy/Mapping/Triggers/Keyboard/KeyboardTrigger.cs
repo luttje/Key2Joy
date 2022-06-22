@@ -21,6 +21,11 @@ namespace KeyToJoy.Mapping
             : base(name)
         { }
 
+        internal override TriggerListener GetTriggerListener()
+        {
+            return KeyboardTriggerListener.Instance;
+        }
+
         internal override string GetUniqueKey()
         {
             return $"{PREFIX_UNIQUE}_{Keys}";
