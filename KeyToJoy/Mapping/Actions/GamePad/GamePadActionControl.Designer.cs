@@ -41,6 +41,7 @@
             this.cmbGamePad.Name = "cmbGamePad";
             this.cmbGamePad.Size = new System.Drawing.Size(317, 21);
             this.cmbGamePad.TabIndex = 9;
+            this.cmbGamePad.SelectedIndexChanged += new System.EventHandler(this.cmbGamePad_SelectedIndexChanged);
             // 
             // lblInfo
             // 

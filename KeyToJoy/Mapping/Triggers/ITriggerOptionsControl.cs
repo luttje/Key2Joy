@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace KeyToJoy.Mapping
 {
-    internal interface ISelectAndSetupTrigger
+    internal interface ITriggerOptionsControl
     {
         /// <summary>
         /// Called to setup the options panel with a trigger
@@ -19,5 +19,10 @@ namespace KeyToJoy.Mapping
         /// </summary>
         /// <param name="trigger"></param>
         void Setup(BaseTrigger trigger);
+
+        /// <summary>
+        /// Called when the options on a trigger change
+        /// </summary>
+        event Action OptionsChanged;
     }
 }

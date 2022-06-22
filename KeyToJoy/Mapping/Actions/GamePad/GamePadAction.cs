@@ -11,8 +11,9 @@ using System.Threading.Tasks;
 namespace KeyToJoy.Mapping
 {
     [Action(
-        Name = "GamePad/Controller Simulation",
-        OptionsUserControl = typeof(GamePadActionControl)
+        Description = "GamePad/Controller Simulation",
+        OptionsUserControl = typeof(GamePadActionControl),
+        NameFormat = "Press {0} on GamePad"
     )]
     internal class GamePadAction : BaseAction
     {
@@ -30,8 +31,8 @@ namespace KeyToJoy.Mapping
             }
         }
 
-        public GamePadAction(string name)
-            : base(name)
+        public GamePadAction(string name, string description)
+            : base(name, description)
         {
         }
 
@@ -181,12 +182,7 @@ namespace KeyToJoy.Mapping
 
         public override string GetNameDisplay()
         {
-            return $"{Name}: {Control}";
-        }
-
-        public override string GetContextDisplay()
-        {
-            return "GamePad";
+            return Name.Replace("{0}", Control.ToString());
         }
 
         public override bool Equals(object obj)
@@ -195,6 +191,16 @@ namespace KeyToJoy.Mapping
                 return false;
 
             return action.Control == Control;
+        }
+
+        public override object Clone()
+        {
+            return new GamePadAction(Name, description)
+            {
+                Control = Control,
+                ImageResource = ImageResource,
+                Name = Name,
+            };
         }
     }
 }

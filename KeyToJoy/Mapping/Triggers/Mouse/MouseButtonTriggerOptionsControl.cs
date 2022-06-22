@@ -8,8 +8,10 @@ using KeyToJoy.Mapping;
 
 namespace KeyToJoy
 {
-    public partial class MouseButtonTriggerOptionsControl : UserControl, ISelectAndSetupTrigger
+    public partial class MouseButtonTriggerOptionsControl : UserControl, ITriggerOptionsControl
     {
+        public event Action OptionsChanged;
+        
         private Mouse.Buttons mouseButtons;
 
         public MouseButtonTriggerOptionsControl()
@@ -59,6 +61,7 @@ namespace KeyToJoy
                     }
 
                     txtKeyBind.Text = $"{mouseButtons}";
+                    OptionsChanged?.Invoke();
                 }
             }
 

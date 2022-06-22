@@ -32,14 +32,16 @@
             this.lstActions = new System.Windows.Forms.ListBox();
             this.pnlActions = new System.Windows.Forms.Panel();
             this.btnRemove = new System.Windows.Forms.Button();
-            this.btnAdd = new System.Windows.Forms.Button();
             this.pnlPadding = new System.Windows.Forms.Panel();
             this.grpSequenceActionOptions = new System.Windows.Forms.GroupBox();
-            this.pnlActionOptions = new System.Windows.Forms.Panel();
             this.actionControl = new KeyToJoy.Mapping.ActionControl();
+            this.pnlActionOptions = new System.Windows.Forms.Panel();
+            this.pnlPadding2 = new System.Windows.Forms.Panel();
+            this.btnAdd = new System.Windows.Forms.Button();
             this.pnlActions.SuspendLayout();
             this.pnlPadding.SuspendLayout();
             this.grpSequenceActionOptions.SuspendLayout();
+            this.pnlPadding2.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblInfo
@@ -61,11 +63,11 @@
             this.lstActions.Name = "lstActions";
             this.lstActions.Size = new System.Drawing.Size(339, 82);
             this.lstActions.TabIndex = 14;
+            this.lstActions.SelectedIndexChanged += new System.EventHandler(this.lstActions_SelectedIndexChanged);
             // 
             // pnlActions
             // 
             this.pnlActions.Controls.Add(this.btnRemove);
-            this.pnlActions.Controls.Add(this.btnAdd);
             this.pnlActions.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlActions.Location = new System.Drawing.Point(5, 109);
             this.pnlActions.Name = "pnlActions";
@@ -74,27 +76,16 @@
             // 
             // btnRemove
             // 
-            this.btnRemove.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnRemove.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnRemove.Enabled = false;
             this.btnRemove.ForeColor = System.Drawing.Color.Black;
-            this.btnRemove.Location = new System.Drawing.Point(199, 0);
+            this.btnRemove.Location = new System.Drawing.Point(0, 0);
             this.btnRemove.Name = "btnRemove";
-            this.btnRemove.Size = new System.Drawing.Size(140, 29);
+            this.btnRemove.Size = new System.Drawing.Size(339, 29);
             this.btnRemove.TabIndex = 18;
             this.btnRemove.Text = "Remove";
             this.btnRemove.UseVisualStyleBackColor = true;
             this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
-            // 
-            // btnAdd
-            // 
-            this.btnAdd.Dock = System.Windows.Forms.DockStyle.Left;
-            this.btnAdd.ForeColor = System.Drawing.Color.Black;
-            this.btnAdd.Location = new System.Drawing.Point(0, 0);
-            this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(140, 29);
-            this.btnAdd.TabIndex = 17;
-            this.btnAdd.Text = "Add";
-            this.btnAdd.UseVisualStyleBackColor = true;
-            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
             // pnlPadding
             // 
@@ -122,6 +113,21 @@
             this.grpSequenceActionOptions.TabStop = false;
             this.grpSequenceActionOptions.Text = "Action Options";
             // 
+            // actionControl
+            // 
+            this.actionControl.AutoSize = true;
+            this.actionControl.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.actionControl.BackColor = System.Drawing.Color.Black;
+            this.actionControl.Dock = System.Windows.Forms.DockStyle.Top;
+            this.actionControl.IsTopLevel = false;
+            this.actionControl.Location = new System.Drawing.Point(3, 16);
+            this.actionControl.MinimumSize = new System.Drawing.Size(300, 32);
+            this.actionControl.Name = "actionControl";
+            this.actionControl.Padding = new System.Windows.Forms.Padding(5);
+            this.actionControl.Size = new System.Drawing.Size(333, 32);
+            this.actionControl.TabIndex = 1;
+            this.actionControl.ActionChanged += new System.Action<KeyToJoy.Mapping.BaseAction>(this.actionControl_ActionChanged);
+            // 
             // pnlActionOptions
             // 
             this.pnlActionOptions.AutoSize = true;
@@ -132,18 +138,27 @@
             this.pnlActionOptions.Size = new System.Drawing.Size(333, 0);
             this.pnlActionOptions.TabIndex = 0;
             // 
-            // actionControl
+            // pnlPadding2
             // 
-            this.actionControl.AutoSize = true;
-            this.actionControl.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.actionControl.BackColor = System.Drawing.Color.Black;
-            this.actionControl.Dock = System.Windows.Forms.DockStyle.Top;
-            this.actionControl.Location = new System.Drawing.Point(3, 16);
-            this.actionControl.MinimumSize = new System.Drawing.Size(300, 32);
-            this.actionControl.Name = "actionControl";
-            this.actionControl.Padding = new System.Windows.Forms.Padding(5);
-            this.actionControl.Size = new System.Drawing.Size(333, 32);
-            this.actionControl.TabIndex = 1;
+            this.pnlPadding2.Controls.Add(this.btnAdd);
+            this.pnlPadding2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlPadding2.Location = new System.Drawing.Point(5, 199);
+            this.pnlPadding2.Name = "pnlPadding2";
+            this.pnlPadding2.Size = new System.Drawing.Size(339, 29);
+            this.pnlPadding2.TabIndex = 19;
+            // 
+            // btnAdd
+            // 
+            this.btnAdd.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnAdd.Enabled = false;
+            this.btnAdd.ForeColor = System.Drawing.Color.Black;
+            this.btnAdd.Location = new System.Drawing.Point(0, 0);
+            this.btnAdd.Name = "btnAdd";
+            this.btnAdd.Size = new System.Drawing.Size(339, 29);
+            this.btnAdd.TabIndex = 17;
+            this.btnAdd.Text = "Add";
+            this.btnAdd.UseVisualStyleBackColor = true;
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
             // SequenceActionControl
             // 
@@ -151,6 +166,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.BackColor = System.Drawing.Color.Black;
+            this.Controls.Add(this.pnlPadding2);
             this.Controls.Add(this.pnlPadding);
             this.Controls.Add(this.pnlActions);
             this.Controls.Add(this.lstActions);
@@ -158,12 +174,13 @@
             this.MinimumSize = new System.Drawing.Size(256, 64);
             this.Name = "SequenceActionControl";
             this.Padding = new System.Windows.Forms.Padding(5);
-            this.Size = new System.Drawing.Size(349, 204);
+            this.Size = new System.Drawing.Size(349, 233);
             this.pnlActions.ResumeLayout(false);
             this.pnlPadding.ResumeLayout(false);
             this.pnlPadding.PerformLayout();
             this.grpSequenceActionOptions.ResumeLayout(false);
             this.grpSequenceActionOptions.PerformLayout();
+            this.pnlPadding2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -175,10 +192,11 @@
         private System.Windows.Forms.ListBox lstActions;
         private System.Windows.Forms.Panel pnlActions;
         private System.Windows.Forms.Button btnRemove;
-        private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.Panel pnlPadding;
         private System.Windows.Forms.GroupBox grpSequenceActionOptions;
         private System.Windows.Forms.Panel pnlActionOptions;
         private ActionControl actionControl;
+        private System.Windows.Forms.Panel pnlPadding2;
+        private System.Windows.Forms.Button btnAdd;
     }
 }

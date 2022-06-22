@@ -11,18 +11,24 @@ namespace KeyToJoy.Mapping
 {
     [JsonObject(MemberSerialization.OptIn)]
     public abstract class BaseAction
+        : ICloneable
     {
         [JsonProperty]
         internal string Name { get; set; }
 
         public string ImageResource { get; set; }
+        
+        protected string description;
 
-        public BaseAction(string name)
+        public BaseAction(string name, string description)
         {
             Name = name;
+            this.description = description;
         }
 
         internal abstract Task Execute(InputBag inputBag);
+        
+        public abstract object Clone();
 
         internal virtual void OnStartListening()
         { }
@@ -34,16 +40,16 @@ namespace KeyToJoy.Mapping
             return Name;
         }
 
-        public virtual string GetContextDisplay()
-        {
-            return ToString();
-        }
-
         public virtual Image GetImage()
         {
             return ImageResource != null
                 ? (Bitmap)Resources.ResourceManager.GetObject(ImageResource)
                 : null;            
+        }
+
+        public override string ToString()
+        {
+            return GetNameDisplay();
         }
 
         public static bool operator ==(BaseAction a, BaseAction b)

@@ -164,7 +164,6 @@ namespace KeyToJoy
             foreach (var mappedOption in selectedPreset.MappedOptions)
             {
                 var listener = mappedOption.Trigger.GetTriggerListener();
-                mappedOption.Action.OnStartListening();
 
                 if (listener.HasWndProcHandle)
                 {
@@ -173,7 +172,9 @@ namespace KeyToJoy
                 }
 
                 listener.StartIfNotStarted();
-                listener.AddMappedOption(mappedOption);
+                mappedOption.Action.OnStartListening();
+
+                listener.AddMappedOption(mappedOption);                
             }
         }
 
@@ -185,7 +186,7 @@ namespace KeyToJoy
             {
                 var listener = mappedOption.Trigger.GetTriggerListener();
                 mappedOption.Action.OnStopListening();                
-                listener.Stop();
+                listener.StopIfNotStopped();
             }
         }
 

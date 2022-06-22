@@ -6,8 +6,10 @@ using KeyToJoy.Mapping;
 
 namespace KeyToJoy
 {
-    public partial class MouseMoveTriggerOptionsControl : UserControl, ISelectAndSetupTrigger
+    public partial class MouseMoveTriggerOptionsControl : UserControl, ITriggerOptionsControl
     {
+        public event Action OptionsChanged;
+        
         public MouseMoveTriggerOptionsControl()
         {
             InitializeComponent();
@@ -35,6 +37,11 @@ namespace KeyToJoy
             var thisTrigger = (MouseMoveTrigger)trigger;
 
             thisTrigger.AxisBinding = (AxisDirection)cmbMouseDirection.SelectedItem;
+        }
+
+        private void cmbMouseDirection_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            OptionsChanged?.Invoke();
         }
     }
 }

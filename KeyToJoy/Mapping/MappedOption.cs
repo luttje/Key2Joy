@@ -15,11 +15,6 @@ namespace KeyToJoy.Mapping
         [JsonProperty(TypeNameHandling = TypeNameHandling.All)]
         public BaseTrigger Trigger;
 
-        public string GetContextDisplay()
-        {
-            return Action.GetContextDisplay();
-        }
-        
         public string GetActionDisplay()
         {
             return Action.GetNameDisplay();

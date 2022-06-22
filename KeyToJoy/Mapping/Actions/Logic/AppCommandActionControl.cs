@@ -10,8 +10,10 @@ using System.Windows.Forms;
 
 namespace KeyToJoy.Mapping
 {
-    public partial class AppCommandActionControl : UserControl, ISelectAndSetupAction
+    public partial class AppCommandActionControl : UserControl, IActionOptionsControl
     {
+        public event Action OptionsChanged;
+        
         private Dictionary<string,string> appCommands;
         
         public AppCommandActionControl()
@@ -38,6 +40,11 @@ namespace KeyToJoy.Mapping
             var thisAction = (AppCommandAction)action;
 
             thisAction.Command = cmbAppCommand.SelectedValue.ToString();
+        }
+
+        private void cmbAppCommand_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            OptionsChanged?.Invoke();
         }
     }
 }

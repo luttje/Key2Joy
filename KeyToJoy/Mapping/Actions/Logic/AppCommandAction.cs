@@ -5,16 +5,17 @@ using System.Windows.Forms;
 namespace KeyToJoy.Mapping
 {
     [Action(
-        Name = "App Commands",
-        OptionsUserControl = typeof(AppCommandActionControl)
+        Description = "App Command",
+        OptionsUserControl = typeof(AppCommandActionControl),
+        NameFormat = "Run App Command '{0}'"
     )]
     internal class AppCommandAction : BaseAction
     {
         [JsonProperty]
         public string Command { get; set; }
 
-        public AppCommandAction(string name)
-            : base(name)
+        public AppCommandAction(string name, string description)
+            : base(name, description)
         { }
 
         internal override async Task Execute(InputBag inputBag)
@@ -25,9 +26,9 @@ namespace KeyToJoy.Mapping
             }
         }
 
-        public override string GetContextDisplay()
+        public override string GetNameDisplay()
         {
-            return "App";
+            return Name.Replace("{0}", Command);
         }
 
         public override bool Equals(object obj)
@@ -36,6 +37,16 @@ namespace KeyToJoy.Mapping
                 return false;
 
             return action.Command == Command;
+        }
+
+        public override object Clone()
+        {
+            return new AppCommandAction(Name, description)
+            {
+                Command = Command,
+                ImageResource = ImageResource,
+                Name = Name,
+            };
         }
     }
 }

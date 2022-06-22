@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 namespace KeyToJoy.Mapping
 {
     [Trigger(
-        Name = "Mouse Button Event",
+        Description = "Mouse Button Event",
         OptionsUserControl = typeof(MouseButtonTriggerOptionsControl)
     )]
     public class MouseButtonTrigger : BaseTrigger, IEquatable<MouseButtonTrigger>
@@ -19,8 +19,8 @@ namespace KeyToJoy.Mapping
 
 
         [JsonConstructor]
-        public MouseButtonTrigger(string name)
-            :base(name)
+        public MouseButtonTrigger(string name, string description)
+            : base(name, description)
         { }
 
         internal override TriggerListener GetTriggerListener()

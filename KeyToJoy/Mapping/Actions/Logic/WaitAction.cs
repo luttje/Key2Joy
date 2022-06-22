@@ -8,17 +8,18 @@ using System.Windows.Forms;
 namespace KeyToJoy.Mapping
 {
     [Action(
-        Name = "Wait for a specified duration",
+        Description = "Wait for a specified duration",
         Visibility = ActionVisibility.UnlessTopLevel,
-        OptionsUserControl = typeof(WaitActionControl)
+        OptionsUserControl = typeof(WaitActionControl),
+        NameFormat = "Wait for {0}ms"
     )]
     internal class WaitAction : BaseAction
     {
         [JsonProperty]
         public TimeSpan WaitTime;
 
-        public WaitAction(string name)
-            : base(name)
+        public WaitAction(string name, string description)
+            : base(name, description)
         {
         }
 
@@ -29,12 +30,17 @@ namespace KeyToJoy.Mapping
 
         public override string GetNameDisplay()
         {
-            return $"{Name} for {WaitTime.TotalMilliseconds}ms";
+            return Name.Replace("{0}", WaitTime.TotalMilliseconds.ToString());
         }
 
-        public override string GetContextDisplay()
+        public override object Clone()
         {
-            return "Logic";
+            return new WaitAction(Name, description)
+            {
+                WaitTime = WaitTime,
+                ImageResource = ImageResource,
+                Name = Name,
+            };
         }
     }
 }

@@ -10,8 +10,10 @@ using System.Windows.Forms;
 
 namespace KeyToJoy.Mapping
 {
-    public partial class GamePadActionControl : UserControl, ISelectAndSetupAction
+    public partial class GamePadActionControl : UserControl, IActionOptionsControl
     {
+        public event Action OptionsChanged;
+        
         public GamePadActionControl()
         {
             InitializeComponent();
@@ -33,6 +35,11 @@ namespace KeyToJoy.Mapping
             var thisAction = (GamePadAction)action;
 
             thisAction.Control = (SimWinInput.GamePadControl)cmbGamePad.SelectedItem;
+        }
+
+        private void cmbGamePad_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            OptionsChanged?.Invoke();
         }
     }
 }

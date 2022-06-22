@@ -4,7 +4,7 @@ using System;
 namespace KeyToJoy.Mapping
 {
     [Trigger(
-        Name = "Mouse Move Event",
+        Description = "Mouse Move Event",
         OptionsUserControl = typeof(MouseMoveTriggerOptionsControl)
     )]
     public class MouseMoveTrigger : BaseTrigger
@@ -15,8 +15,8 @@ namespace KeyToJoy.Mapping
         public AxisDirection AxisBinding { get; set; }
 
         [JsonConstructor]
-        public MouseMoveTrigger(string name)
-            : base(name)
+        public MouseMoveTrigger(string name, string description)
+            : base(name, description)
         { }
 
         internal override TriggerListener GetTriggerListener()

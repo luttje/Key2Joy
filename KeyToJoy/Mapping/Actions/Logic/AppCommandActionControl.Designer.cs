@@ -41,6 +41,7 @@
             this.cmbAppCommand.Name = "cmbAppCommand";
             this.cmbAppCommand.Size = new System.Drawing.Size(221, 21);
             this.cmbAppCommand.TabIndex = 9;
+            this.cmbAppCommand.SelectedIndexChanged += new System.EventHandler(this.cmbAppCommand_SelectedIndexChanged);
             // 
             // lblInfo
             // 

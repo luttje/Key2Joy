@@ -13,9 +13,11 @@ namespace KeyToJoy.Mapping
 {
     public partial class TriggerControl : UserControl
     {
-        public BaseTrigger Trigger => BuildTrigger();
+        public BaseTrigger Trigger { get; private set; }
+        public event Action<BaseTrigger> TriggerChanged;
+        
         private bool isLoaded = false;
-        private ISelectAndSetupTrigger options;
+        private ITriggerOptionsControl options;
 
         private BaseTrigger selectedTrigger = null;
         
@@ -24,24 +26,29 @@ namespace KeyToJoy.Mapping
             InitializeComponent();
         }
 
-        private BaseTrigger BuildTrigger()
+        private void BuildTrigger()
         {
             if (cmbTrigger.SelectedItem == null)
-                return null;
-            
+            {
+                TriggerChanged?.Invoke(null);
+                return;
+            }
+
             var selected = (KeyValuePair<Type, TriggerAttribute>)cmbTrigger.SelectedItem;
             var selectedType = selected.Key;
             var attribute = selected.Value;
 
-            var trigger = (BaseTrigger)Activator.CreateInstance(selectedType, new object[]
-            {
-                attribute.Name
-            });
+            if(Trigger == null || Trigger.GetType() != selectedType)
+                Trigger = (BaseTrigger)Activator.CreateInstance(selectedType, new object[]
+                {
+                    attribute.NameFormat,
+                    attribute.Description
+                });
 
             if (options != null)
-                options.Setup(trigger);
-            
-            return trigger;
+                options.Setup(Trigger);
+
+            TriggerChanged?.Invoke(Trigger);
         }
 
         internal void SelectTrigger(BaseTrigger trigger)
@@ -81,14 +88,21 @@ namespace KeyToJoy.Mapping
             
             var options = MappingForm.BuildOptionsForComboBox<TriggerAttribute>(cmbTrigger, pnlTriggerOptions);
 
-            if (options == null)
-                return;
+            if (options != null)
+            {
+                this.options = options as ITriggerOptionsControl;
 
-            this.options = options as ISelectAndSetupTrigger;
+                if (this.options != null)
+                {
+                    if (selectedTrigger != null)
+                        this.options.Select(selectedTrigger);
 
-            if (this.options != null && selectedTrigger != null)
-                this.options.Select(selectedTrigger);
-
+                    this.options.OptionsChanged += () => BuildTrigger();
+                }
+            }
+            
+            BuildTrigger();
+            
             selectedTrigger = null;
             PerformLayout();
         }

@@ -7,26 +7,22 @@ using System.Windows.Forms;
 namespace KeyToJoy.Mapping
 {
     [Action(
-        Name = "Multiple Actions in Sequence",
+        Description = "Multiple Actions in Sequence",
         Visibility = ActionVisibility.OnlyTopLevel,
-        OptionsUserControl = typeof(SequenceActionControl)
+        OptionsUserControl = typeof(SequenceActionControl),
+        NameFormat = "Run Sequence: {0}"
     )]
     internal class SequenceAction : BaseAction
     {
         [JsonProperty(ItemTypeNameHandling = TypeNameHandling.All)]
         public List<BaseAction> ChildActions;
 
-        public SequenceAction(string name)
-            : base(name)
+        public SequenceAction(string name, string description)
+            : base(name, description)
         {
+            ChildActions = new List<BaseAction>();
         }
 
-        //public SequenceAction(string name, string imagePath, [JsonProperty(ItemTypeNameHandling = TypeNameHandling.All)] List<BaseAction> childActions)
-        //    : base(name, imagePath)
-        //{
-        //    this.ChildActions = childActions;
-        //}
-        
         internal override async Task Execute(InputBag inputBag)
         {
             foreach (var childAction in ChildActions)
@@ -45,12 +41,7 @@ namespace KeyToJoy.Mapping
                 actions.Append(ChildActions[i].GetNameDisplay());
             }
             
-            return $"Sequence: {actions}";
-        }
-
-        public override string GetContextDisplay()
-        {
-            return "Logic";
+            return Name.Replace("{0}", actions.ToString());
         }
 
         public override bool Equals(object obj)
@@ -59,6 +50,16 @@ namespace KeyToJoy.Mapping
                 return false;
 
             return action.Name == Name;
+        }
+
+        public override object Clone()
+        {
+            return new SequenceAction(Name, description)
+            {
+                ChildActions = ChildActions,
+                ImageResource = ImageResource,
+                Name = Name,
+            };
         }
     }
 }

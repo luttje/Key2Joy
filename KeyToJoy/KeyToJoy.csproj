@@ -215,7 +215,7 @@
     <Compile Include="Mapping\Actions\GamePad\GamePadActionControl.Designer.cs">
       <DependentUpon>GamePadActionControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Mapping\Actions\ISelectAndSetupAction.cs" />
+    <Compile Include="Mapping\Actions\IActionOptionsControl.cs" />
     <Compile Include="Mapping\Actions\Logic\AppCommandActionControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -242,7 +242,7 @@
     <Compile Include="Mapping\Actions\BaseAction.cs" />
     <Compile Include="Mapping\MappingAttribute.cs" />
     <Compile Include="Mapping\MappingPresetSerializationBinder.cs" />
-    <Compile Include="Mapping\Triggers\ISelectAndSetupTrigger.cs" />
+    <Compile Include="Mapping\Triggers\ITriggerOptionsControl.cs" />
     <Compile Include="Mapping\Triggers\Keyboard\KeyboardTriggerListener.cs" />
     <Compile Include="Mapping\Triggers\Mouse\MouseMoveTriggerListener.cs" />
     <Compile Include="Mapping\Triggers\Mouse\MouseButtonTriggerListener.cs" />
@@ -348,6 +348,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Mapping\Triggers\Mouse\MouseMoveTriggerOptionsControl.resx">
       <DependentUpon>MouseMoveTriggerOptionsControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Mapping\Triggers\Mouse\MouseButtonTriggerOptionsControl.resx">
       <DependentUpon>MouseButtonTriggerOptionsControl.cs</DependentUpon>

@@ -13,38 +13,42 @@ namespace KeyToJoy.Mapping
 {
     public partial class ActionControl : UserControl
     {
-        public BaseAction Action => BuildAction();
-
+        public BaseAction Action { get; private set; }
+        public event Action<BaseAction> ActionChanged;
         public bool IsTopLevel { get; set; }
 
         private bool isLoaded = false;
-        private ISelectAndSetupAction options;
+        private IActionOptionsControl options;
         private BaseAction selectedAction = null;
-
 
         public ActionControl()
         {
             InitializeComponent();
         }
-
-        private BaseAction BuildAction()
+        
+        private void BuildAction()
         {
-            if (cmbAction.SelectedItem == null)
-                return null;
+            if (cmbAction.SelectedItem == null) 
+            {
+                ActionChanged?.Invoke(null);
+                return;
+            }
 
             var selected = (KeyValuePair<Type, ActionAttribute>)cmbAction.SelectedItem;
             var selectedType = selected.Key;
             var attribute = selected.Value;
 
-            var action = (BaseAction)Activator.CreateInstance(selectedType, new object[]
-            {
-                attribute.Name
-            });
+            if (Action == null || Action.GetType() != selectedType)
+                Action = (BaseAction)Activator.CreateInstance(selectedType, new object[]
+                {
+                    attribute.NameFormat,
+                    attribute.Description
+                });
 
             if (options != null)
-                options.Setup(action);
+                options.Setup(Action);
 
-            return action;
+            ActionChanged?.Invoke(Action);
         }
 
         internal void SelectAction(BaseAction action)
@@ -96,15 +100,22 @@ namespace KeyToJoy.Mapping
                 return;
             
             var options = MappingForm.BuildOptionsForComboBox<ActionAttribute>(cmbAction, pnlActionOptions);
+
+            if (options != null)
+            {
+                this.options = options as IActionOptionsControl;
+
+                if (this.options != null)
+                {
+                    if(selectedAction != null)
+                        this.options.Select(selectedAction);
+
+                    this.options.OptionsChanged += () => BuildAction();
+                }
+            }
             
-            if (options == null)
-                return;
-
-            this.options = options as ISelectAndSetupAction;
-
-            if (this.options != null && selectedAction != null)
-                this.options.Select(selectedAction);
-
+            BuildAction();
+            
             selectedAction = null;
             PerformLayout();
         }

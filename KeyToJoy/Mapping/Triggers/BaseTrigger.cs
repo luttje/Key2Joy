@@ -24,10 +24,13 @@ namespace KeyToJoy.Mapping
         internal abstract TriggerListener GetTriggerListener();
 
         public string ImageResource { get; set; }
+        
+        protected string description;
 
-        internal BaseTrigger(string name)
+        internal BaseTrigger(string name, string description)
         {
             Name = name;
+            this.description = description;
         }
 
         public virtual Image GetImage()

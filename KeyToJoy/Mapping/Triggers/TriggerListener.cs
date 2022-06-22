@@ -21,13 +21,26 @@ namespace KeyToJoy.Mapping
 
             Start();
         }
+        internal void StopIfNotStopped()
+        {
+            if (!IsStarted)
+                return;
+
+            Stop();
+        }
+
 
         protected virtual void Start()
         {
-            IsStarted = true;    
+            IsStarted = true;
         }
 
-        internal abstract void Stop();
+
+        protected virtual void Stop()
+        {
+            IsStarted = false;
+        }
+
         internal abstract void AddMappedOption(MappedOption mappedOption);
 
         internal virtual void WndProc(ref Message m)

@@ -11,8 +11,10 @@ using System.Windows.Forms;
 
 namespace KeyToJoy.Mapping
 {
-    public partial class WaitActionControl : UserControl, ISelectAndSetupAction
+    public partial class WaitActionControl : UserControl, IActionOptionsControl
     {
+        public event Action OptionsChanged;
+        
         public WaitActionControl()
         {
             InitializeComponent();
@@ -38,7 +40,13 @@ namespace KeyToJoy.Mapping
             {
                 e.Handled = true;
                 SystemSounds.Hand.Play();
+                return;
             }
+        }
+
+        private void nudWaitTime_ValueChanged(object sender, EventArgs e)
+        {
+            OptionsChanged?.Invoke();
         }
     }
 }

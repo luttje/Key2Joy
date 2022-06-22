@@ -8,8 +8,10 @@ using KeyToJoy.Mapping;
 
 namespace KeyToJoy
 {
-    public partial class KeyboardTriggerOptionsControl : UserControl, ISelectAndSetupTrigger
+    public partial class KeyboardTriggerOptionsControl : UserControl, ITriggerOptionsControl
     {
+        public event Action OptionsChanged;
+        
         private Keys keys;
 
         public KeyboardTriggerOptionsControl()
@@ -58,6 +60,7 @@ namespace KeyToJoy
             }
 
             txtKeyBind.Text = keys.ToString();
+            OptionsChanged?.Invoke();
         }
 
         protected override void WndProc(ref Message m)

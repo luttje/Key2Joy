@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace KeyToJoy.Mapping
 {
-    internal interface ISelectAndSetupAction
+    internal interface IActionOptionsControl
     {
         /// <summary>
         /// Called to setup the options panel with a action
@@ -19,5 +19,11 @@ namespace KeyToJoy.Mapping
         /// </summary>
         /// <param name="action"></param>
         void Setup(BaseAction action);
+
+
+        /// <summary>
+        /// Called when the options on an action change
+        /// </summary>
+        event Action OptionsChanged;
     }
 }

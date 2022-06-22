@@ -40,10 +40,12 @@ namespace KeyToJoy.Mapping
             base.Start();
         }
 
-        internal override void Stop()
+        protected override void Stop()
         {
             instance = null;
             globalMouseButtonHook.Dispose();
+
+            base.Stop();
         }
 
         internal override void AddMappedOption(MappedOption mappedOption)

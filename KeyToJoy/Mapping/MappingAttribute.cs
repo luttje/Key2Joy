@@ -10,9 +10,14 @@ namespace KeyToJoy.Mapping
     public abstract class MappingAttribute : Attribute
     {
         /// <summary>
-        /// Name for the action (must be unique and constant)
+        /// Customizable name format for the action/trigger
         /// </summary>
-        public string Name { get; set; }
+        public string NameFormat { get; set; }
+
+        /// <summary>
+        /// Description for the action/trigger
+        /// </summary>
+        public string Description { get; set; }
 
         /// <summary>
         /// Which UserControl to load into the MappingForm for the user to set options.
@@ -21,7 +26,7 @@ namespace KeyToJoy.Mapping
 
         public override string ToString()
         {
-            return Name;
+            return Description;
         }
     }
 }

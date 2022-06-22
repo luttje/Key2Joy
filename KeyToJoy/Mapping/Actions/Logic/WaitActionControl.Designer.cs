@@ -56,6 +56,7 @@
             0,
             0,
             0});
+            this.nudWaitTime.ValueChanged += new System.EventHandler(this.nudWaitTime_ValueChanged);
             this.nudWaitTime.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtKeyBind_KeyPress);
             // 
             // WaitActionControl

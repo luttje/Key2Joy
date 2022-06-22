@@ -1,24 +1,26 @@
 ﻿using System;
-using Linearstar.Windows.RawInput.Native;
 using System.Windows.Forms;
 using Newtonsoft.Json;
 
 namespace KeyToJoy.Mapping
 {
     [Trigger(
-        Name = "Keyboard Event",
+        Description = "Keyboard Event",
         OptionsUserControl = typeof(KeyboardTriggerOptionsControl)
     )]
     public class KeyboardTrigger : BaseTrigger, IEquatable<KeyboardTrigger>
     {
         public const string PREFIX_UNIQUE = nameof(KeyboardTrigger);
 
+        private Keys keys;
+
+
         [JsonProperty]
         public Keys Keys { get; set; }
 
         [JsonConstructor]
-        public KeyboardTrigger(string name)
-            : base(name)
+        public KeyboardTrigger(string name, string description)
+            : base(name, description)
         { }
 
         internal override TriggerListener GetTriggerListener()
@@ -46,7 +48,7 @@ namespace KeyToJoy.Mapping
 
         public override string ToString()
         {
-            return $"(keyboard) Move {Keys}";
+            return $"(keyboard) {Keys}";
         }
 
         public override object Clone()
