@@ -35,6 +35,8 @@
             this.pnlActionManagement = new System.Windows.Forms.Panel();
             this.btnAddAction = new System.Windows.Forms.Button();
             this.dgvMappings = new System.Windows.Forms.DataGridView();
+            this.colTrigger = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colControl = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel1 = new System.Windows.Forms.Panel();
             this.txtPresetName = new System.Windows.Forms.TextBox();
             this.lblPresetName = new System.Windows.Forms.Label();
@@ -49,8 +51,6 @@
             this.dbgLabel = new System.Windows.Forms.Label();
             this.pctController = new System.Windows.Forms.PictureBox();
             this.btnAbout = new System.Windows.Forms.Button();
-            this.colTrigger = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colControl = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
             this.splitContainer.Panel2.SuspendLayout();
@@ -133,6 +133,23 @@
             this.dgvMappings.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.DgvMappings_CellFormatting);
             this.dgvMappings.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.DgvMappings_CellMouseDoubleClick);
             this.dgvMappings.SelectionChanged += new System.EventHandler(this.DgvMappings_SelectionChanged);
+            // 
+            // colTrigger
+            // 
+            this.colTrigger.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colTrigger.HeaderText = "Trigger";
+            this.colTrigger.Name = "colTrigger";
+            this.colTrigger.ReadOnly = true;
+            this.colTrigger.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colTrigger.Width = 46;
+            // 
+            // colControl
+            // 
+            this.colControl.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colControl.HeaderText = "Action";
+            this.colControl.Name = "colControl";
+            this.colControl.ReadOnly = true;
+            this.colControl.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // panel1
             // 
@@ -279,7 +296,6 @@
             this.pctController.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pctController.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pctController.ErrorImage = null;
-            this.pctController.Image = global::KeyToJoy.Properties.Resources.XboxSeriesX_Diagram;
             this.pctController.InitialImage = null;
             this.pctController.Location = new System.Drawing.Point(0, 0);
             this.pctController.Name = "pctController";
@@ -298,23 +314,6 @@
             this.btnAbout.Text = "Credits";
             this.btnAbout.UseVisualStyleBackColor = true;
             this.btnAbout.Click += new System.EventHandler(this.BtnAbout_Click);
-            // 
-            // colTrigger
-            // 
-            this.colTrigger.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.colTrigger.HeaderText = "Trigger";
-            this.colTrigger.Name = "colTrigger";
-            this.colTrigger.ReadOnly = true;
-            this.colTrigger.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.colTrigger.Width = 46;
-            // 
-            // colControl
-            // 
-            this.colControl.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colControl.HeaderText = "Action";
-            this.colControl.Name = "colControl";
-            this.colControl.ReadOnly = true;
-            this.colControl.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // MainForm
             // 

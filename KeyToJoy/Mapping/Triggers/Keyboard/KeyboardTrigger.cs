@@ -17,8 +17,8 @@ namespace KeyToJoy.Mapping
         public Keys Keys { get; set; }
 
         [JsonConstructor]
-        public KeyboardTrigger(string name, string imageResource)
-            : base(name, imageResource)
+        public KeyboardTrigger(string name)
+            : base(name)
         { }
 
         internal override string GetUniqueKey()

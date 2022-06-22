@@ -13,8 +13,8 @@ namespace KeyToJoy.Mapping
         [JsonProperty]
         public string Command { get; set; }
 
-        public AppCommandAction(string name, string imagePath)
-            : base(name, imagePath)
+        public AppCommandAction(string name)
+            : base(name)
         { }
 
         internal override async Task Execute(InputBag inputBag)

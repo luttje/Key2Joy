@@ -15,11 +15,6 @@ namespace KeyToJoy.Mapping
         public string Name { get; set; }
 
         /// <summary>
-        /// String pointing to an optional image in resources
-        /// </summary>
-        public string ImagePath { get; set; } = null;
-
-        /// <summary>
         /// Which UserControl to load into the MappingForm for the user to set options.
         /// </summary>
         public Type OptionsUserControl { get; set; }

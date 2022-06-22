@@ -2,6 +2,7 @@
 using SimWinInput;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -15,12 +16,101 @@ namespace KeyToJoy.Mapping
     )]
     internal class GamePadAction : BaseAction
     {
-        [JsonProperty]
-        public GamePadControl Control { get; set; }
+        private GamePadControl _control;
 
-        public GamePadAction(string name, string imageResource)
-            : base(name, imageResource)
+        [JsonProperty]
+        public GamePadControl Control
         {
+            get { return _control; }
+            set
+            {
+                _control = value;
+                OnControlChanged();
+            }
+        }
+
+        public GamePadAction(string name)
+            : base(name)
+        {
+        }
+
+        private void OnControlChanged()
+        {
+            switch (Control)
+            {
+                case GamePadControl.A:
+                    ImageResource = "XboxSeriesX_A";
+                    break;
+                case GamePadControl.B:
+                    ImageResource = "XboxSeriesX_B";
+                    break;
+                case GamePadControl.Back:
+                    ImageResource = "XboxSeriesX_Back";
+                    break;
+                case GamePadControl.DPadDown:
+                    ImageResource = "XboxSeriesX_DPadDown";
+                    break;
+                case GamePadControl.DPadLeft:
+                    ImageResource = "XboxSeriesX_DPadLeft";
+                    break;
+                case GamePadControl.DPadRight:
+                    ImageResource = "XboxSeriesX_DPadRight";
+                    break;
+                case GamePadControl.DPadUp:
+                    ImageResource = "XboxSeriesX_DPadUp";
+                    break;
+                case GamePadControl.LeftShoulder:
+                    ImageResource = "XboxSeriesX_LeftShoulder";
+                    break;
+                case GamePadControl.LeftStickClick:
+                    ImageResource = "XboxSeriesX_LeftStickClick";
+                    break;
+                case GamePadControl.LeftStickDown:
+                    ImageResource = "XboxSeriesX_LeftStickDown";
+                    break;
+                case GamePadControl.LeftStickLeft:
+                    ImageResource = "XboxSeriesX_LeftStickLeft";
+                    break;
+                case GamePadControl.LeftStickRight:
+                    ImageResource = "XboxSeriesX_LeftStickRight";
+                    break;
+                case GamePadControl.LeftStickUp:
+                    ImageResource = "XboxSeriesX_LeftStickUp";
+                    break;
+                case GamePadControl.LeftTrigger:
+                    ImageResource = "XboxSeriesX_LeftTrigger";
+                    break;
+                case GamePadControl.RightShoulder:
+                    ImageResource = "XboxSeriesX_RightShoulder";
+                    break;
+                case GamePadControl.RightStickClick:
+                    ImageResource = "XboxSeriesX_RightStickClick";
+                    break;
+                case GamePadControl.RightStickDown:
+                    ImageResource = "XboxSeriesX_RightStickDown";
+                    break;
+                case GamePadControl.RightStickLeft:
+                    ImageResource = "XboxSeriesX_RightStickLeft";
+                    break;
+                case GamePadControl.RightStickRight:
+                    ImageResource = "XboxSeriesX_RightStickRight";
+                    break;
+                case GamePadControl.RightStickUp:
+                    ImageResource = "XboxSeriesX_RightStickUp";
+                    break;
+                case GamePadControl.RightTrigger:
+                    ImageResource = "XboxSeriesX_RightTrigger";
+                    break;
+                case GamePadControl.Start:
+                    ImageResource = "XboxSeriesX_Start";
+                    break;
+                case GamePadControl.X:
+                    ImageResource = "XboxSeriesX_X";
+                    break;
+                case GamePadControl.Y:
+                    ImageResource = "XboxSeriesX_Y";
+                    break;
+            }
         }
 
         internal override async Task Execute(InputBag inputBag)

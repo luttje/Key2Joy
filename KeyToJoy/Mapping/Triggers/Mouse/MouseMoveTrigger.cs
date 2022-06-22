@@ -15,8 +15,8 @@ namespace KeyToJoy.Mapping
         public AxisDirection AxisBinding { get; set; }
 
         [JsonConstructor]
-        public MouseMoveTrigger(string name, string imageResource)
-            : base(name, imageResource)
+        public MouseMoveTrigger(string name)
+            : base(name)
         { }
 
         internal override string GetUniqueKey()

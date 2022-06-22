@@ -17,8 +17,8 @@ namespace KeyToJoy.Mapping
         [JsonProperty]
         public TimeSpan WaitTime;
 
-        public WaitAction(string name, string imageResource)
-            : base(name, imageResource)
+        public WaitAction(string name)
+            : base(name)
         {
         }
 

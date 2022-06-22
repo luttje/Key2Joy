@@ -38,8 +38,7 @@ namespace KeyToJoy.Mapping
 
             var action = (BaseAction)Activator.CreateInstance(selectedType, new object[]
             {
-                attribute.Name,
-                attribute.ImagePath,
+                attribute.Name
             });
 
             if (options != null)

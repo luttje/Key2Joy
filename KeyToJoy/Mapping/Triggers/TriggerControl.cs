@@ -35,8 +35,7 @@ namespace KeyToJoy.Mapping
 
             var trigger = (BaseTrigger)Activator.CreateInstance(selectedType, new object[]
             {
-                attribute.Name as string,
-                attribute.ImagePath as string,
+                attribute.Name
             });
 
             if (options != null)

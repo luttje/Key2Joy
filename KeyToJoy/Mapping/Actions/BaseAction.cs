@@ -14,13 +14,12 @@ namespace KeyToJoy.Mapping
     {
         [JsonProperty]
         internal string Name { get; set; }
-        
-        private string imageResource;
 
-        public BaseAction(string name, string imageResource)
+        public string ImageResource { get; set; }
+
+        public BaseAction(string name)
         {
-            this.Name = name;
-            this.imageResource = imageResource;
+            Name = name;
         }
 
         internal abstract Task Execute(InputBag inputBag);
@@ -37,8 +36,8 @@ namespace KeyToJoy.Mapping
 
         public virtual Image GetImage()
         {
-            return imageResource != null
-                ? (Bitmap)Resources.ResourceManager.GetObject(imageResource)
+            return ImageResource != null
+                ? (Bitmap)Resources.ResourceManager.GetObject(ImageResource)
                 : null;            
         }
 

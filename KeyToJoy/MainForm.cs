@@ -6,6 +6,7 @@ using System.Drawing;
 using KeyToJoy.Input;
 using System.Diagnostics;
 using KeyToJoy.Mapping;
+using KeyToJoy.Properties;
 
 namespace KeyToJoy
 {
@@ -121,8 +122,7 @@ namespace KeyToJoy
                 return;
 
             var image = mappedOption.Action.GetImage();
-            if (image != null)
-                pctController.Image = image;
+            pctController.Image = image ?? Resources.NoImage;
         }
 
         private void DgvMappings_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)

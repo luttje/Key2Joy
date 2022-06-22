@@ -16,8 +16,8 @@ namespace KeyToJoy.Mapping
         [JsonProperty(ItemTypeNameHandling = TypeNameHandling.All)]
         public List<BaseAction> ChildActions;
 
-        public SequenceAction(string name, string imageResource)
-            : base(name, imageResource)
+        public SequenceAction(string name)
+            : base(name)
         {
         }
 

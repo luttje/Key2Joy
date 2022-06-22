@@ -15,28 +15,27 @@ namespace KeyToJoy.Mapping
         // Will be used to quickly lookup input triggers and their corresponding action
         internal abstract string GetUniqueKey();
 
-        private string imageResource;
+        public string ImageResource { get; set; }
 
-        internal BaseTrigger(string name, string imageResource)
+        internal BaseTrigger(string name)
         {
-            this.Name = name;
-            this.imageResource = imageResource;
+            Name = name;
         }
 
         public virtual Image GetImage()
         {
-            return imageResource != null
-                ? (Bitmap)Resources.ResourceManager.GetObject(imageResource)
+            return ImageResource != null
+                ? (Bitmap)Resources.ResourceManager.GetObject(ImageResource)
                 : null;
         }
 
         public static bool operator ==(BaseTrigger a, BaseTrigger b)
         {
-            if (System.Object.ReferenceEquals(a, b))
+            if (ReferenceEquals(a, b))
                 return true;
 
-            if (System.Object.ReferenceEquals(a, null)
-                || System.Object.ReferenceEquals(b, null))
+            if (ReferenceEquals(a, null)
+                || ReferenceEquals(b, null))
                 return false;
 
             return a.Equals(b);
