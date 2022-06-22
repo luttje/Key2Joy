@@ -65,7 +65,6 @@
             this.Name = "MouseButtonTriggerOptionsControl";
             this.Padding = new System.Windows.Forms.Padding(5);
             this.Size = new System.Drawing.Size(394, 26);
-            this.ControlRemoved += new System.Windows.Forms.ControlEventHandler(this.MouseButtonTriggerOptionsControl_ControlRemoved);
             this.ResumeLayout(false);
             this.PerformLayout();
 

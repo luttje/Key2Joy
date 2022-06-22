@@ -12,8 +12,6 @@ namespace KeyToJoy.Mapping
     [JsonObject(MemberSerialization.OptIn)]
     public abstract class BaseAction
     {
-        internal static List<BaseAction> All = new List<BaseAction>();
-
         [JsonProperty]
         internal string Name { get; set; }
         
@@ -23,13 +21,6 @@ namespace KeyToJoy.Mapping
         {
             this.Name = name;
             this.imageResource = imageResource;
-        }
-
-        public static BaseAction Register(BaseAction bindableAction)
-        {
-            All.Add(bindableAction);
-
-            return bindableAction;
         }
 
         internal abstract Task Execute(InputBag inputBag);
@@ -53,11 +44,11 @@ namespace KeyToJoy.Mapping
 
         public static bool operator ==(BaseAction a, BaseAction b)
         {
-            if (System.Object.ReferenceEquals(a, b))
+            if (ReferenceEquals(a, b))
                 return true;
 
-            if (System.Object.ReferenceEquals(a, null)
-                || System.Object.ReferenceEquals(b, null))
+            if (ReferenceEquals(a, null)
+                || ReferenceEquals(b, null))
                 return false;
 
             return a.Equals(b);

@@ -11,11 +11,18 @@ using System.Windows.Forms;
 
 namespace KeyToJoy.Mapping
 {
-    public partial class WaitActionControl : UserControl
+    public partial class WaitActionControl : UserControl, ISetupAction
     {
         public WaitActionControl()
         {
             InitializeComponent();
+        }
+
+        public void Setup(BaseAction action)
+        {
+            var thisAction = (WaitAction)action;
+
+            thisAction.WaitTime = TimeSpan.FromMilliseconds((double)nudWaitTime.Value);
         }
 
         private void txtKeyBind_KeyPress(object sender, KeyPressEventArgs e)

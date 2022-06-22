@@ -10,15 +10,22 @@ using System.Windows.Forms;
 
 namespace KeyToJoy.Mapping
 {
-    public partial class GamePadActionControl : UserControl
+    public partial class GamePadActionControl : UserControl, ISetupAction
     {
         public GamePadActionControl()
         {
             InitializeComponent();
 
-            var names = Enum.GetNames(typeof(SimWinInput.GamePadControl));
+            var controls = Enum.GetValues(typeof(SimWinInput.GamePadControl));
 
-            cmbGamePad.DataSource = names;
+            cmbGamePad.DataSource = controls;
+        }
+
+        public void Setup(BaseAction action)
+        {
+            var thisAction = (GamePadAction)action;
+
+            thisAction.Control = (SimWinInput.GamePadControl)cmbGamePad.SelectedItem;
         }
     }
 }

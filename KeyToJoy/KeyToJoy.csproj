@@ -236,6 +236,7 @@
     <Compile Include="Mapping\Actions\BaseAction.cs" />
     <Compile Include="Mapping\MappingAttribute.cs" />
     <Compile Include="Mapping\Triggers\ISetupTrigger.cs" />
+    <Compile Include="Mapping\Triggers\Mouse\MouseButtons.cs" />
     <Compile Include="Mapping\Triggers\TriggerControl.cs">
       <SubType>UserControl</SubType>
     </Compile>

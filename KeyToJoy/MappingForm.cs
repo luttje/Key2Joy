@@ -14,9 +14,12 @@ namespace KeyToJoy
 {
     public partial class MappingForm : Form
     {
+        public MappedOption MappedOption { get; private set; } = null;
+
         public MappingForm()
         {
             InitializeComponent();
+            DialogResult = DialogResult.Cancel;
 
             actionControl.IsTopLevel = true;
         }
@@ -24,7 +27,13 @@ namespace KeyToJoy
         public static UserControl BuildOptionsForComboBox<TAttribute>(ComboBox comboBox, Panel optionsPanel)
             where TAttribute : MappingAttribute
         {
-            optionsPanel.Controls.Clear();
+            var optionsUserControl = optionsPanel.Controls.OfType<UserControl>().FirstOrDefault();
+
+            if (optionsUserControl != null) 
+            {
+                optionsPanel.Controls.Remove(optionsUserControl);
+                optionsUserControl.Dispose();
+            }
 
             if (comboBox.SelectedItem == null)
                 return null;
@@ -36,7 +45,7 @@ namespace KeyToJoy
             if (attribute.OptionsUserControl == null)
                 return null;
             
-            var optionsUserControl = (UserControl)Activator.CreateInstance(attribute.OptionsUserControl);
+            optionsUserControl = (UserControl)Activator.CreateInstance(attribute.OptionsUserControl);
             optionsPanel.Controls.Add(optionsUserControl);
             optionsUserControl.Dock = DockStyle.Top;
 
@@ -59,6 +68,15 @@ namespace KeyToJoy
                 MessageBox.Show("You must select an action!", "No action selected!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+
+            MappedOption = new MappedOption()
+            {
+                Trigger = trigger,
+                Action = action
+            };
+            DialogResult = DialogResult.OK;
+
+            Close();
         }
     }
 }

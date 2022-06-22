@@ -8,7 +8,7 @@ using System.Drawing;
 namespace KeyToJoy.Mapping
 {
     [JsonObject(MemberSerialization.OptIn)]
-    internal class MappedOption : ICloneable
+    public class MappedOption : ICloneable
     {
         [JsonProperty(TypeNameHandling = TypeNameHandling.All)]
         public BaseAction Action;

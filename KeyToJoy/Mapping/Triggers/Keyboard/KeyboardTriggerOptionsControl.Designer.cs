@@ -64,7 +64,6 @@
             this.Name = "KeyboardTriggerOptionsControl";
             this.Padding = new System.Windows.Forms.Padding(5);
             this.Size = new System.Drawing.Size(290, 27);
-            this.ControlRemoved += new System.Windows.Forms.ControlEventHandler(this.KeyboardTriggerOptionsControl_ControlRemoved);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -1,13 +1,11 @@
 ﻿using KeyToJoy.Util;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using SimWinInput;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Windows.Forms;
 
 namespace KeyToJoy.Mapping
 {
@@ -22,7 +20,7 @@ namespace KeyToJoy.Mapping
         public static BindingList<MappingPreset> All { get; } = new BindingList<MappingPreset>();
 
         [JsonProperty]
-        public List<MappedOption> MappedOptions { get; set; } = new List<MappedOption>();
+        public BindingList<MappedOption> MappedOptions { get; set; } = new BindingList<MappedOption>();
 
         [JsonProperty]
         public string Name { get; set; }
@@ -36,14 +34,14 @@ namespace KeyToJoy.Mapping
         private Dictionary<string, MappedOption> lookup = new Dictionary<string, MappedOption>();
 
         [JsonConstructor]
-        internal MappingPreset(string name, List<MappedOption> mappedOptions = null)
+        internal MappingPreset(string name, BindingList<MappedOption> mappedOptions = null)
         {
             Name = name;
 
             var directory = GetSaveDirectory();
 
             if (filePath == null)
-                filePath = Util.FileSystem.FindNonExistingFile(Path.Combine(directory, $"profile-%VERSION%.{EXTENSION}.json"));
+                filePath = FileSystem.FindNonExistingFile(Path.Combine(directory, $"profile-%VERSION%.{EXTENSION}.json"));
 
             if (mappedOptions != null)
             {
@@ -52,30 +50,6 @@ namespace KeyToJoy.Mapping
                     MappedOptions.Add((MappedOption)mappedOption.Clone());
                 }
             }
-        }
-
-        internal static void Add(MappingPreset preset, bool blockSave = false)
-        {
-            // Ensure all actions in presets are loaded from the available actions in this app
-            foreach (var action in BaseAction.All)
-            {
-                var mappedOption = preset.MappedOptions.Where(b => b.Action == action).FirstOrDefault();
-
-                if(mappedOption == null) { 
-                    preset.MappedOptions.Add(new MappedOption
-                    {
-                        Action = action,
-                        Trigger = null
-                    });
-                }
-                else 
-                    mappedOption.Action = action;
-            }
-
-            All.Add(preset);
-
-            if (!blockSave)
-                preset.Save();
         }
 
         internal void AddMapping(MappedOption mappedOption)
@@ -91,10 +65,12 @@ namespace KeyToJoy.Mapping
 
         internal void CacheLookup(MappedOption mappedOption)
         {
-            if (mappedOption.Trigger == null)
-                return;
+            var key = mappedOption.Trigger.GetUniqueKey();
 
-            lookup.Add(mappedOption.Trigger.GetUniqueKey(), mappedOption);
+            if (lookup.ContainsKey(key))
+                lookup[key] = mappedOption;
+            else
+                lookup.Add(key, mappedOption);
         }
 
         private void CacheAllLookup()
@@ -122,6 +98,23 @@ namespace KeyToJoy.Mapping
             }
         }
 
+        private bool PostLoad(string filePath)
+        {
+            this.filePath = filePath;
+
+            CacheAllLookup();
+
+            return true;
+        }
+
+        internal static void Add(MappingPreset preset, bool blockSave = false)
+        {
+            All.Add(preset);
+
+            if (!blockSave)
+                preset.Save();
+        }
+
         internal static List<MappingPreset> LoadAll()
         {
             var presets = new List<MappingPreset>();
@@ -142,15 +135,6 @@ namespace KeyToJoy.Mapping
             }
 
             return presets;
-        }
-
-        private bool PostLoad(string filePath)
-        {
-            this.filePath = filePath;
-
-            CacheAllLookup();
-
-            return true;
         }
 
         private static JsonSerializer GetSerializer()

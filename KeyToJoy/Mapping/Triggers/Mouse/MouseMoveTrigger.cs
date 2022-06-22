@@ -9,47 +9,33 @@ namespace KeyToJoy.Mapping
     )]
     public class MouseMoveTrigger : BaseTrigger
     {
-        const string PREFIX = "Mouse Move ";
-        private AxisDirection axisBinding;
+        public const string PREFIX_UNIQUE = nameof(MouseButtonTrigger);
+
+        [JsonProperty]
+        public AxisDirection AxisBinding { get; set; }
 
         [JsonConstructor]
         public MouseMoveTrigger(string name, string imageResource)
             : base(name, imageResource)
-        {
-            try
-            {
-                this.axisBinding = (AxisDirection)Enum.Parse(typeof(AxisDirection), name.Replace(PREFIX, ""));
-            }
-            catch(ArgumentException ex)
-            {
-                // Handle profile file versions before 2
-                var oldPrefix = "Mouse ";
-                this.axisBinding = (AxisDirection)Enum.Parse(typeof(AxisDirection), name.Replace(oldPrefix, ""));
-            }
-        }
-
-        //internal MouseMoveTrigger(AxisDirection axisBinding)
-        //{
-        //    this.axisBinding = axisBinding;
-        //}
+        { }
 
         internal override string GetUniqueKey()
         {
-            return ToString();
+            return $"{PREFIX_UNIQUE}_{AxisBinding}";
         }
 
         public override bool Equals(object obj)
         {
             if (!(obj is MouseMoveTrigger other)) return false;
 
-            return axisBinding == other.axisBinding;
+            return AxisBinding == other.AxisBinding;
         }
 
         public override string ToString()
         {
-            var axis = Enum.GetName(typeof(AxisDirection), axisBinding);
+            var axis = Enum.GetName(typeof(AxisDirection), AxisBinding);
 
-            return PREFIX + axis;
+            return axis;
         }
 
         public override object Clone()

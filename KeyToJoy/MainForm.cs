@@ -32,10 +32,30 @@ namespace KeyToJoy
 
         private void ReloadSelectedPreset()
         {
-            //TODO: Refactor
-            //selectedPreset = cmbPreset.SelectedItem as MappingPreset;
-            //dgvMappings.DataSource = selectedPreset.MappedOptions;
-            //txtPresetName.Text = selectedPreset.Name;
+            selectedPreset = cmbPreset.SelectedItem as MappingPreset;
+
+            if (selectedPreset == null)
+                return;
+            
+            dgvMappings.DataSource = selectedPreset.MappedOptions;
+            txtPresetName.Text = selectedPreset.Name;
+        }
+
+        private void btnAddAction_Click(object sender, EventArgs e)
+        {
+            chkEnabled.Checked = false;
+            var mappingForm = new MappingForm();
+            var result = mappingForm.ShowDialog();
+            RefreshInputCaptures();
+
+            if (result == DialogResult.Cancel)
+                return;
+
+            var mappedOption = mappingForm.MappedOption;
+            selectedPreset.AddMapping(mappedOption);
+            
+            dgvMappings.Update();
+            selectedPreset.Save();
         }
 
         private void ChangeMappedOption(MappedOption mappedOption)
@@ -160,10 +180,12 @@ namespace KeyToJoy
 
         private void BtnCreate_Click(object sender, EventArgs e)
         {
-            var preset = new MappingPreset(txtPresetName.Text, selectedPreset.MappedOptions);
+            var preset = new MappingPreset(txtPresetName.Text, selectedPreset?.MappedOptions);
 
             MappingPreset.Add(preset);
+            
             cmbPreset.SelectedIndex = cmbPreset.Items.Count - 1;
+            ReloadSelectedPreset();
         }
 
         private void BtnAbout_Click(object sender, EventArgs e)
@@ -186,11 +208,6 @@ namespace KeyToJoy
         private void btnOpenFolder_Click(object sender, EventArgs e)
         {
             Process.Start(MappingPreset.GetSaveDirectory());
-        }
-
-        private void btnAddAction_Click(object sender, EventArgs e)
-        {
-            (new MappingForm()).ShowDialog();
         }
     }
 }

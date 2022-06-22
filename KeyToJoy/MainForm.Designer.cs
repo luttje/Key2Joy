@@ -105,11 +105,11 @@
             // btnAddAction
             // 
             this.btnAddAction.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnAddAction.Location = new System.Drawing.Point(451, 0);
+            this.btnAddAction.Location = new System.Drawing.Point(384, 0);
             this.btnAddAction.Name = "btnAddAction";
-            this.btnAddAction.Size = new System.Drawing.Size(82, 34);
+            this.btnAddAction.Size = new System.Drawing.Size(149, 34);
             this.btnAddAction.TabIndex = 0;
-            this.btnAddAction.Text = "Add Action";
+            this.btnAddAction.Text = "Create New Mapping";
             this.btnAddAction.UseVisualStyleBackColor = true;
             this.btnAddAction.Click += new System.EventHandler(this.btnAddAction_Click);
             // 

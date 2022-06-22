@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.lblInfo = new System.Windows.Forms.Label();
-            this.txtKeyBind = new System.Windows.Forms.TextBox();
+            this.nudWaitTime = new System.Windows.Forms.NumericUpDown();
             this.SuspendLayout();
             // 
             // lblInfo
@@ -43,22 +43,22 @@
             this.lblInfo.Text = "Time to wait in milliseconds:";
             this.lblInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // txtKeyBind
+            // nudWaitTime
             // 
-            this.txtKeyBind.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtKeyBind.Location = new System.Drawing.Point(145, 5);
-            this.txtKeyBind.Name = "txtKeyBind";
-            this.txtKeyBind.Size = new System.Drawing.Size(169, 20);
-            this.txtKeyBind.TabIndex = 11;
-            this.txtKeyBind.Text = "500";
-            this.txtKeyBind.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtKeyBind_KeyPress);
+            this.nudWaitTime.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.nudWaitTime.Location = new System.Drawing.Point(145, 5);
+            this.nudWaitTime.Name = "nudWaitTime";
+            this.nudWaitTime.Size = new System.Drawing.Size(169, 20);
+            this.nudWaitTime.TabIndex = 11;
+            this.nudWaitTime.Text = "500";
+            this.nudWaitTime.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtKeyBind_KeyPress);
             // 
             // WaitActionControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
-            this.Controls.Add(this.txtKeyBind);
+            this.Controls.Add(this.nudWaitTime);
             this.Controls.Add(this.lblInfo);
             this.Name = "WaitActionControl";
             this.Padding = new System.Windows.Forms.Padding(5);
@@ -70,6 +70,6 @@
 
         #endregion
         private System.Windows.Forms.Label lblInfo;
-        private System.Windows.Forms.TextBox txtKeyBind;
+        private System.Windows.Forms.NumericUpDown nudWaitTime;
     }
 }

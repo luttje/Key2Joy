@@ -10,13 +10,20 @@ using System.Windows.Forms;
 
 namespace KeyToJoy.Mapping
 {
-    public partial class SequenceActionControl : UserControl
+    public partial class SequenceActionControl : UserControl, ISetupAction
     {
         public SequenceActionControl()
         {
             InitializeComponent();
         }
 
+        public void Setup(BaseAction action)
+        {
+            var thisAction = (SequenceAction)action;
+
+            // TODO: Setup sub-actions here
+        }
+        
         private void btnAdd_Click(object sender, EventArgs e)
         {
 

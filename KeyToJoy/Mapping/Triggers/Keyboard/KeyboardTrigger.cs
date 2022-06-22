@@ -11,41 +11,19 @@ namespace KeyToJoy.Mapping
     )]
     public class KeyboardTrigger : BaseTrigger, IEquatable<KeyboardTrigger>
     {
-        private Keys keys;
+        public const string PREFIX_UNIQUE = nameof(KeyboardTrigger);
+
+        [JsonProperty]
+        public Keys Keys { get; set; }
 
         [JsonConstructor]
         public KeyboardTrigger(string name, string imageResource)
             : base(name, imageResource)
-        {
-            //this.keys = (Keys)Enum.Parse(typeof(Keys), name);
-        }
-
-        //internal KeyboardTrigger(Keys keys, RawKeyboardFlags? flags = null)
-        //{
-        //    this.keys = keys;
-
-        //    if (flags == null)
-        //        return;
-
-        //    if ((flags & RawKeyboardFlags.KeyE0) == RawKeyboardFlags.KeyE0)
-        //    {
-        //        if (keys == Keys.ControlKey)
-        //            this.keys = Keys.RControlKey;
-        //        if (keys == Keys.ShiftKey)
-        //            this.keys = Keys.RShiftKey;
-        //    }
-        //    else
-        //    {
-        //        if (keys == Keys.ControlKey)
-        //            this.keys = Keys.LControlKey;
-        //        if (keys == Keys.ShiftKey)
-        //            this.keys = Keys.LShiftKey;
-        //    }
-        //}
+        { }
 
         internal override string GetUniqueKey()
         {
-            return ToString();
+            return $"{PREFIX_UNIQUE}_{Keys}";
         }
 
         public override bool Equals(object obj)
@@ -58,12 +36,12 @@ namespace KeyToJoy.Mapping
 
         public bool Equals(KeyboardTrigger other)
         {
-            return keys == other.keys;
+            return Keys == other.Keys;
         }
 
         public override string ToString()
         {
-            return keys.ToString();
+            return Keys.ToString();
         }
 
         public override object Clone()
