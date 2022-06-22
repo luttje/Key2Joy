@@ -7,12 +7,17 @@ using System.Threading.Tasks;
 namespace KeyToJoy.Mapping
 {
     [AttributeUsage(AttributeTargets.Class)]
-    internal abstract class MappingAttribute : Attribute
+    public abstract class MappingAttribute : Attribute
     {
         /// <summary>
         /// Name for the action (must be unique and constant)
         /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// String pointing to an optional image in resources
+        /// </summary>
+        public string ImagePath { get; set; } = null;
 
         /// <summary>
         /// Which UserControl to load into the MappingForm for the user to set options.

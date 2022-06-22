@@ -1,4 +1,4 @@
-﻿namespace KeyToJoy.Mapping.Actions.Logic
+﻿namespace KeyToJoy.Mapping
 {
     partial class WaitActionControl
     {
@@ -46,7 +46,6 @@
             // txtKeyBind
             // 
             this.txtKeyBind.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtKeyBind.Enabled = false;
             this.txtKeyBind.Location = new System.Drawing.Point(145, 5);
             this.txtKeyBind.Name = "txtKeyBind";
             this.txtKeyBind.Size = new System.Drawing.Size(169, 20);

@@ -8,6 +8,7 @@ namespace KeyToJoy.Mapping
 {
     [Action(
         Name = "Multiple Actions in Sequence",
+        Visibility = ActionVisibility.OnlyTopLevel,
         OptionsUserControl = typeof(SequenceActionControl)
     )]
     internal class SequenceAction : BaseAction
@@ -15,12 +16,17 @@ namespace KeyToJoy.Mapping
         [JsonProperty(ItemTypeNameHandling = TypeNameHandling.All)]
         public List<BaseAction> ChildActions;
 
-        public SequenceAction(string name, string imagePath, [JsonProperty(ItemTypeNameHandling = TypeNameHandling.All)] List<BaseAction> childActions)
-            : base(name, imagePath)
+        public SequenceAction(string name, string imageResource)
+            : base(name, imageResource)
         {
-            this.ChildActions = childActions;
         }
 
+        //public SequenceAction(string name, string imagePath, [JsonProperty(ItemTypeNameHandling = TypeNameHandling.All)] List<BaseAction> childActions)
+        //    : base(name, imagePath)
+        //{
+        //    this.ChildActions = childActions;
+        //}
+        
         internal override async Task Execute(InputBag inputBag)
         {
             foreach (var childAction in ChildActions)

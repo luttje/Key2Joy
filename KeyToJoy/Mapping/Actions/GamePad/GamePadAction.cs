@@ -18,11 +18,16 @@ namespace KeyToJoy.Mapping
         [JsonProperty]
         private GamePadControl Control;
 
-        public GamePadAction(string name, string imagePath, GamePadControl control)
-            : base(name, imagePath)
+        public GamePadAction(string name, string imageResource)
+            : base(name, imageResource)
         {
-            Control = control;
         }
+
+        //public GamePadAction(string name, string imageResource, GamePadControl control)
+        //    : base(name, imageResource)
+        //{
+        //    Control = control;
+        //}
 
         internal override async Task Execute(InputBag inputBag)
         {

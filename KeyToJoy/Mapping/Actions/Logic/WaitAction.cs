@@ -9,18 +9,24 @@ namespace KeyToJoy.Mapping
 {
     [Action(
         Name = "Wait for a specified duration",
-        IsTopLevel = false
+        Visibility = ActionVisibility.UnlessTopLevel,
+        OptionsUserControl = typeof(WaitActionControl)
     )]
     internal class WaitAction : BaseAction
     {
         [JsonProperty]
         public TimeSpan WaitTime;
 
-        public WaitAction(string name, string imagePath, TimeSpan waitTime)
-            : base(name, imagePath)
+        public WaitAction(string name, string imageResource)
+            : base(name, imageResource)
         {
-            this.WaitTime = waitTime;
         }
+
+        //public WaitAction(string name, string imagePath, TimeSpan waitTime)
+        //    : base(name, imagePath)
+        //{
+        //    this.WaitTime = waitTime;
+        //}
 
         internal override Task Execute(InputBag inputBag)
         {

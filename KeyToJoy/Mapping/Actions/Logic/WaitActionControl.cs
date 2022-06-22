@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace KeyToJoy.Mapping.Actions.Logic
+namespace KeyToJoy.Mapping
 {
     public partial class WaitActionControl : UserControl
     {

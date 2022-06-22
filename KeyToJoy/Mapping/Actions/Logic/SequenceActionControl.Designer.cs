@@ -36,7 +36,7 @@
             this.pnlPadding = new System.Windows.Forms.Panel();
             this.grpSequenceActionOptions = new System.Windows.Forms.GroupBox();
             this.pnlActionOptions = new System.Windows.Forms.Panel();
-            this.actionControl = new KeyToJoy.ActionControl();
+            this.actionControl = new KeyToJoy.Mapping.ActionControl();
             this.pnlActions.SuspendLayout();
             this.pnlPadding.SuspendLayout();
             this.grpSequenceActionOptions.SuspendLayout();
@@ -75,22 +75,26 @@
             // btnRemove
             // 
             this.btnRemove.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnRemove.ForeColor = System.Drawing.Color.Black;
             this.btnRemove.Location = new System.Drawing.Point(199, 0);
             this.btnRemove.Name = "btnRemove";
             this.btnRemove.Size = new System.Drawing.Size(140, 29);
             this.btnRemove.TabIndex = 18;
             this.btnRemove.Text = "Remove";
             this.btnRemove.UseVisualStyleBackColor = true;
+            this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
             // 
             // btnAdd
             // 
             this.btnAdd.Dock = System.Windows.Forms.DockStyle.Left;
+            this.btnAdd.ForeColor = System.Drawing.Color.Black;
             this.btnAdd.Location = new System.Drawing.Point(0, 0);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(140, 29);
             this.btnAdd.TabIndex = 17;
             this.btnAdd.Text = "Add";
             this.btnAdd.UseVisualStyleBackColor = true;
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
             // pnlPadding
             // 
@@ -107,7 +111,6 @@
             // grpSequenceActionOptions
             // 
             this.grpSequenceActionOptions.AutoSize = true;
-            this.grpSequenceActionOptions.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.grpSequenceActionOptions.Controls.Add(this.actionControl);
             this.grpSequenceActionOptions.Controls.Add(this.pnlActionOptions);
             this.grpSequenceActionOptions.Dock = System.Windows.Forms.DockStyle.Top;

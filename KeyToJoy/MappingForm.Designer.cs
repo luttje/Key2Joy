@@ -30,17 +30,14 @@
         {
             this.pnlAction = new System.Windows.Forms.Panel();
             this.grpAction = new System.Windows.Forms.GroupBox();
-            this.actionControl = new KeyToJoy.ActionControl();
+            this.actionControl = new KeyToJoy.Mapping.ActionControl();
             this.btnSaveMapping = new System.Windows.Forms.Button();
             this.grpTrigger = new System.Windows.Forms.GroupBox();
-            this.pnlTriggerOptions = new System.Windows.Forms.Panel();
-            this.pnlPadding = new System.Windows.Forms.Panel();
-            this.cmbTrigger = new System.Windows.Forms.ComboBox();
+            this.triggerControl = new KeyToJoy.Mapping.TriggerControl();
             this.pnlTrigger = new System.Windows.Forms.Panel();
             this.pnlAction.SuspendLayout();
             this.grpAction.SuspendLayout();
             this.grpTrigger.SuspendLayout();
-            this.pnlPadding.SuspendLayout();
             this.pnlTrigger.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -77,6 +74,7 @@
             this.actionControl.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.actionControl.BackColor = System.Drawing.Color.Black;
             this.actionControl.Dock = System.Windows.Forms.DockStyle.Top;
+            this.actionControl.IsTopLevel = false;
             this.actionControl.Location = new System.Drawing.Point(5, 18);
             this.actionControl.MinimumSize = new System.Drawing.Size(300, 32);
             this.actionControl.Name = "actionControl";
@@ -87,20 +85,19 @@
             // btnSaveMapping
             // 
             this.btnSaveMapping.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnSaveMapping.Enabled = false;
             this.btnSaveMapping.Location = new System.Drawing.Point(5, 139);
             this.btnSaveMapping.Name = "btnSaveMapping";
             this.btnSaveMapping.Size = new System.Drawing.Size(486, 44);
             this.btnSaveMapping.TabIndex = 91;
             this.btnSaveMapping.Text = "Save Mapping";
             this.btnSaveMapping.UseVisualStyleBackColor = true;
+            this.btnSaveMapping.Click += new System.EventHandler(this.btnSaveMapping_Click);
             // 
             // grpTrigger
             // 
             this.grpTrigger.AutoSize = true;
             this.grpTrigger.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.grpTrigger.Controls.Add(this.pnlTriggerOptions);
-            this.grpTrigger.Controls.Add(this.pnlPadding);
+            this.grpTrigger.Controls.Add(this.triggerControl);
             this.grpTrigger.Dock = System.Windows.Forms.DockStyle.Top;
             this.grpTrigger.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.grpTrigger.Location = new System.Drawing.Point(5, 5);
@@ -111,39 +108,16 @@
             this.grpTrigger.TabStop = false;
             this.grpTrigger.Text = "Trigger that starts the action(s)";
             // 
-            // pnlTriggerOptions
+            // triggerControl
             // 
-            this.pnlTriggerOptions.AutoSize = true;
-            this.pnlTriggerOptions.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.pnlTriggerOptions.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlTriggerOptions.Location = new System.Drawing.Point(5, 49);
-            this.pnlTriggerOptions.Name = "pnlTriggerOptions";
-            this.pnlTriggerOptions.Size = new System.Drawing.Size(466, 0);
-            this.pnlTriggerOptions.TabIndex = 1;
-            // 
-            // pnlPadding
-            // 
-            this.pnlPadding.AutoSize = true;
-            this.pnlPadding.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.pnlPadding.Controls.Add(this.cmbTrigger);
-            this.pnlPadding.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlPadding.Location = new System.Drawing.Point(5, 18);
-            this.pnlPadding.Name = "pnlPadding";
-            this.pnlPadding.Padding = new System.Windows.Forms.Padding(5);
-            this.pnlPadding.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.pnlPadding.Size = new System.Drawing.Size(466, 31);
-            this.pnlPadding.TabIndex = 2;
-            // 
-            // cmbTrigger
-            // 
-            this.cmbTrigger.Dock = System.Windows.Forms.DockStyle.Top;
-            this.cmbTrigger.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbTrigger.FormattingEnabled = true;
-            this.cmbTrigger.Location = new System.Drawing.Point(5, 5);
-            this.cmbTrigger.Name = "cmbTrigger";
-            this.cmbTrigger.Size = new System.Drawing.Size(456, 21);
-            this.cmbTrigger.TabIndex = 1;
-            this.cmbTrigger.SelectedIndexChanged += new System.EventHandler(this.cmbTrigger_SelectedIndexChanged);
+            this.triggerControl.AutoSize = true;
+            this.triggerControl.BackColor = System.Drawing.Color.Black;
+            this.triggerControl.Dock = System.Windows.Forms.DockStyle.Top;
+            this.triggerControl.Location = new System.Drawing.Point(5, 18);
+            this.triggerControl.Name = "triggerControl";
+            this.triggerControl.Padding = new System.Windows.Forms.Padding(5);
+            this.triggerControl.Size = new System.Drawing.Size(466, 31);
+            this.triggerControl.TabIndex = 0;
             // 
             // pnlTrigger
             // 
@@ -182,7 +156,6 @@
             this.grpAction.PerformLayout();
             this.grpTrigger.ResumeLayout(false);
             this.grpTrigger.PerformLayout();
-            this.pnlPadding.ResumeLayout(false);
             this.pnlTrigger.ResumeLayout(false);
             this.pnlTrigger.PerformLayout();
             this.ResumeLayout(false);
@@ -194,11 +167,9 @@
         private System.Windows.Forms.Panel pnlAction;
         private System.Windows.Forms.Button btnSaveMapping;
         private System.Windows.Forms.GroupBox grpTrigger;
-        private System.Windows.Forms.Panel pnlTriggerOptions;
         private System.Windows.Forms.Panel pnlTrigger;
         private System.Windows.Forms.GroupBox grpAction;
-        private ActionControl actionControl;
-        private System.Windows.Forms.Panel pnlPadding;
-        private System.Windows.Forms.ComboBox cmbTrigger;
+        private Mapping.ActionControl actionControl;
+        private Mapping.TriggerControl triggerControl;
     }
 }

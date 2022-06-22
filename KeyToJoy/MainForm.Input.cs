@@ -54,42 +54,43 @@ namespace KeyToJoy
             var deltaY = (short)-Math.Min(Math.Max(lastY * short.MaxValue * SENSITIVITY, short.MinValue), short.MaxValue);
             MappedOption mappedOption;
 
-            if (
-                (
-                    deltaX > 0
-                    && selectedPreset.TryGetMappedOption(new MouseMoveTrigger(AxisDirection.Right), out mappedOption)
-                )
-                ||
-                (
-                    deltaX < 0
-                    && selectedPreset.TryGetMappedOption(new MouseMoveTrigger(AxisDirection.Left), out mappedOption)
-                )
-            )
-            {
-                if (mappedOption != null)
-                    mappedOption.Action.Execute(new MouseMoveInputBag
-                    {
-                        DeltaX = deltaX,
-                    });      
-            }
-            if (
-                (
-                    deltaY > 0
-                    && selectedPreset.TryGetMappedOption(new MouseMoveTrigger(AxisDirection.Up), out mappedOption)
-                )
-                ||
-                (
-                    deltaY < 0
-                    && selectedPreset.TryGetMappedOption(new MouseMoveTrigger(AxisDirection.Down), out mappedOption)
-                )
-            )
-            {
-                if (mappedOption != null)
-                    mappedOption.Action.Execute(new MouseMoveInputBag
-                    {
-                        DeltaY = deltaY,
-                    });
-            }
+            // TODO: Refactor this after we have a better understanding of the mapping system
+            //if (
+            //    (
+            //        deltaX > 0
+            //        && selectedPreset.TryGetMappedOption(new MouseMoveTrigger(AxisDirection.Right), out mappedOption)
+            //    )
+            //    ||
+            //    (
+            //        deltaX < 0
+            //        && selectedPreset.TryGetMappedOption(new MouseMoveTrigger(AxisDirection.Left), out mappedOption)
+            //    )
+            //)
+            //{
+            //    if (mappedOption != null)
+            //        mappedOption.Action.Execute(new MouseMoveInputBag
+            //        {
+            //            DeltaX = deltaX,
+            //        });      
+            //}
+            //if (
+            //    (
+            //        deltaY > 0
+            //        && selectedPreset.TryGetMappedOption(new MouseMoveTrigger(AxisDirection.Up), out mappedOption)
+            //    )
+            //    ||
+            //    (
+            //        deltaY < 0
+            //        && selectedPreset.TryGetMappedOption(new MouseMoveTrigger(AxisDirection.Down), out mappedOption)
+            //    )
+            //)
+            //{
+            //    if (mappedOption != null)
+            //        mappedOption.Action.Execute(new MouseMoveInputBag
+            //        {
+            //            DeltaY = deltaY,
+            //        });
+            //}
 
             return true;
         }
@@ -118,17 +119,18 @@ namespace KeyToJoy
             // Test if this is a bound key, if so halt default input behaviour
             var keys = VirtualKeyConverter.KeysFromVirtual(e.KeyboardData.VirtualCode);
 
-            if (!selectedPreset.TryGetMappedOption(new KeyboardTrigger(keys), out var mappedOption))
-                return;
+            // TODO: Refactor
+            //if (!selectedPreset.TryGetMappedOption(new KeyboardTrigger(keys), out var mappedOption))
+            //    return;
 
-            if (!TryOverrideKeyboardInput(mappedOption, new KeyboardInputBag
-            {
-                State = e.KeyboardState,
-                Keys = keys
-            }))
-                return;
+            //if (!TryOverrideKeyboardInput(mappedOption, new KeyboardInputBag
+            //{
+            //    State = e.KeyboardState,
+            //    Keys = keys
+            //}))
+            //    return;
 
-            e.Handled = true;
+            //e.Handled = true;
         }
 
         private void OnMouseButtonInputEvent(object sender, GlobalMouseHookEventArgs e)
@@ -140,23 +142,24 @@ namespace KeyToJoy
             if (e.MouseState == MouseState.Move)
                 return;
 
-            try
-            {
-                // Test if this is a bound mouse button, if so halt default input behaviour
-                if (!selectedPreset.TryGetMappedOption(new MouseButtonTrigger(e.MouseState), out var mappedOption))
-                    return;
+            // TODO: Refactor this after we have a better understanding of the mapping system
+            //try
+            //{
+            //    // Test if this is a bound mouse button, if so halt default input behaviour
+            //    if (!selectedPreset.TryGetMappedOption(new MouseButtonTrigger(e.MouseState), out var mappedOption))
+            //        return;
 
-                if (!TryOverrideMouseButtonInput(mappedOption, new MouseButtonInputBag
-                {
-                    State = e.MouseState,
-                    LastX = e.MouseData.Position.X,
-                    LastY = e.MouseData.Position.Y,
-                }))
-                    return;
+            //    if (!TryOverrideMouseButtonInput(mappedOption, new MouseButtonInputBag
+            //    {
+            //        State = e.MouseState,
+            //        LastX = e.MouseData.Position.X,
+            //        LastY = e.MouseData.Position.Y,
+            //    }))
+            //        return;
 
-                e.Handled = true;
-            }
-            catch (ArgumentOutOfRangeException _) { }
+            //    e.Handled = true;
+            //}
+            //catch (ArgumentOutOfRangeException _) { }
         }
     }
 }

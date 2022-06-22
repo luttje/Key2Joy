@@ -14,57 +14,51 @@ namespace KeyToJoy
 {
     public partial class MappingForm : Form
     {
-        private bool isLoaded = false;
-        
         public MappingForm()
         {
             InitializeComponent();
 
-            LoadTriggers();
+            actionControl.IsTopLevel = true;
         }
 
-        private void LoadTriggers()
-        {
-            var triggerTypes = Assembly.GetExecutingAssembly()
-                .GetTypes()
-                .Where(t => t.GetCustomAttribute(typeof(TriggerAttribute), false) != null)
-                .ToDictionary(t => t, t => t.GetCustomAttribute(typeof(TriggerAttribute), false) as MappingAttribute);
-
-            cmbTrigger.DataSource = new BindingSource(triggerTypes, null);
-            cmbTrigger.DisplayMember = "Value";
-            cmbTrigger.ValueMember = "Key";
-            cmbTrigger.SelectedIndex = -1;
-
-            isLoaded = true;
-        }
-
-        private void HandleComboBox(ComboBox comboBox, Panel optionsPanel)
+        public static UserControl BuildOptionsForComboBox<TAttribute>(ComboBox comboBox, Panel optionsPanel)
+            where TAttribute : MappingAttribute
         {
             optionsPanel.Controls.Clear();
 
             if (comboBox.SelectedItem == null)
-                return;
+                return null;
 
-            var selected = (KeyValuePair<Type, MappingAttribute>)comboBox.SelectedItem;
+            var selected = (KeyValuePair<Type, TAttribute>)comboBox.SelectedItem;
             var selectedType = selected.Key;
             var attribute = selected.Value;
 
-            if (attribute.OptionsUserControl != null)
-            {
-                var optionsUserControl = (UserControl)Activator.CreateInstance(attribute.OptionsUserControl);
-                optionsPanel.Controls.Add(optionsUserControl);
-                optionsUserControl.Dock = DockStyle.Top;
-            }
+            if (attribute.OptionsUserControl == null)
+                return null;
+            
+            var optionsUserControl = (UserControl)Activator.CreateInstance(attribute.OptionsUserControl);
+            optionsPanel.Controls.Add(optionsUserControl);
+            optionsUserControl.Dock = DockStyle.Top;
 
-            PerformLayout();
+            return optionsUserControl;
         }
 
-        private void cmbTrigger_SelectedIndexChanged(object sender, EventArgs e)
+        private void btnSaveMapping_Click(object sender, EventArgs e)
         {
-            if (!isLoaded)
+            var trigger = triggerControl.Trigger;
+            var action = actionControl.Action;
+
+            if (trigger == null)
+            {
+                MessageBox.Show("You must select a trigger!", "No trigger selected!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
-            
-            HandleComboBox(cmbTrigger, pnlTriggerOptions);
+            }
+
+            if (action == null) 
+            { 
+                MessageBox.Show("You must select an action!", "No action selected!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
         }
     }
 }

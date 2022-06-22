@@ -21,26 +21,27 @@ namespace KeyToJoy
         {
             const int WM_INPUT = 0x00FF;
 
-            if (m.Msg == WM_INPUT)
-            {
-                var data = RawInputData.FromHandle(m.LParam);
+            // TODO: Refactor
+            //if (m.Msg == WM_INPUT)
+            //{
+            //    var data = RawInputData.FromHandle(m.LParam);
                 
-                if (data is RawInputMouseData mouse 
-                    && mouse.Mouse.Buttons != RawMouseButtonFlags.None
-                    && txtKeyBind.ClientRectangle.Contains(txtKeyBind.PointToClient(MousePosition)))
-                {
-                    try
-                    {
-                        var trigger = new MouseButtonTrigger(mouse.Mouse.Buttons);
+            //    if (data is RawInputMouseData mouse 
+            //        && mouse.Mouse.Buttons != RawMouseButtonFlags.None
+            //        && txtKeyBind.ClientRectangle.Contains(txtKeyBind.PointToClient(MousePosition)))
+            //    {
+            //        try
+            //        {
+            //            var trigger = new MouseButtonTrigger(mouse.Mouse.Buttons);
 
-                        txtKeyBind.Text = $"{trigger}";
-                    }
-                    catch (ArgumentOutOfRangeException ex)
-                    {
-                        MessageBox.Show($"Unknown mouse button pressed ({ex.Message}). Can't map this (yet).", "Unknown mouse button!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                }
-            }
+            //            txtKeyBind.Text = $"{trigger}";
+            //        }
+            //        catch (ArgumentOutOfRangeException ex)
+            //        {
+            //            MessageBox.Show($"Unknown mouse button pressed ({ex.Message}). Can't map this (yet).", "Unknown mouse button!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //        }
+            //    }
+            //}
 
             base.WndProc(ref m);
         }

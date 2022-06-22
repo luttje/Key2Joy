@@ -9,38 +9,39 @@ namespace KeyToJoy.Mapping
         Name = "Keyboard Event",
         OptionsUserControl = typeof(KeyboardTriggerOptionsControl)
     )]
-    internal class KeyboardTrigger : BaseTrigger, IEquatable<KeyboardTrigger>
+    public class KeyboardTrigger : BaseTrigger, IEquatable<KeyboardTrigger>
     {
         private Keys keys;
 
         [JsonConstructor]
-        internal KeyboardTrigger(string name)
+        public KeyboardTrigger(string name, string imageResource)
+            : base(name, imageResource)
         {
-            this.keys = (Keys)Enum.Parse(typeof(Keys), name);
+            //this.keys = (Keys)Enum.Parse(typeof(Keys), name);
         }
 
-        internal KeyboardTrigger(Keys keys, RawKeyboardFlags? flags = null)
-        {
-            this.keys = keys;
+        //internal KeyboardTrigger(Keys keys, RawKeyboardFlags? flags = null)
+        //{
+        //    this.keys = keys;
 
-            if (flags == null)
-                return;
+        //    if (flags == null)
+        //        return;
 
-            if ((flags & RawKeyboardFlags.KeyE0) == RawKeyboardFlags.KeyE0)
-            {
-                if (keys == Keys.ControlKey)
-                    this.keys = Keys.RControlKey;
-                if (keys == Keys.ShiftKey)
-                    this.keys = Keys.RShiftKey;
-            }
-            else
-            {
-                if (keys == Keys.ControlKey)
-                    this.keys = Keys.LControlKey;
-                if (keys == Keys.ShiftKey)
-                    this.keys = Keys.LShiftKey;
-            }
-        }
+        //    if ((flags & RawKeyboardFlags.KeyE0) == RawKeyboardFlags.KeyE0)
+        //    {
+        //        if (keys == Keys.ControlKey)
+        //            this.keys = Keys.RControlKey;
+        //        if (keys == Keys.ShiftKey)
+        //            this.keys = Keys.RShiftKey;
+        //    }
+        //    else
+        //    {
+        //        if (keys == Keys.ControlKey)
+        //            this.keys = Keys.LControlKey;
+        //        if (keys == Keys.ShiftKey)
+        //            this.keys = Keys.LShiftKey;
+        //    }
+        //}
 
         internal override string GetUniqueKey()
         {

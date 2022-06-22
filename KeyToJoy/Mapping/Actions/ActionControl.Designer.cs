@@ -1,4 +1,4 @@
-﻿namespace KeyToJoy
+﻿namespace KeyToJoy.Mapping
 {
     partial class ActionControl
     {
@@ -62,6 +62,7 @@
             this.Name = "ActionControl";
             this.Padding = new System.Windows.Forms.Padding(5);
             this.Size = new System.Drawing.Size(177, 32);
+            this.Load += new System.EventHandler(this.ActionControl_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -32,9 +32,10 @@ namespace KeyToJoy
 
         private void ReloadSelectedPreset()
         {
-            selectedPreset = cmbPreset.SelectedItem as MappingPreset;
-            dgvMappings.DataSource = selectedPreset.MappedOptions;
-            txtPresetName.Text = selectedPreset.Name;
+            //TODO: Refactor
+            //selectedPreset = cmbPreset.SelectedItem as MappingPreset;
+            //dgvMappings.DataSource = selectedPreset.MappedOptions;
+            //txtPresetName.Text = selectedPreset.Name;
         }
 
         private void ChangeMappedOption(MappedOption mappedOption)

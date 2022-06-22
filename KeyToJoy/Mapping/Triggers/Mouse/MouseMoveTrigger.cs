@@ -7,13 +7,14 @@ namespace KeyToJoy.Mapping
         Name = "Mouse Move Event",
         OptionsUserControl = typeof(MouseMoveTriggerOptionsControl)
     )]
-    internal class MouseMoveTrigger : BaseTrigger
+    public class MouseMoveTrigger : BaseTrigger
     {
         const string PREFIX = "Mouse Move ";
         private AxisDirection axisBinding;
 
         [JsonConstructor]
-        internal MouseMoveTrigger(string name)
+        public MouseMoveTrigger(string name, string imageResource)
+            : base(name, imageResource)
         {
             try
             {
@@ -27,10 +28,10 @@ namespace KeyToJoy.Mapping
             }
         }
 
-        internal MouseMoveTrigger(AxisDirection axisBinding)
-        {
-            this.axisBinding = axisBinding;
-        }
+        //internal MouseMoveTrigger(AxisDirection axisBinding)
+        //{
+        //    this.axisBinding = axisBinding;
+        //}
 
         internal override string GetUniqueKey()
         {

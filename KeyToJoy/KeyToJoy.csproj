@@ -194,10 +194,10 @@
     <Compile Include="AboutForm.Designer.cs">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ActionControl.cs">
+    <Compile Include="Mapping\Actions\ActionControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ActionControl.Designer.cs">
+    <Compile Include="Mapping\Actions\ActionControl.Designer.cs">
       <DependentUpon>ActionControl.cs</DependentUpon>
     </Compile>
     <Compile Include="MappingForm.cs">
@@ -208,12 +208,14 @@
     </Compile>
     <Compile Include="IAcceptAppCommands.cs" />
     <Compile Include="Mapping\Actions\ActionAttribute.cs" />
+    <Compile Include="Mapping\Actions\ActionVisibility.cs" />
     <Compile Include="Mapping\Actions\GamePad\GamePadActionControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Mapping\Actions\GamePad\GamePadActionControl.Designer.cs">
       <DependentUpon>GamePadActionControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Mapping\Actions\ISetupAction.cs" />
     <Compile Include="Mapping\Actions\Logic\SequenceActionControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -233,6 +235,13 @@
     <Compile Include="Mapping\Actions\GamePad\GamePadAction.cs" />
     <Compile Include="Mapping\Actions\BaseAction.cs" />
     <Compile Include="Mapping\MappingAttribute.cs" />
+    <Compile Include="Mapping\Triggers\ISetupTrigger.cs" />
+    <Compile Include="Mapping\Triggers\TriggerControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Mapping\Triggers\TriggerControl.Designer.cs">
+      <DependentUpon>TriggerControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Mapping\Triggers\BaseTrigger.cs" />
     <Compile Include="Mapping\MappingPreset.cs" />
     <Compile Include="InitForm.cs">
@@ -297,7 +306,7 @@
     <EmbeddedResource Include="AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ActionControl.resx">
+    <EmbeddedResource Include="Mapping\Actions\ActionControl.resx">
       <DependentUpon>ActionControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MappingForm.resx">
@@ -317,6 +326,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Mapping\Actions\Logic\WaitActionControl.resx">
       <DependentUpon>WaitActionControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Mapping\Triggers\TriggerControl.resx">
+      <DependentUpon>TriggerControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Mapping\Triggers\Keyboard\KeyboardTriggerOptionsControl.resx">
       <DependentUpon>KeyboardTriggerOptionsControl.cs</DependentUpon>

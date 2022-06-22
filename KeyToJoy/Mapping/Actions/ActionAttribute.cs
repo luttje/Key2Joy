@@ -6,18 +6,11 @@ using System.Threading.Tasks;
 
 namespace KeyToJoy.Mapping
 {
-    internal class ActionAttribute : MappingAttribute
+    public class ActionAttribute : MappingAttribute
     {
         /// <summary>
-        /// String pointing to an optional image in resources
+        /// When this action should be visibile in menu's.
         /// </summary>
-        public string ImagePath { get; set; } = null;
-        
-        /// <summary>
-        /// Whether this action is visible in the top level UI. 
-        /// 
-        /// If false then you should provide access to it somewhere in a UserControl.
-        /// </summary>
-        public bool IsTopLevel { get; set; } = true;
+        public ActionVisibility Visibility { get; set; } = ActionVisibility.Always;
     }
 }

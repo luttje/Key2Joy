@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 namespace KeyToJoy.Mapping
 {
     [JsonObject(MemberSerialization.OptIn)]
-    internal abstract class BaseAction
+    public abstract class BaseAction
     {
         internal static List<BaseAction> All = new List<BaseAction>();
 
         [JsonProperty]
-        public string Name { get; set; }
+        internal string Name { get; set; }
         
         private string imageResource;
 
