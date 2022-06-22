@@ -28,6 +28,7 @@ namespace KeyToJoy.Mapping
             var thisAction = (GamePadAction)action;
 
             cmbGamePad.SelectedItem = thisAction.Control;
+            chkDown.Checked = thisAction.PressDown;
         }
 
         public void Setup(BaseAction action)
@@ -35,9 +36,15 @@ namespace KeyToJoy.Mapping
             var thisAction = (GamePadAction)action;
 
             thisAction.Control = (SimWinInput.GamePadControl)cmbGamePad.SelectedItem;
+            thisAction.PressDown = chkDown.Checked;
         }
 
         private void cmbGamePad_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            OptionsChanged?.Invoke();
+        }
+
+        private void chkDown_CheckedChanged(object sender, EventArgs e)
         {
             OptionsChanged?.Invoke();
         }

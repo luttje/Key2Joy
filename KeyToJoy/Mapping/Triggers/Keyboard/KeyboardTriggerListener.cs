@@ -24,11 +24,13 @@ namespace KeyToJoy.Mapping
         }
 
         private GlobalInputHook globalKeyboardHook;
-        private Dictionary<Keys, BaseAction> lookup;
-        
+        private Dictionary<Keys, BaseAction> lookupDown;
+        private Dictionary<Keys, BaseAction> lookupRelease;
+
         private KeyboardTriggerListener()
         {
-            lookup = new Dictionary<Keys, BaseAction>();
+            lookupDown = new Dictionary<Keys, BaseAction>();
+            lookupRelease = new Dictionary<Keys, BaseAction>();
         }
 
         protected override void Start()
@@ -53,15 +55,24 @@ namespace KeyToJoy.Mapping
         {
             var trigger = mappedOption.Trigger as KeyboardTrigger;
             
-            lookup.Add(trigger.Keys, mappedOption.Action);
+            if(trigger.PressedDown)
+                lookupDown.Add(trigger.Keys, mappedOption.Action);
+            else
+                lookupRelease.Add(trigger.Keys, mappedOption.Action);
         }
 
         private void OnKeyInputEvent(object sender, GlobalKeyboardHookEventArgs e)
         {
             // Test if this is a bound key, if so halt default input behaviour
             var keys = VirtualKeyConverter.KeysFromVirtual(e.KeyboardData.VirtualCode);
+            Dictionary<Keys, BaseAction> dictionary;
 
-            if (!lookup.TryGetValue(keys, out var action))
+            if (e.KeyboardState == KeyboardState.KeyDown)
+                dictionary = lookupDown;
+            else
+                dictionary = lookupRelease;
+
+            if (!dictionary.TryGetValue(keys, out var action))
                 return;
 
             if (!TryOverrideKeyboardInput(action, new KeyboardInputBag

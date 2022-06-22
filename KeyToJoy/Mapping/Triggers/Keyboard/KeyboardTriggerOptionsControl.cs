@@ -13,6 +13,7 @@ namespace KeyToJoy
         public event Action OptionsChanged;
         
         private Keys keys;
+        private bool pressedDown;
 
         public KeyboardTriggerOptionsControl()
         {
@@ -29,6 +30,7 @@ namespace KeyToJoy
             var thisTrigger = (KeyboardTrigger)trigger;
 
             this.keys = thisTrigger.Keys;
+            this.pressedDown = thisTrigger.PressedDown;
             UpdateKeys();
         }
 
@@ -37,6 +39,7 @@ namespace KeyToJoy
             var thisTrigger = (KeyboardTrigger)trigger;
 
             thisTrigger.Keys = this.keys;
+            thisTrigger.PressedDown = this.pressedDown;
         }
 
         private void UpdateKeys(RawKeyboardFlags? flags = null)
@@ -60,6 +63,12 @@ namespace KeyToJoy
             }
 
             txtKeyBind.Text = keys.ToString();
+            OptionsChanged?.Invoke();
+        }
+
+        private void chkDown_CheckedChanged(object sender, EventArgs e)
+        {
+            pressedDown = chkDown.Checked;
             OptionsChanged?.Invoke();
         }
 

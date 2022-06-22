@@ -17,6 +17,8 @@ namespace KeyToJoy.Mapping
 
         [JsonProperty]
         public Keys Keys { get; set; }
+        [JsonProperty]
+        public bool PressedDown { get; set; }
 
         [JsonConstructor]
         public KeyboardTrigger(string name, string description)
@@ -43,12 +45,15 @@ namespace KeyToJoy.Mapping
 
         public bool Equals(KeyboardTrigger other)
         {
-            return Keys == other.Keys;
+            return Keys == other.Keys 
+                && PressedDown == other.PressedDown;
         }
 
         public override string ToString()
         {
-            return $"(keyboard) {Keys}";
+            var state = PressedDown ? "Down" : "Released";
+            
+            return $"(keyboard) {Keys} [{state}]";
         }
 
         public override object Clone()

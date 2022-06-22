@@ -31,6 +31,9 @@ namespace KeyToJoy.Mapping
             }
         }
 
+        [JsonProperty]
+        public bool PressDown { get; set; }
+
         public GamePadAction(string name, string description)
             : base(name, description)
         {
@@ -173,8 +176,7 @@ namespace KeyToJoy.Mapping
                 return;
             }
 
-            if ((inputBag is KeyboardInputBag keyboardInputBag && keyboardInputBag.State == Input.LowLevel.KeyboardState.KeyDown)
-                || (inputBag is MouseButtonInputBag mouseInputBag && mouseInputBag.IsDown))
+            if (PressDown)
                 SimGamePad.Instance.SetControl(Control);
             else
                 SimGamePad.Instance.ReleaseControl(Control);
