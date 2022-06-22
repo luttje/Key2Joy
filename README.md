@@ -38,6 +38,12 @@ KeyToJoy will now pretend that your keyboard input is Joystick input.
 
 ---
 
+## Known Issues
+
+- Windows wont let you click if you release a mouse key that hasn't been pressed before.
+
+---
+
 ## Uninstalling
 
 Use `ScpDriverInstaller.exe` to uninstall the driver. You can find the
