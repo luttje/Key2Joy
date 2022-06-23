@@ -10,9 +10,14 @@ namespace KeyToJoy
 {
     public partial class KeyboardTriggerOptionsControl : UserControl, ITriggerOptionsControl
     {
+        const string TEXT_CHANGE = "(press any key to select it as the trigger)";
+        const string TEXT_CHANGE_INSTRUCTION = "(click here, then press any key to set it as the trigger)";
+        const int WM_INPUT = 0x00FF;
+
         public event Action OptionsChanged;
         
         private Keys keys;
+        private bool isTrapping;
 
         public KeyboardTriggerOptionsControl()
         {
@@ -25,6 +30,8 @@ namespace KeyToJoy
 
             cmbPressedState.DataSource = Enum.GetValues(typeof(PressState));
             cmbPressedState.SelectedIndex = 0;
+
+            ResetTrapping();
         }
 
         public void Select(BaseTrigger trigger)
@@ -42,6 +49,23 @@ namespace KeyToJoy
 
             thisTrigger.Keys = this.keys;
             thisTrigger.PressedState = (PressState) cmbPressedState.SelectedItem;
+        }
+
+        private void StartTrapping()
+        {
+            txtKeyBind.Text = TEXT_CHANGE;
+            isTrapping = true;
+        }
+        
+        private void StopTrapping()
+        {
+            isTrapping = false;
+        }
+
+        private void ResetTrapping()
+        {
+            txtKeyBind.Text = TEXT_CHANGE_INSTRUCTION;
+            StopTrapping();
         }
 
         private void UpdateKeys(RawKeyboardFlags? flags = null)
@@ -64,7 +88,7 @@ namespace KeyToJoy
                 }
             }
 
-            txtKeyBind.Text = keys.ToString();
+            txtKeyBind.Text = $"{keys} {TEXT_CHANGE_INSTRUCTION}";
             OptionsChanged?.Invoke();
         }
 
@@ -75,8 +99,11 @@ namespace KeyToJoy
 
         protected override void WndProc(ref Message m)
         {
-            const int WM_INPUT = 0x00FF;
-
+            base.WndProc(ref m);
+            
+            if (!isTrapping)
+                return;
+            
             if (m.Msg == WM_INPUT)
             {
                 var data = RawInputData.FromHandle(m.LParam);
@@ -85,10 +112,14 @@ namespace KeyToJoy
                 {
                     keys = VirtualKeyConverter.KeysFromVirtual(keyboard.Keyboard.VirutalKey);
                     UpdateKeys(keyboard.Keyboard.Flags);
+                    StopTrapping();
                 }
             }
+        }
 
-            base.WndProc(ref m);
+        private void txtKeyBind_MouseUp(object sender, MouseEventArgs e)
+        {
+            StartTrapping();
         }
     }
 }
