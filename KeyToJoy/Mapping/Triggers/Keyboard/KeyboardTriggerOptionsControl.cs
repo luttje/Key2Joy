@@ -13,7 +13,6 @@ namespace KeyToJoy
         public event Action OptionsChanged;
         
         private Keys keys;
-        private bool pressedDown;
 
         public KeyboardTriggerOptionsControl()
         {
@@ -23,6 +22,9 @@ namespace KeyToJoy
 
             // Relieve input capturing by this mapping form and return it to the main form
             this.Disposed += (s,e) => RawInputDevice.UnregisterDevice(HidUsageAndPage.Keyboard);
+
+            cmbPressedState.DataSource = Enum.GetValues(typeof(PressState));
+            cmbPressedState.SelectedIndex = 0;
         }
 
         public void Select(BaseTrigger trigger)
@@ -30,7 +32,7 @@ namespace KeyToJoy
             var thisTrigger = (KeyboardTrigger)trigger;
 
             this.keys = thisTrigger.Keys;
-            this.pressedDown = thisTrigger.PressedDown;
+            cmbPressedState.SelectedItem = thisTrigger.PressedState;
             UpdateKeys();
         }
 
@@ -39,7 +41,7 @@ namespace KeyToJoy
             var thisTrigger = (KeyboardTrigger)trigger;
 
             thisTrigger.Keys = this.keys;
-            thisTrigger.PressedDown = this.pressedDown;
+            thisTrigger.PressedState = (PressState) cmbPressedState.SelectedItem;
         }
 
         private void UpdateKeys(RawKeyboardFlags? flags = null)
@@ -66,9 +68,8 @@ namespace KeyToJoy
             OptionsChanged?.Invoke();
         }
 
-        private void chkDown_CheckedChanged(object sender, EventArgs e)
+        private void cmbPressedState_SelectedIndexChanged(object sender, EventArgs e)
         {
-            pressedDown = chkDown.Checked;
             OptionsChanged?.Invoke();
         }
 

@@ -30,7 +30,7 @@
         {
             this.cmbGamePad = new System.Windows.Forms.ComboBox();
             this.lblInfo = new System.Windows.Forms.Label();
-            this.chkDown = new System.Windows.Forms.CheckBox();
+            this.cmbPressState = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // cmbGamePad
@@ -40,7 +40,7 @@
             this.cmbGamePad.FormattingEnabled = true;
             this.cmbGamePad.Location = new System.Drawing.Point(100, 5);
             this.cmbGamePad.Name = "cmbGamePad";
-            this.cmbGamePad.Size = new System.Drawing.Size(234, 21);
+            this.cmbGamePad.Size = new System.Drawing.Size(228, 21);
             this.cmbGamePad.TabIndex = 9;
             this.cmbGamePad.SelectedIndexChanged += new System.EventHandler(this.cmbGamePad_SelectedIndexChanged);
             // 
@@ -55,17 +55,16 @@
             this.lblInfo.Text = "GamePad Button:";
             this.lblInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // chkDown
+            // cmbPressState
             // 
-            this.chkDown.Dock = System.Windows.Forms.DockStyle.Right;
-            this.chkDown.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.chkDown.Location = new System.Drawing.Point(334, 5);
-            this.chkDown.Name = "chkDown";
-            this.chkDown.Size = new System.Drawing.Size(83, 18);
-            this.chkDown.TabIndex = 12;
-            this.chkDown.Text = "Press Down";
-            this.chkDown.UseVisualStyleBackColor = true;
-            this.chkDown.CheckedChanged += new System.EventHandler(this.chkDown_CheckedChanged);
+            this.cmbPressState.Dock = System.Windows.Forms.DockStyle.Right;
+            this.cmbPressState.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbPressState.FormattingEnabled = true;
+            this.cmbPressState.Location = new System.Drawing.Point(328, 5);
+            this.cmbPressState.Name = "cmbPressState";
+            this.cmbPressState.Size = new System.Drawing.Size(89, 21);
+            this.cmbPressState.TabIndex = 12;
+            this.cmbPressState.SelectedIndexChanged += new System.EventHandler(this.cmbPressState_SelectedIndexChanged);
             // 
             // GamePadActionControl
             // 
@@ -73,7 +72,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.Controls.Add(this.cmbGamePad);
-            this.Controls.Add(this.chkDown);
+            this.Controls.Add(this.cmbPressState);
             this.Controls.Add(this.lblInfo);
             this.Name = "GamePadActionControl";
             this.Padding = new System.Windows.Forms.Padding(5);
@@ -86,6 +85,6 @@
 
         private System.Windows.Forms.ComboBox cmbGamePad;
         private System.Windows.Forms.Label lblInfo;
-        private System.Windows.Forms.CheckBox chkDown;
+        private System.Windows.Forms.ComboBox cmbPressState;
     }
 }

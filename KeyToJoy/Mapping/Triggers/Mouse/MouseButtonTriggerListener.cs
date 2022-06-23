@@ -25,12 +25,12 @@ namespace KeyToJoy.Mapping
 
         private GlobalInputHook globalMouseButtonHook;
         private Dictionary<Mouse.Buttons, BaseAction> lookupDown;
-        private Dictionary<Mouse.Buttons, BaseAction> lookupReleased;
+        private Dictionary<Mouse.Buttons, BaseAction> lookupRelease;
         
         private MouseButtonTriggerListener()
         {
             lookupDown = new Dictionary<Mouse.Buttons, BaseAction>();
-            lookupReleased = new Dictionary<Mouse.Buttons, BaseAction>();
+            lookupRelease = new Dictionary<Mouse.Buttons, BaseAction>();
         }
 
         protected override void Start()
@@ -54,12 +54,11 @@ namespace KeyToJoy.Mapping
         internal override void AddMappedOption(MappedOption mappedOption)
         {
             var trigger = mappedOption.Trigger as MouseButtonTrigger;
-            var dictionary = lookupReleased;
-            
-            if (trigger.PressedDown)
-                dictionary = lookupDown;
-            
-            dictionary.Add(trigger.MouseButtons, mappedOption.Action);
+
+            if (trigger.PressedState == PressState.Down || trigger.PressedState == PressState.Full)
+                lookupDown.Add(trigger.MouseButtons, mappedOption.Action);
+            if (trigger.PressedState == PressState.Released || trigger.PressedState == PressState.Full)
+                lookupRelease.Add(trigger.MouseButtons, mappedOption.Action);
         }
 
         private void OnMouseButtonInputEvent(object sender, GlobalMouseHookEventArgs e)
@@ -77,7 +76,7 @@ namespace KeyToJoy.Mapping
             }
             catch (NotImplementedException) { }
 
-            var dictionary = lookupReleased;
+            var dictionary = lookupRelease;
 
             if (isDown)
                 dictionary = lookupDown;

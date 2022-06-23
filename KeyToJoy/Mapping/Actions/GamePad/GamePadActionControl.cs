@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KeyToJoy.Input;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -18,9 +19,9 @@ namespace KeyToJoy.Mapping
         {
             InitializeComponent();
 
-            var controls = Enum.GetValues(typeof(SimWinInput.GamePadControl));
-
-            cmbGamePad.DataSource = controls;
+            cmbGamePad.DataSource = Enum.GetValues(typeof(SimWinInput.GamePadControl));
+            cmbPressState.DataSource = Enum.GetValues(typeof(PressState));
+            cmbPressState.SelectedIndex = 0;
         }
 
         public void Select(BaseAction action)
@@ -28,7 +29,7 @@ namespace KeyToJoy.Mapping
             var thisAction = (GamePadAction)action;
 
             cmbGamePad.SelectedItem = thisAction.Control;
-            chkDown.Checked = thisAction.PressDown;
+            cmbPressState.SelectedItem = thisAction.PressState;
         }
 
         public void Setup(BaseAction action)
@@ -36,7 +37,7 @@ namespace KeyToJoy.Mapping
             var thisAction = (GamePadAction)action;
 
             thisAction.Control = (SimWinInput.GamePadControl)cmbGamePad.SelectedItem;
-            thisAction.PressDown = chkDown.Checked;
+            thisAction.PressState = (PressState) cmbPressState.SelectedItem;
         }
 
         private void cmbGamePad_SelectedIndexChanged(object sender, EventArgs e)
@@ -44,7 +45,7 @@ namespace KeyToJoy.Mapping
             OptionsChanged?.Invoke();
         }
 
-        private void chkDown_CheckedChanged(object sender, EventArgs e)
+        private void cmbPressState_SelectedIndexChanged(object sender, EventArgs e)
         {
             OptionsChanged?.Invoke();
         }

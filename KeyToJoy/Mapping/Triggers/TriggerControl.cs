@@ -90,6 +90,9 @@ namespace KeyToJoy.Mapping
 
             if (options != null)
             {
+                if(this.options != null)
+                    this.options.OptionsChanged -= OnOptionsChanged;
+
                 this.options = options as ITriggerOptionsControl;
 
                 if (this.options != null)
@@ -97,7 +100,7 @@ namespace KeyToJoy.Mapping
                     if (selectedTrigger != null)
                         this.options.Select(selectedTrigger);
 
-                    this.options.OptionsChanged += () => BuildTrigger();
+                    this.options.OptionsChanged += OnOptionsChanged;
                 }
             }
             
@@ -105,6 +108,17 @@ namespace KeyToJoy.Mapping
             
             selectedTrigger = null;
             PerformLayout();
+        }
+
+        private void OnOptionsChanged()
+        {
+            var selected = (KeyValuePair<Type, TriggerAttribute>)cmbTrigger.SelectedItem;
+            var attribute = selected.Value;
+
+            if (options == null || attribute.OptionsUserControl != options.GetType())
+                return;
+            
+            BuildTrigger();
         }
 
         private void TriggerControl_Load(object sender, EventArgs e)

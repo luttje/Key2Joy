@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using KeyToJoy.Input;
 using Newtonsoft.Json;
 
 namespace KeyToJoy.Mapping
@@ -17,8 +18,9 @@ namespace KeyToJoy.Mapping
 
         [JsonProperty]
         public Keys Keys { get; set; }
+        
         [JsonProperty]
-        public bool PressedDown { get; set; }
+        public PressState PressedState { get; set; }
 
         [JsonConstructor]
         public KeyboardTrigger(string name, string description)
@@ -46,12 +48,12 @@ namespace KeyToJoy.Mapping
         public bool Equals(KeyboardTrigger other)
         {
             return Keys == other.Keys 
-                && PressedDown == other.PressedDown;
+                && PressedState == other.PressedState;
         }
 
         public override string ToString()
         {
-            var state = PressedDown ? "Down" : "Released";
+            var state = Enum.GetName(typeof(PressState), PressedState);
             
             return $"(keyboard) {Keys} [{state}]";
         }

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KeyToJoy.Mapping
+namespace KeyToJoy.Input
 {
     public class Mouse
     {

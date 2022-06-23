@@ -194,6 +194,7 @@
     <Compile Include="AboutForm.Designer.cs">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Input\PressState.cs" />
     <Compile Include="Mapping\Actions\ActionControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -246,7 +247,7 @@
     <Compile Include="Mapping\Triggers\Keyboard\KeyboardTriggerListener.cs" />
     <Compile Include="Mapping\Triggers\Mouse\MouseMoveTriggerListener.cs" />
     <Compile Include="Mapping\Triggers\Mouse\MouseButtonTriggerListener.cs" />
-    <Compile Include="Mapping\Triggers\Mouse\Mouse.cs" />
+    <Compile Include="Input\Mouse.cs" />
     <Compile Include="Mapping\Triggers\TriggerControl.cs">
       <SubType>UserControl</SubType>
     </Compile>

@@ -22,6 +22,9 @@ namespace KeyToJoy
             
             // Relieve input capturing by this mapping form and return it to the main form
             this.Disposed += (s, e) => RawInputDevice.UnregisterDevice(HidUsageAndPage.Mouse);
+
+            cmbPressedState.DataSource = Enum.GetValues(typeof(PressState));
+            cmbPressedState.SelectedIndex = 0;
         }
 
         public void Select(BaseTrigger trigger)
@@ -29,7 +32,7 @@ namespace KeyToJoy
             var thisTrigger = (MouseButtonTrigger)trigger;
 
             this.mouseButtons = thisTrigger.MouseButtons;
-            chkDown.Checked = thisTrigger.PressedDown;
+            cmbPressedState.SelectedItem = thisTrigger.PressedState;
             txtKeyBind.Text = $"{mouseButtons}";
         }
 
@@ -38,7 +41,7 @@ namespace KeyToJoy
             var thisTrigger = (MouseButtonTrigger)trigger;
 
             thisTrigger.MouseButtons = mouseButtons;
-            thisTrigger.PressedDown = chkDown.Checked;
+            thisTrigger.PressedState = (PressState) cmbPressedState.SelectedItem;
         }
 
         protected override void WndProc(ref Message m)
@@ -70,7 +73,7 @@ namespace KeyToJoy
             base.WndProc(ref m);
         }
 
-        private void chkDown_CheckedChanged(object sender, EventArgs e)
+        private void cmbPressedState_SelectedIndexChanged(object sender, EventArgs e)
         {
             OptionsChanged?.Invoke();
         }

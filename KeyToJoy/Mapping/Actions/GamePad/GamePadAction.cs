@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using KeyToJoy.Input;
+using KeyToJoy.Input.LowLevel;
+using Newtonsoft.Json;
 using SimWinInput;
 using System;
 using System.Collections.Generic;
@@ -32,7 +34,7 @@ namespace KeyToJoy.Mapping
         }
 
         [JsonProperty]
-        public bool PressDown { get; set; }
+        public PressState PressState { get; set; }
 
         public GamePadAction(string name, string description)
             : base(name, description)
@@ -176,9 +178,19 @@ namespace KeyToJoy.Mapping
                 return;
             }
 
-            if (PressDown)
+            bool isInputDown = false;
+            
+            if (inputBag is KeyboardInputBag keyboardInputBag)
+                isInputDown = keyboardInputBag.State == KeyboardState.KeyDown;
+            
+            if (inputBag is MouseButtonInputBag mouseButtonInputBag)
+                isInputDown = mouseButtonInputBag.IsDown;
+
+            if (PressState == PressState.Down
+                || (PressState == PressState.Full && isInputDown))
                 SimGamePad.Instance.SetControl(Control);
-            else
+            else if(PressState == PressState.Released
+                || (PressState == PressState.Full && !isInputDown))
                 SimGamePad.Instance.ReleaseControl(Control);
         }
 

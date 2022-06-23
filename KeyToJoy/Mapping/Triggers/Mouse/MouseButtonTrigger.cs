@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using KeyToJoy.Input;
 using KeyToJoy.Input.LowLevel;
 using Linearstar.Windows.RawInput.Native;
 using Newtonsoft.Json;
@@ -18,7 +19,7 @@ namespace KeyToJoy.Mapping
         public Mouse.Buttons MouseButtons { get; set; }
 
         [JsonProperty]
-        public bool PressedDown { get; set; }
+        public PressState PressedState { get; set; }
 
         [JsonConstructor]
         public MouseButtonTrigger(string name, string description)
@@ -46,7 +47,7 @@ namespace KeyToJoy.Mapping
         public bool Equals(MouseButtonTrigger other)
         {
             return MouseButtons == other.MouseButtons 
-                && PressedDown == other.PressedDown;
+                && PressedState == other.PressedState;
         }
 
         public override string ToString()

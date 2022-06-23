@@ -30,7 +30,7 @@
         {
             this.txtKeyBind = new System.Windows.Forms.TextBox();
             this.lblInfo = new System.Windows.Forms.Label();
-            this.chkDown = new System.Windows.Forms.CheckBox();
+            this.cmbPressedState = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // txtKeyBind
@@ -39,7 +39,7 @@
             this.txtKeyBind.Enabled = false;
             this.txtKeyBind.Location = new System.Drawing.Point(88, 5);
             this.txtKeyBind.Name = "txtKeyBind";
-            this.txtKeyBind.Size = new System.Drawing.Size(188, 20);
+            this.txtKeyBind.Size = new System.Drawing.Size(194, 20);
             this.txtKeyBind.TabIndex = 7;
             this.txtKeyBind.Text = "(press any key to select it as the trigger)";
             // 
@@ -54,16 +54,16 @@
             this.lblInfo.Text = "Keyboard Key:";
             this.lblInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // chkDown
+            // cmbPressedState
             // 
-            this.chkDown.Dock = System.Windows.Forms.DockStyle.Right;
-            this.chkDown.Location = new System.Drawing.Point(276, 5);
-            this.chkDown.Name = "chkDown";
-            this.chkDown.Size = new System.Drawing.Size(95, 17);
-            this.chkDown.TabIndex = 11;
-            this.chkDown.Text = "Pressed Down";
-            this.chkDown.UseVisualStyleBackColor = true;
-            this.chkDown.CheckedChanged += new System.EventHandler(this.chkDown_CheckedChanged);
+            this.cmbPressedState.Dock = System.Windows.Forms.DockStyle.Right;
+            this.cmbPressedState.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbPressedState.FormattingEnabled = true;
+            this.cmbPressedState.Location = new System.Drawing.Point(282, 5);
+            this.cmbPressedState.Name = "cmbPressedState";
+            this.cmbPressedState.Size = new System.Drawing.Size(89, 21);
+            this.cmbPressedState.TabIndex = 11;
+            this.cmbPressedState.SelectedIndexChanged += new System.EventHandler(this.cmbPressedState_SelectedIndexChanged);
             // 
             // KeyboardTriggerOptionsControl
             // 
@@ -71,7 +71,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.Controls.Add(this.txtKeyBind);
-            this.Controls.Add(this.chkDown);
+            this.Controls.Add(this.cmbPressedState);
             this.Controls.Add(this.lblInfo);
             this.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.Name = "KeyboardTriggerOptionsControl";
@@ -86,6 +86,6 @@
 
         private System.Windows.Forms.TextBox txtKeyBind;
         private System.Windows.Forms.Label lblInfo;
-        private System.Windows.Forms.CheckBox chkDown;
+        private System.Windows.Forms.ComboBox cmbPressedState;
     }
 }
