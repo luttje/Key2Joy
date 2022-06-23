@@ -41,6 +41,9 @@
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Neo.Lua, Version=5.3.0.0, Culture=neutral, PublicKeyToken=fdb0cd4fe8a6e3b2, processorArchitecture=MSIL">
+      <HintPath>..\packages\NeoLua.1.3.14\lib\net47\Neo.Lua.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -223,6 +226,7 @@
     <Compile Include="Mapping\Actions\Logic\AppCommandActionControl.Designer.cs">
       <DependentUpon>AppCommandActionControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Mapping\Actions\Logic\LuaScriptAction.cs" />
     <Compile Include="Mapping\Actions\Logic\SequenceActionControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -231,6 +235,12 @@
     </Compile>
     <Compile Include="Mapping\Actions\Logic\WaitAction.cs" />
     <Compile Include="Mapping\Actions\Logic\SequenceAction.cs" />
+    <Compile Include="Mapping\Actions\Logic\LuaScriptActionControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Mapping\Actions\Logic\LuaScriptActionControl.Designer.cs">
+      <DependentUpon>LuaScriptActionControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Mapping\Actions\Logic\WaitActionControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -337,6 +347,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Mapping\Actions\Logic\SequenceActionControl.resx">
       <DependentUpon>SequenceActionControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Mapping\Actions\Logic\LuaScriptActionControl.resx">
+      <DependentUpon>LuaScriptActionControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Mapping\Actions\Logic\WaitActionControl.resx">
       <DependentUpon>WaitActionControl.cs</DependentUpon>
