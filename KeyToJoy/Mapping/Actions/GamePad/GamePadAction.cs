@@ -15,7 +15,7 @@ namespace KeyToJoy.Mapping
     [Action(
         Description = "GamePad/Controller Simulation",
         OptionsUserControl = typeof(GamePadActionControl),
-        NameFormat = "Press {0} on GamePad"
+        NameFormat = "{1} {0} on GamePad"
     )]
     internal class GamePadAction : BaseAction
     {
@@ -186,17 +186,18 @@ namespace KeyToJoy.Mapping
             if (inputBag is MouseButtonInputBag mouseButtonInputBag)
                 isInputDown = mouseButtonInputBag.IsDown;
 
-            if (PressState == PressState.Down
-                || (PressState == PressState.Full && isInputDown))
+            if (PressState == PressState.Press
+                || (PressState == PressState.PressAndRelease && isInputDown))
                 SimGamePad.Instance.SetControl(Control);
-            else if(PressState == PressState.Released
-                || (PressState == PressState.Full && !isInputDown))
+            else if(PressState == PressState.Release
+                || (PressState == PressState.PressAndRelease && !isInputDown))
                 SimGamePad.Instance.ReleaseControl(Control);
         }
 
         public override string GetNameDisplay()
         {
-            return Name.Replace("{0}", Control.ToString());
+            return Name.Replace("{0}", Control.ToString())
+                .Replace("{1}", Enum.GetName(typeof(PressState), PressState));
         }
 
         public override bool Equals(object obj)

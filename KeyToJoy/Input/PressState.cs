@@ -11,16 +11,16 @@ namespace KeyToJoy.Input
         /// <summary>
         /// Full click/press (first down, then up)
         /// </summary>
-        Full,
+        PressAndRelease,
         
         /// <summary>
         /// Pressed down
         /// </summary>
-        Down,
+        Press,
 
         /// <summary>
-        /// Released (after pressed down)
+        /// Release (after pressed down)
         /// </summary>
-        Released,
+        Release,
     }
 }

@@ -55,9 +55,9 @@ namespace KeyToJoy.Mapping
         {
             var trigger = mappedOption.Trigger as MouseButtonTrigger;
 
-            if (trigger.PressedState == PressState.Down || trigger.PressedState == PressState.Full)
+            if (trigger.PressedState == PressState.Press || trigger.PressedState == PressState.PressAndRelease)
                 lookupDown.Add(trigger.MouseButtons, mappedOption.Action);
-            if (trigger.PressedState == PressState.Released || trigger.PressedState == PressState.Full)
+            if (trigger.PressedState == PressState.Release || trigger.PressedState == PressState.PressAndRelease)
                 lookupRelease.Add(trigger.MouseButtons, mappedOption.Action);
         }
 

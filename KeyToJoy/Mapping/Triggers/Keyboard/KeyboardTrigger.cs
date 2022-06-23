@@ -53,9 +53,9 @@ namespace KeyToJoy.Mapping
 
         public override string ToString()
         {
-            var state = Enum.GetName(typeof(PressState), PressedState);
-            
-            return $"(keyboard) {Keys} [{state}]";
+            string format = "(keyboard) {1} {0}";
+            return format.Replace("{0}", Keys.ToString())
+                .Replace("{1}", Enum.GetName(typeof(PressState), PressedState));
         }
 
         public override object Clone()
