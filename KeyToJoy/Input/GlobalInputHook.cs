@@ -14,7 +14,7 @@ namespace KeyToJoy.Input
         public event EventHandler<GlobalKeyboardHookEventArgs> KeyboardInputEvent;
         public event EventHandler<GlobalMouseHookEventArgs> MouseInputEvent;
 
-        private IntPtr windowsHookHandle;
+        private IntPtr[] windowsHookHandles;
         private IntPtr user32LibraryHandle;
         private HookProc hookProc;
 
@@ -61,7 +61,7 @@ namespace KeyToJoy.Input
 
         public GlobalInputHook()
         {
-            windowsHookHandle = IntPtr.Zero;
+            windowsHookHandles = new IntPtr[2];
             user32LibraryHandle = IntPtr.Zero;
             hookProc = LowLevelInputHook; // we must keep alive hookProc, because GC is not aware about SetWindowsHookEx behaviour.
 
@@ -72,10 +72,15 @@ namespace KeyToJoy.Input
                 throw new Win32Exception(errorCode, $"Failed to load library 'User32.dll'. Error {errorCode}: {new Win32Exception(Marshal.GetLastWin32Error()).Message}.");
             }
 
-            foreach (var windowsHook in new int[] { WH_KEYBOARD_LL, WH_MOUSE_LL })
+            var windowsHooks = new int[] { WH_KEYBOARD_LL, WH_MOUSE_LL };
+
+            for (int i = 0; i < windowsHooks.Length; i++)
             {
-                windowsHookHandle = SetWindowsHookEx(windowsHook, hookProc, user32LibraryHandle, 0);
-                if (windowsHookHandle == IntPtr.Zero)
+                var windowsHook = windowsHooks[i];
+                
+                windowsHookHandles[i] = SetWindowsHookEx(windowsHook, hookProc, user32LibraryHandle, 0);
+                
+                if (windowsHookHandles[i] == IntPtr.Zero)
                 {
                     int errorCode = Marshal.GetLastWin32Error();
                     throw new Win32Exception(errorCode, $"Failed to adjust input hooks for '{Process.GetCurrentProcess().ProcessName}'. Error {errorCode}: {new Win32Exception(Marshal.GetLastWin32Error()).Message}.");
@@ -88,17 +93,22 @@ namespace KeyToJoy.Input
             if (disposing)
             {
                 // because we can unhook only in the same thread, not in garbage collector thread
-                if (windowsHookHandle != IntPtr.Zero)
+                for (int i = 0; i < windowsHookHandles.Length; i++)
                 {
-                    if (!UnhookWindowsHookEx(windowsHookHandle))
+                    var windowsHookHandle = windowsHookHandles[i];
+                    
+                    if (windowsHookHandle != IntPtr.Zero)
                     {
-                        int errorCode = Marshal.GetLastWin32Error();
-                        throw new Win32Exception(errorCode, $"Failed to remove input hooks for '{Process.GetCurrentProcess().ProcessName}'. Error {errorCode}: {new Win32Exception(Marshal.GetLastWin32Error()).Message}.");
-                    }
-                    windowsHookHandle = IntPtr.Zero;
+                        if (!UnhookWindowsHookEx(windowsHookHandle))
+                        {
+                            int errorCode = Marshal.GetLastWin32Error();
+                            throw new Win32Exception(errorCode, $"Failed to remove input hooks for '{Process.GetCurrentProcess().ProcessName}'. Error {errorCode}: {new Win32Exception(Marshal.GetLastWin32Error()).Message}.");
+                        }
+                        windowsHookHandles[i] = IntPtr.Zero;
 
-                    // ReSharper disable once DelegateSubtraction
-                    hookProc -= LowLevelInputHook;
+                        // ReSharper disable once DelegateSubtraction
+                        hookProc -= LowLevelInputHook;
+                    }
                 }
             }
 

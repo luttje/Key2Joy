@@ -47,6 +47,7 @@ namespace KeyToJoy.Mapping
             instance = null;
             globalMouseButtonHook.MouseInputEvent -= OnMouseButtonInputEvent;
             globalMouseButtonHook.Dispose();
+            globalMouseButtonHook = null;
 
             base.Stop();
         }

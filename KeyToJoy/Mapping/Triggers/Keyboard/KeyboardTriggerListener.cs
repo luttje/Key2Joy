@@ -47,6 +47,7 @@ namespace KeyToJoy.Mapping
             instance = null;
             globalKeyboardHook.KeyboardInputEvent -= OnKeyInputEvent;
             globalKeyboardHook.Dispose();
+            globalKeyboardHook = null;
 
             base.Stop();
         }
