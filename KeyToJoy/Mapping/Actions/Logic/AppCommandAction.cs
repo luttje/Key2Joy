@@ -9,7 +9,7 @@ namespace KeyToJoy.Mapping
         Description = "App Command",
         OptionsUserControl = typeof(AppCommandActionControl),
         NameFormat = "Run App Command '{0}'",
-        FunctionName = AppCommandAction.SCRIPT_COMMAND,
+        FunctionName = SCRIPT_COMMAND,
         FunctionMethodName = nameof(AppCommandAction.ExecuteActionForScript)
     )]
     internal class AppCommandAction : BaseAction
@@ -26,7 +26,7 @@ namespace KeyToJoy.Mapping
         public object[] ExecuteActionForScript(params object[] parameters)
         {
             if (parameters.Length < 1 || !(parameters[0] is string command))
-                throw new ArgumentException($"{AppCommandAction.SCRIPT_COMMAND} expected a command string!");
+                throw new ArgumentException($"{SCRIPT_COMMAND} expected a command string!");
 
             this.Command = command;
 

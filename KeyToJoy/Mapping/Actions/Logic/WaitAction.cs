@@ -12,11 +12,13 @@ namespace KeyToJoy.Mapping
         Visibility = ActionVisibility.UnlessTopLevel,
         OptionsUserControl = typeof(WaitActionControl),
         NameFormat = "Wait for {0}ms",
-        FunctionName = "wait",
+        FunctionName = SCRIPT_COMMAND,
         FunctionMethodName = nameof(WaitAction.ExecuteActionForScript)
     )]
     internal class WaitAction : BaseAction
     {
+        internal const string SCRIPT_COMMAND = "wait";
+        
         [JsonProperty]
         public TimeSpan WaitTime;
 
@@ -28,15 +30,15 @@ namespace KeyToJoy.Mapping
         public object[] ExecuteActionForScript(params object[] parameters)
         {
             if (parameters.Length < 2)
-                throw new ArgumentException($"{AppCommandAction.SCRIPT_COMMAND} expected a callback and wait time!");
+                throw new ArgumentException($"{SCRIPT_COMMAND} expected a callback and wait time!");
             
             if(!(parameters[0] is NLua.LuaFunction callback))
-                throw new ArgumentException($"{AppCommandAction.SCRIPT_COMMAND} expected a callback as the first argument!");
+                throw new ArgumentException($"{SCRIPT_COMMAND} expected a callback as the first argument!");
 
             var waitTime = parameters[1] as long?;
 
             if (waitTime == null)
-                throw new ArgumentException($"{AppCommandAction.SCRIPT_COMMAND} expected a wait time (long) as the second argument!");
+                throw new ArgumentException($"{SCRIPT_COMMAND} expected a wait time (long) as the second argument!");
 
             WaitTime = TimeSpan.FromMilliseconds((long)waitTime);
             var task = Task.Run(async () =>

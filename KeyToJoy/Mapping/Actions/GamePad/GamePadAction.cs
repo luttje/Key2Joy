@@ -15,10 +15,14 @@ namespace KeyToJoy.Mapping
     [Action(
         Description = "GamePad/Controller Simulation",
         OptionsUserControl = typeof(GamePadActionControl),
-        NameFormat = "{1} {0} on GamePad"
+        NameFormat = "{1} {0} on GamePad",
+        FunctionName = SCRIPT_COMMAND,
+        FunctionMethodName = nameof(GamePadAction.ExecuteActionForScript)
     )]
     internal class GamePadAction : BaseAction
     {
+        internal const string SCRIPT_COMMAND = "gamepad";
+        
         private static bool isPluggedIn = false;
         private GamePadControl control;
 
@@ -140,6 +144,44 @@ namespace KeyToJoy.Mapping
                     ImageResource = "XboxSeriesX_Y";
                     break;
             }
+        }
+
+        public object[] ExecuteActionForScript(params object[] parameters)
+        {
+            if (parameters.Length < 2)
+                throw new ArgumentException($"{SCRIPT_COMMAND} expected a gamepad control and press state!");
+
+            if (!(parameters[0] is string controlName))
+                throw new ArgumentException($"{SCRIPT_COMMAND} expected a gamepad control as the first argument!");
+
+            // TODO: Provide enum to Lua at boot
+            control = (GamePadControl)Enum.Parse(typeof(GamePadControl), controlName);
+
+            if (!(parameters[1] is string pressStateName))
+                throw new ArgumentException($"{SCRIPT_COMMAND} expected a press state as the second argument!");
+
+            // TODO: Provide enum to Lua at boot
+            PressState = (PressState)Enum.Parse(typeof(PressState), pressStateName);
+
+            if (PressState == PressState.Press || PressState == PressState.PressAndRelease)
+            {
+                SimGamePad.Instance.SetControl(Control);
+
+                if (PressState == PressState.PressAndRelease)
+                {
+                    Task.Run(async () =>
+                    {
+                        // TODO: Make this a configurable value
+                        await Task.Delay(50);
+                        SimGamePad.Instance.ReleaseControl(Control);
+                    });
+                }
+            }
+            
+            if (PressState == PressState.Release)
+                SimGamePad.Instance.ReleaseControl(Control);
+            
+            return null;
         }
 
         internal override async Task Execute(InputBag inputBag = null)
