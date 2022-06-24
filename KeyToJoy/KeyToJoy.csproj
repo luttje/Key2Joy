@@ -235,13 +235,13 @@
     <Compile Include="Mapping\Actions\Logic\AppCommandActionControl.Designer.cs">
       <DependentUpon>AppCommandActionControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Mapping\Actions\Logic\BaseScriptAction.cs" />
-    <Compile Include="Mapping\Actions\Logic\JavascriptScriptAction.cs" />
-    <Compile Include="Mapping\Actions\Logic\LuaScriptAction.cs" />
-    <Compile Include="Mapping\Actions\Logic\JavascriptScriptActionControl.cs">
+    <Compile Include="Mapping\Actions\Scripting\BaseScriptAction.cs" />
+    <Compile Include="Mapping\Actions\Scripting\JavascriptScriptAction.cs" />
+    <Compile Include="Mapping\Actions\Scripting\LuaScriptAction.cs" />
+    <Compile Include="Mapping\Actions\Scripting\JavascriptScriptActionControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Mapping\Actions\Logic\JavascriptScriptActionControl.Designer.cs">
+    <Compile Include="Mapping\Actions\Scripting\JavascriptScriptActionControl.Designer.cs">
       <DependentUpon>JavascriptScriptActionControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Mapping\Actions\Logic\SequenceActionControl.cs">
@@ -252,10 +252,10 @@
     </Compile>
     <Compile Include="Mapping\Actions\Logic\WaitAction.cs" />
     <Compile Include="Mapping\Actions\Logic\SequenceAction.cs" />
-    <Compile Include="Mapping\Actions\Logic\LuaScriptActionControl.cs">
+    <Compile Include="Mapping\Actions\Scripting\LuaScriptActionControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Mapping\Actions\Logic\LuaScriptActionControl.Designer.cs">
+    <Compile Include="Mapping\Actions\Scripting\LuaScriptActionControl.Designer.cs">
       <DependentUpon>LuaScriptActionControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Mapping\Actions\Logic\WaitActionControl.cs">
@@ -264,6 +264,7 @@
     <Compile Include="Mapping\Actions\Logic\WaitActionControl.Designer.cs">
       <DependentUpon>WaitActionControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Mapping\Actions\Scripting\ScriptCallWrapper.cs" />
     <Compile Include="Mapping\AxisDirection.cs" />
     <Compile Include="Mapping\Actions\Logic\AppCommandAction.cs" />
     <Compile Include="Mapping\Actions\GamePad\GamePadAction.cs" />
@@ -363,13 +364,13 @@
     <EmbeddedResource Include="Mapping\Actions\Logic\AppCommandActionControl.resx">
       <DependentUpon>AppCommandActionControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Mapping\Actions\Logic\JavascriptScriptActionControl.resx">
+    <EmbeddedResource Include="Mapping\Actions\Scripting\JavascriptScriptActionControl.resx">
       <DependentUpon>JavascriptScriptActionControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Mapping\Actions\Logic\SequenceActionControl.resx">
       <DependentUpon>SequenceActionControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Mapping\Actions\Logic\LuaScriptActionControl.resx">
+    <EmbeddedResource Include="Mapping\Actions\Scripting\LuaScriptActionControl.resx">
       <DependentUpon>LuaScriptActionControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Mapping\Actions\Logic\WaitActionControl.resx">

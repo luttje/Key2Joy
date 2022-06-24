@@ -1,10 +1,8 @@
-﻿using Jint;
-using KeyToJoy.Util;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using NLua;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,21 +10,28 @@ using System.Threading.Tasks;
 namespace KeyToJoy.Mapping
 {
     [Action(
-        Description = "Javascript Action",
-        OptionsUserControl = typeof(JavascriptActionControl),
-        NameFormat = "Javascript Script: {0}"
+        Description = "Lua Script Action",
+        OptionsUserControl = typeof(LuaScriptActionControl),
+        NameFormat = "Lua Script: {0}"
     )]
-    internal class JavascriptAction : BaseScriptAction
+    internal class LuaScriptAction : BaseScriptAction
     {
-        private Engine engine;
+        private Lua lua;
 
-        public JavascriptAction(string name, string description)
+        public LuaScriptAction(string name, string description)
             : base(name, description)
         { }
 
         internal override async Task Execute(InputBag inputBag)
         {
-            engine.Execute(Script);
+            try
+            {
+                lua.DoString(Script, "KeyToJoy.Script.Inline");
+            }
+            catch (NLua.Exceptions.LuaScriptException e)
+            {
+                Console.WriteLine(e.ToString());
+            }
         }
 
         public void Print(string message)
@@ -38,12 +43,13 @@ namespace KeyToJoy.Mapping
         {
             base.OnStartListening(listener, ref otherActions);
 
-            engine = new Engine();
-            engine.SetValue("print", new Action<string>(Print));
+            lua = new Lua();
+            
+            lua.RegisterFunction("print", this, typeof(LuaScriptAction).GetMethod(nameof(Print), new[] { typeof(string) }));
 
             var actionTypes = ActionAttribute.GetAllActions();
 
-            // Register all actions as js functions
+            // Register all actions as lua functions
             foreach (var pair in actionTypes)
             {
                 var actionType = pair.Key;
@@ -58,41 +64,41 @@ namespace KeyToJoy.Mapping
                     {
                         var enumNames = Enum.GetNames(enumType);
 
-                        // TODO: Probably a better way to do this
-                        engine.Execute(
+                        lua.DoString(
                             enumType.Name + " = {" +
-                            string.Join(", ", enumNames.Select((name, index) => $"{name}: {(int)Enum.Parse(enumType, name)}")) +
+                            string.Join(", ", enumNames.Select((name, index) => $"{name} = {(int)Enum.Parse(enumType, name)}")) +
                             "    }"
                         );
-
-                        engine.Execute($"print(JSON.stringify({enumType.Name}))");
                     }
                 }
 
                 if (scriptableActionAttribute.FunctionMethodName == null)
                     continue;
-                
-                var instance = MakeAction(actionType);
-                var method = actionType.GetMethod(
-                    scriptableActionAttribute.FunctionMethodName,
-                    new[] { typeof(object[]) });
 
-                engine.SetValue(
+                var instance = MakeAction(actionType);
+                var wrapper = new ScriptCallWrapper(
+                    this,
+                    instance,
+                    actionType,
+                    scriptableActionAttribute.FunctionMethodName);
+
+                lua.RegisterFunction(
                     scriptableActionAttribute.FunctionName,
-                    method.CreateDelegate(instance));
+                    wrapper,
+                    wrapper.GetWrapperMethod());
             }
         }
-        
+
         internal override void OnStopListening(TriggerListener listener)
         {
             base.OnStopListening(listener);
 
-            engine = null;
+            lua.Dispose();
         }
 
         public override bool Equals(object obj)
         {
-            if (!(obj is JavascriptAction action))
+            if (!(obj is LuaScriptAction action))
                 return false;
 
             return action.Name == Name
@@ -101,7 +107,7 @@ namespace KeyToJoy.Mapping
 
         public override object Clone()
         {
-            return new JavascriptAction(Name, description)
+            return new LuaScriptAction(Name, description)
             {
                 Script = Script,
                 ImageResource = ImageResource,

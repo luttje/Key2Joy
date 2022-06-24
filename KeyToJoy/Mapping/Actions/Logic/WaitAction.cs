@@ -27,11 +27,12 @@ namespace KeyToJoy.Mapping
         {
         }
 
-        public object[] ExecuteActionForScript(params object[] parameters)
+        public object[] ExecuteActionForScript(BaseScriptAction scriptAction, params object[] parameters)
         {
             if (parameters.Length < 2)
                 throw new ArgumentException($"{SCRIPT_COMMAND} expected a callback and wait time!");
 
+            // TODO: use scriptAction
             if (!BaseScriptAction.TryConvertParameterToCallback(parameters[0], out Action callback))
                 throw new ArgumentException($"{SCRIPT_COMMAND} expected a callback as the first argument!");
 

@@ -147,11 +147,12 @@ namespace KeyToJoy.Mapping
             }
         }
 
-        public object[] ExecuteActionForScript(params object[] parameters)
+        public object[] ExecuteActionForScript(BaseScriptAction scriptAction, params object[] parameters)
         {
             if (parameters.Length < 2)
                 throw new ArgumentException($"{SCRIPT_COMMAND} expected a gamepad control and press state!");
 
+            // TODO: use scriptAction
             if (!BaseScriptAction.TryConvertParameterToLong(parameters[0], out long controlNumber))
                 throw new ArgumentException($"{SCRIPT_COMMAND} expected a gamepad control as the first argument!");
 
