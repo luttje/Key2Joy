@@ -31,20 +31,18 @@ namespace KeyToJoy.Mapping
         {
             if (parameters.Length < 2)
                 throw new ArgumentException($"{SCRIPT_COMMAND} expected a callback and wait time!");
-            
-            if(!(parameters[0] is NLua.LuaFunction callback))
+
+            if (!BaseScriptAction.TryConvertParameterToCallback(parameters[0], out Action callback))
                 throw new ArgumentException($"{SCRIPT_COMMAND} expected a callback as the first argument!");
 
-            var waitTime = parameters[1] as long?;
-
-            if (waitTime == null)
+            if (!BaseScriptAction.TryConvertParameterToLong(parameters[1], out long waitTime))
                 throw new ArgumentException($"{SCRIPT_COMMAND} expected a wait time (long) as the second argument!");
 
-            WaitTime = TimeSpan.FromMilliseconds((long)waitTime);
+            WaitTime = TimeSpan.FromMilliseconds(waitTime);
             var task = Task.Run(async () =>
             {
                 await this.Execute();
-                callback.Call();
+                callback();
             });
 
             return null;

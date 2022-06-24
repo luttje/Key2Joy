@@ -152,12 +152,12 @@ namespace KeyToJoy.Mapping
             if (parameters.Length < 2)
                 throw new ArgumentException($"{SCRIPT_COMMAND} expected a gamepad control and press state!");
 
-            if (!(parameters[0] is long controlNumber))
+            if (!BaseScriptAction.TryConvertParameterToLong(parameters[0], out long controlNumber))
                 throw new ArgumentException($"{SCRIPT_COMMAND} expected a gamepad control as the first argument!");
 
             control = (GamePadControl)controlNumber;
-            
-            if (!(parameters[1] is long pressStateNumber))
+
+            if (!BaseScriptAction.TryConvertParameterToLong(parameters[1], out long pressStateNumber))
                 throw new ArgumentException($"{SCRIPT_COMMAND} expected a press state as the second argument!");
 
             PressState = (PressState)pressStateNumber;
