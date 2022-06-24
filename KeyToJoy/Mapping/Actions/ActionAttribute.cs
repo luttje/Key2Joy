@@ -11,6 +11,7 @@ namespace KeyToJoy.Mapping
     {
         public string FunctionName { get; set; }
         public string FunctionMethodName { get; set; }
+        public Type[] ExposesEnumerations { get; set; }
 
         /// <summary>
         /// When this action should be visibile in menu's.

@@ -14,10 +14,15 @@ namespace KeyToJoy.Mapping
         /// </summary>
         /// <returns></returns>
         string FunctionName { get; }
-        
+
         /// <summary>
         /// Returns the method name that actually executes the function
         /// </summary>
         string FunctionMethodName { get; }
+
+        /// <summary>
+        /// Returns enumerations to expose to the scripting environment
+        /// </summary>
+        Type[] ExposesEnumerations { get; }
     }
 }

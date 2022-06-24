@@ -1,16 +1,15 @@
 # ![](KeyToJoy/Graphics/Icons/icon32.png?raw=true) KeyToJoy
-Simulate a GameController/Joystick using your keyboard and mouse.
+Simulate a Joystick/Controller using your keyboard, mouse or other triggers.
 
-This is a quick prototype so I could play the game ['Aperture Desk
-Job'](https://store.steampowered.com/app/1902490/Aperture_Desk_Job/)
-without the use of a Steam Deck or controller.
+In addition to simply simulating a button being pressed on the Joystick, you
+can also write scripts with a more complex sequence of actions.
 
 ---
 
 ## Usage
 
-**⚠ Use at own risk!** Incorrect driver (un)installation may cause a
-blue screen.
+**⚠ Use at own risk!** Incorrect driver (un)installation may cause a blue
+screen.
 
 ### Installation
 
@@ -22,15 +21,17 @@ blue screen.
 
 ### Starting
 
-1. Start **![](KeyToJoy/Graphics/Icons/icon16.png?raw=true)
-   KeyToJoy.exe**
+1. Start **![](KeyToJoy/Graphics/Icons/icon16.png?raw=true) KeyToJoy.exe**
 2. *(First time only)* Accept installation of the Scp Virtual Bus Driver
-3. Use the default bindings or modify them by double-clicking a row in
-   the Control/Bind-list.
+3. Use the default bindings or modify them by double-clicking a row in the
+   Control/Bind-list.
+
+   > 🚧 TODO: This information is outdated. The software has a lot more
+   > capabilities.
 
    ![Screenshot showing the key binding process. A controller has one
-   highlighted button and a textbox shows the W button is currently
-   bound to it.](.github/screenshot.png)
+   highlighted button and a textbox shows the W button is currently bound to
+   it.](.github/screenshot.png)
 
 4. Tick the checkbox to simulate the game controller
 
@@ -38,9 +39,35 @@ KeyToJoy will now pretend that your keyboard input is Joystick input.
 
 ---
 
+## Scripting
+
+You can create scripts in Lua or Javascript that perform a sequence of
+actions with more complex logic.
+
+Here is a simple example of a script that presses a button and then stops
+simulating input after two seconds:
+```lua
+print("test")
+
+gamepad(GamePadControl.A, PressState.PressAndRelease)
+wait(function()
+   app_command("abort")
+end, 2000)
+
+print("end test")
+```
+
+**You probably want to bind scripts only to the "Release" press state of
+triggers.** Otherwise a script will be executed both on key down AND up.
+
+> 🚧 TODO: Full scripting reference in [SCRIPTING.md](SCRIPTING.md)
+
+---
+
 ## Known Issues
 
-- Windows wont let you click if you release a mouse key that hasn't been pressed before.
+- Windows wont let you click if you release a mouse key that hasn't been
+  pressed before.
 
 ---
 
@@ -50,16 +77,16 @@ Use `ScpDriverInstaller.exe` to uninstall the driver. You can find the
 latest version here: [mogzol/ScpDriverInterface
 releases](https://github.com/mogzol/ScpDriverInterface/releases)
 
-**⚠ Do not uninstall the driver through Device manager or you'll end up
-with an incomplete and corrupt driver installation.**
+**⚠ Do not uninstall the driver through Device manager or you'll end up with
+an incomplete and corrupt driver installation.**
 
 ---
 
 ## Contributing
 
 Please do not hesitate to [create an issue](/../../issues/new/) when you
-find a problem, or [submit a Pull Request](/../../pulls/) when you've
-made enhancements or fixed bugs.
+find a problem, or [submit a Pull Request](/../../pulls/) when you've made
+enhancements or fixed bugs.
 
 *♥ Thanks in advance for your help!*
 
@@ -85,6 +112,5 @@ Prompts by Nicolae (Xelu) Berbece](https://thoseawesomeguys.com/prompts/)
 ## License
 
 This software is license under [the MIT License (see
-LICENSE-file)](LICENSE). The licenses for other libraries and/or code
-used can be found in [the LICENSE-3RD-PARTY.txt
-file](LICENSE-3RD-PARTY.txt).
+LICENSE-file)](LICENSE). The licenses for other libraries and/or code used
+can be found in [the LICENSE-3RD-PARTY.txt file](LICENSE-3RD-PARTY.txt).

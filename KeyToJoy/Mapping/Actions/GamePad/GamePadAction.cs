@@ -17,7 +17,8 @@ namespace KeyToJoy.Mapping
         OptionsUserControl = typeof(GamePadActionControl),
         NameFormat = "{1} {0} on GamePad",
         FunctionName = SCRIPT_COMMAND,
-        FunctionMethodName = nameof(GamePadAction.ExecuteActionForScript)
+        FunctionMethodName = nameof(GamePadAction.ExecuteActionForScript),
+        ExposesEnumerations = new[] { typeof(GamePadControl), typeof(PressState) }
     )]
     internal class GamePadAction : BaseAction
     {
@@ -151,17 +152,15 @@ namespace KeyToJoy.Mapping
             if (parameters.Length < 2)
                 throw new ArgumentException($"{SCRIPT_COMMAND} expected a gamepad control and press state!");
 
-            if (!(parameters[0] is string controlName))
+            if (!(parameters[0] is long controlNumber))
                 throw new ArgumentException($"{SCRIPT_COMMAND} expected a gamepad control as the first argument!");
 
-            // TODO: Provide enum to Lua at boot
-            control = (GamePadControl)Enum.Parse(typeof(GamePadControl), controlName);
-
-            if (!(parameters[1] is string pressStateName))
+            control = (GamePadControl)controlNumber;
+            
+            if (!(parameters[1] is long pressStateNumber))
                 throw new ArgumentException($"{SCRIPT_COMMAND} expected a press state as the second argument!");
 
-            // TODO: Provide enum to Lua at boot
-            PressState = (PressState)Enum.Parse(typeof(PressState), pressStateName);
+            PressState = (PressState)pressStateNumber;
 
             if (PressState == PressState.Press || PressState == PressState.PressAndRelease)
             {

@@ -58,8 +58,24 @@ namespace KeyToJoy.Mapping
                 var actionType = pair.Key;
                 var actionAttribute = pair.Value;
 
-                if (!(actionAttribute is IScriptable scriptableActionAttribute)
-                    || scriptableActionAttribute.FunctionMethodName == null)
+                if (!(actionAttribute is IScriptable scriptableActionAttribute))
+                    continue;
+
+                if (scriptableActionAttribute.ExposesEnumerations != null)
+                {
+                    foreach (var enumType in scriptableActionAttribute.ExposesEnumerations)
+                    {
+                        var enumNames = Enum.GetNames(enumType);
+
+                        lua.DoString(
+                            enumType.Name + " = {" +
+                            string.Join(", ", enumNames.Select((name, index) => $"{name} = {(int)Enum.Parse(enumType, name)}")) +
+                            "    }"
+                        );
+                    }
+                }
+
+                if (scriptableActionAttribute.FunctionMethodName == null)
                     continue;
                 
                 var instance = MakeAction(actionType);
