@@ -39,11 +39,7 @@ namespace KeyToJoy.Mapping
             var attribute = selected.Value;
 
             if (Action == null || Action.GetType() != selectedType)
-                Action = (BaseAction)Activator.CreateInstance(selectedType, new object[]
-                {
-                    attribute.NameFormat,
-                    attribute.Description
-                });
+                Action = BaseAction.MakeAction(selectedType, attribute);
 
             if (options != null)
                 options.Setup(Action);
@@ -65,23 +61,7 @@ namespace KeyToJoy.Mapping
 
         private void LoadActions()
         {
-            var actionTypes = Assembly.GetExecutingAssembly()
-                .GetTypes()
-                .Where(t =>
-                {
-                    var actionAttribute = t.GetCustomAttributes(typeof(ActionAttribute), false).FirstOrDefault() as ActionAttribute;
-                    
-                    if (actionAttribute == null 
-                    || actionAttribute.Visibility == ActionVisibility.Never)
-                        return false;
-
-                    if(IsTopLevel)
-                        return actionAttribute.Visibility == ActionVisibility.Always 
-                            || actionAttribute.Visibility == ActionVisibility.OnlyTopLevel;
-
-                    return actionAttribute.Visibility == ActionVisibility.Always || actionAttribute.Visibility == ActionVisibility.UnlessTopLevel;
-                })
-                .ToDictionary(t => t, t => t.GetCustomAttribute(typeof(ActionAttribute), false) as ActionAttribute);
+            var actionTypes = ActionAttribute.GetAllActions(IsTopLevel);
 
             cmbAction.DataSource = new BindingSource(actionTypes, null);
             cmbAction.DisplayMember = "Value";

@@ -8,6 +8,7 @@ using System.Diagnostics;
 using KeyToJoy.Mapping;
 using KeyToJoy.Properties;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace KeyToJoy
 {
@@ -162,7 +163,8 @@ namespace KeyToJoy
         private void ArmMappings()
         {
             var listeners = new List<TriggerListener>();
-            
+            var allActions = selectedPreset.MappedOptions.Select(m => m.Action).ToList();
+
             foreach (var mappedOption in selectedPreset.MappedOptions)
             {
                 var listener = mappedOption.Trigger.GetTriggerListener();
@@ -176,7 +178,7 @@ namespace KeyToJoy
                     wndProcListeners.Add(listener);
                 }
 
-                mappedOption.Action.OnStartListening();
+                mappedOption.Action.OnStartListening(listener, ref allActions);
                 listener.AddMappedOption(mappedOption);
             }
 
@@ -192,7 +194,7 @@ namespace KeyToJoy
             foreach (var mappedOption in selectedPreset.MappedOptions)
             {
                 var listener = mappedOption.Trigger.GetTriggerListener();
-                mappedOption.Action.OnStopListening();
+                mappedOption.Action.OnStopListening(listener);
 
                 if (!listeners.Contains(listener))
                     listeners.Add(listener);
@@ -231,10 +233,15 @@ namespace KeyToJoy
 
         public bool RunAppCommand(string command)
         {
+            
             switch (command)
             {
                 case "abort":
-                    chkEnabled.Checked = false;
+                    if (InvokeRequired)
+                        Invoke(new Action(() => chkEnabled.Checked = false));
+                    else
+                        chkEnabled.Checked = false;
+                    
                     return true;
                 default:
                     return false;

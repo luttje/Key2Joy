@@ -64,6 +64,9 @@ namespace KeyToJoy.Mapping
 
         private void OnKeyInputEvent(object sender, GlobalKeyboardHookEventArgs e)
         {
+            if (!IsActive)
+                return;
+
             // Test if this is a bound key, if so halt default input behaviour
             var keys = VirtualKeyConverter.KeysFromVirtual(e.KeyboardData.VirtualCode);
             Dictionary<Keys, BaseAction> dictionary;
@@ -87,12 +90,6 @@ namespace KeyToJoy.Mapping
         }
 
         private bool TryOverrideKeyboardInput(BaseAction action, KeyboardInputBag inputBag)
-        {
-            action.Execute(inputBag);
-
-            return true;
-        }
-        private bool TryOverrideMouseButtonInput(BaseAction action, MouseButtonInputBag inputBag)
         {
             action.Execute(inputBag);
 

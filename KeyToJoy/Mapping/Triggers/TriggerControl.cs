@@ -65,10 +65,7 @@ namespace KeyToJoy.Mapping
 
         private void LoadTriggers()
         {
-            var triggerTypes = Assembly.GetExecutingAssembly()
-                .GetTypes()
-                .Where(t => t.GetCustomAttribute(typeof(TriggerAttribute), false) != null)
-                .ToDictionary(t => t, t => t.GetCustomAttribute(typeof(TriggerAttribute), false) as TriggerAttribute);
+            var triggerTypes = TriggerAttribute.GetAllTriggers();
 
             cmbTrigger.DataSource = new BindingSource(triggerTypes, null);
             cmbTrigger.DisplayMember = "Value";

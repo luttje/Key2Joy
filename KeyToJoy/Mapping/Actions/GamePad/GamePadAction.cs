@@ -41,9 +41,9 @@ namespace KeyToJoy.Mapping
         {
         }
 
-        internal override void OnStartListening()
+        internal override void OnStartListening(TriggerListener listener, ref List<BaseAction> otherActions)
         {
-            base.OnStartListening();
+            base.OnStartListening(listener, ref otherActions);
 
             if (isPluggedIn)
                 return;
@@ -52,9 +52,9 @@ namespace KeyToJoy.Mapping
             isPluggedIn = true;
         }
 
-        internal override void OnStopListening()
+        internal override void OnStopListening(TriggerListener listener)
         {
-            base.OnStopListening();
+            base.OnStopListening(listener);
 
             if (!isPluggedIn)
                 return;
@@ -142,7 +142,7 @@ namespace KeyToJoy.Mapping
             }
         }
 
-        internal override async Task Execute(InputBag inputBag)
+        internal override async Task Execute(InputBag inputBag = null)
         {
             if (inputBag is MouseMoveInputBag mouseMoveInputBag)
             {

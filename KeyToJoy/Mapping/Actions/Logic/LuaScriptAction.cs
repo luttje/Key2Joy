@@ -1,8 +1,9 @@
-﻿using Neo.IronLua;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using NLua;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -26,32 +27,56 @@ namespace KeyToJoy.Mapping
 
         internal override async Task Execute(InputBag inputBag)
         {
-            dynamic g = lua.CreateEnvironment<LuaGlobal>();
-            // register new functions
-            g.print = new Action<object[]>(Print);
-
-            g.dochunk(Script, "KeyToJoy.Script.Inline.lua");
-        }
-
-        private void Print(object[] objects)
-        {
-            foreach (var obj in objects)
+            try
             {
-                System.Diagnostics.Debug.Write(obj);
+                lua.DoString(Script, "KeyToJoy.Script.Inline");
             }
-            System.Diagnostics.Debug.WriteLine("");
+            catch (NLua.Exceptions.LuaScriptException e)
+            {
+                Console.WriteLine(e.ToString());
+            }
         }
 
-        internal override void OnStartListening()
+        public void Print(string message)
         {
-            base.OnStartListening();
+            System.Diagnostics.Debug.WriteLine(message);
+        }
+
+        internal override void OnStartListening(TriggerListener listener, ref List<BaseAction> otherActions)
+        {
+            base.OnStartListening(listener, ref otherActions);
 
             lua = new Lua();
+            
+            lua.RegisterFunction("print", this, typeof(LuaScriptAction).GetMethod(nameof(Print), new[] { typeof(string) }));
+
+            var actionTypes = ActionAttribute.GetAllActions();
+
+            // Register all actions as lua functions
+            foreach (var pair in actionTypes)
+            {
+                var actionType = pair.Key;
+                var actionAttribute = pair.Value;
+
+                if (!(actionAttribute is IScriptable scriptableActionAttribute)
+                    || scriptableActionAttribute.FunctionMethodName == null)
+                    continue;
+                
+                var instance = MakeAction(actionType);
+                var method = actionType.GetMethod(
+                    scriptableActionAttribute.FunctionMethodName,
+                    new[] { typeof(object[]) });
+                
+                lua.RegisterFunction(
+                    scriptableActionAttribute.FunctionName, 
+                    instance, 
+                    method);
+            }
         }
 
-        internal override void OnStopListening()
+        internal override void OnStopListening(TriggerListener listener)
         {
-            base.OnStopListening();
+            base.OnStopListening(listener);
 
             lua.Dispose();
         }

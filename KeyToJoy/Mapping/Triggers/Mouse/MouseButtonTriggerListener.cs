@@ -64,6 +64,9 @@ namespace KeyToJoy.Mapping
 
         private void OnMouseButtonInputEvent(object sender, GlobalMouseHookEventArgs e)
         {
+            if (!IsActive)
+                return;
+
             // Mouse movement is handled through WndProc and TryOverrideMouseMoveInput in MouseMoveTriggerListener
             if (e.MouseState == MouseState.Move)
                 return;

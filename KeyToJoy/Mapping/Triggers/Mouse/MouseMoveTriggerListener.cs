@@ -69,6 +69,9 @@ namespace KeyToJoy.Mapping
         {
             base.WndProc(ref m);
 
+            if (!IsActive)
+                return;
+            
             if (m.Msg != WM_INPUT)
                 return;
 

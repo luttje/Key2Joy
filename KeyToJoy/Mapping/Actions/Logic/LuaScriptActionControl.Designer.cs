@@ -45,11 +45,13 @@
             // 
             // txtScript
             // 
-            this.txtScript.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtScript.Dock = System.Windows.Forms.DockStyle.Top;
+            this.txtScript.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtScript.Location = new System.Drawing.Point(5, 20);
-            this.txtScript.MaximumSize = new System.Drawing.Size(256, 256);
+            this.txtScript.MinimumSize = new System.Drawing.Size(254, 132);
             this.txtScript.Multiline = true;
             this.txtScript.Name = "txtScript";
+            this.txtScript.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.txtScript.Size = new System.Drawing.Size(254, 132);
             this.txtScript.TabIndex = 13;
             this.txtScript.TextChanged += new System.EventHandler(this.txtScript_TextChanged);
@@ -58,6 +60,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
             this.BackColor = System.Drawing.Color.Black;
             this.Controls.Add(this.txtScript);
             this.Controls.Add(this.lblInfo);

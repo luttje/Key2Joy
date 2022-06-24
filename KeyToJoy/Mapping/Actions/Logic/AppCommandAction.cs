@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -7,10 +8,14 @@ namespace KeyToJoy.Mapping
     [Action(
         Description = "App Command",
         OptionsUserControl = typeof(AppCommandActionControl),
-        NameFormat = "Run App Command '{0}'"
+        NameFormat = "Run App Command '{0}'",
+        FunctionName = AppCommandAction.SCRIPT_COMMAND,
+        FunctionMethodName = nameof(AppCommandAction.ExecuteActionForScript)
     )]
     internal class AppCommandAction : BaseAction
     {
+        internal const string SCRIPT_COMMAND = "app_command";
+
         [JsonProperty]
         public string Command { get; set; }
 
@@ -18,7 +23,26 @@ namespace KeyToJoy.Mapping
             : base(name, description)
         { }
 
-        internal override async Task Execute(InputBag inputBag)
+        public object[] ExecuteActionForScript(params object[] parameters)
+        {
+            if (parameters.Length < 1 || !(parameters[0] is string command))
+                throw new ArgumentException($"{AppCommandAction.SCRIPT_COMMAND} expected a command string!");
+
+            this.Command = command;
+
+            Task.Run(async () =>
+            {
+                // Wait a frame so we don't get an Access Violation on the lua.DoString
+                // TODO: Figure out if there's a nicer way
+                await Task.Delay(0);
+
+                this.Execute();
+            });
+
+            return null;
+        }
+
+        internal override async Task Execute(InputBag inputBag = null)
         {
             if (!Program.RunAppCommand(Command))
             {

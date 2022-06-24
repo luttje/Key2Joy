@@ -11,7 +11,9 @@ namespace KeyToJoy.Mapping
         Description = "Wait for a specified duration",
         Visibility = ActionVisibility.UnlessTopLevel,
         OptionsUserControl = typeof(WaitActionControl),
-        NameFormat = "Wait for {0}ms"
+        NameFormat = "Wait for {0}ms",
+        FunctionName = "wait",
+        FunctionMethodName = nameof(WaitAction.ExecuteActionForScript)
     )]
     internal class WaitAction : BaseAction
     {
@@ -23,7 +25,30 @@ namespace KeyToJoy.Mapping
         {
         }
 
-        internal override Task Execute(InputBag inputBag)
+        public object[] ExecuteActionForScript(params object[] parameters)
+        {
+            if (parameters.Length < 2)
+                throw new ArgumentException($"{AppCommandAction.SCRIPT_COMMAND} expected a callback and wait time!");
+            
+            if(!(parameters[0] is NLua.LuaFunction callback))
+                throw new ArgumentException($"{AppCommandAction.SCRIPT_COMMAND} expected a callback as the first argument!");
+
+            var waitTime = parameters[1] as long?;
+
+            if (waitTime == null)
+                throw new ArgumentException($"{AppCommandAction.SCRIPT_COMMAND} expected a wait time (long) as the second argument!");
+
+            WaitTime = TimeSpan.FromMilliseconds((long)waitTime);
+            var task = Task.Run(async () =>
+            {
+                await this.Execute();
+                callback.Call();
+            });
+
+            return null;
+        }
+
+        internal override Task Execute(InputBag inputBag = null)
         {
             return Task.Delay(WaitTime);
         }

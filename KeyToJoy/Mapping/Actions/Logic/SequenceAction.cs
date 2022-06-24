@@ -23,29 +23,29 @@ namespace KeyToJoy.Mapping
             ChildActions = new List<BaseAction>();
         }
 
-        internal override async Task Execute(InputBag inputBag)
+        internal override async Task Execute(InputBag inputBag = null)
         {
             foreach (var childAction in ChildActions)
                 await childAction.Execute(inputBag);
         }
 
-        internal override void OnStartListening()
+        internal override void OnStartListening(TriggerListener listener, ref List<BaseAction> otherActions)
         {
-            base.OnStartListening();
+            base.OnStartListening(listener, ref otherActions);
 
             foreach (var childAction in ChildActions)
             {
-                childAction.OnStartListening();
+                childAction.OnStartListening(listener, ref otherActions);
             }
         }
 
-        internal override void OnStopListening()
+        internal override void OnStopListening(TriggerListener listener)
         {
-            base.OnStopListening();
+            base.OnStopListening(listener);
 
             foreach (var childAction in ChildActions)
             {
-                childAction.OnStopListening();
+                childAction.OnStopListening(listener);
             }
         }
 

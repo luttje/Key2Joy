@@ -12,6 +12,8 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -36,16 +38,19 @@
     <ApplicationIcon>Graphics\Icons\app-icons.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="KeraLua, Version=1.3.1.0, Culture=neutral, PublicKeyToken=6a194c04b9c89217, processorArchitecture=MSIL">
+      <HintPath>..\packages\KeraLua.1.3.1\lib\net46\KeraLua.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Win32.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Win32.Primitives.4.3.0\lib\net46\Microsoft.Win32.Primitives.dll</HintPath>
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Neo.Lua, Version=5.3.0.0, Culture=neutral, PublicKeyToken=fdb0cd4fe8a6e3b2, processorArchitecture=MSIL">
-      <HintPath>..\packages\NeoLua.1.3.14\lib\net47\Neo.Lua.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NLua, Version=1.6.0.0, Culture=neutral, PublicKeyToken=6a194c04b9c89217, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLua.1.6.0\lib\net46\NLua.dll</HintPath>
     </Reference>
     <Reference Include="RawInput.Sharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\RawInput.Sharp.0.0.4\lib\netstandard1.1\RawInput.Sharp.dll</HintPath>
@@ -220,6 +225,7 @@
       <DependentUpon>GamePadActionControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Mapping\Actions\IActionOptionsControl.cs" />
+    <Compile Include="Mapping\Actions\IScriptable.cs" />
     <Compile Include="Mapping\Actions\Logic\AppCommandActionControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -466,4 +472,11 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\KeraLua.1.3.1\build\net46\KeraLua.targets" Condition="Exists('..\packages\KeraLua.1.3.1\build\net46\KeraLua.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\KeraLua.1.3.1\build\net46\KeraLua.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\KeraLua.1.3.1\build\net46\KeraLua.targets'))" />
+  </Target>
 </Project>
