@@ -38,76 +38,8 @@ namespace KeyToJoy.Mapping
             return Name.Replace("{0}", truncatedScript);
         }
 
-        public static bool TryConvertParameterToLong(object parameter, out long result)
-        {
-            if (parameter is long)
-            {
-                result = (long)parameter;
-                return true;
-            }
-            else if (parameter is double)
-            {
-                result = Convert.ToInt64(parameter);
-                return true;
-            }
-            else if (parameter is int)
-            {
-                result = (int)parameter;
-                return true;
-            }
-            else if (parameter is string)
-            {
-                return long.TryParse((string)parameter, out result);
-            }
-            
-            result = 0;
-            return false;
-        }
-
-        internal static bool TryConvertParameterToCallback(object parameter, out Action callback)
-        {
-            // TODO: Move this to specific script implementation somehow
-            if (parameter is NLua.LuaFunction luaCallback)
-            {
-                callback = () =>
-                {
-                    try
-                    {
-                        luaCallback.Call();
-                    }
-                    catch (Exception e)
-                    {
-                        System.Diagnostics.Debug.WriteLine(e.ToString());
-                    }
-                };
-                return true;
-            }
-
-            // TODO: Move this to specific script implementation somehow 
-            if (parameter is Delegate @delegate)
-            {
-                callback = () =>
-                {
-                    try
-                    {
-                        var thisArg = JsValue.Undefined;
-                        var arguments = new JsValue[] {};
-                        @delegate.DynamicInvoke(thisArg, arguments);
-                    }
-                    catch (Exception e)
-                    {
-                        System.Diagnostics.Debug.WriteLine(e.ToString());
-                    }
-                };
-                return true;
-            }
-
-            var test = parameter.GetType();
-
-            throw new NotImplementedException("TODO: Support other callbacks");
-            
-            callback = null;
-            return false;
-        }
+        internal abstract bool TryConvertParameterToDouble(object parameter, out double result);
+        internal abstract bool TryConvertParameterToLong(object parameter, out long result);
+        internal abstract bool TryConvertParameterToCallback(object parameter, out Action callback);
     }
 }

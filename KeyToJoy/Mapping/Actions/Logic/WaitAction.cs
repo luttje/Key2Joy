@@ -32,11 +32,10 @@ namespace KeyToJoy.Mapping
             if (parameters.Length < 2)
                 throw new ArgumentException($"{SCRIPT_COMMAND} expected a callback and wait time!");
 
-            // TODO: use scriptAction
-            if (!BaseScriptAction.TryConvertParameterToCallback(parameters[0], out Action callback))
+            if (!scriptAction.TryConvertParameterToCallback(parameters[0], out Action callback))
                 throw new ArgumentException($"{SCRIPT_COMMAND} expected a callback as the first argument!");
 
-            if (!BaseScriptAction.TryConvertParameterToLong(parameters[1], out long waitTime))
+            if (!scriptAction.TryConvertParameterToLong(parameters[1], out long waitTime))
                 throw new ArgumentException($"{SCRIPT_COMMAND} expected a wait time (long) as the second argument!");
 
             WaitTime = TimeSpan.FromMilliseconds(waitTime);

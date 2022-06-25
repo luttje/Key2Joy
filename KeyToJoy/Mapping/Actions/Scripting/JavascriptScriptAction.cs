@@ -1,4 +1,5 @@
 ﻿using Jint;
+using Jint.Native;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,6 +38,62 @@ namespace KeyToJoy.Mapping
             System.Diagnostics.Debug.WriteLine(message);
         }
 
+        internal override bool TryConvertParameterToDouble(object parameter, out double result)
+        {
+            if (parameter is double)
+            {
+                result = (double)parameter;
+                return true;
+            }
+
+            throw new NotImplementedException("TODO: Support other types (I don't think Jint will give us anything other than double)");
+
+            result = 0;
+            return false;
+        }
+
+        internal override bool TryConvertParameterToLong(object parameter, out long result)
+        {
+            if (parameter is double)
+            {
+                result = Convert.ToInt64(parameter);
+                return true;
+            }
+
+            throw new NotImplementedException("TODO: Support other types (I don't think Jint will give us anything other than double)");
+
+            result = 0;
+            return false;
+        }
+
+        internal override bool TryConvertParameterToCallback(object parameter, out Action callback)
+        {
+            if (parameter is Delegate @delegate)
+            {
+                callback = () =>
+                {
+                    try
+                    {
+                        var thisArg = JsValue.Undefined;
+                        var arguments = new JsValue[] { };
+                        @delegate.DynamicInvoke(thisArg, arguments);
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.ToString());
+                    }
+                };
+                return true;
+            }
+
+            var test = parameter.GetType();
+
+            throw new NotImplementedException("TODO: Support other callback types (do they exist in Jint?)");
+
+            callback = null;
+            return false;
+        }
+        
         internal override void OnStartListening(TriggerListener listener, ref List<BaseAction> otherActions)
         {
             base.OnStartListening(listener, ref otherActions);
