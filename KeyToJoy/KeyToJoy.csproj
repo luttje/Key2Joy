@@ -61,6 +61,9 @@
     <Reference Include="SimWinGamePad, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\SimWinGamePad.1.1.1\lib\net40\SimWinGamePad.dll</HintPath>
     </Reference>
+    <Reference Include="SimWinKeyboard, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SimWinKeyboard.1.0.2\lib\net20\SimWinKeyboard.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.AppContext, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.AppContext.4.3.0\lib\net463\System.AppContext.dll</HintPath>
@@ -229,6 +232,13 @@
     </Compile>
     <Compile Include="Mapping\Actions\IActionOptionsControl.cs" />
     <Compile Include="Mapping\Actions\IScriptable.cs" />
+    <Compile Include="Mapping\Actions\Keyboard\KeyboardAction.cs" />
+    <Compile Include="Mapping\Actions\Keyboard\KeyboardActionControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Mapping\Actions\Keyboard\KeyboardActionControl.Designer.cs">
+      <DependentUpon>KeyboardActionControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Mapping\Actions\Logic\AppCommandActionControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -359,6 +369,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Mapping\Actions\GamePad\GamePadActionControl.resx">
       <DependentUpon>GamePadActionControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Mapping\Actions\Keyboard\KeyboardActionControl.resx">
+      <DependentUpon>KeyboardActionControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Mapping\Actions\Logic\AppCommandActionControl.resx">
       <DependentUpon>AppCommandActionControl.cs</DependentUpon>

@@ -32,7 +32,7 @@ namespace KeyToJoy.Mapping
         {
             var thisAction = (BaseScriptAction)action;
 
-            txtScript.Text = thisAction.Script;
+            txtScript.Text = txtFilePath.Text = thisAction.Script;
             chkDirectInput.Checked = !thisAction.IsScriptPath;
             pnlFileInput.Visible = !chkDirectInput.Checked;
         }

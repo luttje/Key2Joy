@@ -246,7 +246,8 @@ namespace KeyToJoy.Mapping
             if (!(obj is GamePadAction action))
                 return false;
 
-            return action.Control == Control;
+            return action.Control == Control
+                && action.PressState == PressState;
         }
 
         public override object Clone()
@@ -254,6 +255,7 @@ namespace KeyToJoy.Mapping
             return new GamePadAction(Name, description)
             {
                 Control = Control,
+                PressState = PressState,
                 ImageResource = ImageResource,
                 Name = Name,
             };

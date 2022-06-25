@@ -30,8 +30,8 @@
         {
             this.txtScript = new System.Windows.Forms.TextBox();
             this.pnlTop = new System.Windows.Forms.Panel();
-            this.lblInfo = new System.Windows.Forms.Label();
             this.chkDirectInput = new System.Windows.Forms.CheckBox();
+            this.lblInfo = new System.Windows.Forms.Label();
             this.pnlFileInput = new System.Windows.Forms.Panel();
             this.txtFilePath = new System.Windows.Forms.TextBox();
             this.btnBrowseFile = new System.Windows.Forms.Button();
@@ -62,17 +62,6 @@
             this.pnlTop.Size = new System.Drawing.Size(254, 20);
             this.pnlTop.TabIndex = 15;
             // 
-            // lblInfo
-            // 
-            this.lblInfo.Dock = System.Windows.Forms.DockStyle.Left;
-            this.lblInfo.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.lblInfo.Location = new System.Drawing.Point(0, 0);
-            this.lblInfo.Name = "lblInfo";
-            this.lblInfo.Size = new System.Drawing.Size(254, 20);
-            this.lblInfo.TabIndex = 13;
-            this.lblInfo.Text = "X Script:";
-            this.lblInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // chkDirectInput
             // 
             this.chkDirectInput.AutoSize = true;
@@ -87,6 +76,17 @@
             this.chkDirectInput.Text = "Direct Input";
             this.chkDirectInput.UseVisualStyleBackColor = true;
             this.chkDirectInput.CheckedChanged += new System.EventHandler(this.chkDirectInput_CheckedChanged);
+            // 
+            // lblInfo
+            // 
+            this.lblInfo.Dock = System.Windows.Forms.DockStyle.Left;
+            this.lblInfo.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.lblInfo.Location = new System.Drawing.Point(0, 0);
+            this.lblInfo.Name = "lblInfo";
+            this.lblInfo.Size = new System.Drawing.Size(254, 20);
+            this.lblInfo.TabIndex = 13;
+            this.lblInfo.Text = "X Script:";
+            this.lblInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // pnlFileInput
             // 

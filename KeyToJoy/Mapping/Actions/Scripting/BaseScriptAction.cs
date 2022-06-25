@@ -40,6 +40,7 @@ namespace KeyToJoy.Mapping
 
         internal abstract bool TryConvertParameterToDouble(object parameter, out double result);
         internal abstract bool TryConvertParameterToLong(object parameter, out long result);
+        internal abstract bool TryConvertParameterToByte(object parameter, out byte result);
         internal abstract bool TryConvertParameterToCallback(object parameter, out Action callback);
         internal abstract bool TryConvertParameterToPointer(object v, out IntPtr handle);
     }

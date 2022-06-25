@@ -38,6 +38,21 @@ namespace KeyToJoy.Mapping
             System.Diagnostics.Debug.WriteLine(message.ToString());
         }
 
+        internal override bool TryConvertParameterToByte(object parameter, out byte result)
+        {
+            if (parameter is byte)
+            {
+                result = (byte)parameter;
+                return true;
+            }
+
+            var type = parameter.GetType();
+            throw new NotImplementedException("TODO: Support other types");
+
+            result = 0;
+            return false;
+        }
+
         internal override bool TryConvertParameterToDouble(object parameter, out double result)
         {
             if (parameter is double)
