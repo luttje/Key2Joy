@@ -19,7 +19,9 @@ namespace KeyToJoy.Mapping
 
         public JavascriptAction(string name, string description)
             : base(name, description)
-        { }
+        {
+            ImageResource = "JS";
+        }
 
         internal override async Task Execute(InputBag inputBag)
         {

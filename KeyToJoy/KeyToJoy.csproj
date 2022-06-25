@@ -487,6 +487,8 @@
     <None Include="Graphics\XboxSeriesX_RightStickUp.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Graphics\Lua.png" />
+    <None Include="Graphics\JS.png" />
     <None Include="Graphics\NoImage.png" />
     <None Include="Graphics\Mouse.png" />
     <None Include="Graphics\Arrows_Diagonal.png" />

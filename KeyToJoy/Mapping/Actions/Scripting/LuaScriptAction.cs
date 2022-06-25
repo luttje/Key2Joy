@@ -21,7 +21,9 @@ namespace KeyToJoy.Mapping
 
         public LuaScriptAction(string name, string description)
             : base(name, description)
-        { }
+        {
+            ImageResource = "Lua";
+        }
 
         internal override async Task Execute(InputBag inputBag)
         {
