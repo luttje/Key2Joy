@@ -11,25 +11,27 @@ using System.Windows.Forms;
 
 namespace KeyToJoy.Mapping
 {
-    public partial class JavascriptActionControl : UserControl, IActionOptionsControl
+    public partial class ScriptActionControl : UserControl, IActionOptionsControl
     {
         public event Action OptionsChanged;
         
-        public JavascriptActionControl()
+        public ScriptActionControl(string languageName)
         {
             InitializeComponent();
+
+            lblInfo.Text = $"{languageName} Script:";
         }
 
         public void Select(BaseAction action)
         {
-            var thisAction = (JavascriptAction)action;
+            var thisAction = (BaseScriptAction)action;
 
             txtScript.Text = thisAction.Script;
         }
 
         public void Setup(BaseAction action)
         {
-            var thisAction = (JavascriptAction)action;
+            var thisAction = (BaseScriptAction)action;
 
             thisAction.Script = txtScript.Text;
         }

@@ -24,6 +24,11 @@ namespace KeyToJoy.Mapping
         /// </summary>
         public Type OptionsUserControl { get; set; }
 
+        /// <summary>
+        /// Which parameters to provide to the constructor of the user control
+        /// </summary>
+        public object[] OptionsUserControlParams { get; set; }
+
         public override string ToString()
         {
             return Description;

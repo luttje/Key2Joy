@@ -1,6 +1,6 @@
 ﻿namespace KeyToJoy.Mapping
 {
-    partial class LuaScriptActionControl
+    partial class ScriptActionControl
     {
         /// <summary> 
         /// Required designer variable.
@@ -40,7 +40,7 @@
             this.lblInfo.Name = "lblInfo";
             this.lblInfo.Size = new System.Drawing.Size(254, 15);
             this.lblInfo.TabIndex = 12;
-            this.lblInfo.Text = "Lua Script:";
+            this.lblInfo.Text = "X Script:";
             this.lblInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // txtScript
@@ -56,7 +56,7 @@
             this.txtScript.TabIndex = 13;
             this.txtScript.TextChanged += new System.EventHandler(this.txtScript_TextChanged);
             // 
-            // LuaScriptActionControl
+            // ScriptActionControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -64,7 +64,7 @@
             this.BackColor = System.Drawing.Color.Black;
             this.Controls.Add(this.txtScript);
             this.Controls.Add(this.lblInfo);
-            this.Name = "LuaScriptActionControl";
+            this.Name = "ScriptActionControl";
             this.Padding = new System.Windows.Forms.Padding(5);
             this.Size = new System.Drawing.Size(264, 157);
             this.ResumeLayout(false);

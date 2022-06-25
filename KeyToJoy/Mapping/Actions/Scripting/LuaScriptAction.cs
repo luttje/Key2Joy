@@ -11,7 +11,8 @@ namespace KeyToJoy.Mapping
 {
     [Action(
         Description = "Lua Script Action",
-        OptionsUserControl = typeof(LuaScriptActionControl),
+        OptionsUserControl = typeof(ScriptActionControl),
+        OptionsUserControlParams = new[] { "Lua" },
         NameFormat = "Lua Script: {0}"
     )]
     internal class LuaScriptAction : BaseScriptAction

@@ -13,7 +13,8 @@ namespace KeyToJoy.Mapping
 {
     [Action(
         Description = "Javascript Action",
-        OptionsUserControl = typeof(JavascriptActionControl),
+        OptionsUserControl = typeof(ScriptActionControl),
+        OptionsUserControlParams = new[] { "Javascript" },
         NameFormat = "Javascript Script: {0}"
     )]
     internal class JavascriptAction : BaseScriptAction
