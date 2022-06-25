@@ -259,6 +259,11 @@
       <DependentUpon>WaitActionControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Mapping\Actions\Scripting\ScriptCallWrapper.cs" />
+    <Compile Include="Mapping\Actions\Windows\WindowGetTitleAction.cs" />
+    <Compile Include="Mapping\Actions\Windows\WindowGetClassAction.cs" />
+    <Compile Include="Mapping\Actions\Windows\WindowGetAllAction.cs" />
+    <Compile Include="Mapping\Actions\Windows\WindowGetForegroundAction.cs" />
+    <Compile Include="Mapping\Actions\Windows\WindowFindAction.cs" />
     <Compile Include="Mapping\AxisDirection.cs" />
     <Compile Include="Mapping\Actions\Logic\AppCommandAction.cs" />
     <Compile Include="Mapping\Actions\GamePad\GamePadAction.cs" />

@@ -17,7 +17,7 @@ namespace KeyToJoy.Mapping
         OptionsUserControl = typeof(GamePadActionControl),
         NameFormat = "{1} {0} on GamePad",
         FunctionName = SCRIPT_COMMAND,
-        FunctionMethodName = nameof(GamePadAction.ExecuteActionForScript),
+        FunctionMethodName = nameof(ExecuteActionForScript),
         ExposesEnumerations = new[] { typeof(GamePadControl), typeof(PressState) }
     )]
     internal class GamePadAction : BaseAction
@@ -147,7 +147,7 @@ namespace KeyToJoy.Mapping
             }
         }
 
-        public object[] ExecuteActionForScript(BaseScriptAction scriptAction, params object[] parameters)
+        public object ExecuteActionForScript(BaseScriptAction scriptAction, params object[] parameters)
         {
             if (parameters.Length < 2)
                 throw new ArgumentException($"{SCRIPT_COMMAND} expected a gamepad control and press state!");

@@ -13,7 +13,7 @@ namespace KeyToJoy.Mapping
         OptionsUserControl = typeof(WaitActionControl),
         NameFormat = "Wait for {0}ms",
         FunctionName = SCRIPT_COMMAND,
-        FunctionMethodName = nameof(WaitAction.ExecuteActionForScript)
+        FunctionMethodName = nameof(ExecuteActionForScript)
     )]
     internal class WaitAction : BaseAction
     {
@@ -27,7 +27,7 @@ namespace KeyToJoy.Mapping
         {
         }
 
-        public object[] ExecuteActionForScript(BaseScriptAction scriptAction, params object[] parameters)
+        public object ExecuteActionForScript(BaseScriptAction scriptAction, params object[] parameters)
         {
             if (parameters.Length < 2)
                 throw new ArgumentException($"{SCRIPT_COMMAND} expected a callback and wait time!");

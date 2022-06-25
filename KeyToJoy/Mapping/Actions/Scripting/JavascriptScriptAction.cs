@@ -33,9 +33,9 @@ namespace KeyToJoy.Mapping
             engine.Execute(Script);
         }
 
-        public void Print(string message)
+        public void Print(object message)
         {
-            System.Diagnostics.Debug.WriteLine(message);
+            System.Diagnostics.Debug.WriteLine(message.ToString());
         }
 
         internal override bool TryConvertParameterToDouble(object parameter, out double result)
@@ -46,6 +46,7 @@ namespace KeyToJoy.Mapping
                 return true;
             }
 
+            var type = parameter.GetType();
             throw new NotImplementedException("TODO: Support other types (I don't think Jint will give us anything other than double)");
 
             result = 0;
@@ -60,6 +61,7 @@ namespace KeyToJoy.Mapping
                 return true;
             }
 
+            var type = parameter.GetType();
             throw new NotImplementedException("TODO: Support other types (I don't think Jint will give us anything other than double)");
 
             result = 0;
@@ -86,20 +88,34 @@ namespace KeyToJoy.Mapping
                 return true;
             }
 
-            var test = parameter.GetType();
-
+            var type = parameter.GetType();
             throw new NotImplementedException("TODO: Support other callback types (do they exist in Jint?)");
 
             callback = null;
             return false;
         }
-        
+
+        internal override bool TryConvertParameterToPointer(object parameter, out IntPtr result)
+        {
+            if (parameter is IntPtr)
+            {
+                result = (IntPtr)parameter;
+                return true;
+            }
+
+            var type = parameter.GetType();
+            throw new NotImplementedException("TODO: Support other types (I don't think Jint will give us anything other than IntPtr)");
+
+            result = IntPtr.Zero;
+            return false;
+        }
+
         internal override void OnStartListening(TriggerListener listener, ref List<BaseAction> otherActions)
         {
             base.OnStartListening(listener, ref otherActions);
 
             engine = new Engine();
-            engine.SetValue("print", new Action<string>(Print));
+            engine.SetValue("print", new Action<object>(Print));
 
             var actionTypes = ActionAttribute.GetAllActions();
 

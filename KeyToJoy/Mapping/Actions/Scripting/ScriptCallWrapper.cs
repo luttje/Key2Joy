@@ -27,7 +27,7 @@ namespace KeyToJoy.Mapping
                 new[] { typeof(BaseScriptAction), typeof(object[]) });
         }
 
-        public object[] CallWithScriptAction(params object[] parameters)
+        public object CallWithScriptAction(params object[] parameters)
         {
             // Append the script action to the parameters
             var newParameters = new object[]
@@ -36,7 +36,7 @@ namespace KeyToJoy.Mapping
                 parameters
             };
             
-            return method.Invoke(instance, newParameters) as object[];
+            return method.Invoke(instance, newParameters);
         }
 
         internal Delegate GetWrapperDelegate()

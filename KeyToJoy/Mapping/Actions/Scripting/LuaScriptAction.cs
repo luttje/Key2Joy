@@ -41,9 +41,9 @@ namespace KeyToJoy.Mapping
             }
         }
 
-        public void Print(string message)
+        public void Print(object message)
         {
-            System.Diagnostics.Debug.WriteLine(message);
+            System.Diagnostics.Debug.WriteLine(message.ToString());
         }
 
         internal override bool TryConvertParameterToDouble(object parameter, out double result)
@@ -54,6 +54,7 @@ namespace KeyToJoy.Mapping
                 return true;
             }
 
+            var type = parameter.GetType();
             throw new NotImplementedException("TODO: Support other types (I don't think NLua will give us anything other than double)");
 
             result = 0;
@@ -72,6 +73,9 @@ namespace KeyToJoy.Mapping
                 result = Convert.ToInt64(parameter);
                 return true;
             }
+
+            var type = parameter.GetType();
+            throw new NotImplementedException("TODO: Support other longs");
 
             result = 0;
             return false;
@@ -95,11 +99,25 @@ namespace KeyToJoy.Mapping
                 return true;
             }
 
-            var test = parameter.GetType();
-
+            var type = parameter.GetType();
             throw new NotImplementedException("TODO: Support other callbacks");
 
             callback = null;
+            return false;
+        }
+
+        internal override bool TryConvertParameterToPointer(object parameter, out IntPtr result)
+        {
+            if (parameter is IntPtr)
+            {
+                result = (IntPtr)parameter;
+                return true;
+            }
+
+            var type = parameter.GetType();
+            throw new NotImplementedException("TODO: Support other types");
+
+            result = IntPtr.Zero;
             return false;
         }
 
@@ -109,7 +127,7 @@ namespace KeyToJoy.Mapping
 
             lua = new Lua();
             
-            lua.RegisterFunction("print", this, typeof(LuaScriptAction).GetMethod(nameof(Print), new[] { typeof(string) }));
+            lua.RegisterFunction("print", this, typeof(LuaScriptAction).GetMethod(nameof(Print), new[] { typeof(object) }));
 
             var actionTypes = ActionAttribute.GetAllActions();
 
