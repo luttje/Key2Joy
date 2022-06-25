@@ -1,12 +1,7 @@
 ﻿using Jint;
-using KeyToJoy.Util;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace KeyToJoy.Mapping
@@ -27,6 +22,13 @@ namespace KeyToJoy.Mapping
 
         internal override async Task Execute(InputBag inputBag)
         {
+            if (IsScriptPath) 
+            {
+                string source = System.IO.File.ReadAllText(Script);
+                engine.Execute(source);
+                return;
+            }
+
             engine.Execute(Script);
         }
 

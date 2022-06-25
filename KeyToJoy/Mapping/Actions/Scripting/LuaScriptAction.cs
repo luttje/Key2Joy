@@ -27,6 +27,12 @@ namespace KeyToJoy.Mapping
         {
             try
             {
+                if (IsScriptPath)
+                {
+                    lua.DoFile(Script);
+                    return;
+                }
+
                 lua.DoString(Script, "KeyToJoy.Script.Inline");
             }
             catch (NLua.Exceptions.LuaScriptException e)

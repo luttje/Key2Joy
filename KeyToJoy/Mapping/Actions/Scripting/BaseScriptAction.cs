@@ -17,6 +17,9 @@ namespace KeyToJoy.Mapping
         [JsonProperty]
         public string Script { get; set; }
 
+        [JsonProperty]
+        public bool IsScriptPath { get; set; }
+
         public BaseScriptAction(string name, string description)
             : base(name, description)
         { }
