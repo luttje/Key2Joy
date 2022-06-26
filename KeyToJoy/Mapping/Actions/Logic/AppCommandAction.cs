@@ -19,6 +19,17 @@ namespace KeyToJoy.Mapping
             : base(name, description)
         { }
 
+        /// <markdown-doc>
+        /// <parent-name>Logic</parent-name>
+        /// <path>Api</path>
+        /// </markdown-doc>
+        /// <summary>
+        /// Execute a command in this app
+        /// 
+        /// TODO: Make commands Enumerations and show those in the docs.
+        /// </summary>
+        /// <param name="command">Command to execute</param>
+        /// <name>AppCommand</name>
         [ExposesScriptingMethod("AppCommand")]
         public void ExecuteForScript(string command)
         {

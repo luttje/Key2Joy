@@ -144,6 +144,16 @@ namespace KeyToJoy.Mapping
             }
         }
 
+        /// <markdown-doc>
+        /// <parent-name>Input</parent-name>
+        /// <path>Api</path>
+        /// </markdown-doc>
+        /// <summary>
+        /// Simulate pressing or releasing (or both) gamepad buttons.
+        /// </summary>
+        /// <param name="control">Button to simulate</param>
+        /// <param name="pressState">Action to simulate</param>
+        /// <name>Gamepad</name>
         [ExposesScriptingMethod("Gamepad")]
         public void ExecuteForScript(GamePadControl control, PressState pressState)
         {

@@ -26,6 +26,18 @@ namespace KeyToJoy.Mapping
             : base(name, description)
         { }
 
+        /// <markdown-doc>
+        /// <parent-name>Windows</parent-name>
+        /// <path>Api</path>
+        /// </markdown-doc>
+        /// <summary>
+        /// Get the title of a software's window.
+        /// 
+        /// You can use <see href="WindowGetAllAction.md"/>, <see href="WindowFindAction.md"/> or  <see href="WindowGetForegroundAction.md"/> to get handles.
+        /// </summary>
+        /// <param name="handle">The window handle to get the class for</param>
+        /// <returns>Title of the window</returns>
+        /// <name>WindowGetTitle</name>
         [ExposesScriptingMethod("WindowGetTitle")]
         public string ExecuteForScript(IntPtr handle)
         {

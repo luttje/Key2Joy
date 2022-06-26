@@ -28,6 +28,17 @@ namespace KeyToJoy.Mapping
             : base(name, description)
         { }
 
+        /// <markdown-doc>
+        /// <parent-name>Windows</parent-name>
+        /// <path>Api</path>
+        /// </markdown-doc>
+        /// <summary>
+        /// Find a window of a piece of software currently running.
+        /// </summary>
+        /// <param name="className">Window class name</param>
+        /// <param name="windowTitle">Optional window title</param>
+        /// <returns>Handle for the window</returns>
+        /// <name>WindowFind</name>
         [ExposesScriptingMethod("WindowFind")]
         public IntPtr ExecuteForScript(string className, string windowTitle = null)
         {

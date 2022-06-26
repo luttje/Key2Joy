@@ -1,12 +1,15 @@
-# `keyboard` (`Keys`, `PressState`)
+# `Keyboard` (`Keys`, `PressState`)
+
 
 Simulate pressing or releasing (or both) keyboard keys.
+
 
 ## Parameters
 
 * **key (`Keys`)** 
 
 	Key to simulate
+
 * **pressState (`PressState`)** 
 
 	Action to simulate

@@ -21,7 +21,7 @@ namespace BuildMarkdownDocs
             outputDirectory = !outputDirectory.EndsWith("\\") ? $"{outputDirectory}\\" : outputDirectory;
 
             var outputFile = Path.GetFullPath(outputDirectory + "Index.md");
-            var outputParents = new SortedDictionary<MarkdownMeta, StringBuilder>();
+            var outputParents = new SortedDictionary<MarkdownMeta, List<Member>>();
 
             var directory = Path.GetDirectoryName(outputFile);
 
@@ -39,14 +39,12 @@ namespace BuildMarkdownDocs
                 var outputMemberFile = Path.GetFullPath(outputDirectory + member.Parent.Path + member.Name.FirstCharToUpper() + ".md");
                 var outputMember = new StringBuilder();
 
-                if(!outputParents.TryGetValue(member.Parent, out var output)) 
+                if(!outputParents.TryGetValue(member.Parent, out var parent)) 
                 { 
-                    outputParents.Add(member.Parent, output = new StringBuilder());
-
-                    output.AppendLine($"## {member.Parent.Name}\n");
+                    outputParents.Add(member.Parent, parent = new List<Member>());
                 }
 
-                output.AppendLine($"* [`{member.Name}` ({member.GetParametersSignature()})]({member.Parent.Path}{member.Name}.md)");
+                parent.Add(member);
 
                 Console.WriteLine($"Writing output to {outputMemberFile}");
 
@@ -69,8 +67,26 @@ namespace BuildMarkdownDocs
             if (!Directory.Exists(directory))
                 Directory.CreateDirectory(directory);
 
-            File.WriteAllText(outputFile, 
-                string.Join("\n", outputParents.Select(kvp => kvp.Value.ToString())));
+            var output = new StringBuilder();
+            output.AppendLine($"# Scripting API Reference\n");
+
+            // Sort members
+            foreach (var outputParent in outputParents)
+            {
+                var parent = outputParent.Key;
+                var members = outputParent.Value;
+                members.Sort();
+
+                output.AppendLine($"## {parent.Name}\n");
+
+                foreach (var member in members)
+                {
+                    output.AppendLine($"* [`{member.Name}` ({member.GetParametersSignature()})]({member.Parent.Path}{member.Name}.md)");
+                }
+                output.AppendLine("");
+            }
+
+            File.WriteAllText(outputFile, output.ToString());
         }
     }
 }

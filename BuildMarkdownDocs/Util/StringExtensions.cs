@@ -17,5 +17,10 @@ namespace BuildMarkdownDocs.Util
                 default: return input[0].ToString().ToUpper() + input.Substring(1);
             }
         }
+
+        public static string TrimEachLine(this string input)
+        {
+            return string.Join("\n", input.Split('\n').Select(line => line.Trim()));
+        }
     }
 }

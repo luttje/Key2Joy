@@ -1,12 +1,14 @@
-﻿using System;
+﻿using BuildMarkdownDocs.Util;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
 namespace BuildMarkdownDocs
 {
-    internal class Member
+    internal class Member : IComparable<Member>
     {
         public MarkdownMeta Parent { get; set; }
         public Example[] MarkdownExamples { get; set; }
@@ -17,6 +19,9 @@ namespace BuildMarkdownDocs
 
         public string GetParametersSignature()
         {
+            if (Parameters == null)
+                return string.Empty;
+            
             return string.Join(", ", Parameters?
                     .Select(p => $"`{p.Type.Name}`"));
         }
@@ -41,12 +46,37 @@ namespace BuildMarkdownDocs
                 parameterTypes = new Type[0];
             }
 
-            var i = 0;
             var member = new Member();
             member.Name = element.Element("name")?.Value ?? element.Attribute("name").Value;
-            member.Summary = element.Element("summary").Value.Trim();
+            
+            var summaryNodes = element.Element("summary").Nodes();
+            var summary = new StringBuilder();
 
-            if(parameterTypes.Length > 0)
+            foreach (var node in summaryNodes)
+            {
+                if (node is XElement nodeElement)
+                {
+                    if(nodeElement.Name == "see")
+                    {
+                        var href = nodeElement.Attribute("href")?.Value;
+                        var cref = nodeElement.Attribute("cref")?.Value;
+
+                        if(href != null)
+                            summary.Append($" [{href}]({href}) ");
+                        else
+                            summary.Append($" `{cref}` ");
+                    }
+                    else
+                        summary.Append(nodeElement.Value.TrimEachLine());
+                }
+                else
+                    summary.Append(node.ToString().TrimEachLine());
+            }
+
+            member.Summary = summary.ToString();
+
+            var i = 0;
+            if (parameterTypes.Length > 0)
                 member.Parameters = element.Elements("param")?
                     .Select(e => Parameter.FromXml(e, parameterTypes[i++]))
                     .ToArray();
@@ -63,15 +93,14 @@ namespace BuildMarkdownDocs
 
         internal string FillTemplate(string fileTemplate)
         {
-            var parametersSignature = "";
+            var parametersSignature = GetParametersSignature();
             var parameters = "";
             
             if(Parameters != null)
             {
-                parametersSignature = GetParametersSignature();
                 parameters = string.Join("\n", Parameters?
                     .Select(p => $"* **{p.Name} (`{p.Type.Name}`)** \n\n" +
-                        $"\t{p.Description}"));
+                        $"\t{p.Description}\n"));
             }
             
             var examples = string.Join<Example>("\n\n", MarkdownExamples);
@@ -107,6 +136,11 @@ namespace BuildMarkdownDocs
             }
 
             return template;
+        }
+
+        public int CompareTo(Member other)
+        {
+            return Name.CompareTo(other.Name);
         }
     }
 }

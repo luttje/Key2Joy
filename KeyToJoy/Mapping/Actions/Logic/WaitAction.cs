@@ -23,6 +23,16 @@ namespace KeyToJoy.Mapping
         {
         }
 
+        /// <markdown-doc>
+        /// <parent-name>Logic</parent-name>
+        /// <path>Api</path>
+        /// </markdown-doc>
+        /// <summary>
+        /// Wait for the specified duration in milliseconds, then execute the callback
+        /// </summary>
+        /// <param name="callback">Function to execute</param>
+        /// <param name="waitTime">Time to wait (in milliseconds)</param>
+        /// <name>Wait</name>
         [ExposesScriptingMethod("Wait")]
         public void ExecuteForScript(Action callback, long waitTime)
         {

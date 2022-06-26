@@ -33,15 +33,14 @@ namespace KeyToJoy.Mapping
         }
 
         /// <markdown-doc>
-        /// <parent-name>Scripting</parent-name>
-        /// <path>Api\Scripting</path>
+        /// <parent-name>Input</parent-name>
+        /// <path>Api</path>
         /// </markdown-doc>
         /// <summary>
         /// Simulate pressing or releasing (or both) keyboard keys.
         /// </summary>
         /// <param name="key">Key to simulate</param>
         /// <param name="pressState">Action to simulate</param>
-        /// <name>keyboard</name>
         /// <markdown-example>
         /// TODO: Explain how to use this function in js
         /// <code language="js">
@@ -54,6 +53,7 @@ namespace KeyToJoy.Mapping
         /// <![CDATA[--TODO: Lua example]]>
         /// </code>
         /// </markdown-example>
+        /// <name>Keyboard</name>
         [ExposesScriptingMethod("Keyboard")]
         public void ExecuteForScript(Keys key, PressState pressState)
         {

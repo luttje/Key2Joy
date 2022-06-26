@@ -2,12 +2,10 @@
 
 {{Summary}}
 
-## Parameters
+{{#if(Parameters)}}## Parameters
 
-{{Parameters}}
+{{Parameters}}{{#endif(Parameters)}}
 
-{{#if(Examples)}}
-## Examples
+{{#if(Examples)}}## Examples
 
-{{Examples}}
-{{#endif(Examples)}}
+{{Examples}}{{#endif(Examples)}}
