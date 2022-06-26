@@ -224,6 +224,7 @@
     <Compile Include="IAcceptAppCommands.cs" />
     <Compile Include="Mapping\Actions\ActionAttribute.cs" />
     <Compile Include="Mapping\Actions\ActionVisibility.cs" />
+    <Compile Include="Mapping\Actions\ExposesScriptingMethodAttribute.cs" />
     <Compile Include="Mapping\Actions\GamePad\GamePadActionControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -231,7 +232,7 @@
       <DependentUpon>GamePadActionControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Mapping\Actions\IActionOptionsControl.cs" />
-    <Compile Include="Mapping\Actions\IScriptable.cs" />
+    <Compile Include="Mapping\Actions\ExposesScriptingEnumerationAttribute.cs" />
     <Compile Include="Mapping\Actions\Keyboard\KeyboardAction.cs" />
     <Compile Include="Mapping\Actions\Keyboard\KeyboardActionControl.cs">
       <SubType>UserControl</SubType>
@@ -268,7 +269,6 @@
     <Compile Include="Mapping\Actions\Logic\WaitActionControl.Designer.cs">
       <DependentUpon>WaitActionControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Mapping\Actions\Scripting\ScriptCallWrapper.cs" />
     <Compile Include="Mapping\Actions\Windows\WindowGetTitleAction.cs" />
     <Compile Include="Mapping\Actions\Windows\WindowGetClassAction.cs" />
     <Compile Include="Mapping\Actions\Windows\WindowGetAllAction.cs" />

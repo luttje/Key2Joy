@@ -3,7 +3,9 @@ using Jint.Native;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
+using KeyToJoy.Util;
 
 namespace KeyToJoy.Mapping
 {
@@ -127,55 +129,33 @@ namespace KeyToJoy.Mapping
             return false;
         }
 
+        internal override void RegisterScriptingEnum(Type enumType)
+        {
+            var enumNames = Enum.GetNames(enumType);
+
+            // TODO: Probably a better way to do this
+            engine.Execute(
+                enumType.Name + " = {" +
+                string.Join(", ", enumNames.Select((name, index) => $"{name}: {(int)Enum.Parse(enumType, name)}")) +
+                "    }"
+            );
+
+            engine.Execute($"print(JSON.stringify({enumType.Name}))");
+        }
+
+        internal override void RegisterScriptingMethod(string functionName, BaseAction instance, MethodInfo method)
+        {
+            engine.SetValue(
+                functionName,
+                method.CreateDelegate(instance));
+        }
+
         internal override void OnStartListening(TriggerListener listener, ref List<BaseAction> otherActions)
         {
-            base.OnStartListening(listener, ref otherActions);
-
             engine = new Engine();
             engine.SetValue("print", new Action<object>(Print));
 
-            var actionTypes = ActionAttribute.GetAllActions();
-
-            // Register all actions as js functions
-            foreach (var pair in actionTypes)
-            {
-                var actionType = pair.Key;
-                var actionAttribute = pair.Value;
-
-                if (!(actionAttribute is IScriptable scriptableActionAttribute))
-                    continue;
-
-                if (scriptableActionAttribute.ExposesEnumerations != null)
-                {
-                    foreach (var enumType in scriptableActionAttribute.ExposesEnumerations)
-                    {
-                        var enumNames = Enum.GetNames(enumType);
-
-                        // TODO: Probably a better way to do this
-                        engine.Execute(
-                            enumType.Name + " = {" +
-                            string.Join(", ", enumNames.Select((name, index) => $"{name}: {(int)Enum.Parse(enumType, name)}")) +
-                            "    }"
-                        );
-
-                        engine.Execute($"print(JSON.stringify({enumType.Name}))");
-                    }
-                }
-
-                if (scriptableActionAttribute.FunctionMethodName == null)
-                    continue;
-                
-                var instance = MakeAction(actionType);
-                var wrapper = new ScriptCallWrapper(
-                    this,
-                    instance, 
-                    actionType, 
-                    scriptableActionAttribute.FunctionMethodName);
-
-                engine.SetValue(
-                    scriptableActionAttribute.FunctionName,
-                    wrapper.GetWrapperDelegate());
-            }
+            base.OnStartListening(listener, ref otherActions);
         }
 
         internal override void OnStopListening(TriggerListener listener)

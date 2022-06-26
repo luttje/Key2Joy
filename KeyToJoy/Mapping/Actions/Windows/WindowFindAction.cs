@@ -11,9 +11,7 @@ namespace KeyToJoy.Mapping
     [Action(
         Description = "Find Window Handle",
         Visibility = ActionVisibility.Never,
-        NameFormat = "Find Window '{0}' with title {1}",
-        FunctionName = SCRIPT_COMMAND,
-        FunctionMethodName = nameof(ExecuteActionForScript)
+        NameFormat = "Find Window '{0}' with title {1}"
     )]
     internal class WindowFindAction : BaseAction
     {
@@ -32,18 +30,9 @@ namespace KeyToJoy.Mapping
             : base(name, description)
         { }
 
-        public object ExecuteActionForScript(BaseScriptAction scriptAction, params object[] parameters)
+        [ExposesScriptingMethod(SCRIPT_COMMAND)]
+        public IntPtr ExecuteActionForScript(string className, string windowTitle = null)
         {
-            if (parameters.Length < 1)
-                throw new ArgumentException($"{SCRIPT_COMMAND} expected a Window class name string and optional title!");
-
-            if (!(parameters[0] is string className))
-                throw new ArgumentException($"{SCRIPT_COMMAND} expected a Window class name string as the first argument!");
-
-            string windowTitle = parameters.Length > 1 ? (parameters[1] as string) : null;
-            if (parameters.Length > 1 && windowTitle == null)
-                throw new ArgumentException($"{SCRIPT_COMMAND} expected a Window title string as the second argument!");
-
             ClassName = className;
             WindowName = windowTitle;
 

@@ -16,11 +16,9 @@ namespace KeyToJoy.Mapping
     [Action(
         Description = "Keyboard Simulation",
         OptionsUserControl = typeof(KeyboardActionControl),
-        NameFormat = "{1} {0} on Keyboard",
-        FunctionName = SCRIPT_COMMAND,
-        FunctionMethodName = nameof(ExecuteActionForScript),
-        ExposesEnumerations = new[] { typeof(Keys) }
+        NameFormat = "{1} {0} on Keyboard"
     )]
+    [ExposesScriptingEnumeration(typeof(Keys))]
     internal class KeyboardAction : BaseAction
     {
         internal const string SCRIPT_COMMAND = "keyboard";
@@ -36,20 +34,10 @@ namespace KeyToJoy.Mapping
         {
         }
 
-        public object ExecuteActionForScript(BaseScriptAction scriptAction, params object[] parameters)
+        [ExposesScriptingMethod(SCRIPT_COMMAND)]
+        public void ExecuteActionForScript(long keyNumber, long pressStateNumber)
         {
-            if (parameters.Length < 2)
-                throw new ArgumentException($"{SCRIPT_COMMAND} expected a keyboard key and press state!");
-
-            if (!scriptAction.TryConvertParameterToLong(parameters[0], out long keyNumber))
-                throw new ArgumentException($"{SCRIPT_COMMAND} expected a keyboard key as the first argument!");
-
-            var key = (Keys)keyNumber;
-
-            if (!scriptAction.TryConvertParameterToLong(parameters[1], out long pressStateNumber))
-                throw new ArgumentException($"{SCRIPT_COMMAND} expected a press state as the second argument!");
-
-            Key = (byte)key;
+            Key = (byte)(Keys)keyNumber;
             PressState = (PressState)pressStateNumber;
 
             if (PressState == PressState.Press || PressState == PressState.PressAndRelease)
@@ -69,8 +57,6 @@ namespace KeyToJoy.Mapping
             
             if (PressState == PressState.Release)
                 SimKeyboard.KeyUp(Key);
-
-            return null;
         }
 
         internal override async Task Execute(InputBag inputBag = null)

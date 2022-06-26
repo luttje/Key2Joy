@@ -138,54 +138,31 @@ namespace KeyToJoy.Mapping
             return false;
         }
 
+        internal override void RegisterScriptingEnum(Type enumType)
+        {
+            var enumNames = Enum.GetNames(enumType);
+
+            lua.DoString(
+                enumType.Name + " = {" +
+                string.Join(", ", enumNames.Select((name, index) => $"{name} = {(int)Enum.Parse(enumType, name)}")) +
+                "}"
+            );
+        }
+
+        internal override void RegisterScriptingMethod(string functionName, BaseAction instance, MethodInfo method)
+        {
+            lua.RegisterFunction(
+                functionName,
+                instance,
+                method);
+        }
+
         internal override void OnStartListening(TriggerListener listener, ref List<BaseAction> otherActions)
         {
-            base.OnStartListening(listener, ref otherActions);
-
             lua = new Lua();
-            
             lua.RegisterFunction("print", this, typeof(LuaScriptAction).GetMethod(nameof(Print), new[] { typeof(object) }));
 
-            var actionTypes = ActionAttribute.GetAllActions();
-
-            // Register all actions as lua functions
-            foreach (var pair in actionTypes)
-            {
-                var actionType = pair.Key;
-                var actionAttribute = pair.Value;
-
-                if (!(actionAttribute is IScriptable scriptableActionAttribute))
-                    continue;
-
-                if (scriptableActionAttribute.ExposesEnumerations != null)
-                {
-                    foreach (var enumType in scriptableActionAttribute.ExposesEnumerations)
-                    {
-                        var enumNames = Enum.GetNames(enumType);
-
-                        lua.DoString(
-                            enumType.Name + " = {" +
-                            string.Join(", ", enumNames.Select((name, index) => $"{name} = {(int)Enum.Parse(enumType, name)}")) +
-                            "    }"
-                        );
-                    }
-                }
-
-                if (scriptableActionAttribute.FunctionMethodName == null)
-                    continue;
-
-                var instance = MakeAction(actionType);
-                var wrapper = new ScriptCallWrapper(
-                    this,
-                    instance,
-                    actionType,
-                    scriptableActionAttribute.FunctionMethodName);
-
-                lua.RegisterFunction(
-                    scriptableActionAttribute.FunctionName,
-                    wrapper,
-                    wrapper.GetWrapperMethod());
-            }
+            base.OnStartListening(listener, ref otherActions);
         }
 
         internal override void OnStopListening(TriggerListener listener)

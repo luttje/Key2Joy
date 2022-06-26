@@ -11,9 +11,7 @@ namespace KeyToJoy.Mapping
     [Action(
         Description = "Get Foreground Window Handle",
         Visibility = ActionVisibility.Never,
-        NameFormat = "Get Foreground Window Handle",
-        FunctionName = SCRIPT_COMMAND,
-        FunctionMethodName = nameof(ExecuteActionForScript)
+        NameFormat = "Get Foreground Window Handle"
     )]
     internal class WindowGetForegroundAction : BaseAction
     {
@@ -26,7 +24,8 @@ namespace KeyToJoy.Mapping
             : base(name, description)
         { }
 
-        public object ExecuteActionForScript(BaseScriptAction scriptAction, params object[] parameters)
+        [ExposesScriptingMethod(SCRIPT_COMMAND)]
+        public IntPtr ExecuteActionForScript()
         {
             var windowHandle = GetForegroundWindow();
             return windowHandle;

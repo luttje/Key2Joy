@@ -11,9 +11,7 @@ namespace KeyToJoy.Mapping
         Description = "Wait for a specified duration",
         Visibility = ActionVisibility.UnlessTopLevel,
         OptionsUserControl = typeof(WaitActionControl),
-        NameFormat = "Wait for {0}ms",
-        FunctionName = SCRIPT_COMMAND,
-        FunctionMethodName = nameof(ExecuteActionForScript)
+        NameFormat = "Wait for {0}ms"
     )]
     internal class WaitAction : BaseAction
     {
@@ -27,25 +25,15 @@ namespace KeyToJoy.Mapping
         {
         }
 
-        public object ExecuteActionForScript(BaseScriptAction scriptAction, params object[] parameters)
+        [ExposesScriptingMethod(SCRIPT_COMMAND)]
+        public void ExecuteActionForScript(Action callback, long waitTime)
         {
-            if (parameters.Length < 2)
-                throw new ArgumentException($"{SCRIPT_COMMAND} expected a callback and wait time!");
-
-            if (!scriptAction.TryConvertParameterToCallback(parameters[0], out Action callback))
-                throw new ArgumentException($"{SCRIPT_COMMAND} expected a callback as the first argument!");
-
-            if (!scriptAction.TryConvertParameterToLong(parameters[1], out long waitTime))
-                throw new ArgumentException($"{SCRIPT_COMMAND} expected a wait time (long) as the second argument!");
-
             WaitTime = TimeSpan.FromMilliseconds(waitTime);
             var task = Task.Run(async () =>
             {
-                await this.Execute();
+                await Task.Delay(WaitTime);
                 callback();
             });
-
-            return null;
         }
 
         internal override Task Execute(InputBag inputBag = null)

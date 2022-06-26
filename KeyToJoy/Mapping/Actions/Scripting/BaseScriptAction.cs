@@ -24,11 +24,14 @@ namespace KeyToJoy.Mapping
             : base(name, description)
         { }
 
-        // TODO: Keep this here and output to a source the user can see (send errors there too)
-        //public void Print(string message)
-        //{
-        //    System.Diagnostics.Debug.WriteLine(message);
-        //}
+        internal abstract void RegisterScriptingEnum(Type enumType);
+        internal abstract void RegisterScriptingMethod(string functionName, BaseAction instance, MethodInfo method);
+
+        internal abstract bool TryConvertParameterToDouble(object parameter, out double result);
+        internal abstract bool TryConvertParameterToLong(object parameter, out long result);
+        internal abstract bool TryConvertParameterToByte(object parameter, out byte result);
+        internal abstract bool TryConvertParameterToCallback(object parameter, out Action callback);
+        internal abstract bool TryConvertParameterToPointer(object v, out IntPtr handle);
 
         public override string GetNameDisplay()
         {
@@ -38,10 +41,41 @@ namespace KeyToJoy.Mapping
             return Name.Replace("{0}", truncatedScript);
         }
 
-        internal abstract bool TryConvertParameterToDouble(object parameter, out double result);
-        internal abstract bool TryConvertParameterToLong(object parameter, out long result);
-        internal abstract bool TryConvertParameterToByte(object parameter, out byte result);
-        internal abstract bool TryConvertParameterToCallback(object parameter, out Action callback);
-        internal abstract bool TryConvertParameterToPointer(object v, out IntPtr handle);
+        internal override void OnStartListening(TriggerListener listener, ref List<BaseAction> otherActions)
+        {
+            base.OnStartListening(listener, ref otherActions);
+
+            var actionTypes = ActionAttribute.GetAllActions();
+
+            // Register all scripting available action methods and enumerations
+            foreach (var pair in actionTypes)
+            {
+                var actionType = pair.Key;
+                var exposesEnumerationAttributes = (ExposesScriptingEnumerationAttribute[])actionType.GetCustomAttributes(typeof(ExposesScriptingEnumerationAttribute), false);
+
+                foreach (var scriptingEnumAttribute in exposesEnumerationAttributes)
+                {
+                    RegisterScriptingEnum(scriptingEnumAttribute.ExposedEnumeration);
+                }
+
+                foreach (var methodInfo in actionType.GetMethods())
+                {
+                    var exposesMethodAttributes = (ExposesScriptingMethodAttribute[])methodInfo.GetCustomAttributes(typeof(ExposesScriptingMethodAttribute), false);
+                    
+                    if (exposesMethodAttributes.Length == 0)
+                        continue;
+
+                    foreach (var scriptingMethodAttribute in exposesMethodAttributes)
+                    {
+                        var instance = MakeAction(actionType);
+
+                        RegisterScriptingMethod(
+                            scriptingMethodAttribute.FunctionName,
+                            instance,
+                            methodInfo);
+                    }
+                }
+            }
+        }
     }
 }

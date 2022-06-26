@@ -8,9 +8,7 @@ namespace KeyToJoy.Mapping
     [Action(
         Description = "App Command",
         OptionsUserControl = typeof(AppCommandActionControl),
-        NameFormat = "Run App Command '{0}'",
-        FunctionName = SCRIPT_COMMAND,
-        FunctionMethodName = nameof(ExecuteActionForScript)
+        NameFormat = "Run App Command '{0}'"
     )]
     internal class AppCommandAction : BaseAction
     {
@@ -23,7 +21,8 @@ namespace KeyToJoy.Mapping
             : base(name, description)
         { }
 
-        public object ExecuteActionForScript(BaseScriptAction scriptAction, params object[] parameters)
+        [ExposesScriptingMethod(SCRIPT_COMMAND)]
+        public void ExecuteActionForScript(params object[] parameters)
         {
             if (parameters.Length < 1 || !(parameters[0] is string command))
                 throw new ArgumentException($"{SCRIPT_COMMAND} expected a command string!");
@@ -38,8 +37,6 @@ namespace KeyToJoy.Mapping
 
                 this.Execute();
             });
-
-            return null;
         }
 
         internal override async Task Execute(InputBag inputBag = null)

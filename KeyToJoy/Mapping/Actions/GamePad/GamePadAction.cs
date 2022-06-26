@@ -15,11 +15,10 @@ namespace KeyToJoy.Mapping
     [Action(
         Description = "GamePad/Controller Simulation",
         OptionsUserControl = typeof(GamePadActionControl),
-        NameFormat = "{1} {0} on GamePad",
-        FunctionName = SCRIPT_COMMAND,
-        FunctionMethodName = nameof(ExecuteActionForScript),
-        ExposesEnumerations = new[] { typeof(GamePadControl), typeof(PressState) }
+        NameFormat = "{1} {0} on GamePad"
     )]
+    [ExposesScriptingEnumeration(typeof(GamePadControl))]
+    [ExposesScriptingEnumeration(typeof(PressState))]
     internal class GamePadAction : BaseAction
     {
         internal const string SCRIPT_COMMAND = "gamepad";
@@ -147,19 +146,10 @@ namespace KeyToJoy.Mapping
             }
         }
 
-        public object ExecuteActionForScript(BaseScriptAction scriptAction, params object[] parameters)
+        [ExposesScriptingMethod(SCRIPT_COMMAND)]
+        public void ExecuteActionForScript(long controlNumber, long pressStateNumber)
         {
-            if (parameters.Length < 2)
-                throw new ArgumentException($"{SCRIPT_COMMAND} expected a gamepad control and press state!");
-
-            if (!scriptAction.TryConvertParameterToLong(parameters[0], out long controlNumber))
-                throw new ArgumentException($"{SCRIPT_COMMAND} expected a gamepad control as the first argument!");
-
             control = (GamePadControl)controlNumber;
-
-            if (!scriptAction.TryConvertParameterToLong(parameters[1], out long pressStateNumber))
-                throw new ArgumentException($"{SCRIPT_COMMAND} expected a press state as the second argument!");
-
             PressState = (PressState)pressStateNumber;
 
             if (PressState == PressState.Press || PressState == PressState.PressAndRelease)
@@ -179,8 +169,6 @@ namespace KeyToJoy.Mapping
             
             if (PressState == PressState.Release)
                 SimGamePad.Instance.ReleaseControl(Control);
-            
-            return null;
         }
 
         internal override async Task Execute(InputBag inputBag = null)

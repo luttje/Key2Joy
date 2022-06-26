@@ -32,7 +32,7 @@ namespace KeyToJoy.Mapping
         internal abstract Task Execute(InputBag inputBag = null);
         
         public abstract object Clone();
-
+        
         internal static BaseAction MakeAction(Type actionType, ActionAttribute typeAttribute = null)
         {
             if(typeAttribute == null)
@@ -44,27 +44,6 @@ namespace KeyToJoy.Mapping
                     typeAttribute.Description
                 });
         }
-
-        /// <summary>
-        /// Returns an action reference that remains during this session.
-        /// 
-        /// !!! I removed this because I was wrong to think this was immediately useful to me.
-        /// </summary>
-        /// <param name="actionType"></param>
-        /// <returns></returns>
-        //internal BaseAction GetOtherActionByType(Type actionType)
-        //{
-        //    foreach (var action in otherActions)
-        //    {
-        //        if (action.GetType() == actionType)
-        //            return action;
-        //    }
-
-        //    var attribute = actionType.GetCustomAttributes(typeof(ActionAttribute), true)[0] as ActionAttribute;
-        //    var newAction = Create(actionType, attribute);
-        //    otherActions.Add(newAction);
-        //    return newAction;
-        //}
 
         internal virtual void OnStartListening(TriggerListener listener, ref List<BaseAction> otherActions)
         {

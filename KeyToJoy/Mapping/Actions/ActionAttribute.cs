@@ -7,12 +7,8 @@ using System.Threading.Tasks;
 
 namespace KeyToJoy.Mapping
 {
-    public class ActionAttribute : MappingAttribute, IScriptable
+    public class ActionAttribute : MappingAttribute
     {
-        public string FunctionName { get; set; }
-        public string FunctionMethodName { get; set; }
-        public Type[] ExposesEnumerations { get; set; }
-
         /// <summary>
         /// When this action should be visibile in menu's.
         /// </summary>

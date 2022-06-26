@@ -12,9 +12,7 @@ namespace KeyToJoy.Mapping
     [Action(
         Description = "Get All Window Handles",
         Visibility = ActionVisibility.Never,
-        NameFormat = "Get All Window Handles",
-        FunctionName = SCRIPT_COMMAND,
-        FunctionMethodName = nameof(ExecuteActionForScript)
+        NameFormat = "Get All Window Handles"
     )]
     internal class WindowGetAllAction : BaseAction
     {
@@ -45,7 +43,8 @@ namespace KeyToJoy.Mapping
             return true;
         }
 
-        public object ExecuteActionForScript(BaseScriptAction scriptAction, params object[] parameters)
+        [ExposesScriptingMethod(SCRIPT_COMMAND)]
+        public object[] ExecuteActionForScript()
         {
             var windowHandles = GetWindows();
             return windowHandles.ToArray();

@@ -12,9 +12,7 @@ namespace KeyToJoy.Mapping
     [Action(
         Description = "Get Window Title",
         Visibility = ActionVisibility.Never,
-        NameFormat = "Get Window Title",
-        FunctionName = SCRIPT_COMMAND,
-        FunctionMethodName = nameof(ExecuteActionForScript)
+        NameFormat = "Get Window Title"
     )]
     internal class WindowGetTitleAction : BaseAction
     {
@@ -30,14 +28,9 @@ namespace KeyToJoy.Mapping
             : base(name, description)
         { }
 
-        public object ExecuteActionForScript(BaseScriptAction scriptAction, params object[] parameters)
+        [ExposesScriptingMethod(SCRIPT_COMMAND)]
+        public string ExecuteActionForScript(IntPtr handle)
         {
-            if (parameters.Length < 1)
-                throw new ArgumentException($"{SCRIPT_COMMAND} expected a window handle!");
-
-            if (!scriptAction.TryConvertParameterToPointer(parameters[0], out IntPtr handle))
-                throw new ArgumentException($"{SCRIPT_COMMAND} expected a window handle as the first argument!");
-
             var length = GetWindowTextLength(handle) + 1;
             var title = new StringBuilder(length);
             GetWindowText(handle, title, length);
