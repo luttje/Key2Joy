@@ -147,10 +147,10 @@ namespace KeyToJoy.Mapping
         }
 
         [ExposesScriptingMethod(SCRIPT_COMMAND)]
-        public void ExecuteActionForScript(long controlNumber, long pressStateNumber)
+        public void ExecuteActionForScript(GamePadControl control, PressState pressState)
         {
-            control = (GamePadControl)controlNumber;
-            PressState = (PressState)pressStateNumber;
+            this.control = control;
+            PressState = pressState;
 
             if (PressState == PressState.Press || PressState == PressState.PressAndRelease)
             {

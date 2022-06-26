@@ -35,10 +35,10 @@ namespace KeyToJoy.Mapping
         }
 
         [ExposesScriptingMethod(SCRIPT_COMMAND)]
-        public void ExecuteActionForScript(long keyNumber, long pressStateNumber)
+        public void ExecuteActionForScript(Keys keys, PressState pressState)
         {
-            Key = (byte)(Keys)keyNumber;
-            PressState = (PressState)pressStateNumber;
+            Key = (byte)keys;
+            PressState = pressState;
 
             if (PressState == PressState.Press || PressState == PressState.PressAndRelease)
             {

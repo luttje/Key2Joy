@@ -27,12 +27,6 @@ namespace KeyToJoy.Mapping
         internal abstract void RegisterScriptingEnum(Type enumType);
         internal abstract void RegisterScriptingMethod(string functionName, BaseAction instance, MethodInfo method);
 
-        internal abstract bool TryConvertParameterToDouble(object parameter, out double result);
-        internal abstract bool TryConvertParameterToLong(object parameter, out long result);
-        internal abstract bool TryConvertParameterToByte(object parameter, out byte result);
-        internal abstract bool TryConvertParameterToCallback(object parameter, out Action callback);
-        internal abstract bool TryConvertParameterToPointer(object v, out IntPtr handle);
-
         public override string GetNameDisplay()
         {
             // Truncate the script to be no more than 50 characters
