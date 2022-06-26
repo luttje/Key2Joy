@@ -20,9 +20,7 @@ namespace KeyToJoy.Mapping
     )]
     [ExposesScriptingEnumeration(typeof(Keys))]
     internal class KeyboardAction : BaseAction
-    {
-        internal const string SCRIPT_COMMAND = "keyboard";
-        
+    {        
         [JsonProperty]
         public byte Key { get; set; }
 
@@ -34,10 +32,32 @@ namespace KeyToJoy.Mapping
         {
         }
 
-        [ExposesScriptingMethod(SCRIPT_COMMAND)]
-        public void ExecuteActionForScript(Keys keys, PressState pressState)
+        /// <markdown-doc>
+        /// <parent-name>Scripting</parent-name>
+        /// <path>Api\Scripting</path>
+        /// </markdown-doc>
+        /// <summary>
+        /// Simulate pressing or releasing (or both) keyboard keys.
+        /// </summary>
+        /// <param name="key">Key to simulate</param>
+        /// <param name="pressState">Action to simulate</param>
+        /// <name>keyboard</name>
+        /// <markdown-example>
+        /// TODO: Explain how to use this function in js
+        /// <code language="js">
+        /// <![CDATA[//TODO: JS example]]>
+        /// </code>
+        /// </markdown-example>
+        /// <markdown-example>
+        /// TODO: Explain how to use this function in Lua
+        /// <code language="lua">
+        /// <![CDATA[--TODO: Lua example]]>
+        /// </code>
+        /// </markdown-example>
+        [ExposesScriptingMethod("Keyboard")]
+        public void ExecuteForScript(Keys key, PressState pressState)
         {
-            Key = (byte)keys;
+            Key = (byte)key;
             PressState = pressState;
 
             if (PressState == PressState.Press || PressState == PressState.PressAndRelease)

@@ -71,6 +71,7 @@ namespace KeyToJoy.Mapping
         {
             lua = new Lua();
             lua.RegisterFunction("print", this, typeof(LuaScriptAction).GetMethod(nameof(Print), new[] { typeof(object) }));
+            lua.RegisterFunction("Print", this, typeof(LuaScriptAction).GetMethod(nameof(Print), new[] { typeof(object) }));
 
             base.OnStartListening(listener, ref otherActions);
         }

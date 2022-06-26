@@ -16,8 +16,6 @@ namespace KeyToJoy.Mapping
     )]
     internal class WindowGetAllAction : BaseAction
     {
-        internal const string SCRIPT_COMMAND = "window_get_all";
-
         public delegate bool EnumedWindow(IntPtr handleWindow, ArrayList handles);
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
@@ -43,8 +41,8 @@ namespace KeyToJoy.Mapping
             return true;
         }
 
-        [ExposesScriptingMethod(SCRIPT_COMMAND)]
-        public object[] ExecuteActionForScript()
+        [ExposesScriptingMethod("WindowGetAll")]
+        public object[] ExecuteForScript()
         {
             var windowHandles = GetWindows();
             return windowHandles.ToArray();

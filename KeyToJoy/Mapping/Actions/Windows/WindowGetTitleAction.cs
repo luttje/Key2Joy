@@ -16,8 +16,6 @@ namespace KeyToJoy.Mapping
     )]
     internal class WindowGetTitleAction : BaseAction
     {
-        internal const string SCRIPT_COMMAND = "window_get_title";
-        
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
 
@@ -28,8 +26,8 @@ namespace KeyToJoy.Mapping
             : base(name, description)
         { }
 
-        [ExposesScriptingMethod(SCRIPT_COMMAND)]
-        public string ExecuteActionForScript(IntPtr handle)
+        [ExposesScriptingMethod("WindowGetTitle")]
+        public string ExecuteForScript(IntPtr handle)
         {
             var length = GetWindowTextLength(handle) + 1;
             var title = new StringBuilder(length);

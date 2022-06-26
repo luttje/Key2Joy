@@ -15,8 +15,6 @@ namespace KeyToJoy.Mapping
     )]
     internal class WindowGetForegroundAction : BaseAction
     {
-        internal const string SCRIPT_COMMAND = "window_get_foreground";
-
         [DllImport("user32.dll")]
         public static extern IntPtr GetForegroundWindow();
 
@@ -24,8 +22,8 @@ namespace KeyToJoy.Mapping
             : base(name, description)
         { }
 
-        [ExposesScriptingMethod(SCRIPT_COMMAND)]
-        public IntPtr ExecuteActionForScript()
+        [ExposesScriptingMethod("WindowGetForeground")]
+        public IntPtr ExecuteForScript()
         {
             var windowHandle = GetForegroundWindow();
             return windowHandle;

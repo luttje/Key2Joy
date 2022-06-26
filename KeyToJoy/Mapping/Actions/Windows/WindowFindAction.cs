@@ -15,8 +15,6 @@ namespace KeyToJoy.Mapping
     )]
     internal class WindowFindAction : BaseAction
     {
-        internal const string SCRIPT_COMMAND = "window_find";
-
         [JsonProperty]
         internal string ClassName { get; set; }
         
@@ -30,8 +28,8 @@ namespace KeyToJoy.Mapping
             : base(name, description)
         { }
 
-        [ExposesScriptingMethod(SCRIPT_COMMAND)]
-        public IntPtr ExecuteActionForScript(string className, string windowTitle = null)
+        [ExposesScriptingMethod("WindowFind")]
+        public IntPtr ExecuteForScript(string className, string windowTitle = null)
         {
             ClassName = className;
             WindowName = windowTitle;

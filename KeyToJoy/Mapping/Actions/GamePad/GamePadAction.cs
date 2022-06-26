@@ -21,8 +21,6 @@ namespace KeyToJoy.Mapping
     [ExposesScriptingEnumeration(typeof(PressState))]
     internal class GamePadAction : BaseAction
     {
-        internal const string SCRIPT_COMMAND = "gamepad";
-        
         private static bool isPluggedIn = false;
         private GamePadControl control;
 
@@ -146,8 +144,8 @@ namespace KeyToJoy.Mapping
             }
         }
 
-        [ExposesScriptingMethod(SCRIPT_COMMAND)]
-        public void ExecuteActionForScript(GamePadControl control, PressState pressState)
+        [ExposesScriptingMethod("Gamepad")]
+        public void ExecuteForScript(GamePadControl control, PressState pressState)
         {
             this.control = control;
             PressState = pressState;

@@ -16,8 +16,6 @@ namespace KeyToJoy.Mapping
     )]
     internal class WindowGetClassAction : BaseAction
     {
-        internal const string SCRIPT_COMMAND = "window_get_class";
-
         [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
         static extern int GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
 
@@ -25,8 +23,8 @@ namespace KeyToJoy.Mapping
             : base(name, description)
         { }
 
-        [ExposesScriptingMethod(SCRIPT_COMMAND)]
-        public string ExecuteActionForScript(IntPtr handle)
+        [ExposesScriptingMethod("WindowGetClass")]
+        public string ExecuteForScript(IntPtr handle)
         {
             int nRet;
             // Pre-allocate 256 characters, since this is the maximum class name length.

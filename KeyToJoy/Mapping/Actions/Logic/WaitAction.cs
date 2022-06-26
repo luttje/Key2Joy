@@ -15,8 +15,6 @@ namespace KeyToJoy.Mapping
     )]
     internal class WaitAction : BaseAction
     {
-        internal const string SCRIPT_COMMAND = "wait";
-        
         [JsonProperty]
         public TimeSpan WaitTime;
 
@@ -25,8 +23,8 @@ namespace KeyToJoy.Mapping
         {
         }
 
-        [ExposesScriptingMethod(SCRIPT_COMMAND)]
-        public void ExecuteActionForScript(Action callback, long waitTime)
+        [ExposesScriptingMethod("Wait")]
+        public void ExecuteForScript(Action callback, long waitTime)
         {
             WaitTime = TimeSpan.FromMilliseconds(waitTime);
             var task = Task.Run(async () =>

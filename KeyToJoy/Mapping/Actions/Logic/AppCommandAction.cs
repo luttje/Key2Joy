@@ -12,8 +12,6 @@ namespace KeyToJoy.Mapping
     )]
     internal class AppCommandAction : BaseAction
     {
-        internal const string SCRIPT_COMMAND = "app_command";
-
         [JsonProperty]
         public string Command { get; set; }
 
@@ -21,13 +19,10 @@ namespace KeyToJoy.Mapping
             : base(name, description)
         { }
 
-        [ExposesScriptingMethod(SCRIPT_COMMAND)]
-        public void ExecuteActionForScript(params object[] parameters)
+        [ExposesScriptingMethod("AppCommand")]
+        public void ExecuteForScript(string command)
         {
-            if (parameters.Length < 1 || !(parameters[0] is string command))
-                throw new ArgumentException($"{SCRIPT_COMMAND} expected a command string!");
-
-            this.Command = command;
+            Command = command;
 
             Task.Run(async () =>
             {

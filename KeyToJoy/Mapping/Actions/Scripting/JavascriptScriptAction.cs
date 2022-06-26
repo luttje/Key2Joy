@@ -53,7 +53,7 @@ namespace KeyToJoy.Mapping
                 "    }"
             );
 
-            engine.Execute($"print(JSON.stringify({enumType.Name}))");
+            engine.Execute($"Print(JSON.stringify({enumType.Name}))");
         }
 
         internal override void RegisterScriptingMethod(string functionName, BaseAction instance, MethodInfo method)
@@ -66,7 +66,7 @@ namespace KeyToJoy.Mapping
         internal override void OnStartListening(TriggerListener listener, ref List<BaseAction> otherActions)
         {
             engine = new Engine();
-            engine.SetValue("print", new Action<object>(Print));
+            engine.SetValue("Print", new Action<object>(Print));
 
             base.OnStartListening(listener, ref otherActions);
         }

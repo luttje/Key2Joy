@@ -7,9 +7,9 @@ using System.Windows.Forms;
 
 namespace KeyToJoy
 {
-    internal static class Program
+    public static class Program
     {
-        internal static Form ActiveForm { get; set; }
+        public static Form ActiveForm { get; set; }
 
         /// <summary>
         /// The main entry point for the application.
