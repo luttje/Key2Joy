@@ -12,7 +12,7 @@ When writing action scripts you have the choice to use any of these languages:
 * [Lua 5.2.3](https://www.lua.org/manual/5.2/)
 * [ECMAScript 5.1 (Javascript)](https://262.ecma-international.org/5.1/)
 
-If you're an advanced user and are running into limitations. These are the implementations we use: [NLua](https://github.com/NLua/NLua) and [Jint](https://github.com/sebastienros/jint)
+*(If you're an advanced user and are running into limitations. These are the implementations we use: [NLua](https://github.com/NLua/NLua) and [Jint](https://github.com/sebastienros/jint))*
 
 
 ## Examples
@@ -21,14 +21,14 @@ If you're an advanced user and are running into limitations. These are the imple
 **Lua Example:**
 
 ```lua
-print("test")
+Print("test")
 
-gamepad(GamePadControl.A, PressState.PressAndRelease)
-wait(function ()
-   app_command("abort")
+Gamepad(GamePadControl.A, PressState.PressAndRelease)
+Wait(function ()
+   AppCommand("abort")
 end, 2000)
 
-print("end test")
+Print("end test")
 ```
 
 **Javascript Example:**
