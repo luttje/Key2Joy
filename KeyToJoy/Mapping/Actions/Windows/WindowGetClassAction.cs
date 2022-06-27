@@ -25,17 +25,17 @@ namespace KeyToJoy.Mapping
 
         /// <markdown-doc>
         /// <parent-name>Windows</parent-name>
-        /// <path>Api</path>
+        /// <path>Api/Windows</path>
         /// </markdown-doc>
         /// <summary>
         /// Get the class name for a specified Window.
         /// 
-        /// You can use <see href="WindowGetAllAction.md"/>, <see href="WindowFindAction.md"/> or  <see href="WindowGetForegroundAction.md"/> to get handles.
+        /// You can use <see href="Window.GetAllAction.md"/>, <see href="Window.FindAction.md"/> or  <see href="Window.GetForegroundAction.md"/> to get handles.
         /// </summary>
         /// <param name="handle">The window handle to get the class for</param>
         /// <returns>Class name for the window</returns>
-        /// <name>WindowGetClass</name>
-        [ExposesScriptingMethod("WindowGetClass")]
+        /// <name>Window.GetClass</name>
+        [ExposesScriptingMethod("Window.GetClass")]
         public string ExecuteForScript(IntPtr handle)
         {
             int nRet;

@@ -19,7 +19,7 @@ namespace BuildMarkdownDocs
             parent.Path = element.Element("path")?.Value;
 
             if (parent.Path.Length > 0)
-                parent.Path = !parent.Path.EndsWith("\\") ? $"{parent.Path}\\" : parent.Path;
+                parent.Path = !parent.Path.EndsWith("/") ? $"{parent.Path}/" : parent.Path;
 
             return parent;
         }

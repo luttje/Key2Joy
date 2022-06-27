@@ -2,19 +2,19 @@
 
 ## Input
 
-* [`Gamepad` (`GamePadControl`, `PressState`)](Api\Gamepad.md)
-* [`Keyboard` (`Keys`, `PressState`)](Api\Keyboard.md)
+* [`GamePad.Simulate` (`GamePadControl`, `PressState`)](Api/Input/GamePad.Simulate.md)
+* [`Keyboard.Simulate` (`Keys`, `PressState`)](Api/Input/Keyboard.Simulate.md)
 
 ## Logic
 
-* [`AppCommand` (`String`)](Api\AppCommand.md)
-* [`Wait` (`Action`, `Int64`)](Api\Wait.md)
+* [`App.Command` (`String`)](Api/Logic/App.Command.md)
+* [`Wait` (`Action`, `Int64`)](Api/Logic/Wait.md)
 
 ## Windows
 
-* [`WindowFind` (`String`, `String`)](Api\WindowFind.md)
-* [`WindowGetAll` ()](Api\WindowGetAll.md)
-* [`WindowGetClass` (`IntPtr`)](Api\WindowGetClass.md)
-* [`WindowGetForeground` ()](Api\WindowGetForeground.md)
-* [`WindowGetTitle` (`IntPtr`)](Api\WindowGetTitle.md)
+* [`Window.Find` (`String`, `String`)](Api/Windows/Window.Find.md)
+* [`Window.GetAll` ()](Api/Windows/Window.GetAll.md)
+* [`Window.GetClass` (`IntPtr`)](Api/Windows/Window.GetClass.md)
+* [`Window.GetForeground` ()](Api/Windows/Window.GetForeground.md)
+* [`Window.GetTitle` (`IntPtr`)](Api/Windows/Window.GetTitle.md)
 

@@ -43,14 +43,14 @@ namespace KeyToJoy.Mapping
 
         /// <markdown-doc>
         /// <parent-name>Windows</parent-name>
-        /// <path>Api</path>
+        /// <path>Api/Windows</path>
         /// </markdown-doc>
         /// <summary>
         /// Fetches all windows of software currently running.
         /// </summary>
         /// <returns>List with handles of all the windows</returns>
-        /// <name>WindowGetAll</name>
-        [ExposesScriptingMethod("WindowGetAll")]
+        /// <name>Window.GetAll</name>
+        [ExposesScriptingMethod("Window.GetAll")]
         public object[] ExecuteForScript()
         {
             var windowHandles = GetWindows();

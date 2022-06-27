@@ -34,7 +34,7 @@ namespace KeyToJoy.Mapping
 
         /// <markdown-doc>
         /// <parent-name>Input</parent-name>
-        /// <path>Api</path>
+        /// <path>Api/Input</path>
         /// </markdown-doc>
         /// <summary>
         /// Simulate pressing or releasing (or both) keyboard keys.
@@ -53,8 +53,8 @@ namespace KeyToJoy.Mapping
         /// <![CDATA[--TODO: Lua example]]>
         /// </code>
         /// </markdown-example>
-        /// <name>Keyboard</name>
-        [ExposesScriptingMethod("Keyboard")]
+        /// <name>Keyboard.Simulate</name>
+        [ExposesScriptingMethod("Keyboard.Simulate")]
         public void ExecuteForScript(Keys key, PressState pressState)
         {
             Key = (byte)key;

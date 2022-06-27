@@ -27,6 +27,20 @@ namespace KeyToJoy.Mapping
         internal abstract void RegisterScriptingEnum(Type enumType);
         internal abstract void RegisterScriptingMethod(string functionName, BaseAction instance, MethodInfo method);
 
+        public virtual void Print(params object[] args)
+        {
+            var sb = new StringBuilder();
+            for (int i = 0; i < args.Length; i++)
+            {
+                if (i > 0)
+                    sb.Append("\t");
+
+                sb.Append(args[i]);
+            }
+
+            System.Diagnostics.Debug.WriteLine(sb.ToString());
+        }
+
         public override string GetNameDisplay()
         {
             // Truncate the script to be no more than 50 characters

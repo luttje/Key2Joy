@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using NLua;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -43,24 +44,43 @@ namespace KeyToJoy.Mapping
             }
         }
 
-        public void Print(object message)
-        {
-            System.Diagnostics.Debug.WriteLine(message.ToString());
-        }
-
         internal override void RegisterScriptingEnum(Type enumType)
         {
-            var enumNames = Enum.GetNames(enumType);
+            if (!enumType.IsEnum)
+                throw new ArgumentException("The type must be an enumeration!");
 
-            lua.DoString(
-                enumType.Name + " = {" +
-                string.Join(", ", enumNames.Select((name, index) => $"{name} = {(int)Enum.Parse(enumType, name)}")) +
-                "}"
-            );
+            string[] names = Enum.GetNames(enumType);
+            lua.NewTable(enumType.Name);
+
+            for (int i = 0; i < names.Length; i++)
+            {
+                string path = enumType.Name + "." + names[i];
+                lua.SetObjectToPath(path, Enum.Parse(enumType, names[i]));
+            }
         }
 
         internal override void RegisterScriptingMethod(string functionName, BaseAction instance, MethodInfo method)
         {
+            var parents = functionName.Split('.');
+
+            if (parents.Length > 1)
+            {
+                var currentPath = new StringBuilder();
+                
+                for (int i = 0; i < parents.Length - 1; i++)
+                {
+                    if (i > 0)
+                        currentPath.Append('.');
+
+                    currentPath.Append(parents[i]);
+                }
+
+                var path = currentPath.ToString();
+
+                if(lua.GetTable(path) == null)
+                    lua.NewTable(path);
+            }
+
             lua.RegisterFunction(
                 functionName,
                 instance,
@@ -70,8 +90,8 @@ namespace KeyToJoy.Mapping
         internal override void OnStartListening(TriggerListener listener, ref List<BaseAction> otherActions)
         {
             lua = new Lua();
-            lua.RegisterFunction("print", this, typeof(LuaScriptAction).GetMethod(nameof(Print), new[] { typeof(object) }));
-            lua.RegisterFunction("Print", this, typeof(LuaScriptAction).GetMethod(nameof(Print), new[] { typeof(object) }));
+            lua.RegisterFunction("print", this, typeof(LuaScriptAction).GetMethod(nameof(Print), new[] { typeof(object[]) }));
+            lua.RegisterFunction("Print", this, typeof(LuaScriptAction).GetMethod(nameof(Print), new[] { typeof(object[]) }));
 
             base.OnStartListening(listener, ref otherActions);
         }

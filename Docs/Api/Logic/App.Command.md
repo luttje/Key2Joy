@@ -1,4 +1,4 @@
-# `AppCommand` (`String`)
+# `App.Command` (`String`)
 
 
 Execute a command in this app

@@ -25,7 +25,7 @@ namespace KeyToJoy.Mapping
 
         /// <markdown-doc>
         /// <parent-name>Logic</parent-name>
-        /// <path>Api</path>
+        /// <path>Api/Logic</path>
         /// </markdown-doc>
         /// <summary>
         /// Wait for the specified duration in milliseconds, then execute the callback

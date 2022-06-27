@@ -24,14 +24,14 @@ namespace KeyToJoy.Mapping
 
         /// <markdown-doc>
         /// <parent-name>Windows</parent-name>
-        /// <path>Api</path>
+        /// <path>Api/Windows</path>
         /// </markdown-doc>
         /// <summary>
         /// Get the handle of a software's window that is currently in the foreground.
         /// </summary>
         /// <returns>Handle for the window</returns>
-        /// <name>WindowGetForeground</name>
-        [ExposesScriptingMethod("WindowGetForeground")]
+        /// <name>Window.GetForeground</name>
+        [ExposesScriptingMethod("Window.GetForeground")]
         public IntPtr ExecuteForScript()
         {
             var windowHandle = GetForegroundWindow();

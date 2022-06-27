@@ -1,4 +1,4 @@
-# `WindowFind` (`String`, `String`)
+# `Window.Find` (`String`, `String`)
 
 
 Find a window of a piece of software currently running.

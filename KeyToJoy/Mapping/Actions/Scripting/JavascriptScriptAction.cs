@@ -6,6 +6,9 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using KeyToJoy.Util;
+using System.Text;
+using Jint.Native.Object;
+using Jint.Runtime.Interop;
 
 namespace KeyToJoy.Mapping
 {
@@ -37,11 +40,6 @@ namespace KeyToJoy.Mapping
             engine.Execute(Script);
         }
 
-        public void Print(object message)
-        {
-            System.Diagnostics.Debug.WriteLine(message.ToString());
-        }
-
         internal override void RegisterScriptingEnum(Type enumType)
         {
             var enumNames = Enum.GetNames(enumType);
@@ -58,15 +56,39 @@ namespace KeyToJoy.Mapping
 
         internal override void RegisterScriptingMethod(string functionName, BaseAction instance, MethodInfo method)
         {
+            var parents = functionName.Split('.');
+            var @delegate = method.CreateDelegate(instance);
+
+            if (parents.Length > 1)
+            {
+                ObjectInstance currentObject = engine.Global;
+
+                for (int i = 0; i < parents.Length; i++)
+                {
+                    if(i != parents.Length - 1)
+                    {
+                        var childObject = new ObjectInstance(engine);
+                        currentObject.FastAddProperty(parents[i], childObject, false, true, true);
+                        currentObject = childObject;
+                    }
+                    else
+                    {
+                        currentObject.FastAddProperty(parents[i], new DelegateWrapper(engine, @delegate), false, true, true);
+                    }
+                }
+
+                return;
+            }
+
             engine.SetValue(
                 functionName,
-                method.CreateDelegate(instance));
+                @delegate);
         }
 
         internal override void OnStartListening(TriggerListener listener, ref List<BaseAction> otherActions)
         {
             engine = new Engine();
-            engine.SetValue("Print", new Action<object>(Print));
+            engine.SetValue("Print", new Action<object[]>(Print));
 
             base.OnStartListening(listener, ref otherActions);
         }

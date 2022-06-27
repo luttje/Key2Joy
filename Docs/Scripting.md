@@ -23,9 +23,9 @@ When writing action scripts you have the choice to use any of these languages:
 ```lua
 Print("test")
 
-Gamepad(GamePadControl.A, PressState.PressAndRelease)
+GamePad.Simulate(GamePadControl.A, PressState.PressAndRelease)
 Wait(function ()
-   AppCommand("abort")
+   App.Command("abort")
 end, 2000)
 
 Print("end test")
@@ -36,9 +36,9 @@ Print("end test")
 ```js
 Print("test");
 
-Gamepad(GamePadControl.A, PressState.PressAndRelease);
+GamePad.Simulate(GamePadControl.A, PressState.PressAndRelease);
 Wait(function () {
-  AppCommand("abort");
+  App.Command("abort");
 }, 2000);
 
 Print("end test");
@@ -47,13 +47,13 @@ Print("end test");
 **Javascript example showing access to Windows:**
 
 ```js
-let handles = WindowGetAll();
+let handles = Window.GetAll();
 
 handles.forEach(function (handle) {
   Print(
-    handle + " / " + WindowGetClass(handle) + " : " + WindowGetTitle(handle)
+    handle + " / " + Window.GetClass(handle) + " : " + Window.GetTitle(handle)
   );
 });
 
-Print(WindowGetForeground());
+Print(Window.GetForeground());
 ```

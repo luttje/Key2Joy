@@ -1,4 +1,4 @@
-# `Gamepad` (`GamePadControl`, `PressState`)
+# `GamePad.Simulate` (`GamePadControl`, `PressState`)
 
 
 Simulate pressing or releasing (or both) gamepad buttons.
