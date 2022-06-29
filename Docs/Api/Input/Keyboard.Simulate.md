@@ -1,4 +1,4 @@
-# `Keyboard.Simulate` (`Keys`, `PressState`)
+# `Keyboard.Simulate` (`KeyboardKey`, `PressState`)
 
 
 Simulate pressing or releasing (or both) keyboard keys.
@@ -6,7 +6,7 @@ Simulate pressing or releasing (or both) keyboard keys.
 
 ## Parameters
 
-* **key (`Keys`)** 
+* **key (`KeyboardKey`)** 
 
 	Key to simulate
 

@@ -3,7 +3,7 @@
 ## Input
 
 * [`GamePad.Simulate` (`GamePadControl`, `PressState`)](Api/Input/GamePad.Simulate.md)
-* [`Keyboard.Simulate` (`Keys`, `PressState`)](Api/Input/Keyboard.Simulate.md)
+* [`Keyboard.Simulate` (`KeyboardKey`, `PressState`)](Api/Input/Keyboard.Simulate.md)
 
 ## Logic
 

@@ -23,7 +23,7 @@ namespace BuildMarkdownDocs
                 return string.Empty;
             
             return string.Join(", ", Parameters?
-                    .Select(p => $"`{p.Type.Name}`"));
+                    .Select(p => $"`{p.Type?.Name}`"));
         }
 
         internal static Member FromXml(XElement element)

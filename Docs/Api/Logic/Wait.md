@@ -3,6 +3,7 @@
 
 Wait for the specified duration in milliseconds, then execute the callback
 
+Note: There are issues with this function I have yet to fix. It may not work as expected sometimes!
 
 ## Parameters
 
