@@ -377,11 +377,6 @@ namespace KeyToJoy
             MessageBox.Show("When you make changes to a preset, changes are automatically saved. This button is only here to explain that feature to you.", "Preset already saved!", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        private void savePresetCopyAsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void openPresetFolderToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Process.Start(MappingPreset.GetSaveDirectory());

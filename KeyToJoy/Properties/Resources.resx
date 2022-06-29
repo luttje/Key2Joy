@@ -139,4 +139,7 @@
   <data name="script_code" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Graphics\Icons\script_code.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="default_profile_k2j" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\default-profile.k2j.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

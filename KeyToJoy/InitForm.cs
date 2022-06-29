@@ -16,6 +16,7 @@ namespace KeyToJoy
         private void InitForm_Load(object sender, EventArgs e)
         {
             Config.Load();
+            MappingPreset.ExtractDefaultIfNotExists();
             SimGamePad.Instance.Initialize();
             Program.GoToNextForm(new MainForm());
         }

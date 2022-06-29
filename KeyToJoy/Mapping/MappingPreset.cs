@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 
 namespace KeyToJoy.Mapping
 {
@@ -14,8 +15,10 @@ namespace KeyToJoy.Mapping
     {
         const int NO_VERSION = 0;
         const int CURRENT_VERSION = 4;
-
+        
+        public const string DEFAULT_PRESET_PATH = "default-profile";
         public const string EXTENSION = ".k2j.json";
+
         public const string SAVE_DIR = "Presets";
 
         [JsonProperty]
@@ -91,6 +94,23 @@ namespace KeyToJoy.Mapping
             this.filePath = filePath;
 
             return true;
+        }
+
+        internal static void ExtractDefaultIfNotExists()
+        {
+            var defaultPath = Path.Combine(GetSaveDirectory(), $"{DEFAULT_PRESET_PATH}{EXTENSION}");
+            
+            if (File.Exists(defaultPath))
+                return;
+
+            using (var file = new FileStream(defaultPath, FileMode.Create, FileAccess.Write))
+            using (var writer = new BinaryWriter(file))
+            {
+                writer.Write(Properties.Resources.default_profile_k2j);
+            }
+
+            if(Config.Instance.LastLoadedPreset == null)
+                Config.Instance.LastLoadedPreset = defaultPath;
         }
 
         internal static MappingPreset Load(string filePath)

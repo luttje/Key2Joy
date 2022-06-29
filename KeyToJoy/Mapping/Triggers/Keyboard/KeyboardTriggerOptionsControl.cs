@@ -31,7 +31,7 @@ namespace KeyToJoy
             cmbPressedState.DataSource = Enum.GetValues(typeof(PressState));
             cmbPressedState.SelectedIndex = 0;
 
-            ResetTrapping();
+            StartTrapping();
         }
 
         public void Select(BaseTrigger trigger)
@@ -54,6 +54,7 @@ namespace KeyToJoy
         private void StartTrapping()
         {
             txtKeyBind.Text = TEXT_CHANGE;
+            txtKeyBind.Focus();
             isTrapping = true;
         }
         

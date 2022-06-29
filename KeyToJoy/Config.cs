@@ -68,6 +68,7 @@ namespace KeyToJoy
             if (!File.Exists(configPath))
             {
                 Instance = new Config();
+                Instance.isInitialized = true;
                 Instance.Save();
                 return;
             }

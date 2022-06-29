@@ -61,6 +61,16 @@ namespace KeyToJoy.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] default_profile_k2j {
+            get {
+                object obj = ResourceManager.GetObject("default_profile_k2j", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap icon256 {

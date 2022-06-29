@@ -45,7 +45,6 @@
             this.loadPresetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.savePresetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.savePresetCopyAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openPresetFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -204,7 +203,6 @@
             this.loadPresetToolStripMenuItem,
             this.toolStripSeparator3,
             this.savePresetToolStripMenuItem,
-            this.savePresetCopyAsToolStripMenuItem,
             this.openPresetFolderToolStripMenuItem,
             this.toolStripSeparator2,
             this.closeToolStripMenuItem,
@@ -238,13 +236,6 @@
             this.savePresetToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
             this.savePresetToolStripMenuItem.Text = "Save Preset";
             this.savePresetToolStripMenuItem.Click += new System.EventHandler(this.savePresetToolStripMenuItem_Click);
-            // 
-            // savePresetCopyAsToolStripMenuItem
-            // 
-            this.savePresetCopyAsToolStripMenuItem.Name = "savePresetCopyAsToolStripMenuItem";
-            this.savePresetCopyAsToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
-            this.savePresetCopyAsToolStripMenuItem.Text = "Save Preset Copy As...";
-            this.savePresetCopyAsToolStripMenuItem.Click += new System.EventHandler(this.savePresetCopyAsToolStripMenuItem_Click);
             // 
             // openPresetFolderToolStripMenuItem
             // 
@@ -518,7 +509,6 @@
         private System.Windows.Forms.ToolStripMenuItem openPresetFolderToolStripMenuItem;
         private System.Windows.Forms.NotifyIcon ntfIndicator;
         private System.Windows.Forms.ToolStripMenuItem newPresetToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem savePresetCopyAsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem savePresetToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitProgramToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem testMappingsToolStripMenuItem;
