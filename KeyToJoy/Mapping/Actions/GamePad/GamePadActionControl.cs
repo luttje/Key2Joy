@@ -19,7 +19,7 @@ namespace KeyToJoy.Mapping
         {
             InitializeComponent();
 
-            cmbGamePad.DataSource = Enum.GetValues(typeof(SimWinInput.GamePadControl));
+            cmbGamePad.DataSource = GamePadAction.GetAllButtons();
             cmbPressState.DataSource = Enum.GetValues(typeof(PressState));
             cmbPressState.SelectedIndex = 0;
         }

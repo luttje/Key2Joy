@@ -36,6 +36,37 @@ namespace KeyToJoy.Mapping
         {
         }
 
+        internal static Keys[] GetAllKeys()
+        {
+            var allEnums = Enum.GetValues(typeof(Keys));
+
+            // Skip the first (= None) enumeration value
+            var keys = new Keys[allEnums.Length - 1];
+            Array.Copy(allEnums, 1, keys, 0, keys.Length);
+
+            return keys;
+        }
+
+        public static List<MappedOption> GetAllButtonActions(PressState pressState)
+        {
+            var actionType = typeof(KeyboardAction);
+            var typeAttribute = ((ActionAttribute[])actionType.GetCustomAttributes(typeof(ActionAttribute), false))[0];
+
+            var actions = new List<MappedOption>();
+            foreach (var key in GetAllKeys())
+            {
+                var action = (KeyboardAction)MakeAction(actionType, typeAttribute);
+                action.Key = (byte)key;
+                action.PressState = pressState;
+
+                actions.Add(new MappedOption
+                {
+                    Action = action
+                });
+            }
+            return actions;
+        }
+
         /// <markdown-doc>
         /// <parent-name>Input</parent-name>
         /// <path>Api/Input</path>

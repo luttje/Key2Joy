@@ -38,6 +38,37 @@ namespace KeyToJoy.Mapping
         {
         }
 
+        public static List<MappedOption> GetAllButtonActions(PressState pressState)
+        {
+            var actionType = typeof(GamePadAction);
+            var typeAttribute = ((ActionAttribute[])actionType.GetCustomAttributes(typeof(ActionAttribute), false))[0];
+
+            var actions = new List<MappedOption>();
+            foreach (var control in GetAllButtons())
+            {
+                var action = (GamePadAction)MakeAction(actionType, typeAttribute);
+                action.Control = (GamePadControl) control;
+                action.PressState = pressState;
+                
+                actions.Add(new MappedOption
+                {
+                    Action = action
+                });
+            }
+            return actions;
+        }
+
+        internal static GamePadControl[] GetAllButtons()
+        {
+            var allEnums = Enum.GetValues(typeof(GamePadControl));
+
+            // Skip the first (= None) enumeration value
+            var buttons = new GamePadControl[allEnums.Length - 1];
+            Array.Copy(allEnums, 1, buttons, 0, buttons.Length);
+
+            return buttons;
+        }
+
         internal override void OnStartListening(TriggerListener listener, ref List<BaseAction> otherActions)
         {
             base.OnStartListening(listener, ref otherActions);

@@ -57,6 +57,12 @@ namespace KeyToJoy.Mapping
             MappedOptions.Add(mappedOption);
         }
 
+        internal void AddMappingRange(IEnumerable<MappedOption> mappedOptions)
+        {
+            foreach (var mappedOption in mappedOptions)
+                MappedOptions.Add((MappedOption)mappedOption.Clone());
+        }
+
         internal bool TryGetMappedOption(BaseTrigger trigger, out MappedOption mappedOption)
         {
             mappedOption = MappedOptions.FirstOrDefault(mo => mo.Trigger == trigger);

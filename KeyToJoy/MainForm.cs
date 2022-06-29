@@ -107,72 +107,8 @@ namespace KeyToJoy
             if (createNewMapping)
                 selectedPreset.AddMapping(mappedOption);
 
-            //olvMappings.UpdateObject(mappedOption);
             selectedPreset.Save();
-        }
-
-        private void olvMappings_CellClick(object sender, BrightIdeasSoftware.CellClickEventArgs e)
-        {
-            if (e.ClickCount < 2 || e.Item == null)
-                return;
-
-            var mappedOption = olvMappings.SelectedObject as MappedOption;
-
-            if (mappedOption == null)
-                return;
-
-            EditMappedOption(mappedOption);
-        }
-
-        private object olvMappings_GroupKeyGetter(object rowObject)
-        {
-            var option = (MappedOption)rowObject;
-            var groupType = option.Action.GetType();
-            var groupAttributes = (ObjectListViewGroupAttribute[])groupType.GetCustomAttributes(typeof(ObjectListViewGroupAttribute), true);
-
-            if (groupAttributes.Length > 0)
-                return groupAttributes[0];
-
-            return null;
-        }
-
-        private string olvMappings_GroupKeyToTitleConverter(object groupKey)
-        {
-            if (groupKey == null)
-                return null;
-
-            var groupAttribute = (ObjectListViewGroupAttribute)groupKey;
-
-            return groupAttribute.Name;
-        }
-
-        private void olvMappings_AboutToCreateGroups(object sender, BrightIdeasSoftware.CreateGroupsEventArgs e)
-        {
-            foreach (var group in e.Groups)
-            {
-                if (group.Key == null)
-                    continue;
-
-                var groupAttribute = (ObjectListViewGroupAttribute)group.Key;
-                group.TitleImage = groupAttribute.Image;
-            }
-        }
-
-        private void BtnOpenTest_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void ChkEnabled_CheckedChanged(object sender, EventArgs e)
-        {
-            bool isEnabled = chkEnabled.Checked;
-
-            lblStatusActive.Visible = isEnabled;
-            lblStatusInactive.Visible = !isEnabled;
-
-            if (isEnabled)
-                ArmMappings();
-            else
-                DisarmMappings();
+            SetSelectedPreset(selectedPreset);
         }
 
         private void ArmMappings()
@@ -246,6 +182,75 @@ namespace KeyToJoy
             }
         }
 
+        private void olvMappings_CellClick(object sender, BrightIdeasSoftware.CellClickEventArgs e)
+        {
+            if (e.ClickCount < 2 || e.Item == null)
+                return;
+
+            var mappedOption = olvMappings.SelectedObject as MappedOption;
+
+            if (mappedOption == null)
+                return;
+
+            EditMappedOption(mappedOption);
+        }
+
+        private object olvMappings_GroupKeyGetter(object rowObject)
+        {
+            var option = (MappedOption)rowObject;
+            var groupType = option.Action.GetType();
+            var groupAttributes = (ObjectListViewGroupAttribute[])groupType.GetCustomAttributes(typeof(ObjectListViewGroupAttribute), true);
+
+            if (groupAttributes.Length > 0)
+                return groupAttributes[0];
+
+            return null;
+        }
+
+        private string olvMappings_GroupKeyToTitleConverter(object groupKey)
+        {
+            if (groupKey == null)
+                return null;
+
+            var groupAttribute = (ObjectListViewGroupAttribute)groupKey;
+
+            return groupAttribute.Name;
+        }
+
+        private void olvMappings_AboutToCreateGroups(object sender, BrightIdeasSoftware.CreateGroupsEventArgs e)
+        {
+            foreach (var group in e.Groups)
+            {
+                if (group.Key == null)
+                    continue;
+
+                var groupAttribute = (ObjectListViewGroupAttribute)group.Key;
+                group.TitleImage = groupAttribute.Image;
+            }
+        }
+
+        private void olvMappings_CellRightClick(object sender, BrightIdeasSoftware.CellRightClickEventArgs e)
+        {
+
+        }
+
+        private void BtnOpenTest_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void ChkEnabled_CheckedChanged(object sender, EventArgs e)
+        {
+            bool isEnabled = chkEnabled.Checked;
+
+            lblStatusActive.Visible = isEnabled;
+            lblStatusInactive.Visible = !isEnabled;
+
+            if (isEnabled)
+                ArmMappings();
+            else
+                DisarmMappings();
+        }
+
         private void TxtPresetName_TextChanged(object sender, EventArgs e)
         {
             selectedPreset.Name = txtPresetName.Text;
@@ -309,6 +314,48 @@ namespace KeyToJoy
         private void openPresetFolderToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Process.Start(MappingPreset.GetSaveDirectory());
+        }
+
+        private void gamePadPressAndReleaseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            selectedPreset.AddMappingRange(GamePadAction.GetAllButtonActions(PressState.PressAndRelease));
+            selectedPreset.Save();
+            SetSelectedPreset(selectedPreset);
+        }
+
+        private void gamePadPressToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            selectedPreset.AddMappingRange(GamePadAction.GetAllButtonActions(PressState.Press));
+            selectedPreset.Save();
+            SetSelectedPreset(selectedPreset);
+        }
+
+        private void gamePadReleaseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            selectedPreset.AddMappingRange(GamePadAction.GetAllButtonActions(PressState.Release));
+            selectedPreset.Save();
+            SetSelectedPreset(selectedPreset);
+        }
+
+        private void keyboardPressAndReleaseToolStripMenuItem(object sender, EventArgs e)
+        {
+            selectedPreset.AddMappingRange(KeyboardAction.GetAllButtonActions(PressState.PressAndRelease));
+            selectedPreset.Save();
+            SetSelectedPreset(selectedPreset);
+        }
+
+        private void keyboardPressToolStripMenuItem(object sender, EventArgs e)
+        {
+            selectedPreset.AddMappingRange(KeyboardAction.GetAllButtonActions(PressState.Press));
+            selectedPreset.Save();
+            SetSelectedPreset(selectedPreset);
+        }
+
+        private void keyboardReleaseToolStripMenuItem(object sender, EventArgs e)
+        {
+            selectedPreset.AddMappingRange(KeyboardAction.GetAllButtonActions(PressState.Release));
+            selectedPreset.Save();
+            SetSelectedPreset(selectedPreset);
         }
 
         private void testGamePadJoystickToolStripMenuItem_Click(object sender, EventArgs e)

@@ -19,7 +19,7 @@ namespace KeyToJoy.Mapping
         {
             InitializeComponent();
 
-            cmbKeyboard.DataSource = Enum.GetValues(typeof(Keys));
+            cmbKeyboard.DataSource = KeyboardAction.GetAllKeys();
             cmbPressState.DataSource = Enum.GetValues(typeof(PressState));
             cmbPressState.SelectedIndex = 0;
         }

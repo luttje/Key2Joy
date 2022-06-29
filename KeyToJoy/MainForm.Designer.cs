@@ -53,7 +53,13 @@
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fillPresetWithToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.allGamePadJoystickActionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pressAndReleaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pressToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.releaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.allKeyboardActionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pressAndReleaseToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.pressToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.releaseToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.testMappingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.testGamePadJoystickToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.testKeyboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -98,6 +104,7 @@
             this.olvMappings.View = System.Windows.Forms.View.Details;
             this.olvMappings.AboutToCreateGroups += new System.EventHandler<BrightIdeasSoftware.CreateGroupsEventArgs>(this.olvMappings_AboutToCreateGroups);
             this.olvMappings.CellClick += new System.EventHandler<BrightIdeasSoftware.CellClickEventArgs>(this.olvMappings_CellClick);
+            this.olvMappings.CellRightClick += new System.EventHandler<BrightIdeasSoftware.CellRightClickEventArgs>(this.olvMappings_CellRightClick);
             // 
             // olvColumnAction
             // 
@@ -278,20 +285,70 @@
             this.allGamePadJoystickActionsToolStripMenuItem,
             this.allKeyboardActionsToolStripMenuItem});
             this.fillPresetWithToolStripMenuItem.Name = "fillPresetWithToolStripMenuItem";
-            this.fillPresetWithToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.fillPresetWithToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
             this.fillPresetWithToolStripMenuItem.Text = "Fill Preset With...";
             // 
             // allGamePadJoystickActionsToolStripMenuItem
             // 
+            this.allGamePadJoystickActionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.pressAndReleaseToolStripMenuItem,
+            this.pressToolStripMenuItem,
+            this.releaseToolStripMenuItem});
             this.allGamePadJoystickActionsToolStripMenuItem.Name = "allGamePadJoystickActionsToolStripMenuItem";
-            this.allGamePadJoystickActionsToolStripMenuItem.Size = new System.Drawing.Size(237, 22);
-            this.allGamePadJoystickActionsToolStripMenuItem.Text = "All GamePad / Joystick Actions";
+            this.allGamePadJoystickActionsToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
+            this.allGamePadJoystickActionsToolStripMenuItem.Text = "All GamePad/Joystick Actions";
+            // 
+            // pressAndReleaseToolStripMenuItem
+            // 
+            this.pressAndReleaseToolStripMenuItem.Name = "pressAndReleaseToolStripMenuItem";
+            this.pressAndReleaseToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.pressAndReleaseToolStripMenuItem.Text = "PressAndRelease";
+            this.pressAndReleaseToolStripMenuItem.Click += new System.EventHandler(this.gamePadPressAndReleaseToolStripMenuItem_Click);
+            // 
+            // pressToolStripMenuItem
+            // 
+            this.pressToolStripMenuItem.Name = "pressToolStripMenuItem";
+            this.pressToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.pressToolStripMenuItem.Text = "Press";
+            this.pressToolStripMenuItem.Click += new System.EventHandler(this.gamePadPressToolStripMenuItem_Click);
+            // 
+            // releaseToolStripMenuItem
+            // 
+            this.releaseToolStripMenuItem.Name = "releaseToolStripMenuItem";
+            this.releaseToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.releaseToolStripMenuItem.Text = "Release";
+            this.releaseToolStripMenuItem.Click += new System.EventHandler(this.gamePadReleaseToolStripMenuItem_Click);
             // 
             // allKeyboardActionsToolStripMenuItem
             // 
+            this.allKeyboardActionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.pressAndReleaseToolStripMenuItem1,
+            this.pressToolStripMenuItem1,
+            this.releaseToolStripMenuItem1});
             this.allKeyboardActionsToolStripMenuItem.Name = "allKeyboardActionsToolStripMenuItem";
-            this.allKeyboardActionsToolStripMenuItem.Size = new System.Drawing.Size(237, 22);
+            this.allKeyboardActionsToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
             this.allKeyboardActionsToolStripMenuItem.Text = "All Keyboard Actions";
+            // 
+            // pressAndReleaseToolStripMenuItem1
+            // 
+            this.pressAndReleaseToolStripMenuItem1.Name = "pressAndReleaseToolStripMenuItem1";
+            this.pressAndReleaseToolStripMenuItem1.Size = new System.Drawing.Size(162, 22);
+            this.pressAndReleaseToolStripMenuItem1.Text = "PressAndRelease";
+            this.pressAndReleaseToolStripMenuItem1.Click += new System.EventHandler(this.keyboardPressAndReleaseToolStripMenuItem);
+            // 
+            // pressToolStripMenuItem1
+            // 
+            this.pressToolStripMenuItem1.Name = "pressToolStripMenuItem1";
+            this.pressToolStripMenuItem1.Size = new System.Drawing.Size(162, 22);
+            this.pressToolStripMenuItem1.Text = "Press";
+            this.pressToolStripMenuItem1.Click += new System.EventHandler(this.keyboardPressToolStripMenuItem);
+            // 
+            // releaseToolStripMenuItem1
+            // 
+            this.releaseToolStripMenuItem1.Name = "releaseToolStripMenuItem1";
+            this.releaseToolStripMenuItem1.Size = new System.Drawing.Size(162, 22);
+            this.releaseToolStripMenuItem1.Text = "Release";
+            this.releaseToolStripMenuItem1.Click += new System.EventHandler(this.keyboardReleaseToolStripMenuItem);
             // 
             // testMappingsToolStripMenuItem
             // 
@@ -300,7 +357,7 @@
             this.testKeyboardToolStripMenuItem,
             this.testMouseToolStripMenuItem});
             this.testMappingsToolStripMenuItem.Name = "testMappingsToolStripMenuItem";
-            this.testMappingsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.testMappingsToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
             this.testMappingsToolStripMenuItem.Text = "Test Mappings";
             // 
             // testGamePadJoystickToolStripMenuItem
@@ -448,8 +505,6 @@
         private System.Windows.Forms.ToolStripMenuItem loadPresetToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fillPresetWithToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem allGamePadJoystickActionsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem allKeyboardActionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem reportAProblemToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem viewSourceCodeToolStripMenuItem;
@@ -472,6 +527,14 @@
         private System.Windows.Forms.ToolStripMenuItem testGamePadJoystickToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem testKeyboardToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem testMouseToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem allGamePadJoystickActionsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem pressAndReleaseToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem pressToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem releaseToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem allKeyboardActionsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem pressAndReleaseToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem pressToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem releaseToolStripMenuItem1;
     }
 }
 
