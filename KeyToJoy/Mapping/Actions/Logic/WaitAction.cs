@@ -33,6 +33,8 @@ namespace KeyToJoy.Mapping
         /// </markdown-doc>
         /// <summary>
         /// Wait for the specified duration in milliseconds, then execute the callback
+        /// 
+        /// <strong>Note: There are issues with this function I have yet to fix. It may not work as expected sometimes!</strong>
         /// </summary>
         /// <param name="callback">Function to execute</param>
         /// <param name="waitTime">Time to wait (in milliseconds)</param>
@@ -44,7 +46,7 @@ namespace KeyToJoy.Mapping
             var task = Task.Run(async () =>
             {
                 await Task.Delay(WaitTime);
-                callback();
+                callback.DynamicInvoke();
             });
         }
 
