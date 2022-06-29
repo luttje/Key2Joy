@@ -146,6 +146,9 @@ namespace KeyToJoy
 
             foreach (var mappedOption in selectedPreset.MappedOptions)
             {
+                if (mappedOption.Trigger == null)
+                    continue;
+
                 var listener = mappedOption.Trigger.GetTriggerListener();
                 
                 if(!listeners.Contains(listener))
@@ -172,6 +175,9 @@ namespace KeyToJoy
 
             foreach (var mappedOption in selectedPreset.MappedOptions)
             {
+                if (mappedOption.Trigger == null)
+                    continue;
+                
                 var listener = mappedOption.Trigger.GetTriggerListener();
                 mappedOption.Action.OnStopListening(listener);
 
