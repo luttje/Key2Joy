@@ -1,5 +1,4 @@
-﻿using KeyToJoy.Input;
-using KeyToJoy.Input.LowLevel;
+﻿using KeyToJoy.LowLevelInput;
 using Newtonsoft.Json;
 using SimWinInput;
 using System;
@@ -18,7 +17,7 @@ namespace KeyToJoy.Mapping
         OptionsUserControl = typeof(KeyboardActionControl),
         NameFormat = "{1} {0} on Keyboard"
     )]
-    [ExposesScriptingEnumeration(typeof(Keys))]
+    [ExposesScriptingEnumeration(typeof(KeyboardKey))]
     [Util.ObjectListViewGroup(
         Name = "Keyboard Simulation",
         Image = "keyboard"
@@ -26,7 +25,7 @@ namespace KeyToJoy.Mapping
     internal class KeyboardAction : BaseAction
     {        
         [JsonProperty]
-        public byte Key { get; set; }
+        public KeyboardKey Key { get; set; }
 
         [JsonProperty]
         public PressState PressState { get; set; }
@@ -36,15 +35,21 @@ namespace KeyToJoy.Mapping
         {
         }
 
-        internal static Keys[] GetAllKeys()
+        internal static KeyboardKey[] GetAllKeys()
         {
-            var allEnums = Enum.GetValues(typeof(Keys));
+            var allEnums = Enum.GetValues(typeof(KeyboardKey));
+            var keys = new List<KeyboardKey>();
 
-            // Skip the first (= None) enumeration value
-            var keys = new Keys[allEnums.Length - 1];
-            Array.Copy(allEnums, 1, keys, 0, keys.Length);
+            // Skip the enumerations that are zero
+            foreach (var keyEnum in allEnums)
+            {
+                if ((short)keyEnum == 0)
+                    continue;
 
-            return keys;
+                keys.Add((KeyboardKey)keyEnum);
+            }
+
+            return keys.ToArray();
         }
 
         public static List<MappedOption> GetAllButtonActions(PressState pressState)
@@ -56,7 +61,7 @@ namespace KeyToJoy.Mapping
             foreach (var key in GetAllKeys())
             {
                 var action = (KeyboardAction)MakeAction(actionType, typeAttribute);
-                action.Key = (byte)key;
+                action.Key = key;
                 action.PressState = pressState;
 
                 actions.Add(new MappedOption
@@ -90,14 +95,14 @@ namespace KeyToJoy.Mapping
         /// </markdown-example>
         /// <name>Keyboard.Simulate</name>
         [ExposesScriptingMethod("Keyboard.Simulate")]
-        public void ExecuteForScript(Keys key, PressState pressState)
+        public void ExecuteForScript(KeyboardKey key, PressState pressState)
         {
-            Key = (byte)key;
+            Key = key;
             PressState = pressState;
 
             if (PressState == PressState.Press || PressState == PressState.PressAndRelease)
             {
-                SimKeyboard.KeyDown(Key);
+                SimulatedKeyboard.PressKey(Key);
 
                 if (PressState == PressState.PressAndRelease)
                 {
@@ -105,13 +110,13 @@ namespace KeyToJoy.Mapping
                     {
                         // TODO: Make this a configurable value
                         await Task.Delay(50);
-                        SimKeyboard.KeyUp(Key);
+                        SimulatedKeyboard.ReleaseKey(Key);
                     });
                 }
             }
             
             if (PressState == PressState.Release)
-                SimKeyboard.KeyUp(Key);
+                SimulatedKeyboard.ReleaseKey(Key);
         }
 
         internal override async Task Execute(InputBag inputBag = null)
@@ -126,15 +131,15 @@ namespace KeyToJoy.Mapping
 
             if (PressState == PressState.Press
                 || (PressState == PressState.PressAndRelease && isInputDown))
-                SimKeyboard.KeyDown(Key);
+                SimulatedKeyboard.PressKey(Key);
             else if(PressState == PressState.Release
                 || (PressState == PressState.PressAndRelease && !isInputDown))
-                SimKeyboard.KeyUp(Key);
+                SimulatedKeyboard.ReleaseKey(Key);
         }
 
         public override string GetNameDisplay()
         {
-            return Name.Replace("{0}", Enum.GetName(typeof(Keys), Key))
+            return Name.Replace("{0}", Enum.GetName(typeof(KeyboardKey), Key))
                 .Replace("{1}", Enum.GetName(typeof(PressState), PressState));
         }
 

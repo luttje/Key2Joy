@@ -3,7 +3,6 @@ using System;
 using System.Windows.Forms;
 using Linearstar.Windows.RawInput;
 using System.Drawing;
-using KeyToJoy.Input;
 using System.Diagnostics;
 using KeyToJoy.Mapping;
 using KeyToJoy.Properties;
@@ -14,6 +13,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.IO;
 using BrightIdeasSoftware;
+using KeyToJoy.LowLevelInput;
 
 namespace KeyToJoy
 {

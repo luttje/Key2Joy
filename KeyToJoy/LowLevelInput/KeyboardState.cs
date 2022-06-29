@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KeyToJoy.Input.LowLevel
+namespace KeyToJoy.LowLevelInput
 {
     // Source: https://stackoverflow.com/a/34384189
     public enum KeyboardState

@@ -47,7 +47,18 @@ namespace KeyToJoy.Mapping
             // TODO: Probably a better way to do this
             engine.Execute(
                 enumType.Name + " = {" +
-                string.Join(", ", enumNames.Select((name, index) => $"{name}: {(int)Enum.Parse(enumType, name)}")) +
+                string.Join(", ", enumNames.Select((name, index) =>
+                {
+                    var underlyingType = Enum.GetUnderlyingType(enumType);
+                    var e = Enum.Parse(enumType, name);
+
+                    if (underlyingType == typeof(int))
+                        return $"{name}: {(int)e}";
+                    else if (underlyingType == typeof(short))
+                        return $"{name}: {(short)e}";
+                    else
+                        throw new NotImplementedException("Enumeration was of unimplemented underlying datatype: " + underlyingType);
+                })) +
                 "    }"
             );
 

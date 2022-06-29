@@ -1,12 +1,11 @@
-﻿using KeyToJoy.Input.LowLevel;
-using Linearstar.Windows.RawInput.Native;
+﻿using Linearstar.Windows.RawInput.Native;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KeyToJoy.Input
+namespace KeyToJoy.LowLevelInput
 {
     public class Mouse
     {

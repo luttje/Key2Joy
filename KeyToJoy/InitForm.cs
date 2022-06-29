@@ -1,5 +1,4 @@
-﻿using KeyToJoy.Input;
-using KeyToJoy.Mapping;
+﻿using KeyToJoy.Mapping;
 using SimWinInput;
 using System;
 using System.Collections.Generic;

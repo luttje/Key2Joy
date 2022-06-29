@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KeyToJoy.Input
+namespace KeyToJoy.LowLevelInput
 {
     public enum PressState
     {

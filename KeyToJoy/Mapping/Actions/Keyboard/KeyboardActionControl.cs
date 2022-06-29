@@ -1,4 +1,4 @@
-﻿using KeyToJoy.Input;
+﻿using KeyToJoy.LowLevelInput;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -28,7 +28,7 @@ namespace KeyToJoy.Mapping
         {
             var thisAction = (KeyboardAction)action;
 
-            cmbKeyboard.SelectedItem = (Keys)thisAction.Key;
+            cmbKeyboard.SelectedItem = thisAction.Key;
             cmbPressState.SelectedItem = thisAction.PressState;
         }
 
@@ -36,7 +36,7 @@ namespace KeyToJoy.Mapping
         {
             var thisAction = (KeyboardAction)action;
 
-            thisAction.Key = Convert.ToByte(cmbKeyboard.SelectedItem);
+            thisAction.Key = (KeyboardKey) cmbKeyboard.SelectedItem;
             thisAction.PressState = (PressState) cmbPressState.SelectedItem;
         }
 

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
-using KeyToJoy.Input;
-using KeyToJoy.Input.LowLevel;
+using KeyToJoy.LowLevelInput;
 using Linearstar.Windows.RawInput.Native;
 using Newtonsoft.Json;
 

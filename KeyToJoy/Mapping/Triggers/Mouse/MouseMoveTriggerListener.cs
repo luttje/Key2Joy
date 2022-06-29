@@ -1,6 +1,4 @@
-﻿using KeyToJoy.Input;
-using KeyToJoy.Input.LowLevel;
-using Linearstar.Windows.RawInput;
+﻿using Linearstar.Windows.RawInput;
 using SimWinInput;
 using System;
 using System.Collections.Generic;

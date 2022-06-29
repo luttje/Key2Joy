@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace KeyToJoy.Input.LowLevel
+namespace KeyToJoy.LowLevelInput
 {
     // Source: https://stackoverflow.com/a/34384189
     [StructLayout(LayoutKind.Sequential)]

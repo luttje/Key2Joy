@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-namespace KeyToJoy.Input
+namespace KeyToJoy.LowLevelInput
 {
     // Source: https://stackoverflow.com/a/2934866
     internal class VirtualKeyConverter

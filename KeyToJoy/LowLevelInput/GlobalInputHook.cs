@@ -2,9 +2,8 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using KeyToJoy.Input.LowLevel;
 
-namespace KeyToJoy.Input
+namespace KeyToJoy.LowLevelInput
 {
     // Based on these sources:
     // - https://gist.github.com/Stasonix/3181083

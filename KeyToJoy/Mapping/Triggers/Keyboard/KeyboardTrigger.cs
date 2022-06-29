@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
-using KeyToJoy.Input;
+using KeyToJoy.LowLevelInput;
 using Newtonsoft.Json;
 
 namespace KeyToJoy.Mapping

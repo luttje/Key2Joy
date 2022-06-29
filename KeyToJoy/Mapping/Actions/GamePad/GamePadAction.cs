@@ -1,5 +1,4 @@
-﻿using KeyToJoy.Input;
-using KeyToJoy.Input.LowLevel;
+﻿using KeyToJoy.LowLevelInput;
 using Newtonsoft.Json;
 using SimWinInput;
 using System;

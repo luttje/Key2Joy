@@ -1,5 +1,4 @@
-﻿using KeyToJoy.Input;
-using KeyToJoy.Input.LowLevel;
+﻿using KeyToJoy.LowLevelInput;
 using System;
 using System.Collections.Generic;
 using System.Linq;

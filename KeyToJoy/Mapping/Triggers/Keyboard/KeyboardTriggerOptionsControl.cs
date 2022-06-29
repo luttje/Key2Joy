@@ -1,10 +1,10 @@
-﻿using KeyToJoy.Input;
-using Linearstar.Windows.RawInput;
+﻿using Linearstar.Windows.RawInput;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using Linearstar.Windows.RawInput.Native;
 using KeyToJoy.Mapping;
+using KeyToJoy.LowLevelInput;
 
 namespace KeyToJoy
 {

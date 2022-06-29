@@ -66,9 +66,6 @@
     <Reference Include="SimWinGamePad, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\SimWinGamePad.1.1.1\lib\net40\SimWinGamePad.dll</HintPath>
     </Reference>
-    <Reference Include="SimWinKeyboard, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\SimWinKeyboard.1.0.2\lib\net20\SimWinKeyboard.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.AppContext, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.AppContext.4.3.0\lib\net463\System.AppContext.dll</HintPath>
@@ -214,7 +211,9 @@
       <DependentUpon>AboutForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Config.cs" />
-    <Compile Include="Input\PressState.cs" />
+    <Compile Include="LowLevelInput\KeyboardKey.cs" />
+    <Compile Include="LowLevelInput\PressState.cs" />
+    <Compile Include="LowLevelInput\SimulatedKeyboard.cs" />
     <Compile Include="Mapping\Actions\ActionControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -290,7 +289,7 @@
     <Compile Include="Mapping\Triggers\Keyboard\KeyboardTriggerListener.cs" />
     <Compile Include="Mapping\Triggers\Mouse\MouseMoveTriggerListener.cs" />
     <Compile Include="Mapping\Triggers\Mouse\MouseButtonTriggerListener.cs" />
-    <Compile Include="Input\Mouse.cs" />
+    <Compile Include="LowLevelInput\Mouse.cs" />
     <Compile Include="Mapping\Triggers\TriggerControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -305,7 +304,7 @@
     <Compile Include="InitForm.Designer.cs">
       <DependentUpon>InitForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Input\GlobalInputHook.cs" />
+    <Compile Include="LowLevelInput\GlobalInputHook.cs" />
     <Compile Include="Mapping\Triggers\InputBag.cs" />
     <Compile Include="Mapping\Triggers\Keyboard\KeyboardTriggerOptionsControl.cs">
       <SubType>UserControl</SubType>
@@ -329,13 +328,13 @@
     <Compile Include="Mapping\Triggers\Mouse\MouseMoveInputBag.cs" />
     <Compile Include="Mapping\Triggers\Mouse\MouseButtonTrigger.cs" />
     <Compile Include="Mapping\Triggers\Keyboard\KeyboardTrigger.cs" />
-    <Compile Include="Input\LowLevel\GlobalKeyboardHookEventArgs.cs" />
-    <Compile Include="Input\LowLevel\GlobalMouseHookEventArgs.cs" />
-    <Compile Include="Input\LowLevel\KeyboardState.cs" />
-    <Compile Include="Input\LowLevel\LowLevelKeyboardInputEvent.cs" />
-    <Compile Include="Input\LowLevel\LowLevelMouseInputEvent.cs" />
-    <Compile Include="Input\LowLevel\MouseState.cs" />
-    <Compile Include="Input\LowLevel\Point.cs" />
+    <Compile Include="LowLevelInput\GlobalKeyboardHookEventArgs.cs" />
+    <Compile Include="LowLevelInput\GlobalMouseHookEventArgs.cs" />
+    <Compile Include="LowLevelInput\KeyboardState.cs" />
+    <Compile Include="LowLevelInput\LowLevelKeyboardInputEvent.cs" />
+    <Compile Include="LowLevelInput\LowLevelMouseInputEvent.cs" />
+    <Compile Include="LowLevelInput\MouseState.cs" />
+    <Compile Include="LowLevelInput\Point.cs" />
     <Compile Include="Mapping\Triggers\Mouse\MouseButtonInputBag.cs" />
     <Compile Include="Mapping\Triggers\Mouse\MouseMoveTrigger.cs" />
     <Compile Include="Mapping\Triggers\TriggerAttribute.cs" />
@@ -349,7 +348,7 @@
     <Compile Include="Mapping\Triggers\TriggerListener.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Input\VirtualKeyConverter.cs" />
+    <Compile Include="LowLevelInput\VirtualKeyConverter.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

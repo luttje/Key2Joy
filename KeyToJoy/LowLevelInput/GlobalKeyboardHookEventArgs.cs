@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace KeyToJoy.Input.LowLevel
+namespace KeyToJoy.LowLevelInput
 {
     // Source: https://stackoverflow.com/a/34384189
     internal class GlobalKeyboardHookEventArgs : HandledEventArgs
