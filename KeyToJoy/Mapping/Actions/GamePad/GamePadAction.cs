@@ -19,21 +19,16 @@ namespace KeyToJoy.Mapping
     )]
     [ExposesScriptingEnumeration(typeof(GamePadControl))]
     [ExposesScriptingEnumeration(typeof(PressState))]
+    [Util.ObjectListViewGroup(
+        Name = "GamePad Simulation",
+        Image = "joystick"
+    )]
     internal class GamePadAction : BaseAction
     {
         private static bool isPluggedIn = false;
-        private GamePadControl control;
 
         [JsonProperty]
-        public GamePadControl Control
-        {
-            get { return control; }
-            set
-            {
-                control = value;
-                OnControlChanged();
-            }
-        }
+        public GamePadControl Control { get; set; }
 
         [JsonProperty]
         public PressState PressState { get; set; }
@@ -65,85 +60,6 @@ namespace KeyToJoy.Mapping
             isPluggedIn = false;
         }
 
-        private void OnControlChanged()
-        {
-            switch (Control)
-            {
-                case GamePadControl.A:
-                    ImageResource = "XboxSeriesX_A";
-                    break;
-                case GamePadControl.B:
-                    ImageResource = "XboxSeriesX_B";
-                    break;
-                case GamePadControl.Back:
-                    ImageResource = "XboxSeriesX_Back";
-                    break;
-                case GamePadControl.DPadDown:
-                    ImageResource = "XboxSeriesX_DPadDown";
-                    break;
-                case GamePadControl.DPadLeft:
-                    ImageResource = "XboxSeriesX_DPadLeft";
-                    break;
-                case GamePadControl.DPadRight:
-                    ImageResource = "XboxSeriesX_DPadRight";
-                    break;
-                case GamePadControl.DPadUp:
-                    ImageResource = "XboxSeriesX_DPadUp";
-                    break;
-                case GamePadControl.LeftShoulder:
-                    ImageResource = "XboxSeriesX_LeftShoulder";
-                    break;
-                case GamePadControl.LeftStickClick:
-                    ImageResource = "XboxSeriesX_LeftStickClick";
-                    break;
-                case GamePadControl.LeftStickDown:
-                    ImageResource = "XboxSeriesX_LeftStickDown";
-                    break;
-                case GamePadControl.LeftStickLeft:
-                    ImageResource = "XboxSeriesX_LeftStickLeft";
-                    break;
-                case GamePadControl.LeftStickRight:
-                    ImageResource = "XboxSeriesX_LeftStickRight";
-                    break;
-                case GamePadControl.LeftStickUp:
-                    ImageResource = "XboxSeriesX_LeftStickUp";
-                    break;
-                case GamePadControl.LeftTrigger:
-                    ImageResource = "XboxSeriesX_LeftTrigger";
-                    break;
-                case GamePadControl.RightShoulder:
-                    ImageResource = "XboxSeriesX_RightShoulder";
-                    break;
-                case GamePadControl.RightStickClick:
-                    ImageResource = "XboxSeriesX_RightStickClick";
-                    break;
-                case GamePadControl.RightStickDown:
-                    ImageResource = "XboxSeriesX_RightStickDown";
-                    break;
-                case GamePadControl.RightStickLeft:
-                    ImageResource = "XboxSeriesX_RightStickLeft";
-                    break;
-                case GamePadControl.RightStickRight:
-                    ImageResource = "XboxSeriesX_RightStickRight";
-                    break;
-                case GamePadControl.RightStickUp:
-                    ImageResource = "XboxSeriesX_RightStickUp";
-                    break;
-                case GamePadControl.RightTrigger:
-                    ImageResource = "XboxSeriesX_RightTrigger";
-                    break;
-                case GamePadControl.Start:
-                    ImageResource = "XboxSeriesX_Start";
-                    break;
-                case GamePadControl.X:
-                    ImageResource = "XboxSeriesX_X";
-                    break;
-                case GamePadControl.Y:
-                    ImageResource = "XboxSeriesX_Y";
-                    break;
-            }
-        }
-
         /// <markdown-doc>
         /// <parent-name>Input</parent-name>
         /// <path>Api/Input</path>
@@ -157,7 +73,7 @@ namespace KeyToJoy.Mapping
         [ExposesScriptingMethod("GamePad.Simulate")]
         public void ExecuteForScript(GamePadControl control, PressState pressState)
         {
-            this.control = control;
+            Control = control;
             PressState = pressState;
 
             if (PressState == PressState.Press || PressState == PressState.PressAndRelease)

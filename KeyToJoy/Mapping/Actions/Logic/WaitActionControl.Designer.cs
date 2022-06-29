@@ -36,7 +36,6 @@
             // lblInfo
             // 
             this.lblInfo.Dock = System.Windows.Forms.DockStyle.Left;
-            this.lblInfo.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.lblInfo.Location = new System.Drawing.Point(5, 5);
             this.lblInfo.Name = "lblInfo";
             this.lblInfo.Size = new System.Drawing.Size(140, 15);
@@ -63,7 +62,6 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.Black;
             this.Controls.Add(this.nudWaitTime);
             this.Controls.Add(this.lblInfo);
             this.Name = "WaitActionControl";

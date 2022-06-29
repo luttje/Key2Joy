@@ -12,6 +12,10 @@ using System.Threading.Tasks;
 
 namespace KeyToJoy.Mapping
 {
+    [Util.ObjectListViewGroup(
+        Name = "Scripting",
+        Image = "script_code"
+    )]
     internal abstract class BaseScriptAction : BaseAction
     {
         [JsonProperty]

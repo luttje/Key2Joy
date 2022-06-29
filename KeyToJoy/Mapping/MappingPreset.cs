@@ -15,9 +15,8 @@ namespace KeyToJoy.Mapping
         const int NO_VERSION = 0;
         const int CURRENT_VERSION = 4;
 
-        const string EXTENSION = "k2j";
-        const string SAVE_DIR = "Key2Joy Presets";
-        public static BindingList<MappingPreset> All { get; } = new BindingList<MappingPreset>();
+        public const string EXTENSION = ".k2j.json";
+        public const string SAVE_DIR = "Presets";
 
         [JsonProperty]
         public BindingList<MappedOption> MappedOptions { get; set; } = new BindingList<MappedOption>();
@@ -27,6 +26,8 @@ namespace KeyToJoy.Mapping
 
         [JsonProperty]
         public int Version { get; set; } = NO_VERSION; // Version is set on save
+        
+        public string FilePath => filePath;
 
         public string Display => $"{Name} ({Path.GetFileName(filePath)})";
 
@@ -40,7 +41,7 @@ namespace KeyToJoy.Mapping
             var directory = GetSaveDirectory();
 
             if (filePath == null)
-                filePath = FileSystem.FindNonExistingFile(Path.Combine(directory, $"profile-%VERSION%.{EXTENSION}.json"));
+                filePath = FileSystem.FindNonExistingFile(Path.Combine(directory, $"profile-%VERSION%{EXTENSION}"));
 
             if (mappedOptions != null)
             {
@@ -81,34 +82,33 @@ namespace KeyToJoy.Mapping
             return true;
         }
 
-        internal static void Add(MappingPreset preset, bool blockSave = false)
+        internal static MappingPreset Load(string filePath)
         {
-            All.Add(preset);
-
-            if (!blockSave)
-                preset.Save();
-        }
-
-        internal static List<MappingPreset> LoadAll()
-        {
-            var presets = new List<MappingPreset>();
             var serializer = GetSerializer();
 
-            foreach (var filePath in Directory.EnumerateFiles(GetSaveDirectory(), $"*.{EXTENSION}.json"))
-            {
-                MappingPreset preset;
+            MappingPreset preset;
 
-                using (var sr = new StreamReader(filePath))
-                using (var reader = new JsonTextReader(sr))
-                {
-                    preset = serializer.Deserialize<MappingPreset>(reader);
-                }
+            using (var sr = new StreamReader(filePath))
+            using (var reader = new JsonTextReader(sr))
+                preset = serializer.Deserialize<MappingPreset>(reader);
 
-                if (preset.PostLoad(filePath))
-                    presets.Add(preset);
-            }
+            if (preset.PostLoad(filePath))
+                return preset;
 
-            return presets;
+            return null;
+        }
+
+        internal static MappingPreset RestoreLastLoaded()
+        {
+            var lastLoadedPath = Config.Instance.LastLoadedPreset;
+
+            if (lastLoadedPath == null)
+                return null;
+
+            if (!File.Exists(lastLoadedPath))
+                return null;
+
+            return Load(lastLoadedPath);
         }
 
         private static JsonSerializer GetSerializer()
@@ -124,10 +124,11 @@ namespace KeyToJoy.Mapping
         internal static string GetSaveDirectory()
         {
             var directory = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                Program.GetAppDirectory(),
                 SAVE_DIR);
 
-            Directory.CreateDirectory(directory);
+            if (!Directory.Exists(directory))
+                Directory.CreateDirectory(directory);
 
             return directory;
         }

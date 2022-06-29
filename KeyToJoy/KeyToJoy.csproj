@@ -57,6 +57,9 @@
     <Reference Include="NLua, Version=1.6.0.0, Culture=neutral, PublicKeyToken=6a194c04b9c89217, processorArchitecture=MSIL">
       <HintPath>..\packages\NLua.1.6.0\lib\net46\NLua.dll</HintPath>
     </Reference>
+    <Reference Include="ObjectListView, Version=2.9.1.1072, Culture=neutral, PublicKeyToken=b1c5bf581481bcd4, processorArchitecture=MSIL">
+      <HintPath>..\packages\ObjectListView.Official.2.9.1\lib\net20\ObjectListView.dll</HintPath>
+    </Reference>
     <Reference Include="RawInput.Sharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\RawInput.Sharp.0.0.4\lib\netstandard1.1\RawInput.Sharp.dll</HintPath>
     </Reference>
@@ -210,6 +213,7 @@
     <Compile Include="AboutForm.Designer.cs">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Config.cs" />
     <Compile Include="Input\PressState.cs" />
     <Compile Include="Mapping\Actions\ActionControl.cs">
       <SubType>UserControl</SubType>
@@ -353,8 +357,10 @@
     </Compile>
     <Compile Include="Util\FileSystem.cs" />
     <Compile Include="Util\MethodInfoExtensions.cs" />
+    <Compile Include="Util\ObjectListViewGroupAttribute.cs" />
     <EmbeddedResource Include="AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Mapping\Actions\ActionControl.resx">
       <DependentUpon>ActionControl.cs</DependentUpon>
@@ -489,6 +495,10 @@
     <None Include="Graphics\XboxSeriesX_RightStickUp.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Graphics\Icons\script_code.png" />
+    <None Include="Graphics\Icons\mouse.png" />
+    <None Include="Graphics\Icons\keyboard.png" />
+    <None Include="Graphics\Icons\joystick.png" />
     <None Include="Graphics\Lua.png" />
     <None Include="Graphics\JS.png" />
     <None Include="Graphics\NoImage.png" />

@@ -19,6 +19,10 @@ namespace KeyToJoy.Mapping
         NameFormat = "{1} {0} on Keyboard"
     )]
     [ExposesScriptingEnumeration(typeof(Keys))]
+    [Util.ObjectListViewGroup(
+        Name = "Keyboard Simulation",
+        Image = "keyboard"
+    )]
     internal class KeyboardAction : BaseAction
     {        
         [JsonProperty]

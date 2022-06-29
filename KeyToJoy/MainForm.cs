@@ -9,45 +9,66 @@ using KeyToJoy.Mapping;
 using KeyToJoy.Properties;
 using System.Collections.Generic;
 using System.Linq;
+using KeyToJoy.Util;
+using System.Reflection;
+using System.Threading.Tasks;
+using System.IO;
 
 namespace KeyToJoy
 {
     public partial class MainForm : Form, IAcceptAppCommands
     {
         private MappingPreset selectedPreset;
-
-        private Image defaultControllerImage;
         private List<TriggerListener> wndProcListeners = new List<TriggerListener>();
 
         public MainForm()
         {
             InitializeComponent();
-
-            defaultControllerImage = pctController.Image;
-
-            cmbPreset.DisplayMember = "Display";
-            cmbPreset.DataSource = MappingPreset.All;
             
-            ReloadSelectedPreset();
+            lblStatusActive.Visible = chkEnabled.Checked;
+
+            var items = new MenuItem[]{
+                new MenuItem("Show", (s, e) => {
+                    Show();
+                }),
+                new MenuItem("Exit", exitProgramToolStripMenuItem_Click)
+            };
+
+            ntfIndicator.ContextMenu = new ContextMenu(items);
+
+            var allAttributes = Assembly.GetExecutingAssembly()
+                .GetTypes()
+                .Where(t => t.GetCustomAttribute(typeof(ObjectListViewGroupAttribute), false) != null)
+                .Select(t => t.GetCustomAttribute(typeof(ObjectListViewGroupAttribute), false) as ObjectListViewGroupAttribute);
+            
+            var imageList = new ImageList();
+            
+            foreach (var attribute in allAttributes)
+            {
+                if(!imageList.Images.ContainsKey(attribute.Image))
+                    imageList.Images.Add(attribute.Image, (Bitmap)Resources.ResourceManager.GetObject(attribute.Image));
+            }
+
+            olvMappings.GroupImageList = imageList;
+
+            olvColumnAction.GroupKeyGetter = olvMappings_GroupKeyGetter;
+            olvColumnAction.GroupKeyToTitleConverter = olvMappings_GroupKeyToTitleConverter;
         }
 
-        private void ReloadSelectedPreset()
+        private void SetSelectedPreset(MappingPreset preset)
         {
-            selectedPreset = cmbPreset.SelectedItem as MappingPreset;
-
-            if (selectedPreset == null)
-                return;
-            
-            dgvMappings.DataSource = selectedPreset.MappedOptions;
-            txtPresetName.Text = selectedPreset.Name;
+            selectedPreset = preset;
+            Config.Instance.LastLoadedPreset = preset.FilePath;
+                
+            olvMappings.SetObjects(preset.MappedOptions);
+            olvMappings.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+            txtPresetName.Text = preset.Name;
         }
 
         private void btnAddAction_Click(object sender, EventArgs e)
         {
             if (selectedPreset == null)
-            {
                 CreateNewPreset();
-            }
 
             EditMappedOption();
         }
@@ -56,10 +77,7 @@ namespace KeyToJoy
         {
             var preset = new MappingPreset(txtPresetName.Text, selectedPreset?.MappedOptions);
 
-            MappingPreset.Add(preset);
-
-            cmbPreset.SelectedIndex = cmbPreset.Items.Count - 1;
-            ReloadSelectedPreset();
+            SetSelectedPreset(preset);
         }
         
         private void EditMappedOption(MappedOption existingMappedOption = null)
@@ -89,25 +107,16 @@ namespace KeyToJoy
             if (createNewMapping)
                 selectedPreset.AddMapping(mappedOption);
 
-            dgvMappings.Update();
+            //olvMappings.UpdateObject(mappedOption);
             selectedPreset.Save();
         }
 
-        private void SettingsForm_Load(object sender, EventArgs e)
+        private void olvMappings_CellClick(object sender, BrightIdeasSoftware.CellClickEventArgs e)
         {
-            dgvMappings.ClearSelection();
-            pctController.Image = defaultControllerImage;
-        }
+            if (e.ClickCount < 2 || e.Item == null)
+                return;
 
-        private void CmbPreset_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            ReloadSelectedPreset();
-        }
-
-        private void DgvMappings_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
-        {
-            var row = dgvMappings.Rows[e.RowIndex];
-            var mappedOption = row.DataBoundItem as MappedOption;
+            var mappedOption = olvMappings.SelectedObject as MappedOption;
 
             if (mappedOption == null)
                 return;
@@ -115,44 +124,50 @@ namespace KeyToJoy
             EditMappedOption(mappedOption);
         }
 
-        private void DgvMappings_SelectionChanged(object sender, EventArgs e)
+        private object olvMappings_GroupKeyGetter(object rowObject)
         {
-            var rowsCount = dgvMappings.SelectedRows.Count;
+            var option = (MappedOption)rowObject;
+            var groupType = option.Action.GetType();
+            var groupAttributes = (ObjectListViewGroupAttribute[])groupType.GetCustomAttributes(typeof(ObjectListViewGroupAttribute), true);
 
-            if (rowsCount == 0 || rowsCount > 1) 
-                return;
+            if (groupAttributes.Length > 0)
+                return groupAttributes[0];
 
-            var row = dgvMappings.SelectedRows[0];
-
-            if (!row.Selected)
-            {
-                pctController.Image = defaultControllerImage;
-                return;
-            }
-
-            if (!(row.DataBoundItem is MappedOption mappedOption))
-                return;
-
-            var image = mappedOption.Action.GetImage();
-            pctController.Image = image ?? Resources.NoImage;
+            return null;
         }
 
-        private void DgvMappings_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        private string olvMappings_GroupKeyToTitleConverter(object groupKey)
         {
-            var mappedOption = dgvMappings.Rows[e.RowIndex].DataBoundItem as MappedOption;
+            if (groupKey == null)
+                return null;
 
-            dgvMappings.Rows[e.RowIndex].Cells[colControl.Name].Value = mappedOption.GetActionDisplay();
-            dgvMappings.Rows[e.RowIndex].Cells[colTrigger.Name].Value = mappedOption.GetTriggerDisplay();
+            var groupAttribute = (ObjectListViewGroupAttribute)groupKey;
+
+            return groupAttribute.Name;
+        }
+
+        private void olvMappings_AboutToCreateGroups(object sender, BrightIdeasSoftware.CreateGroupsEventArgs e)
+        {
+            foreach (var group in e.Groups)
+            {
+                if (group.Key == null)
+                    continue;
+
+                var groupAttribute = (ObjectListViewGroupAttribute)group.Key;
+                group.TitleImage = groupAttribute.Image;
+            }
         }
 
         private void BtnOpenTest_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("https://devicetests.com/controller-tester");
         }
 
         private void ChkEnabled_CheckedChanged(object sender, EventArgs e)
         {
             bool isEnabled = chkEnabled.Checked;
+
+            lblStatusActive.Visible = isEnabled;
+            lblStatusInactive.Visible = !isEnabled;
 
             if (isEnabled)
                 ArmMappings();
@@ -204,6 +219,23 @@ namespace KeyToJoy
                 listener.StopListening();
         }
 
+        public bool RunAppCommand(string command)
+        {
+
+            switch (command)
+            {
+                case "abort":
+                    if (InvokeRequired)
+                        Invoke(new Action(() => chkEnabled.Checked = false));
+                    else
+                        chkEnabled.Checked = false;
+
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
         protected override void WndProc(ref Message m)
         {
             base.WndProc(ref m);
@@ -218,39 +250,126 @@ namespace KeyToJoy
         {
             selectedPreset.Name = txtPresetName.Text;
             selectedPreset.Save();
-            MappingPreset.All.ResetBindings();
         }
 
         private void BtnCreate_Click(object sender, EventArgs e)
         {
             CreateNewPreset();
         }
+        
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            var lastLoadedPreset = MappingPreset.RestoreLastLoaded();
 
-        private void BtnAbout_Click(object sender, EventArgs e)
+            if (lastLoadedPreset != null)
+                SetSelectedPreset(lastLoadedPreset);
+        }
+
+        private void newPresetToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CreateNewPreset();
+        }
+
+        private void loadPresetToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Load a preset from the file system
+            var dialog = new OpenFileDialog();
+            dialog.Filter = "KeyToJoy Presets|*" + MappingPreset.EXTENSION;
+            dialog.Title = "Load Preset";
+            dialog.InitialDirectory = MappingPreset.GetSaveDirectory();
+            dialog.RestoreDirectory = true;
+            dialog.CheckFileExists = true;
+            dialog.CheckPathExists = true;
+            dialog.ShowReadOnly = false;
+
+            if (dialog.ShowDialog() != DialogResult.OK)
+                return;
+            
+            var preset = MappingPreset.Load(dialog.FileName);
+                
+            if (preset == null)
+            {
+                MessageBox.Show("The selected preset was corrupt! If you did not modify the preset file this could be a bug.\n\nPlease help us by reporting the bug on GitHub: https://github.com/luttje/KeyToJoy.", "Failed to load preset!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            SetSelectedPreset(preset);
+        }
+
+        private void savePresetToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("When you make changes to a preset, changes are automatically saved. This button is only here to explain that feature to you.", "Preset already saved!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void savePresetCopyAsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void openPresetFolderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Process.Start(MappingPreset.GetSaveDirectory());
+        }
+
+        private void testGamePadJoystickToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://devicetests.com/controller-tester");
+        }
+
+        private void testKeyboardToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://devicetests.com/keyboard-tester");
+        }
+
+        private void testMouseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://devicetests.com/mouse-test");
+        }
+
+        private void reportAProblemToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://github.com/luttje/KeyToJoy/issues");
+        }
+
+        private void viewSourceCodeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://github.com/luttje/KeyToJoy");
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             new AboutForm().ShowDialog();
         }
-
-        public bool RunAppCommand(string command)
+        
+        private void ntfIndicator_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            
-            switch (command)
+            Show();
+        }
+
+        private void closeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (e.CloseReason == CloseReason.UserClosing)
             {
-                case "abort":
-                    if (InvokeRequired)
-                        Invoke(new Action(() => chkEnabled.Checked = false));
-                    else
-                        chkEnabled.Checked = false;
-                    
-                    return true;
-                default:
-                    return false;
+                e.Cancel = true;
+                Hide();
+
+                if (Config.Instance.MuteCloseExitMessage)
+                    return;
+
+                var result = MessageBox.Show("Closing this window minimizes it to the notification tray in your taskbar. You can shut down KeyToJoy through File > Exit Program.\n\nContinue showing this message?", "Minimizing to notification tray.", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                
+                Config.Instance.MuteCloseExitMessage = result != DialogResult.Yes;
             }
         }
 
-        private void btnOpenFolder_Click(object sender, EventArgs e)
+        private void exitProgramToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Process.Start(MappingPreset.GetSaveDirectory());
+            Application.Exit();
         }
     }
 }

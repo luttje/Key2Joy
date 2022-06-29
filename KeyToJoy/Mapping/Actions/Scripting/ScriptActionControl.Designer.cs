@@ -68,7 +68,6 @@
             this.chkDirectInput.Checked = true;
             this.chkDirectInput.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkDirectInput.Dock = System.Windows.Forms.DockStyle.Right;
-            this.chkDirectInput.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.chkDirectInput.Location = new System.Drawing.Point(173, 0);
             this.chkDirectInput.Name = "chkDirectInput";
             this.chkDirectInput.Size = new System.Drawing.Size(81, 20);
@@ -80,7 +79,6 @@
             // lblInfo
             // 
             this.lblInfo.Dock = System.Windows.Forms.DockStyle.Left;
-            this.lblInfo.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.lblInfo.Location = new System.Drawing.Point(0, 0);
             this.lblInfo.Name = "lblInfo";
             this.lblInfo.Size = new System.Drawing.Size(254, 20);
@@ -109,7 +107,6 @@
             // btnBrowseFile
             // 
             this.btnBrowseFile.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnBrowseFile.ForeColor = System.Drawing.Color.Black;
             this.btnBrowseFile.Location = new System.Drawing.Point(190, 0);
             this.btnBrowseFile.Name = "btnBrowseFile";
             this.btnBrowseFile.Size = new System.Drawing.Size(64, 21);
@@ -123,7 +120,6 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.BackColor = System.Drawing.Color.Black;
             this.Controls.Add(this.pnlFileInput);
             this.Controls.Add(this.txtScript);
             this.Controls.Add(this.pnlTop);

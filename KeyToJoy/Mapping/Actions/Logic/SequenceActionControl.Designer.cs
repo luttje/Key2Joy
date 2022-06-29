@@ -47,7 +47,6 @@
             // lblInfo
             // 
             this.lblInfo.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lblInfo.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.lblInfo.Location = new System.Drawing.Point(5, 5);
             this.lblInfo.Name = "lblInfo";
             this.lblInfo.Size = new System.Drawing.Size(339, 22);
@@ -78,7 +77,6 @@
             // 
             this.btnRemove.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnRemove.Enabled = false;
-            this.btnRemove.ForeColor = System.Drawing.Color.Black;
             this.btnRemove.Location = new System.Drawing.Point(0, 0);
             this.btnRemove.Name = "btnRemove";
             this.btnRemove.Size = new System.Drawing.Size(339, 29);
@@ -105,7 +103,6 @@
             this.grpSequenceActionOptions.Controls.Add(this.actionControl);
             this.grpSequenceActionOptions.Controls.Add(this.pnlActionOptions);
             this.grpSequenceActionOptions.Dock = System.Windows.Forms.DockStyle.Top;
-            this.grpSequenceActionOptions.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.grpSequenceActionOptions.Location = new System.Drawing.Point(0, 5);
             this.grpSequenceActionOptions.Name = "grpSequenceActionOptions";
             this.grpSequenceActionOptions.Size = new System.Drawing.Size(339, 51);
@@ -117,7 +114,6 @@
             // 
             this.actionControl.AutoSize = true;
             this.actionControl.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.actionControl.BackColor = System.Drawing.Color.Black;
             this.actionControl.Dock = System.Windows.Forms.DockStyle.Top;
             this.actionControl.IsTopLevel = false;
             this.actionControl.Location = new System.Drawing.Point(3, 16);
@@ -151,7 +147,6 @@
             // 
             this.btnAdd.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnAdd.Enabled = false;
-            this.btnAdd.ForeColor = System.Drawing.Color.Black;
             this.btnAdd.Location = new System.Drawing.Point(0, 0);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(339, 29);
@@ -165,7 +160,6 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.BackColor = System.Drawing.Color.Black;
             this.Controls.Add(this.pnlPadding2);
             this.Controls.Add(this.pnlPadding);
             this.Controls.Add(this.pnlActions);

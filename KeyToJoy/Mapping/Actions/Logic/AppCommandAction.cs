@@ -10,6 +10,10 @@ namespace KeyToJoy.Mapping
         OptionsUserControl = typeof(AppCommandActionControl),
         NameFormat = "Run App Command '{0}'"
     )]
+    [Util.ObjectListViewGroup(
+        Name = "Logic",
+        Image = "script_code"
+    )]
     internal class AppCommandAction : BaseAction
     {
         [JsonProperty]

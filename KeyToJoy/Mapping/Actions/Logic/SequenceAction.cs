@@ -12,6 +12,10 @@ namespace KeyToJoy.Mapping
         OptionsUserControl = typeof(SequenceActionControl),
         NameFormat = "Run Sequence: {0}"
     )]
+    [Util.ObjectListViewGroup(
+        Name = "Logic",
+        Image = "script_code"
+    )]
     internal class SequenceAction : BaseAction
     {
         [JsonProperty(ItemTypeNameHandling = TypeNameHandling.All)]

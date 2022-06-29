@@ -47,7 +47,7 @@
             // lblInfo
             // 
             this.lblInfo.Dock = System.Windows.Forms.DockStyle.Left;
-            this.lblInfo.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.lblInfo.ForeColor = System.Drawing.SystemColors.ControlText;
             this.lblInfo.Location = new System.Drawing.Point(5, 5);
             this.lblInfo.Name = "lblInfo";
             this.lblInfo.Size = new System.Drawing.Size(83, 17);
@@ -70,11 +70,11 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.Black;
+            this.BackColor = System.Drawing.SystemColors.Control;
             this.Controls.Add(this.txtKeyBind);
             this.Controls.Add(this.cmbPressedState);
             this.Controls.Add(this.lblInfo);
-            this.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Name = "KeyboardTriggerOptionsControl";
             this.Padding = new System.Windows.Forms.Padding(5);
             this.Size = new System.Drawing.Size(376, 27);

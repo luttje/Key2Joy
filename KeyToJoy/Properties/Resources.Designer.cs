@@ -63,9 +63,9 @@ namespace KeyToJoy.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Arrows_Diagonal {
+        internal static System.Drawing.Bitmap icon256 {
             get {
-                object obj = ResourceManager.GetObject("Arrows_Diagonal", resourceCulture);
+                object obj = ResourceManager.GetObject("icon256", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -73,9 +73,9 @@ namespace KeyToJoy.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap icon256 {
+        internal static System.Drawing.Bitmap joystick {
             get {
-                object obj = ResourceManager.GetObject("icon256", resourceCulture);
+                object obj = ResourceManager.GetObject("joystick", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -93,6 +93,16 @@ namespace KeyToJoy.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap keyboard {
+            get {
+                object obj = ResourceManager.GetObject("keyboard", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Lua {
             get {
                 object obj = ResourceManager.GetObject("Lua", resourceCulture);
@@ -103,9 +113,9 @@ namespace KeyToJoy.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Mouse {
+        internal static System.Drawing.Bitmap mouse1 {
             get {
-                object obj = ResourceManager.GetObject("Mouse", resourceCulture);
+                object obj = ResourceManager.GetObject("mouse1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -113,259 +123,9 @@ namespace KeyToJoy.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap NoImage {
+        internal static System.Drawing.Bitmap script_code {
             get {
-                object obj = ResourceManager.GetObject("NoImage", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap XboxSeriesX_A {
-            get {
-                object obj = ResourceManager.GetObject("XboxSeriesX_A", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap XboxSeriesX_B {
-            get {
-                object obj = ResourceManager.GetObject("XboxSeriesX_B", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap XboxSeriesX_Back {
-            get {
-                object obj = ResourceManager.GetObject("XboxSeriesX_Back", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap XboxSeriesX_Diagram {
-            get {
-                object obj = ResourceManager.GetObject("XboxSeriesX_Diagram", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap XboxSeriesX_DPadDown {
-            get {
-                object obj = ResourceManager.GetObject("XboxSeriesX_DPadDown", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap XboxSeriesX_DPadLeft {
-            get {
-                object obj = ResourceManager.GetObject("XboxSeriesX_DPadLeft", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap XboxSeriesX_DPadRight {
-            get {
-                object obj = ResourceManager.GetObject("XboxSeriesX_DPadRight", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap XboxSeriesX_DPadUp {
-            get {
-                object obj = ResourceManager.GetObject("XboxSeriesX_DPadUp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap XboxSeriesX_LeftShoulder {
-            get {
-                object obj = ResourceManager.GetObject("XboxSeriesX_LeftShoulder", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap XboxSeriesX_LeftStickClick {
-            get {
-                object obj = ResourceManager.GetObject("XboxSeriesX_LeftStickClick", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap XboxSeriesX_LeftStickDown {
-            get {
-                object obj = ResourceManager.GetObject("XboxSeriesX_LeftStickDown", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap XboxSeriesX_LeftStickLeft {
-            get {
-                object obj = ResourceManager.GetObject("XboxSeriesX_LeftStickLeft", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap XboxSeriesX_LeftStickRight {
-            get {
-                object obj = ResourceManager.GetObject("XboxSeriesX_LeftStickRight", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap XboxSeriesX_LeftStickUp {
-            get {
-                object obj = ResourceManager.GetObject("XboxSeriesX_LeftStickUp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap XboxSeriesX_LeftTrigger {
-            get {
-                object obj = ResourceManager.GetObject("XboxSeriesX_LeftTrigger", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap XboxSeriesX_RightShoulder {
-            get {
-                object obj = ResourceManager.GetObject("XboxSeriesX_RightShoulder", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap XboxSeriesX_RightStickClick {
-            get {
-                object obj = ResourceManager.GetObject("XboxSeriesX_RightStickClick", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap XboxSeriesX_RightStickDown {
-            get {
-                object obj = ResourceManager.GetObject("XboxSeriesX_RightStickDown", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap XboxSeriesX_RightStickLeft {
-            get {
-                object obj = ResourceManager.GetObject("XboxSeriesX_RightStickLeft", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap XboxSeriesX_RightStickRight {
-            get {
-                object obj = ResourceManager.GetObject("XboxSeriesX_RightStickRight", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap XboxSeriesX_RightStickUp {
-            get {
-                object obj = ResourceManager.GetObject("XboxSeriesX_RightStickUp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap XboxSeriesX_RightTrigger {
-            get {
-                object obj = ResourceManager.GetObject("XboxSeriesX_RightTrigger", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap XboxSeriesX_Start {
-            get {
-                object obj = ResourceManager.GetObject("XboxSeriesX_Start", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap XboxSeriesX_X {
-            get {
-                object obj = ResourceManager.GetObject("XboxSeriesX_X", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap XboxSeriesX_Y {
-            get {
-                object obj = ResourceManager.GetObject("XboxSeriesX_Y", resourceCulture);
+                object obj = ResourceManager.GetObject("script_code", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

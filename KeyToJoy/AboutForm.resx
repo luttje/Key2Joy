@@ -124,8 +124,10 @@ SimWinInput that allows simulating the controller by David Rieman (https://githu
 
 SimWinInput works thanks to the ScpVBus driver by Benjamin Höglinger-Stelzer (https://github.com/nefarius/ScpVBus)
 
-Original XBox One controller diagram by Nicolae Berbece (@xelubest)
+Inspired by JoyToKey which allows simulating keyboard and mouse with a Joystick (https://joytokey.net/en/)
 
-Inspired by JoyToKey which does the inverse (https://joytokey.net/en/)</value>
+Mark James for the great Silk Icons (http://www.famfamfam.com/lab/icons/silk/)
+
+(If someone is missing from this list, please do let me know on GitHub)</value>
   </data>
 </root>

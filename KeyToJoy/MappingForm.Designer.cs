@@ -30,11 +30,11 @@
         {
             this.pnlAction = new System.Windows.Forms.Panel();
             this.grpAction = new System.Windows.Forms.GroupBox();
-            this.actionControl = new KeyToJoy.Mapping.ActionControl();
             this.btnSaveMapping = new System.Windows.Forms.Button();
             this.grpTrigger = new System.Windows.Forms.GroupBox();
-            this.triggerControl = new KeyToJoy.Mapping.TriggerControl();
             this.pnlTrigger = new System.Windows.Forms.Panel();
+            this.actionControl = new KeyToJoy.Mapping.ActionControl();
+            this.triggerControl = new KeyToJoy.Mapping.TriggerControl();
             this.pnlAction.SuspendLayout();
             this.grpAction.SuspendLayout();
             this.grpTrigger.SuspendLayout();
@@ -59,7 +59,6 @@
             this.grpAction.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.grpAction.Controls.Add(this.actionControl);
             this.grpAction.Dock = System.Windows.Forms.DockStyle.Top;
-            this.grpAction.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.grpAction.Location = new System.Drawing.Point(5, 5);
             this.grpAction.Name = "grpAction";
             this.grpAction.Padding = new System.Windows.Forms.Padding(5);
@@ -67,20 +66,6 @@
             this.grpAction.TabIndex = 88;
             this.grpAction.TabStop = false;
             this.grpAction.Text = "Actions that start at the trigger";
-            // 
-            // actionControl
-            // 
-            this.actionControl.AutoSize = true;
-            this.actionControl.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.actionControl.BackColor = System.Drawing.Color.Black;
-            this.actionControl.Dock = System.Windows.Forms.DockStyle.Top;
-            this.actionControl.IsTopLevel = false;
-            this.actionControl.Location = new System.Drawing.Point(5, 18);
-            this.actionControl.MinimumSize = new System.Drawing.Size(300, 32);
-            this.actionControl.Name = "actionControl";
-            this.actionControl.Padding = new System.Windows.Forms.Padding(5);
-            this.actionControl.Size = new System.Drawing.Size(466, 32);
-            this.actionControl.TabIndex = 0;
             // 
             // btnSaveMapping
             // 
@@ -99,7 +84,6 @@
             this.grpTrigger.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.grpTrigger.Controls.Add(this.triggerControl);
             this.grpTrigger.Dock = System.Windows.Forms.DockStyle.Top;
-            this.grpTrigger.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.grpTrigger.Location = new System.Drawing.Point(5, 5);
             this.grpTrigger.Name = "grpTrigger";
             this.grpTrigger.Padding = new System.Windows.Forms.Padding(5);
@@ -107,17 +91,6 @@
             this.grpTrigger.TabIndex = 86;
             this.grpTrigger.TabStop = false;
             this.grpTrigger.Text = "Trigger that starts the action(s)";
-            // 
-            // triggerControl
-            // 
-            this.triggerControl.AutoSize = true;
-            this.triggerControl.BackColor = System.Drawing.Color.Black;
-            this.triggerControl.Dock = System.Windows.Forms.DockStyle.Top;
-            this.triggerControl.Location = new System.Drawing.Point(5, 18);
-            this.triggerControl.Name = "triggerControl";
-            this.triggerControl.Padding = new System.Windows.Forms.Padding(5);
-            this.triggerControl.Size = new System.Drawing.Size(466, 31);
-            this.triggerControl.TabIndex = 0;
             // 
             // pnlTrigger
             // 
@@ -131,6 +104,29 @@
             this.pnlTrigger.Size = new System.Drawing.Size(486, 64);
             this.pnlTrigger.TabIndex = 89;
             // 
+            // actionControl
+            // 
+            this.actionControl.AutoSize = true;
+            this.actionControl.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.actionControl.Dock = System.Windows.Forms.DockStyle.Top;
+            this.actionControl.IsTopLevel = false;
+            this.actionControl.Location = new System.Drawing.Point(5, 18);
+            this.actionControl.MinimumSize = new System.Drawing.Size(300, 32);
+            this.actionControl.Name = "actionControl";
+            this.actionControl.Padding = new System.Windows.Forms.Padding(5);
+            this.actionControl.Size = new System.Drawing.Size(466, 32);
+            this.actionControl.TabIndex = 0;
+            // 
+            // triggerControl
+            // 
+            this.triggerControl.AutoSize = true;
+            this.triggerControl.Dock = System.Windows.Forms.DockStyle.Top;
+            this.triggerControl.Location = new System.Drawing.Point(5, 18);
+            this.triggerControl.Name = "triggerControl";
+            this.triggerControl.Padding = new System.Windows.Forms.Padding(5);
+            this.triggerControl.Size = new System.Drawing.Size(466, 31);
+            this.triggerControl.TabIndex = 0;
+            // 
             // MappingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -138,7 +134,6 @@
             this.AutoScroll = true;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(496, 188);
             this.Controls.Add(this.btnSaveMapping);
             this.Controls.Add(this.pnlAction);

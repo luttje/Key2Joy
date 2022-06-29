@@ -118,97 +118,25 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="XboxSeriesX_RightTrigger" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Graphics\XboxSeriesX_RightTrigger.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="XboxSeriesX_X" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Graphics\XboxSeriesX_X.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="XboxSeriesX_Diagram" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Graphics\XboxSeriesX_Diagram.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="XboxSeriesX_DPadDown" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Graphics\XboxSeriesX_DPadDown.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="XboxSeriesX_RightStickUp" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Graphics\XboxSeriesX_RightStickUp.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="XboxSeriesX_LeftStickDown" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Graphics\XboxSeriesX_LeftStickDown.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="XboxSeriesX_DPadRight" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Graphics\XboxSeriesX_DPadRight.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="XboxSeriesX_RightShoulder" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Graphics\XboxSeriesX_RightShoulder.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="XboxSeriesX_LeftStickRight" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Graphics\XboxSeriesX_LeftStickRight.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="XboxSeriesX_LeftTrigger" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Graphics\XboxSeriesX_LeftTrigger.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="XboxSeriesX_Y" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Graphics\XboxSeriesX_Y.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="XboxSeriesX_LeftStickLeft" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Graphics\XboxSeriesX_LeftStickLeft.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="XboxSeriesX_A" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Graphics\XboxSeriesX_A.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="XboxSeriesX_DPadUp" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Graphics\XboxSeriesX_DPadUp.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="XboxSeriesX_RightStickDown" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Graphics\XboxSeriesX_RightStickDown.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="XboxSeriesX_RightStickRight" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Graphics\XboxSeriesX_RightStickRight.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="XboxSeriesX_LeftStickClick" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Graphics\XboxSeriesX_LeftStickClick.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="XboxSeriesX_DPadLeft" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Graphics\XboxSeriesX_DPadLeft.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="XboxSeriesX_LeftStickUp" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Graphics\XboxSeriesX_LeftStickUp.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="XboxSeriesX_LeftShoulder" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Graphics\XboxSeriesX_LeftShoulder.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="XboxSeriesX_B" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Graphics\XboxSeriesX_B.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="XboxSeriesX_Start" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Graphics\XboxSeriesX_Start.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="XboxSeriesX_Back" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Graphics\XboxSeriesX_Back.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="XboxSeriesX_RightStickLeft" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Graphics\XboxSeriesX_RightStickLeft.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="XboxSeriesX_RightStickClick" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Graphics\XboxSeriesX_RightStickClick.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="icon256" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Graphics\Icons\icon256.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Arrows_Diagonal" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Graphics\Arrows_Diagonal.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Mouse" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Graphics\Mouse.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="NoImage" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Graphics\NoImage.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="JS" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Graphics\JS.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Lua" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Graphics\Lua.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="joystick" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Graphics\Icons\joystick.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="keyboard" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Graphics\Icons\keyboard.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mouse1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Graphics\Icons\mouse.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="script_code" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Graphics\Icons\script_code.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

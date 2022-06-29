@@ -16,14 +16,7 @@ namespace KeyToJoy
 
         private void InitForm_Load(object sender, EventArgs e)
         {
-            // Load presets from documents
-            var presets = MappingPreset.LoadAll();
-
-            foreach (var preset in presets)
-            {
-                MappingPreset.Add(preset, false);
-            }
-
+            Config.Load();
             SimGamePad.Instance.Initialize();
             Program.GoToNextForm(new MainForm());
         }

@@ -13,6 +13,10 @@ namespace KeyToJoy.Mapping
         OptionsUserControl = typeof(WaitActionControl),
         NameFormat = "Wait for {0}ms"
     )]
+    [Util.ObjectListViewGroup(
+        Name = "Logic",
+        Image = "script_code"
+    )]
     internal class WaitAction : BaseAction
     {
         [JsonProperty]
