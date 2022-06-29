@@ -13,6 +13,7 @@ using KeyToJoy.Util;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.IO;
+using BrightIdeasSoftware;
 
 namespace KeyToJoy
 {
@@ -53,6 +54,15 @@ namespace KeyToJoy
 
             olvColumnAction.GroupKeyGetter = olvMappings_GroupKeyGetter;
             olvColumnAction.GroupKeyToTitleConverter = olvMappings_GroupKeyToTitleConverter;
+
+            olvColumnTrigger.AspectToStringConverter = delegate (object obj) {
+                var trigger = obj as BaseTrigger;
+
+                if(trigger == null)
+                    return "(no trigger mapped)";
+
+                return trigger.ToString();
+            };
         }
 
         private void SetSelectedPreset(MappingPreset preset)
@@ -106,6 +116,24 @@ namespace KeyToJoy
 
             if (createNewMapping)
                 selectedPreset.AddMapping(mappedOption);
+
+            selectedPreset.Save();
+            SetSelectedPreset(selectedPreset);
+        }
+
+        private void RemoveSelectedMappings()
+        {
+            var selectedCount = olvMappings.SelectedItems.Count;
+
+            if (selectedCount == 0)
+                return;
+
+            if(selectedCount > 1)
+                if (MessageBox.Show($"Are you sure you want to remove the {selectedCount} selected mappings?", $"Remove {selectedCount} Mappings", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                    return;
+
+            foreach (OLVListItem listItem in olvMappings.SelectedItems)
+                selectedPreset.RemoveMapping((MappedOption)listItem.RowObject);
 
             selectedPreset.Save();
             SetSelectedPreset(selectedPreset);
@@ -231,7 +259,44 @@ namespace KeyToJoy
 
         private void olvMappings_CellRightClick(object sender, BrightIdeasSoftware.CellRightClickEventArgs e)
         {
+            var menu = new ContextMenuStrip();
 
+            var addItem = menu.Items.Add("Add New Mapping");
+            addItem.Click += (s, _) =>
+            {
+                EditMappedOption();
+            };
+
+            var selectedCount = olvMappings.SelectedItems.Count;
+            
+            if (selectedCount > 1)
+            {
+                var removeItems = menu.Items.Add($"Remove {selectedCount} Mappings");
+                removeItems.Click += (s, _) =>
+                {
+                    RemoveSelectedMappings();
+                };
+            }
+            else if (e.Model is MappedOption mappedOption)
+            {
+                var removeItem = menu.Items.Add("Remove Mapping");
+                removeItem.Click += (s, _) =>
+                {
+                    selectedPreset.RemoveMapping(mappedOption);
+                    selectedPreset.Save();
+                    SetSelectedPreset(selectedPreset);
+                };
+            }
+
+            e.MenuStrip = menu;
+        }
+
+        private void olvMappings_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode != Keys.Delete)
+                return;
+
+            RemoveSelectedMappings();
         }
 
         private void BtnOpenTest_Click(object sender, EventArgs e)
@@ -417,6 +482,15 @@ namespace KeyToJoy
         private void exitProgramToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void olvMappings_FormatCell(object sender, FormatCellEventArgs e)
+        {
+            if (e.CellValue != null)
+                return;
+
+            e.SubItem.ForeColor = SystemColors.GrayText;
+            e.SubItem.Font = new Font(e.SubItem.Font, FontStyle.Italic);
         }
     }
 }

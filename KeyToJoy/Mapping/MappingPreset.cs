@@ -63,6 +63,11 @@ namespace KeyToJoy.Mapping
                 MappedOptions.Add((MappedOption)mappedOption.Clone());
         }
 
+        internal void RemoveMapping(MappedOption mappedOption)
+        {
+            MappedOptions.Remove(mappedOption);
+        }
+
         internal bool TryGetMappedOption(BaseTrigger trigger, out MappedOption mappedOption)
         {
             mappedOption = MappedOptions.FirstOrDefault(mo => mo.Trigger == trigger);

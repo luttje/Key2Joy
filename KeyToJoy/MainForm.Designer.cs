@@ -32,7 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.olvMappings = new BrightIdeasSoftware.ObjectListView();
             this.olvColumnAction = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.olvColumnTriggers = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumnTrigger = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.pnlActionManagement = new System.Windows.Forms.Panel();
             this.btnAddAction = new System.Windows.Forms.Button();
             this.pnlPresetManagement = new System.Windows.Forms.Panel();
@@ -83,20 +83,20 @@
             // olvMappings
             // 
             this.olvMappings.AllColumns.Add(this.olvColumnAction);
-            this.olvMappings.AllColumns.Add(this.olvColumnTriggers);
+            this.olvMappings.AllColumns.Add(this.olvColumnTrigger);
             this.olvMappings.CellEditUseWholeCell = false;
             this.olvMappings.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.olvColumnAction,
-            this.olvColumnTriggers});
+            this.olvColumnTrigger});
             this.olvMappings.Cursor = System.Windows.Forms.Cursors.Default;
             this.olvMappings.Dock = System.Windows.Forms.DockStyle.Fill;
             this.olvMappings.FullRowSelect = true;
             this.olvMappings.HideSelection = false;
             this.olvMappings.Location = new System.Drawing.Point(0, 53);
-            this.olvMappings.MultiSelect = false;
             this.olvMappings.Name = "olvMappings";
-            this.olvMappings.Size = new System.Drawing.Size(580, 404);
+            this.olvMappings.Size = new System.Drawing.Size(580, 370);
             this.olvMappings.TabIndex = 84;
+            this.olvMappings.UseCellFormatEvents = true;
             this.olvMappings.UseCompatibleStateImageBehavior = false;
             this.olvMappings.UseHotItem = true;
             this.olvMappings.UseTranslucentHotItem = true;
@@ -105,6 +105,8 @@
             this.olvMappings.AboutToCreateGroups += new System.EventHandler<BrightIdeasSoftware.CreateGroupsEventArgs>(this.olvMappings_AboutToCreateGroups);
             this.olvMappings.CellClick += new System.EventHandler<BrightIdeasSoftware.CellClickEventArgs>(this.olvMappings_CellClick);
             this.olvMappings.CellRightClick += new System.EventHandler<BrightIdeasSoftware.CellRightClickEventArgs>(this.olvMappings_CellRightClick);
+            this.olvMappings.FormatCell += new System.EventHandler<BrightIdeasSoftware.FormatCellEventArgs>(this.olvMappings_FormatCell);
+            this.olvMappings.KeyUp += new System.Windows.Forms.KeyEventHandler(this.olvMappings_KeyUp);
             // 
             // olvColumnAction
             // 
@@ -113,12 +115,12 @@
             this.olvColumnAction.Text = "Action";
             this.olvColumnAction.UseInitialLetterForGroup = true;
             // 
-            // olvColumnTriggers
+            // olvColumnTrigger
             // 
-            this.olvColumnTriggers.AspectName = "Trigger";
-            this.olvColumnTriggers.DisplayIndex = 0;
-            this.olvColumnTriggers.Groupable = false;
-            this.olvColumnTriggers.Text = "Trigger";
+            this.olvColumnTrigger.AspectName = "Trigger";
+            this.olvColumnTrigger.DisplayIndex = 0;
+            this.olvColumnTrigger.Groupable = false;
+            this.olvColumnTrigger.Text = "Trigger";
             // 
             // pnlActionManagement
             // 
@@ -466,8 +468,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(580, 457);
-            this.Controls.Add(this.pnlActionManagement);
             this.Controls.Add(this.olvMappings);
+            this.Controls.Add(this.pnlActionManagement);
             this.Controls.Add(this.pnlPresetManagement);
             this.Controls.Add(this.pnlMainMenu);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
@@ -498,7 +500,7 @@
         private System.Windows.Forms.TextBox txtPresetName;
         private System.Windows.Forms.Label lblPresetName;
         private BrightIdeasSoftware.ObjectListView olvMappings;
-        private BrightIdeasSoftware.OLVColumn olvColumnTriggers;
+        private BrightIdeasSoftware.OLVColumn olvColumnTrigger;
         private BrightIdeasSoftware.OLVColumn olvColumnAction;
         private System.Windows.Forms.MenuStrip menMainMenu;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
