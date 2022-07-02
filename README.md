@@ -23,19 +23,21 @@ screen.
 
 1. Start **![](KeyToJoy/Graphics/Icons/icon16.png?raw=true) KeyToJoy.exe**
 2. *(First time only)* Accept installation of the Scp Virtual Bus Driver
-3. Use the default bindings or modify them by double-clicking a row in the
-   Control/Bind-list.
+3. Use the default mappings, modify them by double-clicking a row in the mapping-list, or add new mappings.
 
-   > 🚧 TODO: This information is outdated. The software has a lot more
-   > capabilities.
+   ![Screenshot showing the overview window. Off to the side the mapping dialog is showing all
+   available actions.](.github/screenshot.png)
 
-   ![Screenshot showing the key binding process. A controller has one
-   highlighted button and a textbox shows the W button is currently bound to
-   it.](.github/screenshot.png)
+   **A trigger** is something that KeyToJoy will listen for. *E.g: a mouse move, key press, key
+   release, etc...*
+   > **⚠ Note:** The default behaviour of a trigger is disabled. This means setting the left mouse button as
+   > a trigger will make it so you can't left-click anymore until you abort this app.
 
-4. Tick the checkbox to simulate the game controller
+   **An action** is what will happen when that trigger occurs. *E.g: simulating a joystick button
+   being pressed, a keyboard button being released, or executing a Lua/Javascript script.*
 
-KeyToJoy will now pretend that your keyboard input is Joystick input.
+4. Tick the *Enable* checkbox to start listening for triggers that will execute actions.
+
 
 ---
 
@@ -67,6 +69,7 @@ Full scripting reference is available in
 
 - Windows wont let you click if you release a mouse key that hasn't been
   pressed before.
+- Keyboard triggers do not activate when the app is in the foreground.
 
 ---
 
