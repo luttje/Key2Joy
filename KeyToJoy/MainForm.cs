@@ -195,12 +195,11 @@ namespace KeyToJoy
             switch (command)
             {
                 case "abort":
-                    if (InvokeRequired)
-                        Invoke(new Action(() => chkEnabled.Checked = false));
-                    else
+                    BeginInvoke(new MethodInvoker(delegate
+                    {
                         chkEnabled.Checked = false;
+                    }));
 
-                    System.Diagnostics.Debug.WriteLine("Stopped");
                     return true;
                 default:
                     return false;

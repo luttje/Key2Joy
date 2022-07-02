@@ -44,9 +44,7 @@ namespace KeyToJoy.Mapping
         {
             WaitTime = TimeSpan.FromMilliseconds(waitTime);
             await Task.Delay(WaitTime);
-            System.Diagnostics.Debug.WriteLine("Test A");
             callback.Invoke();
-            System.Diagnostics.Debug.WriteLine("Test B");
         }
 
         internal override Task Execute(InputBag inputBag = null)

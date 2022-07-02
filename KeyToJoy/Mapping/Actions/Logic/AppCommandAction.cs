@@ -52,7 +52,6 @@ namespace KeyToJoy.Mapping
             {
                 MessageBox.Show("This app command is invalid or could not be run at this time!", "Invalid command!", MessageBoxButtons.OK, MessageBoxIcon.Hand);
             }
-            System.Diagnostics.Debug.WriteLine("Executed");
         }
 
         public override string GetNameDisplay()
