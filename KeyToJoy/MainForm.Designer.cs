@@ -30,312 +30,503 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.timerAxisTimeout = new System.Windows.Forms.Timer(this.components);
-            this.splitContainer = new System.Windows.Forms.SplitContainer();
-            this.dgvBinds = new System.Windows.Forms.DataGridView();
-            this.colControl = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colBind = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.olvMappings = new BrightIdeasSoftware.ObjectListView();
+            this.olvColumnAction = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumnTrigger = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.pnlActionManagement = new System.Windows.Forms.Panel();
+            this.btnAddAction = new System.Windows.Forms.Button();
+            this.pnlPresetManagement = new System.Windows.Forms.Panel();
             this.txtPresetName = new System.Windows.Forms.TextBox();
-            this.lblInfoName = new System.Windows.Forms.Label();
-            this.pnlPreset = new System.Windows.Forms.Panel();
-            this.lblPresetInfo = new System.Windows.Forms.Label();
-            this.cmbPreset = new System.Windows.Forms.ComboBox();
-            this.btnCreate = new System.Windows.Forms.Button();
-            this.lblPreset = new System.Windows.Forms.Label();
+            this.lblPresetName = new System.Windows.Forms.Label();
             this.chkEnabled = new System.Windows.Forms.CheckBox();
-            this.lblAbortInfo = new System.Windows.Forms.Label();
-            this.btnOpenTest = new System.Windows.Forms.Button();
-            this.dbgLabel = new System.Windows.Forms.Label();
-            this.pctController = new System.Windows.Forms.PictureBox();
-            this.btnAbout = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
-            this.splitContainer.Panel1.SuspendLayout();
-            this.splitContainer.Panel2.SuspendLayout();
-            this.splitContainer.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvBinds)).BeginInit();
-            this.panel1.SuspendLayout();
-            this.pnlPreset.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pctController)).BeginInit();
+            this.menMainMenu = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.newPresetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadPresetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.savePresetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openPresetFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitProgramToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fillPresetWithToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.allGamePadJoystickActionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pressAndReleaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pressToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.releaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.allKeyboardActionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pressAndReleaseToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.pressToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.releaseToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.testMappingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.testGamePadJoystickToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.testKeyboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.testMouseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.reportAProblemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.viewSourceCodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ntfIndicator = new System.Windows.Forms.NotifyIcon(this.components);
+            this.pnlMainMenu = new System.Windows.Forms.Panel();
+            this.lblStatusInactive = new System.Windows.Forms.Label();
+            this.lblStatusActive = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.olvMappings)).BeginInit();
+            this.pnlActionManagement.SuspendLayout();
+            this.pnlPresetManagement.SuspendLayout();
+            this.menMainMenu.SuspendLayout();
+            this.pnlMainMenu.SuspendLayout();
             this.SuspendLayout();
             // 
-            // timerAxisTimeout
+            // olvMappings
             // 
-            this.timerAxisTimeout.Interval = 250;
+            this.olvMappings.AllColumns.Add(this.olvColumnAction);
+            this.olvMappings.AllColumns.Add(this.olvColumnTrigger);
+            this.olvMappings.CellEditUseWholeCell = false;
+            this.olvMappings.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.olvColumnAction,
+            this.olvColumnTrigger});
+            this.olvMappings.Cursor = System.Windows.Forms.Cursors.Default;
+            this.olvMappings.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.olvMappings.FullRowSelect = true;
+            this.olvMappings.HideSelection = false;
+            this.olvMappings.Location = new System.Drawing.Point(0, 53);
+            this.olvMappings.Name = "olvMappings";
+            this.olvMappings.Size = new System.Drawing.Size(580, 370);
+            this.olvMappings.TabIndex = 84;
+            this.olvMappings.UseCellFormatEvents = true;
+            this.olvMappings.UseCompatibleStateImageBehavior = false;
+            this.olvMappings.UseHotItem = true;
+            this.olvMappings.UseTranslucentHotItem = true;
+            this.olvMappings.UseTranslucentSelection = true;
+            this.olvMappings.View = System.Windows.Forms.View.Details;
+            this.olvMappings.AboutToCreateGroups += new System.EventHandler<BrightIdeasSoftware.CreateGroupsEventArgs>(this.olvMappings_AboutToCreateGroups);
+            this.olvMappings.CellClick += new System.EventHandler<BrightIdeasSoftware.CellClickEventArgs>(this.olvMappings_CellClick);
+            this.olvMappings.CellRightClick += new System.EventHandler<BrightIdeasSoftware.CellRightClickEventArgs>(this.olvMappings_CellRightClick);
+            this.olvMappings.FormatCell += new System.EventHandler<BrightIdeasSoftware.FormatCellEventArgs>(this.olvMappings_FormatCell);
+            this.olvMappings.KeyUp += new System.Windows.Forms.KeyEventHandler(this.olvMappings_KeyUp);
             // 
-            // splitContainer
+            // olvColumnAction
             // 
-            this.splitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer.Name = "splitContainer";
+            this.olvColumnAction.AspectName = "Action";
+            this.olvColumnAction.DisplayIndex = 1;
+            this.olvColumnAction.Text = "Action";
+            this.olvColumnAction.UseInitialLetterForGroup = true;
             // 
-            // splitContainer.Panel1
+            // olvColumnTrigger
             // 
-            this.splitContainer.Panel1.Controls.Add(this.dgvBinds);
-            this.splitContainer.Panel1.Controls.Add(this.panel1);
-            this.splitContainer.Panel1.Controls.Add(this.pnlPreset);
-            this.splitContainer.Panel1.Controls.Add(this.chkEnabled);
-            this.splitContainer.Panel1.Controls.Add(this.lblAbortInfo);
-            this.splitContainer.Panel1.Controls.Add(this.btnOpenTest);
+            this.olvColumnTrigger.AspectName = "Trigger";
+            this.olvColumnTrigger.DisplayIndex = 0;
+            this.olvColumnTrigger.Groupable = false;
+            this.olvColumnTrigger.Text = "Trigger";
             // 
-            // splitContainer.Panel2
+            // pnlActionManagement
             // 
-            this.splitContainer.Panel2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.splitContainer.Panel2.Controls.Add(this.dbgLabel);
-            this.splitContainer.Panel2.Controls.Add(this.pctController);
-            this.splitContainer.Size = new System.Drawing.Size(876, 485);
-            this.splitContainer.SplitterDistance = 274;
-            this.splitContainer.TabIndex = 56;
+            this.pnlActionManagement.Controls.Add(this.btnAddAction);
+            this.pnlActionManagement.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.pnlActionManagement.Location = new System.Drawing.Point(0, 423);
+            this.pnlActionManagement.Name = "pnlActionManagement";
+            this.pnlActionManagement.Size = new System.Drawing.Size(580, 34);
+            this.pnlActionManagement.TabIndex = 0;
             // 
-            // dgvBinds
+            // btnAddAction
             // 
-            this.dgvBinds.AllowUserToAddRows = false;
-            this.dgvBinds.AllowUserToDeleteRows = false;
-            this.dgvBinds.AllowUserToResizeRows = false;
-            this.dgvBinds.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvBinds.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.colControl,
-            this.colBind});
-            this.dgvBinds.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvBinds.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dgvBinds.Location = new System.Drawing.Point(0, 108);
-            this.dgvBinds.Name = "dgvBinds";
-            this.dgvBinds.ReadOnly = true;
-            this.dgvBinds.RowHeadersVisible = false;
-            this.dgvBinds.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvBinds.Size = new System.Drawing.Size(274, 239);
-            this.dgvBinds.TabIndex = 86;
-            this.dgvBinds.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.DgvBinds_CellFormatting);
-            this.dgvBinds.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.DgvBinds_CellMouseDoubleClick);
-            this.dgvBinds.SelectionChanged += new System.EventHandler(this.DgvBinds_SelectionChanged);
+            this.btnAddAction.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnAddAction.Location = new System.Drawing.Point(431, 0);
+            this.btnAddAction.Name = "btnAddAction";
+            this.btnAddAction.Size = new System.Drawing.Size(149, 34);
+            this.btnAddAction.TabIndex = 0;
+            this.btnAddAction.Text = "Create New Mapping";
+            this.btnAddAction.UseVisualStyleBackColor = true;
+            this.btnAddAction.Click += new System.EventHandler(this.btnAddAction_Click);
             // 
-            // colControl
+            // pnlPresetManagement
             // 
-            this.colControl.HeaderText = "Control";
-            this.colControl.Name = "colControl";
-            this.colControl.ReadOnly = true;
-            // 
-            // colBind
-            // 
-            this.colBind.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colBind.HeaderText = "Bind";
-            this.colBind.Name = "colBind";
-            this.colBind.ReadOnly = true;
-            // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.txtPresetName);
-            this.panel1.Controls.Add(this.lblInfoName);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 78);
-            this.panel1.Name = "panel1";
-            this.panel1.Padding = new System.Windows.Forms.Padding(5);
-            this.panel1.Size = new System.Drawing.Size(274, 30);
-            this.panel1.TabIndex = 80;
+            this.pnlPresetManagement.Controls.Add(this.txtPresetName);
+            this.pnlPresetManagement.Controls.Add(this.lblPresetName);
+            this.pnlPresetManagement.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlPresetManagement.Location = new System.Drawing.Point(0, 23);
+            this.pnlPresetManagement.Name = "pnlPresetManagement";
+            this.pnlPresetManagement.Padding = new System.Windows.Forms.Padding(5);
+            this.pnlPresetManagement.Size = new System.Drawing.Size(580, 30);
+            this.pnlPresetManagement.TabIndex = 82;
             // 
             // txtPresetName
             // 
             this.txtPresetName.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtPresetName.Location = new System.Drawing.Point(82, 5);
             this.txtPresetName.Name = "txtPresetName";
-            this.txtPresetName.Size = new System.Drawing.Size(187, 20);
+            this.txtPresetName.Size = new System.Drawing.Size(493, 20);
             this.txtPresetName.TabIndex = 85;
             this.txtPresetName.TextChanged += new System.EventHandler(this.TxtPresetName_TextChanged);
             // 
-            // lblInfoName
+            // lblPresetName
             // 
-            this.lblInfoName.Dock = System.Windows.Forms.DockStyle.Left;
-            this.lblInfoName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblInfoName.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.lblInfoName.Location = new System.Drawing.Point(5, 5);
-            this.lblInfoName.Name = "lblInfoName";
-            this.lblInfoName.Size = new System.Drawing.Size(77, 20);
-            this.lblInfoName.TabIndex = 88;
-            this.lblInfoName.Text = "Preset Name:";
-            this.lblInfoName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // pnlPreset
-            // 
-            this.pnlPreset.Controls.Add(this.lblPresetInfo);
-            this.pnlPreset.Controls.Add(this.cmbPreset);
-            this.pnlPreset.Controls.Add(this.btnCreate);
-            this.pnlPreset.Controls.Add(this.lblPreset);
-            this.pnlPreset.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlPreset.Location = new System.Drawing.Point(0, 0);
-            this.pnlPreset.Name = "pnlPreset";
-            this.pnlPreset.Padding = new System.Windows.Forms.Padding(5);
-            this.pnlPreset.Size = new System.Drawing.Size(274, 78);
-            this.pnlPreset.TabIndex = 80;
-            // 
-            // lblPresetInfo
-            // 
-            this.lblPresetInfo.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lblPresetInfo.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.lblPresetInfo.Location = new System.Drawing.Point(5, 5);
-            this.lblPresetInfo.Name = "lblPresetInfo";
-            this.lblPresetInfo.Size = new System.Drawing.Size(264, 43);
-            this.lblPresetInfo.TabIndex = 80;
-            this.lblPresetInfo.Text = "Select a preset or type the name for a custom preset and click \'Create\'. Presets " +
-    "are saved to the KeyToJoy folder in your documents automatically.";
-            // 
-            // cmbPreset
-            // 
-            this.cmbPreset.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmbPreset.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbPreset.FormattingEnabled = true;
-            this.cmbPreset.Location = new System.Drawing.Point(88, 52);
-            this.cmbPreset.Name = "cmbPreset";
-            this.cmbPreset.Size = new System.Drawing.Size(133, 21);
-            this.cmbPreset.TabIndex = 84;
-            this.cmbPreset.SelectedIndexChanged += new System.EventHandler(this.CmbPreset_SelectedIndexChanged);
-            // 
-            // btnCreate
-            // 
-            this.btnCreate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCreate.Location = new System.Drawing.Point(221, 52);
-            this.btnCreate.Name = "btnCreate";
-            this.btnCreate.Size = new System.Drawing.Size(48, 21);
-            this.btnCreate.TabIndex = 80;
-            this.btnCreate.Text = "Create";
-            this.btnCreate.UseVisualStyleBackColor = true;
-            this.btnCreate.Click += new System.EventHandler(this.BtnCreate_Click);
-            // 
-            // lblPreset
-            // 
-            this.lblPreset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblPreset.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPreset.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.lblPreset.Location = new System.Drawing.Point(5, 52);
-            this.lblPreset.Name = "lblPreset";
-            this.lblPreset.Size = new System.Drawing.Size(83, 21);
-            this.lblPreset.TabIndex = 82;
-            this.lblPreset.Text = "Bindings Preset:";
-            this.lblPreset.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblPresetName.Dock = System.Windows.Forms.DockStyle.Left;
+            this.lblPresetName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPresetName.Location = new System.Drawing.Point(5, 5);
+            this.lblPresetName.Name = "lblPresetName";
+            this.lblPresetName.Size = new System.Drawing.Size(77, 20);
+            this.lblPresetName.TabIndex = 88;
+            this.lblPresetName.Text = "Preset Name:";
+            this.lblPresetName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // chkEnabled
             // 
-            this.chkEnabled.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.chkEnabled.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.chkEnabled.Location = new System.Drawing.Point(0, 347);
+            this.chkEnabled.AutoSize = true;
+            this.chkEnabled.Dock = System.Windows.Forms.DockStyle.Right;
+            this.chkEnabled.Location = new System.Drawing.Point(320, 0);
             this.chkEnabled.Name = "chkEnabled";
-            this.chkEnabled.Padding = new System.Windows.Forms.Padding(5);
-            this.chkEnabled.Size = new System.Drawing.Size(274, 44);
+            this.chkEnabled.Size = new System.Drawing.Size(59, 23);
             this.chkEnabled.TabIndex = 81;
-            this.chkEnabled.Text = "Pretend keyboard and mouse input is game controller (using the binds configured a" +
-    "bove)";
+            this.chkEnabled.Text = "Enable";
             this.chkEnabled.UseVisualStyleBackColor = true;
             this.chkEnabled.CheckedChanged += new System.EventHandler(this.ChkEnabled_CheckedChanged);
             // 
-            // lblAbortInfo
+            // menMainMenu
             // 
-            this.lblAbortInfo.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.lblAbortInfo.ForeColor = System.Drawing.Color.IndianRed;
-            this.lblAbortInfo.Location = new System.Drawing.Point(0, 391);
-            this.lblAbortInfo.Name = "lblAbortInfo";
-            this.lblAbortInfo.Padding = new System.Windows.Forms.Padding(5);
-            this.lblAbortInfo.Size = new System.Drawing.Size(274, 46);
-            this.lblAbortInfo.TabIndex = 80;
-            this.lblAbortInfo.Text = "To quickly stop pretending to be a controller use Left Ctrl + Left Shift + Escape" +
-    " to abort.";
-            this.lblAbortInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblAbortInfo.Visible = false;
+            this.menMainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem,
+            this.toolsToolStripMenuItem,
+            this.helpToolStripMenuItem});
+            this.menMainMenu.Location = new System.Drawing.Point(0, 0);
+            this.menMainMenu.Name = "menMainMenu";
+            this.menMainMenu.Size = new System.Drawing.Size(320, 24);
+            this.menMainMenu.TabIndex = 81;
+            this.menMainMenu.Text = "menuStrip1";
             // 
-            // btnOpenTest
+            // fileToolStripMenuItem
             // 
-            this.btnOpenTest.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.btnOpenTest.Location = new System.Drawing.Point(0, 437);
-            this.btnOpenTest.Name = "btnOpenTest";
-            this.btnOpenTest.Size = new System.Drawing.Size(274, 48);
-            this.btnOpenTest.TabIndex = 79;
-            this.btnOpenTest.Text = "Test input translation using \'devicetests.com\'";
-            this.btnOpenTest.UseVisualStyleBackColor = true;
-            this.btnOpenTest.Click += new System.EventHandler(this.BtnOpenTest_Click);
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.newPresetToolStripMenuItem,
+            this.loadPresetToolStripMenuItem,
+            this.toolStripSeparator3,
+            this.savePresetToolStripMenuItem,
+            this.openPresetFolderToolStripMenuItem,
+            this.toolStripSeparator2,
+            this.closeToolStripMenuItem,
+            this.exitProgramToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Text = "File";
             // 
-            // dbgLabel
+            // newPresetToolStripMenuItem
             // 
-            this.dbgLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.dbgLabel.AutoSize = true;
-            this.dbgLabel.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.dbgLabel.Location = new System.Drawing.Point(316, 359);
-            this.dbgLabel.Name = "dbgLabel";
-            this.dbgLabel.Size = new System.Drawing.Size(0, 13);
-            this.dbgLabel.TabIndex = 78;
+            this.newPresetToolStripMenuItem.Name = "newPresetToolStripMenuItem";
+            this.newPresetToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.newPresetToolStripMenuItem.Text = "New Preset";
+            this.newPresetToolStripMenuItem.Click += new System.EventHandler(this.newPresetToolStripMenuItem_Click);
             // 
-            // pctController
+            // loadPresetToolStripMenuItem
             // 
-            this.pctController.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.pctController.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pctController.ErrorImage = null;
-            this.pctController.Image = global::KeyToJoy.Properties.Resources.XboxSeriesX_Diagram;
-            this.pctController.InitialImage = null;
-            this.pctController.Location = new System.Drawing.Point(0, 0);
-            this.pctController.Name = "pctController";
-            this.pctController.Size = new System.Drawing.Size(598, 485);
-            this.pctController.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pctController.TabIndex = 79;
-            this.pctController.TabStop = false;
+            this.loadPresetToolStripMenuItem.Name = "loadPresetToolStripMenuItem";
+            this.loadPresetToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.loadPresetToolStripMenuItem.Text = "Load Preset";
+            this.loadPresetToolStripMenuItem.Click += new System.EventHandler(this.loadPresetToolStripMenuItem_Click);
             // 
-            // btnAbout
+            // toolStripSeparator3
             // 
-            this.btnAbout.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAbout.Location = new System.Drawing.Point(786, 458);
-            this.btnAbout.Name = "btnAbout";
-            this.btnAbout.Size = new System.Drawing.Size(90, 27);
-            this.btnAbout.TabIndex = 80;
-            this.btnAbout.Text = "Credits";
-            this.btnAbout.UseVisualStyleBackColor = true;
-            this.btnAbout.Click += new System.EventHandler(this.BtnAbout_Click);
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(201, 6);
+            // 
+            // savePresetToolStripMenuItem
+            // 
+            this.savePresetToolStripMenuItem.Name = "savePresetToolStripMenuItem";
+            this.savePresetToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.savePresetToolStripMenuItem.Text = "Save Preset";
+            this.savePresetToolStripMenuItem.Click += new System.EventHandler(this.savePresetToolStripMenuItem_Click);
+            // 
+            // openPresetFolderToolStripMenuItem
+            // 
+            this.openPresetFolderToolStripMenuItem.Name = "openPresetFolderToolStripMenuItem";
+            this.openPresetFolderToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.openPresetFolderToolStripMenuItem.Text = "Open Preset Folder";
+            this.openPresetFolderToolStripMenuItem.Click += new System.EventHandler(this.openPresetFolderToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(201, 6);
+            // 
+            // closeToolStripMenuItem
+            // 
+            this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.closeToolStripMenuItem.Text = "Close to notification tray";
+            this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
+            // 
+            // exitProgramToolStripMenuItem
+            // 
+            this.exitProgramToolStripMenuItem.Name = "exitProgramToolStripMenuItem";
+            this.exitProgramToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.exitProgramToolStripMenuItem.Text = "Exit Program";
+            this.exitProgramToolStripMenuItem.Click += new System.EventHandler(this.exitProgramToolStripMenuItem_Click);
+            // 
+            // toolsToolStripMenuItem
+            // 
+            this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fillPresetWithToolStripMenuItem,
+            this.testMappingsToolStripMenuItem});
+            this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
+            this.toolsToolStripMenuItem.Text = "Tools";
+            // 
+            // fillPresetWithToolStripMenuItem
+            // 
+            this.fillPresetWithToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.allGamePadJoystickActionsToolStripMenuItem,
+            this.allKeyboardActionsToolStripMenuItem});
+            this.fillPresetWithToolStripMenuItem.Name = "fillPresetWithToolStripMenuItem";
+            this.fillPresetWithToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
+            this.fillPresetWithToolStripMenuItem.Text = "Fill Preset With...";
+            // 
+            // allGamePadJoystickActionsToolStripMenuItem
+            // 
+            this.allGamePadJoystickActionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.pressAndReleaseToolStripMenuItem,
+            this.pressToolStripMenuItem,
+            this.releaseToolStripMenuItem});
+            this.allGamePadJoystickActionsToolStripMenuItem.Name = "allGamePadJoystickActionsToolStripMenuItem";
+            this.allGamePadJoystickActionsToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
+            this.allGamePadJoystickActionsToolStripMenuItem.Text = "All GamePad/Joystick Actions";
+            // 
+            // pressAndReleaseToolStripMenuItem
+            // 
+            this.pressAndReleaseToolStripMenuItem.Name = "pressAndReleaseToolStripMenuItem";
+            this.pressAndReleaseToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.pressAndReleaseToolStripMenuItem.Text = "PressAndRelease";
+            this.pressAndReleaseToolStripMenuItem.Click += new System.EventHandler(this.gamePadPressAndReleaseToolStripMenuItem_Click);
+            // 
+            // pressToolStripMenuItem
+            // 
+            this.pressToolStripMenuItem.Name = "pressToolStripMenuItem";
+            this.pressToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.pressToolStripMenuItem.Text = "Press";
+            this.pressToolStripMenuItem.Click += new System.EventHandler(this.gamePadPressToolStripMenuItem_Click);
+            // 
+            // releaseToolStripMenuItem
+            // 
+            this.releaseToolStripMenuItem.Name = "releaseToolStripMenuItem";
+            this.releaseToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.releaseToolStripMenuItem.Text = "Release";
+            this.releaseToolStripMenuItem.Click += new System.EventHandler(this.gamePadReleaseToolStripMenuItem_Click);
+            // 
+            // allKeyboardActionsToolStripMenuItem
+            // 
+            this.allKeyboardActionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.pressAndReleaseToolStripMenuItem1,
+            this.pressToolStripMenuItem1,
+            this.releaseToolStripMenuItem1});
+            this.allKeyboardActionsToolStripMenuItem.Name = "allKeyboardActionsToolStripMenuItem";
+            this.allKeyboardActionsToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
+            this.allKeyboardActionsToolStripMenuItem.Text = "All Keyboard Actions";
+            // 
+            // pressAndReleaseToolStripMenuItem1
+            // 
+            this.pressAndReleaseToolStripMenuItem1.Name = "pressAndReleaseToolStripMenuItem1";
+            this.pressAndReleaseToolStripMenuItem1.Size = new System.Drawing.Size(162, 22);
+            this.pressAndReleaseToolStripMenuItem1.Text = "PressAndRelease";
+            this.pressAndReleaseToolStripMenuItem1.Click += new System.EventHandler(this.keyboardPressAndReleaseToolStripMenuItem);
+            // 
+            // pressToolStripMenuItem1
+            // 
+            this.pressToolStripMenuItem1.Name = "pressToolStripMenuItem1";
+            this.pressToolStripMenuItem1.Size = new System.Drawing.Size(162, 22);
+            this.pressToolStripMenuItem1.Text = "Press";
+            this.pressToolStripMenuItem1.Click += new System.EventHandler(this.keyboardPressToolStripMenuItem);
+            // 
+            // releaseToolStripMenuItem1
+            // 
+            this.releaseToolStripMenuItem1.Name = "releaseToolStripMenuItem1";
+            this.releaseToolStripMenuItem1.Size = new System.Drawing.Size(162, 22);
+            this.releaseToolStripMenuItem1.Text = "Release";
+            this.releaseToolStripMenuItem1.Click += new System.EventHandler(this.keyboardReleaseToolStripMenuItem);
+            // 
+            // testMappingsToolStripMenuItem
+            // 
+            this.testMappingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.testGamePadJoystickToolStripMenuItem,
+            this.testKeyboardToolStripMenuItem,
+            this.testMouseToolStripMenuItem});
+            this.testMappingsToolStripMenuItem.Name = "testMappingsToolStripMenuItem";
+            this.testMappingsToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
+            this.testMappingsToolStripMenuItem.Text = "Test Mappings";
+            // 
+            // testGamePadJoystickToolStripMenuItem
+            // 
+            this.testGamePadJoystickToolStripMenuItem.Name = "testGamePadJoystickToolStripMenuItem";
+            this.testGamePadJoystickToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.testGamePadJoystickToolStripMenuItem.Text = "Test GamePad / Joystick";
+            this.testGamePadJoystickToolStripMenuItem.Click += new System.EventHandler(this.testGamePadJoystickToolStripMenuItem_Click);
+            // 
+            // testKeyboardToolStripMenuItem
+            // 
+            this.testKeyboardToolStripMenuItem.Name = "testKeyboardToolStripMenuItem";
+            this.testKeyboardToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.testKeyboardToolStripMenuItem.Text = "Test Keyboard";
+            this.testKeyboardToolStripMenuItem.Click += new System.EventHandler(this.testKeyboardToolStripMenuItem_Click);
+            // 
+            // testMouseToolStripMenuItem
+            // 
+            this.testMouseToolStripMenuItem.Name = "testMouseToolStripMenuItem";
+            this.testMouseToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.testMouseToolStripMenuItem.Text = "Test Mouse";
+            this.testMouseToolStripMenuItem.Click += new System.EventHandler(this.testMouseToolStripMenuItem_Click);
+            // 
+            // helpToolStripMenuItem
+            // 
+            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.reportAProblemToolStripMenuItem,
+            this.viewSourceCodeToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.aboutToolStripMenuItem});
+            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.helpToolStripMenuItem.Text = "Help";
+            // 
+            // reportAProblemToolStripMenuItem
+            // 
+            this.reportAProblemToolStripMenuItem.Name = "reportAProblemToolStripMenuItem";
+            this.reportAProblemToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.reportAProblemToolStripMenuItem.Text = "Report a Problem";
+            this.reportAProblemToolStripMenuItem.Click += new System.EventHandler(this.reportAProblemToolStripMenuItem_Click);
+            // 
+            // viewSourceCodeToolStripMenuItem
+            // 
+            this.viewSourceCodeToolStripMenuItem.Name = "viewSourceCodeToolStripMenuItem";
+            this.viewSourceCodeToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.viewSourceCodeToolStripMenuItem.Text = "View Source Code";
+            this.viewSourceCodeToolStripMenuItem.Click += new System.EventHandler(this.viewSourceCodeToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(166, 6);
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.aboutToolStripMenuItem.Text = "About";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            // 
+            // ntfIndicator
+            // 
+            this.ntfIndicator.Icon = ((System.Drawing.Icon)(resources.GetObject("ntfIndicator.Icon")));
+            this.ntfIndicator.Text = "KeyToJoy";
+            this.ntfIndicator.Visible = true;
+            this.ntfIndicator.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ntfIndicator_MouseDoubleClick);
+            // 
+            // pnlMainMenu
+            // 
+            this.pnlMainMenu.Controls.Add(this.menMainMenu);
+            this.pnlMainMenu.Controls.Add(this.chkEnabled);
+            this.pnlMainMenu.Controls.Add(this.lblStatusInactive);
+            this.pnlMainMenu.Controls.Add(this.lblStatusActive);
+            this.pnlMainMenu.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlMainMenu.Location = new System.Drawing.Point(0, 0);
+            this.pnlMainMenu.Name = "pnlMainMenu";
+            this.pnlMainMenu.Size = new System.Drawing.Size(580, 23);
+            this.pnlMainMenu.TabIndex = 85;
+            // 
+            // lblStatusInactive
+            // 
+            this.lblStatusInactive.BackColor = System.Drawing.Color.IndianRed;
+            this.lblStatusInactive.Dock = System.Windows.Forms.DockStyle.Right;
+            this.lblStatusInactive.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.lblStatusInactive.Location = new System.Drawing.Point(379, 0);
+            this.lblStatusInactive.Name = "lblStatusInactive";
+            this.lblStatusInactive.Size = new System.Drawing.Size(109, 23);
+            this.lblStatusInactive.TabIndex = 82;
+            this.lblStatusInactive.Text = "(Mappings not active)";
+            this.lblStatusInactive.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblStatusActive
+            // 
+            this.lblStatusActive.BackColor = System.Drawing.Color.LawnGreen;
+            this.lblStatusActive.Dock = System.Windows.Forms.DockStyle.Right;
+            this.lblStatusActive.Location = new System.Drawing.Point(488, 0);
+            this.lblStatusActive.Name = "lblStatusActive";
+            this.lblStatusActive.Size = new System.Drawing.Size(92, 23);
+            this.lblStatusActive.TabIndex = 83;
+            this.lblStatusActive.Text = "(Mappings active)";
+            this.lblStatusActive.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.Black;
-            this.ClientSize = new System.Drawing.Size(876, 485);
-            this.Controls.Add(this.btnAbout);
-            this.Controls.Add(this.splitContainer);
+            this.AutoSize = true;
+            this.ClientSize = new System.Drawing.Size(580, 457);
+            this.Controls.Add(this.olvMappings);
+            this.Controls.Add(this.pnlActionManagement);
+            this.Controls.Add(this.pnlPresetManagement);
+            this.Controls.Add(this.pnlMainMenu);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.MaximizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(600, 500);
             this.Name = "MainForm";
             this.Text = "KeyToJoy - Prototype";
-            this.Load += new System.EventHandler(this.SettingsForm_Load);
-            this.splitContainer.Panel1.ResumeLayout(false);
-            this.splitContainer.Panel2.ResumeLayout(false);
-            this.splitContainer.Panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).EndInit();
-            this.splitContainer.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvBinds)).EndInit();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            this.pnlPreset.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pctController)).EndInit();
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+            this.Load += new System.EventHandler(this.MainForm_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.olvMappings)).EndInit();
+            this.pnlActionManagement.ResumeLayout(false);
+            this.pnlPresetManagement.ResumeLayout(false);
+            this.pnlPresetManagement.PerformLayout();
+            this.menMainMenu.ResumeLayout(false);
+            this.menMainMenu.PerformLayout();
+            this.pnlMainMenu.ResumeLayout(false);
+            this.pnlMainMenu.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-        private System.Windows.Forms.Timer timerAxisTimeout;
-        private System.Windows.Forms.SplitContainer splitContainer;
-        private System.Windows.Forms.Button btnOpenTest;
         private System.Windows.Forms.CheckBox chkEnabled;
-        private System.Windows.Forms.Label dbgLabel;
-        private System.Windows.Forms.PictureBox pctController;
-        private System.Windows.Forms.Panel pnlPreset;
-        private System.Windows.Forms.Label lblPreset;
-        private System.Windows.Forms.ComboBox cmbPreset;
-        private System.Windows.Forms.Button btnCreate;
-        private System.Windows.Forms.Label lblPresetInfo;
-        private System.Windows.Forms.Button btnAbout;
+        private System.Windows.Forms.Panel pnlActionManagement;
+        private System.Windows.Forms.Panel pnlPresetManagement;
         private System.Windows.Forms.TextBox txtPresetName;
-        private System.Windows.Forms.DataGridView dgvBinds;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colControl;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colBind;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label lblInfoName;
-        private System.Windows.Forms.Label lblAbortInfo;
+        private System.Windows.Forms.Label lblPresetName;
+        private BrightIdeasSoftware.ObjectListView olvMappings;
+        private BrightIdeasSoftware.OLVColumn olvColumnTrigger;
+        private BrightIdeasSoftware.OLVColumn olvColumnAction;
+        private System.Windows.Forms.MenuStrip menMainMenu;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem loadPresetToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem fillPresetWithToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem reportAProblemToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem viewSourceCodeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private System.Windows.Forms.Button btnAddAction;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openPresetFolderToolStripMenuItem;
+        private System.Windows.Forms.NotifyIcon ntfIndicator;
+        private System.Windows.Forms.ToolStripMenuItem newPresetToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem savePresetToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exitProgramToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem testMappingsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.Panel pnlMainMenu;
+        private System.Windows.Forms.Label lblStatusInactive;
+        private System.Windows.Forms.Label lblStatusActive;
+        private System.Windows.Forms.ToolStripMenuItem testGamePadJoystickToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem testKeyboardToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem testMouseToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem allGamePadJoystickActionsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem pressAndReleaseToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem pressToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem releaseToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem allKeyboardActionsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem pressAndReleaseToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem pressToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem releaseToolStripMenuItem1;
     }
 }
 

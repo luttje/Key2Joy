@@ -1,0 +1,351 @@
+{
+  "MappedOptions": [
+    {
+      "Action": {
+        "$type": "GamePadAction",
+        "Control": "DPadUp",
+        "PressState": "PressAndRelease",
+        "Name": "{1} {0} on GamePad"
+      },
+      "Trigger": {
+        "$type": "KeyboardTrigger",
+        "Keys": "Up",
+        "PressedState": "PressAndRelease",
+        "Name": null
+      }
+    },
+    {
+      "Action": {
+        "$type": "GamePadAction",
+        "Control": "DPadDown",
+        "PressState": "PressAndRelease",
+        "Name": "{1} {0} on GamePad"
+      },
+      "Trigger": {
+        "$type": "KeyboardTrigger",
+        "Keys": "Down",
+        "PressedState": "PressAndRelease",
+        "Name": null
+      }
+    },
+    {
+      "Action": {
+        "$type": "GamePadAction",
+        "Control": "DPadLeft",
+        "PressState": "PressAndRelease",
+        "Name": "{1} {0} on GamePad"
+      },
+      "Trigger": {
+        "$type": "KeyboardTrigger",
+        "Keys": "Left",
+        "PressedState": "PressAndRelease",
+        "Name": null
+      }
+    },
+    {
+      "Action": {
+        "$type": "GamePadAction",
+        "Control": "DPadRight",
+        "PressState": "PressAndRelease",
+        "Name": "{1} {0} on GamePad"
+      },
+      "Trigger": {
+        "$type": "KeyboardTrigger",
+        "Keys": "Right",
+        "PressedState": "PressAndRelease",
+        "Name": null
+      }
+    },
+    {
+      "Action": {
+        "$type": "GamePadAction",
+        "Control": "Start",
+        "PressState": "PressAndRelease",
+        "Name": "{1} {0} on GamePad"
+      },
+      "Trigger": {
+        "$type": "KeyboardTrigger",
+        "Keys": "F1",
+        "PressedState": "PressAndRelease",
+        "Name": null
+      }
+    },
+    {
+      "Action": {
+        "$type": "GamePadAction",
+        "Control": "Back",
+        "PressState": "PressAndRelease",
+        "Name": "{1} {0} on GamePad"
+      },
+      "Trigger": {
+        "$type": "KeyboardTrigger",
+        "Keys": "F2",
+        "PressedState": "PressAndRelease",
+        "Name": null
+      }
+    },
+    {
+      "Action": {
+        "$type": "GamePadAction",
+        "Control": "LeftStickClick",
+        "PressState": "PressAndRelease",
+        "Name": "{1} {0} on GamePad"
+      },
+      "Trigger": {
+        "$type": "KeyboardTrigger",
+        "Keys": "LControlKey",
+        "PressedState": "PressAndRelease",
+        "Name": null
+      }
+    },
+    {
+      "Action": {
+        "$type": "GamePadAction",
+        "Control": "RightStickClick",
+        "PressState": "PressAndRelease",
+        "Name": "{1} {0} on GamePad"
+      },
+      "Trigger": {
+        "$type": "KeyboardTrigger",
+        "Keys": "RControlKey",
+        "PressedState": "PressAndRelease",
+        "Name": null
+      }
+    },
+    {
+      "Action": {
+        "$type": "GamePadAction",
+        "Control": "LeftShoulder",
+        "PressState": "PressAndRelease",
+        "Name": "{1} {0} on GamePad"
+      },
+      "Trigger": {
+        "$type": "KeyboardTrigger",
+        "Keys": "Q",
+        "PressedState": "PressAndRelease",
+        "Name": null
+      }
+    },
+    {
+      "Action": {
+        "$type": "GamePadAction",
+        "Control": "RightShoulder",
+        "PressState": "PressAndRelease",
+        "Name": "{1} {0} on GamePad"
+      },
+      "Trigger": {
+        "$type": "KeyboardTrigger",
+        "Keys": "E",
+        "PressedState": "PressAndRelease",
+        "Name": null
+      }
+    },
+    {
+      "Action": {
+        "$type": "GamePadAction",
+        "Control": "A",
+        "PressState": "PressAndRelease",
+        "Name": "{1} {0} on GamePad"
+      },
+      "Trigger": {
+        "$type": "KeyboardTrigger",
+        "Keys": "F",
+        "PressedState": "PressAndRelease",
+        "Name": null
+      }
+    },
+    {
+      "Action": {
+        "$type": "GamePadAction",
+        "Control": "B",
+        "PressState": "PressAndRelease",
+        "Name": "{1} {0} on GamePad"
+      },
+      "Trigger": {
+        "$type": "KeyboardTrigger",
+        "Keys": "Z",
+        "PressedState": "PressAndRelease",
+        "Name": null
+      }
+    },
+    {
+      "Action": {
+        "$type": "GamePadAction",
+        "Control": "X",
+        "PressState": "PressAndRelease",
+        "Name": "{1} {0} on GamePad"
+      },
+      "Trigger": {
+        "$type": "KeyboardTrigger",
+        "Keys": "R",
+        "PressedState": "PressAndRelease",
+        "Name": null
+      }
+    },
+    {
+      "Action": {
+        "$type": "GamePadAction",
+        "Control": "Y",
+        "PressState": "PressAndRelease",
+        "Name": "{1} {0} on GamePad"
+      },
+      "Trigger": {
+        "$type": "KeyboardTrigger",
+        "Keys": "Y",
+        "PressedState": "PressAndRelease",
+        "Name": null
+      }
+    },
+    {
+      "Action": {
+        "$type": "GamePadAction",
+        "Control": "LeftTrigger",
+        "PressState": "PressAndRelease",
+        "Name": "{1} {0} on GamePad"
+      },
+      "Trigger": {
+        "$type": "KeyboardTrigger",
+        "Keys": "D1",
+        "PressedState": "PressAndRelease",
+        "Name": null
+      }
+    },
+    {
+      "Action": {
+        "$type": "GamePadAction",
+        "Control": "RightTrigger",
+        "PressState": "PressAndRelease",
+        "Name": "{1} {0} on GamePad"
+      },
+      "Trigger": {
+        "$type": "KeyboardTrigger",
+        "Keys": "D2",
+        "PressedState": "PressAndRelease",
+        "Name": null
+      }
+    },
+    {
+      "Action": {
+        "$type": "GamePadAction",
+        "Control": "LeftStickLeft",
+        "PressState": "PressAndRelease",
+        "Name": "{1} {0} on GamePad"
+      },
+      "Trigger": {
+        "$type": "KeyboardTrigger",
+        "Keys": "A",
+        "PressedState": "PressAndRelease",
+        "Name": null
+      }
+    },
+    {
+      "Action": {
+        "$type": "GamePadAction",
+        "Control": "LeftStickRight",
+        "PressState": "PressAndRelease",
+        "Name": "{1} {0} on GamePad"
+      },
+      "Trigger": {
+        "$type": "KeyboardTrigger",
+        "Keys": "D",
+        "PressedState": "PressAndRelease",
+        "Name": null
+      }
+    },
+    {
+      "Action": {
+        "$type": "GamePadAction",
+        "Control": "LeftStickUp",
+        "PressState": "PressAndRelease",
+        "Name": "{1} {0} on GamePad"
+      },
+      "Trigger": {
+        "$type": "KeyboardTrigger",
+        "Keys": "W",
+        "PressedState": "PressAndRelease",
+        "Name": null
+      }
+    },
+    {
+      "Action": {
+        "$type": "GamePadAction",
+        "Control": "LeftStickDown",
+        "PressState": "PressAndRelease",
+        "Name": "{1} {0} on GamePad"
+      },
+      "Trigger": {
+        "$type": "KeyboardTrigger",
+        "Keys": "S",
+        "PressedState": "PressAndRelease",
+        "Name": null
+      }
+    },
+    {
+      "Action": {
+        "$type": "GamePadAction",
+        "Control": "RightStickLeft",
+        "PressState": "PressAndRelease",
+        "Name": "{1} {0} on GamePad"
+      },
+      "Trigger": {
+        "$type": "MouseMoveTrigger",
+        "AxisBinding": "Left",
+        "Name": null
+      }
+    },
+    {
+      "Action": {
+        "$type": "GamePadAction",
+        "Control": "RightStickRight",
+        "PressState": "PressAndRelease",
+        "Name": "{1} {0} on GamePad"
+      },
+      "Trigger": {
+        "$type": "MouseMoveTrigger",
+        "AxisBinding": "Right",
+        "Name": null
+      }
+    },
+    {
+      "Action": {
+        "$type": "GamePadAction",
+        "Control": "RightStickUp",
+        "PressState": "PressAndRelease",
+        "Name": "{1} {0} on GamePad"
+      },
+      "Trigger": {
+        "$type": "MouseMoveTrigger",
+        "AxisBinding": "Forward",
+        "Name": null
+      }
+    },
+    {
+      "Action": {
+        "$type": "GamePadAction",
+        "Control": "RightStickDown",
+        "PressState": "PressAndRelease",
+        "Name": "{1} {0} on GamePad"
+      },
+      "Trigger": {
+        "$type": "MouseMoveTrigger",
+        "AxisBinding": "Backward",
+        "Name": null
+      }
+    },
+    {
+      "Action": {
+        "$type": "AppCommandAction",
+        "Command": "abort",
+        "Name": "Run App Command '{0}'"
+      },
+      "Trigger": {
+        "$type": "KeyboardTrigger",
+        "Keys": "Escape",
+        "PressedState": "PressAndRelease",
+        "Name": null
+      }
+    }
+  ],
+  "Name": "Default Profile",
+  "Version": 4
+}
