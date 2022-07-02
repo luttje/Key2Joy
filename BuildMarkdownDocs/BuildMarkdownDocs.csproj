@@ -51,6 +51,7 @@
     <Compile Include="Parameter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReturnType.cs" />
     <Compile Include="TypeUtil.cs" />
     <Compile Include="Util\StringExtensions.cs" />
   </ItemGroup>

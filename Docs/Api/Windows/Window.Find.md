@@ -14,4 +14,6 @@ Find a window of a piece of software currently running.
 
 	Optional window title
 
+## Returns
 
+Handle for the window

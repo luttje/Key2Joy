@@ -16,6 +16,7 @@ namespace BuildMarkdownDocs
         public string Name { get; set; }
         public string Summary { get; set; }
         public Parameter[] Parameters { get; set; }
+        public ReturnType ReturnType { get; set; }
 
         public string GetParametersSignature()
         {
@@ -75,6 +76,9 @@ namespace BuildMarkdownDocs
 
             member.Summary = summary.ToString();
 
+            var returnTypeEl = element.Element("returns");
+            member.ReturnType = returnTypeEl != null ? ReturnType.FromXml(returnTypeEl) : null ;
+
             var i = 0;
             if (parameterTypes.Length > 0)
                 member.Parameters = element.Elements("param")?
@@ -95,14 +99,14 @@ namespace BuildMarkdownDocs
         {
             var parametersSignature = GetParametersSignature();
             var parameters = "";
-            
-            if(Parameters != null)
+
+            if (Parameters != null)
             {
                 parameters = string.Join("\n", Parameters?
                     .Select(p => $"* **{p.Name} (`{p.Type.Name}`)** \n\n" +
                         $"\t{p.Description}\n"));
             }
-            
+
             var examples = string.Join<Example>("\n\n", MarkdownExamples);
 
             var replacements = new Dictionary<string, string>()
@@ -111,6 +115,7 @@ namespace BuildMarkdownDocs
                 { "ParametersSignature", parametersSignature },
                 { "Summary", Summary },
                 { "Parameters", parameters },
+                { "ReturnType", $"{ReturnType?.Description ?? ""}" },
                 { "Examples", examples },
             };
 

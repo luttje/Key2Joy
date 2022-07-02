@@ -12,4 +12,6 @@ You can use [Window.GetAllAction.md](Window.GetAllAction.md) , [Window.FindActio
 
 	The window handle to get the class for
 
+## Returns
 
+Class name for the window
