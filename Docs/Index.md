@@ -8,6 +8,7 @@
 ## Logic
 
 * [`App.Command` (`String`)](Api/Logic/App.Command.md)
+* [`SetDelayedFunctions` (`Int64`, `Action[]`)](Api/Logic/SetDelayedFunctions.md)
 * [`SetTimeout` (`Action`, `Int64`)](Api/Logic/SetTimeout.md)
 
 ## Windows

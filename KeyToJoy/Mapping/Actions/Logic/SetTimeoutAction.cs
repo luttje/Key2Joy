@@ -10,7 +10,6 @@ namespace KeyToJoy.Mapping
     [Action(
         Description = "Timeout for a specified duration before executing a function",
         Visibility = ActionVisibility.Never,
-        OptionsUserControl = typeof(SetTimeoutActionControl),
         NameFormat = "Timeout for {0}ms"
     )]
     [Util.ObjectListViewGroup(
@@ -61,7 +60,7 @@ namespace KeyToJoy.Mapping
         /// </code>
         /// </markdown-example>
         /// <markdown-example>
-        /// Shows how to count down from 3 and execute a command using Lua.
+        /// Shows how to count down from 3 each second and execute a command using Lua.
         /// <code language="lua">
         /// <![CDATA[
         /// SetTimeout(function ()

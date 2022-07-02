@@ -68,7 +68,7 @@ namespace KeyToJoy.Mapping
         internal override void RegisterScriptingMethod(string functionName, BaseAction instance, MethodInfo method)
         {
             var parents = functionName.Split('.');
-            var @delegate = method.CreateDelegate(instance);
+            var @delegate = new DelegateWrapper(engine, method.CreateDelegate(instance));
 
             if (parents.Length > 1)
             {
@@ -84,7 +84,7 @@ namespace KeyToJoy.Mapping
                     }
                     else
                     {
-                        currentObject.FastAddProperty(parents[i], new DelegateWrapper(engine, @delegate), false, true, true);
+                        currentObject.FastAddProperty(parents[i], @delegate, false, true, true);
                     }
                 }
 

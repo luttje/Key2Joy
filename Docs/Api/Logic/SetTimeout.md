@@ -43,7 +43,7 @@ Shows how to count down from 3 and execute a command using Javascript.
              
 ```
 
-Shows how to count down from 3 and execute a command using Lua.
+Shows how to count down from 3 each second and execute a command using Lua.
 
 ```lua
 

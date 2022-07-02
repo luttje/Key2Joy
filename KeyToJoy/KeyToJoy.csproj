@@ -251,6 +251,7 @@
     <Compile Include="Mapping\Actions\Logic\AppCommandActionControl.Designer.cs">
       <DependentUpon>AppCommandActionControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Mapping\Actions\Logic\SetDelayedFunctionsAction.cs" />
     <Compile Include="Mapping\Actions\Scripting\BaseScriptAction.cs" />
     <Compile Include="Mapping\Actions\Scripting\JavascriptScriptAction.cs" />
     <Compile Include="Mapping\Actions\Scripting\LuaScriptAction.cs" />
@@ -276,12 +277,6 @@
     </Compile>
     <Compile Include="Mapping\Actions\Logic\SetTimeoutAction.cs" />
     <Compile Include="Mapping\Actions\Logic\SequenceAction.cs" />
-    <Compile Include="Mapping\Actions\Logic\SetTimeoutActionControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Mapping\Actions\Logic\SetTimeoutActionControl.Designer.cs">
-      <DependentUpon>SetTimeoutActionControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="Mapping\Actions\Windows\WindowGetTitleAction.cs" />
     <Compile Include="Mapping\Actions\Windows\WindowGetClassAction.cs" />
     <Compile Include="Mapping\Actions\Windows\WindowGetAllAction.cs" />
@@ -399,9 +394,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Mapping\Actions\Logic\SequenceActionControl.resx">
       <DependentUpon>SequenceActionControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Mapping\Actions\Logic\SetTimeoutActionControl.resx">
-      <DependentUpon>SetTimeoutActionControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Mapping\Triggers\TriggerControl.resx">
       <DependentUpon>TriggerControl.cs</DependentUpon>
