@@ -22,12 +22,18 @@ namespace BuildMarkdownDocs
             base.FillTemplateReplacements(ref replacements);
 
             var allEnumerations = new StringBuilder();
+            string firstName = null;
 
             foreach (var name in Enum.GetNames(Type))
             {
+                if (firstName == null)
+                    firstName = name;
+                
                 allEnumerations.AppendLine($"* `{name}`");
             }
 
+            if(firstName != null)
+            replacements.Add("Example", $"`{Name}.{firstName}`");
             replacements.Add("Values", allEnumerations.ToString());
         }
     }

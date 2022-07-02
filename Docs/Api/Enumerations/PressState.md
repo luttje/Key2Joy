@@ -1,6 +1,9 @@
 # `PressState`
 
 
+## Example Use
+
+`PressState.PressAndRelease`
 
 ## Possible Values
 

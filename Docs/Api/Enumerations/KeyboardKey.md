@@ -1,6 +1,9 @@
 # `KeyboardKey`
 
 
+## Example Use
+
+`KeyboardKey.Accept`
 
 ## Possible Values
 

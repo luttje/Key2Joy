@@ -1,6 +1,9 @@
 # `GamePadControl`
 
 
+## Example Use
+
+`GamePadControl.None`
 
 ## Possible Values
 
