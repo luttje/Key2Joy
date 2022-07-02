@@ -24,7 +24,7 @@ When writing action scripts you have the choice to use any of these languages:
 Print("test")
 
 GamePad.Simulate(GamePadControl.A, PressState.PressAndRelease)
-Wait(function ()
+SetTimeout(function ()
    App.Command("abort")
 end, 2000)
 
@@ -37,7 +37,7 @@ Print("end test")
 Print("test");
 
 GamePad.Simulate(GamePadControl.A, PressState.PressAndRelease);
-Wait(function () {
+setTimeout(function () {
   App.Command("abort");
 }, 2000);
 
