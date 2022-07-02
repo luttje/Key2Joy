@@ -45,8 +45,10 @@
   <ItemGroup>
     <Compile Include="CodeBlock.cs" />
     <Compile Include="Example.cs" />
+    <Compile Include="EnumMember.cs" />
     <Compile Include="MarkdownDocs.cs" />
     <Compile Include="MarkdownMeta.cs" />
+    <Compile Include="FunctionMember.cs" />
     <Compile Include="Member.cs" />
     <Compile Include="Parameter.cs" />
     <Compile Include="Program.cs" />
@@ -58,6 +60,9 @@
   <ItemGroup>
     <None Include="App.config" />
     <Content Include="DefaultTemplate.md">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DefaultEnumTemplate.md">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

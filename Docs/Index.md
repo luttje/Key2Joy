@@ -1,5 +1,11 @@
 # Scripting API Reference
 
+## All Enumerations
+
+* [`GamePadControl`](Api/Enumerations/GamePadControl.md)
+* [`KeyboardKey`](Api/Enumerations/KeyboardKey.md)
+* [`PressState`](Api/Enumerations/PressState.md)
+
 ## Input
 
 * [`GamePad.Simulate` (`GamePadControl`, `PressState`)](Api/Input/GamePad.Simulate.md)
