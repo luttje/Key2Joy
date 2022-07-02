@@ -44,7 +44,7 @@ namespace KeyToJoy.Mapping
         {
             var enumNames = Enum.GetNames(enumType);
 
-            // TODO: Probably a better way to do this
+            // TODO: Probably a better way to register enums
             engine.Execute(
                 enumType.Name + " = {" +
                 string.Join(", ", enumNames.Select((name, index) =>

@@ -8,7 +8,7 @@
 ## Logic
 
 * [`App.Command` (`String`)](Api/Logic/App.Command.md)
-* [`Wait` (`Action`, `Int64`)](Api/Logic/Wait.md)
+* [`SetTimeout` (`Action`, `Int64`)](Api/Logic/SetTimeout.md)
 
 ## Windows
 

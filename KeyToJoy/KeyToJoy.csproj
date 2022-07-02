@@ -260,12 +260,6 @@
     <Compile Include="Mapping\Actions\Scripting\ScriptActionControl.Designer.cs">
       <DependentUpon>ScriptActionControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Mapping\Actions\Logic\SequenceActionControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Mapping\Actions\Logic\SequenceActionControl.Designer.cs">
-      <DependentUpon>SequenceActionControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="Mapping\Actions\Logic\WaitAction.cs" />
     <Compile Include="Mapping\Actions\Logic\SequenceAction.cs" />
     <Compile Include="Mapping\Actions\Logic\WaitActionControl.cs">
@@ -273,6 +267,20 @@
     </Compile>
     <Compile Include="Mapping\Actions\Logic\WaitActionControl.Designer.cs">
       <DependentUpon>WaitActionControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Mapping\Actions\Logic\SequenceActionControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Mapping\Actions\Logic\SequenceActionControl.Designer.cs">
+      <DependentUpon>SequenceActionControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Mapping\Actions\Logic\SetTimeoutAction.cs" />
+    <Compile Include="Mapping\Actions\Logic\SequenceAction.cs" />
+    <Compile Include="Mapping\Actions\Logic\SetTimeoutActionControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Mapping\Actions\Logic\SetTimeoutActionControl.Designer.cs">
+      <DependentUpon>SetTimeoutActionControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Mapping\Actions\Windows\WindowGetTitleAction.cs" />
     <Compile Include="Mapping\Actions\Windows\WindowGetClassAction.cs" />
@@ -383,14 +391,17 @@
     <EmbeddedResource Include="Mapping\Actions\Logic\AppCommandActionControl.resx">
       <DependentUpon>AppCommandActionControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Mapping\Actions\Logic\WaitActionControl.resx">
+      <DependentUpon>WaitActionControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Mapping\Actions\Scripting\ScriptActionControl.resx">
       <DependentUpon>ScriptActionControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Mapping\Actions\Logic\SequenceActionControl.resx">
       <DependentUpon>SequenceActionControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Mapping\Actions\Logic\WaitActionControl.resx">
-      <DependentUpon>WaitActionControl.cs</DependentUpon>
+    <EmbeddedResource Include="Mapping\Actions\Logic\SetTimeoutActionControl.resx">
+      <DependentUpon>SetTimeoutActionControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Mapping\Triggers\TriggerControl.resx">
       <DependentUpon>TriggerControl.cs</DependentUpon>
