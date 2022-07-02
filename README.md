@@ -44,23 +44,22 @@ KeyToJoy will now pretend that your keyboard input is Joystick input.
 You can create scripts in Lua or Javascript that perform a sequence of
 actions with more complex logic.
 
-Here is a simple example of a script that presses a button and then stops
-simulating input after two seconds:
+Here is a simple example of a script that presses the "A" button on a
+gamepad and then stops simulating input after two seconds:
 ```lua
-print("test")
+Print("Hello World!")
 
-gamepad(GamePadControl.A, PressState.PressAndRelease)
-wait(function()
-   app_command("abort")
+GamePad.Simulate(GamePadControl.A, PressState.PressAndRelease)
+SetTimeout(function()
+   App.Command("abort")
 end, 2000)
-
-print("end test")
 ```
 
 **You probably want to bind scripts only to the "Release" press state of
 triggers.** Otherwise a script will be executed both on key down AND up.
 
-> 🚧 TODO: Full scripting reference in [SCRIPTING.md](SCRIPTING.md)
+Full scripting reference is available in
+[Docs/Scripting.md](Docs/Scripting.md)
 
 ---
 
