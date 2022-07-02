@@ -5,8 +5,6 @@ Execute functions whilst waiting the specified time between them.
 
 The first function is executed immediately.
 
-Note: currently broken in Javascript
-
 
 ## Parameters
 

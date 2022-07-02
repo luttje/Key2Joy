@@ -34,8 +34,6 @@ namespace KeyToJoy.Mapping
         /// Execute functions whilst waiting the specified time between them.
         /// 
         /// The first function is executed immediately.
-        /// 
-        /// Note: currently broken in Javascript
         /// </summary>
         /// <markdown-example>
         /// Shows how to count down from 3 and execute a command using Lua.

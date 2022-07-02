@@ -72,7 +72,7 @@ namespace KeyToJoy.Mapping
 
             if (parents.Length > 1)
             {
-                ObjectInstance currentObject = engine.Global;
+                var currentObject = engine.Realm.GlobalObject;
 
                 for (int i = 0; i < parents.Length; i++)
                 {
