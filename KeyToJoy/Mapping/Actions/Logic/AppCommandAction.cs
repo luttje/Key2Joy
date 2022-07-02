@@ -35,18 +35,15 @@ namespace KeyToJoy.Mapping
         /// <param name="command">Command to execute</param>
         /// <name>App.Command</name>
         [ExposesScriptingMethod("App.Command")]
-        public void ExecuteForScript(string command)
+        public async void ExecuteForScript(string command)
         {
             Command = command;
 
-            Task.Run(async () =>
-            {
-                // Wait a frame so we don't get an Access Violation on the lua.DoString
-                // TODO: Figure out if there's a nicer way
-                await Task.Delay(0);
+            // Wait a frame so we don't get an Access Violation on the lua.DoString
+            // TODO: Figure out if there's a nicer way
+            await Task.Delay(0);
 
-                this.Execute();
-            });
+            await this.Execute();
         }
 
         internal override async Task Execute(InputBag inputBag = null)
@@ -55,6 +52,7 @@ namespace KeyToJoy.Mapping
             {
                 MessageBox.Show("This app command is invalid or could not be run at this time!", "Invalid command!", MessageBoxButtons.OK, MessageBoxIcon.Hand);
             }
+            System.Diagnostics.Debug.WriteLine("Executed");
         }
 
         public override string GetNameDisplay()

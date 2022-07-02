@@ -101,7 +101,7 @@ namespace KeyToJoy.Mapping
         /// <param name="pressState">Action to simulate</param>
         /// <name>GamePad.Simulate</name>
         [ExposesScriptingMethod("GamePad.Simulate")]
-        public void ExecuteForScript(GamePadControl control, PressState pressState)
+        public async void ExecuteForScript(GamePadControl control, PressState pressState)
         {
             Control = control;
             PressState = pressState;
@@ -112,12 +112,9 @@ namespace KeyToJoy.Mapping
 
                 if (PressState == PressState.PressAndRelease)
                 {
-                    Task.Run(async () =>
-                    {
-                        // TODO: Make this a configurable value
-                        await Task.Delay(50);
-                        SimGamePad.Instance.ReleaseControl(Control);
-                    });
+                    // TODO: Make this a configurable value
+                    await Task.Delay(50);
+                    SimGamePad.Instance.ReleaseControl(Control);
                 }
             }
             

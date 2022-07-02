@@ -40,7 +40,7 @@ namespace KeyToJoy.Mapping
         {
             int nRet;
             // Pre-allocate 256 characters, since this is the maximum class name length.
-            StringBuilder classNameBuilder = new StringBuilder(256);
+            var classNameBuilder = new StringBuilder(256);
             //Get the window class name
             nRet = GetClassName((IntPtr)handle, classNameBuilder, classNameBuilder.Capacity);
             

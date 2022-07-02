@@ -40,14 +40,13 @@ namespace KeyToJoy.Mapping
         /// <param name="waitTime">Time to wait (in milliseconds)</param>
         /// <name>Wait</name>
         [ExposesScriptingMethod("Wait")]
-        public void ExecuteForScript(Action callback, long waitTime)
+        public async void ExecuteForScript(Action callback, long waitTime)
         {
             WaitTime = TimeSpan.FromMilliseconds(waitTime);
-            var task = Task.Run(async () =>
-            {
-                await Task.Delay(WaitTime);
-                callback.DynamicInvoke();
-            });
+            await Task.Delay(WaitTime);
+            System.Diagnostics.Debug.WriteLine("Test A");
+            callback.Invoke();
+            System.Diagnostics.Debug.WriteLine("Test B");
         }
 
         internal override Task Execute(InputBag inputBag = null)

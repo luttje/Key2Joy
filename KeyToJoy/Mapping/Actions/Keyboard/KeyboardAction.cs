@@ -95,7 +95,7 @@ namespace KeyToJoy.Mapping
         /// </markdown-example>
         /// <name>Keyboard.Simulate</name>
         [ExposesScriptingMethod("Keyboard.Simulate")]
-        public void ExecuteForScript(KeyboardKey key, PressState pressState)
+        public async void ExecuteForScript(KeyboardKey key, PressState pressState)
         {
             Key = key;
             PressState = pressState;
@@ -106,12 +106,9 @@ namespace KeyToJoy.Mapping
 
                 if (PressState == PressState.PressAndRelease)
                 {
-                    Task.Run(async () =>
-                    {
-                        // TODO: Make this a configurable value
-                        await Task.Delay(50);
-                        SimulatedKeyboard.ReleaseKey(Key);
-                    });
+                    // TODO: Make this a configurable value
+                    await Task.Delay(50);
+                    SimulatedKeyboard.ReleaseKey(Key);
                 }
             }
             

@@ -200,6 +200,7 @@ namespace KeyToJoy
                     else
                         chkEnabled.Checked = false;
 
+                    System.Diagnostics.Debug.WriteLine("Stopped");
                     return true;
                 default:
                     return false;
