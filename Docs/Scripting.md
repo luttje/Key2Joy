@@ -10,9 +10,9 @@ Most actions that you can configure in KeyToJoy are available through scripting.
 ## Available Scripting Languages
 When writing action scripts you have the choice to use any of these languages:
 * [Lua 5.2.3](https://www.lua.org/manual/5.2/)
-* [ECMAScript 5.1 (Javascript)](https://262.ecma-international.org/5.1/)
+* [ECMAScript 5.1 (Javascript)](https://262.ecma-international.org/5.1/) *(with partial [ECMAScript 2015 - 2022 Support](https://github.com/sebastienros/jint#version-3x))*
 
-*(If you're an advanced user and are running into limitations. These are the implementations we use: [NLua](https://github.com/NLua/NLua) and [Jint](https://github.com/sebastienros/jint))*
+*If you're an advanced user and curious about the Lua and Javascript implementations: this project uses [NLua](https://github.com/NLua/NLua) and [Jint](https://github.com/sebastienros/jint).*
 
 
 ## Examples

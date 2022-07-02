@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -16,7 +17,13 @@ namespace BuildMarkdownDocs
         {
             var code = new CodeBlock();
             code.Language = element.Attribute("language").Value;
-            code.Code = element.Value;
+
+            var whiteSpaceToTrimPattern = new Regex(@"^[^\S\r\n]+", RegexOptions.Multiline);
+            var whiteSpaceToTrim = whiteSpaceToTrimPattern.Match(element.Value);
+
+            var whiteSpaceTrimPattern = new Regex($"^{whiteSpaceToTrim}", RegexOptions.Multiline);
+            code.Code = whiteSpaceTrimPattern.Replace(element.Value, "").Trim();
+
             return code;
         }
 
