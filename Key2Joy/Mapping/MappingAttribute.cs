@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Key2Joy.Mapping
 {
     [AttributeUsage(AttributeTargets.Class)]
-    public abstract class MappingAttribute : Attribute
+    public abstract class MappingAttribute : Attribute, IComparable<MappingAttribute>
     {
         /// <summary>
         /// Customizable name format for the action/trigger
@@ -32,6 +32,16 @@ namespace Key2Joy.Mapping
         public override string ToString()
         {
             return Description;
+        }
+
+        public override int GetHashCode()
+        {
+            return Description.GetHashCode();
+        }
+
+        public int CompareTo(MappingAttribute other)
+        {
+            return Description.CompareTo(other.Description);
         }
     }
 }

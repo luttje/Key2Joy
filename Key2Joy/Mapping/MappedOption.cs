@@ -33,7 +33,7 @@ namespace Key2Joy.Mapping
             return new MappedOption()
             {
                 Trigger = Trigger != null ? (BaseTrigger)Trigger.Clone() : null,
-                Action = Action,
+                Action = (BaseAction)Action.Clone(),
             };
         }
     }

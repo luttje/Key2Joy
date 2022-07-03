@@ -10,7 +10,7 @@ namespace Key2Joy.Mapping
         Description = "Mouse Button Event",
         OptionsUserControl = typeof(MouseButtonTriggerOptionsControl)
     )]
-    public class MouseButtonTrigger : BaseTrigger, IEquatable<MouseButtonTrigger>
+    public class MouseButtonTrigger : BaseTrigger, IPressState, IEquatable<MouseButtonTrigger>
     {
         public const string PREFIX_UNIQUE = nameof(MouseButtonTrigger);
 
@@ -18,7 +18,7 @@ namespace Key2Joy.Mapping
         public Mouse.Buttons MouseButtons { get; set; }
 
         [JsonProperty]
-        public PressState PressedState { get; set; }
+        public PressState PressState { get; set; }
 
         [JsonConstructor]
         public MouseButtonTrigger(string name, string description)
@@ -46,7 +46,7 @@ namespace Key2Joy.Mapping
         public bool Equals(MouseButtonTrigger other)
         {
             return MouseButtons == other.MouseButtons 
-                && PressedState == other.PressedState;
+                && PressState == other.PressState;
         }
 
         public override string ToString()

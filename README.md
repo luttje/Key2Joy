@@ -46,15 +46,16 @@ screen.
 You can create scripts in Lua or Javascript that perform a sequence of
 actions with more complex logic.
 
-Here is a simple example of a script that presses the "A" button on a
-gamepad and then stops simulating input after two seconds:
+Here is a simple example of a script that holds the "A" button on a
+gamepad for 500 ms and then stops simulating input:
 ```lua
 Print("Hello World!")
 
-GamePad.Simulate(GamePadControl.A, PressState.PressAndRelease)
+GamePad.Simulate(GamePadControl.A, PressState.Press)
 SetTimeout(function()
+   GamePad.Simulate(GamePadControl.A, PressState.Release)
    App.Command("abort")
-end, 2000)
+end, 500)
 ```
 
 **You probably want to bind scripts only to the "Release" press state of

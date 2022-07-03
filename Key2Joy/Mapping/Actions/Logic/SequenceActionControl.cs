@@ -37,6 +37,7 @@ namespace Key2Joy.Mapping
         public void Setup(BaseAction action)
         {
             var thisAction = (SequenceAction)action;
+            thisAction.ChildActions.Clear();
 
             foreach (var childAction in childActions)
             {
@@ -64,7 +65,7 @@ namespace Key2Joy.Mapping
 
         private void btnRemove_Click(object sender, EventArgs e)
         {
-            RemoveChildAction((BaseAction)lstActions.SelectedValue);
+            RemoveChildAction((BaseAction)lstActions.SelectedItem);
             OptionsChanged?.Invoke();
         }
 

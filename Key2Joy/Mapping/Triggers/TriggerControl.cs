@@ -34,9 +34,9 @@ namespace Key2Joy.Mapping
                 return;
             }
 
-            var selected = (KeyValuePair<Type, TriggerAttribute>)cmbTrigger.SelectedItem;
-            var selectedType = selected.Key;
-            var attribute = selected.Value;
+            var selected = (KeyValuePair<TriggerAttribute, Type>)cmbTrigger.SelectedItem;
+            var selectedType = selected.Value;
+            var attribute = selected.Key;
 
             if(Trigger == null || Trigger.GetType() != selectedType)
                 Trigger = (BaseTrigger)Activator.CreateInstance(selectedType, new object[]
@@ -58,8 +58,8 @@ namespace Key2Joy.Mapping
             if (!isLoaded)
                 return;
             
-            var selected = cmbTrigger.Items.Cast<KeyValuePair<Type, TriggerAttribute>>();
-            var selectedType = selected.FirstOrDefault(x => x.Key == trigger.GetType());
+            var selected = cmbTrigger.Items.Cast<KeyValuePair<TriggerAttribute, Type>>();
+            var selectedType = selected.FirstOrDefault(x => x.Value == trigger.GetType());
             cmbTrigger.SelectedItem = selectedType;
         }
 
@@ -68,8 +68,8 @@ namespace Key2Joy.Mapping
             var triggerTypes = TriggerAttribute.GetAllTriggers();
 
             cmbTrigger.DataSource = new BindingSource(triggerTypes, null);
-            cmbTrigger.DisplayMember = "Value";
-            cmbTrigger.ValueMember = "Key";
+            cmbTrigger.DisplayMember = "Key";
+            cmbTrigger.ValueMember = "Value";
             cmbTrigger.SelectedIndex = -1;
 
             isLoaded = true;
@@ -109,8 +109,8 @@ namespace Key2Joy.Mapping
 
         private void OnOptionsChanged()
         {
-            var selected = (KeyValuePair<Type, TriggerAttribute>)cmbTrigger.SelectedItem;
-            var attribute = selected.Value;
+            var selected = (KeyValuePair<TriggerAttribute, Type>)cmbTrigger.SelectedItem;
+            var attribute = selected.Key;
 
             if (options == null || attribute.OptionsUserControl != options.GetType())
                 return;

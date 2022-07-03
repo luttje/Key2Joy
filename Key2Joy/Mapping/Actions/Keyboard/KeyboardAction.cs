@@ -22,7 +22,7 @@ namespace Key2Joy.Mapping
         Name = "Keyboard Simulation",
         Image = "keyboard"
     )]
-    internal class KeyboardAction : BaseAction
+    internal class KeyboardAction : BaseAction, IPressState
     {        
         [JsonProperty]
         public KeyboardKey Key { get; set; }
@@ -100,16 +100,8 @@ namespace Key2Joy.Mapping
             Key = key;
             PressState = pressState;
 
-            if (PressState == PressState.Press || PressState == PressState.PressAndRelease)
-            {
+            if (PressState == PressState.Press)
                 SimulatedKeyboard.PressKey(Key);
-
-                if (PressState == PressState.PressAndRelease)
-                {
-                    await Task.Delay(Config.Instance.PressReleaseWaitTime);
-                    SimulatedKeyboard.ReleaseKey(Key);
-                }
-            }
             
             if (PressState == PressState.Release)
                 SimulatedKeyboard.ReleaseKey(Key);
@@ -117,19 +109,9 @@ namespace Key2Joy.Mapping
 
         internal override async Task Execute(InputBag inputBag = null)
         {
-            bool isInputDown = false;
-            
-            if (inputBag is KeyboardInputBag keyboardInputBag)
-                isInputDown = keyboardInputBag.State == KeyboardState.KeyDown;
-            
-            if (inputBag is MouseButtonInputBag mouseButtonInputBag)
-                isInputDown = mouseButtonInputBag.IsDown;
-
-            if (PressState == PressState.Press
-                || (PressState == PressState.PressAndRelease && isInputDown))
+            if (PressState == PressState.Press)
                 SimulatedKeyboard.PressKey(Key);
-            else if(PressState == PressState.Release
-                || (PressState == PressState.PressAndRelease && !isInputDown))
+            else if(PressState == PressState.Release)
                 SimulatedKeyboard.ReleaseKey(Key);
         }
 

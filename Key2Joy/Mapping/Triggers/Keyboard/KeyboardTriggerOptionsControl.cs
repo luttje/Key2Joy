@@ -39,7 +39,7 @@ namespace Key2Joy
             var thisTrigger = (KeyboardTrigger)trigger;
 
             this.keys = thisTrigger.Keys;
-            cmbPressedState.SelectedItem = thisTrigger.PressedState;
+            cmbPressedState.SelectedItem = thisTrigger.PressState;
             UpdateKeys();
         }
 
@@ -48,7 +48,7 @@ namespace Key2Joy
             var thisTrigger = (KeyboardTrigger)trigger;
 
             thisTrigger.Keys = this.keys;
-            thisTrigger.PressedState = (PressState) cmbPressedState.SelectedItem;
+            thisTrigger.PressState = (PressState) cmbPressedState.SelectedItem;
         }
 
         private void StartTrapping()

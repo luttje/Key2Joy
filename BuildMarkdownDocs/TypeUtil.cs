@@ -22,11 +22,18 @@ namespace BuildMarkdownDocs
 
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
-                type = assembly.GetType(typeName);
+                foreach (var parentType in assembly.GetTypes())
+                {
+                    if(parentType.Name == typeName)
+                        return type;
 
-                if (type != null)
-                    return type;
-
+                    foreach (var childType in parentType.GetNestedTypes())
+                    {
+                        if (childType.FullName.Replace("+", ".") == typeName)
+                            return childType;
+                    }
+                }
+                
                 var referencedAssemblies = assembly.GetReferencedAssemblies();
 
                 foreach (var referencedAssembly in referencedAssemblies)
@@ -36,8 +43,9 @@ namespace BuildMarkdownDocs
                     if (type != null)
                         return type;
                 }
+
             }
-            
+
             return null;
         }
     }

@@ -1,4 +1,4 @@
-# `SetTimeout` (`Action`, `Int64`)
+# `SetTimeout` (`CallbackAction`, `Int64`, `Object[]`)
 
 
 Timeout for the specified duration in milliseconds, then execute the callback
@@ -6,13 +6,17 @@ Timeout for the specified duration in milliseconds, then execute the callback
 
 ## Parameters
 
-* **callback (`Action`)** 
+* **callback (`CallbackAction`)** 
 
 	Function to execute after the wait
 
 * **waitTime (`Int64`)** 
 
 	Time to wait (in milliseconds)
+
+* **arguments (`Object[]`)** 
+
+	Zero or more extra parameters to pass to the function
 
 
 ## Examples

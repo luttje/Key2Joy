@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Key2Joy.Mapping
 {
-    internal static class IdPool
+    public static class IdPool
     {
         private static int nextId = 1;
-        
-        internal class BaseId
+
+        public class BaseId
         {
             public int Id { get; set; }
             public CancellationTokenSource Cancellation { get; set; }
@@ -38,7 +38,7 @@ namespace Key2Joy.Mapping
             }
         }
 
-        internal class TimeoutId : BaseId
+        public class TimeoutId : BaseId
         {
             public TimeoutId()
                 : base()
@@ -48,8 +48,8 @@ namespace Key2Joy.Mapping
                 : base(cancellation)
             {}
         }
-        
-        internal class IntervalId : BaseId
+
+        public class IntervalId : BaseId
         {
             public IntervalId()
                 : base()

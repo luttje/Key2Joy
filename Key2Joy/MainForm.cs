@@ -446,7 +446,8 @@ namespace Key2Joy
 
         private void gamePadPressAndReleaseToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            selectedPreset.AddMappingRange(GamePadAction.GetAllButtonActions(PressState.PressAndRelease));
+            selectedPreset.AddMappingRange(GamePadAction.GetAllButtonActions(PressState.Press));
+            selectedPreset.AddMappingRange(GamePadAction.GetAllButtonActions(PressState.Release));
             selectedPreset.Save();
             SetSelectedPreset(selectedPreset);
         }
@@ -467,7 +468,8 @@ namespace Key2Joy
 
         private void keyboardPressAndReleaseToolStripMenuItem(object sender, EventArgs e)
         {
-            selectedPreset.AddMappingRange(KeyboardAction.GetAllButtonActions(PressState.PressAndRelease));
+            selectedPreset.AddMappingRange(KeyboardAction.GetAllButtonActions(PressState.Press));
+            selectedPreset.AddMappingRange(KeyboardAction.GetAllButtonActions(PressState.Release));
             selectedPreset.Save();
             SetSelectedPreset(selectedPreset);
         }

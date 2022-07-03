@@ -8,5 +8,6 @@ namespace Key2Joy.Mapping
 {
     internal abstract class InputBag
     {
+        public BaseTrigger Trigger { get; set; }
     }
 }

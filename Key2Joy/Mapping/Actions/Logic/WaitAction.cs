@@ -8,7 +8,7 @@ using System.Windows.Forms;
 namespace Key2Joy.Mapping
 {
     [Action(
-        Description = "Wait for a specified duration (useful inbetween actions in a sequence)",
+        Description = "Wait for a specified duration",
         Visibility = ActionVisibility.UnlessTopLevel,
         OptionsUserControl = typeof(WaitActionControl),
         NameFormat = "Wait for {0}ms"

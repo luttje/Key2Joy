@@ -41,18 +41,6 @@ namespace Key2Joy
         private string lastLoadedPreset;
 
         [ConfigControl(
-            Text = "Release button after how many milliseconds after pressing it with PressAndRelease",
-            ControlType = typeof(System.Windows.Forms.NumericUpDown)
-        )]
-        [JsonProperty]
-        public int PressReleaseWaitTime
-        {
-            get => pressReleaseWaitTime;
-            set => SaveIfInitialized(pressReleaseWaitTime = value);
-        }
-        private int pressReleaseWaitTime = 50;
-
-        [ConfigControl(
             Text = "Path to directory where logs are saved",
             ControlType = typeof(System.Windows.Forms.TextBox)
         )]
