@@ -50,9 +50,9 @@ namespace Key2Joy
             if (comboBox.SelectedItem == null)
                 return null;
 
-            var selected = (KeyValuePair<Type, TAttribute>)comboBox.SelectedItem;
-            var selectedType = selected.Key;
-            var attribute = selected.Value;
+            var selected = (KeyValuePair<TAttribute, Type>)comboBox.SelectedItem;
+            var selectedType = selected.Value;
+            var attribute = selected.Key;
 
             if (attribute.OptionsUserControl == null)
                 return null;

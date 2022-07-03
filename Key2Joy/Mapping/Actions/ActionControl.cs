@@ -34,9 +34,9 @@ namespace Key2Joy.Mapping
                 return;
             }
 
-            var selected = (KeyValuePair<Type, ActionAttribute>)cmbAction.SelectedItem;
-            var selectedType = selected.Key;
-            var attribute = selected.Value;
+            var selected = (KeyValuePair<ActionAttribute, Type>)cmbAction.SelectedItem;
+            var selectedType = selected.Value;
+            var attribute = selected.Key;
 
             if (Action == null || Action.GetType() != selectedType)
                 Action = BaseAction.MakeAction(selectedType, attribute);
@@ -54,8 +54,8 @@ namespace Key2Joy.Mapping
             if (!isLoaded)
                 return;
 
-            var selected = cmbAction.Items.Cast<KeyValuePair<Type, ActionAttribute>>();
-            var selectedType = selected.FirstOrDefault(x => x.Key == action.GetType());
+            var selected = cmbAction.Items.Cast<KeyValuePair<ActionAttribute, Type>>();
+            var selectedType = selected.FirstOrDefault(x => x.Value == action.GetType());
             cmbAction.SelectedItem = selectedType;
         }
 
@@ -64,8 +64,8 @@ namespace Key2Joy.Mapping
             var actionTypes = ActionAttribute.GetAllActions(IsTopLevel);
 
             cmbAction.DataSource = new BindingSource(actionTypes, null);
-            cmbAction.DisplayMember = "Value";
-            cmbAction.ValueMember = "Key";
+            cmbAction.DisplayMember = "Key";
+            cmbAction.ValueMember = "Value";
             cmbAction.SelectedIndex = -1;
 
             isLoaded = true;

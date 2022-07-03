@@ -22,7 +22,7 @@ namespace Key2Joy.Mapping
         Name = "GamePad Simulation",
         Image = "joystick"
     )]
-    internal class GamePadAction : BaseAction
+    internal class GamePadAction : BaseAction, IPressState
     {
         private static bool isPluggedIn = false;
 
@@ -106,16 +106,8 @@ namespace Key2Joy.Mapping
             Control = control;
             PressState = pressState;
 
-            if (PressState == PressState.Press || PressState == PressState.PressAndRelease)
-            {
+            if (PressState == PressState.Press)
                 SimGamePad.Instance.SetControl(Control);
-
-                if (PressState == PressState.PressAndRelease)
-                {
-                    await Task.Delay(Config.Instance.PressReleaseWaitTime);
-                    SimGamePad.Instance.ReleaseControl(Control);
-                }
-            }
             
             if (PressState == PressState.Release)
                 SimGamePad.Instance.ReleaseControl(Control);
@@ -157,19 +149,9 @@ namespace Key2Joy.Mapping
                 return;
             }
 
-            bool isInputDown = false;
-            
-            if (inputBag is KeyboardInputBag keyboardInputBag)
-                isInputDown = keyboardInputBag.State == KeyboardState.KeyDown;
-            
-            if (inputBag is MouseButtonInputBag mouseButtonInputBag)
-                isInputDown = mouseButtonInputBag.IsDown;
-
-            if (PressState == PressState.Press
-                || (PressState == PressState.PressAndRelease && isInputDown))
+            if (PressState == PressState.Press)
                 SimGamePad.Instance.SetControl(Control);
-            else if(PressState == PressState.Release
-                || (PressState == PressState.PressAndRelease && !isInputDown))
+            else if(PressState == PressState.Release)
                 SimGamePad.Instance.ReleaseControl(Control);
         }
 

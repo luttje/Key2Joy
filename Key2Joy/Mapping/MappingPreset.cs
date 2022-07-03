@@ -1,4 +1,5 @@
-﻿using Key2Joy.Util;
+﻿using Key2Joy.LowLevelInput;
+using Key2Joy.Util;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
@@ -92,6 +93,8 @@ namespace Key2Joy.Mapping
         private bool PostLoad(string filePath)
         {
             this.filePath = filePath;
+
+            LegacyPressStateConverter.UpdateLegacyIfApplicable(this);
 
             return true;
         }

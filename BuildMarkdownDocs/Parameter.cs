@@ -15,6 +15,9 @@ namespace BuildMarkdownDocs
 
         public static Parameter FromXml(XElement element, Type type)
         {
+            if (type == null)
+                throw new ArgumentNullException("Parameter type should be provided!");
+            
             var parameter = new Parameter();
             parameter.Name = element.Attribute("name").Value;
             parameter.Description = element.Value;

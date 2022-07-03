@@ -23,13 +23,13 @@ namespace Key2Joy.Mapping
         }
 
         private GlobalInputHook globalMouseButtonHook;
-        private Dictionary<Mouse.Buttons, BaseAction> lookupDown;
-        private Dictionary<Mouse.Buttons, BaseAction> lookupRelease;
+        private Dictionary<Mouse.Buttons, MappedOption> lookupDown;
+        private Dictionary<Mouse.Buttons, MappedOption> lookupRelease;
         
         private MouseButtonTriggerListener()
         {
-            lookupDown = new Dictionary<Mouse.Buttons, BaseAction>();
-            lookupRelease = new Dictionary<Mouse.Buttons, BaseAction>();
+            lookupDown = new Dictionary<Mouse.Buttons, MappedOption>();
+            lookupRelease = new Dictionary<Mouse.Buttons, MappedOption>();
         }
 
         protected override void Start()
@@ -55,10 +55,10 @@ namespace Key2Joy.Mapping
         {
             var trigger = mappedOption.Trigger as MouseButtonTrigger;
 
-            if (trigger.PressedState == PressState.Press || trigger.PressedState == PressState.PressAndRelease)
-                lookupDown.Add(trigger.MouseButtons, mappedOption.Action);
-            if (trigger.PressedState == PressState.Release || trigger.PressedState == PressState.PressAndRelease)
-                lookupRelease.Add(trigger.MouseButtons, mappedOption.Action);
+            if (trigger.PressState == PressState.Press)
+                lookupDown.Add(trigger.MouseButtons, mappedOption);
+            if (trigger.PressState == PressState.Release)
+                lookupRelease.Add(trigger.MouseButtons, mappedOption);
         }
 
         private void OnMouseButtonInputEvent(object sender, GlobalMouseHookEventArgs e)
@@ -85,11 +85,12 @@ namespace Key2Joy.Mapping
                 dictionary = lookupDown;
                 
             // Test if this is a bound mouse button, if so halt default input behaviour
-            if (!dictionary.TryGetValue(buttons, out var action))
+            if (!dictionary.TryGetValue(buttons, out var mappedOption))
                 return;
                 
-            if (!TryOverrideMouseButtonInput(action, new MouseButtonInputBag
+            if (!TryOverrideMouseButtonInput(mappedOption.Action, new MouseButtonInputBag
             {
+                Trigger = mappedOption.Trigger,
                 State = e.MouseState,
                 IsDown = isDown,
                 LastX = e.MouseData.Position.X,

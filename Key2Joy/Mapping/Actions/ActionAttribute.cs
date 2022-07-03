@@ -32,9 +32,10 @@ namespace Key2Joy.Mapping
         /// </summary>
         /// <param name="forTopLevel"></param>
         /// <returns></returns>
-        public static Dictionary<Type, ActionAttribute> GetAllActions(bool forTopLevel)
+        public static SortedDictionary<ActionAttribute, Type> GetAllActions(bool forTopLevel)
         {
-            return Assembly.GetExecutingAssembly()
+            return new SortedDictionary<ActionAttribute, Type>(
+                Assembly.GetExecutingAssembly()
                 .GetTypes()
                 .Where(t =>
                 {
@@ -50,7 +51,8 @@ namespace Key2Joy.Mapping
 
                     return actionAttribute.Visibility == ActionVisibility.Always || actionAttribute.Visibility == ActionVisibility.UnlessTopLevel;
                 })
-                .ToDictionary(t => t, t => t.GetCustomAttribute(typeof(ActionAttribute), false) as ActionAttribute);
+                .ToDictionary(t => t.GetCustomAttribute(typeof(ActionAttribute), false) as ActionAttribute, t => t)
+            );
         }
     }
 }

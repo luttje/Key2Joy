@@ -9,7 +9,7 @@ namespace Key2Joy.Mapping
         Description = "Keyboard Event",
         OptionsUserControl = typeof(KeyboardTriggerOptionsControl)
     )]
-    public class KeyboardTrigger : BaseTrigger, IEquatable<KeyboardTrigger>
+    public class KeyboardTrigger : BaseTrigger, IPressState, IEquatable<KeyboardTrigger>
     {
         public const string PREFIX_UNIQUE = nameof(KeyboardTrigger);
 
@@ -20,7 +20,7 @@ namespace Key2Joy.Mapping
         public Keys Keys { get; set; }
         
         [JsonProperty]
-        public PressState PressedState { get; set; }
+        public PressState PressState { get; set; }
 
         [JsonConstructor]
         public KeyboardTrigger(string name, string description)
@@ -48,14 +48,14 @@ namespace Key2Joy.Mapping
         public bool Equals(KeyboardTrigger other)
         {
             return Keys == other.Keys 
-                && PressedState == other.PressedState;
+                && PressState == other.PressState;
         }
 
         public override string ToString()
         {
             string format = "(keyboard) {1} {0}";
             return format.Replace("{0}", Keys.ToString())
-                .Replace("{1}", Enum.GetName(typeof(PressState), PressedState));
+                .Replace("{1}", Enum.GetName(typeof(PressState), PressState));
         }
 
         public override object Clone()

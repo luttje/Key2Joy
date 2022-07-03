@@ -14,8 +14,11 @@
 ## Logic
 
 * [`App.Command` (`String`)](Api/Logic/App.Command.md)
+* [`ClearInterval` (`IntervalId`)](Api/Logic/ClearInterval.md)
+* [`ClearTimeout` (`TimeoutId`)](Api/Logic/ClearTimeout.md)
 * [`SetDelayedFunctions` (`Int64`, `Action[]`)](Api/Logic/SetDelayedFunctions.md)
-* [`SetTimeout` (`Action`, `Int64`)](Api/Logic/SetTimeout.md)
+* [`SetInterval` (`CallbackAction`, `Int64`, `Object[]`)](Api/Logic/SetInterval.md)
+* [`SetTimeout` (`CallbackAction`, `Int64`, `Object[]`)](Api/Logic/SetTimeout.md)
 
 ## Windows
 

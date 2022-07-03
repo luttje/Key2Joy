@@ -40,14 +40,22 @@ implementations: this project uses [NLua](https://github.com/NLua/NLua) and
           GamePad.Simulate(GamePadControl.DPadRight, PressState.Release)
        end,
        function ()
-          -- Or simply press and release (takes 50 ms to release)
-          GamePad.Simulate(GamePadControl.DPadDown, PressState.PressAndRelease)
+          GamePad.Simulate(GamePadControl.DPadDown, PressState.Press)
        end,
        function ()
-          GamePad.Simulate(GamePadControl.DPadLeft, PressState.PressAndRelease)
+          GamePad.Simulate(GamePadControl.DPadDown, PressState.Release)
        end,
        function ()
-          GamePad.Simulate(GamePadControl.B, PressState.PressAndRelease)
+          GamePad.Simulate(GamePadControl.DPadLeft, PressState.Press)
+       end,
+       function ()
+          GamePad.Simulate(GamePadControl.DPadLeft, PressState.Release)
+       end,
+       function ()
+          GamePad.Simulate(GamePadControl.B, PressState.Press)
+       end,
+       function ()
+          GamePad.Simulate(GamePadControl.B, PressState.Release)
        end
     )
     ```
@@ -67,23 +75,21 @@ Now when you enable the mappings *(Enable checkbox in the top right of
 Key2Joy)* you can run that Lua script by pressing and releasing the F-key
 on your keyboard.
 
-> 🚨 **Note:** If you bind a script to a keyboard PressAndRelease it will
-> execute twice! Once on pressing down and once on releasing.
-
 
 ## Some Script Examples
 You can find more examples in the [📃 Scripting API Reference](Index.md).
 
-### Press "A", then stop listening for triggers after two seconds.
+### Holds "A" for 500 ms then stop listening for triggers
 
 **Lua:**
 ```lua
 Print("test")
 
-GamePad.Simulate(GamePadControl.A, PressState.PressAndRelease)
+GamePad.Simulate(GamePadControl.A, PressState.Press)
 SetTimeout(function ()
+   GamePad.Simulate(GamePadControl.A, PressState.Release)
    App.Command("abort")
-end, 2000)
+end, 500)
 
 Print("end test")
 ```
@@ -92,10 +98,11 @@ Print("end test")
 ```js
 Print("test");
 
-GamePad.Simulate(GamePadControl.A, PressState.PressAndRelease);
+GamePad.Simulate(GamePadControl.A, PressState.Press);
 setTimeout(function () {
-  App.Command("abort");
-}, 2000); // SetTimeout also works in Javascript.
+   GamePad.Simulate(GamePadControl.A, PressState.Release)
+   App.Command("abort");
+}, 500); // SetTimeout also works in Javascript.
 
 Print("end test");
 ```

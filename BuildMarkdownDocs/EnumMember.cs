@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
@@ -26,6 +27,14 @@ namespace BuildMarkdownDocs
 
             foreach (var name in Enum.GetNames(Type))
             {
+                var memberInfo = Type.GetMember(name);
+                var enumValueMemberInfo = memberInfo.FirstOrDefault(
+                    m => m.DeclaringType == Type);
+                var valueAttributes = enumValueMemberInfo.GetCustomAttribute(typeof(ObsoleteAttribute), false);
+
+                if (valueAttributes != null)
+                    continue;
+                
                 if (firstName == null)
                     firstName = name;
                 

@@ -28,13 +28,13 @@ namespace Key2Joy.Mapping
             }
         }
         
-        private Dictionary<AxisDirection, BaseAction> lookup;
+        private Dictionary<AxisDirection, MappedOption> lookup;
         private System.ComponentModel.Container components;
         private Timer tmrAxisTimeout;
 
         private MouseMoveTriggerListener()
         {
-            lookup = new Dictionary<AxisDirection, BaseAction>();
+            lookup = new Dictionary<AxisDirection, MappedOption>();
 
             components = new System.ComponentModel.Container();
             tmrAxisTimeout = new Timer(components);
@@ -60,7 +60,7 @@ namespace Key2Joy.Mapping
         {
             var trigger = mappedOption.Trigger as MouseMoveTrigger;
             
-            lookup.Add(trigger.AxisBinding, mappedOption.Action);
+            lookup.Add(trigger.AxisBinding, mappedOption);
         }
 
         internal override void WndProc(ref Message m)
@@ -98,41 +98,43 @@ namespace Key2Joy.Mapping
 
             var deltaX = (short)Math.Min(Math.Max(lastX * short.MaxValue * SENSITIVITY, short.MinValue), short.MaxValue);
             var deltaY = (short)-Math.Min(Math.Max(lastY * short.MaxValue * SENSITIVITY, short.MinValue), short.MaxValue);
-            BaseAction action;
+            MappedOption mappedOption;
 
             if (
                 (
                     deltaX > 0
-                    && lookup.TryGetValue(AxisDirection.Right, out action)
+                    && lookup.TryGetValue(AxisDirection.Right, out mappedOption)
                 )
                 ||
                 (
                     deltaX < 0
-                    && lookup.TryGetValue(AxisDirection.Left, out action)
+                    && lookup.TryGetValue(AxisDirection.Left, out mappedOption)
                 )
             )
             {
-                if (action != null)
-                    action.Execute(new MouseMoveInputBag
+                if (mappedOption?.Action != null)
+                    mappedOption.Action.Execute(new MouseMoveInputBag
                     {
+                        Trigger = mappedOption.Trigger,
                         DeltaX = deltaX,
                     });
             }
             if (
                 (
                     deltaY > 0
-                    && lookup.TryGetValue(AxisDirection.Forward, out action)
+                    && lookup.TryGetValue(AxisDirection.Forward, out mappedOption)
                 )
                 ||
                 (
                     deltaY < 0
-                    && lookup.TryGetValue(AxisDirection.Backward, out action)
+                    && lookup.TryGetValue(AxisDirection.Backward, out mappedOption)
                 )
             )
             {
-                if (action != null)
-                    action.Execute(new MouseMoveInputBag
+                if (mappedOption?.Action != null)
+                    mappedOption.Action.Execute(new MouseMoveInputBag
                     {
+                        Trigger = mappedOption.Trigger,
                         DeltaY = deltaY,
                     });
             }

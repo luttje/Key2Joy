@@ -32,7 +32,7 @@ namespace Key2Joy
             var thisTrigger = (MouseButtonTrigger)trigger;
 
             this.mouseButtons = thisTrigger.MouseButtons;
-            cmbPressedState.SelectedItem = thisTrigger.PressedState;
+            cmbPressedState.SelectedItem = thisTrigger.PressState;
             txtKeyBind.Text = $"{mouseButtons}";
         }
 
@@ -41,7 +41,7 @@ namespace Key2Joy
             var thisTrigger = (MouseButtonTrigger)trigger;
 
             thisTrigger.MouseButtons = mouseButtons;
-            thisTrigger.PressedState = (PressState) cmbPressedState.SelectedItem;
+            thisTrigger.PressState = (PressState) cmbPressedState.SelectedItem;
         }
 
         protected override void WndProc(ref Message m)

@@ -23,13 +23,13 @@ namespace Key2Joy.Mapping
         }
 
         private GlobalInputHook globalKeyboardHook;
-        private Dictionary<Keys, BaseAction> lookupDown;
-        private Dictionary<Keys, BaseAction> lookupRelease;
+        private Dictionary<Keys, MappedOption> lookupDown;
+        private Dictionary<Keys, MappedOption> lookupRelease;
 
         private KeyboardTriggerListener()
         {
-            lookupDown = new Dictionary<Keys, BaseAction>();
-            lookupRelease = new Dictionary<Keys, BaseAction>();
+            lookupDown = new Dictionary<Keys, MappedOption>();
+            lookupRelease = new Dictionary<Keys, MappedOption>();
         }
 
         protected override void Start()
@@ -55,10 +55,10 @@ namespace Key2Joy.Mapping
         {
             var trigger = mappedOption.Trigger as KeyboardTrigger;
             
-            if (trigger.PressedState == PressState.Press || trigger.PressedState == PressState.PressAndRelease)
-                lookupDown.Add(trigger.Keys, mappedOption.Action);
-            if (trigger.PressedState == PressState.Release || trigger.PressedState == PressState.PressAndRelease)
-                lookupRelease.Add(trigger.Keys, mappedOption.Action);
+            if (trigger.PressState == PressState.Press)
+                lookupDown.Add(trigger.Keys, mappedOption);
+            if (trigger.PressState == PressState.Release)
+                lookupRelease.Add(trigger.Keys, mappedOption);
         }
 
         private void OnKeyInputEvent(object sender, GlobalKeyboardHookEventArgs e)
@@ -68,18 +68,19 @@ namespace Key2Joy.Mapping
 
             // Test if this is a bound key, if so halt default input behaviour
             var keys = VirtualKeyConverter.KeysFromVirtual(e.KeyboardData.VirtualCode);
-            Dictionary<Keys, BaseAction> dictionary;
+            Dictionary<Keys, MappedOption> dictionary;
 
             if (e.KeyboardState == KeyboardState.KeyDown)
                 dictionary = lookupDown;
             else
                 dictionary = lookupRelease;
 
-            if (!dictionary.TryGetValue(keys, out var action))
+            if (!dictionary.TryGetValue(keys, out var mappedOption))
                 return;
 
-            if (!TryOverrideKeyboardInput(action, new KeyboardInputBag
+            if (!TryOverrideKeyboardInput(mappedOption.Action, new KeyboardInputBag
             {
+                Trigger = mappedOption.Trigger,
                 State = e.KeyboardState,
                 Keys = keys
             }))

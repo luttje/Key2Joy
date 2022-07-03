@@ -3,10 +3,9 @@
 
 ## Example Use
 
-`PressState.PressAndRelease`
+`PressState.Press`
 
 ## Possible Values
 
-* `PressAndRelease`
 * `Press`
 * `Release`
