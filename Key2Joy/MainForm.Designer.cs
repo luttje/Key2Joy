@@ -34,7 +34,7 @@
             this.olvColumnAction = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnTrigger = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.pnlActionManagement = new System.Windows.Forms.Panel();
-            this.btnAddAction = new System.Windows.Forms.Button();
+            this.btnCreateMapping = new System.Windows.Forms.Button();
             this.pnlPresetManagement = new System.Windows.Forms.Panel();
             this.txtPresetName = new System.Windows.Forms.TextBox();
             this.lblPresetName = new System.Windows.Forms.Label();
@@ -51,6 +51,7 @@
             this.exitProgramToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.createNewMappingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.viewScriptOutputToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fillPresetWithToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.allGamePadJoystickActionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -76,7 +77,6 @@
             this.pnlMainMenu = new System.Windows.Forms.Panel();
             this.lblStatusInactive = new System.Windows.Forms.Label();
             this.lblStatusActive = new System.Windows.Forms.Label();
-            this.viewScriptOutputToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.olvMappings)).BeginInit();
             this.pnlActionManagement.SuspendLayout();
             this.pnlPresetManagement.SuspendLayout();
@@ -128,23 +128,23 @@
             // 
             // pnlActionManagement
             // 
-            this.pnlActionManagement.Controls.Add(this.btnAddAction);
+            this.pnlActionManagement.Controls.Add(this.btnCreateMapping);
             this.pnlActionManagement.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnlActionManagement.Location = new System.Drawing.Point(0, 423);
             this.pnlActionManagement.Name = "pnlActionManagement";
             this.pnlActionManagement.Size = new System.Drawing.Size(580, 34);
             this.pnlActionManagement.TabIndex = 0;
             // 
-            // btnAddAction
+            // btnCreateMapping
             // 
-            this.btnAddAction.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnAddAction.Location = new System.Drawing.Point(431, 0);
-            this.btnAddAction.Name = "btnAddAction";
-            this.btnAddAction.Size = new System.Drawing.Size(149, 34);
-            this.btnAddAction.TabIndex = 0;
-            this.btnAddAction.Text = "Create New Mapping";
-            this.btnAddAction.UseVisualStyleBackColor = true;
-            this.btnAddAction.Click += new System.EventHandler(this.btnAddAction_Click);
+            this.btnCreateMapping.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnCreateMapping.Location = new System.Drawing.Point(431, 0);
+            this.btnCreateMapping.Name = "btnCreateMapping";
+            this.btnCreateMapping.Size = new System.Drawing.Size(149, 34);
+            this.btnCreateMapping.TabIndex = 0;
+            this.btnCreateMapping.Text = "Create New Mapping";
+            this.btnCreateMapping.UseVisualStyleBackColor = true;
+            this.btnCreateMapping.Click += new System.EventHandler(this.btnCreateMapping_Click);
             // 
             // pnlPresetManagement
             // 
@@ -284,6 +284,13 @@
             this.createNewMappingToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
             this.createNewMappingToolStripMenuItem.Text = "Create New Mapping";
             this.createNewMappingToolStripMenuItem.Click += new System.EventHandler(this.createNewMappingToolStripMenuItem_Click);
+            // 
+            // viewScriptOutputToolStripMenuItem
+            // 
+            this.viewScriptOutputToolStripMenuItem.Name = "viewScriptOutputToolStripMenuItem";
+            this.viewScriptOutputToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.viewScriptOutputToolStripMenuItem.Text = "View Script Output";
+            this.viewScriptOutputToolStripMenuItem.Click += new System.EventHandler(this.viewScriptOutputToolStripMenuItem_Click);
             // 
             // toolsToolStripMenuItem
             // 
@@ -490,13 +497,6 @@
             this.lblStatusActive.Text = "(Mappings active)";
             this.lblStatusActive.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // viewScriptOutputToolStripMenuItem
-            // 
-            this.viewScriptOutputToolStripMenuItem.Name = "viewScriptOutputToolStripMenuItem";
-            this.viewScriptOutputToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
-            this.viewScriptOutputToolStripMenuItem.Text = "View Script Output";
-            this.viewScriptOutputToolStripMenuItem.Click += new System.EventHandler(this.viewScriptOutputToolStripMenuItem_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -547,7 +547,7 @@
         private System.Windows.Forms.ToolStripMenuItem viewSourceCodeToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
-        private System.Windows.Forms.Button btnAddAction;
+        private System.Windows.Forms.Button btnCreateMapping;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openPresetFolderToolStripMenuItem;

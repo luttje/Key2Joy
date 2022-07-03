@@ -72,10 +72,16 @@ namespace Key2Joy
                 
             olvMappings.SetObjects(preset.MappedOptions);
             olvMappings.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
-            txtPresetName.Text = preset.Name;
+
+            UpdateSelectedPresetName();
         }
 
-        private void btnAddAction_Click(object sender, EventArgs e)
+        private void UpdateSelectedPresetName()
+        {
+            txtPresetName.Text = selectedPreset.Name;
+        }
+
+        private void btnCreateMapping_Click(object sender, EventArgs e)
         {
             if (selectedPreset == null)
                 CreateNewPreset();
@@ -83,11 +89,13 @@ namespace Key2Joy
             EditMappedOption();
         }
 
-        private void CreateNewPreset()
+        private MappingPreset CreateNewPreset(string nameSuffix = default)
         {
-            var preset = new MappingPreset(txtPresetName.Text, selectedPreset?.MappedOptions);
+            var preset = new MappingPreset($"{txtPresetName.Text}{nameSuffix}", selectedPreset?.MappedOptions);
 
             SetSelectedPreset(preset);
+
+            return preset;
         }
         
         private void EditMappedOption(MappedOption existingMappedOption = null)
@@ -314,10 +322,6 @@ namespace Key2Joy
             e.SubItem.Font = new Font(e.SubItem.Font, FontStyle.Italic);
         }
 
-        private void BtnOpenTest_Click(object sender, EventArgs e)
-        {
-        }
-
         private void ChkEnabled_CheckedChanged(object sender, EventArgs e)
         {
             bool isEnabled = chkEnabled.Checked;
@@ -337,11 +341,6 @@ namespace Key2Joy
             selectedPreset.Save();
         }
 
-        private void BtnCreate_Click(object sender, EventArgs e)
-        {
-            CreateNewPreset();
-        }
-        
         private void MainForm_Load(object sender, EventArgs e)
         {
             var lastLoadedPreset = MappingPreset.RestoreLastLoaded();
@@ -368,7 +367,7 @@ namespace Key2Joy
 
         private void newPresetToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            CreateNewPreset();
+            var copy = CreateNewPreset(" - Copy");
         }
 
         private void loadPresetToolStripMenuItem_Click(object sender, EventArgs e)
@@ -404,7 +403,14 @@ namespace Key2Joy
 
         private void openPresetFolderToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Process.Start(MappingPreset.GetSaveDirectory());
+            if (selectedPreset == null)
+            {
+                Process.Start(MappingPreset.GetSaveDirectory());
+                return;
+            }
+
+            var argument = "/select, \"" + selectedPreset.FilePath + "\"";
+            Process.Start("explorer.exe", argument);
         }
 
         private void exitProgramToolStripMenuItem_Click(object sender, EventArgs e)
@@ -414,7 +420,7 @@ namespace Key2Joy
 
         private void createNewMappingToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            btnAddAction_Click(sender, e);
+            btnCreateMapping_Click(sender, e);
         }
 
         private void viewScriptOutputToolStripMenuItem_Click(object sender, EventArgs e)
