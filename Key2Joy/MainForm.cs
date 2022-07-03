@@ -31,6 +31,10 @@ namespace Key2Joy
             var items = new MenuItem[]{
                 new MenuItem("Show", (s, e) => {
                     Show();
+                    BringToFront();
+
+                    if (WindowState == FormWindowState.Minimized)
+                        WindowState = FormWindowState.Normal;
                 }),
                 new MenuItem("Exit", exitProgramToolStripMenuItem_Click)
             };
@@ -423,9 +427,21 @@ namespace Key2Joy
             btnCreateMapping_Click(sender, e);
         }
 
+        private OutputForm outputForm;
         private void viewScriptOutputToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            new OutputForm().Show();
+            if(outputForm != null && !outputForm.IsDisposed)
+            {
+                outputForm.BringToFront();
+
+                if (outputForm.WindowState == FormWindowState.Minimized)
+                    outputForm.WindowState = FormWindowState.Normal;
+                
+                return;
+            }
+
+            outputForm = new OutputForm();
+            outputForm.Show();
         }
 
         private void gamePadPressAndReleaseToolStripMenuItem_Click(object sender, EventArgs e)

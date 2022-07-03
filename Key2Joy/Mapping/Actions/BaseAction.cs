@@ -40,7 +40,7 @@ namespace Key2Joy.Mapping
             
             return (BaseAction)Activator.CreateInstance(actionType, new object[]
                 {
-                    typeAttribute.NameFormat,
+                    typeAttribute.NameFormat ?? actionType.Name,
                     typeAttribute.Description
                 });
         }
