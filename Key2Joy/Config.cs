@@ -52,6 +52,18 @@ namespace Key2Joy
         }
         private int pressReleaseWaitTime = 50;
 
+        [ConfigControl(
+            Text = "Path to directory where logs are saved",
+            ControlType = typeof(System.Windows.Forms.TextBox)
+        )]
+        [JsonProperty]
+        public string LogOutputPath
+        {
+            get => logOutputPath;
+            set => SaveIfInitialized(logOutputPath = value);
+        }
+        private string logOutputPath = Path.Combine(Program.GetAppDirectory(), "Logs");
+
         private Config() { }
         private void SaveIfInitialized(object changedValue = null)
         {

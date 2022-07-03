@@ -40,7 +40,7 @@ namespace Key2Joy.Mapping
             }
             catch (NLua.Exceptions.LuaScriptException e)
             {
-                Console.WriteLine(e.ToString());
+                Output.WriteLine(e);
             }
         }
 
@@ -84,7 +84,7 @@ namespace Key2Joy.Mapping
             var paramDebug = string.Join(", ", method.GetParameters()
                 .Select(p => $"{p.ParameterType.Name} {p.Name}")
                 .ToArray());
-            System.Diagnostics.Debug.WriteLine($"lua.RegisterFunction({functionName},{instance},{method.Name}({paramDebug}):{method.ReturnType})");
+            Output.WriteLine(Output.OutputModes.Verbose, $"lua.RegisterFunction({functionName},{instance},{method.Name}({paramDebug}):{method.ReturnType})");
             
             lua.RegisterFunction(
                 functionName,

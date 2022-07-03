@@ -277,6 +277,7 @@
     <Compile Include="Mapping\Actions\Scripting\BaseScriptAction.cs" />
     <Compile Include="Mapping\Actions\Scripting\JavascriptScriptAction.cs" />
     <Compile Include="Mapping\Actions\Scripting\LuaScriptAction.cs" />
+    <Compile Include="Output.cs" />
     <Compile Include="Mapping\Actions\Scripting\ScriptActionControl.cs">
       <SubType>UserControl</SubType>
     </Compile>

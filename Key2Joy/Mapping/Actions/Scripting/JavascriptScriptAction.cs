@@ -30,14 +30,21 @@ namespace Key2Joy.Mapping
 
         internal override async Task Execute(InputBag inputBag)
         {
-            if (IsScriptPath) 
+            try
             {
-                string source = System.IO.File.ReadAllText(Script);
-                engine.Execute(source);
-                return;
-            }
+                if (IsScriptPath)
+                {
+                    string source = System.IO.File.ReadAllText(Script);
+                    engine.Execute(source);
+                    return;
+                }
 
-            engine.Execute(Script);
+                engine.Execute(Script);
+            }
+            catch (Jint.Runtime.JavaScriptException e)
+            {
+                Output.WriteLine(e);
+            }
         }
 
         internal override void RegisterScriptingEnum(Type enumType)

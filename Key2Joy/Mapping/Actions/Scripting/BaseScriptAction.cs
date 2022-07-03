@@ -42,7 +42,7 @@ namespace Key2Joy.Mapping
                 sb.Append(args[i]);
             }
 
-            System.Diagnostics.Debug.WriteLine(sb.ToString());
+            Output.WriteLine(sb);
         }
 
         public override string GetNameDisplay()
