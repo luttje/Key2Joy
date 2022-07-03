@@ -1,8 +1,8 @@
-# ![](KeyToJoy/Graphics/Icons/icon32.png?raw=true) KeyToJoy - Scripting
+# ![](Key2Joy/Graphics/Icons/icon32.png?raw=true) Key2Joy - Scripting
 Using action scripts you can bind a complex sequence of actions to a
 trigger.
 
-Most actions that you can configure in KeyToJoy are available through
+Most actions that you can configure in Key2Joy are available through
 scripting. To get started check out the examples, or browse the full API
 Reference.
 
@@ -53,7 +53,7 @@ implementations: this project uses [NLua](https://github.com/NLua/NLua) and
     ```
 ![image](https://user-images.githubusercontent.com/2738114/177006114-1ffafa7e-2f94-43d4-bddc-1bcca7c51344.png)
 
-2. In KeyToJoy click *Create New Mapping*
+2. In Key2Joy click *Create New Mapping*
 3. Choose the trigger *Keyboard Event*
 4. Press the "F"-key on your keyboard
 5. Select *Release* from the dropdown. This ensures the script will only run
@@ -64,7 +64,7 @@ implementations: this project uses [NLua](https://github.com/NLua/NLua) and
 9. Save the mapping.
 
 Now when you enable the mappings *(Enable checkbox in the top right of
-KeyToJoy)* you can run that Lua script by pressing and releasing the F-key
+Key2Joy)* you can run that Lua script by pressing and releasing the F-key
 on your keyboard.
 
 > 🚨 **Note:** If you bind a script to a keyboard PressAndRelease it will

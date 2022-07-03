@@ -1,4 +1,4 @@
-# ![](KeyToJoy/Graphics/Icons/icon32.png?raw=true) KeyToJoy
+# ![](Key2Joy/Graphics/Icons/icon32.png?raw=true) Key2Joy
 Simulate a Joystick/Controller using your keyboard, mouse or other triggers.
 
 In addition to simply simulating a button being pressed on the Joystick, you
@@ -16,19 +16,19 @@ screen.
 1. *(Optional)* I advise you [create a System Restore
    Point](https://support.microsoft.com/en-us/windows/create-a-system-restore-point-77e02e2a-3298-c869-9974-ef5658ea3be9)
 2. Download a binary from the [releases of this
-   repo](https://github.com/luttje/KeyToJoy/releases)
+   repo](https://github.com/luttje/Key2Joy/releases)
 3. Extract all files to the same location
 
 ### Starting
 
-1. Start **![](KeyToJoy/Graphics/Icons/icon16.png?raw=true) KeyToJoy.exe**
+1. Start **![](Key2Joy/Graphics/Icons/icon16.png?raw=true) Key2Joy.exe**
 2. *(First time only)* Accept installation of the Scp Virtual Bus Driver
 3. Use the default mappings, modify them by double-clicking a row in the mapping-list, or add new mappings.
 
    ![Screenshot showing the overview window. Off to the side the mapping dialog is showing all
    available actions.](.github/screenshot.png)
 
-   **A trigger** is something that KeyToJoy will listen for. *E.g: a mouse move, key press, key
+   **A trigger** is something that Key2Joy will listen for. *E.g: a mouse move, key press, key
    release, etc...*
    > **⚠ Note:** The default behaviour of a trigger is disabled. This means setting the left mouse button as
    > a trigger will make it so you can't left-click anymore until you abort this app.

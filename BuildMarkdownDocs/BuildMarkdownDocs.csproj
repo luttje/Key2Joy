@@ -67,9 +67,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\KeyToJoy\KeyToJoy.csproj">
+    <ProjectReference Include="..\Key2Joy\Key2Joy.csproj">
       <Project>{808ba609-806d-4d55-857b-6fb4e16e13f1}</Project>
-      <Name>KeyToJoy</Name>
+      <Name>Key2Joy</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

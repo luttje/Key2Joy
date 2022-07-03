@@ -25,7 +25,7 @@ namespace BuildMarkdownDocs
 
         internal static Member FromXml(XElement element)
         {
-            // Get the parameter types from member attribute: <member name="M:KeyToJoy.Mapping.KeyboardAction.ExecuteForScript(System.Windows.Forms.Keys,KeyToJoy.Input.PressState)">
+            // Get the parameter types from member attribute: <member name="M:Key2Joy.Mapping.KeyboardAction.ExecuteForScript(System.Windows.Forms.Keys,Key2Joy.Input.PressState)">
             var memberName = element.Attribute("name").Value;
             var parametersStart = memberName.IndexOf('(');
             Type[] parameterTypes;

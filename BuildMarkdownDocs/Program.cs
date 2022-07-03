@@ -36,7 +36,7 @@ namespace BuildMarkdownDocs
             }
 
             // TODO: This is hacky, but it works.
-            TypeUtil.NotifyAssemblyRelation(typeof(KeyToJoy.Program));
+            TypeUtil.NotifyAssemblyRelation(typeof(Key2Joy.Program));
 
             MarkdownDocs.Build(xmlFile, outputDirectory, template, filter);
         }
