@@ -305,6 +305,15 @@ namespace Key2Joy
             RemoveSelectedMappings();
         }
 
+        private void olvMappings_FormatCell(object sender, FormatCellEventArgs e)
+        {
+            if (e.CellValue != null)
+                return;
+
+            e.SubItem.ForeColor = SystemColors.GrayText;
+            e.SubItem.Font = new Font(e.SubItem.Font, FontStyle.Italic);
+        }
+
         private void BtnOpenTest_Click(object sender, EventArgs e)
         {
         }
@@ -339,6 +348,22 @@ namespace Key2Joy
 
             if (lastLoadedPreset != null)
                 SetSelectedPreset(lastLoadedPreset);
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                e.Cancel = true;
+                Hide();
+
+                if (Config.Instance.MuteCloseExitMessage)
+                    return;
+
+                var result = MessageBox.Show("Closing this window minimizes it to the notification tray in your taskbar. You can shut down Key2Joy through File > Exit Program.\n\nContinue showing this message?", "Minimizing to notification tray.", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+
+                Config.Instance.MuteCloseExitMessage = result != DialogResult.Yes;
+            }
         }
 
         private void newPresetToolStripMenuItem_Click(object sender, EventArgs e)
@@ -380,6 +405,11 @@ namespace Key2Joy
         private void openPresetFolderToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Process.Start(MappingPreset.GetSaveDirectory());
+        }
+
+        private void exitProgramToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
 
         private void gamePadPressAndReleaseToolStripMenuItem_Click(object sender, EventArgs e)
@@ -439,6 +469,11 @@ namespace Key2Joy
             Process.Start("https://devicetests.com/mouse-test");
         }
 
+        private void userConfigurationsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            (new ConfigForm()).ShowDialog();
+        }
+
         private void reportAProblemToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Process.Start("https://github.com/luttje/Key2Joy/issues");
@@ -462,36 +497,6 @@ namespace Key2Joy
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Close();
-        }
-
-        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (e.CloseReason == CloseReason.UserClosing)
-            {
-                e.Cancel = true;
-                Hide();
-
-                if (Config.Instance.MuteCloseExitMessage)
-                    return;
-
-                var result = MessageBox.Show("Closing this window minimizes it to the notification tray in your taskbar. You can shut down Key2Joy through File > Exit Program.\n\nContinue showing this message?", "Minimizing to notification tray.", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
-                
-                Config.Instance.MuteCloseExitMessage = result != DialogResult.Yes;
-            }
-        }
-
-        private void exitProgramToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
-
-        private void olvMappings_FormatCell(object sender, FormatCellEventArgs e)
-        {
-            if (e.CellValue != null)
-                return;
-
-            e.SubItem.ForeColor = SystemColors.GrayText;
-            e.SubItem.Font = new Font(e.SubItem.Font, FontStyle.Italic);
         }
     }
 }

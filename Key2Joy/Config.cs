@@ -14,38 +14,50 @@ namespace Key2Joy
         const string CONFIG_PATH = "config.json";
 
         public static Config Instance { get; private set; }
+        private bool isInitialized;
 
+        [ConfigControl(
+            Text = "Mute informative message about this app minimizing by default",
+            ControlType = typeof(System.Windows.Forms.CheckBox)
+        )]
         [JsonProperty]
         public bool MuteCloseExitMessage
         {
             get => muteCloseExitMessage;
-            set
-            {
-                muteCloseExitMessage = value;
-
-                if (isInitialized)
-                    Save();
-            }
+            set => SaveIfInitialized(muteCloseExitMessage = value);
         }
         private bool muteCloseExitMessage;
 
+        [ConfigControl(
+            Text = "Last loaded mapping preset file location",
+            ControlType = typeof(System.Windows.Forms.TextBox)
+        )]
         [JsonProperty]
         public string LastLoadedPreset
         {
             get => lastLoadedPreset;
-            set
-            {
-                lastLoadedPreset = value;
-
-                if (isInitialized)
-                    Save();
-            }
+            set => SaveIfInitialized(lastLoadedPreset = value);
         }
         private string lastLoadedPreset;
 
-        private bool isInitialized;
+        [ConfigControl(
+            Text = "Release button after how many milliseconds after pressing it with PressAndRelease",
+            ControlType = typeof(System.Windows.Forms.NumericUpDown)
+        )]
+        [JsonProperty]
+        public int PressReleaseWaitTime
+        {
+            get => pressReleaseWaitTime;
+            set => SaveIfInitialized(pressReleaseWaitTime = value);
+        }
+        private int pressReleaseWaitTime = 50;
 
         private Config() { }
+        private void SaveIfInitialized(object changedValue = null)
+        {
+            if (isInitialized)
+                Save();
+        }
 
         private void Save()
         {

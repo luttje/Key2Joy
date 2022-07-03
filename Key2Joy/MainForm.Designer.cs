@@ -63,6 +63,8 @@
             this.testGamePadJoystickToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.testKeyboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.testMouseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.userConfigurationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reportAProblemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewSourceCodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -267,7 +269,9 @@
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fillPresetWithToolStripMenuItem,
-            this.testMappingsToolStripMenuItem});
+            this.testMappingsToolStripMenuItem,
+            this.toolStripSeparator4,
+            this.userConfigurationsToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
@@ -278,7 +282,7 @@
             this.allGamePadJoystickActionsToolStripMenuItem,
             this.allKeyboardActionsToolStripMenuItem});
             this.fillPresetWithToolStripMenuItem.Name = "fillPresetWithToolStripMenuItem";
-            this.fillPresetWithToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
+            this.fillPresetWithToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.fillPresetWithToolStripMenuItem.Text = "Fill Preset With...";
             // 
             // allGamePadJoystickActionsToolStripMenuItem
@@ -350,7 +354,7 @@
             this.testKeyboardToolStripMenuItem,
             this.testMouseToolStripMenuItem});
             this.testMappingsToolStripMenuItem.Name = "testMappingsToolStripMenuItem";
-            this.testMappingsToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
+            this.testMappingsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.testMappingsToolStripMenuItem.Text = "Test Mappings";
             // 
             // testGamePadJoystickToolStripMenuItem
@@ -373,6 +377,19 @@
             this.testMouseToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
             this.testMouseToolStripMenuItem.Text = "Test Mouse";
             this.testMouseToolStripMenuItem.Click += new System.EventHandler(this.testMouseToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(177, 6);
+            // 
+            // userConfigurationsToolStripMenuItem
+            // 
+            this.userConfigurationsToolStripMenuItem.Image = global::Key2Joy.Properties.Resources.cog;
+            this.userConfigurationsToolStripMenuItem.Name = "userConfigurationsToolStripMenuItem";
+            this.userConfigurationsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.userConfigurationsToolStripMenuItem.Text = "User Configurations";
+            this.userConfigurationsToolStripMenuItem.Click += new System.EventHandler(this.userConfigurationsToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -527,6 +544,8 @@
         private System.Windows.Forms.ToolStripMenuItem pressAndReleaseToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem pressToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem releaseToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.ToolStripMenuItem userConfigurationsToolStripMenuItem;
     }
 }
 

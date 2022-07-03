@@ -106,8 +106,7 @@ namespace Key2Joy.Mapping
 
                 if (PressState == PressState.PressAndRelease)
                 {
-                    // TODO: Make this a configurable value
-                    await Task.Delay(50);
+                    await Task.Delay(Config.Instance.PressReleaseWaitTime);
                     SimulatedKeyboard.ReleaseKey(Key);
                 }
             }
