@@ -8,19 +8,19 @@ using System.Windows.Forms;
 namespace Key2Joy.Mapping
 {
     [Action(
-        Description = "Sets a timer which executes a function or specified piece of code once the timer expires",
+        Description = "Repeatedly calls a function or executes a code snippet, with a fixed time delay between each call",
         Visibility = ActionVisibility.Never
     )]
     [Util.ObjectListViewGroup(
         Name = "Logic",
         Image = "script_code"
     )]
-    internal class SetTimeoutAction : BaseAction
+    internal class SetIntervalAction : BaseAction
     {
         [JsonProperty]
         public TimeSpan WaitTime;
 
-        public SetTimeoutAction(string name, string description)
+        public SetIntervalAction(string name, string description)
             : base(name, description)
         {
         }
@@ -30,10 +30,10 @@ namespace Key2Joy.Mapping
         /// <path>Api/Logic</path>
         /// </markdown-doc>
         /// <summary>
-        /// Timeout for the specified duration in milliseconds, then execute the callback
+        /// Repeatedly calls a function or executes a code snippet, with a fixed time delay between each call
         /// </summary>
         /// <markdown-example>
-        /// Shows how to count down from 3 and execute a command using Javascript.
+        /// Shows how to count up to 10 every second and then stop by using ClearInterval();
         /// <code language="js">
         /// <![CDATA[
         /// setTimeout(function () {
@@ -58,38 +58,12 @@ namespace Key2Joy.Mapping
         /// ]]>
         /// </code>
         /// </markdown-example>
-        /// <markdown-example>
-        /// Shows how to count down from 3 each second and execute a command using Lua.
-        /// <code language="lua">
-        /// <![CDATA[
-        /// SetTimeout(function ()
-        ///    Print("Aborting in 3 second...")
-        ///
-        ///    SetTimeout(function ()
-        ///       Print("Three")
-        ///
-        ///       SetTimeout(function ()
-        ///          Print("Two")
-        ///
-        ///          SetTimeout(function ()
-        ///             Print("One")
-        ///
-        ///             SetTimeout(function ()
-        ///                App.Command("abort")
-        ///             end, 1000)
-        ///          end, 1000)
-        ///       end, 1000)
-        ///    end, 1000)
-        /// end, 1000)
-        /// ]]>
-        /// </code>
-        /// </markdown-example>
-        /// <param name="callback">Function to execute after the wait</param>
+        /// <param name="callback">Function to execute after each wait</param>
         /// <param name="waitTime">Time to wait (in milliseconds)</param>
-        /// <name>SetTimeout</name>
-        [ExposesScriptingMethod("SetTimeout")]
-        [ExposesScriptingMethod("setTimeout")] // Alias to conform to JS standard
-        public IdPool.TimeoutId ExecuteForScript(Action callback, long waitTime)
+        /// <name>SetInterval</name>
+        [ExposesScriptingMethod("SetInterval")]
+        [ExposesScriptingMethod("setInterval")] // Alias to conform to JS standard
+        public IdPool.IntervalId ExecuteForScript(Action callback, long waitTime)
         {
             WaitTime = TimeSpan.FromMilliseconds(waitTime);
 
@@ -97,16 +71,19 @@ namespace Key2Joy.Mapping
             var token = cancellation.Token;
             Task.Run(async () =>
             {
-                token.ThrowIfCancellationRequested();
-                
-                await Task.Delay(WaitTime);
+                while (true)
+                {
+                    token.ThrowIfCancellationRequested();
 
-                token.ThrowIfCancellationRequested();
-                
-                callback.Invoke();
+                    await Task.Delay(WaitTime);
+
+                    token.ThrowIfCancellationRequested();
+
+                    callback.Invoke();
+                }
             }, token);
 
-            return IdPool.CreateNewId<IdPool.TimeoutId>(cancellation);
+            return IdPool.CreateNewId<IdPool.IntervalId>(cancellation);
         }
 
         internal override Task Execute(InputBag inputBag = null)
@@ -123,7 +100,7 @@ namespace Key2Joy.Mapping
 
         public override object Clone()
         {
-            return new SetTimeoutAction(Name, description)
+            return new SetIntervalAction(Name, description)
             {
                 WaitTime = WaitTime,
                 ImageResource = ImageResource,

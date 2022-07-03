@@ -273,7 +273,11 @@
     <Compile Include="Mapping\Actions\Logic\AppCommandActionControl.Designer.cs">
       <DependentUpon>AppCommandActionControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Mapping\Actions\Logic\ClearIntervalAction.cs" />
+    <Compile Include="Mapping\Actions\Logic\IdPool.cs" />
     <Compile Include="Mapping\Actions\Logic\SetDelayedFunctionsAction.cs" />
+    <Compile Include="Mapping\Actions\Logic\ClearTimeoutAction.cs" />
+    <Compile Include="Mapping\Actions\Logic\SetIntervalAction.cs" />
     <Compile Include="Mapping\Actions\Scripting\BaseScriptAction.cs" />
     <Compile Include="Mapping\Actions\Scripting\JavascriptScriptAction.cs" />
     <Compile Include="Mapping\Actions\Scripting\LuaScriptAction.cs" />
