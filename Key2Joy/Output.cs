@@ -22,7 +22,23 @@ namespace Key2Joy
             Verbose
         }
 
+        internal static event Action<string> OnNewLogLine;
+
         internal static OutputModes OutputMode { get; set; } = OutputModes.Verbose;
+
+        internal static string GetLogPath(DateTime? day = null)
+        {
+            if (day == null)
+                day = DateTime.Now;
+
+            var directory = Config.Instance.LogOutputPath;
+
+            if (!Directory.Exists(directory))
+                Directory.CreateDirectory(directory);
+
+            var dayString = ((DateTime)day).ToString("yyyy-MM-dd");
+            return Path.Combine(directory, $"{dayString}.log");
+        }
 
         internal static void WriteLine(params object[] parts)
         {
@@ -34,16 +50,12 @@ namespace Key2Joy
             foreach (var part in parts)
                 output.Append(part.ToString());
 
-            System.Diagnostics.Debug.WriteLine(output.ToString());
-
-            var directory = Config.Instance.LogOutputPath;
-
-            if (!Directory.Exists(directory))
-                Directory.CreateDirectory(directory);
-
-            var file = Path.Combine(directory, $"{DateTime.Now.ToString("yyyy-MM-dd")}.log");
+            var outputLine = output.ToString() + Environment.NewLine;
             
-            File.AppendAllText(file, output.ToString() + Environment.NewLine);
+            System.Diagnostics.Debug.WriteLine(outputLine);
+            File.AppendAllText(GetLogPath(), outputLine);
+
+            OnNewLogLine?.Invoke(outputLine);
         }
 
         internal static void WriteLine(OutputModes messageMode = OutputModes.Default, params object[] parts)

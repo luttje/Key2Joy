@@ -412,6 +412,16 @@ namespace Key2Joy
             Application.Exit();
         }
 
+        private void createNewMappingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            btnAddAction_Click(sender, e);
+        }
+
+        private void viewScriptOutputToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new OutputForm().Show();
+        }
+
         private void gamePadPressAndReleaseToolStripMenuItem_Click(object sender, EventArgs e)
         {
             selectedPreset.AddMappingRange(GamePadAction.GetAllButtonActions(PressState.PressAndRelease));
@@ -471,7 +481,7 @@ namespace Key2Joy
 
         private void userConfigurationsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            (new ConfigForm()).ShowDialog();
+            new ConfigForm().ShowDialog();
         }
 
         private void reportAProblemToolStripMenuItem_Click(object sender, EventArgs e)

@@ -49,6 +49,8 @@
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitProgramToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.createNewMappingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fillPresetWithToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.allGamePadJoystickActionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -74,6 +76,7 @@
             this.pnlMainMenu = new System.Windows.Forms.Panel();
             this.lblStatusInactive = new System.Windows.Forms.Label();
             this.lblStatusActive = new System.Windows.Forms.Label();
+            this.viewScriptOutputToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.olvMappings)).BeginInit();
             this.pnlActionManagement.SuspendLayout();
             this.pnlPresetManagement.SuspendLayout();
@@ -190,6 +193,7 @@
             // 
             this.menMainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
+            this.viewToolStripMenuItem,
             this.toolsToolStripMenuItem,
             this.helpToolStripMenuItem});
             this.menMainMenu.Location = new System.Drawing.Point(0, 0);
@@ -265,6 +269,22 @@
             this.exitProgramToolStripMenuItem.Text = "Exit Program";
             this.exitProgramToolStripMenuItem.Click += new System.EventHandler(this.exitProgramToolStripMenuItem_Click);
             // 
+            // viewToolStripMenuItem
+            // 
+            this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.createNewMappingToolStripMenuItem,
+            this.viewScriptOutputToolStripMenuItem});
+            this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
+            this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.viewToolStripMenuItem.Text = "View";
+            // 
+            // createNewMappingToolStripMenuItem
+            // 
+            this.createNewMappingToolStripMenuItem.Name = "createNewMappingToolStripMenuItem";
+            this.createNewMappingToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.createNewMappingToolStripMenuItem.Text = "Create New Mapping";
+            this.createNewMappingToolStripMenuItem.Click += new System.EventHandler(this.createNewMappingToolStripMenuItem_Click);
+            // 
             // toolsToolStripMenuItem
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -282,7 +302,7 @@
             this.allGamePadJoystickActionsToolStripMenuItem,
             this.allKeyboardActionsToolStripMenuItem});
             this.fillPresetWithToolStripMenuItem.Name = "fillPresetWithToolStripMenuItem";
-            this.fillPresetWithToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.fillPresetWithToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.fillPresetWithToolStripMenuItem.Text = "Fill Preset With...";
             // 
             // allGamePadJoystickActionsToolStripMenuItem
@@ -354,7 +374,7 @@
             this.testKeyboardToolStripMenuItem,
             this.testMouseToolStripMenuItem});
             this.testMappingsToolStripMenuItem.Name = "testMappingsToolStripMenuItem";
-            this.testMappingsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.testMappingsToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.testMappingsToolStripMenuItem.Text = "Test Mappings";
             // 
             // testGamePadJoystickToolStripMenuItem
@@ -381,13 +401,13 @@
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(176, 6);
             // 
             // userConfigurationsToolStripMenuItem
             // 
             this.userConfigurationsToolStripMenuItem.Image = global::Key2Joy.Properties.Resources.cog;
             this.userConfigurationsToolStripMenuItem.Name = "userConfigurationsToolStripMenuItem";
-            this.userConfigurationsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.userConfigurationsToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.userConfigurationsToolStripMenuItem.Text = "User Configurations";
             this.userConfigurationsToolStripMenuItem.Click += new System.EventHandler(this.userConfigurationsToolStripMenuItem_Click);
             // 
@@ -470,6 +490,13 @@
             this.lblStatusActive.Text = "(Mappings active)";
             this.lblStatusActive.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // viewScriptOutputToolStripMenuItem
+            // 
+            this.viewScriptOutputToolStripMenuItem.Name = "viewScriptOutputToolStripMenuItem";
+            this.viewScriptOutputToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.viewScriptOutputToolStripMenuItem.Text = "View Script Output";
+            this.viewScriptOutputToolStripMenuItem.Click += new System.EventHandler(this.viewScriptOutputToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -546,6 +573,9 @@
         private System.Windows.Forms.ToolStripMenuItem releaseToolStripMenuItem1;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripMenuItem userConfigurationsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem createNewMappingToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem viewScriptOutputToolStripMenuItem;
     }
 }
 

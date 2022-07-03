@@ -120,6 +120,7 @@
             // triggerControl
             // 
             this.triggerControl.AutoSize = true;
+            this.triggerControl.BackColor = System.Drawing.SystemColors.Control;
             this.triggerControl.Dock = System.Windows.Forms.DockStyle.Top;
             this.triggerControl.Location = new System.Drawing.Point(5, 18);
             this.triggerControl.Name = "triggerControl";
@@ -138,7 +139,7 @@
             this.Controls.Add(this.btnSaveMapping);
             this.Controls.Add(this.pnlAction);
             this.Controls.Add(this.pnlTrigger);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximumSize = new System.Drawing.Size(1024, 1024);
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(512, 39);
