@@ -28,8 +28,8 @@ namespace Key2Joy
             // Relieve input capturing by this mapping form and return it to the main form
             this.Disposed += (s,e) => RawInputDevice.UnregisterDevice(HidUsageAndPage.Keyboard);
 
-            cmbPressedState.DataSource = Enum.GetValues(typeof(PressState));
-            cmbPressedState.SelectedIndex = 0;
+            cmbPressState.DataSource = LegacyPressStateConverter.GetPressStatesWithoutLegacy();
+            cmbPressState.SelectedIndex = 0;
 
             StartTrapping();
         }
@@ -39,7 +39,7 @@ namespace Key2Joy
             var thisTrigger = (KeyboardTrigger)trigger;
 
             this.keys = thisTrigger.Keys;
-            cmbPressedState.SelectedItem = thisTrigger.PressState;
+            cmbPressState.SelectedItem = thisTrigger.PressState;
             UpdateKeys();
         }
 
@@ -48,7 +48,7 @@ namespace Key2Joy
             var thisTrigger = (KeyboardTrigger)trigger;
 
             thisTrigger.Keys = this.keys;
-            thisTrigger.PressState = (PressState) cmbPressedState.SelectedItem;
+            thisTrigger.PressState = (PressState) cmbPressState.SelectedItem;
         }
 
         private void StartTrapping()

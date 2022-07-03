@@ -23,8 +23,8 @@ namespace Key2Joy
             // Relieve input capturing by this mapping form and return it to the main form
             this.Disposed += (s, e) => RawInputDevice.UnregisterDevice(HidUsageAndPage.Mouse);
 
-            cmbPressedState.DataSource = Enum.GetValues(typeof(PressState));
-            cmbPressedState.SelectedIndex = 0;
+            cmbPressState.DataSource = LegacyPressStateConverter.GetPressStatesWithoutLegacy();
+            cmbPressState.SelectedIndex = 0;
         }
 
         public void Select(BaseTrigger trigger)
@@ -32,7 +32,7 @@ namespace Key2Joy
             var thisTrigger = (MouseButtonTrigger)trigger;
 
             this.mouseButtons = thisTrigger.MouseButtons;
-            cmbPressedState.SelectedItem = thisTrigger.PressState;
+            cmbPressState.SelectedItem = thisTrigger.PressState;
             txtKeyBind.Text = $"{mouseButtons}";
         }
 
@@ -41,7 +41,7 @@ namespace Key2Joy
             var thisTrigger = (MouseButtonTrigger)trigger;
 
             thisTrigger.MouseButtons = mouseButtons;
-            thisTrigger.PressState = (PressState) cmbPressedState.SelectedItem;
+            thisTrigger.PressState = (PressState) cmbPressState.SelectedItem;
         }
 
         protected override void WndProc(ref Message m)

@@ -45,6 +45,19 @@ namespace Key2Joy.LowLevelInput
             return (PressState)Enum.Parse(typeof(PressState), reader.Value.ToString());
         }
 
+        internal static PressState[] GetPressStatesWithoutLegacy()
+        {
+            var values = new PressState[2];
+            int i = 0;
+            foreach (PressState value in Enum.GetValues(typeof(PressState)))
+            {
+                if (value != PressState.LegacyPressAndRelease)
+                    values[i++] = value;
+            }
+
+            return values;
+        }
+
         internal static void UpdateLegacyIfApplicable(MappingPreset preset)
         {
             bool changed = false;

@@ -30,7 +30,7 @@
         {
             this.txtKeyBind = new System.Windows.Forms.TextBox();
             this.lblInfo = new System.Windows.Forms.Label();
-            this.cmbPressedState = new System.Windows.Forms.ComboBox();
+            this.cmbPressState = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // txtKeyBind
@@ -57,14 +57,14 @@
             // 
             // cmbPressedState
             // 
-            this.cmbPressedState.Dock = System.Windows.Forms.DockStyle.Right;
-            this.cmbPressedState.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbPressedState.FormattingEnabled = true;
-            this.cmbPressedState.Location = new System.Drawing.Point(282, 5);
-            this.cmbPressedState.Name = "cmbPressedState";
-            this.cmbPressedState.Size = new System.Drawing.Size(89, 21);
-            this.cmbPressedState.TabIndex = 11;
-            this.cmbPressedState.SelectedIndexChanged += new System.EventHandler(this.cmbPressedState_SelectedIndexChanged);
+            this.cmbPressState.Dock = System.Windows.Forms.DockStyle.Right;
+            this.cmbPressState.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbPressState.FormattingEnabled = true;
+            this.cmbPressState.Location = new System.Drawing.Point(282, 5);
+            this.cmbPressState.Name = "cmbPressedState";
+            this.cmbPressState.Size = new System.Drawing.Size(89, 21);
+            this.cmbPressState.TabIndex = 11;
+            this.cmbPressState.SelectedIndexChanged += new System.EventHandler(this.cmbPressedState_SelectedIndexChanged);
             // 
             // KeyboardTriggerOptionsControl
             // 
@@ -72,7 +72,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.Controls.Add(this.txtKeyBind);
-            this.Controls.Add(this.cmbPressedState);
+            this.Controls.Add(this.cmbPressState);
             this.Controls.Add(this.lblInfo);
             this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Name = "KeyboardTriggerOptionsControl";
@@ -87,6 +87,6 @@
 
         private System.Windows.Forms.TextBox txtKeyBind;
         private System.Windows.Forms.Label lblInfo;
-        private System.Windows.Forms.ComboBox cmbPressedState;
+        private System.Windows.Forms.ComboBox cmbPressState;
     }
 }

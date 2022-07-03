@@ -20,7 +20,7 @@ namespace Key2Joy.Mapping
             InitializeComponent();
 
             cmbGamePad.DataSource = GamePadAction.GetAllButtons();
-            cmbPressState.DataSource = Enum.GetValues(typeof(PressState));
+            cmbPressState.DataSource = LegacyPressStateConverter.GetPressStatesWithoutLegacy();
             cmbPressState.SelectedIndex = 0;
         }
 
