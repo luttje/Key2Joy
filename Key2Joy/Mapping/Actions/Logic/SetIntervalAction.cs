@@ -17,6 +17,8 @@ namespace Key2Joy.Mapping
     )]
     internal class SetIntervalAction : BaseAction
     {
+        public delegate void CallbackAction(params object[] arguments);
+            
         [JsonProperty]
         public TimeSpan WaitTime;
 
@@ -60,10 +62,11 @@ namespace Key2Joy.Mapping
         /// </markdown-example>
         /// <param name="callback">Function to execute after each wait</param>
         /// <param name="waitTime">Time to wait (in milliseconds)</param>
+        /// <param name="arguments">Zero or more extra parameters to pass to the function</param>
         /// <name>SetInterval</name>
         [ExposesScriptingMethod("SetInterval")]
         [ExposesScriptingMethod("setInterval")] // Alias to conform to JS standard
-        public IdPool.IntervalId ExecuteForScript(Action callback, long waitTime)
+        public IdPool.IntervalId ExecuteForScript(CallbackAction callback, long waitTime, params object[] arguments)
         {
             WaitTime = TimeSpan.FromMilliseconds(waitTime);
 
@@ -79,7 +82,7 @@ namespace Key2Joy.Mapping
 
                     token.ThrowIfCancellationRequested();
 
-                    callback.Invoke();
+                    callback.Invoke(arguments);
                 }
             }, token);
 
