@@ -137,6 +137,7 @@ namespace Key2Joy.Mapping
             return new JavascriptAction(Name, description)
             {
                 Script = Script,
+                IsScriptPath = IsScriptPath,
                 ImageResource = ImageResource,
                 Name = Name,
             };

@@ -347,20 +347,6 @@
     },
     {
       "Action": {
-        "$type": "LuaScriptAction",
-        "Script": "C:\\Users\\twl\\Desktop\\test.lua",
-        "IsScriptPath": false,
-        "Name": "Lua Script: {0}"
-      },
-      "Trigger": {
-        "$type": "KeyboardTrigger",
-        "Keys": "D3",
-        "PressState": "Press",
-        "Name": null
-      }
-    },
-    {
-      "Action": {
         "$type": "GamePadAction",
         "Control": "DPadUp",
         "PressState": "Release",

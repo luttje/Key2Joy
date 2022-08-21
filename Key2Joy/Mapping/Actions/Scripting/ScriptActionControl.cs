@@ -57,6 +57,11 @@ namespace Key2Joy.Mapping
             OptionsChanged?.Invoke();
         }
 
+        private void txtFilePath_TextChanged(object sender, EventArgs e)
+        {
+            OptionsChanged?.Invoke();
+        }
+
         private void chkDirectInput_CheckedChanged(object sender, EventArgs e)
         {
             txtScript.Visible = chkDirectInput.Checked;

@@ -23,6 +23,7 @@ namespace Key2Joy.Mapping
 
         [JsonProperty]
         public bool IsScriptPath { get; set; }
+        
         public static BaseScriptAction Instance { get; private set; }
 
         public BaseScriptAction(string name, string description)

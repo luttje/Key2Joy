@@ -103,6 +103,7 @@
             this.txtFilePath.Name = "txtFilePath";
             this.txtFilePath.Size = new System.Drawing.Size(190, 20);
             this.txtFilePath.TabIndex = 0;
+            this.txtFilePath.TextChanged += new System.EventHandler(this.txtFilePath_TextChanged);
             // 
             // btnBrowseFile
             // 
