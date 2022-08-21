@@ -28,3 +28,11 @@ for keyName, key in pairs(KeyboardKey)do
    end
 end
 ```
+
+Shows how to only simulate pressing "A" when shift is also held down. This allows binding to multiple keys, where one is the trigger and the rest of the inputs are checked in the script.
+
+```js
+if(Keyboard.GetKeyDown(KeyboardKey.Shift)) {
+  GamePad.Simulate(GamePadControl.A, PressState.Press);
+}
+```
