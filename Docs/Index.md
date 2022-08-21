@@ -2,6 +2,7 @@
 
 ## All Enumerations
 
+* [`AppCommand`](Api/Enumerations/AppCommand.md)
 * [`GamePadControl`](Api/Enumerations/GamePadControl.md)
 * [`KeyboardKey`](Api/Enumerations/KeyboardKey.md)
 * [`PressState`](Api/Enumerations/PressState.md)
@@ -9,11 +10,12 @@
 ## Input
 
 * [`GamePad.Simulate` (`GamePadControl`, `PressState`)](Api/Input/GamePad.Simulate.md)
+* [`Keyboard.GetKeyDown` (`KeyboardKey`)](Api/Input/Keyboard.GetKeyDown.md)
 * [`Keyboard.Simulate` (`KeyboardKey`, `PressState`)](Api/Input/Keyboard.Simulate.md)
 
 ## Logic
 
-* [`App.Command` (`String`)](Api/Logic/App.Command.md)
+* [`App.Command` (`AppCommand`)](Api/Logic/App.Command.md)
 * [`ClearInterval` (`IntervalId`)](Api/Logic/ClearInterval.md)
 * [`ClearTimeout` (`TimeoutId`)](Api/Logic/ClearTimeout.md)
 * [`SetDelayedFunctions` (`Int64`, `Action[]`)](Api/Logic/SetDelayedFunctions.md)

@@ -23,6 +23,7 @@ namespace Key2Joy.Mapping
 
         [JsonProperty]
         public bool IsScriptPath { get; set; }
+        public static BaseScriptAction Instance { get; private set; }
 
         public BaseScriptAction(string name, string description)
             : base(name, description)
@@ -53,9 +54,9 @@ namespace Key2Joy.Mapping
             return Name.Replace("{0}", truncatedScript);
         }
 
-        internal override void OnStartListening(TriggerListener listener, ref List<BaseAction> otherActions)
+        internal override void ResetEnvironment()
         {
-            base.OnStartListening(listener, ref otherActions);
+            base.ResetEnvironment();
 
             var actionTypes = ActionAttribute.GetAllActions();
 
@@ -73,7 +74,7 @@ namespace Key2Joy.Mapping
                 foreach (var methodInfo in actionType.GetMethods())
                 {
                     var exposesMethodAttributes = (ExposesScriptingMethodAttribute[])methodInfo.GetCustomAttributes(typeof(ExposesScriptingMethodAttribute), false);
-                    
+
                     if (exposesMethodAttributes.Length == 0)
                         continue;
 
@@ -88,6 +89,15 @@ namespace Key2Joy.Mapping
                     }
                 }
             }
+        }
+
+        internal override void OnStartListening(TriggerListener listener, ref List<BaseAction> otherActions)
+        {
+            Instance = this;
+
+            base.OnStartListening(listener, ref otherActions);
+
+            ResetEnvironment();
         }
     }
 }

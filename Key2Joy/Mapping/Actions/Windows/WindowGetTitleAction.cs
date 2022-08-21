@@ -33,7 +33,7 @@ namespace Key2Joy.Mapping
         /// <summary>
         /// Get the title of a software's window.
         /// 
-        /// You can use <see href="Window.GetAllAction.md"/>, <see href="Window.FindAction.md"/> or  <see href="Window.GetForegroundAction.md"/> to get handles.
+        /// You can use <see href="Window.GetAll.md"/>, <see href="Window.Find.md"/> or <see href="Window.GetForeground.md"/> to get handles.
         /// </summary>
         /// <param name="handle">The window handle to get the class for</param>
         /// <returns>Title of the window</returns>

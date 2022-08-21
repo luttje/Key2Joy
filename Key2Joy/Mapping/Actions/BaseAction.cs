@@ -45,6 +45,10 @@ namespace Key2Joy.Mapping
                 });
         }
 
+        internal virtual void ResetEnvironment()
+        { 
+        }
+
         internal virtual void OnStartListening(TriggerListener listener, ref List<BaseAction> otherActions)
         {
             this.listener = listener;

@@ -1,14 +1,9 @@
 ﻿using Key2Joy.LowLevelInput;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Key2Joy.Mapping
 {
-    internal class MouseButtonTriggerListener : TriggerListener
+    internal class MouseButtonTriggerListener : PressReleaseTriggerListener<MouseButtonTrigger>
     {
         internal static MouseButtonTriggerListener instance;
         internal static MouseButtonTriggerListener Instance
@@ -23,15 +18,7 @@ namespace Key2Joy.Mapping
         }
 
         private GlobalInputHook globalMouseButtonHook;
-        private Dictionary<Mouse.Buttons, MappedOption> lookupDown;
-        private Dictionary<Mouse.Buttons, MappedOption> lookupRelease;
         
-        private MouseButtonTriggerListener()
-        {
-            lookupDown = new Dictionary<Mouse.Buttons, MappedOption>();
-            lookupRelease = new Dictionary<Mouse.Buttons, MappedOption>();
-        }
-
         protected override void Start()
         {
             // This captures global mouse input and blocks default behaviour by setting e.Handled
@@ -49,16 +36,6 @@ namespace Key2Joy.Mapping
             globalMouseButtonHook = null;
 
             base.Stop();
-        }
-
-        internal override void AddMappedOption(MappedOption mappedOption)
-        {
-            var trigger = mappedOption.Trigger as MouseButtonTrigger;
-
-            if (trigger.PressState == PressState.Press)
-                lookupDown.Add(trigger.MouseButtons, mappedOption);
-            if (trigger.PressState == PressState.Release)
-                lookupRelease.Add(trigger.MouseButtons, mappedOption);
         }
 
         private void OnMouseButtonInputEvent(object sender, GlobalMouseHookEventArgs e)
@@ -85,18 +62,20 @@ namespace Key2Joy.Mapping
                 dictionary = lookupDown;
                 
             // Test if this is a bound mouse button, if so halt default input behaviour
-            if (!dictionary.TryGetValue(buttons, out var mappedOption))
+            if (!dictionary.TryGetValue(MouseButtonTrigger.GetInputHashFor(buttons), out var mappedOptions))
                 return;
-                
-            if (!TryOverrideMouseButtonInput(mappedOption.Action, new MouseButtonInputBag
+
+            foreach (var mappedOption in mappedOptions)
             {
-                Trigger = mappedOption.Trigger,
-                State = e.MouseState,
-                IsDown = isDown,
-                LastX = e.MouseData.Position.X,
-                LastY = e.MouseData.Position.Y,
-            }))
-                return;
+                TryOverrideMouseButtonInput(mappedOption.Action, new MouseButtonInputBag
+                {
+                    Trigger = mappedOption.Trigger,
+                    State = e.MouseState,
+                    IsDown = isDown,
+                    LastX = e.MouseData.Position.X,
+                    LastY = e.MouseData.Position.Y,
+                });
+            }
 
             e.Handled = true;
         }
@@ -105,7 +84,7 @@ namespace Key2Joy.Mapping
         {
             action.Execute(inputBag);
 
-            return true;
+            return true; // Unused return parameter! We always override default behaviour with e.Handled = true;
         }
     }
 }

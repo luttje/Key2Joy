@@ -55,13 +55,13 @@
             this.lblInfo.Text = "Keyboard Key:";
             this.lblInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // cmbPressedState
+            // cmbPressState
             // 
             this.cmbPressState.Dock = System.Windows.Forms.DockStyle.Right;
             this.cmbPressState.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbPressState.FormattingEnabled = true;
             this.cmbPressState.Location = new System.Drawing.Point(282, 5);
-            this.cmbPressState.Name = "cmbPressedState";
+            this.cmbPressState.Name = "cmbPressState";
             this.cmbPressState.Size = new System.Drawing.Size(89, 21);
             this.cmbPressState.TabIndex = 11;
             this.cmbPressState.SelectedIndexChanged += new System.EventHandler(this.cmbPressedState_SelectedIndexChanged);

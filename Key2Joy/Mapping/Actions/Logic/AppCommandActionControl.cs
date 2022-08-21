@@ -14,32 +14,32 @@ namespace Key2Joy.Mapping
     {
         public event Action OptionsChanged;
         
-        private Dictionary<string,string> appCommands;
-        
         public AppCommandActionControl()
         {
             InitializeComponent();
 
-            appCommands = new Dictionary<string, string>();
-            appCommands.Add("abort", "abort - Stops mapping keys to actions.");
+            var appCommands = new List<AppCommand>();
 
-            cmbAppCommand.DataSource = new BindingSource(appCommands, null);
-            cmbAppCommand.DisplayMember = "Value";
-            cmbAppCommand.ValueMember = "Key";
+            foreach (AppCommand command in Enum.GetValues(typeof(AppCommand)))
+            {
+                appCommands.Add(command);
+            }
+
+            cmbAppCommand.DataSource = appCommands;
         }
 
         public void Select(BaseAction action)
         {
             var thisAction = (AppCommandAction)action;
 
-            cmbAppCommand.SelectedValue = thisAction.Command;
+            cmbAppCommand.SelectedItem = thisAction.Command;
         }
 
         public void Setup(BaseAction action)
-        {
+        { 
             var thisAction = (AppCommandAction)action;
 
-            thisAction.Command = cmbAppCommand.SelectedValue.ToString();
+            thisAction.Command = (AppCommand)cmbAppCommand.SelectedItem;
         }
 
         private void cmbAppCommand_SelectedIndexChanged(object sender, EventArgs e)

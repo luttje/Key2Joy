@@ -10,6 +10,7 @@ namespace Key2Joy.Mapping
         OptionsUserControl = typeof(AppCommandActionControl),
         NameFormat = "Run App Command '{0}'"
     )]
+    [ExposesScriptingEnumeration(typeof(AppCommand))]
     [Util.ObjectListViewGroup(
         Name = "Logic",
         Image = "script_code"
@@ -17,7 +18,7 @@ namespace Key2Joy.Mapping
     internal class AppCommandAction : BaseAction
     {
         [JsonProperty]
-        public string Command { get; set; }
+        public AppCommand Command { get; set; }
 
         public AppCommandAction(string name, string description)
             : base(name, description)
@@ -35,12 +36,19 @@ namespace Key2Joy.Mapping
         /// <param name="command">Command to execute</param>
         /// <name>App.Command</name>
         [ExposesScriptingMethod("App.Command")]
-        public async void ExecuteForScript(string command)
+        public async void ExecuteForScript(AppCommand command)
         {
             Command = command;
 
+            if(command == AppCommand.ResetScriptEnvironment)
+            {
+                BaseScriptAction.Instance.ResetEnvironment();
+                return;
+            }
+
             // Wait a frame so we don't get an Access Violation on the lua.DoString
             // TODO: Figure out if there's a nicer way
+            // TODO: Do we still need this?
             await Task.Delay(0);
 
             await this.Execute();
@@ -56,7 +64,7 @@ namespace Key2Joy.Mapping
 
         public override string GetNameDisplay()
         {
-            return Name.Replace("{0}", Command);
+            return Name.Replace("{0}", Enum.GetName(typeof(AppCommand), Command));
         }
 
         public override bool Equals(object obj)
