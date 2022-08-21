@@ -1,4 +1,5 @@
-﻿using SimWinInput;
+﻿using Key2Joy.Mapping;
+using SimWinInput;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -46,7 +47,7 @@ namespace Key2Joy
             oldForm.Close();
         }
 
-        internal static bool RunAppCommand(string command)
+        internal static bool RunAppCommand(AppCommand command)
         {
             if(ActiveForm is IAcceptAppCommands form)
             {

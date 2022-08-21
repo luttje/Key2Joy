@@ -201,12 +201,12 @@ namespace Key2Joy
                 listener.StopListening();
         }
 
-        public bool RunAppCommand(string command)
+        public bool RunAppCommand(AppCommand command)
         {
 
             switch (command)
             {
-                case "abort":
+                case AppCommand.Abort:
                     BeginInvoke(new MethodInvoker(delegate
                     {
                         chkEnabled.Checked = false;

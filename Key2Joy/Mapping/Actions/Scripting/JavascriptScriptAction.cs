@@ -103,11 +103,16 @@ namespace Key2Joy.Mapping
                 @delegate);
         }
 
-        internal override void OnStartListening(TriggerListener listener, ref List<BaseAction> otherActions)
+        internal override void ResetEnvironment()
         {
             engine = new Engine();
             engine.SetValue("Print", new Action<object[]>(Print));
 
+            base.ResetEnvironment();
+        }
+
+        internal override void OnStartListening(TriggerListener listener, ref List<BaseAction> otherActions)
+        {
             base.OnStartListening(listener, ref otherActions);
         }
 

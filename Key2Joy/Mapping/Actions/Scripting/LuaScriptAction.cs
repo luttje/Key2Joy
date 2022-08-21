@@ -92,12 +92,17 @@ namespace Key2Joy.Mapping
                 method);
         }
 
-        internal override void OnStartListening(TriggerListener listener, ref List<BaseAction> otherActions)
+        internal override void ResetEnvironment()
         {
             lua = new Lua();
             lua.RegisterFunction("print", this, typeof(LuaScriptAction).GetMethod(nameof(Print), new[] { typeof(object[]) }));
             lua.RegisterFunction("Print", this, typeof(LuaScriptAction).GetMethod(nameof(Print), new[] { typeof(object[]) }));
 
+            base.ResetEnvironment();
+        }
+
+        internal override void OnStartListening(TriggerListener listener, ref List<BaseAction> otherActions)
+        {
             base.OnStartListening(listener, ref otherActions);
         }
 

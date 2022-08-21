@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Key2Joy.Mapping;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,6 @@ namespace Key2Joy
 {
     internal interface IAcceptAppCommands
     {
-        bool RunAppCommand(string command);
+        bool RunAppCommand(AppCommand command);
     }
 }

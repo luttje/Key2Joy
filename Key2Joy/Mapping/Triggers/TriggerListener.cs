@@ -37,7 +37,6 @@ namespace Key2Joy.Mapping
             IsActive = true;
         }
 
-
         protected virtual void Stop()
         {
             IsActive = false;

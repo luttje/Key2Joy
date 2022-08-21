@@ -10,7 +10,7 @@ namespace Key2Joy.Mapping
         Description = "Mouse Button Event",
         OptionsUserControl = typeof(MouseButtonTriggerOptionsControl)
     )]
-    public class MouseButtonTrigger : BaseTrigger, IPressState, IEquatable<MouseButtonTrigger>
+    public class MouseButtonTrigger : BaseTrigger, IPressState, IReturnInputHash, IEquatable<MouseButtonTrigger>
     {
         public const string PREFIX_UNIQUE = nameof(MouseButtonTrigger);
 
@@ -33,6 +33,16 @@ namespace Key2Joy.Mapping
         internal override string GetUniqueKey()
         {
             return $"{PREFIX_UNIQUE}_{MouseButtons}";
+        }
+
+        public static int GetInputHashFor(Mouse.Buttons mouseButtons)
+        {
+            return (int)mouseButtons;
+        }
+
+        public int GetInputHash()
+        {
+            return GetInputHashFor(MouseButtons);
         }
 
         public override bool Equals(object obj)

@@ -270,6 +270,7 @@
     <Compile Include="Mapping\Actions\Keyboard\KeyboardActionControl.Designer.cs">
       <DependentUpon>KeyboardActionControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Mapping\Actions\Logic\AppCommand.cs" />
     <Compile Include="Mapping\Actions\Logic\AppCommandActionControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -285,6 +286,8 @@
     <Compile Include="Mapping\Actions\Scripting\JavascriptScriptAction.cs" />
     <Compile Include="Mapping\Actions\Scripting\LuaScriptAction.cs" />
     <Compile Include="Mapping\IPressState.cs" />
+    <Compile Include="Mapping\IReturnInputHash.cs" />
+    <Compile Include="Mapping\Triggers\PressReleaseTriggerListener.cs" />
     <Compile Include="Output.cs" />
     <Compile Include="Mapping\Actions\Scripting\ScriptActionControl.cs">
       <SubType>UserControl</SubType>

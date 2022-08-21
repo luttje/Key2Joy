@@ -9,12 +9,9 @@ namespace Key2Joy.Mapping
         Description = "Keyboard Event",
         OptionsUserControl = typeof(KeyboardTriggerOptionsControl)
     )]
-    public class KeyboardTrigger : BaseTrigger, IPressState, IEquatable<KeyboardTrigger>
+    public class KeyboardTrigger : BaseTrigger, IPressState, IReturnInputHash, IEquatable<KeyboardTrigger>
     {
         public const string PREFIX_UNIQUE = nameof(KeyboardTrigger);
-
-        private Keys keys;
-
 
         [JsonProperty]
         public Keys Keys { get; set; }
@@ -30,6 +27,16 @@ namespace Key2Joy.Mapping
         internal override TriggerListener GetTriggerListener()
         {
             return KeyboardTriggerListener.Instance;
+        }
+
+        public static int GetInputHashFor(Keys keys)
+        {
+            return (int)keys;
+        }
+
+        public int GetInputHash()
+        {
+            return GetInputHashFor(Keys);
         }
 
         internal override string GetUniqueKey()
