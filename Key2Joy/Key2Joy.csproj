@@ -384,12 +384,6 @@
     </Compile>
     <Compile Include="Mapping\MappedOption.cs" />
     <Compile Include="Mapping\Triggers\TriggerListener.cs" />
-    <Compile Include="OutputForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="OutputForm.Designer.cs">
-      <DependentUpon>OutputForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LowLevelInput\VirtualKeyConverter.cs" />
@@ -452,9 +446,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Mapping\Triggers\Mouse\MouseButtonTriggerOptionsControl.resx">
       <DependentUpon>MouseButtonTriggerOptionsControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="OutputForm.resx">
-      <DependentUpon>OutputForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -50,10 +51,16 @@ namespace Key2Joy
             foreach (var part in parts)
                 output.Append(part.ToString());
 
-            var outputLine = output.ToString() + Environment.NewLine;
-            
-            System.Diagnostics.Debug.WriteLine(outputLine);
-            File.AppendAllText(GetLogPath(), outputLine);
+            var outputLine = output.ToString();
+
+            using (EventLog eventLog = new EventLog("Application"))
+            {
+                eventLog.Source = "Application";
+                eventLog.WriteEntry(outputLine, EventLogEntryType.Information, 101, 1);
+            }
+
+            Debug.WriteLine(outputLine);
+            File.AppendAllText(GetLogPath(), outputLine + Environment.NewLine);
 
             OnNewLogLine?.Invoke(outputLine);
         }

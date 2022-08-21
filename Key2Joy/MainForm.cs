@@ -427,23 +427,6 @@ namespace Key2Joy
             btnCreateMapping_Click(sender, e);
         }
 
-        private OutputForm outputForm;
-        private void viewScriptOutputToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if(outputForm != null && !outputForm.IsDisposed)
-            {
-                outputForm.BringToFront();
-
-                if (outputForm.WindowState == FormWindowState.Minimized)
-                    outputForm.WindowState = FormWindowState.Normal;
-                
-                return;
-            }
-
-            outputForm = new OutputForm();
-            outputForm.Show();
-        }
-
         private void gamePadPressAndReleaseToolStripMenuItem_Click(object sender, EventArgs e)
         {
             selectedPreset.AddMappingRange(GamePadAction.GetAllButtonActions(PressState.Press));
@@ -531,6 +514,24 @@ namespace Key2Joy
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void viewLogFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var logFile = Output.GetLogPath();
+
+            if (!File.Exists(logFile))
+            {
+                MessageBox.Show("The log file does not exist yet. Please wait for the program to finish writing to it.", "Log file not found!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            Process.Start(logFile);
+        }
+
+        private void viewEventViewerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Process.Start("eventvwr.exe", "/c:Application");
         }
     }
 }

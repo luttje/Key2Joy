@@ -55,13 +55,13 @@
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fillPresetWithToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.allGamePadJoystickActionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pressAndReleaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pressToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.releaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pressAndReleaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.allKeyboardActionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pressAndReleaseToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.pressToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.releaseToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.pressAndReleaseToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.testMappingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.testGamePadJoystickToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.testKeyboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -77,6 +77,8 @@
             this.pnlMainMenu = new System.Windows.Forms.Panel();
             this.lblStatusInactive = new System.Windows.Forms.Label();
             this.lblStatusActive = new System.Windows.Forms.Label();
+            this.viewLogFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.viewEventViewerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.olvMappings)).BeginInit();
             this.pnlActionManagement.SuspendLayout();
             this.pnlPresetManagement.SuspendLayout();
@@ -287,10 +289,12 @@
             // 
             // viewScriptOutputToolStripMenuItem
             // 
+            this.viewScriptOutputToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.viewLogFileToolStripMenuItem,
+            this.viewEventViewerToolStripMenuItem});
             this.viewScriptOutputToolStripMenuItem.Name = "viewScriptOutputToolStripMenuItem";
             this.viewScriptOutputToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
             this.viewScriptOutputToolStripMenuItem.Text = "View Script Output";
-            this.viewScriptOutputToolStripMenuItem.Click += new System.EventHandler(this.viewScriptOutputToolStripMenuItem_Click);
             // 
             // toolsToolStripMenuItem
             // 
@@ -309,7 +313,7 @@
             this.allGamePadJoystickActionsToolStripMenuItem,
             this.allKeyboardActionsToolStripMenuItem});
             this.fillPresetWithToolStripMenuItem.Name = "fillPresetWithToolStripMenuItem";
-            this.fillPresetWithToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.fillPresetWithToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.fillPresetWithToolStripMenuItem.Text = "Fill Preset With...";
             // 
             // allGamePadJoystickActionsToolStripMenuItem
@@ -322,26 +326,26 @@
             this.allGamePadJoystickActionsToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
             this.allGamePadJoystickActionsToolStripMenuItem.Text = "All GamePad/Joystick Actions";
             // 
-            // pressAndReleaseToolStripMenuItem
-            // 
-            this.pressAndReleaseToolStripMenuItem.Name = "pressAndReleaseToolStripMenuItem";
-            this.pressAndReleaseToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
-            this.pressAndReleaseToolStripMenuItem.Text = "Both Press and Release";
-            this.pressAndReleaseToolStripMenuItem.Click += new System.EventHandler(this.gamePadPressAndReleaseToolStripMenuItem_Click);
-            // 
             // pressToolStripMenuItem
             // 
             this.pressToolStripMenuItem.Name = "pressToolStripMenuItem";
-            this.pressToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.pressToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.pressToolStripMenuItem.Text = "Press";
             this.pressToolStripMenuItem.Click += new System.EventHandler(this.gamePadPressToolStripMenuItem_Click);
             // 
             // releaseToolStripMenuItem
             // 
             this.releaseToolStripMenuItem.Name = "releaseToolStripMenuItem";
-            this.releaseToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.releaseToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.releaseToolStripMenuItem.Text = "Release";
             this.releaseToolStripMenuItem.Click += new System.EventHandler(this.gamePadReleaseToolStripMenuItem_Click);
+            // 
+            // pressAndReleaseToolStripMenuItem
+            // 
+            this.pressAndReleaseToolStripMenuItem.Name = "pressAndReleaseToolStripMenuItem";
+            this.pressAndReleaseToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.pressAndReleaseToolStripMenuItem.Text = "Both Press and Release";
+            this.pressAndReleaseToolStripMenuItem.Click += new System.EventHandler(this.gamePadPressAndReleaseToolStripMenuItem_Click);
             // 
             // allKeyboardActionsToolStripMenuItem
             // 
@@ -353,26 +357,26 @@
             this.allKeyboardActionsToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
             this.allKeyboardActionsToolStripMenuItem.Text = "All Keyboard Actions";
             // 
-            // pressAndReleaseToolStripMenuItem1
-            // 
-            this.pressAndReleaseToolStripMenuItem1.Name = "pressAndReleaseToolStripMenuItem1";
-            this.pressAndReleaseToolStripMenuItem1.Size = new System.Drawing.Size(194, 22);
-            this.pressAndReleaseToolStripMenuItem1.Text = "Both Press and Release";
-            this.pressAndReleaseToolStripMenuItem1.Click += new System.EventHandler(this.keyboardPressAndReleaseToolStripMenuItem);
-            // 
             // pressToolStripMenuItem1
             // 
             this.pressToolStripMenuItem1.Name = "pressToolStripMenuItem1";
-            this.pressToolStripMenuItem1.Size = new System.Drawing.Size(162, 22);
+            this.pressToolStripMenuItem1.Size = new System.Drawing.Size(194, 22);
             this.pressToolStripMenuItem1.Text = "Press";
             this.pressToolStripMenuItem1.Click += new System.EventHandler(this.keyboardPressToolStripMenuItem);
             // 
             // releaseToolStripMenuItem1
             // 
             this.releaseToolStripMenuItem1.Name = "releaseToolStripMenuItem1";
-            this.releaseToolStripMenuItem1.Size = new System.Drawing.Size(162, 22);
+            this.releaseToolStripMenuItem1.Size = new System.Drawing.Size(194, 22);
             this.releaseToolStripMenuItem1.Text = "Release";
             this.releaseToolStripMenuItem1.Click += new System.EventHandler(this.keyboardReleaseToolStripMenuItem);
+            // 
+            // pressAndReleaseToolStripMenuItem1
+            // 
+            this.pressAndReleaseToolStripMenuItem1.Name = "pressAndReleaseToolStripMenuItem1";
+            this.pressAndReleaseToolStripMenuItem1.Size = new System.Drawing.Size(194, 22);
+            this.pressAndReleaseToolStripMenuItem1.Text = "Both Press and Release";
+            this.pressAndReleaseToolStripMenuItem1.Click += new System.EventHandler(this.keyboardPressAndReleaseToolStripMenuItem);
             // 
             // testMappingsToolStripMenuItem
             // 
@@ -381,7 +385,7 @@
             this.testKeyboardToolStripMenuItem,
             this.testMouseToolStripMenuItem});
             this.testMappingsToolStripMenuItem.Name = "testMappingsToolStripMenuItem";
-            this.testMappingsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.testMappingsToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.testMappingsToolStripMenuItem.Text = "Test Mappings";
             // 
             // testGamePadJoystickToolStripMenuItem
@@ -408,13 +412,13 @@
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(176, 6);
             // 
             // userConfigurationsToolStripMenuItem
             // 
             this.userConfigurationsToolStripMenuItem.Image = global::Key2Joy.Properties.Resources.cog;
             this.userConfigurationsToolStripMenuItem.Name = "userConfigurationsToolStripMenuItem";
-            this.userConfigurationsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.userConfigurationsToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.userConfigurationsToolStripMenuItem.Text = "User Configurations";
             this.userConfigurationsToolStripMenuItem.Click += new System.EventHandler(this.userConfigurationsToolStripMenuItem_Click);
             // 
@@ -497,6 +501,20 @@
             this.lblStatusActive.Text = "(Mappings active)";
             this.lblStatusActive.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // viewLogFileToolStripMenuItem
+            // 
+            this.viewLogFileToolStripMenuItem.Name = "viewLogFileToolStripMenuItem";
+            this.viewLogFileToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.viewLogFileToolStripMenuItem.Text = "View Log File";
+            this.viewLogFileToolStripMenuItem.Click += new System.EventHandler(this.viewLogFileToolStripMenuItem_Click);
+            // 
+            // viewEventViewerToolStripMenuItem
+            // 
+            this.viewEventViewerToolStripMenuItem.Name = "viewEventViewerToolStripMenuItem";
+            this.viewEventViewerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.viewEventViewerToolStripMenuItem.Text = "View Event Viewer";
+            this.viewEventViewerToolStripMenuItem.Click += new System.EventHandler(this.viewEventViewerToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -576,6 +594,8 @@
         private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem createNewMappingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem viewScriptOutputToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem viewLogFileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem viewEventViewerToolStripMenuItem;
     }
 }
 
