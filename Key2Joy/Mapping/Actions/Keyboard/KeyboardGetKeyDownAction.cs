@@ -44,6 +44,16 @@ namespace Key2Joy.Mapping
         /// ]]>
         /// </code>
         /// </markdown-example>
+        /// <markdown-example>
+        /// Shows how to only simulate pressing "A" when shift is also held down. This allows binding to multiple keys, where one is the trigger and the rest of the inputs are checked in the script.
+        /// <code language="js">
+        /// <![CDATA[
+        /// if(Keyboard.GetKeyDown(KeyboardKey.Shift)) {
+        ///   GamePad.Simulate(GamePadControl.A, PressState.Press);
+        /// }
+        /// ]]>
+        /// </code>
+        /// </markdown-example>
         /// <param name="key">The key to test for</param>
         /// <returns>True if the key is currently pressed down, false otherwise</returns>
         /// <name>Keyboard.GetKeyDown</name>

@@ -97,6 +97,17 @@ namespace Key2Joy.Mapping
         /// <summary>
         /// Simulate pressing or releasing (or both) gamepad buttons.
         /// </summary>
+        /// <markdown-example>
+        /// Shows how to press "A" on the gamepad for 500ms, then release it.
+        /// <code language="js">
+        /// <![CDATA[
+        /// GamePad.Simulate(GamePadControl.A, PressState.Press);
+        /// setTimeout(function () {
+        ///     GamePad.Simulate(GamePadControl.A, PressState.Release);
+        /// }, 500);
+        /// ]]>
+        /// </code>
+        /// </markdown-example>
         /// <param name="control">Button to simulate</param>
         /// <param name="pressState">Action to simulate</param>
         /// <name>GamePad.Simulate</name>
