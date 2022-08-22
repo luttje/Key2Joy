@@ -18,8 +18,8 @@ namespace Key2Joy.LowLevelInput
 
         public static void Send(KeyboardKey scanCode, KEYEVENTF? rawPressState = null)
         {
-            var Inputs = new INPUT[1];
-            var Input = new INPUT();
+            var Inputs = new Simulator.INPUT[1];
+            var Input = new Simulator.INPUT();
 
             Input.type = 1; // 1 = Keyboard Input
             Input.U.ki.wScan = scanCode;
@@ -31,79 +31,7 @@ namespace Key2Joy.LowLevelInput
             
             Inputs[0] = Input;
 
-            SendInput(1, Inputs, INPUT.Size);
-        }
-
-        /// <summary>
-        /// Declaration of external SendInput method
-        /// </summary>
-        [DllImport("user32.dll")]
-        internal static extern uint SendInput(
-            uint nInputs,
-            [MarshalAs(UnmanagedType.LPArray), In] INPUT[] pInputs,
-            int cbSize);
-
-
-        // Declare the INPUT struct
-        [StructLayout(LayoutKind.Sequential)]
-        public struct INPUT
-        {
-            public uint type;
-            public InputUnion U;
-            public static int Size
-            {
-                get { return Marshal.SizeOf(typeof(INPUT)); }
-            }
-        }
-
-        // Declare the InputUnion struct
-        [StructLayout(LayoutKind.Explicit)]
-        public struct InputUnion
-        {
-            [FieldOffset(0)]
-            internal MOUSEINPUT mi;
-            [FieldOffset(0)]
-            internal KEYBDINPUT ki;
-            [FieldOffset(0)]
-            internal HARDWAREINPUT hi;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        public struct MOUSEINPUT
-        {
-            internal int dx;
-            internal int dy;
-            internal MouseEventDataXButtons mouseData;
-            internal MOUSEEVENTF dwFlags;
-            internal uint time;
-            internal UIntPtr dwExtraInfo;
-        }
-
-        [Flags]
-        public enum MouseEventDataXButtons : uint
-        {
-            Nothing = 0x00000000,
-            XBUTTON1 = 0x00000001,
-            XBUTTON2 = 0x00000002
-        }
-
-        [Flags]
-        public enum MOUSEEVENTF : uint
-        {
-            ABSOLUTE = 0x8000,
-            HWHEEL = 0x01000,
-            MOVE = 0x0001,
-            MOVE_NOCOALESCE = 0x2000,
-            LEFTDOWN = 0x0002,
-            LEFTUP = 0x0004,
-            RIGHTDOWN = 0x0008,
-            RIGHTUP = 0x0010,
-            MIDDLEDOWN = 0x0020,
-            MIDDLEUP = 0x0040,
-            VIRTUALDESK = 0x4000,
-            WHEEL = 0x0800,
-            XDOWN = 0x0080,
-            XUP = 0x0100
+            Simulator.SendInput(1, Inputs, Simulator.INPUT.Size);
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -817,17 +745,6 @@ namespace Key2Joy.LowLevelInput
             ///Clear key
             ///</summary>
             OEM_CLEAR = 0xFE
-        }
-
-        /// <summary>
-        /// Define HARDWAREINPUT struct
-        /// </summary>
-        [StructLayout(LayoutKind.Sequential)]
-        public struct HARDWAREINPUT
-        {
-            internal int uMsg;
-            internal short wParamL;
-            internal short wParamH;
         }
     }
 }

@@ -9,6 +9,12 @@ namespace Key2Joy.LowLevelInput
 {
     public class Mouse
     {
+        public enum MoveType
+        {
+            Relative = 0,
+            Absolute = 1
+        }
+        
         public enum Buttons
         {
             None = 0,

@@ -3,6 +3,7 @@ using NLua;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -19,7 +20,8 @@ namespace Key2Joy.Mapping
     internal class LuaScriptAction : BaseScriptAction
     {
         private Lua lua;
-
+        private string cachedFile;
+        
         public LuaScriptAction(string name, string description)
             : base(name, description)
         {
@@ -32,11 +34,16 @@ namespace Key2Joy.Mapping
             {
                 if (IsScriptPath)
                 {
-                    lua.DoFile(Script);
+                    if(cachedFile == null)
+                        cachedFile = File.ReadAllText(Script);
+
+                    lock (LockObject)
+                        lua.DoString(cachedFile, Script);
                     return;
                 }
 
-                lua.DoString(Script, "Key2Joy.Script.Inline");
+                lock (LockObject)
+                    lua.DoString(Script, "Key2Joy.Script.Inline");
             }
             catch (NLua.Exceptions.LuaScriptException e)
             {
@@ -97,7 +104,8 @@ namespace Key2Joy.Mapping
             lua = new Lua();
             lua.RegisterFunction("print", this, typeof(LuaScriptAction).GetMethod(nameof(Print), new[] { typeof(object[]) }));
             lua.RegisterFunction("Print", this, typeof(LuaScriptAction).GetMethod(nameof(Print), new[] { typeof(object[]) }));
-
+            cachedFile = null;
+            
             base.ResetEnvironment();
         }
 

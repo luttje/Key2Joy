@@ -18,6 +18,8 @@ namespace Key2Joy.Mapping
     )]
     internal abstract class BaseScriptAction : BaseAction
     {
+        internal static readonly object LockObject = new object();
+        
         [JsonProperty]
         public string Script { get; set; }
 

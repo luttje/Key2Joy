@@ -241,6 +241,8 @@
     <Compile Include="Config\NumericConfigControlAttribute.cs" />
     <Compile Include="LowLevelInput\KeyboardKey.cs" />
     <Compile Include="LowLevelInput\PressState.cs" />
+    <Compile Include="LowLevelInput\Simulator.cs" />
+    <Compile Include="LowLevelInput\SimulatedMouse.cs" />
     <Compile Include="LowLevelInput\SimulatedKeyboard.cs" />
     <Compile Include="Mapping\Actions\ActionControl.cs">
       <SubType>UserControl</SubType>
@@ -258,22 +260,26 @@
     <Compile Include="Mapping\Actions\ActionAttribute.cs" />
     <Compile Include="Mapping\Actions\ActionVisibility.cs" />
     <Compile Include="Mapping\Actions\ExposesScriptingMethodAttribute.cs" />
-    <Compile Include="Mapping\Actions\GamePad\GamePadActionControl.cs">
+    <Compile Include="Mapping\Actions\Input\GamePadActionControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Mapping\Actions\GamePad\GamePadActionControl.Designer.cs">
+    <Compile Include="Mapping\Actions\Input\GamePadActionControl.Designer.cs">
       <DependentUpon>GamePadActionControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Mapping\Actions\IActionOptionsControl.cs" />
     <Compile Include="Mapping\Actions\ExposesScriptingEnumerationAttribute.cs" />
-    <Compile Include="Mapping\Actions\Keyboard\KeyboardAction.cs" />
-    <Compile Include="Mapping\Actions\Keyboard\KeyboardActionControl.cs">
+    <Compile Include="Mapping\Actions\Input\GamePadResetAction.cs" />
+    <Compile Include="Mapping\Actions\Input\GamePadStickAction.cs" />
+    <Compile Include="Mapping\Actions\Input\MouseMoveAction.cs" />
+    <Compile Include="Mapping\Actions\Input\MouseButtonAction.cs" />
+    <Compile Include="Mapping\Actions\Input\KeyboardAction.cs" />
+    <Compile Include="Mapping\Actions\Input\KeyboardActionControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Mapping\Actions\Keyboard\KeyboardActionControl.Designer.cs">
+    <Compile Include="Mapping\Actions\Input\KeyboardActionControl.Designer.cs">
       <DependentUpon>KeyboardActionControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Mapping\Actions\Keyboard\KeyboardGetKeyDownAction.cs" />
+    <Compile Include="Mapping\Actions\Input\KeyboardGetKeyDownAction.cs" />
     <Compile Include="Mapping\Actions\Logic\AppCommand.cs" />
     <Compile Include="Mapping\Actions\Logic\AppCommandActionControl.cs">
       <SubType>UserControl</SubType>
@@ -322,7 +328,7 @@
     <Compile Include="Mapping\Actions\Windows\WindowFindAction.cs" />
     <Compile Include="Mapping\AxisDirection.cs" />
     <Compile Include="Mapping\Actions\Logic\AppCommandAction.cs" />
-    <Compile Include="Mapping\Actions\GamePad\GamePadAction.cs" />
+    <Compile Include="Mapping\Actions\Input\GamePadAction.cs" />
     <Compile Include="Mapping\Actions\BaseAction.cs" />
     <Compile Include="Mapping\MappingAttribute.cs" />
     <Compile Include="Mapping\MappingPresetSerializationBinder.cs" />
@@ -419,10 +425,10 @@
       <DependentUpon>MainForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Mapping\Actions\GamePad\GamePadActionControl.resx">
+    <EmbeddedResource Include="Mapping\Actions\Input\GamePadActionControl.resx">
       <DependentUpon>GamePadActionControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Mapping\Actions\Keyboard\KeyboardActionControl.resx">
+    <EmbeddedResource Include="Mapping\Actions\Input\KeyboardActionControl.resx">
       <DependentUpon>KeyboardActionControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Mapping\Actions\Logic\AppCommandActionControl.resx">

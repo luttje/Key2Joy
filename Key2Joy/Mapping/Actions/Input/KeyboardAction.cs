@@ -81,18 +81,6 @@ namespace Key2Joy.Mapping
         /// </summary>
         /// <param name="key">Key to simulate</param>
         /// <param name="pressState">Action to simulate</param>
-        /// <markdown-example>
-        /// TODO: Explain how to use this function in js
-        /// <code language="js">
-        /// <![CDATA[//TODO: JS example]]>
-        /// </code>
-        /// </markdown-example>
-        /// <markdown-example>
-        /// TODO: Explain how to use this function in Lua
-        /// <code language="lua">
-        /// <![CDATA[--TODO: Lua example]]>
-        /// </code>
-        /// </markdown-example>
         /// <name>Keyboard.Simulate</name>
         [ExposesScriptingMethod("Keyboard.Simulate")]
         public async void ExecuteForScript(KeyboardKey key, PressState pressState)

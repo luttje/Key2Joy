@@ -98,6 +98,7 @@ namespace Key2Joy.Mapping
 
             var cancellation = new CancellationTokenSource();
             var token = cancellation.Token;
+
             Task.Run(async () =>
             {
                 token.ThrowIfCancellationRequested();
@@ -105,8 +106,9 @@ namespace Key2Joy.Mapping
                 await Task.Delay(WaitTime);
 
                 token.ThrowIfCancellationRequested();
-                
-                callback.Invoke(arguments);
+
+                lock (BaseScriptAction.LockObject)
+                    callback.Invoke(arguments);
             }, token);
 
             return IdPool.CreateNewId<IdPool.TimeoutId>(cancellation);
