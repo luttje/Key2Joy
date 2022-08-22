@@ -21,26 +21,28 @@ Repeatedly calls a function or executes a code snippet, with a fixed time delay 
 
 ## Examples
 
-Shows how to count up to 10 every second and then stop by using ClearInterval();
-
-```js
-setTimeout(function () {
-  Print("Aborting in 3 second...")
-   
-  setTimeout(function () {
-    Print("Three")
-
-    setTimeout(function () {
-      Print("Two")
-
-      setTimeout(function () {
-        Print("One")
-
-        setTimeout(function () {
-          App.Command("abort")
-        }, 1000)
-      }, 1000)
-    }, 1000)
-  }, 1000)
-}, 1000)
-```
+> Shows how to count up to 10 every second and then stop by using ClearInterval();
+> 
+> #### _js_:
+> ```js
+> setTimeout(function () {
+>   Print("Aborting in 3 second...")
+>    
+>   setTimeout(function () {
+>     Print("Three")
+> 
+>     setTimeout(function () {
+>       Print("Two")
+> 
+>       setTimeout(function () {
+>         Print("One")
+> 
+>         setTimeout(function () {
+>           App.Command("abort")
+>         }, 1000)
+>       }, 1000)
+>     }, 1000)
+>   }, 1000)
+> }, 1000)
+> ```
+---

@@ -3,15 +3,22 @@
 ## All Enumerations
 
 * [`AppCommand`](Api/Enumerations/AppCommand.md)
+* [`Buttons`](Api/Enumerations/Buttons.md)
 * [`GamePadControl`](Api/Enumerations/GamePadControl.md)
+* [`GamePadStick`](Api/Enumerations/GamePadStick.md)
 * [`KeyboardKey`](Api/Enumerations/KeyboardKey.md)
+* [`MoveType`](Api/Enumerations/MoveType.md)
 * [`PressState`](Api/Enumerations/PressState.md)
 
 ## Input
 
+* [`GamePad.Reset` ()](Api/Input/GamePad.Reset.md)
 * [`GamePad.Simulate` (`GamePadControl`, `PressState`)](Api/Input/GamePad.Simulate.md)
+* [`GamePad.SimulateMove` (`Double`, `Double`, `GamePadStick`)](Api/Input/GamePad.SimulateMove.md)
 * [`Keyboard.GetKeyDown` (`KeyboardKey`)](Api/Input/Keyboard.GetKeyDown.md)
 * [`Keyboard.Simulate` (`KeyboardKey`, `PressState`)](Api/Input/Keyboard.Simulate.md)
+* [`Mouse.Simulate` (`Buttons`, `PressState`)](Api/Input/Mouse.Simulate.md)
+* [`Mouse.SimulateMove` (`Int32`, `Int32`, `MoveType`)](Api/Input/Mouse.SimulateMove.md)
 
 ## Logic
 

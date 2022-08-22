@@ -19,20 +19,24 @@ You can find the keycodes in [../Enumerations/KeyboardKey.md](../Enumerations/Ke
 True if the key is currently pressed down, false otherwise
 ## Examples
 
-Shows how to show all keys currently pressed.
+> Shows how to show all keys currently pressed.
+> 
+> #### _lua_:
+> ```lua
+> for keyName, key in pairs(KeyboardKey)do
+>    if(Keyboard.GetKeyDown(key))then
+>       Print(keyName, "is currently pressed")
+>    end
+> end
+> ```
+---
 
-```lua
-for keyName, key in pairs(KeyboardKey)do
-   if(Keyboard.GetKeyDown(key))then
-      Print(keyName, "is currently pressed")
-   end
-end
-```
-
-Shows how to only simulate pressing "A" when shift is also held down. This allows binding to multiple keys, where one is the trigger and the rest of the inputs are checked in the script.
-
-```js
-if(Keyboard.GetKeyDown(KeyboardKey.Shift)) {
-  GamePad.Simulate(GamePadControl.A, PressState.Press);
-}
-```
+> Shows how to only simulate pressing "A" when shift is also held down. This allows binding to multiple keys, where one is the trigger and the rest of the inputs are checked in the script.
+> 
+> #### _js_:
+> ```js
+> if(Keyboard.GetKeyDown(KeyboardKey.Shift)) {
+>   GamePad.Simulate(GamePadControl.A, PressState.Press);
+> }
+> ```
+---

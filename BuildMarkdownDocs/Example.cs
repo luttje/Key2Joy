@@ -35,7 +35,7 @@ namespace BuildMarkdownDocs
                         value = elementChild.Value.Trim();
                 }
 
-                example.TextContent.Add(value);
+                example.TextContent.AddRange(value.Split('\n'));
             }
             
             return example;
@@ -43,7 +43,7 @@ namespace BuildMarkdownDocs
 
         public override string ToString()
         {
-            return string.Join("\n\n", TextContent);
+            return "> " + string.Join("\n> ", TextContent) + "\n---";
         }
     }
 }
