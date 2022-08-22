@@ -1,4 +1,5 @@
-﻿using Linearstar.Windows.RawInput;
+﻿using Key2Joy.Config;
+using Linearstar.Windows.RawInput;
 using SimWinInput;
 using System;
 using System.Collections.Generic;
@@ -12,9 +13,6 @@ namespace Key2Joy.Mapping
     internal class MouseMoveTriggerListener : TriggerListener
     {
         internal override bool HasWndProcHandle => true;
-        
-        private const double SENSITIVITY = 0.05;
-        private const int WM_INPUT = 0x00FF;
 
         internal static MouseMoveTriggerListener instance;
         internal static MouseMoveTriggerListener Instance
@@ -27,19 +25,18 @@ namespace Key2Joy.Mapping
                 return instance;
             }
         }
-        
-        private Dictionary<AxisDirection, MappedOption> lookup;
+
+        private const double SENSITIVITY = 0.05;
+        private const int WM_INPUT = 0x00FF;
+
+        private Dictionary<int, List<MappedOption>> lookupAxis;
         private System.ComponentModel.Container components;
-        private Timer tmrAxisTimeout;
 
         private MouseMoveTriggerListener()
         {
-            lookup = new Dictionary<AxisDirection, MappedOption>();
+            lookupAxis = new Dictionary<int, List<MappedOption>>();
 
             components = new System.ComponentModel.Container();
-            tmrAxisTimeout = new Timer(components);
-            tmrAxisTimeout.Interval = 250;
-            tmrAxisTimeout.Tick += this.tmrAxisTimeout_Tick;
         }
 
         protected override void Start()
@@ -59,8 +56,11 @@ namespace Key2Joy.Mapping
         internal override void AddMappedOption(MappedOption mappedOption)
         {
             var trigger = mappedOption.Trigger as MouseMoveTrigger;
-            
-            lookup.Add(trigger.AxisBinding, mappedOption);
+
+            if (!lookupAxis.TryGetValue(trigger.GetInputHash(), out var mappedOptions))
+                lookupAxis.Add(trigger.GetInputHash(), mappedOptions = new List<MappedOption>());
+
+            mappedOptions.Add(mappedOption);
         }
 
         internal override void WndProc(ref Message m)
@@ -93,50 +93,58 @@ namespace Key2Joy.Mapping
 
         private bool TryOverrideMouseMoveInput(int lastX, int lastY)
         {
-            tmrAxisTimeout.Stop();
-            tmrAxisTimeout.Start();
-
             var deltaX = (short)Math.Min(Math.Max(lastX * short.MaxValue * SENSITIVITY, short.MinValue), short.MaxValue);
             var deltaY = (short)-Math.Min(Math.Max(lastY * short.MaxValue * SENSITIVITY, short.MinValue), short.MaxValue);
-            MappedOption mappedOption;
+
+            var mappedOptions = new List<MappedOption>();
+            List<MappedOption> matchedOptions;
 
             if (
                 (
                     deltaX > 0
-                    && lookup.TryGetValue(AxisDirection.Right, out mappedOption)
+                    && lookupAxis.TryGetValue(
+                        MouseMoveTrigger.GetInputHashFor(AxisDirection.Right), 
+                        out matchedOptions)
                 )
                 ||
                 (
                     deltaX < 0
-                    && lookup.TryGetValue(AxisDirection.Left, out mappedOption)
+                    && lookupAxis.TryGetValue(
+                        MouseMoveTrigger.GetInputHashFor(AxisDirection.Left), 
+                        out matchedOptions)
                 )
             )
             {
-                if (mappedOption?.Action != null)
-                    mappedOption.Action.Execute(new MouseMoveInputBag
-                    {
-                        Trigger = mappedOption.Trigger,
-                        DeltaX = deltaX,
-                    });
+                mappedOptions.AddRange(matchedOptions);
             }
+            
             if (
                 (
                     deltaY > 0
-                    && lookup.TryGetValue(AxisDirection.Forward, out mappedOption)
+                    && lookupAxis.TryGetValue(
+                        MouseMoveTrigger.GetInputHashFor(AxisDirection.Forward), 
+                        out matchedOptions)
                 )
                 ||
                 (
                     deltaY < 0
-                    && lookup.TryGetValue(AxisDirection.Backward, out mappedOption)
+                    && lookupAxis.TryGetValue(
+                        MouseMoveTrigger.GetInputHashFor(AxisDirection.Backward), 
+                        out matchedOptions)
                 )
             )
             {
-                if (mappedOption?.Action != null)
-                    mappedOption.Action.Execute(new MouseMoveInputBag
-                    {
-                        Trigger = mappedOption.Trigger,
-                        DeltaY = deltaY,
-                    });
+                mappedOptions.AddRange(matchedOptions);
+            }
+
+            foreach (var mappedOption in mappedOptions)
+            {
+                mappedOption.Action.Execute(new MouseMoveInputBag
+                {
+                    Trigger = mappedOption.Trigger,
+                    DeltaX = deltaX,
+                    DeltaY = deltaY,
+                });
             }
 
             return true;

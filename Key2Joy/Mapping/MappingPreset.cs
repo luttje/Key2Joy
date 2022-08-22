@@ -1,4 +1,5 @@
-﻿using Key2Joy.LowLevelInput;
+﻿using Key2Joy.Config;
+using Key2Joy.LowLevelInput;
 using Key2Joy.Util;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -112,8 +113,8 @@ namespace Key2Joy.Mapping
                 writer.Write(Properties.Resources.default_profile_k2j);
             }
 
-            if(Config.Instance.LastLoadedPreset == null)
-                Config.Instance.LastLoadedPreset = defaultPath;
+            if(ConfigManager.Instance.LastLoadedPreset == null)
+                ConfigManager.Instance.LastLoadedPreset = defaultPath;
         }
 
         internal static MappingPreset Load(string filePath)
@@ -134,7 +135,7 @@ namespace Key2Joy.Mapping
 
         internal static MappingPreset RestoreLastLoaded()
         {
-            var lastLoadedPath = Config.Instance.LastLoadedPreset;
+            var lastLoadedPath = ConfigManager.Instance.LastLoadedPreset;
 
             if (lastLoadedPath == null)
                 return null;

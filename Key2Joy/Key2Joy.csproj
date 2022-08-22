@@ -228,14 +228,17 @@
     <Compile Include="AboutForm.Designer.cs">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Config.cs" />
-    <Compile Include="ConfigControlAttribute.cs" />
+    <Compile Include="Config\ConfigManager.cs" />
+    <Compile Include="Config\BooleanConfigControlAttribute.cs" />
+    <Compile Include="Config\TextConfigControlAttribute.cs" />
+    <Compile Include="Config\ConfigControlAttribute.cs" />
     <Compile Include="ConfigForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ConfigForm.Designer.cs">
       <DependentUpon>ConfigForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Config\NumericConfigControlAttribute.cs" />
     <Compile Include="LowLevelInput\KeyboardKey.cs" />
     <Compile Include="LowLevelInput\PressState.cs" />
     <Compile Include="LowLevelInput\SimulatedKeyboard.cs" />

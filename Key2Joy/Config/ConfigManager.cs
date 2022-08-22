@@ -6,19 +6,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Key2Joy
+namespace Key2Joy.Config
 {
     [JsonObject(MemberSerialization.OptIn)]
-    internal class Config
+    internal class ConfigManager
     {
         const string CONFIG_PATH = "config.json";
 
-        public static Config Instance { get; private set; }
+        public static ConfigManager Instance { get; private set; }
         private bool isInitialized;
 
-        [ConfigControl(
-            Text = "Mute informative message about this app minimizing by default",
-            ControlType = typeof(System.Windows.Forms.CheckBox)
+        [BooleanConfigControl(
+            Text = "Mute informative message about this app minimizing by default"
         )]
         [JsonProperty]
         public bool MuteCloseExitMessage
@@ -28,9 +27,8 @@ namespace Key2Joy
         }
         private bool muteCloseExitMessage;
 
-        [ConfigControl(
-            Text = "Last loaded mapping preset file location",
-            ControlType = typeof(System.Windows.Forms.TextBox)
+        [TextConfigControl(
+            Text = "Last loaded mapping preset file location"
         )]
         [JsonProperty]
         public string LastLoadedPreset
@@ -40,9 +38,8 @@ namespace Key2Joy
         }
         private string lastLoadedPreset;
 
-        [ConfigControl(
-            Text = "Path to directory where logs are saved",
-            ControlType = typeof(System.Windows.Forms.TextBox)
+        [TextConfigControl(
+            Text = "Path to directory where logs are saved"
         )]
         [JsonProperty]
         public string LogOutputPath
@@ -52,7 +49,7 @@ namespace Key2Joy
         }
         private string logOutputPath = Path.Combine(Program.GetAppDirectory(), "Logs");
 
-        private Config() { }
+        private ConfigManager() { }
         private void SaveIfInitialized(object changedValue = null)
         {
             if (isInitialized)
@@ -79,7 +76,7 @@ namespace Key2Joy
 
             if (!File.Exists(configPath))
             {
-                Instance = new Config();
+                Instance = new ConfigManager();
                 Instance.isInitialized = true;
                 Instance.Save();
                 return;
@@ -89,7 +86,7 @@ namespace Key2Joy
                 
             using (var sr = new StreamReader(configPath))
             using (var reader = new JsonTextReader(sr))
-                Instance = serializer.Deserialize<Config>(reader);
+                Instance = serializer.Deserialize<ConfigManager>(reader);
 
             Instance.isInitialized = true;
         }

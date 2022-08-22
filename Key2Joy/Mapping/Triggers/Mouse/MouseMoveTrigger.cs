@@ -7,7 +7,7 @@ namespace Key2Joy.Mapping
         Description = "Mouse Move Event",
         OptionsUserControl = typeof(MouseMoveTriggerOptionsControl)
     )]
-    public class MouseMoveTrigger : BaseTrigger
+    public class MouseMoveTrigger : BaseTrigger, IReturnInputHash
     {
         public const string PREFIX_UNIQUE = nameof(MouseButtonTrigger);
 
@@ -27,6 +27,16 @@ namespace Key2Joy.Mapping
         internal override string GetUniqueKey()
         {
             return $"{PREFIX_UNIQUE}_{AxisBinding}";
+        }
+
+        public static int GetInputHashFor(AxisDirection axisBinding)
+        {
+            return (int)axisBinding;
+        }
+
+        public int GetInputHash()
+        {
+            return GetInputHashFor(AxisBinding);
         }
 
         public override bool Equals(object obj)

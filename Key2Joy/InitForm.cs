@@ -1,4 +1,5 @@
-﻿using Key2Joy.Mapping;
+﻿using Key2Joy.Config;
+using Key2Joy.Mapping;
 using SimWinInput;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace Key2Joy
 
         private void InitForm_Load(object sender, EventArgs e)
         {
-            Config.Load();
+            ConfigManager.Load();
             MappingPreset.ExtractDefaultIfNotExists();
             SimGamePad.Instance.Initialize();
             Program.GoToNextForm(new MainForm());

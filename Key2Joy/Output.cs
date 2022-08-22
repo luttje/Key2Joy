@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Key2Joy.Config;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -32,7 +33,7 @@ namespace Key2Joy
             if (day == null)
                 day = DateTime.Now;
 
-            var directory = Config.Instance.LogOutputPath;
+            var directory = ConfigManager.Instance.LogOutputPath;
 
             if (!Directory.Exists(directory))
                 Directory.CreateDirectory(directory);

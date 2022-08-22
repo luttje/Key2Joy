@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using System.IO;
 using BrightIdeasSoftware;
 using Key2Joy.LowLevelInput;
+using Key2Joy.Config;
 
 namespace Key2Joy
 {
@@ -72,7 +73,7 @@ namespace Key2Joy
         private void SetSelectedPreset(MappingPreset preset)
         {
             selectedPreset = preset;
-            Config.Instance.LastLoadedPreset = preset.FilePath;
+            ConfigManager.Instance.LastLoadedPreset = preset.FilePath;
                 
             olvMappings.SetObjects(preset.MappedOptions);
             olvMappings.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
@@ -360,12 +361,12 @@ namespace Key2Joy
                 e.Cancel = true;
                 Hide();
 
-                if (Config.Instance.MuteCloseExitMessage)
+                if (ConfigManager.Instance.MuteCloseExitMessage)
                     return;
 
                 var result = MessageBox.Show("Closing this window minimizes it to the notification tray in your taskbar. You can shut down Key2Joy through File > Exit Program.\n\nContinue showing this message?", "Minimizing to notification tray.", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
 
-                Config.Instance.MuteCloseExitMessage = result != DialogResult.Yes;
+                ConfigManager.Instance.MuteCloseExitMessage = result != DialogResult.Yes;
             }
         }
 
