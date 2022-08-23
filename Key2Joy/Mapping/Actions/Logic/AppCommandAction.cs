@@ -1,5 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using Key2Joy.Util;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -42,7 +44,28 @@ namespace Key2Joy.Mapping
 
             if(command == AppCommand.ResetScriptEnvironment)
             {
-                BaseScriptAction.Instance.ResetEnvironment();
+                // Keep track of new environments to pass to all related script actions
+                Dictionary<Type, object> newEnvironments = new Dictionary<Type, object>();
+                
+                foreach (var otherAction in otherActions)
+                {
+                    var otherActionType = otherAction.GetType();
+
+                    // TODO: This is a bit hacky and could do with less reflection
+                    if (typeof(BaseScriptActionWithEnvironment<>).IsSubclassOfRawGeneric(otherActionType))
+                    {
+                        if (!newEnvironments.TryGetValue(otherActionType, out object environment))
+                        {
+                            var newEnvironmentMethod = otherActionType.GetMethod(nameof(BaseScriptActionWithEnvironment<object>.SetupEnvironment));
+                            environment = newEnvironmentMethod.Invoke(otherAction, null);
+                            newEnvironments.Add(otherActionType, environment);
+                        }
+
+                        var replaceEnvironmentMethod = otherActionType.GetMethod(nameof(BaseScriptActionWithEnvironment<object>.ReplaceEnvironment));
+                        replaceEnvironmentMethod.Invoke(otherAction, new object[] { environment });
+                    }
+                }
+                
                 return;
             }
 

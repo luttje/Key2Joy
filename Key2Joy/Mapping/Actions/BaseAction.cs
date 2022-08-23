@@ -16,7 +16,9 @@ namespace Key2Joy.Mapping
         internal string Name { get; set; }
 
         public string ImageResource { get; set; }
-        
+
+        public bool IsStarted;
+
         protected string description;
         protected TriggerListener listener;
 
@@ -44,18 +46,25 @@ namespace Key2Joy.Mapping
                 });
         }
 
-        internal virtual void ResetEnvironment()
-        { 
+        internal BaseAction MakeStartedAction(Type actionType)
+        {
+            var action = MakeAction(actionType);
+            action.IsStarted = IsStarted;
+            action.listener = listener;
+            action.otherActions = otherActions;
+            return action;
         }
 
         internal virtual void OnStartListening(TriggerListener listener, ref List<BaseAction> otherActions)
         {
+            IsStarted = true;
             this.listener = listener;
             this.otherActions = otherActions;
         }
 
         internal virtual void OnStopListening(TriggerListener listener)
         {
+            IsStarted = false;
             this.listener = null;
         }
 

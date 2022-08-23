@@ -17,10 +17,8 @@ namespace Key2Joy.Mapping
         OptionsUserControlParams = new[] { "Lua" },
         NameFormat = "Lua Script: {0}"
     )]
-    internal class LuaScriptAction : BaseScriptAction
+    internal class LuaScriptAction : BaseScriptActionWithEnvironment<Lua>
     {
-        private Lua lua;
-        
         public LuaScriptAction(string name, string description)
             : base(name, description)
         {
@@ -36,7 +34,7 @@ namespace Key2Joy.Mapping
                     source = Script;
 
                 lock (LockObject)
-                    lua.DoString(GetExecutableScript(), Script);
+                    environment.DoString(GetExecutableScript(), Script);
             }
             catch (NLua.Exceptions.LuaScriptException e)
             {
@@ -50,12 +48,12 @@ namespace Key2Joy.Mapping
                 throw new ArgumentException("The type must be an enumeration!");
 
             string[] names = Enum.GetNames(enumType);
-            lua.NewTable(enumType.Name);
+            environment.NewTable(enumType.Name);
 
             for (int i = 0; i < names.Length; i++)
             {
                 string path = enumType.Name + "." + names[i];
-                lua.SetObjectToPath(path, Enum.GetValues(enumType).GetValue(i));
+                environment.SetObjectToPath(path, Enum.GetValues(enumType).GetValue(i));
             }
         }
 
@@ -77,29 +75,32 @@ namespace Key2Joy.Mapping
 
                 var path = currentPath.ToString();
 
-                if(lua.GetTable(path) == null)
-                    lua.NewTable(path);
+                if(environment.GetTable(path) == null)
+                    environment.NewTable(path);
             }
 
             var paramDebug = string.Join(", ", method.GetParameters()
                 .Select(p => $"{p.ParameterType.Name} {p.Name}")
                 .ToArray());
             Output.WriteLine(Output.OutputModes.Verbose, $"lua.RegisterFunction({functionName},{instance},{method.Name}({paramDebug}):{method.ReturnType})");
-            
-            lua.RegisterFunction(
+
+            environment.RegisterFunction(
                 functionName,
                 instance,
                 method);
         }
 
-        internal override void ResetEnvironment()
+        internal override Lua MakeEnvironment()
         {
-            lua = new Lua();
-            lua.RegisterFunction("print", this, typeof(LuaScriptAction).GetMethod(nameof(Print), new[] { typeof(object[]) }));
-            lua.RegisterFunction("Print", this, typeof(LuaScriptAction).GetMethod(nameof(Print), new[] { typeof(object[]) }));
-            cachedFile = null;
-            
-            base.ResetEnvironment();
+            return new Lua();
+        }
+
+        public override void RegisterEnvironmentObjects()
+        {
+            environment.RegisterFunction("print", this, typeof(LuaScriptAction).GetMethod(nameof(Print), new[] { typeof(object[]) }));
+            environment.RegisterFunction("Print", this, typeof(LuaScriptAction).GetMethod(nameof(Print), new[] { typeof(object[]) }));
+
+            base.RegisterEnvironmentObjects();
         }
 
         internal override void OnStartListening(TriggerListener listener, ref List<BaseAction> otherActions)
@@ -111,7 +112,7 @@ namespace Key2Joy.Mapping
         {
             base.OnStopListening(listener);
 
-            lua.Dispose();
+            environment.Dispose();
         }
 
         public override bool Equals(object obj)

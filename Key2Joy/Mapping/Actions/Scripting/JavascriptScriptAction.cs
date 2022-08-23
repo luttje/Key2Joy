@@ -18,10 +18,8 @@ namespace Key2Joy.Mapping
         OptionsUserControlParams = new[] { "Javascript" },
         NameFormat = "Javascript Script: {0}"
     )]
-    internal class JavascriptAction : BaseScriptAction
+    internal class JavascriptAction : BaseScriptActionWithEnvironment<Engine>
     {
-        private Engine engine;
-
         public JavascriptAction(string name, string description)
             : base(name, description)
         {
@@ -33,7 +31,7 @@ namespace Key2Joy.Mapping
             try
             {
                 lock (LockObject)
-                    engine.Execute(GetExecutableScript());
+                    environment.Execute(GetExecutableScript());
             }
             catch (Jint.Runtime.JavaScriptException e)
             {
@@ -46,7 +44,7 @@ namespace Key2Joy.Mapping
             var enumNames = Enum.GetNames(enumType);
 
             // TODO: Probably should make a better way to register enums
-            engine.Execute(
+            environment.Execute(
                 enumType.Name + " = {" +
                 string.Join(", ", enumNames.Select((name, index) =>
                 {
@@ -63,13 +61,13 @@ namespace Key2Joy.Mapping
                 "    }"
             );
 
-            engine.Execute($"Print(JSON.stringify({enumType.Name}))");
+            environment.Execute($"Print(JSON.stringify({enumType.Name}))");
         }
 
         internal override void RegisterScriptingMethod(string functionName, BaseAction instance, MethodInfo method)
         {
             var parents = functionName.Split('.');
-            var @delegate = new DelegateWrapper(engine, method.CreateDelegate(instance));
+            var @delegate = new DelegateWrapper(environment, method.CreateDelegate(instance));
 
             var paramDebug = string.Join(", ", method.GetParameters()
                 .Select(p => $"{p.ParameterType.Name} {p.Name}")
@@ -78,14 +76,14 @@ namespace Key2Joy.Mapping
 
             if (parents.Length > 1)
             {
-                var currentObject = engine.Realm.GlobalObject;
+                var currentObject = environment.Realm.GlobalObject;
 
                 for (int i = 0; i < parents.Length; i++)
                 {
                     if(i != parents.Length - 1)
                     {
                         if (!currentObject.TryGetValue(parents[i], out JsValue child))
-                            child = new ObjectInstance(engine);
+                            child = new ObjectInstance(environment);
 
                         if (!(child is ObjectInstance childObject))
                             throw new NotImplementedException($"Tried using a non object({parents[i]}) as object parent while registering function: {functionName}!");
@@ -102,17 +100,21 @@ namespace Key2Joy.Mapping
                 return;
             }
 
-            engine.SetValue(
+            environment.SetValue(
                 functionName,
                 @delegate);
         }
 
-        internal override void ResetEnvironment()
+        internal override Engine MakeEnvironment()
         {
-            engine = new Engine();
-            engine.SetValue("Print", new Action<object[]>(Print));
+            return new Engine();
+        }
 
-            base.ResetEnvironment();
+        public override void RegisterEnvironmentObjects()
+        {
+            environment.SetValue("Print", new Action<object[]>(Print));
+            
+            base.RegisterEnvironmentObjects();
         }
 
         internal override void OnStartListening(TriggerListener listener, ref List<BaseAction> otherActions)
@@ -124,7 +126,7 @@ namespace Key2Joy.Mapping
         {
             base.OnStopListening(listener);
 
-            engine = null;
+            environment = null;
         }
 
         public override bool Equals(object obj)

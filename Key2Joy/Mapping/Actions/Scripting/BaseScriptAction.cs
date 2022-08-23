@@ -1,14 +1,8 @@
-﻿using Jint;
-using Jint.Native;
-using Key2Joy.Util;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Key2Joy.Mapping
 {
@@ -19,14 +13,12 @@ namespace Key2Joy.Mapping
     internal abstract class BaseScriptAction : BaseAction
     {
         internal static readonly object LockObject = new object();
-        
+
         [JsonProperty]
         public string Script { get; set; }
 
         [JsonProperty]
         public bool IsScriptPath { get; set; }
-        
-        public static BaseScriptAction Instance { get; private set; }
 
         protected string cachedFile;
 
@@ -72,50 +64,9 @@ namespace Key2Joy.Mapping
             return Name.Replace("{0}", truncatedScript);
         }
 
-        internal override void ResetEnvironment()
-        {
-            base.ResetEnvironment();
-
-            var actionTypes = ActionAttribute.GetAllActions();
-
-            // Register all scripting available action methods and enumerations
-            foreach (var pair in actionTypes)
-            {
-                var actionType = pair.Key;
-                var exposesEnumerationAttributes = (ExposesScriptingEnumerationAttribute[])actionType.GetCustomAttributes(typeof(ExposesScriptingEnumerationAttribute), false);
-
-                foreach (var scriptingEnumAttribute in exposesEnumerationAttributes)
-                {
-                    RegisterScriptingEnum(scriptingEnumAttribute.ExposedEnumeration);
-                }
-
-                foreach (var methodInfo in actionType.GetMethods())
-                {
-                    var exposesMethodAttributes = (ExposesScriptingMethodAttribute[])methodInfo.GetCustomAttributes(typeof(ExposesScriptingMethodAttribute), false);
-
-                    if (exposesMethodAttributes.Length == 0)
-                        continue;
-
-                    foreach (var scriptingMethodAttribute in exposesMethodAttributes)
-                    {
-                        var instance = MakeAction(actionType);
-
-                        RegisterScriptingMethod(
-                            scriptingMethodAttribute.FunctionName,
-                            instance,
-                            methodInfo);
-                    }
-                }
-            }
-        }
-
         internal override void OnStartListening(TriggerListener listener, ref List<BaseAction> otherActions)
         {
-            Instance = this;
-
             base.OnStartListening(listener, ref otherActions);
-
-            ResetEnvironment();
         }
     }
 }

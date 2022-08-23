@@ -14,7 +14,7 @@ namespace Key2Joy.Mapping
         Abort = 0,
 
         /// <summary>
-        /// Reset the scripting environment
+        /// Recreate the scripting environment (loses all variables, functions and other changes scripts made)
         /// </summary>
         ResetScriptEnvironment = 10,
     }

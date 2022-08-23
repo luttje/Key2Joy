@@ -120,7 +120,11 @@ namespace Key2Joy
                 selectedPreset.AddMapping(mappedOption);
 
             selectedPreset.Save();
-            olvMappings.UpdateObject(mappedOption);
+
+            if (existingMappedOption == null)
+                olvMappings.AddObject(mappedOption);
+            else
+                olvMappings.UpdateObject(mappedOption);
         }
 
         private void RemoveMapping(MappedOption mappedOption)
