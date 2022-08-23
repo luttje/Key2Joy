@@ -84,10 +84,8 @@ namespace Key2Joy.Mapping
                 {
                     if(i != parents.Length - 1)
                     {
-                        JsValue child;
-
-                        if (!currentObject.TryGetValue(parents[i], out child))
-                            child =  new ObjectInstance(engine);
+                        if (!currentObject.TryGetValue(parents[i], out JsValue child))
+                            child = new ObjectInstance(engine);
 
                         if (!(child is ObjectInstance childObject))
                             throw new NotImplementedException($"Tried using a non object({parents[i]}) as object parent while registering function: {functionName}!");
