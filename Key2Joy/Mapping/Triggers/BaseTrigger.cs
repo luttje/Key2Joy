@@ -6,7 +6,7 @@ using System.Drawing;
 namespace Key2Joy.Mapping
 {
     [JsonObject(MemberSerialization.OptIn)]
-    public abstract class BaseTrigger: ICloneable
+    public abstract class BaseTrigger: ICloneable, IComparable<BaseTrigger>
     {
         [JsonProperty]
         internal string Name { get; set; }
@@ -38,6 +38,11 @@ namespace Key2Joy.Mapping
             return ImageResource != null
                 ? (Bitmap)Resources.ResourceManager.GetObject(ImageResource)
                 : null;
+        }
+
+        public int CompareTo(BaseTrigger other)
+        {
+            return ToString().CompareTo(other.ToString());
         }
 
         public static bool operator ==(BaseTrigger a, BaseTrigger b)

@@ -57,8 +57,9 @@ namespace Key2Joy
 
             olvMappings.GroupImageList = imageList;
 
-            olvColumnAction.GroupKeyGetter = olvMappings_GroupKeyGetter;
-            olvColumnAction.GroupKeyToTitleConverter = olvMappings_GroupKeyToTitleConverter;
+            olvColumnAction.GroupKeyGetter += olvMappings_GroupKeyGetter;
+            olvColumnAction.GroupKeyToTitleConverter += olvMappings_GroupKeyToTitleConverter;
+            olvMappings.BeforeCreatingGroups += olvMappings_BeforeCreatingGroups;
 
             olvColumnTrigger.AspectToStringConverter = delegate (object obj) {
                 var trigger = obj as BaseTrigger;
@@ -77,7 +78,8 @@ namespace Key2Joy
                 
             olvMappings.SetObjects(preset.MappedOptions);
             olvMappings.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
-
+            olvMappings.Sort(olvColumnTrigger, SortOrder.Ascending);
+            
             UpdateSelectedPresetName();
         }
 
@@ -233,10 +235,10 @@ namespace Key2Joy
         {
             var option = (MappedOption)rowObject;
             var groupType = option.Action.GetType();
-            var groupAttributes = (ObjectListViewGroupAttribute[])groupType.GetCustomAttributes(typeof(ObjectListViewGroupAttribute), true);
+            var groupAttribute = groupType.GetCustomAttribute<ObjectListViewGroupAttribute>(true);
 
-            if (groupAttributes.Length > 0)
-                return groupAttributes[0];
+            if (groupAttribute != null)
+                return groupAttribute;
 
             return null;
         }
@@ -251,7 +253,13 @@ namespace Key2Joy
             return groupAttribute.Name;
         }
 
-        private void olvMappings_AboutToCreateGroups(object sender, BrightIdeasSoftware.CreateGroupsEventArgs e)
+        private void olvMappings_BeforeCreatingGroups(object sender, CreateGroupsEventArgs e)
+        {
+            e.Parameters.GroupComparer = new MappingGroupComparer();
+            e.Parameters.ItemComparer = new MappingGroupItemComparer(e.Parameters.PrimarySort, e.Parameters.PrimarySortOrder);
+        }
+        
+        private void olvMappings_AboutToCreateGroups(object sender, CreateGroupsEventArgs e)
         {
             foreach (var group in e.Groups)
             {

@@ -244,6 +244,8 @@
     <Compile Include="LowLevelInput\Simulator.cs" />
     <Compile Include="LowLevelInput\SimulatedMouse.cs" />
     <Compile Include="LowLevelInput\SimulatedKeyboard.cs" />
+    <Compile Include="MappingGroupComparer.cs" />
+    <Compile Include="MappingGroupItemComparer.cs" />
     <Compile Include="Mapping\Actions\ActionControl.cs">
       <SubType>UserControl</SubType>
     </Compile>

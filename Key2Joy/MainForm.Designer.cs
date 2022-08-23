@@ -52,6 +52,8 @@
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.createNewMappingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewScriptOutputToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.viewLogFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.viewEventViewerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fillPresetWithToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.allGamePadJoystickActionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -77,8 +79,6 @@
             this.pnlMainMenu = new System.Windows.Forms.Panel();
             this.lblStatusInactive = new System.Windows.Forms.Label();
             this.lblStatusActive = new System.Windows.Forms.Label();
-            this.viewLogFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.viewEventViewerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.olvMappings)).BeginInit();
             this.pnlActionManagement.SuspendLayout();
             this.pnlPresetManagement.SuspendLayout();
@@ -296,6 +296,20 @@
             this.viewScriptOutputToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
             this.viewScriptOutputToolStripMenuItem.Text = "View Script Output";
             // 
+            // viewLogFileToolStripMenuItem
+            // 
+            this.viewLogFileToolStripMenuItem.Name = "viewLogFileToolStripMenuItem";
+            this.viewLogFileToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.viewLogFileToolStripMenuItem.Text = "View Log File";
+            this.viewLogFileToolStripMenuItem.Click += new System.EventHandler(this.viewLogFileToolStripMenuItem_Click);
+            // 
+            // viewEventViewerToolStripMenuItem
+            // 
+            this.viewEventViewerToolStripMenuItem.Name = "viewEventViewerToolStripMenuItem";
+            this.viewEventViewerToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.viewEventViewerToolStripMenuItem.Text = "View Event Viewer";
+            this.viewEventViewerToolStripMenuItem.Click += new System.EventHandler(this.viewEventViewerToolStripMenuItem_Click);
+            // 
             // toolsToolStripMenuItem
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -500,20 +514,6 @@
             this.lblStatusActive.TabIndex = 83;
             this.lblStatusActive.Text = "(Mappings active)";
             this.lblStatusActive.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // viewLogFileToolStripMenuItem
-            // 
-            this.viewLogFileToolStripMenuItem.Name = "viewLogFileToolStripMenuItem";
-            this.viewLogFileToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.viewLogFileToolStripMenuItem.Text = "View Log File";
-            this.viewLogFileToolStripMenuItem.Click += new System.EventHandler(this.viewLogFileToolStripMenuItem_Click);
-            // 
-            // viewEventViewerToolStripMenuItem
-            // 
-            this.viewEventViewerToolStripMenuItem.Name = "viewEventViewerToolStripMenuItem";
-            this.viewEventViewerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.viewEventViewerToolStripMenuItem.Text = "View Event Viewer";
-            this.viewEventViewerToolStripMenuItem.Click += new System.EventHandler(this.viewEventViewerToolStripMenuItem_Click);
             // 
             // MainForm
             // 

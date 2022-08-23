@@ -10,8 +10,7 @@ using System.Threading.Tasks;
 namespace Key2Joy.Mapping
 {
     [JsonObject(MemberSerialization.OptIn)]
-    public abstract class BaseAction
-        : ICloneable
+    public abstract class BaseAction : ICloneable, IComparable<BaseAction>
     {
         [JsonProperty]
         internal string Name { get; set; }
@@ -75,6 +74,11 @@ namespace Key2Joy.Mapping
         public override string ToString()
         {
             return GetNameDisplay();
+        }
+
+        public int CompareTo(BaseAction other)
+        {
+            return ToString().CompareTo(other.ToString());
         }
 
         public static bool operator ==(BaseAction a, BaseAction b)
