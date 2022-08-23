@@ -113,21 +113,8 @@ namespace Key2Joy
                 return;
 
             var mappedOption = mappingForm.MappedOption;
-            bool createNewMapping = true;
-
-            if(selectedPreset.TryGetMappedOption(mappedOption.Trigger, out var otherMappedOption))
-            {
-                if (existingMappedOption == null)
-                {
-                    MessageBox.Show($"This trigger is already mapped to {otherMappedOption.Action.GetNameDisplay()}. Remap that first!", "Trigger already in use.", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-
-                if (existingMappedOption.Equals(otherMappedOption))
-                    createNewMapping = false;
-            }
-
-            if (createNewMapping)
+            
+            if (existingMappedOption == null)
                 selectedPreset.AddMapping(mappedOption);
 
             selectedPreset.Save();

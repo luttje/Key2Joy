@@ -31,7 +31,8 @@ namespace Key2Joy
             cmbPressState.DataSource = LegacyPressStateConverter.GetPressStatesWithoutLegacy();
             cmbPressState.SelectedIndex = 0;
 
-            StartTrapping();
+            // Removed because this is annoying when you want to just edit code
+            //StartTrapping();
         }
 
         public void Select(BaseTrigger trigger)
