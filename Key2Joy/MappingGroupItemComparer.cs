@@ -30,8 +30,13 @@ namespace Key2Joy
 
             if(mappedOptionX.Trigger != null)
             {
+                if (mappedOptionY.Trigger == null)
+                    return 1 * sortDirection;
+                
                 return mappedOptionX.Trigger.CompareTo(mappedOptionY.Trigger) * sortDirection;
             }
+            else
+                return mappedOptionY.Trigger == null ? 0 : -1 * sortDirection;
 
             return 1 * sortDirection;
         }

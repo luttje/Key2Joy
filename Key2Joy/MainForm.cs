@@ -120,7 +120,13 @@ namespace Key2Joy
                 selectedPreset.AddMapping(mappedOption);
 
             selectedPreset.Save();
-            SetSelectedPreset(selectedPreset);
+            olvMappings.UpdateObject(mappedOption);
+        }
+
+        private void RemoveMapping(MappedOption mappedOption)
+        {
+            selectedPreset.RemoveMapping(mappedOption);
+            olvMappings.RemoveObject(mappedOption);
         }
 
         private void RemoveSelectedMappings()
@@ -135,10 +141,9 @@ namespace Key2Joy
                     return;
 
             foreach (OLVListItem listItem in olvMappings.SelectedItems)
-                selectedPreset.RemoveMapping((MappedOption)listItem.RowObject);
+                RemoveMapping((MappedOption)listItem.RowObject);
 
             selectedPreset.Save();
-            SetSelectedPreset(selectedPreset);
         }
 
         private void ArmMappings()
@@ -289,6 +294,7 @@ namespace Key2Joy
                 removeItems.Click += (s, _) =>
                 {
                     RemoveSelectedMappings();
+                    selectedPreset.Save();
                 };
             }
             else if (e.Model is MappedOption mappedOption)
@@ -296,9 +302,7 @@ namespace Key2Joy
                 var removeItem = menu.Items.Add("Remove Mapping");
                 removeItem.Click += (s, _) =>
                 {
-                    selectedPreset.RemoveMapping(mappedOption);
-                    selectedPreset.Save();
-                    SetSelectedPreset(selectedPreset);
+                    RemoveMapping(mappedOption);
                 };
             }
 
@@ -425,46 +429,56 @@ namespace Key2Joy
 
         private void gamePadPressAndReleaseToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            selectedPreset.AddMappingRange(GamePadAction.GetAllButtonActions(PressState.Press));
-            selectedPreset.AddMappingRange(GamePadAction.GetAllButtonActions(PressState.Release));
+            var range = new List<MappedOption>();
+            range.AddRange(GamePadAction.GetAllButtonActions(PressState.Press));
+            range.AddRange(GamePadAction.GetAllButtonActions(PressState.Release));
+
+            selectedPreset.AddMappingRange(range);
             selectedPreset.Save();
-            SetSelectedPreset(selectedPreset);
+            olvMappings.AddObjects(range);
         }
 
         private void gamePadPressToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            selectedPreset.AddMappingRange(GamePadAction.GetAllButtonActions(PressState.Press));
+            var range = GamePadAction.GetAllButtonActions(PressState.Press);
+            selectedPreset.AddMappingRange(range);
             selectedPreset.Save();
-            SetSelectedPreset(selectedPreset);
+            olvMappings.AddObjects(range);
         }
 
         private void gamePadReleaseToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            selectedPreset.AddMappingRange(GamePadAction.GetAllButtonActions(PressState.Release));
+            var range = GamePadAction.GetAllButtonActions(PressState.Release);
+            selectedPreset.AddMappingRange(range);
             selectedPreset.Save();
-            SetSelectedPreset(selectedPreset);
+            olvMappings.AddObjects(range);
         }
 
         private void keyboardPressAndReleaseToolStripMenuItem(object sender, EventArgs e)
         {
-            selectedPreset.AddMappingRange(KeyboardAction.GetAllButtonActions(PressState.Press));
-            selectedPreset.AddMappingRange(KeyboardAction.GetAllButtonActions(PressState.Release));
+            var range = new List<MappedOption>();
+            range.AddRange(KeyboardAction.GetAllButtonActions(PressState.Press));
+            range.AddRange(KeyboardAction.GetAllButtonActions(PressState.Release));
+
+            selectedPreset.AddMappingRange(range);
             selectedPreset.Save();
-            SetSelectedPreset(selectedPreset);
+            olvMappings.AddObjects(range);
         }
 
         private void keyboardPressToolStripMenuItem(object sender, EventArgs e)
         {
-            selectedPreset.AddMappingRange(KeyboardAction.GetAllButtonActions(PressState.Press));
+            var range = KeyboardAction.GetAllButtonActions(PressState.Press);
+            selectedPreset.AddMappingRange(range);
             selectedPreset.Save();
-            SetSelectedPreset(selectedPreset);
+            olvMappings.AddObjects(range);
         }
 
         private void keyboardReleaseToolStripMenuItem(object sender, EventArgs e)
         {
-            selectedPreset.AddMappingRange(KeyboardAction.GetAllButtonActions(PressState.Release));
+            var range = KeyboardAction.GetAllButtonActions(PressState.Release);
+            selectedPreset.AddMappingRange(range);
             selectedPreset.Save();
-            SetSelectedPreset(selectedPreset);
+            olvMappings.AddObjects(range);
         }
 
         private void testGamePadJoystickToolStripMenuItem_Click(object sender, EventArgs e)
