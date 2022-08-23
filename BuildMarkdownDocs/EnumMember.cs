@@ -12,7 +12,8 @@ namespace BuildMarkdownDocs
     internal class EnumMember : Member
     {
         public Type Type { get; set; }
-        
+        public Dictionary<string, string> ValueSummaries;
+
         internal override string GetLinkMarkdown()
         {
             return $"* [`{Name}`]({Parent.Path}{Name}.md)";
@@ -37,8 +38,11 @@ namespace BuildMarkdownDocs
                 
                 if (firstName == null)
                     firstName = name;
-                
-                allEnumerations.AppendLine($"* `{name}`");
+
+                var summary = ValueSummaries != null && ValueSummaries.ContainsKey(name) 
+                    ? $": {ValueSummaries[name]}" : "";
+
+                allEnumerations.AppendLine($"* `{name}`{summary}");
             }
 
             if(firstName != null)

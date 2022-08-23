@@ -18,12 +18,12 @@ namespace Key2Joy.LowLevelInput
         LegacyPressAndRelease,
 
         /// <summary>
-        /// Pressed down
+        /// The key/button is pressed down
         /// </summary>
         Press,
 
         /// <summary>
-        /// Release (after pressed down)
+        /// The key/button is released (after having been pressed down)
         /// </summary>
         Release,
     }

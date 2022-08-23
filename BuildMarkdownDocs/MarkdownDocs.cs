@@ -73,12 +73,27 @@ namespace BuildMarkdownDocs
                         if (!isTypeDescribed)
                         {
                             EnumMember enumMember;
+                            var valueSummaries = new Dictionary<string, string>();
+                            var fullXmlName = $"F:{parameter.Type.FullName}";
+                            
+                            foreach (var m in xmlMembers)
+                            {
+                                var name = m.Attribute("name").Value;
+                                
+                                if(name.StartsWith(fullXmlName))
+                                {
+                                    var summary = m.Element("summary").Value.TrimEachLine().Trim('\n');
+                                    valueSummaries.Add(name.Substring(fullXmlName.Length + 1), summary);
+                                }
+                            }
+
                             enumerations.Add(enumMember = new EnumMember()
                             {
                                 Parent = enumParent,
                                 Type = parameter.Type,
                                 Name = enumName,
-                                Summary = ""
+                                Summary = "",
+                                ValueSummaries = valueSummaries,
                             });
 
                             var outputEnumFile = Path.GetFullPath(outputDirectory + enumMember.Parent.Path + enumMember.Name.FirstCharToUpper() + ".md");
