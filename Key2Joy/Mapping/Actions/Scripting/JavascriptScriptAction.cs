@@ -21,6 +21,7 @@ namespace Key2Joy.Mapping
     internal class JavascriptAction : BaseScriptAction
     {
         private Engine engine;
+        private string cachedFile;
 
         public JavascriptAction(string name, string description)
             : base(name, description)
@@ -34,12 +35,16 @@ namespace Key2Joy.Mapping
             {
                 if (IsScriptPath)
                 {
-                    string source = System.IO.File.ReadAllText(Script);
-                    engine.Execute(source);
+                    if (cachedFile == null)
+                        cachedFile = System.IO.File.ReadAllText(Script);
+
+                    lock (LockObject)
+                        engine.Execute(cachedFile);
                     return;
                 }
 
-                engine.Execute(Script);
+                lock (LockObject)
+                    engine.Execute(Script);
             }
             catch (Jint.Runtime.JavaScriptException e)
             {
@@ -51,7 +56,7 @@ namespace Key2Joy.Mapping
         {
             var enumNames = Enum.GetNames(enumType);
 
-            // TODO: Probably a better way to register enums
+            // TODO: Probably should make a better way to register enums
             engine.Execute(
                 enumType.Name + " = {" +
                 string.Join(", ", enumNames.Select((name, index) =>
@@ -77,6 +82,11 @@ namespace Key2Joy.Mapping
             var parents = functionName.Split('.');
             var @delegate = new DelegateWrapper(engine, method.CreateDelegate(instance));
 
+            var paramDebug = string.Join(", ", method.GetParameters()
+                .Select(p => $"{p.ParameterType.Name} {p.Name}")
+                .ToArray());
+            Output.WriteLine(Output.OutputModes.Verbose, $"js.RegisterFunction({functionName},{instance},{method.Name}({paramDebug}):{method.ReturnType})");
+
             if (parents.Length > 1)
             {
                 var currentObject = engine.Realm.GlobalObject;
@@ -85,7 +95,14 @@ namespace Key2Joy.Mapping
                 {
                     if(i != parents.Length - 1)
                     {
-                        var childObject = new ObjectInstance(engine);
+                        JsValue child;
+
+                        if (!currentObject.TryGetValue(parents[i], out child))
+                            child =  new ObjectInstance(engine);
+
+                        if (!(child is ObjectInstance childObject))
+                            throw new NotImplementedException($"Tried using a non object({parents[i]}) as object parent while registering function: {functionName}!");
+
                         currentObject.FastAddProperty(parents[i], childObject, false, true, true);
                         currentObject = childObject;
                     }
