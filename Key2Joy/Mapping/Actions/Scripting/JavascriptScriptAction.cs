@@ -21,7 +21,6 @@ namespace Key2Joy.Mapping
     internal class JavascriptAction : BaseScriptAction
     {
         private Engine engine;
-        private string cachedFile;
 
         public JavascriptAction(string name, string description)
             : base(name, description)
@@ -33,18 +32,8 @@ namespace Key2Joy.Mapping
         {
             try
             {
-                if (IsScriptPath)
-                {
-                    if (cachedFile == null)
-                        cachedFile = System.IO.File.ReadAllText(Script);
-
-                    lock (LockObject)
-                        engine.Execute(cachedFile);
-                    return;
-                }
-
                 lock (LockObject)
-                    engine.Execute(Script);
+                    engine.Execute(GetExecutableScript());
             }
             catch (Jint.Runtime.JavaScriptException e)
             {

@@ -20,7 +20,6 @@ namespace Key2Joy.Mapping
     internal class LuaScriptAction : BaseScriptAction
     {
         private Lua lua;
-        private string cachedFile;
         
         public LuaScriptAction(string name, string description)
             : base(name, description)
@@ -32,18 +31,12 @@ namespace Key2Joy.Mapping
         {
             try
             {
+                var source = "Key2Joy.Script.Inline";
                 if (IsScriptPath)
-                {
-                    if(cachedFile == null)
-                        cachedFile = File.ReadAllText(Script);
-
-                    lock (LockObject)
-                        lua.DoString(cachedFile, Script);
-                    return;
-                }
+                    source = Script;
 
                 lock (LockObject)
-                    lua.DoString(Script, "Key2Joy.Script.Inline");
+                    lua.DoString(GetExecutableScript(), Script);
             }
             catch (NLua.Exceptions.LuaScriptException e)
             {

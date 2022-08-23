@@ -28,9 +28,24 @@ namespace Key2Joy.Mapping
         
         public static BaseScriptAction Instance { get; private set; }
 
+        protected string cachedFile;
+
         public BaseScriptAction(string name, string description)
             : base(name, description)
         { }
+
+        protected virtual string GetExecutableScript()
+        {
+            if (IsScriptPath)
+            {
+                if (cachedFile == null)
+                    cachedFile = System.IO.File.ReadAllText(Script);
+
+                return cachedFile;
+            }
+
+            return Script;
+        }
 
         internal abstract void RegisterScriptingEnum(Type enumType);
         internal abstract void RegisterScriptingMethod(string functionName, BaseAction instance, MethodInfo method);
