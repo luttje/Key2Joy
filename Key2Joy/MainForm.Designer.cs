@@ -66,6 +66,8 @@
             this.pressAndReleaseToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.testMappingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.testGamePadJoystickToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.devicetestscomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.gamepadtestercomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.testKeyboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.testMouseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
@@ -327,7 +329,7 @@
             this.allGamePadJoystickActionsToolStripMenuItem,
             this.allKeyboardActionsToolStripMenuItem});
             this.fillPresetWithToolStripMenuItem.Name = "fillPresetWithToolStripMenuItem";
-            this.fillPresetWithToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.fillPresetWithToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.fillPresetWithToolStripMenuItem.Text = "Fill Preset With...";
             // 
             // allGamePadJoystickActionsToolStripMenuItem
@@ -399,15 +401,31 @@
             this.testKeyboardToolStripMenuItem,
             this.testMouseToolStripMenuItem});
             this.testMappingsToolStripMenuItem.Name = "testMappingsToolStripMenuItem";
-            this.testMappingsToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.testMappingsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.testMappingsToolStripMenuItem.Text = "Test Mappings";
             // 
             // testGamePadJoystickToolStripMenuItem
             // 
+            this.testGamePadJoystickToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.devicetestscomToolStripMenuItem,
+            this.gamepadtestercomToolStripMenuItem});
             this.testGamePadJoystickToolStripMenuItem.Name = "testGamePadJoystickToolStripMenuItem";
             this.testGamePadJoystickToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
             this.testGamePadJoystickToolStripMenuItem.Text = "Test GamePad / Joystick";
-            this.testGamePadJoystickToolStripMenuItem.Click += new System.EventHandler(this.testGamePadJoystickToolStripMenuItem_Click);
+            // 
+            // devicetestscomToolStripMenuItem
+            // 
+            this.devicetestscomToolStripMenuItem.Name = "devicetestscomToolStripMenuItem";
+            this.devicetestscomToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.devicetestscomToolStripMenuItem.Text = "devicetests.com";
+            this.devicetestscomToolStripMenuItem.Click += new System.EventHandler(this.devicetestscomToolStripMenuItem_Click);
+            // 
+            // gamepadtestercomToolStripMenuItem
+            // 
+            this.gamepadtestercomToolStripMenuItem.Name = "gamepadtestercomToolStripMenuItem";
+            this.gamepadtestercomToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.gamepadtestercomToolStripMenuItem.Text = "gamepad-tester.com";
+            this.gamepadtestercomToolStripMenuItem.Click += new System.EventHandler(this.gamepadtestercomToolStripMenuItem_Click);
             // 
             // testKeyboardToolStripMenuItem
             // 
@@ -426,13 +444,13 @@
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(176, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(177, 6);
             // 
             // userConfigurationsToolStripMenuItem
             // 
             this.userConfigurationsToolStripMenuItem.Image = global::Key2Joy.Properties.Resources.cog;
             this.userConfigurationsToolStripMenuItem.Name = "userConfigurationsToolStripMenuItem";
-            this.userConfigurationsToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.userConfigurationsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.userConfigurationsToolStripMenuItem.Text = "User Configurations";
             this.userConfigurationsToolStripMenuItem.Click += new System.EventHandler(this.userConfigurationsToolStripMenuItem_Click);
             // 
@@ -596,6 +614,8 @@
         private System.Windows.Forms.ToolStripMenuItem viewScriptOutputToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem viewLogFileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem viewEventViewerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem devicetestscomToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem gamepadtestercomToolStripMenuItem;
     }
 }
 

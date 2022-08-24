@@ -22,6 +22,8 @@ namespace Key2Joy.Mapping
             cmbGamePad.DataSource = GamePadAction.GetAllButtons();
             cmbPressState.DataSource = LegacyPressStateConverter.GetPressStatesWithoutLegacy();
             cmbPressState.SelectedIndex = 0;
+            cmbGamePadIndex.DataSource = GamePadManager.Instance.GetAllGamePadIndices();
+            cmbGamePadIndex.SelectedIndex = 0;
         }
 
         public void Select(BaseAction action)
@@ -30,6 +32,7 @@ namespace Key2Joy.Mapping
 
             cmbGamePad.SelectedItem = thisAction.Control;
             cmbPressState.SelectedItem = thisAction.PressState;
+            cmbGamePadIndex.SelectedItem = thisAction.GamePadIndex;
         }
 
         public void Setup(BaseAction action)
@@ -38,6 +41,7 @@ namespace Key2Joy.Mapping
 
             thisAction.Control = (SimWinInput.GamePadControl)cmbGamePad.SelectedItem;
             thisAction.PressState = (PressState) cmbPressState.SelectedItem;
+            thisAction.GamePadIndex = (int)cmbGamePadIndex.SelectedItem;
         }
 
         private void cmbGamePad_SelectedIndexChanged(object sender, EventArgs e)
@@ -46,6 +50,11 @@ namespace Key2Joy.Mapping
         }
 
         private void cmbPressState_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            OptionsChanged?.Invoke();
+        }
+
+        private void cmbGamePadIndex_SelectedIndexChanged(object sender, EventArgs e)
         {
             OptionsChanged?.Invoke();
         }

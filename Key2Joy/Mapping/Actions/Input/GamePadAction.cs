@@ -24,13 +24,14 @@ namespace Key2Joy.Mapping
     )]
     internal class GamePadAction : BaseAction, IPressState
     {
-        private static bool isPluggedIn = false;
-
         [JsonProperty]
         public GamePadControl Control { get; set; }
 
         [JsonProperty]
         public PressState PressState { get; set; }
+
+        [JsonProperty]
+        public int GamePadIndex { get; set; }
 
         public GamePadAction(string name, string description)
             : base(name, description)
@@ -46,7 +47,7 @@ namespace Key2Joy.Mapping
             foreach (var control in GetAllButtons())
             {
                 var action = (GamePadAction)MakeAction(actionType, typeAttribute);
-                action.Control = (GamePadControl) control;
+                action.Control = control;
                 action.PressState = pressState;
                 
                 actions.Add(new MappedOption
@@ -72,22 +73,7 @@ namespace Key2Joy.Mapping
         {
             base.OnStartListening(listener, ref otherActions);
 
-            if (isPluggedIn)
-                return;
-            
-            SimGamePad.Instance.PlugIn();
-            isPluggedIn = true;
-        }
-
-        internal override void OnStopListening(TriggerListener listener)
-        {
-            base.OnStopListening(listener);
-
-            if (!isPluggedIn)
-                return;
-            
-            SimGamePad.Instance.Unplug();
-            isPluggedIn = false;
+            GamePadManager.Instance.EnsurePluggedIn(GamePadIndex);
         }
 
         /// <markdown-doc>
@@ -110,18 +96,22 @@ namespace Key2Joy.Mapping
         /// </markdown-example>
         /// <param name="control">Button to simulate</param>
         /// <param name="pressState">Action to simulate</param>
+        /// <param name="gamepadIndex">Which of 4 possible gamepads to simulate (0, 1, 2 or 3)</param>
         /// <name>GamePad.Simulate</name>
         [ExposesScriptingMethod("GamePad.Simulate")]
-        public async void ExecuteForScript(GamePadControl control, PressState pressState)
+        public async void ExecuteForScript(GamePadControl control, PressState pressState, int gamepadIndex = 0)
         {
             Control = control;
             PressState = pressState;
+            GamePadIndex = gamepadIndex;
+
+            GamePadManager.Instance.EnsurePluggedIn(GamePadIndex);
 
             if (PressState == PressState.Press)
-                SimGamePad.Instance.SetControl(Control);
+                SimGamePad.Instance.SetControl(Control, GamePadIndex);
             
             if (PressState == PressState.Release)
-                SimGamePad.Instance.ReleaseControl(Control);
+                SimGamePad.Instance.ReleaseControl(Control, GamePadIndex);
         }
 
         internal override async Task Execute(IInputBag inputBag = null)
@@ -130,8 +120,7 @@ namespace Key2Joy.Mapping
             {
                 // TODO: Sensitivity should be tweakable by user
                 // TODO: Support non axis buttons when delta is over a threshold?
-                var controllerId = 0;
-                var state = SimGamePad.Instance.State[controllerId];
+                var state = SimGamePad.Instance.State[GamePadIndex];
 
                 switch (Control)
                 {
@@ -155,15 +144,15 @@ namespace Key2Joy.Mapping
                         throw new NotImplementedException("This control does not (yet) support mouse axis input");
                 }
 
-                SimGamePad.Instance.Update(controllerId);
+                SimGamePad.Instance.Update(GamePadIndex);
                 
                 return;
             }
 
             if (PressState == PressState.Press)
-                SimGamePad.Instance.SetControl(Control);
+                SimGamePad.Instance.SetControl(Control, GamePadIndex);
             else if(PressState == PressState.Release)
-                SimGamePad.Instance.ReleaseControl(Control);
+                SimGamePad.Instance.ReleaseControl(Control, GamePadIndex);
         }
 
         public override string GetNameDisplay()
@@ -187,6 +176,7 @@ namespace Key2Joy.Mapping
             {
                 Control = Control,
                 PressState = PressState,
+                GamePadIndex = GamePadIndex,
                 ImageResource = ImageResource,
                 Name = Name,
             };

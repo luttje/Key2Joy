@@ -34,9 +34,19 @@ namespace Key2Joy.Mapping
         [JsonProperty]
         public double DeltaY { get; set; }
 
+        [JsonProperty]
+        public int GamePadIndex { get; set; }
+
         public GamePadStickAction(string name, string description)
             : base(name, description)
         {
+        }
+
+        internal override void OnStartListening(TriggerListener listener, ref List<BaseAction> otherActions)
+        {
+            base.OnStartListening(listener, ref otherActions);
+
+            GamePadManager.Instance.EnsurePluggedIn(GamePadIndex);
         }
 
         /// <markdown-doc>
@@ -60,22 +70,29 @@ namespace Key2Joy.Mapping
         /// <param name="deltaX">The fraction by which to move the stick forward (negative) or backward (positive)</param>
         /// <param name="deltaY">The fraction by which to move the stick right (positive) or left (negative)</param>
         /// <param name="stick">Which gamepad stick to move, either GamePadStick.Left (default) or .Right</param>
+        /// <param name="gamepadIndex">Which of 4 possible gamepads to simulate (0, 1, 2 or 3)</param>
         /// <name>GamePad.SimulateMove</name>
         [ExposesScriptingMethod("GamePad.SimulateMove")]
-        public async void ExecuteForScript(double deltaX, double deltaY, Simulator.GamePadStick stick = Simulator.GamePadStick.Left)
+        public async void ExecuteForScript(
+            double deltaX, 
+            double deltaY, 
+            Simulator.GamePadStick stick = Simulator.GamePadStick.Left,
+            int gamepadIndex = 0)
         {
             DeltaX = deltaX;
             DeltaY = deltaY;
             Stick = stick;
-            
+            GamePadIndex = gamepadIndex;
+
+            GamePadManager.Instance.EnsurePluggedIn(GamePadIndex);
+
             await Execute();
         }
 
         internal override async Task Execute(IInputBag inputBag = null)
         {
             var simPad = SimGamePad.Instance;
-            var targetGamePad = 0; // TODO: Support multiple gamepads
-            var state = simPad.State[targetGamePad];
+            var state = simPad.State[GamePadIndex];
 
             var x = (short)(short.MinValue * DeltaX);
             var y = (short)(short.MinValue * DeltaY);
@@ -91,7 +108,7 @@ namespace Key2Joy.Mapping
                 state.LeftStickY = y;
             }
 
-            simPad.Update(targetGamePad);
+            simPad.Update(GamePadIndex);
         }
 
         public override string GetNameDisplay()
@@ -118,6 +135,7 @@ namespace Key2Joy.Mapping
                 Stick = Stick,
                 DeltaX = DeltaX,
                 DeltaY = DeltaY,
+                GamePadIndex = GamePadIndex,
                 ImageResource = ImageResource,
                 Name = Name,
             };

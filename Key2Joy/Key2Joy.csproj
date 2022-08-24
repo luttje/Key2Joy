@@ -239,6 +239,7 @@
       <DependentUpon>ConfigForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Config\NumericConfigControlAttribute.cs" />
+    <Compile Include="LowLevelInput\GamePadManager.cs" />
     <Compile Include="LowLevelInput\KeyboardKey.cs" />
     <Compile Include="LowLevelInput\PressState.cs" />
     <Compile Include="LowLevelInput\Simulator.cs" />

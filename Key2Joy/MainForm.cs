@@ -198,6 +198,8 @@ namespace Key2Joy
 
             foreach (var listener in listeners)
                 listener.StopListening();
+
+            GamePadManager.Instance.EnsureAllUnplugged();
         }
 
         public bool RunAppCommand(AppCommand command)
@@ -485,11 +487,6 @@ namespace Key2Joy
             olvMappings.AddObjects(range);
         }
 
-        private void testGamePadJoystickToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Process.Start("https://devicetests.com/controller-tester");
-        }
-
         private void testKeyboardToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Process.Start("https://devicetests.com/keyboard-tester");
@@ -546,6 +543,16 @@ namespace Key2Joy
         private void viewEventViewerToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Process.Start("eventvwr.exe", "/c:Application");
+        }
+
+        private void devicetestscomToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://devicetests.com/controller-tester");
+        }
+
+        private void gamepadtestercomToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://gamepad-tester.com/");
         }
     }
 }

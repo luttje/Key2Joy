@@ -24,9 +24,19 @@ namespace Key2Joy.Mapping
     )]
     internal class GamePadResetAction : BaseAction
     {
+        [JsonProperty]
+        public int GamePadIndex { get; set; }
+
         public GamePadResetAction(string name, string description)
             : base(name, description)
         {
+        }
+        
+        internal override void OnStartListening(TriggerListener listener, ref List<BaseAction> otherActions)
+        {
+            base.OnStartListening(listener, ref otherActions);
+
+            GamePadManager.Instance.EnsurePluggedIn(GamePadIndex);
         }
 
         /// <markdown-doc>
@@ -47,24 +57,27 @@ namespace Key2Joy.Mapping
         /// ]]>
         /// </code>
         /// </markdown-example>
+        /// <param name="gamepadIndex">Which of 4 possible gamepads to reset (0, 1, 2 or 3)</param>
         /// <name>GamePad.Reset</name>
         [ExposesScriptingMethod("GamePad.Reset")]
-        public async void ExecuteForScript()
+        public async void ExecuteForScript(int gamepadIndex = 0)
         {
+            GamePadIndex = gamepadIndex;
+
+            GamePadManager.Instance.EnsurePluggedIn(GamePadIndex);
+
             var simPad = SimGamePad.Instance;
-            var targetGamePad = 0; // TODO: Support multiple gamepads
-            var state = simPad.State[targetGamePad];
+            var state = simPad.State[GamePadIndex];
             state.Reset();
-            simPad.Update();
+            simPad.Update(GamePadIndex);
         }
 
         internal override async Task Execute(IInputBag inputBag = null)
         {
             var simPad = SimGamePad.Instance;
-            var targetGamePad = 0; // TODO: Support multiple gamepads
-            var state = simPad.State[targetGamePad];
+            var state = simPad.State[GamePadIndex];
             state.Reset();
-            simPad.Update();
+            simPad.Update(GamePadIndex);
         }
 
         public override bool Equals(object obj)
@@ -79,6 +92,7 @@ namespace Key2Joy.Mapping
         {
             return new GamePadResetAction(Name, description)
             {
+                GamePadIndex = GamePadIndex,
                 ImageResource = ImageResource,
                 Name = Name,
             };
