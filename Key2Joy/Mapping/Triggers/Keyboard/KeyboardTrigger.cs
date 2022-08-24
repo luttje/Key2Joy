@@ -44,6 +44,16 @@ namespace Key2Joy.Mapping
             return $"{PREFIX_UNIQUE}_{Keys}";
         }
 
+        // Keep Press and Release together while sorting
+        public override int CompareTo(BaseTrigger other)
+        {
+            if (other == null || !(other is KeyboardTrigger otherKeyboardTrigger))
+                return base.CompareTo(other);
+            
+            return $"{Keys}#{(int)PressState}"
+                .CompareTo($"{otherKeyboardTrigger.Keys}#{(int)otherKeyboardTrigger.PressState}");
+        }
+        
         public override bool Equals(object obj)
         {
             if(!(obj is KeyboardTrigger other)) 

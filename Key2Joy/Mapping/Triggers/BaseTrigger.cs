@@ -55,7 +55,7 @@ namespace Key2Joy.Mapping
                 : null;
         }
 
-        public int CompareTo(BaseTrigger other)
+        public virtual int CompareTo(BaseTrigger other)
         {
             return ToString().CompareTo(other.ToString());
         }
