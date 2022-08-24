@@ -8,6 +8,8 @@ namespace Key2Joy.Mapping
     [JsonObject(MemberSerialization.OptIn)]
     public abstract class BaseTrigger: ICloneable, IComparable<BaseTrigger>
     {
+        public event EventHandler<TriggerExecutingEventArgs> Executing;
+
         [JsonProperty]
         internal string Name { get; set; }
 
@@ -24,13 +26,26 @@ namespace Key2Joy.Mapping
         internal abstract TriggerListener GetTriggerListener();
 
         public string ImageResource { get; set; }
-        
+
         protected string description;
+
+        public DateTime LastActivated { get; private set; }
+        public IInputBag LastInputBag { get; private set; }
+        public bool ExecutedLastActivation { get; private set; }
 
         internal BaseTrigger(string name, string description)
         {
             Name = name;
             this.description = description;
+        }
+
+        public virtual bool GetShouldExecute()
+        {
+            var eventArgs = new TriggerExecutingEventArgs();
+
+            Executing?.Invoke(this, eventArgs);
+
+            return !eventArgs.Handled;
         }
 
         public virtual Image GetImage()
@@ -57,6 +72,13 @@ namespace Key2Joy.Mapping
             return a.Equals(b);
         }
         public static bool operator !=(BaseTrigger a, BaseTrigger b) => !(a == b);
+
+        internal void DoActivate(IInputBag inputBag, bool executed = false)
+        {
+            LastActivated = DateTime.Now;
+            LastInputBag = inputBag;
+            ExecutedLastActivation = executed;
+        }
 
         public abstract object Clone();
     }

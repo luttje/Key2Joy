@@ -23,6 +23,6 @@ namespace Key2Joy.Mapping
         /// <summary>
         /// Called when the options on a trigger change
         /// </summary>
-        event Action OptionsChanged;
+        event EventHandler OptionsChanged;
     }
 }

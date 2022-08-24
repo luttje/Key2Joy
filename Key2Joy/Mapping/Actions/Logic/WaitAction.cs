@@ -9,7 +9,7 @@ namespace Key2Joy.Mapping
 {
     [Action(
         Description = "Wait for a specified duration",
-        Visibility = ActionVisibility.UnlessTopLevel,
+        Visibility = MappingMenuVisibility.UnlessTopLevel,
         OptionsUserControl = typeof(WaitActionControl),
         NameFormat = "Wait for {0}ms"
     )]
@@ -23,7 +23,7 @@ namespace Key2Joy.Mapping
         {
         }
 
-        internal override Task Execute(InputBag inputBag = null)
+        internal override Task Execute(IInputBag inputBag = null)
         {
             return Task.Delay(WaitTime);
         }

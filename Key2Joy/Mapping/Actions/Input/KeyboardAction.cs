@@ -95,7 +95,7 @@ namespace Key2Joy.Mapping
                 SimulatedKeyboard.ReleaseKey(Key);
         }
 
-        internal override async Task Execute(InputBag inputBag = null)
+        internal override async Task Execute(IInputBag inputBag = null)
         {
             if (PressState == PressState.Press)
                 SimulatedKeyboard.PressKey(Key);

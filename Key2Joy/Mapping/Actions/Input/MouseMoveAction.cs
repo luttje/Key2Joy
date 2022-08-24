@@ -14,7 +14,7 @@ namespace Key2Joy.Mapping
 {
     [Action(
         Description = "Mouse Move Simulation",
-        Visibility = ActionVisibility.Never,
+        Visibility = MappingMenuVisibility.Never,
         NameFormat = "Move {0} {1},{2} on Mouse"
     )]
     [ExposesScriptingEnumeration(typeof(Mouse.MoveType))]
@@ -75,7 +75,7 @@ namespace Key2Joy.Mapping
             await Execute();
         }
 
-        internal override async Task Execute(InputBag inputBag = null)
+        internal override async Task Execute(IInputBag inputBag = null)
         {
             SimulatedMouse.Move(X, Y, MoveType);
         }

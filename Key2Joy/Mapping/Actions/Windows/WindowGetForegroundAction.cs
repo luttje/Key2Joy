@@ -10,7 +10,7 @@ namespace Key2Joy.Mapping
 {
     [Action(
         Description = "Get Foreground Window Handle",
-        Visibility = ActionVisibility.Never,
+        Visibility = MappingMenuVisibility.Never,
         NameFormat = "Get Foreground Window Handle"
     )]
     internal class WindowGetForegroundAction : BaseAction
@@ -38,7 +38,7 @@ namespace Key2Joy.Mapping
             return windowHandle;
         }
 
-        internal override async Task Execute(InputBag inputBag = null)
+        internal override async Task Execute(IInputBag inputBag = null)
         {
             // TODO: Currently this is only a script action...
         }

@@ -8,7 +8,7 @@ namespace Key2Joy.Mapping
 {
     [Action(
         Description = "Multiple Actions in Sequence",
-        Visibility = ActionVisibility.OnlyTopLevel,
+        Visibility = MappingMenuVisibility.OnlyTopLevel,
         OptionsUserControl = typeof(SequenceActionControl),
         NameFormat = "Run Sequence: {0}"
     )]
@@ -27,7 +27,7 @@ namespace Key2Joy.Mapping
             ChildActions = new List<BaseAction>();
         }
 
-        internal override async Task Execute(InputBag inputBag = null)
+        internal override async Task Execute(IInputBag inputBag = null)
         {
             foreach (var childAction in ChildActions)
                 await childAction.Execute(inputBag);

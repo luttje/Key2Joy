@@ -260,7 +260,7 @@
     </Compile>
     <Compile Include="IAcceptAppCommands.cs" />
     <Compile Include="Mapping\Actions\ActionAttribute.cs" />
-    <Compile Include="Mapping\Actions\ActionVisibility.cs" />
+    <Compile Include="Mapping\ActionVisibility.cs" />
     <Compile Include="Mapping\Actions\ExposesScriptingMethodAttribute.cs" />
     <Compile Include="Mapping\Actions\Input\GamePadActionControl.cs">
       <SubType>UserControl</SubType>
@@ -300,7 +300,26 @@
     <Compile Include="Mapping\Actions\Scripting\LuaScriptAction.cs" />
     <Compile Include="Mapping\IPressState.cs" />
     <Compile Include="Mapping\IReturnInputHash.cs" />
+    <Compile Include="Mapping\Triggers\Logic\CombinedInputBag.cs" />
+    <Compile Include="Mapping\Triggers\Logic\CombinedTrigger.cs" />
+    <Compile Include="Mapping\Triggers\Logic\CombinedTriggerControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Mapping\Triggers\Logic\CombinedTriggerControl.Designer.cs">
+      <DependentUpon>CombinedTriggerControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Mapping\Triggers\Logic\CombinedTriggerListener.cs" />
+    <Compile Include="Mapping\Triggers\Logic\CombinedTriggerOptionsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Mapping\Triggers\Logic\CombinedTriggerOptionsControl.Designer.cs">
+      <DependentUpon>CombinedTriggerOptionsControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Mapping\Triggers\PressReleaseTriggerListener.cs" />
+    <Compile Include="Mapping\Triggers\TriggerActivatingEventArgs.cs" />
+    <Compile Include="Mapping\Triggers\TriggerActivatedEventArgs.cs" />
+    <Compile Include="Mapping\Triggers\TriggerChangedEventArgs.cs" />
+    <Compile Include="Mapping\Triggers\TriggerExecutingEventArgs.cs" />
     <Compile Include="Output.cs" />
     <Compile Include="Mapping\Actions\Scripting\ScriptActionControl.cs">
       <SubType>UserControl</SubType>
@@ -446,6 +465,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Mapping\Actions\Logic\SequenceActionControl.resx">
       <DependentUpon>SequenceActionControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Mapping\Triggers\Logic\CombinedTriggerControl.resx">
+      <DependentUpon>CombinedTriggerControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Mapping\Triggers\Logic\CombinedTriggerOptionsControl.resx">
+      <DependentUpon>CombinedTriggerOptionsControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Mapping\Triggers\TriggerControl.resx">
       <DependentUpon>TriggerControl.cs</DependentUpon>

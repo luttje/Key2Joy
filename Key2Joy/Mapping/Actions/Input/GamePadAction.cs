@@ -124,7 +124,7 @@ namespace Key2Joy.Mapping
                 SimGamePad.Instance.ReleaseControl(Control);
         }
 
-        internal override async Task Execute(InputBag inputBag = null)
+        internal override async Task Execute(IInputBag inputBag = null)
         {
             if (inputBag is MouseMoveInputBag mouseMoveInputBag)
             {

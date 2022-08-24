@@ -14,8 +14,9 @@ namespace Key2Joy.Mapping
     public partial class TriggerControl : UserControl
     {
         public BaseTrigger Trigger { get; private set; }
-        public event Action<BaseTrigger> TriggerChanged;
-        
+        public event EventHandler<TriggerChangedEventArgs> TriggerChanged;
+        public bool IsTopLevel { get; set; }
+
         private bool isLoaded = false;
         private ITriggerOptionsControl options;
 
@@ -30,7 +31,7 @@ namespace Key2Joy.Mapping
         {
             if (cmbTrigger.SelectedItem == null)
             {
-                TriggerChanged?.Invoke(null);
+                TriggerChanged?.Invoke(this, TriggerChangedEventArgs.Empty);
                 return;
             }
 
@@ -48,7 +49,7 @@ namespace Key2Joy.Mapping
             if (options != null)
                 options.Setup(Trigger);
 
-            TriggerChanged?.Invoke(Trigger);
+            TriggerChanged?.Invoke(this, new TriggerChangedEventArgs(Trigger));
         }
 
         internal void SelectTrigger(BaseTrigger trigger)
@@ -65,7 +66,7 @@ namespace Key2Joy.Mapping
 
         private void LoadTriggers()
         {
-            var triggerTypes = TriggerAttribute.GetAllTriggers();
+            var triggerTypes = TriggerAttribute.GetAllTriggers(IsTopLevel);
 
             cmbTrigger.DataSource = new BindingSource(triggerTypes, null);
             cmbTrigger.DisplayMember = "Key";
@@ -107,7 +108,7 @@ namespace Key2Joy.Mapping
             PerformLayout();
         }
 
-        private void OnOptionsChanged()
+        private void OnOptionsChanged(object sender, EventArgs e)
         {
             var selected = (KeyValuePair<TriggerAttribute, Type>)cmbTrigger.SelectedItem;
             var attribute = selected.Key;

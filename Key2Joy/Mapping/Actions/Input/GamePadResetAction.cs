@@ -14,7 +14,7 @@ namespace Key2Joy.Mapping
 {
     [Action(
         Description = "GamePad Reset Simulation",
-        Visibility = ActionVisibility.Never,
+        Visibility = MappingMenuVisibility.Never,
         NameFormat = "GamePad Reset"
     )]
     [ExposesScriptingEnumeration(typeof(Simulator.GamePadStick))]
@@ -58,7 +58,7 @@ namespace Key2Joy.Mapping
             simPad.Update();
         }
 
-        internal override async Task Execute(InputBag inputBag = null)
+        internal override async Task Execute(IInputBag inputBag = null)
         {
             var simPad = SimGamePad.Instance;
             var targetGamePad = 0; // TODO: Support multiple gamepads

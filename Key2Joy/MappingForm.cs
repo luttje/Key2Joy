@@ -22,6 +22,7 @@ namespace Key2Joy
             DialogResult = DialogResult.Cancel;
 
             actionControl.IsTopLevel = true;
+            triggerControl.IsTopLevel = true;
         }
 
         public MappingForm(MappedOption mappedOption)

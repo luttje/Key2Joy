@@ -11,7 +11,7 @@ namespace Key2Joy.Mapping
 {
     [Action(
         Description = "Get All Window Handles",
-        Visibility = ActionVisibility.Never,
+        Visibility = MappingMenuVisibility.Never,
         NameFormat = "Get All Window Handles"
     )]
     internal class WindowGetAllAction : BaseAction
@@ -57,7 +57,7 @@ namespace Key2Joy.Mapping
             return windowHandles.ToArray();
         }
 
-        internal override async Task Execute(InputBag inputBag = null)
+        internal override async Task Execute(IInputBag inputBag = null)
         {
             // TODO: Currently this is only a script action...
         }

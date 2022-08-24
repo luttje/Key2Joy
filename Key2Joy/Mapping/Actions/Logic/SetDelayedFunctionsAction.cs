@@ -9,7 +9,7 @@ namespace Key2Joy.Mapping
 {
     [Action(
         Description = "Timeout for a specified duration before executing a function",
-        Visibility = ActionVisibility.Never,
+        Visibility = MappingMenuVisibility.Never,
         NameFormat = "Timeout for {0}ms"
     )]
     [Util.ObjectListViewGroup(
@@ -77,7 +77,7 @@ namespace Key2Joy.Mapping
             }
         }
 
-        internal override Task Execute(InputBag inputBag = null)
+        internal override Task Execute(IInputBag inputBag = null)
         {
             // Irrelevant because only scripts should use this function
             return Task.Delay(WaitTime);

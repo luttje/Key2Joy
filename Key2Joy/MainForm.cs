@@ -152,7 +152,7 @@ namespace Key2Joy
 
         private void ArmMappings()
         {
-            var listeners = new List<TriggerListener>();
+            var allListeners = new List<TriggerListener>();
             var allActions = selectedPreset.MappedOptions.Select(m => m.Action).ToList();
 
             foreach (var mappedOption in selectedPreset.MappedOptions)
@@ -162,8 +162,8 @@ namespace Key2Joy
 
                 var listener = mappedOption.Trigger.GetTriggerListener();
                 
-                if(!listeners.Contains(listener))
-                    listeners.Add(listener);
+                if(!allListeners.Contains(listener))
+                    allListeners.Add(listener);
 
                 if (listener.HasWndProcHandle)
                 {
@@ -175,8 +175,8 @@ namespace Key2Joy
                 listener.AddMappedOption(mappedOption);
             }
 
-            foreach (var listener in listeners)
-                listener.StartListening();
+            foreach (var listener in allListeners)
+                listener.StartListening(ref allListeners);
         }
 
         private void DisarmMappings()

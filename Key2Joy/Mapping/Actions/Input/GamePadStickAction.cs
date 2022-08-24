@@ -14,7 +14,7 @@ namespace Key2Joy.Mapping
 {
     [Action(
         Description = "GamePad Stick Simulation",
-        Visibility = ActionVisibility.Never,
+        Visibility = MappingMenuVisibility.Never,
         NameFormat = "Move GamePad stick {0} by {1},{2}"
     )]
     [ExposesScriptingEnumeration(typeof(Simulator.GamePadStick))]
@@ -71,7 +71,7 @@ namespace Key2Joy.Mapping
             await Execute();
         }
 
-        internal override async Task Execute(InputBag inputBag = null)
+        internal override async Task Execute(IInputBag inputBag = null)
         {
             var simPad = SimGamePad.Instance;
             var targetGamePad = 0; // TODO: Support multiple gamepads

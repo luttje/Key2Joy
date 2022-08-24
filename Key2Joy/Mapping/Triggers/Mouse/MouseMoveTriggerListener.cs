@@ -97,55 +97,50 @@ namespace Key2Joy.Mapping
             var deltaY = (short)-Math.Min(Math.Max(lastY * short.MaxValue * SENSITIVITY, short.MinValue), short.MaxValue);
 
             var mappedOptions = new List<MappedOption>();
-            List<MappedOption> matchedOptions;
-
-            if (
-                (
-                    deltaX > 0
-                    && lookupAxis.TryGetValue(
-                        MouseMoveTrigger.GetInputHashFor(AxisDirection.Right), 
-                        out matchedOptions)
-                )
-                ||
-                (
-                    deltaX < 0
-                    && lookupAxis.TryGetValue(
-                        MouseMoveTrigger.GetInputHashFor(AxisDirection.Left), 
-                        out matchedOptions)
-                )
-            )
+            var directionHashes = new List<int>();
+            var directionChecks = new Dictionary<int, Func<bool>>()
             {
-                mappedOptions.AddRange(matchedOptions);
-            }
-            
-            if (
-                (
-                    deltaY > 0
-                    && lookupAxis.TryGetValue(
-                        MouseMoveTrigger.GetInputHashFor(AxisDirection.Forward), 
-                        out matchedOptions)
-                )
-                ||
-                (
-                    deltaY < 0
-                    && lookupAxis.TryGetValue(
-                        MouseMoveTrigger.GetInputHashFor(AxisDirection.Backward), 
-                        out matchedOptions)
-                )
-            )
-            {
-                mappedOptions.AddRange(matchedOptions);
-            }
-
-            foreach (var mappedOption in mappedOptions)
-            {
-                mappedOption.Action.Execute(new MouseMoveInputBag
                 {
-                    Trigger = mappedOption.Trigger,
-                    DeltaX = deltaX,
-                    DeltaY = deltaY,
-                });
+                    MouseMoveTrigger.GetInputHashFor(AxisDirection.Right),
+                    () => deltaX > 0
+                },
+                {
+                    MouseMoveTrigger.GetInputHashFor(AxisDirection.Left),
+                    () => deltaX < 0
+                },
+                {
+                    MouseMoveTrigger.GetInputHashFor(AxisDirection.Forward),
+                    () => deltaY > 0
+                },
+                {
+                    MouseMoveTrigger.GetInputHashFor(AxisDirection.Backward),
+                    () => deltaY < 0
+                },
+            };
+
+            foreach (var directionCheck in directionChecks)
+            {
+                if (directionCheck.Value.Invoke())
+                {
+                    if (lookupAxis.TryGetValue(directionCheck.Key, out var matchedOptions))
+                    {
+                        mappedOptions.AddRange(matchedOptions);
+                        directionHashes.Add(directionCheck.Key);
+                    }
+                }
             }
+
+            var inputBag = new MouseMoveInputBag
+            {
+                DeltaX = deltaX,
+                DeltaY = deltaY,
+            };
+
+            DoExecuteTrigger(
+                mappedOptions,
+                inputBag,
+                trigger => directionHashes.Contains((trigger as IReturnInputHash).GetInputHash())
+            );
 
             return true;
         }

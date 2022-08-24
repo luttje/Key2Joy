@@ -9,7 +9,7 @@ namespace Key2Joy.Mapping
 {
     [Action(
         Description = "Repeatedly calls a function or executes a code snippet, with a fixed time delay between each call",
-        Visibility = ActionVisibility.Never
+        Visibility = MappingMenuVisibility.Never
     )]
     [Util.ObjectListViewGroup(
         Name = "Logic",
@@ -89,7 +89,7 @@ namespace Key2Joy.Mapping
             return IdPool.CreateNewId<IdPool.IntervalId>(cancellation);
         }
 
-        internal override Task Execute(InputBag inputBag = null)
+        internal override Task Execute(IInputBag inputBag = null)
         {
             // Irrelevant because only scripts should use this function
             return Task.Delay(WaitTime);

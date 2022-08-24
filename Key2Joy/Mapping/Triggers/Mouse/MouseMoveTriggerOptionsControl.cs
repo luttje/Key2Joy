@@ -8,7 +8,7 @@ namespace Key2Joy
 {
     public partial class MouseMoveTriggerOptionsControl : UserControl, ITriggerOptionsControl
     {
-        public event Action OptionsChanged;
+        public event EventHandler OptionsChanged;
         
         public MouseMoveTriggerOptionsControl()
         {
@@ -41,7 +41,7 @@ namespace Key2Joy
 
         private void cmbMouseDirection_SelectedIndexChanged(object sender, EventArgs e)
         {
-            OptionsChanged?.Invoke();
+            OptionsChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

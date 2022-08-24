@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Key2Joy.Mapping
 {
-    public interface IInputBag
+    internal class CombinedInputBag : IInputBag
     {
+        public List<IInputBag> InputBags;
     }
 }

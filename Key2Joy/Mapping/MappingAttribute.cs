@@ -29,6 +29,11 @@ namespace Key2Joy.Mapping
         /// </summary>
         public object[] OptionsUserControlParams { get; set; }
 
+        /// <summary>
+        /// When this action should be visibile in menu's.
+        /// </summary>
+        public MappingMenuVisibility Visibility { get; set; } = MappingMenuVisibility.Always;
+
         public override string ToString()
         {
             return Description;

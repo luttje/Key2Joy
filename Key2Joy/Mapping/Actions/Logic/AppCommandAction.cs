@@ -77,7 +77,7 @@ namespace Key2Joy.Mapping
             await this.Execute();
         }
 
-        internal override async Task Execute(InputBag inputBag = null)
+        internal override async Task Execute(IInputBag inputBag = null)
         {
             if (!Program.RunAppCommand(Command))
             {

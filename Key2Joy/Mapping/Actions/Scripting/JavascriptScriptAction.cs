@@ -26,7 +26,7 @@ namespace Key2Joy.Mapping
             ImageResource = "JS";
         }
 
-        internal override async Task Execute(InputBag inputBag)
+        internal override async Task Execute(IInputBag inputBag)
         {
             try
             {

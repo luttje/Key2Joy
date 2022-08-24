@@ -11,7 +11,7 @@ namespace Key2Joy.Mapping
 {
     [Action(
         Description = "Get Window Class name",
-        Visibility = ActionVisibility.Never,
+        Visibility = MappingMenuVisibility.Never,
         NameFormat = "Get Window Class name"
     )]
     internal class WindowGetClassAction : BaseAction
@@ -50,7 +50,7 @@ namespace Key2Joy.Mapping
             return classNameBuilder.ToString();
         }
 
-        internal override async Task Execute(InputBag inputBag = null)
+        internal override async Task Execute(IInputBag inputBag = null)
         {
             // TODO: Currently this is only a script action...
         }

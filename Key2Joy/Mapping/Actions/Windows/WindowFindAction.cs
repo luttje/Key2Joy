@@ -10,7 +10,7 @@ namespace Key2Joy.Mapping
 {
     [Action(
         Description = "Find Window Handle",
-        Visibility = ActionVisibility.Never,
+        Visibility = MappingMenuVisibility.Never,
         NameFormat = "Find Window '{0}' with title {1}"
     )]
     internal class WindowFindAction : BaseAction
@@ -49,7 +49,7 @@ namespace Key2Joy.Mapping
             return windowHandle;
         }
 
-        internal override async Task Execute(InputBag inputBag = null)
+        internal override async Task Execute(IInputBag inputBag = null)
         {
             // TODO: Currently this is only a script action...
         }

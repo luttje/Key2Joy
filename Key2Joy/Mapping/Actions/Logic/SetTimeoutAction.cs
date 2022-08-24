@@ -9,7 +9,7 @@ namespace Key2Joy.Mapping
 {
     [Action(
         Description = "Sets a timer which executes a function or specified piece of code once the timer expires",
-        Visibility = ActionVisibility.Never
+        Visibility = MappingMenuVisibility.Never
     )]
     [Util.ObjectListViewGroup(
         Name = "Logic",
@@ -114,7 +114,7 @@ namespace Key2Joy.Mapping
             return IdPool.CreateNewId<IdPool.TimeoutId>(cancellation);
         }
 
-        internal override Task Execute(InputBag inputBag = null)
+        internal override Task Execute(IInputBag inputBag = null)
         {
             // Irrelevant because only scripts should use this function
             return Task.Delay(WaitTime);

@@ -10,7 +10,7 @@ namespace Key2Joy
 {
     public partial class MouseButtonTriggerOptionsControl : UserControl, ITriggerOptionsControl
     {
-        public event Action OptionsChanged;
+        public event EventHandler OptionsChanged;
         
         private Mouse.Buttons mouseButtons;
 
@@ -66,7 +66,7 @@ namespace Key2Joy
                     }
 
                     txtKeyBind.Text = $"{mouseButtons}";
-                    OptionsChanged?.Invoke();
+                    OptionsChanged?.Invoke(this, EventArgs.Empty);
                 }
             }
 
@@ -75,7 +75,7 @@ namespace Key2Joy
 
         private void cmbPressedState_SelectedIndexChanged(object sender, EventArgs e)
         {
-            OptionsChanged?.Invoke();
+            OptionsChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

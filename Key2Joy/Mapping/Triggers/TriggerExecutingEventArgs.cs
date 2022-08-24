@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace Key2Joy.Mapping
 {
-    public interface IInputBag
+    public class TriggerExecutingEventArgs : EventArgs
     {
+        public bool Handled { get; set; }
+
+        public TriggerExecutingEventArgs()
+        {
+        }
     }
 }

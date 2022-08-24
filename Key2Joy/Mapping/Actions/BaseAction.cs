@@ -30,7 +30,7 @@ namespace Key2Joy.Mapping
             this.description = description;
         }
 
-        internal abstract Task Execute(InputBag inputBag = null);
+        internal abstract Task Execute(IInputBag inputBag = null);
         
         public abstract object Clone();
         

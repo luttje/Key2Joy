@@ -70,27 +70,26 @@ namespace Key2Joy.Mapping
                 currentKeysDown.Remove(keys);
             }
 
-            if (!dictionary.TryGetValue(KeyboardTrigger.GetInputHashFor(keys), out var mappedOptions))
-                return;
-
-            foreach (var mappedOption in mappedOptions)
+            var inputBag = new KeyboardInputBag
             {
-                TryOverrideKeyboardInput(mappedOption.Action, new KeyboardInputBag
+                State = e.KeyboardState,
+                Keys = keys
+            };
+
+            var hash = KeyboardTrigger.GetInputHashFor(keys);
+            dictionary.TryGetValue(hash, out var mappedOptions);
+
+            DoExecuteTrigger(
+                mappedOptions,
+                inputBag,
+                trigger =>
                 {
-                    Trigger = mappedOption.Trigger,
-                    State = e.KeyboardState,
-                    Keys = keys
+                    var keyboardTrigger = trigger as KeyboardTrigger;
+                    return keyboardTrigger.GetInputHash() == hash
+                        && keyboardTrigger.GetKeyboardState() == e.KeyboardState;
                 });
-            }
 
             e.Handled = true;
-        }
-
-        private bool TryOverrideKeyboardInput(BaseAction action, KeyboardInputBag inputBag)
-        {
-            action.Execute(inputBag);
-
-            return true; // Unused return parameter! We always override default behaviour with e.Handled = true;
         }
     }
 }

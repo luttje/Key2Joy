@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Key2Joy.Mapping
 {
-    public enum ActionVisibility
+    public enum MappingMenuVisibility
     {
         /// <summary>
         /// This action isn't visibile anywhere by default.

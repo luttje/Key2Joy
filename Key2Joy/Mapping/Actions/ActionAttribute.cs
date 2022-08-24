@@ -10,11 +10,6 @@ namespace Key2Joy.Mapping
     public class ActionAttribute : MappingAttribute
     {
         /// <summary>
-        /// When this action should be visibile in menu's.
-        /// </summary>
-        public ActionVisibility Visibility { get; set; } = ActionVisibility.Always;
-
-        /// <summary>
         /// Gets all action types and their attribute annotations
         /// </summary>
         /// <param name="forTopLevel"></param>
@@ -42,14 +37,14 @@ namespace Key2Joy.Mapping
                     var actionAttribute = t.GetCustomAttributes(typeof(ActionAttribute), false).FirstOrDefault() as ActionAttribute;
 
                     if (actionAttribute == null
-                    || actionAttribute.Visibility == ActionVisibility.Never)
+                    || actionAttribute.Visibility == MappingMenuVisibility.Never)
                         return false;
 
                     if (forTopLevel)
-                        return actionAttribute.Visibility == ActionVisibility.Always
-                            || actionAttribute.Visibility == ActionVisibility.OnlyTopLevel;
+                        return actionAttribute.Visibility == MappingMenuVisibility.Always
+                            || actionAttribute.Visibility == MappingMenuVisibility.OnlyTopLevel;
 
-                    return actionAttribute.Visibility == ActionVisibility.Always || actionAttribute.Visibility == ActionVisibility.UnlessTopLevel;
+                    return actionAttribute.Visibility == MappingMenuVisibility.Always || actionAttribute.Visibility == MappingMenuVisibility.UnlessTopLevel;
                 })
                 .ToDictionary(t => t.GetCustomAttribute(typeof(ActionAttribute), false) as ActionAttribute, t => t)
             );

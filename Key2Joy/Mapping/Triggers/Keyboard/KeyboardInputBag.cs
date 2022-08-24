@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace Key2Joy.Mapping
 {
-    internal class KeyboardInputBag : InputBag
+    internal class KeyboardInputBag : IInputBag
     {
         public Keys Keys { get; set; }
         public KeyboardState State { get; set; }

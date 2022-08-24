@@ -334,19 +334,6 @@
     },
     {
       "Action": {
-        "$type": "AppCommandAction",
-        "Command": "abort",
-        "Name": "Run App Command '{0}'"
-      },
-      "Trigger": {
-        "$type": "KeyboardTrigger",
-        "Keys": "Escape",
-        "PressState": "Press",
-        "Name": null
-      }
-    },
-    {
-      "Action": {
         "$type": "GamePadAction",
         "Control": "DPadUp",
         "PressState": "Release",
@@ -680,13 +667,40 @@
     {
       "Action": {
         "$type": "AppCommandAction",
-        "Command": "abort",
+        "Command": "Abort",
         "Name": "Run App Command '{0}'"
       },
       "Trigger": {
         "$type": "KeyboardTrigger",
         "Keys": "Escape",
         "PressState": "Release",
+        "Name": null
+      }
+    },
+    {
+      "Action": {
+        "$type": "LuaScriptAction",
+        "Script": "print(\"Shift + A was pressed\")",
+        "IsScriptPath": false,
+        "Name": "Lua Script: {0}"
+      },
+      "Trigger": {
+        "$type": "CombinedTrigger",
+        "Triggers": [
+          {
+            "$type": "KeyboardTrigger",
+            "Keys": "A",
+            "PressState": "Press",
+            "Name": null
+          },
+          {
+            "$type": "KeyboardTrigger",
+            "Keys": "LShiftKey",
+            "PressState": "Press",
+            "Name": null
+          }
+        ],
+        "Timeout": 300,
         "Name": null
       }
     }

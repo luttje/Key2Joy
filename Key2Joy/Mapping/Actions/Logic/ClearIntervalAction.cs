@@ -9,7 +9,7 @@ namespace Key2Joy.Mapping
 {
     [Action(
         Description = "Cancels an interval previously established by calling SetInterval()",
-        Visibility = ActionVisibility.Never
+        Visibility = MappingMenuVisibility.Never
     )]
     [Util.ObjectListViewGroup(
         Name = "Logic",
@@ -56,7 +56,7 @@ namespace Key2Joy.Mapping
             intervalId.Cancel();
         }
 
-        internal override Task Execute(InputBag inputBag = null)
+        internal override Task Execute(IInputBag inputBag = null)
         {
             // Irrelevant because only scripts should use this function
             return null;

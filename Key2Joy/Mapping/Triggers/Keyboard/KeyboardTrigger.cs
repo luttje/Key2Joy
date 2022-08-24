@@ -69,5 +69,13 @@ namespace Key2Joy.Mapping
         {
             return MemberwiseClone();
         }
+
+        internal KeyboardState GetKeyboardState()
+        {
+            if (PressState == PressState.Press)
+                return KeyboardState.KeyDown;
+
+            return KeyboardState.KeyUp;
+        }
     }
 }

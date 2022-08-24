@@ -14,7 +14,7 @@ namespace Key2Joy.Mapping
 {
     [Action(
         Description = "Mouse Button Simulation",
-        Visibility = ActionVisibility.Never,
+        Visibility = MappingMenuVisibility.Never,
         NameFormat = "{1} {0} on Mouse"
     )]
     [ExposesScriptingEnumeration(typeof(Mouse.Buttons))]
@@ -71,7 +71,7 @@ namespace Key2Joy.Mapping
             await Execute();
         }
 
-        internal override async Task Execute(InputBag inputBag = null)
+        internal override async Task Execute(IInputBag inputBag = null)
         {
             if (PressState == PressState.Press)
                 SimulatedMouse.PressButton(Button);

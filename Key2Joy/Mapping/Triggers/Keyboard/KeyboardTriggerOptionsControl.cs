@@ -14,7 +14,7 @@ namespace Key2Joy
         const string TEXT_CHANGE_INSTRUCTION = "(click here, then press any key to set it as the trigger)";
         const int WM_INPUT = 0x00FF;
 
-        public event Action OptionsChanged;
+        public event EventHandler OptionsChanged;
         
         private Keys keys;
         private bool isTrapping;
@@ -91,12 +91,12 @@ namespace Key2Joy
             }
 
             txtKeyBind.Text = $"{keys} {TEXT_CHANGE_INSTRUCTION}";
-            OptionsChanged?.Invoke();
+            OptionsChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void cmbPressedState_SelectedIndexChanged(object sender, EventArgs e)
         {
-            OptionsChanged?.Invoke();
+            OptionsChanged?.Invoke(this, EventArgs.Empty);
         }
 
         protected override void WndProc(ref Message m)
