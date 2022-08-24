@@ -23,16 +23,34 @@ namespace Key2Joy
         {
             InitializeComponent();
 
-            RawInputDevice.RegisterDevice(HidUsageAndPage.Keyboard, RawInputDeviceFlags.InputSink, Handle);
+            // This captures global keyboard input and blocks default behaviour by setting e.Handled
+            var globalKeyboardHook = new GlobalInputHook();
+            globalKeyboardHook.KeyboardInputEvent += OnKeyInputEvent;
 
-            // Relieve input capturing by this mapping form and return it to the main form
-            this.Disposed += (s,e) => RawInputDevice.UnregisterDevice(HidUsageAndPage.Keyboard);
+            // Relieve input capturing by this mapping form
+            Disposed += (s, e) =>
+            {
+                globalKeyboardHook.KeyboardInputEvent -= OnKeyInputEvent;
+                globalKeyboardHook.Dispose();
+                globalKeyboardHook = null;
+            };
+            ControlRemoved += (s, e) => Dispose();
 
             cmbPressState.DataSource = LegacyPressStateConverter.GetPressStatesWithoutLegacy();
             cmbPressState.SelectedIndex = 0;
 
             // Removed because this is annoying when you want to just edit code
             //StartTrapping();
+        }
+
+        private void OnKeyInputEvent(object sender, GlobalKeyboardHookEventArgs e)
+        {
+            if (!isTrapping)
+                return;
+
+            keys = VirtualKeyConverter.KeysFromVirtual(e.KeyboardData.VirtualCode);
+            UpdateKeys();
+            StopTrapping();
         }
 
         public void Select(BaseTrigger trigger)
@@ -70,26 +88,8 @@ namespace Key2Joy
             StopTrapping();
         }
 
-        private void UpdateKeys(RawKeyboardFlags? flags = null)
+        private void UpdateKeys()
         {
-            if (flags != null)
-            {
-                if ((flags & RawKeyboardFlags.KeyE0) == RawKeyboardFlags.KeyE0)
-                {
-                    if (keys == Keys.ControlKey)
-                        keys = Keys.RControlKey;
-                    if (keys == Keys.ShiftKey)
-                        keys = Keys.RShiftKey;
-                }
-                else
-                {
-                    if (keys == Keys.ControlKey)
-                        keys = Keys.LControlKey;
-                    if (keys == Keys.ShiftKey)
-                        keys = Keys.LShiftKey;
-                }
-            }
-
             txtKeyBind.Text = $"{keys} {TEXT_CHANGE_INSTRUCTION}";
             OptionsChanged?.Invoke(this, EventArgs.Empty);
         }
@@ -97,26 +97,6 @@ namespace Key2Joy
         private void cmbPressedState_SelectedIndexChanged(object sender, EventArgs e)
         {
             OptionsChanged?.Invoke(this, EventArgs.Empty);
-        }
-
-        protected override void WndProc(ref Message m)
-        {
-            base.WndProc(ref m);
-            
-            if (!isTrapping)
-                return;
-            
-            if (m.Msg == WM_INPUT)
-            {
-                var data = RawInputData.FromHandle(m.LParam);
-
-                if (data is RawInputKeyboardData keyboard)
-                {
-                    keys = VirtualKeyConverter.KeysFromVirtual(keyboard.Keyboard.VirutalKey);
-                    UpdateKeys(keyboard.Keyboard.Flags);
-                    StopTrapping();
-                }
-            }
         }
 
         private void txtKeyBind_MouseUp(object sender, MouseEventArgs e)

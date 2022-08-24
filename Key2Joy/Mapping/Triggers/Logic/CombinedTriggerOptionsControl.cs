@@ -29,7 +29,9 @@ namespace Key2Joy.Mapping
             triggerControl.Dock = DockStyle.Top;
             triggerControl.RequestedRemove += (s, _) =>
             {
-                pnlTriggers.Controls.Remove(s as CombinedTriggerControl);
+                var control = s as CombinedTriggerControl;
+                pnlTriggers.Controls.Remove(control);
+                control.Dispose();
                 PerformLayout();
             };
             triggerControl.TriggerChanged += (s, _) => this.OptionsChanged?.Invoke(this, EventArgs.Empty);

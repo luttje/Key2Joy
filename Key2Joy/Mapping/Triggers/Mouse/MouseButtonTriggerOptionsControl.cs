@@ -13,25 +13,60 @@ namespace Key2Joy
         public event EventHandler OptionsChanged;
         
         private Mouse.Buttons mouseButtons;
+        private bool isShowingError;
 
         public MouseButtonTriggerOptionsControl()
         {
             InitializeComponent();
 
-            RawInputDevice.RegisterDevice(HidUsageAndPage.Mouse, RawInputDeviceFlags.InputSink, Handle);
-            
-            // Relieve input capturing by this mapping form and return it to the main form
-            this.Disposed += (s, e) => RawInputDevice.UnregisterDevice(HidUsageAndPage.Mouse);
+            // This captures global keyboard input and blocks default behaviour by setting e.Handled
+            var globalMouseHook = new GlobalInputHook();
+            globalMouseHook.MouseInputEvent += OnMouseInputEvent;
+
+            // Relieve input capturing by this mapping form
+            Disposed += (s, e) =>
+            {
+                globalMouseHook.MouseInputEvent -= OnMouseInputEvent;
+                globalMouseHook.Dispose();
+                globalMouseHook = null;
+            };
+            ControlRemoved += (s, e) => Dispose();
 
             cmbPressState.DataSource = LegacyPressStateConverter.GetPressStatesWithoutLegacy();
             cmbPressState.SelectedIndex = 0;
+        }
+
+        private void OnMouseInputEvent(object sender, GlobalMouseHookEventArgs e)
+        {
+            if (e.MouseState == MouseState.Move
+                || !txtKeyBind.ClientRectangle.Contains(txtKeyBind.PointToClient(MousePosition)))
+                return;
+
+            var isDown = false;
+
+            try
+            {
+                mouseButtons = Mouse.ButtonsFromState(e.MouseState, out isDown);
+            }
+            catch (NotImplementedException ex) 
+            {
+                if (!isShowingError)
+                {
+                    isShowingError = true;
+                    MessageBox.Show($"{ex.Message}. Can't map this (yet).", "Unknown mouse button!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    isShowingError = false;
+                }
+            }
+
+            txtKeyBind.Text = $"{mouseButtons}";
+            OptionsChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public void Select(BaseTrigger trigger)
         {
             var thisTrigger = (MouseButtonTrigger)trigger;
 
-            this.mouseButtons = thisTrigger.MouseButtons;
+            mouseButtons = thisTrigger.MouseButtons;
             cmbPressState.SelectedItem = thisTrigger.PressState;
             txtKeyBind.Text = $"{mouseButtons}";
         }
@@ -42,35 +77,6 @@ namespace Key2Joy
 
             thisTrigger.MouseButtons = mouseButtons;
             thisTrigger.PressState = (PressState) cmbPressState.SelectedItem;
-        }
-
-        protected override void WndProc(ref Message m)
-        {
-            const int WM_INPUT = 0x00FF;
-
-            if (m.Msg == WM_INPUT)
-            {
-                var data = RawInputData.FromHandle(m.LParam);
-
-                if (data is RawInputMouseData mouse
-                    && mouse.Mouse.Buttons != RawMouseButtonFlags.None
-                    && txtKeyBind.ClientRectangle.Contains(txtKeyBind.PointToClient(MousePosition)))
-                {
-                    try
-                    {
-                        mouseButtons = Mouse.ButtonsFromRaw(mouse.Mouse, out var isDown);
-                    }
-                    catch (NotImplementedException ex)
-                    {
-                        MessageBox.Show($"{ex.Message}. Can't map this (yet).", "Unknown mouse button!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-
-                    txtKeyBind.Text = $"{mouseButtons}";
-                    OptionsChanged?.Invoke(this, EventArgs.Empty);
-                }
-            }
-
-            base.WndProc(ref m);
         }
 
         private void cmbPressedState_SelectedIndexChanged(object sender, EventArgs e)

@@ -23,6 +23,8 @@ namespace Key2Joy
 
             actionControl.IsTopLevel = true;
             triggerControl.IsTopLevel = true;
+
+            FormClosed += (s, e) => Dispose();
         }
 
         public MappingForm(MappedOption mappedOption)
