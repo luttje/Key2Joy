@@ -61,7 +61,9 @@ namespace Key2Joy.Mapping
             { 
                 dictionary = lookupDown;
 
-                if(!currentKeysDown.ContainsKey(keys))
+                if (currentKeysDown.ContainsKey(keys))
+                    return; // Prevent firing multiple times for a single key press
+                else
                     currentKeysDown.Add(keys, true);
             }
             else
@@ -79,7 +81,7 @@ namespace Key2Joy.Mapping
             var hash = KeyboardTrigger.GetInputHashFor(keys);
             dictionary.TryGetValue(hash, out var mappedOptions);
 
-            DoExecuteTrigger(
+            if(DoExecuteTrigger(
                 mappedOptions,
                 inputBag,
                 trigger =>
@@ -87,9 +89,8 @@ namespace Key2Joy.Mapping
                     var keyboardTrigger = trigger as KeyboardTrigger;
                     return keyboardTrigger.GetInputHash() == hash
                         && keyboardTrigger.GetKeyboardState() == e.KeyboardState;
-                });
-
-            e.Handled = true;
+                }))
+                e.Handled = true;
         }
     }
 }

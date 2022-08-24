@@ -72,7 +72,7 @@ namespace Key2Joy.Mapping
             var hash = MouseButtonTrigger.GetInputHashFor(buttons);
             dictionary.TryGetValue(hash, out var mappedOptions);
             
-            DoExecuteTrigger(
+            if(DoExecuteTrigger(
                 mappedOptions,
                 inputBag,
                 trigger =>
@@ -80,9 +80,8 @@ namespace Key2Joy.Mapping
                     var mouseTrigger = trigger as MouseButtonTrigger;
                     return mouseTrigger.GetInputHash() == hash
                         && mouseTrigger.MouseButtons == buttons;
-                });
-
-            e.Handled = true;
+                }))
+                e.Handled = true;
         }
     }
 }

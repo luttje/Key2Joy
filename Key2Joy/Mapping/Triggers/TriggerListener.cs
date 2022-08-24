@@ -60,7 +60,7 @@ namespace Key2Joy.Mapping
         /// <param name="mappedOptions"></param>
         /// <param name="inputBag"></param>
         /// <param name="optionCandidateFilter"></param>
-        protected virtual void DoExecuteTrigger(
+        protected virtual bool DoExecuteTrigger(
             List<MappedOption> mappedOptions, 
             IInputBag inputBag,
             Func<BaseTrigger, bool> optionCandidateFilter = null)
@@ -71,6 +71,7 @@ namespace Key2Joy.Mapping
                 mappedOptions ?? new List<MappedOption>(), 
                 optionCandidateFilter);
             TriggerActivating?.Invoke(this, eventArgs);
+            bool executedAny = false;
 
             foreach (var mappedOption in eventArgs.MappedOptionCandidates)
             {
@@ -79,13 +80,18 @@ namespace Key2Joy.Mapping
                 mappedOption.Trigger.DoActivate(inputBag, shouldExecute);
 
                 if (shouldExecute)
+                {
+                    executedAny = true;
                     mappedOption.Action.Execute(inputBag);
+                }
             }
 
             TriggerActivated?.Invoke(this, new TriggerActivatedEventArgs(
                 this, 
                 inputBag, 
                 eventArgs.MappedOptionCandidates));
+
+            return executedAny;
         }
 
         internal virtual void WndProc(ref Message m)
