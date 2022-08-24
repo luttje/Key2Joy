@@ -27,6 +27,17 @@ namespace Key2Joy.Config
         }
         private bool muteCloseExitMessage;
 
+        [BooleanConfigControl(
+            Text = "Override default behaviour when trigger action is executed"
+        )]
+        [JsonProperty]
+        public bool OverrideDefaultTriggerBehaviour
+        {
+            get => overrideDefaultTriggerBehaviour;
+            set => SaveIfInitialized(overrideDefaultTriggerBehaviour = value);
+        }
+        private bool overrideDefaultTriggerBehaviour = true;
+
         [TextConfigControl(
             Text = "Last loaded mapping preset file location"
         )]

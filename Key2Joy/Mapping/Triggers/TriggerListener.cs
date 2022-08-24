@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Key2Joy.Config;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -91,7 +92,7 @@ namespace Key2Joy.Mapping
                 inputBag, 
                 eventArgs.MappedOptionCandidates));
 
-            return executedAny;
+            return ConfigManager.Instance.OverrideDefaultTriggerBehaviour ? executedAny : false;
         }
 
         internal virtual void WndProc(ref Message m)

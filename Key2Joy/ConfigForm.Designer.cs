@@ -38,13 +38,13 @@
             this.pnlConfigurations.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlConfigurations.Location = new System.Drawing.Point(0, 0);
             this.pnlConfigurations.Name = "pnlConfigurations";
-            this.pnlConfigurations.Size = new System.Drawing.Size(453, 175);
+            this.pnlConfigurations.Size = new System.Drawing.Size(453, 196);
             this.pnlConfigurations.TabIndex = 0;
             // 
             // btnSave
             // 
             this.btnSave.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.btnSave.Location = new System.Drawing.Point(0, 175);
+            this.btnSave.Location = new System.Drawing.Point(0, 196);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(453, 35);
             this.btnSave.TabIndex = 0;
@@ -56,7 +56,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(453, 210);
+            this.ClientSize = new System.Drawing.Size(453, 231);
             this.Controls.Add(this.pnlConfigurations);
             this.Controls.Add(this.btnSave);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
