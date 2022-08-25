@@ -18,8 +18,6 @@ namespace Key2Joy.Mapping
         public CombinedTriggerOptionsControl()
         {
             InitializeComponent();
-
-            nudTimeout.Value = ConfigManager.Instance.DefaultCombinedTriggerTimeout;
         }
 
         private CombinedTriggerControl AddTriggerControl(BaseTrigger trigger = null)
@@ -55,8 +53,6 @@ namespace Key2Joy.Mapping
         {
             var thisTrigger = (CombinedTrigger)combinedTrigger;
 
-            nudTimeout.Value = thisTrigger.Timeout;
-
             if(thisTrigger.Triggers != null)
             {
                 foreach(var trigger in thisTrigger.Triggers)
@@ -70,7 +66,6 @@ namespace Key2Joy.Mapping
         {
             var thisTrigger = (CombinedTrigger)trigger;
 
-            thisTrigger.Timeout = (int) nudTimeout.Value;
             thisTrigger.Triggers = new List<BaseTrigger>();
 
             foreach (var triggerControl in pnlTriggers.Controls)

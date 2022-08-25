@@ -60,19 +60,6 @@ namespace Key2Joy.Config
         }
         private string logOutputPath = Path.Combine(Program.GetAppDirectory(), "Logs");
 
-        [NumericConfigControl(
-            Text = "Default timeout (in milliseconds) between Combined Triggers",
-            Minimum = 1,
-            Maximum = 60000
-        )]
-        [JsonProperty]
-        public int DefaultCombinedTriggerTimeout
-        {
-            get => defaultCombinedTriggerTimeout;
-            set => SaveIfInitialized(defaultCombinedTriggerTimeout = value);
-        }
-        private int defaultCombinedTriggerTimeout = 300;
-
         private ConfigManager() { }
         private void SaveIfInitialized(object changedValue = null)
         {

@@ -19,9 +19,6 @@ namespace Key2Joy.Mapping
         [JsonProperty(ItemTypeNameHandling = TypeNameHandling.All)]
         public List<BaseTrigger> Triggers { get; set; }
 
-        [JsonProperty]
-        public int Timeout { get; set; }
-
         [JsonConstructor]
         public CombinedTrigger(string name, string description)
             : base(name, description)
