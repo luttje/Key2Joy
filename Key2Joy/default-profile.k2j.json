@@ -6,7 +6,7 @@
         "Control": "DPadUp",
         "PressState": "Press",
         "GamePadIndex": 0,
-        "Name": "{1} {0} on GamePad"
+        "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
         "$type": "KeyboardTrigger",
@@ -20,8 +20,8 @@
         "$type": "GamePadAction",
         "Control": "DPadDown",
         "PressState": "Press",
-        "GamePadIndex": 1,
-        "Name": "{1} {0} on GamePad"
+        "GamePadIndex": 0,
+        "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
         "$type": "KeyboardTrigger",
@@ -36,7 +36,7 @@
         "Control": "DPadLeft",
         "PressState": "Press",
         "GamePadIndex": 0,
-        "Name": "{1} {0} on GamePad"
+        "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
         "$type": "KeyboardTrigger",
@@ -51,7 +51,7 @@
         "Control": "DPadRight",
         "PressState": "Press",
         "GamePadIndex": 0,
-        "Name": "{1} {0} on GamePad"
+        "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
         "$type": "KeyboardTrigger",
@@ -66,7 +66,7 @@
         "Control": "Start",
         "PressState": "Press",
         "GamePadIndex": 0,
-        "Name": "{1} {0} on GamePad"
+        "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
         "$type": "KeyboardTrigger",
@@ -81,7 +81,7 @@
         "Control": "Back",
         "PressState": "Press",
         "GamePadIndex": 0,
-        "Name": "{1} {0} on GamePad"
+        "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
         "$type": "KeyboardTrigger",
@@ -96,7 +96,7 @@
         "Control": "LeftStickClick",
         "PressState": "Press",
         "GamePadIndex": 0,
-        "Name": "{1} {0} on GamePad"
+        "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
         "$type": "KeyboardTrigger",
@@ -111,7 +111,7 @@
         "Control": "RightStickClick",
         "PressState": "Press",
         "GamePadIndex": 0,
-        "Name": "{1} {0} on GamePad"
+        "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
         "$type": "KeyboardTrigger",
@@ -126,7 +126,7 @@
         "Control": "LeftShoulder",
         "PressState": "Press",
         "GamePadIndex": 0,
-        "Name": "{1} {0} on GamePad"
+        "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
         "$type": "KeyboardTrigger",
@@ -141,7 +141,7 @@
         "Control": "RightShoulder",
         "PressState": "Press",
         "GamePadIndex": 0,
-        "Name": "{1} {0} on GamePad"
+        "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
         "$type": "KeyboardTrigger",
@@ -156,7 +156,7 @@
         "Control": "A",
         "PressState": "Press",
         "GamePadIndex": 0,
-        "Name": "{1} {0} on GamePad"
+        "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
         "$type": "KeyboardTrigger",
@@ -171,7 +171,7 @@
         "Control": "B",
         "PressState": "Press",
         "GamePadIndex": 0,
-        "Name": "{1} {0} on GamePad"
+        "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
         "$type": "KeyboardTrigger",
@@ -186,7 +186,7 @@
         "Control": "X",
         "PressState": "Press",
         "GamePadIndex": 0,
-        "Name": "{1} {0} on GamePad"
+        "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
         "$type": "KeyboardTrigger",
@@ -201,7 +201,7 @@
         "Control": "Y",
         "PressState": "Press",
         "GamePadIndex": 0,
-        "Name": "{1} {0} on GamePad"
+        "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
         "$type": "KeyboardTrigger",
@@ -216,7 +216,7 @@
         "Control": "LeftTrigger",
         "PressState": "Press",
         "GamePadIndex": 0,
-        "Name": "{1} {0} on GamePad"
+        "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
         "$type": "KeyboardTrigger",
@@ -231,7 +231,7 @@
         "Control": "RightTrigger",
         "PressState": "Press",
         "GamePadIndex": 0,
-        "Name": "{1} {0} on GamePad"
+        "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
         "$type": "KeyboardTrigger",
@@ -246,7 +246,7 @@
         "Control": "LeftStickLeft",
         "PressState": "Press",
         "GamePadIndex": 0,
-        "Name": "{1} {0} on GamePad"
+        "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
         "$type": "KeyboardTrigger",
@@ -261,7 +261,7 @@
         "Control": "LeftStickRight",
         "PressState": "Press",
         "GamePadIndex": 0,
-        "Name": "{1} {0} on GamePad"
+        "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
         "$type": "KeyboardTrigger",
@@ -276,7 +276,7 @@
         "Control": "LeftStickUp",
         "PressState": "Press",
         "GamePadIndex": 0,
-        "Name": "{1} {0} on GamePad"
+        "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
         "$type": "KeyboardTrigger",
@@ -291,7 +291,7 @@
         "Control": "LeftStickDown",
         "PressState": "Press",
         "GamePadIndex": 0,
-        "Name": "{1} {0} on GamePad"
+        "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
         "$type": "KeyboardTrigger",
@@ -306,7 +306,7 @@
         "Control": "RightStickLeft",
         "PressState": "Press",
         "GamePadIndex": 0,
-        "Name": "{1} {0} on GamePad"
+        "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
         "$type": "MouseMoveTrigger",
@@ -320,7 +320,7 @@
         "Control": "RightStickRight",
         "PressState": "Press",
         "GamePadIndex": 0,
-        "Name": "{1} {0} on GamePad"
+        "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
         "$type": "MouseMoveTrigger",
@@ -334,7 +334,7 @@
         "Control": "RightStickUp",
         "PressState": "Press",
         "GamePadIndex": 0,
-        "Name": "{1} {0} on GamePad"
+        "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
         "$type": "MouseMoveTrigger",
@@ -348,7 +348,7 @@
         "Control": "RightStickDown",
         "PressState": "Press",
         "GamePadIndex": 0,
-        "Name": "{1} {0} on GamePad"
+        "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
         "$type": "MouseMoveTrigger",
@@ -362,7 +362,7 @@
         "Control": "DPadUp",
         "PressState": "Release",
         "GamePadIndex": 0,
-        "Name": "{1} {0} on GamePad"
+        "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
         "$type": "KeyboardTrigger",
@@ -377,7 +377,7 @@
         "Control": "DPadDown",
         "PressState": "Release",
         "GamePadIndex": 0,
-        "Name": "{1} {0} on GamePad"
+        "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
         "$type": "KeyboardTrigger",
@@ -392,7 +392,7 @@
         "Control": "DPadLeft",
         "PressState": "Release",
         "GamePadIndex": 0,
-        "Name": "{1} {0} on GamePad"
+        "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
         "$type": "KeyboardTrigger",
@@ -407,7 +407,7 @@
         "Control": "DPadRight",
         "PressState": "Release",
         "GamePadIndex": 0,
-        "Name": "{1} {0} on GamePad"
+        "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
         "$type": "KeyboardTrigger",
@@ -422,7 +422,7 @@
         "Control": "Start",
         "PressState": "Release",
         "GamePadIndex": 0,
-        "Name": "{1} {0} on GamePad"
+        "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
         "$type": "KeyboardTrigger",
@@ -437,7 +437,7 @@
         "Control": "Back",
         "PressState": "Release",
         "GamePadIndex": 0,
-        "Name": "{1} {0} on GamePad"
+        "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
         "$type": "KeyboardTrigger",
@@ -452,7 +452,7 @@
         "Control": "LeftStickClick",
         "PressState": "Release",
         "GamePadIndex": 0,
-        "Name": "{1} {0} on GamePad"
+        "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
         "$type": "KeyboardTrigger",
@@ -467,7 +467,7 @@
         "Control": "RightStickClick",
         "PressState": "Release",
         "GamePadIndex": 0,
-        "Name": "{1} {0} on GamePad"
+        "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
         "$type": "KeyboardTrigger",
@@ -482,7 +482,7 @@
         "Control": "LeftShoulder",
         "PressState": "Release",
         "GamePadIndex": 0,
-        "Name": "{1} {0} on GamePad"
+        "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
         "$type": "KeyboardTrigger",
@@ -497,7 +497,7 @@
         "Control": "RightShoulder",
         "PressState": "Release",
         "GamePadIndex": 0,
-        "Name": "{1} {0} on GamePad"
+        "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
         "$type": "KeyboardTrigger",
@@ -512,7 +512,7 @@
         "Control": "A",
         "PressState": "Release",
         "GamePadIndex": 0,
-        "Name": "{1} {0} on GamePad"
+        "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
         "$type": "KeyboardTrigger",
@@ -527,7 +527,7 @@
         "Control": "B",
         "PressState": "Release",
         "GamePadIndex": 0,
-        "Name": "{1} {0} on GamePad"
+        "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
         "$type": "KeyboardTrigger",
@@ -542,7 +542,7 @@
         "Control": "X",
         "PressState": "Release",
         "GamePadIndex": 0,
-        "Name": "{1} {0} on GamePad"
+        "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
         "$type": "KeyboardTrigger",
@@ -557,7 +557,7 @@
         "Control": "Y",
         "PressState": "Release",
         "GamePadIndex": 0,
-        "Name": "{1} {0} on GamePad"
+        "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
         "$type": "KeyboardTrigger",
@@ -572,7 +572,7 @@
         "Control": "LeftTrigger",
         "PressState": "Release",
         "GamePadIndex": 0,
-        "Name": "{1} {0} on GamePad"
+        "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
         "$type": "KeyboardTrigger",
@@ -587,7 +587,7 @@
         "Control": "RightTrigger",
         "PressState": "Release",
         "GamePadIndex": 0,
-        "Name": "{1} {0} on GamePad"
+        "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
         "$type": "KeyboardTrigger",
@@ -602,7 +602,7 @@
         "Control": "LeftStickLeft",
         "PressState": "Release",
         "GamePadIndex": 0,
-        "Name": "{1} {0} on GamePad"
+        "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
         "$type": "KeyboardTrigger",
@@ -617,7 +617,7 @@
         "Control": "LeftStickRight",
         "PressState": "Release",
         "GamePadIndex": 0,
-        "Name": "{1} {0} on GamePad"
+        "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
         "$type": "KeyboardTrigger",
@@ -632,7 +632,7 @@
         "Control": "LeftStickUp",
         "PressState": "Release",
         "GamePadIndex": 0,
-        "Name": "{1} {0} on GamePad"
+        "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
         "$type": "KeyboardTrigger",
@@ -647,7 +647,7 @@
         "Control": "LeftStickDown",
         "PressState": "Release",
         "GamePadIndex": 0,
-        "Name": "{1} {0} on GamePad"
+        "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
         "$type": "KeyboardTrigger",
