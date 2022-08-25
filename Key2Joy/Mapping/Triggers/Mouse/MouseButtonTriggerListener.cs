@@ -1,5 +1,7 @@
 ﻿using Key2Joy.LowLevelInput;
 using System;
+using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace Key2Joy.Mapping
 {
@@ -18,7 +20,13 @@ namespace Key2Joy.Mapping
         }
 
         private GlobalInputHook globalMouseButtonHook;
-        
+        private readonly Dictionary<Mouse.Buttons, bool> currentButtonsDown = new Dictionary<Mouse.Buttons, bool>();
+
+        internal bool GetButtonsDown(Mouse.Buttons buttons)
+        {
+            return currentButtonsDown.ContainsKey(buttons);
+        }
+
         protected override void Start()
         {
             // This captures global mouse input and blocks default behaviour by setting e.Handled
@@ -36,6 +44,14 @@ namespace Key2Joy.Mapping
             globalMouseButtonHook = null;
 
             base.Stop();
+        }
+        
+        internal override bool GetIsTriggered(BaseTrigger trigger)
+        {
+            if (!(trigger is MouseButtonTrigger mouseButtonTrigger))
+                return false;
+
+            return currentButtonsDown.ContainsKey(mouseButtonTrigger.MouseButtons);
         }
 
         private void OnMouseButtonInputEvent(object sender, GlobalMouseHookEventArgs e)
@@ -59,7 +75,19 @@ namespace Key2Joy.Mapping
             var dictionary = lookupRelease;
 
             if (isDown)
+            {
                 dictionary = lookupDown;
+
+                if (currentButtonsDown.ContainsKey(buttons))
+                    return; // Prevent firing multiple times for a single key press
+                else
+                    currentButtonsDown.Add(buttons, true);
+            }
+            else
+            {
+                if (currentButtonsDown.ContainsKey(buttons))
+                    currentButtonsDown.Remove(buttons);
+            }
 
             var inputBag = new MouseButtonInputBag
             {

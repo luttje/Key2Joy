@@ -26,17 +26,18 @@ namespace Key2Joy.Mapping
             }
         }
 
+        private static readonly TimeSpan IS_MOVING_TOLERANCE = TimeSpan.FromMilliseconds(10);
         private const double SENSITIVITY = 0.05;
         private const int WM_INPUT = 0x00FF;
 
         private Dictionary<int, List<MappedOption>> lookupAxis;
-        private System.ComponentModel.Container components;
+        
+        private List<int> lastDirectionHashes;
+        private DateTime lastMoveTime;
 
         private MouseMoveTriggerListener()
         {
             lookupAxis = new Dictionary<int, List<MappedOption>>();
-
-            components = new System.ComponentModel.Container();
         }
 
         protected override void Start()
@@ -63,6 +64,15 @@ namespace Key2Joy.Mapping
             mappedOptions.Add(mappedOption);
         }
 
+        internal override bool GetIsTriggered(BaseTrigger trigger)
+        {
+            if (!(trigger is MouseMoveTrigger mouseMoveTrigger))
+                return false;
+
+            return (DateTime.Now - lastMoveTime < IS_MOVING_TOLERANCE) 
+                && lastDirectionHashes.Contains(mouseMoveTrigger.GetInputHash());
+        }
+
         internal override void WndProc(ref Message m)
         {
             base.WndProc(ref m);
@@ -82,15 +92,6 @@ namespace Key2Joy.Mapping
                 return;
         }
         
-        private void tmrAxisTimeout_Tick(object sender, EventArgs e)
-        {
-            var controllerId = 0;
-            var state = SimGamePad.Instance.State[controllerId];
-            state.RightStickX = 0;
-            state.RightStickY = 0;
-            SimGamePad.Instance.Update(controllerId);
-        }
-
         private bool TryOverrideMouseMoveInput(int lastX, int lastY)
         {
             var deltaX = (short)Math.Min(Math.Max(lastX * short.MaxValue * SENSITIVITY, short.MinValue), short.MaxValue);
@@ -141,6 +142,9 @@ namespace Key2Joy.Mapping
                 inputBag,
                 trigger => directionHashes.Contains((trigger as IReturnInputHash).GetInputHash())
             );
+
+            lastDirectionHashes = directionHashes;
+            lastMoveTime = DateTime.Now;
 
             return true;
         }

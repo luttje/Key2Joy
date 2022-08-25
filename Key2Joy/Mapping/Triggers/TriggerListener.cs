@@ -42,6 +42,8 @@ namespace Key2Joy.Mapping
 
         internal abstract void AddMappedOption(MappedOption mappedOption);
 
+        internal abstract bool GetIsTriggered(BaseTrigger trigger);
+
         protected virtual void Start()
         {
             IsActive = true;

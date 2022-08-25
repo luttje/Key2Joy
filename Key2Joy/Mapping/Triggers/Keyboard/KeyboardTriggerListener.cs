@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using static Key2Joy.LowLevelInput.Mouse;
 
 namespace Key2Joy.Mapping
 {
@@ -48,6 +49,14 @@ namespace Key2Joy.Mapping
             base.Stop();
         }
 
+        internal override bool GetIsTriggered(BaseTrigger trigger)
+        {
+            if (!(trigger is KeyboardTrigger keyboardTrigger))
+                return false;
+
+            return currentKeysDown.ContainsKey(keyboardTrigger.Keys);
+        }
+
         private void OnKeyInputEvent(object sender, GlobalKeyboardHookEventArgs e)
         {
             if (!IsActive)
@@ -69,7 +78,9 @@ namespace Key2Joy.Mapping
             else
             {
                 dictionary = lookupRelease;
-                currentKeysDown.Remove(keys);
+                
+                if (currentKeysDown.ContainsKey(keys))
+                    currentKeysDown.Remove(keys);
             }
 
             var inputBag = new KeyboardInputBag

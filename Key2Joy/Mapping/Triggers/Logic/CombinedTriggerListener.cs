@@ -39,6 +39,8 @@ namespace Key2Joy.Mapping
 
             mappedOptions.Add(mappedOption);
         }
+        
+        internal override bool GetIsTriggered(BaseTrigger trigger) => false;
 
         protected override void Start()
         {
@@ -106,8 +108,6 @@ namespace Key2Joy.Mapping
 
         private void Listener_TriggerActivated(object sender, TriggerActivatedEventArgs e)
         {
-            var currentTime = DateTime.Now;
-
             foreach (var mappedOption in e.MappedOptions)
             {
                 // Skip every mapped option that we didn't add as candidates ourselves
@@ -118,11 +118,10 @@ namespace Key2Joy.Mapping
 
                 // Check if all triggers for this mapped option are matched. Only then Executes the actions.
                 var allTriggered = true;
-                var timeout = TimeSpan.FromMilliseconds(combinedTrigger.Timeout);
 
                 foreach (var trigger in combinedTrigger.Triggers)
                 {
-                    if (currentTime - trigger.LastActivated > timeout) 
+                    if(!trigger.GetTriggerListener().GetIsTriggered(trigger))
                     { 
                         allTriggered = false;
                         break;
