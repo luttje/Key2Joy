@@ -43,7 +43,7 @@ namespace Key2Joy.Mapping
         /// print(cursorPosition.X .. ", " .. cursorPosition.Y)
         /// </code>
         /// </markdown-example>
-        /// <returns>Cursor x, y as an object/table</returns>
+        /// <returns>A Point object with X and Y properties that represent the cursor X and Y</returns>
         /// <name>Cursor.GetPosition</name>
         [ExposesScriptingMethod("Cursor.GetPosition")]
         public Point ExecuteForScript()
