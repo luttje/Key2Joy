@@ -42,6 +42,7 @@ namespace Key2Joy.Mapping
         /// print(pixelColor.G) -- Green
         /// print(pixelColor.B) -- Blue
         /// print(pixelColor.A) -- Alpha (opacity, always 255)
+        /// ]]>
         /// </code>
         /// </markdown-example>
         /// <returns>A color object containing Red, Green and Blue color information</returns>

@@ -1,9 +1,14 @@
-# `GamePad.Reset` ()
+# `GamePad.Reset` (`Int32`)
 
 
 Reset the gamepad so the stick returns to the resting position (0,0)
 
 
+## Parameters
+
+* **gamepadIndex (`Int32`)** 
+
+	Which of 4 possible gamepads to reset (0, 1, 2 or 3)
 
 
 ## Examples

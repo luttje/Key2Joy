@@ -1,4 +1,4 @@
-# `GamePad.Simulate` (`GamePadControl`, `PressState`)
+# `GamePad.Simulate` (`GamePadControl`, `PressState`, `Int32`)
 
 
 Simulate pressing or releasing (or both) gamepad buttons.
@@ -13,6 +13,10 @@ Simulate pressing or releasing (or both) gamepad buttons.
 * **pressState (`PressState`)** 
 
 	Action to simulate
+
+* **gamepadIndex (`Int32`)** 
+
+	Which of 4 possible gamepads to simulate (0, 1, 2 or 3)
 
 
 ## Examples

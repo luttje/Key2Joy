@@ -10,13 +10,19 @@
 * [`MoveType`](Api/Enumerations/MoveType.md)
 * [`PressState`](Api/Enumerations/PressState.md)
 
+## Graphics
+
+* [`Graphics.GetPixelColor` (`Int32`, `Int32`)](Api/Graphics/Graphics.GetPixelColor.md)
+
 ## Input
 
-* [`GamePad.Reset` ()](Api/Input/GamePad.Reset.md)
-* [`GamePad.Simulate` (`GamePadControl`, `PressState`)](Api/Input/GamePad.Simulate.md)
-* [`GamePad.SimulateMove` (`Double`, `Double`, `GamePadStick`)](Api/Input/GamePad.SimulateMove.md)
+* [`Cursor.GetPosition` ()](Api/Input/Cursor.GetPosition.md)
+* [`GamePad.Reset` (`Int32`)](Api/Input/GamePad.Reset.md)
+* [`GamePad.Simulate` (`GamePadControl`, `PressState`, `Int32`)](Api/Input/GamePad.Simulate.md)
+* [`GamePad.SimulateMove` (`Double`, `Double`, `GamePadStick`, `Int32`)](Api/Input/GamePad.SimulateMove.md)
 * [`Keyboard.GetKeyDown` (`KeyboardKey`)](Api/Input/Keyboard.GetKeyDown.md)
 * [`Keyboard.Simulate` (`KeyboardKey`, `PressState`)](Api/Input/Keyboard.Simulate.md)
+* [`Mouse.GetButtonDown` (`Buttons`)](Api/Input/Mouse.GetButtonDown.md)
 * [`Mouse.Simulate` (`Buttons`, `PressState`)](Api/Input/Mouse.Simulate.md)
 * [`Mouse.SimulateMove` (`Int32`, `Int32`, `MoveType`)](Api/Input/Mouse.SimulateMove.md)
 
@@ -28,6 +34,10 @@
 * [`SetDelayedFunctions` (`Int64`, `Action[]`)](Api/Logic/SetDelayedFunctions.md)
 * [`SetInterval` (`CallbackAction`, `Int64`, `Object[]`)](Api/Logic/SetInterval.md)
 * [`SetTimeout` (`CallbackAction`, `Int64`, `Object[]`)](Api/Logic/SetTimeout.md)
+
+## Util
+
+* [`Util.GetUnixTimeSeconds` ()](Api/Util/Util.GetUnixTimeSeconds.md)
 
 ## Windows
 

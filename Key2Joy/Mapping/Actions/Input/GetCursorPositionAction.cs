@@ -36,11 +36,13 @@ namespace Key2Joy.Mapping
         /// <![CDATA[
         /// var cursorPosition = Cursor.GetPosition()
         /// Print(`${cursorPosition.X}, ${cursorPosition.Y}`)
+        /// ]]>
         /// </code>
         /// <code language="lua">
         /// <![CDATA[
         /// local cursorPosition = Cursor.GetPosition()
         /// print(cursorPosition.X .. ", " .. cursorPosition.Y)
+        /// ]]>
         /// </code>
         /// </markdown-example>
         /// <returns>A Point object with X and Y properties that represent the cursor X and Y</returns>

@@ -1,4 +1,4 @@
-# `GamePad.SimulateMove` (`Double`, `Double`, `GamePadStick`)
+# `GamePad.SimulateMove` (`Double`, `Double`, `GamePadStick`, `Int32`)
 
 
 Simulate moving a gamepad joystick
@@ -17,6 +17,10 @@ Simulate moving a gamepad joystick
 * **stick (`GamePadStick`)** 
 
 	Which gamepad stick to move, either GamePadStick.Left (default) or .Right
+
+* **gamepadIndex (`Int32`)** 
+
+	Which of 4 possible gamepads to simulate (0, 1, 2 or 3)
 
 
 ## Examples

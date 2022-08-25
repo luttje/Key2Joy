@@ -31,6 +31,7 @@ namespace Key2Joy.Mapping
         /// <code language="js">
         /// <![CDATA[
         /// Print(Util.GetUnixTimeSeconds())
+        /// ]]>
         /// </code>
         /// </markdown-example>
         /// <returns>Time since UNIX in seconds</returns>
