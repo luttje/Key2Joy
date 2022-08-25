@@ -20,7 +20,7 @@ Simulate moving a gamepad joystick
 
 * **gamepadIndex (`Int32`)** 
 
-	Which of 4 possible gamepads to simulate (0, 1, 2 or 3)
+	Which of 4 possible gamepads to simulate: 0 (default), 1, 2 or 3
 
 
 ## Examples

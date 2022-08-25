@@ -96,7 +96,7 @@ namespace Key2Joy.Mapping
         /// </markdown-example>
         /// <param name="control">Button to simulate</param>
         /// <param name="pressState">Action to simulate</param>
-        /// <param name="gamepadIndex">Which of 4 possible gamepads to simulate (0, 1, 2 or 3)</param>
+        /// <param name="gamepadIndex">Which of 4 possible gamepads to simulate: 0 (default), 1, 2 or 3</param>
         /// <name>GamePad.Simulate</name>
         [ExposesScriptingMethod("GamePad.Simulate")]
         public async void ExecuteForScript(GamePadControl control, PressState pressState, int gamepadIndex = 0)

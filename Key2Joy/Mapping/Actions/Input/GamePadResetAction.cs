@@ -57,7 +57,7 @@ namespace Key2Joy.Mapping
         /// ]]>
         /// </code>
         /// </markdown-example>
-        /// <param name="gamepadIndex">Which of 4 possible gamepads to reset (0, 1, 2 or 3)</param>
+        /// <param name="gamepadIndex">Which of 4 possible gamepads to simulate: 0 (default), 1, 2 or 3</param>
         /// <name>GamePad.Reset</name>
         [ExposesScriptingMethod("GamePad.Reset")]
         public async void ExecuteForScript(int gamepadIndex = 0)

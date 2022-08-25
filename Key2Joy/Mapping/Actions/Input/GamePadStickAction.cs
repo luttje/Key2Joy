@@ -70,7 +70,7 @@ namespace Key2Joy.Mapping
         /// <param name="deltaX">The fraction by which to move the stick forward (negative) or backward (positive)</param>
         /// <param name="deltaY">The fraction by which to move the stick right (positive) or left (negative)</param>
         /// <param name="stick">Which gamepad stick to move, either GamePadStick.Left (default) or .Right</param>
-        /// <param name="gamepadIndex">Which of 4 possible gamepads to simulate (0, 1, 2 or 3)</param>
+        /// <param name="gamepadIndex">Which of 4 possible gamepads to simulate: 0 (default), 1, 2 or 3</param>
         /// <name>GamePad.SimulateMove</name>
         [ExposesScriptingMethod("GamePad.SimulateMove")]
         public async void ExecuteForScript(
