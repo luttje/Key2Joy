@@ -68,5 +68,17 @@ namespace Key2Joy
 
             return directory;
         }
+
+        internal static List<TriggerListener> GetScriptingListeners()
+        {
+            var listeners = new List<TriggerListener>();
+            
+            // Always add these listeners so they keep track of triggers. That way scripts can ask them if stuff has happened.
+            listeners.Add(KeyboardTriggerListener.Instance);
+            listeners.Add(MouseButtonTriggerListener.Instance);
+            listeners.Add(MouseMoveTriggerListener.Instance);
+
+            return listeners;
+        }
     }
 }

@@ -152,13 +152,8 @@ namespace Key2Joy
 
         private void ArmMappings()
         {
-            var allListeners = new List<TriggerListener>();
+            var allListeners = Program.GetScriptingListeners();
             var allActions = selectedPreset.MappedOptions.Select(m => m.Action).ToList();
-
-            // Always add these listeners so they keep track of triggers. That way scripts can ask them if stuff has happened.
-            allListeners.Add(KeyboardTriggerListener.Instance);
-            allListeners.Add(MouseButtonTriggerListener.Instance);
-            allListeners.Add(MouseMoveTriggerListener.Instance);
 
             foreach (var mappedOption in selectedPreset.MappedOptions)
             {
@@ -186,7 +181,7 @@ namespace Key2Joy
 
         private void DisarmMappings()
         {
-            var listeners = new List<TriggerListener>();
+            var listeners = Program.GetScriptingListeners();
             wndProcListeners.Clear();
 
             foreach (var mappedOption in selectedPreset.MappedOptions)
