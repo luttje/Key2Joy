@@ -15,7 +15,7 @@ namespace Key2Joy.Mapping
     [Action(
         Description = "GamePad Stick Simulation",
         Visibility = MappingMenuVisibility.Never,
-        NameFormat = "Move GamePad stick {0} by {1},{2}"
+        NameFormat = "Move {0} Stick on GamePad #{3} by {1},{2}"
     )]
     [ExposesScriptingEnumeration(typeof(Simulator.GamePadStick))]
     [Util.ObjectListViewGroup(
@@ -115,7 +115,8 @@ namespace Key2Joy.Mapping
         {
             return Name.Replace("{0}", Stick == Simulator.GamePadStick.Left ? "Left" : "Right")
                 .Replace("{1}", DeltaX.ToString())
-                .Replace("{2}", DeltaY.ToString());
+                .Replace("{2}", DeltaY.ToString())
+                .Replace("{3}", GamePadIndex.ToString());
         }
 
         public override bool Equals(object obj)

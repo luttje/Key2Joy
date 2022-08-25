@@ -59,7 +59,7 @@ namespace Key2Joy.Mapping
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            AddChildAction(actionControl.Action);
+            AddChildAction((BaseAction)actionControl.Action.Clone());
             OptionsChanged?.Invoke();
         }
 

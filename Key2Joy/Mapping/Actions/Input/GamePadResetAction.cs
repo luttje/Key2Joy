@@ -15,7 +15,7 @@ namespace Key2Joy.Mapping
     [Action(
         Description = "GamePad Reset Simulation",
         Visibility = MappingMenuVisibility.Never,
-        NameFormat = "GamePad Reset"
+        NameFormat = "Reset GamePad #{0}"
     )]
     [ExposesScriptingEnumeration(typeof(Simulator.GamePadStick))]
     [Util.ObjectListViewGroup(
@@ -78,6 +78,11 @@ namespace Key2Joy.Mapping
             var state = simPad.State[GamePadIndex];
             state.Reset();
             simPad.Update(GamePadIndex);
+        }
+
+        public override string GetNameDisplay()
+        {
+            return Name.Replace("{0}", GamePadIndex.ToString());
         }
 
         public override bool Equals(object obj)

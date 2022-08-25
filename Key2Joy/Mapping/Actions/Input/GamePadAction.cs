@@ -14,7 +14,7 @@ namespace Key2Joy.Mapping
     [Action(
         Description = "GamePad/Controller Simulation",
         OptionsUserControl = typeof(GamePadActionControl),
-        NameFormat = "{1} {0} on GamePad"
+        NameFormat = "{1} {0} on GamePad #{2}"
     )]
     [ExposesScriptingEnumeration(typeof(GamePadControl))]
     [ExposesScriptingEnumeration(typeof(PressState))]
@@ -158,7 +158,8 @@ namespace Key2Joy.Mapping
         public override string GetNameDisplay()
         {
             return Name.Replace("{0}", Control.ToString())
-                .Replace("{1}", Enum.GetName(typeof(PressState), PressState));
+                .Replace("{1}", Enum.GetName(typeof(PressState), PressState))
+                .Replace("{2}", GamePadIndex.ToString());
         }
 
         public override bool Equals(object obj)
