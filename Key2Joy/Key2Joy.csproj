@@ -261,6 +261,7 @@
     </Compile>
     <Compile Include="IAcceptAppCommands.cs" />
     <Compile Include="Mapping\Actions\ActionAttribute.cs" />
+    <Compile Include="Mapping\Actions\Input\MouseGetButtonDownAction.cs" />
     <Compile Include="Mapping\Actions\Util\GetTimeAction.cs" />
     <Compile Include="Mapping\ActionVisibility.cs" />
     <Compile Include="Mapping\Actions\ExposesScriptingMethodAttribute.cs" />
