@@ -13,7 +13,7 @@ namespace Key2Joy.Mapping
 {
     public partial class GamePadActionControl : UserControl, IActionOptionsControl
     {
-        public event Action OptionsChanged;
+        public event EventHandler OptionsChanged;
         
         public GamePadActionControl()
         {
@@ -44,19 +44,24 @@ namespace Key2Joy.Mapping
             thisAction.GamePadIndex = (int)cmbGamePadIndex.SelectedItem;
         }
 
+        public bool CanMappingSave(BaseAction action)
+        {
+            return true;
+        }
+
         private void cmbGamePad_SelectedIndexChanged(object sender, EventArgs e)
         {
-            OptionsChanged?.Invoke();
+            OptionsChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void cmbPressState_SelectedIndexChanged(object sender, EventArgs e)
         {
-            OptionsChanged?.Invoke();
+            OptionsChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void cmbGamePadIndex_SelectedIndexChanged(object sender, EventArgs e)
         {
-            OptionsChanged?.Invoke();
+            OptionsChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

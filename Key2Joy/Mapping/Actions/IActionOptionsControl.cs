@@ -20,10 +20,15 @@ namespace Key2Joy.Mapping
         /// <param name="action"></param>
         void Setup(BaseAction action);
 
+        /// <summary>
+        /// Called when the mapping is saving and can still be stopped
+        /// </summary>
+        bool CanMappingSave(BaseAction action);
 
         /// <summary>
         /// Called when the options on an action change
         /// </summary>
-        event Action OptionsChanged;
+        event EventHandler OptionsChanged;
+        
     }
 }

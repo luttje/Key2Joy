@@ -13,7 +13,7 @@ namespace Key2Joy.Mapping
 {
     public partial class WaitActionControl : UserControl, IActionOptionsControl
     {
-        public event Action OptionsChanged;
+        public event EventHandler OptionsChanged;
         
         public WaitActionControl()
         {
@@ -34,6 +34,11 @@ namespace Key2Joy.Mapping
             thisAction.WaitTime = TimeSpan.FromMilliseconds((double)nudWaitTime.Value);
         }
 
+        public bool CanMappingSave(BaseAction action)
+        {
+            return true;
+        }
+
         private void txtKeyBind_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsDigit(e.KeyChar))
@@ -46,7 +51,7 @@ namespace Key2Joy.Mapping
 
         private void nudWaitTime_ValueChanged(object sender, EventArgs e)
         {
-            OptionsChanged?.Invoke();
+            OptionsChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

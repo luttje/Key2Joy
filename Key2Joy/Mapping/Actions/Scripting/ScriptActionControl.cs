@@ -14,7 +14,7 @@ namespace Key2Joy.Mapping
 {
     public partial class ScriptActionControl : UserControl, IActionOptionsControl
     {
-        public event Action OptionsChanged;
+        public event EventHandler OptionsChanged;
 
         private string languageName;
 
@@ -52,21 +52,33 @@ namespace Key2Joy.Mapping
             thisAction.Script = txtScript.Text;
         }
 
+        public bool CanMappingSave(BaseAction action)
+        {
+            return MessageBox.Show(
+                "Scripts can click and type like you do and therefor impersonate you. "
+                + "Scripts could cause harm to your pc, you or else. "
+                + "For that reason you should only run scripts that you trust!"
+                + "\n\nDo you trust this script?",
+                "Warning:! Scripts can be dangerous!",
+                MessageBoxButtons.YesNoCancel,
+                MessageBoxIcon.Warning) == DialogResult.Yes;
+        }
+
         private void txtScript_TextChanged(object sender, EventArgs e)
         {
-            OptionsChanged?.Invoke();
+            OptionsChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void txtFilePath_TextChanged(object sender, EventArgs e)
         {
-            OptionsChanged?.Invoke();
+            OptionsChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void chkDirectInput_CheckedChanged(object sender, EventArgs e)
         {
             txtScript.Visible = chkDirectInput.Checked;
             pnlFileInput.Visible = !chkDirectInput.Checked;
-            OptionsChanged?.Invoke();
+            OptionsChanged?.Invoke(this, EventArgs.Empty);
             PerformLayout();
         }
 
@@ -82,7 +94,7 @@ namespace Key2Joy.Mapping
             {
                 File.ReadAllText(file);
                 txtFilePath.Text = file;
-                OptionsChanged?.Invoke();
+                OptionsChanged?.Invoke(this, EventArgs.Empty);
             }
             catch (IOException)
             {

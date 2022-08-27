@@ -12,7 +12,7 @@ namespace Key2Joy.Mapping
 {
     public partial class SequenceActionControl : UserControl, IActionOptionsControl
     {
-        public event Action OptionsChanged;
+        public event EventHandler OptionsChanged;
         
         private List<BaseAction> childActions;
 
@@ -45,6 +45,11 @@ namespace Key2Joy.Mapping
             }
         }
 
+        public bool CanMappingSave(BaseAction action)
+        {
+            return true;
+        }
+
         private void AddChildAction(BaseAction action)
         {
             childActions.Add(action);
@@ -60,13 +65,13 @@ namespace Key2Joy.Mapping
         private void btnAdd_Click(object sender, EventArgs e)
         {
             AddChildAction((BaseAction)actionControl.Action.Clone());
-            OptionsChanged?.Invoke();
+            OptionsChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void btnRemove_Click(object sender, EventArgs e)
         {
             RemoveChildAction((BaseAction)lstActions.SelectedItem);
-            OptionsChanged?.Invoke();
+            OptionsChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void lstActions_SelectedIndexChanged(object sender, EventArgs e)

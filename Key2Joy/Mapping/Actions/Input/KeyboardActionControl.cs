@@ -13,7 +13,7 @@ namespace Key2Joy.Mapping
 {
     public partial class KeyboardActionControl : UserControl, IActionOptionsControl
     {
-        public event Action OptionsChanged;
+        public event EventHandler OptionsChanged;
                 
         public KeyboardActionControl()
         {
@@ -40,14 +40,19 @@ namespace Key2Joy.Mapping
             thisAction.PressState = (PressState) cmbPressState.SelectedItem;
         }
 
+        public bool CanMappingSave(BaseAction action)
+        {
+            return true;
+        }
+
         private void cmbKeyboard_SelectedIndexChanged(object sender, EventArgs e)
         {
-            OptionsChanged?.Invoke();
+            OptionsChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void cmbPressState_SelectedIndexChanged(object sender, EventArgs e)
         {
-            OptionsChanged?.Invoke();
+            OptionsChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

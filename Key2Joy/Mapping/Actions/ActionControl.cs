@@ -47,6 +47,14 @@ namespace Key2Joy.Mapping
             ActionChanged?.Invoke(Action);
         }
 
+        internal bool CanMappingSave(MappedOption mappedOption)
+        {
+            if (options != null)
+                return options.CanMappingSave(mappedOption.Action);
+
+            return false;
+        }
+
         internal void SelectAction(BaseAction action)
         {
             selectedAction = action;
@@ -90,7 +98,7 @@ namespace Key2Joy.Mapping
                     if(selectedAction != null)
                         this.options.Select(selectedAction);
 
-                    this.options.OptionsChanged += () => BuildAction();
+                    this.options.OptionsChanged += (s, _) => BuildAction();
                 }
             }
             

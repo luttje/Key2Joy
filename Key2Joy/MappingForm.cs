@@ -87,7 +87,10 @@ namespace Key2Joy
             MappedOption = MappedOption ?? new MappedOption();
             MappedOption.Trigger = trigger;
             MappedOption.Action = action;
-            
+
+            if (!actionControl.CanMappingSave(MappedOption))
+                return;
+
             DialogResult = DialogResult.OK;
 
             Close();

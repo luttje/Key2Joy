@@ -12,7 +12,7 @@ namespace Key2Joy.Mapping
 {
     public partial class AppCommandActionControl : UserControl, IActionOptionsControl
     {
-        public event Action OptionsChanged;
+        public event EventHandler OptionsChanged;
         
         public AppCommandActionControl()
         {
@@ -41,10 +41,14 @@ namespace Key2Joy.Mapping
 
             thisAction.Command = (AppCommand)cmbAppCommand.SelectedItem;
         }
+        public bool CanMappingSave(BaseAction action)
+        {
+            return true;
+        }
 
         private void cmbAppCommand_SelectedIndexChanged(object sender, EventArgs e)
         {
-            OptionsChanged?.Invoke();
+            OptionsChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }
