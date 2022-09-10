@@ -27,5 +27,10 @@ namespace Key2Joy.Util
             }
             return false;
         }
+
+        internal static bool IsList(this Type generic)
+        {
+            return generic.IsGenericType && (generic.GetGenericTypeDefinition() == typeof(List<>));
+        }
     }
 }

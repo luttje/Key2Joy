@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Key2Joy.Util;
+using Newtonsoft.Json;
 using NLua;
 using System;
 using System.Collections;
@@ -6,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -79,10 +81,20 @@ namespace Key2Joy.Mapping
                     environment.NewTable(path);
             }
 
-            var paramDebug = string.Join(", ", method.GetParameters()
+            var parameters = method.GetParameters();
+            var paramDebug = string.Join(", ", parameters
                 .Select(p => $"{p.ParameterType.Name} {p.Name}")
                 .ToArray());
             Output.WriteLine(Output.OutputModes.Verbose, $"lua.RegisterFunction({functionName},{instance},{method.Name}({paramDebug}):{method.ReturnType})");
+
+            //if (parameters.Any(p => p.ParameterType.IsList()))
+            //{
+            //    var oldMethod = method;
+
+            //    // Create a wrapper method with the same parameters
+            //    method = new DynamicMethod(method.Name, method.ReturnType, parameters.Select(p => p.ParameterType.IsList() ? typeof(LuaTable) : p.ParameterType).ToArray());
+
+            //}
 
             environment.RegisterFunction(
                 functionName,

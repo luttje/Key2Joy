@@ -53,3 +53,22 @@ Captures the specified Screen Region in the specified format
 > )
 > ```
 ---
+
+> Captures a sequence of images from the screen and saves them to a folder on the desktop (frames/)
+> 
+> #### _lua_:
+> ```lua
+> local frame = 1
+> local frameCount = 30
+> local framesPerSecond = 5
+> local interval
+> interval = SetInterval(function()
+>    Graphics.CaptureScreen(Util.PathExpand("%HOMEDRIVE%/%HOMEPATH%/Desktop/frames/"..frame..".png"))
+>    frame = frame + 1
+> 
+>    if(frame > frameCount)then
+>       ClearInterval(interval)
+>    end
+> end, 1000 / framesPerSecond)
+> ```
+---

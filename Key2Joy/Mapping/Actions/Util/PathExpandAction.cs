@@ -49,7 +49,7 @@ namespace Key2Joy.Mapping
 
         public override bool Equals(object obj)
         {
-            if (!(obj is GetTimeAction action))
+            if (!(obj is PathExpandAction action))
                 return false;
 
             return true;

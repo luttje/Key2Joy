@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BuildMarkdownDocs.Util;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,7 +27,7 @@ namespace BuildMarkdownDocs
                 var value = "";
 
                 if (child is XText textChild)
-                    value = textChild.Value.Trim();
+                    value = textChild.Value.Trim().TrimEachLine();
                 else if (child is XElement elementChild)
                 {
                     if (elementChild.Name.LocalName == "code")

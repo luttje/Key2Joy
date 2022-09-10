@@ -1,4 +1,5 @@
-﻿using Key2Joy.Mapping;
+﻿using FFMpegCore;
+using Key2Joy.Mapping;
 using SimWinInput;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,8 @@ namespace Key2Joy
         [STAThread]
         static void Main()
         {
+            GlobalFFOptions.Configure(options => options.BinaryFolder = "./ffmpeg");
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 

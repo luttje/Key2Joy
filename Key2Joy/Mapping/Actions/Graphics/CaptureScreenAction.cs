@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Esprima;
 using System.Windows.Forms;
+using System.IO;
 
 namespace Key2Joy.Mapping
 {
@@ -52,6 +53,25 @@ namespace Key2Joy.Mapping
         ///     size,
         ///     size
         /// )
+        /// ]]>
+        /// </code>
+        /// </markdown-example>
+        /// <markdown-example>
+        /// Captures a sequence of images from the screen and saves them to a folder on the desktop (frames/)
+        /// <code language="lua">
+        /// <![CDATA[
+        /// local frame = 1
+        /// local frameCount = 30
+        /// local framesPerSecond = 5
+        /// local interval
+        /// interval = SetInterval(function()
+        ///    Graphics.CaptureScreen(Util.PathExpand("%HOMEDRIVE%/%HOMEPATH%/Desktop/frames/"..frame..".png"))
+        ///    frame = frame + 1
+        /// 
+        ///    if(frame > frameCount)then
+        ///       ClearInterval(interval)
+        ///    end
+        /// end, 1000 / framesPerSecond)
         /// ]]>
         /// </code>
         /// </markdown-example>
@@ -105,6 +125,10 @@ namespace Key2Joy.Mapping
                 using (var g = Graphics.FromImage(pixelCache))
                     g.CopyFromScreen(bounds.Location, Point.Empty, bounds.Size);
 
+            var directory = Path.GetDirectoryName(savePath);
+            if (!Directory.Exists(directory))
+                Directory.CreateDirectory(directory);
+
             pixelCache.Save(savePath, format);
         }
 
@@ -115,7 +139,7 @@ namespace Key2Joy.Mapping
 
         public override bool Equals(object obj)
         {
-            if (!(obj is GetPixelColorAction action))
+            if (!(obj is CaptureScreenAction action))
                 return false;
 
             return true;

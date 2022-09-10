@@ -46,11 +46,20 @@
     <Reference Include="Esprima, Version=3.0.0.0, Culture=neutral, PublicKeyToken=2e92ba9c8d81157f, processorArchitecture=MSIL">
       <HintPath>..\packages\Esprima.3.0.0-beta-2\lib\net462\Esprima.dll</HintPath>
     </Reference>
+    <Reference Include="FFMpegCore, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FFMpegCore.4.8.0\lib\netstandard2.0\FFMpegCore.dll</HintPath>
+    </Reference>
+    <Reference Include="Instances, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Instances.2.0.0\lib\netstandard2.0\Instances.dll</HintPath>
+    </Reference>
     <Reference Include="Jint, Version=3.0.0.0, Culture=neutral, PublicKeyToken=2e92ba9c8d81157f, processorArchitecture=MSIL">
       <HintPath>..\packages\Jint.3.0.0-preview-296\lib\net462\Jint.dll</HintPath>
     </Reference>
     <Reference Include="KeraLua, Version=1.3.1.0, Culture=neutral, PublicKeyToken=6a194c04b9c89217, processorArchitecture=MSIL">
       <HintPath>..\packages\KeraLua.1.3.1\lib\net46\KeraLua.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.6.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Win32.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Win32.Primitives.4.3.0\lib\net46\Microsoft.Win32.Primitives.dll</HintPath>
@@ -95,6 +104,9 @@
       <HintPath>..\packages\System.Diagnostics.Tracing.4.3.0\lib\net462\System.Diagnostics.Tracing.dll</HintPath>
       <Private>True</Private>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Drawing.Common, Version=4.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Drawing.Common.5.0.2\lib\net461\System.Drawing.Common.dll</HintPath>
     </Reference>
     <Reference Include="System.Globalization.Calendars, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Globalization.Calendars.4.3.0\lib\net46\System.Globalization.Calendars.dll</HintPath>
@@ -164,8 +176,8 @@
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.3\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Extensions, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.Extensions.4.3.0\lib\net462\System.Runtime.Extensions.dll</HintPath>
@@ -202,10 +214,22 @@
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Text.Encodings.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encodings.Web.6.0.0\lib\net461\System.Text.Encodings.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Json, Version=6.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Json.6.0.2\lib\net461\System.Text.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System.Text.RegularExpressions, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Text.RegularExpressions.4.3.0\lib\net463\System.Text.RegularExpressions.dll</HintPath>
       <Private>True</Private>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -220,6 +244,7 @@
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AboutForm.cs">
@@ -261,6 +286,7 @@
     </Compile>
     <Compile Include="IAcceptAppCommands.cs" />
     <Compile Include="Mapping\Actions\ActionAttribute.cs" />
+    <Compile Include="Mapping\Actions\Graphics\AnimationFromImagesAction.cs" />
     <Compile Include="Mapping\Actions\Graphics\CaptureScreenAction.cs" />
     <Compile Include="Mapping\Actions\Graphics\GetPixelColorAction.cs" />
     <Compile Include="Mapping\Actions\Input\GetCursorPositionAction.cs" />
@@ -605,8 +631,14 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\KeraLua.1.3.1\build\net46\KeraLua.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\KeraLua.1.3.1\build\net46\KeraLua.targets'))" />
+    <Error Condition="!Exists('..\packages\System.Text.Json.6.0.2\build\System.Text.Json.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.Text.Json.6.0.2\build\System.Text.Json.targets'))" />
+    <Error Condition="!Exists('..\packages\VisioForge.DotNet.Core.Redist.Base.x64.12.1.26\build\VisioForge.DotNet.Core.Redist.Base.x64.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\VisioForge.DotNet.Core.Redist.Base.x64.12.1.26\build\VisioForge.DotNet.Core.Redist.Base.x64.targets'))" />
+    <Error Condition="!Exists('..\packages\FFmpeg.Win64.Static.4.1.1.1\build\FFmpeg.Win64.Static.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\FFmpeg.Win64.Static.4.1.1.1\build\FFmpeg.Win64.Static.targets'))" />
   </Target>
   <PropertyGroup>
     <PostBuildEvent>if $(ConfigurationName) == Release $(SolutionDir)BuildDocumentation.bat</PostBuildEvent>
   </PropertyGroup>
+  <Import Project="..\packages\System.Text.Json.6.0.2\build\System.Text.Json.targets" Condition="Exists('..\packages\System.Text.Json.6.0.2\build\System.Text.Json.targets')" />
+  <Import Project="..\packages\VisioForge.DotNet.Core.Redist.Base.x64.12.1.26\build\VisioForge.DotNet.Core.Redist.Base.x64.targets" Condition="Exists('..\packages\VisioForge.DotNet.Core.Redist.Base.x64.12.1.26\build\VisioForge.DotNet.Core.Redist.Base.x64.targets')" />
+  <Import Project="..\packages\FFmpeg.Win64.Static.4.1.1.1\build\FFmpeg.Win64.Static.targets" Condition="Exists('..\packages\FFmpeg.Win64.Static.4.1.1.1\build\FFmpeg.Win64.Static.targets')" />
 </Project>

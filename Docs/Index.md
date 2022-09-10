@@ -12,6 +12,7 @@
 
 ## Graphics
 
+* [`Graphics.AnimationFromImages` (`String`, `Double`, `Object`)](Api/Graphics/Graphics.AnimationFromImages.md)
 * [`Graphics.CaptureScreen` (`String`, `Int32?`, `Int32?`, `Int32?`, `Int32?`)](Api/Graphics/Graphics.CaptureScreen.md)
 * [`Graphics.GetPixelColor` (`Int32`, `Int32`)](Api/Graphics/Graphics.GetPixelColor.md)
 
