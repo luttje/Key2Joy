@@ -35,6 +35,7 @@ namespace Key2Joy.Mapping
         /// </code>
         /// </markdown-example>
         /// <returns>String containing expanded path</returns>
+        /// <param name="path">The path to expand</param>
         /// <name>Util.PathExpand</name>
         [ExposesScriptingMethod("Util.PathExpand")]
         public string ExecuteForScript(string path)

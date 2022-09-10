@@ -40,7 +40,7 @@
 ## Util
 
 * [`Util.GetUnixTimeSeconds` ()](Api/Util/Util.GetUnixTimeSeconds.md)
-* [`Util.PathExpand` ()](Api/Util/Util.PathExpand.md)
+* [`Util.PathExpand` (`String`)](Api/Util/Util.PathExpand.md)
 
 ## Windows
 
