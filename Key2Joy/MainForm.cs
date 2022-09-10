@@ -161,22 +161,22 @@ namespace Key2Joy
                     continue;
 
                 var listener = mappedOption.Trigger.GetTriggerListener();
-                
-                if(!allListeners.Contains(listener))
+
+                if (!allListeners.Contains(listener))
                     allListeners.Add(listener);
 
                 if (listener.HasWndProcHandle)
-                {
-                    listener.Handle = Handle;
                     wndProcListeners.Add(listener);
-                }
 
                 mappedOption.Action.OnStartListening(listener, ref allActions);
                 listener.AddMappedOption(mappedOption);
             }
 
             foreach (var listener in allListeners)
+            { 
+                listener.Handle = Handle;
                 listener.StartListening(ref allListeners);
+            }
         }
 
         private void DisarmMappings()
