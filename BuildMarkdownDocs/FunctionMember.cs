@@ -20,7 +20,7 @@ namespace BuildMarkdownDocs
                 return string.Empty;
             
             return string.Join(", ", Parameters?
-                    .Select(p => $"`{p.Type?.Name}`"));
+                    .Select(p => $"`{p.GetTypeName()}`"));
         }
 
         internal static Member FromXml(XElement element)
@@ -106,7 +106,8 @@ namespace BuildMarkdownDocs
             if (Parameters != null)
             {
                 parameters = string.Join("\n", Parameters?
-                    .Select(p => $"* **{p.Name} (`{p.Type.Name}`)** \n\n" +
+                    .Select(p => 
+                        $"* **{p.Name} ("+ (p.IsOptional ? "Optional " : "") + $"`{p.GetTypeName(false)}`)** \n\n" +
                         $"\t{p.Description}\n"));
             }
 

@@ -13,6 +13,9 @@ namespace BuildMarkdownDocs
         public Type Type { get; set; }
         public string Description { get; set; }
 
+        public bool IsOptional { get; set; }
+        private Type nullableType = null;
+
         public static Parameter FromXml(XElement element, Type type)
         {
             if (type == null)
@@ -22,8 +25,19 @@ namespace BuildMarkdownDocs
             parameter.Name = element.Attribute("name").Value;
             parameter.Description = element.Value;
             parameter.Type = type;
+            
+            parameter.nullableType = Nullable.GetUnderlyingType(type);
+            parameter.IsOptional = parameter.nullableType != null;
 
             return parameter;
+        }
+
+        internal object GetTypeName(bool includeOptionalMarkerIfApplicable = true)
+        {
+            if (IsOptional)
+                return $"{nullableType.Name}" + (includeOptionalMarkerIfApplicable ? "?" : string.Empty);
+
+            return Type.Name;
         }
     }
 }

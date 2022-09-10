@@ -261,9 +261,11 @@
     </Compile>
     <Compile Include="IAcceptAppCommands.cs" />
     <Compile Include="Mapping\Actions\ActionAttribute.cs" />
-    <Compile Include="Mapping\Actions\Graphics\GetPixelColor.cs" />
+    <Compile Include="Mapping\Actions\Graphics\CaptureScreenAction.cs" />
+    <Compile Include="Mapping\Actions\Graphics\GetPixelColorAction.cs" />
     <Compile Include="Mapping\Actions\Input\GetCursorPositionAction.cs" />
     <Compile Include="Mapping\Actions\Input\MouseGetButtonDownAction.cs" />
+    <Compile Include="Mapping\Actions\Util\PathExpandAction.cs" />
     <Compile Include="Mapping\Actions\Util\GetTimeAction.cs" />
     <Compile Include="Mapping\ActionVisibility.cs" />
     <Compile Include="Mapping\Actions\ExposesScriptingMethodAttribute.cs" />

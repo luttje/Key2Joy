@@ -17,11 +17,11 @@ namespace Key2Joy.Mapping
         Visibility = MappingMenuVisibility.Never,
         NameFormat = "Get a Pixel Color"
     )]
-    internal class GetPixelColor : BaseAction
+    internal class GetPixelColorAction : BaseAction
     {
         private Bitmap pixelCache = new Bitmap(1, 1);
         
-        public GetPixelColor(string name, string description)
+        public GetPixelColorAction(string name, string description)
             : base(name, description)
         { }
 
@@ -53,8 +53,10 @@ namespace Key2Joy.Mapping
         public Color ExecuteForScript(int x, int y)
         {
             var bounds = new Rectangle(x, y, 1, 1);
-            using (var g = Graphics.FromImage(pixelCache))
-                g.CopyFromScreen(bounds.Location, Point.Empty, bounds.Size);
+
+            lock (BaseScriptAction.LockObject)
+                using (var g = Graphics.FromImage(pixelCache))
+                    g.CopyFromScreen(bounds.Location, Point.Empty, bounds.Size);
             
             return pixelCache.GetPixel(0, 0);
         }
@@ -66,7 +68,7 @@ namespace Key2Joy.Mapping
 
         public override bool Equals(object obj)
         {
-            if (!(obj is GetPixelColor action))
+            if (!(obj is GetPixelColorAction action))
                 return false;
 
             return true;
@@ -74,7 +76,7 @@ namespace Key2Joy.Mapping
 
         public override object Clone()
         {
-            return new GetPixelColor(Name, description)
+            return new GetPixelColorAction(Name, description)
             {
                 ImageResource = ImageResource,
                 Name = Name,

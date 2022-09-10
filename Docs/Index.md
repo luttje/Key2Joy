@@ -12,6 +12,7 @@
 
 ## Graphics
 
+* [`Graphics.CaptureScreen` (`String`, `Int32?`, `Int32?`, `Int32?`, `Int32?`)](Api/Graphics/Graphics.CaptureScreen.md)
 * [`Graphics.GetPixelColor` (`Int32`, `Int32`)](Api/Graphics/Graphics.GetPixelColor.md)
 
 ## Input
@@ -38,6 +39,7 @@
 ## Util
 
 * [`Util.GetUnixTimeSeconds` ()](Api/Util/Util.GetUnixTimeSeconds.md)
+* [`Util.PathExpand` ()](Api/Util/Util.PathExpand.md)
 
 ## Windows
 

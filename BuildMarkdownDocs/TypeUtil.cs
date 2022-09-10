@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace BuildMarkdownDocs
@@ -15,6 +16,8 @@ namespace BuildMarkdownDocs
 
         public static Type GetType(string typeName)
         {
+            typeName = Regex.Replace(typeName, @"System\.Nullable{(.+)}", "System.Nullable`1[$1]");
+            
             var type = Type.GetType(typeName);
             
             if (type != null)
@@ -45,7 +48,7 @@ namespace BuildMarkdownDocs
                 }
 
             }
-
+            
             return null;
         }
     }
