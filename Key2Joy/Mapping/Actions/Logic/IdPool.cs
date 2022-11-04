@@ -10,6 +10,7 @@ namespace Key2Joy.Mapping
     public static class IdPool
     {
         private static int nextId = 1;
+        private static List<BaseId> ids = new List<BaseId>();
 
         public class BaseId
         {
@@ -19,6 +20,8 @@ namespace Key2Joy.Mapping
             public BaseId()
             {
                 Id = nextId++;
+
+                ids.Add(this);
             }
 
             public BaseId(CancellationTokenSource cancellation)
@@ -63,6 +66,16 @@ namespace Key2Joy.Mapping
         internal static IdType CreateNewId<IdType>(CancellationTokenSource cancellation) where IdType : BaseId
         {
             return (IdType)Activator.CreateInstance(typeof(IdType), cancellation);
+        }
+
+        internal static void CancelAll()
+        {
+            foreach (var id in ids)
+            {
+                id.Cancel();
+            }
+
+            ids = new List<BaseId>();
         }
     }
 }

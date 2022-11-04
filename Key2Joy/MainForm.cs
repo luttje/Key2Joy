@@ -184,6 +184,9 @@ namespace Key2Joy
             var listeners = Program.GetScriptingListeners();
             wndProcListeners.Clear();
 
+            // Clear all intervals
+            IdPool.CancelAll();
+
             foreach (var mappedOption in selectedPreset.MappedOptions)
             {
                 if (mappedOption.Trigger == null)
