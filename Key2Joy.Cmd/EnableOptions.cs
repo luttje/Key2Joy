@@ -26,6 +26,8 @@ namespace Key2Joy.Cmd
             if (PresetPath == null)
                 PresetPath = ConfigManager.Instance.LastLoadedPreset;
 
+            Console.WriteLine($"Commanding Key2Joy to enable the preset: {PresetPath}");
+            
             try 
             { 
                 InteropClient.Instance.SendCommand(new EnableCommand

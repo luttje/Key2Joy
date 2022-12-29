@@ -19,18 +19,17 @@ namespace Key2Joy.Gui
         [STAThread]
         static void Main()
         {
-            Key2JoyManager.InitSafely(OnRunAppCommand, () =>
-            {
-                Application.EnableVisualStyles();
-                Application.SetCompatibleTextRenderingDefault(false);
+            Key2JoyManager.InitSafely(
+                OnRunAppCommand, 
+                () => {
+                    Application.EnableVisualStyles();
+                    Application.SetCompatibleTextRenderingDefault(false);
 
-                ActiveForm = new InitForm();
+                    ActiveForm = new InitForm();
 
-                while (ActiveForm != null && !ActiveForm.IsDisposed)
-                {
-                    Application.Run(ActiveForm);
-                }
-            });
+                    while (ActiveForm != null && !ActiveForm.IsDisposed)
+                        Application.Run(ActiveForm);
+                });
         }
 
         internal static void GoToNextForm(Form form)
@@ -49,18 +48,6 @@ namespace Key2Joy.Gui
             }
 
             return false;
-        }
-
-        internal static List<TriggerListener> GetScriptingListeners()
-        {
-            var listeners = new List<TriggerListener>();
-            
-            // Always add these listeners so they keep track of triggers. That way scripts can ask them if stuff has happened.
-            listeners.Add(KeyboardTriggerListener.Instance);
-            listeners.Add(MouseButtonTriggerListener.Instance);
-            listeners.Add(MouseMoveTriggerListener.Instance);
-
-            return listeners;
         }
     }
 }

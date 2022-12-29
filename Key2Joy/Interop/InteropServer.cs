@@ -1,4 +1,5 @@
 ﻿using Key2Joy.Interop;
+using Key2Joy.Mapping;
 using System;
 using System.Collections.Generic;
 using System.IO.Pipes;
@@ -42,13 +43,20 @@ namespace Key2Joy.Interop
 
         private void HandleEnableCommand(EnableCommand command)
         {
-            MessageBox.Show("TODO: GUI received EnableCommand with path: " + command.ProfilePath);
+            Key2JoyManager.Instance.CallOnUiThread(() =>
+            {
+                var preset = MappingPreset.Load(command.ProfilePath);
+                Key2JoyManager.Instance.ArmMappings(preset);
+            });
         }
         
         private void HandleDisableCommand(DisableCommand command)
         {
-
-            MessageBox.Show("TODO: GUI received DisableCommand");
+            Key2JoyManager.Instance.CallOnUiThread(() =>
+            {
+                if (Key2JoyManager.Instance.GetIsArmed())
+                    Key2JoyManager.Instance.DisarmMappings();
+            });
         }
 
         private void OnClientConnected(IAsyncResult asyncResult)

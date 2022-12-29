@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Key2Joy.Interop;
 
 namespace Key2Joy.Cmd
 {
@@ -13,7 +14,17 @@ namespace Key2Joy.Cmd
     {
         public override void Handle()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("Commanding Key2Joy to disable the active preset.");
+            
+            try
+            {
+                InteropClient.Instance.SendCommand(new DisableCommand());
+            }
+            catch (TimeoutException)
+            {
+                // TODO: Start Key2Joy and try again
+                throw new NotImplementedException("TODO: Start Key2Joy");
+            }
         }
     }
 }

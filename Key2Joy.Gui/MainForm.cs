@@ -20,12 +20,11 @@ namespace Key2Joy.Gui
     public partial class MainForm : Form, IAcceptAppCommands
     {
         private MappingPreset selectedPreset;
-        private List<TriggerListener> wndProcListeners = new List<TriggerListener>();
 
         public MainForm()
         {
             InitializeComponent();
-            
+
             lblStatusActive.Visible = chkEnabled.Checked;
 
             var items = new MenuItem[]{
@@ -87,12 +86,14 @@ namespace Key2Joy.Gui
             txtPresetName.Text = selectedPreset.Name;
         }
 
-        private void btnCreateMapping_Click(object sender, EventArgs e)
+        private void SetStatusView(bool isEnabled)
         {
-            if (selectedPreset == null)
-                CreateNewPreset();
+            chkEnabled.CheckedChanged -= ChkEnabled_CheckedChanged;
+            chkEnabled.Checked = isEnabled;
+            chkEnabled.CheckedChanged += ChkEnabled_CheckedChanged;
 
-            EditMappedOption();
+            lblStatusActive.Visible = isEnabled;
+            lblStatusInactive.Visible = !isEnabled;
         }
 
         private MappingPreset CreateNewPreset(string nameSuffix = default)
@@ -149,64 +150,8 @@ namespace Key2Joy.Gui
             selectedPreset.Save();
         }
 
-        private void ArmMappings()
-        {
-            var allListeners = Program.GetScriptingListeners();
-            var allActions = selectedPreset.MappedOptions.Select(m => m.Action).ToList();
-
-            foreach (var mappedOption in selectedPreset.MappedOptions)
-            {
-                if (mappedOption.Trigger == null)
-                    continue;
-
-                var listener = mappedOption.Trigger.GetTriggerListener();
-
-                if (!allListeners.Contains(listener))
-                    allListeners.Add(listener);
-
-                if (listener.HasWndProcHandle)
-                    wndProcListeners.Add(listener);
-
-                mappedOption.Action.OnStartListening(listener, ref allActions);
-                listener.AddMappedOption(mappedOption);
-            }
-
-            foreach (var listener in allListeners)
-            { 
-                listener.Handle = Handle;
-                listener.StartListening(ref allListeners);
-            }
-        }
-
-        private void DisarmMappings()
-        {
-            var listeners = Program.GetScriptingListeners();
-            wndProcListeners.Clear();
-
-            // Clear all intervals
-            IdPool.CancelAll();
-
-            foreach (var mappedOption in selectedPreset.MappedOptions)
-            {
-                if (mappedOption.Trigger == null)
-                    continue;
-                
-                var listener = mappedOption.Trigger.GetTriggerListener();
-                mappedOption.Action.OnStopListening(listener);
-
-                if (!listeners.Contains(listener))
-                    listeners.Add(listener);
-            }
-
-            foreach (var listener in listeners)
-                listener.StopListening();
-
-            GamePadManager.Instance.EnsureAllUnplugged();
-        }
-
         public bool RunAppCommand(AppCommand command)
         {
-
             switch (command)
             {
                 case AppCommand.Abort:
@@ -221,14 +166,27 @@ namespace Key2Joy.Gui
             }
         }
 
-        protected override void WndProc(ref Message m)
+        private void MainForm_Load(object sender, EventArgs e)
         {
-            base.WndProc(ref m);
-
-            foreach (var wndProcListener in wndProcListeners)
+            // Ensure the manager knows which window handle catches all inputs
+            Key2JoyManager.Instance.SetMainForm(this);
+            Key2JoyManager.Instance.StatusChanged += (s, ev) =>
             {
-                wndProcListener.WndProc(ref m);
-            }
+                SetStatusView(ev.IsEnabled);
+            };
+
+            var lastLoadedPreset = MappingPreset.RestoreLastLoaded();
+
+            if (lastLoadedPreset != null)
+                SetSelectedPreset(lastLoadedPreset);
+        }
+
+        private void btnCreateMapping_Click(object sender, EventArgs e)
+        {
+            if (selectedPreset == null)
+                CreateNewPreset();
+
+            EditMappedOption();
         }
 
         private void olvMappings_CellClick(object sender, BrightIdeasSoftware.CellClickEventArgs e)
@@ -336,29 +294,20 @@ namespace Key2Joy.Gui
 
         private void ChkEnabled_CheckedChanged(object sender, EventArgs e)
         {
-            bool isEnabled = chkEnabled.Checked;
+            var isEnabled = chkEnabled.Checked;
 
-            lblStatusActive.Visible = isEnabled;
-            lblStatusInactive.Visible = !isEnabled;
+            SetStatusView(isEnabled);
 
             if (isEnabled)
-                ArmMappings();
+                Key2JoyManager.Instance.ArmMappings(selectedPreset);
             else
-                DisarmMappings();
+                Key2JoyManager.Instance.DisarmMappings();
         }
 
         private void TxtPresetName_TextChanged(object sender, EventArgs e)
         {
             selectedPreset.Name = txtPresetName.Text;
             selectedPreset.Save();
-        }
-
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-            var lastLoadedPreset = MappingPreset.RestoreLastLoaded();
-
-            if (lastLoadedPreset != null)
-                SetSelectedPreset(lastLoadedPreset);
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -379,7 +328,7 @@ namespace Key2Joy.Gui
 
         private void newPresetToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var copy = CreateNewPreset(" - Copy");
+            CreateNewPreset(" - Copy");
         }
 
         private void loadPresetToolStripMenuItem_Click(object sender, EventArgs e)

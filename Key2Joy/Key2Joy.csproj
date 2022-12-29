@@ -251,6 +251,7 @@
     <Compile Include="Interop\EnableCommand.cs" />
     <Compile Include="Interop\InteropClient.cs" />
     <Compile Include="Interop\InteropServer.cs" />
+    <Compile Include="Interop\StatusChangedEventArgs.cs" />
     <Compile Include="Key2JoyManager.cs" />
     <Compile Include="LowLevelInput\GamePadManager.cs" />
     <Compile Include="LowLevelInput\GlobalInputHook.cs" />
