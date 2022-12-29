@@ -14,7 +14,17 @@ namespace Key2Joy.Config
         const string APP_DIR = "Key2Joy";
         const string CONFIG_PATH = "config.json";
 
-        public static ConfigManager Instance { get; private set; }
+        public static ConfigManager instance;
+        public static ConfigManager Instance
+        {
+            get
+            {
+                if (instance == null)
+                    instance = LoadOrCreate();
+
+                return instance;
+            }
+        }
         private bool isInitialized;
 
         [BooleanConfigControl(
@@ -79,8 +89,8 @@ namespace Key2Joy.Config
             using (var writer = new JsonTextWriter(sw))
                 serializer.Serialize(writer, this);
         }
-
-        public static void Load()
+        
+        private static ConfigManager LoadOrCreate()
         {
             var configPath = Path.Combine(
                 GetAppDirectory(),
@@ -88,19 +98,21 @@ namespace Key2Joy.Config
 
             if (!File.Exists(configPath))
             {
-                Instance = new ConfigManager();
-                Instance.isInitialized = true;
-                Instance.Save();
-                return;
+                instance = new ConfigManager();
+                instance.isInitialized = true;
+                instance.Save();
+                return instance;
             }
             
             var serializer = GetSerializer();
                 
             using (var sr = new StreamReader(configPath))
             using (var reader = new JsonTextReader(sr))
-                Instance = serializer.Deserialize<ConfigManager>(reader);
+                instance = serializer.Deserialize<ConfigManager>(reader);
 
-            Instance.isInitialized = true;
+            instance.isInitialized = true;
+
+            return instance;
         }
 
         private static JsonSerializer GetSerializer()

@@ -1,4 +1,5 @@
 ﻿using FFMpegCore;
+using Key2Joy.Interop;
 using Key2Joy.Mapping;
 using SimWinInput;
 using System;
@@ -14,8 +15,11 @@ namespace Key2Joy
     public class Key2JoyManager
     {
         private static AppCommandRunner commandRunner;
-        
-        public static void InitSafely(AppCommandRunner commandRunner, Action value)
+
+        /// <summary>
+        /// Ensures Key2Joy is running and ready to accept commands as long as the main loop does not end.
+        /// </summary>
+        public static void InitSafely(AppCommandRunner commandRunner, Action mainLoop)
         {
             Key2JoyManager.commandRunner = commandRunner;
 
@@ -23,10 +27,12 @@ namespace Key2Joy
 
             try
             {
-                value();
+                InteropServer.Instance.RestartListening();
+                mainLoop();
             }
             finally
             {
+                InteropServer.Instance.StopListening();
                 SimGamePad.Instance.ShutDown();
             }
         }

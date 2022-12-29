@@ -123,6 +123,20 @@ namespace Key2Joy.Mapping
 
             MappingPreset preset;
 
+            if (!File.Exists(filePath))
+            {
+                var directory = GetSaveDirectory();
+                filePath = Path.Combine(directory, filePath);
+
+                if (!File.Exists(filePath))
+                {
+                    filePath += EXTENSION;
+
+                    if (!File.Exists(filePath))
+                        return null;
+                }
+            }
+
             using (var sr = new StreamReader(filePath))
             using (var reader = new JsonTextReader(sr))
                 preset = serializer.Deserialize<MappingPreset>(reader);

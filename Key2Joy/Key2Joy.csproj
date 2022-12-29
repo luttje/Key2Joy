@@ -12,6 +12,7 @@
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <LangVersion>latest</LangVersion>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
   </PropertyGroup>
@@ -25,6 +26,7 @@
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
     <DocumentationFile>bin\Debug\Key2Joy.xml</DocumentationFile>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -242,6 +244,13 @@
     <Compile Include="Config\NumericConfigControlAttribute.cs" />
     <Compile Include="Config\TextConfigControlAttribute.cs" />
     <Compile Include="IAcceptAppCommands.cs" />
+    <Compile Include="Interop\CommandInfo.cs" />
+    <Compile Include="Interop\CommandAttribute.cs" />
+    <Compile Include="Interop\CommandRepository.cs" />
+    <Compile Include="Interop\DisableCommand.cs" />
+    <Compile Include="Interop\EnableCommand.cs" />
+    <Compile Include="Interop\InteropClient.cs" />
+    <Compile Include="Interop\InteropServer.cs" />
     <Compile Include="Key2JoyManager.cs" />
     <Compile Include="LowLevelInput\GamePadManager.cs" />
     <Compile Include="LowLevelInput\GlobalInputHook.cs" />

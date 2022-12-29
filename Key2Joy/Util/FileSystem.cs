@@ -9,6 +9,8 @@ namespace Key2Joy.Util
 {
     public static class FileSystem
     {
+        public const int MAX_PATH = 260;
+
         /// <summary>
         /// Tests the given pathFormat with a number to see if it exists, if it does it tries again while increasing the number until an available filename is found.
         /// </summary>

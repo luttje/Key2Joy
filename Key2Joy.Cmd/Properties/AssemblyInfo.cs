@@ -1,13 +1,13 @@
-﻿using System.Resources;
-using System.Reflection;
+﻿using System.Reflection;
+using System.Resources;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Key2Joy (GUI)")]
-[assembly: AssemblyDescription("Simulate a game controller with your mouse and keyboard")]
+[assembly: AssemblyTitle("Key2Joy (CLI)")]
+[assembly: AssemblyDescription("Control Key2Joy from the command line")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Lutt.online")]
 [assembly: AssemblyProduct("Key2Joy")]
@@ -21,7 +21,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("808ba609-806d-4d55-857b-6fb4e16e13f1")]
+[assembly: Guid("ff955f62-e00d-46f4-a945-6677df10fca2")]
 
 // Version information for an assembly consists of the following four values:
 //

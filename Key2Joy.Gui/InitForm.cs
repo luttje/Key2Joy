@@ -16,7 +16,6 @@ namespace Key2Joy.Gui
 
         private void InitForm_Load(object sender, EventArgs e)
         {
-            ConfigManager.Load();
             MappingPreset.ExtractDefaultIfNotExists();
             SimGamePad.Instance.Initialize();
             Program.GoToNextForm(new MainForm());
