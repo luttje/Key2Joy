@@ -3,13 +3,11 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Key2Joy.Mapping
 {
     [Action(
         Description = "App Command",
-        OptionsUserControl = typeof(AppCommandActionControl),
         NameFormat = "Run App Command '{0}'"
     )]
     [ExposesScriptingEnumeration(typeof(AppCommand))]
@@ -17,7 +15,7 @@ namespace Key2Joy.Mapping
         Name = "Logic",
         Image = "script_code"
     )]
-    internal class AppCommandAction : BaseAction
+    public class AppCommandAction : BaseAction
     {
         [JsonProperty]
         public AppCommand Command { get; set; }
@@ -77,11 +75,11 @@ namespace Key2Joy.Mapping
             await this.Execute();
         }
 
-        internal override async Task Execute(IInputBag inputBag = null)
+        public override async Task Execute(IInputBag inputBag = null)
         {
-            if (!Program.RunAppCommand(Command))
+            if (!Key2JoyManager.RunAppCommand(Command))
             {
-                MessageBox.Show("This app command is invalid or could not be run at this time!", "Invalid command!", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                throw new NotImplementedException("This app command is invalid!");
             }
         }
 

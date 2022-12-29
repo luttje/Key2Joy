@@ -13,7 +13,6 @@ namespace Key2Joy.Mapping
 {
     [Action(
         Description = "GamePad/Controller Simulation",
-        OptionsUserControl = typeof(GamePadActionControl),
         NameFormat = "{1} {0} on GamePad #{2}"
     )]
     [ExposesScriptingEnumeration(typeof(GamePadControl))]
@@ -22,7 +21,7 @@ namespace Key2Joy.Mapping
         Name = "GamePad Simulation",
         Image = "joystick"
     )]
-    internal class GamePadAction : BaseAction, IPressState
+    public class GamePadAction : BaseAction, IPressState
     {
         [JsonProperty]
         public GamePadControl Control { get; set; }
@@ -58,7 +57,7 @@ namespace Key2Joy.Mapping
             return actions;
         }
 
-        internal static GamePadControl[] GetAllButtons()
+        public static GamePadControl[] GetAllButtons()
         {
             var allEnums = Enum.GetValues(typeof(GamePadControl));
 
@@ -69,7 +68,7 @@ namespace Key2Joy.Mapping
             return buttons;
         }
 
-        internal override void OnStartListening(TriggerListener listener, ref List<BaseAction> otherActions)
+        public override void OnStartListening(TriggerListener listener, ref List<BaseAction> otherActions)
         {
             base.OnStartListening(listener, ref otherActions);
 
@@ -114,7 +113,7 @@ namespace Key2Joy.Mapping
                 SimGamePad.Instance.ReleaseControl(Control, GamePadIndex);
         }
 
-        internal override async Task Execute(IInputBag inputBag = null)
+        public override async Task Execute(IInputBag inputBag = null)
         {
             if (inputBag is MouseMoveInputBag mouseMoveInputBag)
             {

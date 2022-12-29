@@ -13,7 +13,7 @@ namespace Key2Joy.Mapping
         Visibility = MappingMenuVisibility.Never,
         NameFormat = "Expand Path System Variables"
     )]
-    internal class PathExpandAction : BaseAction
+    public class PathExpandAction : BaseAction
     {
         public PathExpandAction(string name, string description)
             : base(name, description)
@@ -43,7 +43,7 @@ namespace Key2Joy.Mapping
             return Environment.ExpandEnvironmentVariables(path);
         }
 
-        internal override async Task Execute(IInputBag inputBag = null)
+        public override async Task Execute(IInputBag inputBag = null)
         {
             // TODO: Currently this is only a script action...
         }

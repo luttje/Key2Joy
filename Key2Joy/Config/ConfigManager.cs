@@ -9,8 +9,9 @@ using System.Threading.Tasks;
 namespace Key2Joy.Config
 {
     [JsonObject(MemberSerialization.OptIn)]
-    internal class ConfigManager
+    public class ConfigManager
     {
+        const string APP_DIR = "Key2Joy";
         const string CONFIG_PATH = "config.json";
 
         public static ConfigManager Instance { get; private set; }
@@ -58,7 +59,7 @@ namespace Key2Joy.Config
             get => logOutputPath;
             set => SaveIfInitialized(logOutputPath = value);
         }
-        private string logOutputPath = Path.Combine(Program.GetAppDirectory(), "Logs");
+        private string logOutputPath = Path.Combine(GetAppDirectory(), "Logs");
 
         private ConfigManager() { }
         private void SaveIfInitialized(object changedValue = null)
@@ -71,7 +72,7 @@ namespace Key2Joy.Config
         {
             var serializer = GetSerializer();
             var configPath = Path.Combine(
-                Program.GetAppDirectory(),
+                GetAppDirectory(),
                 CONFIG_PATH);
 
             using (var sw = new StreamWriter(configPath))
@@ -82,7 +83,7 @@ namespace Key2Joy.Config
         public static void Load()
         {
             var configPath = Path.Combine(
-                Program.GetAppDirectory(),
+                GetAppDirectory(),
                 CONFIG_PATH);
 
             if (!File.Exists(configPath))
@@ -109,5 +110,18 @@ namespace Key2Joy.Config
 
             return serializer;
         }
+
+        public static string GetAppDirectory()
+        {
+            var directory = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                APP_DIR);
+
+            if (!Directory.Exists(directory))
+                Directory.CreateDirectory(directory);
+
+            return directory;
+        }
+
     }
 }

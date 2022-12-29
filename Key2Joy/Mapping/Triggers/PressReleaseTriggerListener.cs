@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace Key2Joy.Mapping
 {
-    internal abstract class PressReleaseTriggerListener<TTrigger> : TriggerListener 
+    public abstract class PressReleaseTriggerListener<TTrigger> : TriggerListener 
         where TTrigger : class, IPressState, IReturnInputHash
     {
         protected Dictionary<int, List<MappedOption>> lookupDown;
@@ -21,7 +21,7 @@ namespace Key2Joy.Mapping
             lookupRelease = new Dictionary<int, List<MappedOption>>();
         }
 
-        internal override void AddMappedOption(MappedOption mappedOption)
+        public override void AddMappedOption(MappedOption mappedOption)
         {
             var trigger = mappedOption.Trigger as TTrigger;
             var dictionary = (Dictionary<int, List<MappedOption>>)null;

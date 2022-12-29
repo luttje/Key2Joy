@@ -13,13 +13,13 @@ namespace Key2Joy.Mapping
         Visibility = MappingMenuVisibility.Never,
         NameFormat = "Find Window '{0}' with title {1}"
     )]
-    internal class WindowFindAction : BaseAction
+    public class WindowFindAction : BaseAction
     {
         [JsonProperty]
-        internal string ClassName { get; set; }
+        public string ClassName { get; set; }
         
         [JsonProperty]
-        internal string WindowName { get; set; }
+        public string WindowName { get; set; }
 
         [DllImport("user32.dll", EntryPoint = "FindWindow")]
         private static extern IntPtr FindWindow(string className, string windowTitle);
@@ -49,7 +49,7 @@ namespace Key2Joy.Mapping
             return windowHandle;
         }
 
-        internal override async Task Execute(IInputBag inputBag = null)
+        public override async Task Execute(IInputBag inputBag = null)
         {
             // TODO: Currently this is only a script action...
         }

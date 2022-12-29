@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Key2Joy.Mapping
 {
-    internal class CombinedTriggerListener : TriggerListener
+    public class CombinedTriggerListener : TriggerListener
     {
-        internal static CombinedTriggerListener instance;
-        internal static CombinedTriggerListener Instance
+        public static CombinedTriggerListener instance;
+        public static CombinedTriggerListener Instance
         {
             get
             {
@@ -23,7 +23,7 @@ namespace Key2Joy.Mapping
         protected Dictionary<CombinedTrigger, List<MappedOption>> lookup = new Dictionary<CombinedTrigger, List<MappedOption>>();
         private Dictionary<MappedOption, CombinedTrigger> optionsToExecute;
 
-        internal override void AddMappedOption(MappedOption mappedOption)
+        public override void AddMappedOption(MappedOption mappedOption)
         {
             var trigger = mappedOption.Trigger as CombinedTrigger;
             List<MappedOption> mappedOptions;
@@ -40,7 +40,7 @@ namespace Key2Joy.Mapping
             mappedOptions.Add(mappedOption);
         }
         
-        internal override bool GetIsTriggered(BaseTrigger trigger) => false;
+        public override bool GetIsTriggered(BaseTrigger trigger) => false;
 
         protected override void Start()
         {

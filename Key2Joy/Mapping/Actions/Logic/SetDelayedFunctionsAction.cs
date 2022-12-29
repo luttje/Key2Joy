@@ -16,7 +16,7 @@ namespace Key2Joy.Mapping
         Name = "Logic",
         Image = "script_code"
     )]
-    internal class SetDelayedFunctionsAction : BaseAction
+    public class SetDelayedFunctionsAction : BaseAction
     {
         [JsonProperty]
         public TimeSpan WaitTime;
@@ -77,7 +77,7 @@ namespace Key2Joy.Mapping
             }
         }
 
-        internal override Task Execute(IInputBag inputBag = null)
+        public override Task Execute(IInputBag inputBag = null)
         {
             // Irrelevant because only scripts should use this function
             return Task.Delay(WaitTime);

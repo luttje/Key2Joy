@@ -14,14 +14,14 @@ namespace Key2Joy.Mapping
         public event EventHandler<TriggerActivatingEventArgs> TriggerActivating;
         public event EventHandler<TriggerActivatedEventArgs> TriggerActivated;
         
-        internal virtual bool HasWndProcHandle { get; } = false;
-        internal IntPtr Handle { get; set; }
+        public virtual bool HasWndProcHandle { get; } = false;
+        public IntPtr Handle { get; set; }
 
-        internal bool IsActive { get; private set; }
+        public bool IsActive { get; private set; }
 
         protected List<TriggerListener> allListeners;
 
-        internal void StartListening(ref List<TriggerListener> allListeners)
+        public void StartListening(ref List<TriggerListener> allListeners)
         {
             if (IsActive)
                 throw new Exception("Shouldn't StartListening to already active listener!");
@@ -30,7 +30,7 @@ namespace Key2Joy.Mapping
 
             Start();
         }
-        internal void StopListening()
+        public void StopListening()
         {
             if (!IsActive)
                 return;
@@ -40,9 +40,9 @@ namespace Key2Joy.Mapping
             allListeners = null;
         }
 
-        internal abstract void AddMappedOption(MappedOption mappedOption);
+        public abstract void AddMappedOption(MappedOption mappedOption);
 
-        internal abstract bool GetIsTriggered(BaseTrigger trigger);
+        public abstract bool GetIsTriggered(BaseTrigger trigger);
 
         protected virtual void Start()
         {
@@ -97,7 +97,7 @@ namespace Key2Joy.Mapping
             return ConfigManager.Instance.OverrideDefaultTriggerBehaviour ? executedAny : false;
         }
 
-        internal virtual void WndProc(ref Message m)
+        public virtual void WndProc(ref Message m)
         { }
     }
 }

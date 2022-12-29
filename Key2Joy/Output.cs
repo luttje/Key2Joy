@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Key2Joy
 {
-    internal static class Output
+    public static class Output
     {
         public enum OutputModes
         {
@@ -24,11 +24,11 @@ namespace Key2Joy
             Verbose
         }
 
-        internal static event Action<string> OnNewLogLine;
+        public static event Action<string> OnNewLogLine;
 
-        internal static OutputModes OutputMode { get; set; } = OutputModes.Verbose;
+        public static OutputModes OutputMode { get; set; } = OutputModes.Verbose;
 
-        internal static string GetLogPath(DateTime? day = null)
+        public static string GetLogPath(DateTime? day = null)
         {
             if (day == null)
                 day = DateTime.Now;
@@ -42,7 +42,7 @@ namespace Key2Joy
             return Path.Combine(directory, $"{dayString}.log");
         }
 
-        internal static void WriteLine(params object[] parts)
+        public static void WriteLine(params object[] parts)
         {
             var output = new StringBuilder();
             output.Append("[");
@@ -66,7 +66,7 @@ namespace Key2Joy
             OnNewLogLine?.Invoke(outputLine);
         }
 
-        internal static void WriteLine(OutputModes messageMode = OutputModes.Default, params object[] parts)
+        public static void WriteLine(OutputModes messageMode = OutputModes.Default, params object[] parts)
         {
             if(OutputMode != OutputModes.Verbose && messageMode == OutputModes.Verbose)
                 return;

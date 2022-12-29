@@ -14,7 +14,7 @@ namespace Key2Joy.Mapping
         Visibility = MappingMenuVisibility.Never,
         NameFormat = "Get the Cursor Position"
     )]
-    internal class GetCursorPositionAction : BaseAction
+    public class GetCursorPositionAction : BaseAction
     {
         [DllImport("user32.dll")]
         static extern bool GetCursorPos(ref Point lpPoint);
@@ -55,7 +55,7 @@ namespace Key2Joy.Mapping
             return cursorPosition;
         }
 
-        internal override async Task Execute(IInputBag inputBag = null)
+        public override async Task Execute(IInputBag inputBag = null)
         {
             // TODO: Currently this is only a script action...
         }

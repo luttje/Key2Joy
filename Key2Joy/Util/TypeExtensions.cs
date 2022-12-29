@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Key2Joy.Util
 {
-    internal static class TypeExtensions
+    public static class TypeExtensions
     {
         /// <summary>
         /// Source: https://stackoverflow.com/a/457708
@@ -14,7 +14,7 @@ namespace Key2Joy.Util
         /// <param name="generic"></param>
         /// <param name="toCheck"></param>
         /// <returns></returns>
-        internal static bool IsSubclassOfRawGeneric(this Type generic, Type toCheck)
+        public static bool IsSubclassOfRawGeneric(this Type generic, Type toCheck)
         {
             while (toCheck != null && toCheck != typeof(object))
             {
@@ -28,7 +28,7 @@ namespace Key2Joy.Util
             return false;
         }
 
-        internal static bool IsList(this Type generic)
+        public static bool IsList(this Type generic)
         {
             return generic.IsGenericType && (generic.GetGenericTypeDefinition() == typeof(List<>));
         }

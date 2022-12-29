@@ -10,12 +10,12 @@ using System.Windows.Forms;
 
 namespace Key2Joy.Mapping
 {
-    internal class MouseMoveTriggerListener : TriggerListener
+    public class MouseMoveTriggerListener : TriggerListener
     {
-        internal override bool HasWndProcHandle => true;
+        public override bool HasWndProcHandle => true;
 
-        internal static MouseMoveTriggerListener instance;
-        internal static MouseMoveTriggerListener Instance
+        public static MouseMoveTriggerListener instance;
+        public static MouseMoveTriggerListener Instance
         {
             get
             {
@@ -54,7 +54,7 @@ namespace Key2Joy.Mapping
             base.Stop();
         }
 
-        internal override void AddMappedOption(MappedOption mappedOption)
+        public override void AddMappedOption(MappedOption mappedOption)
         {
             var trigger = mappedOption.Trigger as MouseMoveTrigger;
 
@@ -64,7 +64,7 @@ namespace Key2Joy.Mapping
             mappedOptions.Add(mappedOption);
         }
 
-        internal override bool GetIsTriggered(BaseTrigger trigger)
+        public override bool GetIsTriggered(BaseTrigger trigger)
         {
             if (!(trigger is MouseMoveTrigger mouseMoveTrigger))
                 return false;
@@ -73,7 +73,7 @@ namespace Key2Joy.Mapping
                 && lastDirectionHashes.Contains(mouseMoveTrigger.GetInputHash());
         }
 
-        internal override void WndProc(ref Message m)
+        public override void WndProc(ref Message m)
         {
             base.WndProc(ref m);
 

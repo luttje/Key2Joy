@@ -15,7 +15,7 @@ namespace Key2Joy.Mapping
         Visibility = MappingMenuVisibility.Never,
         NameFormat = "Get Keyboard Key Down"
     )]
-    internal class KeyboardGetKeyDownAction : BaseAction
+    public class KeyboardGetKeyDownAction : BaseAction
     {
         public KeyboardGetKeyDownAction(string name, string description)
             : base(name, description)
@@ -63,7 +63,7 @@ namespace Key2Joy.Mapping
             return KeyboardTriggerListener.Instance.GetKeyDown(VirtualKeyConverter.KeysFromScanCode(key));
         }
 
-        internal override async Task Execute(IInputBag inputBag = null)
+        public override async Task Execute(IInputBag inputBag = null)
         {
             // TODO: Currently this is only a script action...
         }

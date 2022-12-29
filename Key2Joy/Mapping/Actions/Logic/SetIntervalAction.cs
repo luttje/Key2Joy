@@ -15,7 +15,7 @@ namespace Key2Joy.Mapping
         Name = "Logic",
         Image = "script_code"
     )]
-    internal class SetIntervalAction : BaseAction
+    public class SetIntervalAction : BaseAction
     {
         public delegate void CallbackAction(params object[] arguments);
             
@@ -89,7 +89,7 @@ namespace Key2Joy.Mapping
             return IdPool.CreateNewId<IdPool.IntervalId>(cancellation);
         }
 
-        internal override Task Execute(IInputBag inputBag = null)
+        public override Task Execute(IInputBag inputBag = null)
         {
             // Irrelevant because only scripts should use this function
             return Task.Delay(WaitTime);

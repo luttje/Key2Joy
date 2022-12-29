@@ -25,7 +25,7 @@ namespace Key2Joy.LowLevelInput
             WheelDown = 16
         }
 
-        internal static Buttons ButtonsFromRaw(RawMouse rawMouse, out bool isDown)
+        public static Buttons ButtonsFromRaw(RawMouse rawMouse, out bool isDown)
         {
             isDown = true;
             
@@ -63,7 +63,7 @@ namespace Key2Joy.LowLevelInput
             throw new NotImplementedException($"Mouse button ({rawMouse.Buttons}) not yet supported!");
         }
 
-        internal static Buttons ButtonsFromState(MouseState mouseState, out bool isDown)
+        public static Buttons ButtonsFromState(MouseState mouseState, out bool isDown)
         {
             isDown = true;
             

@@ -22,7 +22,7 @@ namespace Key2Joy.Mapping
         Name = "Mouse Button Simulation",
         Image = "mouse"
     )]
-    internal class MouseButtonAction : BaseAction, IPressState
+    public class MouseButtonAction : BaseAction, IPressState
     {        
         [JsonProperty]
         public Mouse.Buttons Button { get; set; }
@@ -35,7 +35,7 @@ namespace Key2Joy.Mapping
         {
         }
 
-        internal static Mouse.Buttons[] GetAllButtons()
+        public static Mouse.Buttons[] GetAllButtons()
         {
             var allEnums = Enum.GetValues(typeof(Mouse.Buttons));
             var buttons = new List<Mouse.Buttons>();
@@ -71,7 +71,7 @@ namespace Key2Joy.Mapping
             await Execute();
         }
 
-        internal override async Task Execute(IInputBag inputBag = null)
+        public override async Task Execute(IInputBag inputBag = null)
         {
             if (PressState == PressState.Press)
                 SimulatedMouse.PressButton(Button);

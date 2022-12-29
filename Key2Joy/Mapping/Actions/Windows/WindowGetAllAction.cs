@@ -14,7 +14,7 @@ namespace Key2Joy.Mapping
         Visibility = MappingMenuVisibility.Never,
         NameFormat = "Get All Window Handles"
     )]
-    internal class WindowGetAllAction : BaseAction
+    public class WindowGetAllAction : BaseAction
     {
         public delegate bool EnumedWindow(IntPtr handleWindow, ArrayList handles);
 
@@ -57,7 +57,7 @@ namespace Key2Joy.Mapping
             return windowHandles.ToArray();
         }
 
-        internal override async Task Execute(IInputBag inputBag = null)
+        public override async Task Execute(IInputBag inputBag = null)
         {
             // TODO: Currently this is only a script action...
         }

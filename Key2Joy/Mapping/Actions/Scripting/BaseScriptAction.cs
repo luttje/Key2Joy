@@ -10,9 +10,9 @@ namespace Key2Joy.Mapping
         Name = "Scripting",
         Image = "script_code"
     )]
-    internal abstract class BaseScriptAction : BaseAction
+    public abstract class BaseScriptAction : BaseAction
     {
-        internal static readonly object LockObject = new object();
+        public static readonly object LockObject = new object();
 
         [JsonProperty]
         public string Script { get; set; }
@@ -39,8 +39,8 @@ namespace Key2Joy.Mapping
             return Script;
         }
 
-        internal abstract void RegisterScriptingEnum(Type enumType);
-        internal abstract void RegisterScriptingMethod(string functionName, BaseAction instance, MethodInfo method);
+        public abstract void RegisterScriptingEnum(Type enumType);
+        public abstract void RegisterScriptingMethod(string functionName, BaseAction instance, MethodInfo method);
 
         public virtual void Print(params object[] args)
         {
@@ -64,7 +64,7 @@ namespace Key2Joy.Mapping
             return Name.Replace("{0}", truncatedScript);
         }
 
-        internal override void OnStartListening(TriggerListener listener, ref List<BaseAction> otherActions)
+        public override void OnStartListening(TriggerListener listener, ref List<BaseAction> otherActions)
         {
             base.OnStartListening(listener, ref otherActions);
         }

@@ -20,16 +20,6 @@ namespace Key2Joy.Mapping
         public string Description { get; set; }
 
         /// <summary>
-        /// Which UserControl to load into the MappingForm for the user to set options.
-        /// </summary>
-        public Type OptionsUserControl { get; set; }
-
-        /// <summary>
-        /// Which parameters to provide to the constructor of the user control
-        /// </summary>
-        public object[] OptionsUserControlParams { get; set; }
-
-        /// <summary>
         /// When this action should be visibile in menu's.
         /// </summary>
         public MappingMenuVisibility Visibility { get; set; } = MappingMenuVisibility.Always;

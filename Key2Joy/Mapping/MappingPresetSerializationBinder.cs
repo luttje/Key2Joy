@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace Key2Joy.Mapping
 {
-    internal class MappingPresetSerializationBinder : ISerializationBinder
+    public class MappingPresetSerializationBinder : ISerializationBinder
     {
         private IList<Type> allowedTypes;
 

@@ -17,7 +17,7 @@ namespace Key2Joy.Mapping
         Visibility = MappingMenuVisibility.Never,
         NameFormat = "Get a Pixel Color"
     )]
-    internal class GetPixelColorAction : BaseAction
+    public class GetPixelColorAction : BaseAction
     {
         private Bitmap pixelCache = new Bitmap(1, 1);
         
@@ -61,7 +61,7 @@ namespace Key2Joy.Mapping
             return pixelCache.GetPixel(0, 0);
         }
 
-        internal override async Task Execute(IInputBag inputBag = null)
+        public override async Task Execute(IInputBag inputBag = null)
         {
             // TODO: Currently this is only a script action...
         }

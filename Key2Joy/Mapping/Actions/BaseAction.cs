@@ -1,5 +1,4 @@
-﻿using Key2Joy.Properties;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -13,7 +12,7 @@ namespace Key2Joy.Mapping
     public abstract class BaseAction : ICloneable, IComparable<BaseAction>
     {
         [JsonProperty]
-        internal string Name { get; set; }
+        public string Name { get; set; }
 
         public string ImageResource { get; set; }
 
@@ -30,11 +29,11 @@ namespace Key2Joy.Mapping
             this.description = description;
         }
 
-        internal abstract Task Execute(IInputBag inputBag = null);
+        public abstract Task Execute(IInputBag inputBag = null);
         
         public abstract object Clone();
         
-        internal static BaseAction MakeAction(Type actionType, ActionAttribute typeAttribute = null)
+        public static BaseAction MakeAction(Type actionType, ActionAttribute typeAttribute = null)
         {
             if(typeAttribute == null)
                 typeAttribute = actionType.GetCustomAttributes(typeof(ActionAttribute), true)[0] as ActionAttribute;
@@ -46,7 +45,7 @@ namespace Key2Joy.Mapping
                 });
         }
 
-        internal BaseAction MakeStartedAction(Type actionType)
+        public BaseAction MakeStartedAction(Type actionType)
         {
             var action = MakeAction(actionType);
             action.IsStarted = IsStarted;
@@ -55,14 +54,14 @@ namespace Key2Joy.Mapping
             return action;
         }
 
-        internal virtual void OnStartListening(TriggerListener listener, ref List<BaseAction> otherActions)
+        public virtual void OnStartListening(TriggerListener listener, ref List<BaseAction> otherActions)
         {
             IsStarted = true;
             this.listener = listener;
             this.otherActions = otherActions;
         }
 
-        internal virtual void OnStopListening(TriggerListener listener)
+        public virtual void OnStopListening(TriggerListener listener)
         {
             IsStarted = false;
             this.listener = null;
@@ -71,13 +70,6 @@ namespace Key2Joy.Mapping
         public virtual string GetNameDisplay()
         {
             return Name;
-        }
-
-        public virtual Image GetImage()
-        {
-            return ImageResource != null
-                ? (Bitmap)Resources.ResourceManager.GetObject(ImageResource)
-                : null;            
         }
 
         public override string ToString()

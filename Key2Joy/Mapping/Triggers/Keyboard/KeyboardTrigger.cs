@@ -6,8 +6,7 @@ using Newtonsoft.Json;
 namespace Key2Joy.Mapping
 {
     [Trigger(
-        Description = "Keyboard Event",
-        OptionsUserControl = typeof(KeyboardTriggerOptionsControl)
+        Description = "Keyboard Event"
     )]
     public class KeyboardTrigger : BaseTrigger, IPressState, IReturnInputHash, IEquatable<KeyboardTrigger>
     {
@@ -24,7 +23,7 @@ namespace Key2Joy.Mapping
             : base(name, description)
         { }
 
-        internal override TriggerListener GetTriggerListener()
+        public override TriggerListener GetTriggerListener()
         {
             return KeyboardTriggerListener.Instance;
         }
@@ -39,7 +38,7 @@ namespace Key2Joy.Mapping
             return GetInputHashFor(Keys);
         }
 
-        internal override string GetUniqueKey()
+        public override string GetUniqueKey()
         {
             return $"{PREFIX_UNIQUE}_{Keys}";
         }
@@ -80,7 +79,7 @@ namespace Key2Joy.Mapping
             return MemberwiseClone();
         }
 
-        internal KeyboardState GetKeyboardState()
+        public KeyboardState GetKeyboardState()
         {
             if (PressState == PressState.Press)
                 return KeyboardState.KeyDown;

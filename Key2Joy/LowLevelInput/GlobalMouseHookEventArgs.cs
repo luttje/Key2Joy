@@ -3,7 +3,7 @@
 namespace Key2Joy.LowLevelInput
 {
     // Source: https://stackoverflow.com/a/34384189
-    internal class GlobalMouseHookEventArgs : HandledEventArgs
+    public class GlobalMouseHookEventArgs : HandledEventArgs
     {
         public MouseState MouseState { get; private set; }
         public LowLevelMouseInputEvent MouseData { get; private set; }

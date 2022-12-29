@@ -14,7 +14,7 @@ namespace Key2Joy.Mapping
         Visibility = MappingMenuVisibility.Never,
         NameFormat = "Get Window Title"
     )]
-    internal class WindowGetTitleAction : BaseAction
+    public class WindowGetTitleAction : BaseAction
     {
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
@@ -47,7 +47,7 @@ namespace Key2Joy.Mapping
             return title.ToString();
         }
 
-        internal override async Task Execute(IInputBag inputBag = null)
+        public override async Task Execute(IInputBag inputBag = null)
         {
             // TODO: Currently this is only a script action...
         }

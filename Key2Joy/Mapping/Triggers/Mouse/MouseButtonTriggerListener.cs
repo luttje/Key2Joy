@@ -5,10 +5,10 @@ using System.Windows.Forms;
 
 namespace Key2Joy.Mapping
 {
-    internal class MouseButtonTriggerListener : PressReleaseTriggerListener<MouseButtonTrigger>
+    public class MouseButtonTriggerListener : PressReleaseTriggerListener<MouseButtonTrigger>
     {
-        internal static MouseButtonTriggerListener instance;
-        internal static MouseButtonTriggerListener Instance
+        public static MouseButtonTriggerListener instance;
+        public static MouseButtonTriggerListener Instance
         {
             get
             {
@@ -22,7 +22,7 @@ namespace Key2Joy.Mapping
         private GlobalInputHook globalMouseButtonHook;
         private readonly Dictionary<Mouse.Buttons, bool> currentButtonsDown = new Dictionary<Mouse.Buttons, bool>();
 
-        internal bool GetButtonsDown(Mouse.Buttons buttons)
+        public bool GetButtonsDown(Mouse.Buttons buttons)
         {
             return currentButtonsDown.ContainsKey(buttons);
         }
@@ -46,7 +46,7 @@ namespace Key2Joy.Mapping
             base.Stop();
         }
         
-        internal override bool GetIsTriggered(BaseTrigger trigger)
+        public override bool GetIsTriggered(BaseTrigger trigger)
         {
             if (!(trigger is MouseButtonTrigger mouseButtonTrigger))
                 return false;

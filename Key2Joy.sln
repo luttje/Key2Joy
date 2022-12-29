@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Key2Joy", "Key2Joy\Key2Joy.csproj", "{808BA609-806D-4D55-857B-6FB4E16E13F1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Key2Joy.Gui", "Key2Joy.Gui\Key2Joy.Gui.csproj", "{808BA609-806D-4D55-857B-6FB4E16E13F1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildMarkdownDocs", "BuildMarkdownDocs\BuildMarkdownDocs.csproj", "{75E34405-03B8-4123-BE76-BFF0BF1F890C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Key2Joy", "Key2Joy\Key2Joy.csproj", "{1A961914-67B8-4B11-80D4-280323BC7B25}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{75E34405-03B8-4123-BE76-BFF0BF1F890C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{75E34405-03B8-4123-BE76-BFF0BF1F890C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{75E34405-03B8-4123-BE76-BFF0BF1F890C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A961914-67B8-4B11-80D4-280323BC7B25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A961914-67B8-4B11-80D4-280323BC7B25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A961914-67B8-4B11-80D4-280323BC7B25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A961914-67B8-4B11-80D4-280323BC7B25}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Windows.Forms;
 using Key2Joy.LowLevelInput;
 using Linearstar.Windows.RawInput.Native;
 using Newtonsoft.Json;
@@ -7,8 +6,7 @@ using Newtonsoft.Json;
 namespace Key2Joy.Mapping
 {
     [Trigger(
-        Description = "Mouse Button Event",
-        OptionsUserControl = typeof(MouseButtonTriggerOptionsControl)
+        Description = "Mouse Button Event"
     )]
     public class MouseButtonTrigger : BaseTrigger, IPressState, IReturnInputHash, IEquatable<MouseButtonTrigger>
     {
@@ -25,12 +23,12 @@ namespace Key2Joy.Mapping
             : base(name, description)
         { }
 
-        internal override TriggerListener GetTriggerListener()
+        public override TriggerListener GetTriggerListener()
         {
             return MouseButtonTriggerListener.Instance;
         }
 
-        internal override string GetUniqueKey()
+        public override string GetUniqueKey()
         {
             return $"{PREFIX_UNIQUE}_{MouseButtons}";
         }

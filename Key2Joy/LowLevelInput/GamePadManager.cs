@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Key2Joy.LowLevelInput
 {
-    internal class GamePadManager
+    public class GamePadManager
     {
-        internal const int MAX_GAMEPADS = 4;
+        public const int MAX_GAMEPADS = 4;
 
         private static GamePadManager instance;
         public static GamePadManager Instance
@@ -27,7 +27,7 @@ namespace Key2Joy.LowLevelInput
         
         private GamePadManager() { }
 
-        internal void EnsurePluggedIn(int gamePadIndex)
+        public void EnsurePluggedIn(int gamePadIndex)
         {
             if (pluggedInGamePads[gamePadIndex])
                 return;
@@ -36,12 +36,12 @@ namespace Key2Joy.LowLevelInput
             pluggedInGamePads[gamePadIndex] = true;
         }
 
-        internal int[] GetAllGamePadIndices()
+        public int[] GetAllGamePadIndices()
         {
             return Enumerable.Range(0, MAX_GAMEPADS).ToArray();
         }
 
-        internal void EnsureUnplugged(int gamePadIndex)
+        public void EnsureUnplugged(int gamePadIndex)
         {
             if (!pluggedInGamePads[gamePadIndex])
                 return;
@@ -50,7 +50,7 @@ namespace Key2Joy.LowLevelInput
             pluggedInGamePads[gamePadIndex] = false;
         }
 
-        internal void EnsureAllUnplugged()
+        public void EnsureAllUnplugged()
         {
             for (int i = 0; i < MAX_GAMEPADS; i++)
                 EnsureUnplugged(i);

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Key2Joy.Util
 {
     [AttributeUsage(AttributeTargets.Class)]
-    internal class ObjectListViewGroupAttribute : Attribute
+    public class ObjectListViewGroupAttribute : Attribute
     {
         /// <summary>
         /// Display name for the image group

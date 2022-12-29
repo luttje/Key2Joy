@@ -14,7 +14,6 @@ namespace Key2Joy.Mapping
 {
     [Action(
         Description = "Keyboard Simulation",
-        OptionsUserControl = typeof(KeyboardActionControl),
         NameFormat = "{1} {0} on Keyboard"
     )]
     [ExposesScriptingEnumeration(typeof(KeyboardKey))]
@@ -22,7 +21,7 @@ namespace Key2Joy.Mapping
         Name = "Keyboard Simulation",
         Image = "keyboard"
     )]
-    internal class KeyboardAction : BaseAction, IPressState
+    public class KeyboardAction : BaseAction, IPressState
     {        
         [JsonProperty]
         public KeyboardKey Key { get; set; }
@@ -35,7 +34,7 @@ namespace Key2Joy.Mapping
         {
         }
 
-        internal static KeyboardKey[] GetAllKeys()
+        public static KeyboardKey[] GetAllKeys()
         {
             var allEnums = Enum.GetValues(typeof(KeyboardKey));
             var keys = new List<KeyboardKey>();
@@ -95,7 +94,7 @@ namespace Key2Joy.Mapping
                 SimulatedKeyboard.ReleaseKey(Key);
         }
 
-        internal override async Task Execute(IInputBag inputBag = null)
+        public override async Task Execute(IInputBag inputBag = null)
         {
             if (PressState == PressState.Press)
                 SimulatedKeyboard.PressKey(Key);

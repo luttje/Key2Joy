@@ -1,5 +1,4 @@
-﻿using Key2Joy.Properties;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Drawing;
 
@@ -11,11 +10,11 @@ namespace Key2Joy.Mapping
         public event EventHandler<TriggerExecutingEventArgs> Executing;
 
         [JsonProperty]
-        internal string Name { get; set; }
+        public string Name { get; set; }
 
         // Must return an input value unique in the preset. Like a Keys combination or an AxisDirection.
         // Will be used to quickly lookup input triggers and their corresponding action
-        internal abstract string GetUniqueKey();
+        public abstract string GetUniqueKey();
 
         /// <summary>
         /// Must return a singleton listener that will listen for triggers.
@@ -23,7 +22,7 @@ namespace Key2Joy.Mapping
         /// When the user starts their mappings, this listener will be given each relevant mapping to look for.
         /// </summary>
         /// <returns>Singleton trigger listener</returns>
-        internal abstract TriggerListener GetTriggerListener();
+        public abstract TriggerListener GetTriggerListener();
 
         public string ImageResource { get; set; }
 
@@ -33,7 +32,7 @@ namespace Key2Joy.Mapping
         public IInputBag LastInputBag { get; private set; }
         public bool ExecutedLastActivation { get; private set; }
 
-        internal BaseTrigger(string name, string description)
+        public BaseTrigger(string name, string description)
         {
             Name = name;
             this.description = description;
@@ -46,13 +45,6 @@ namespace Key2Joy.Mapping
             Executing?.Invoke(this, eventArgs);
 
             return !eventArgs.Handled;
-        }
-
-        public virtual Image GetImage()
-        {
-            return ImageResource != null
-                ? (Bitmap)Resources.ResourceManager.GetObject(ImageResource)
-                : null;
         }
 
         public virtual int CompareTo(BaseTrigger other)
@@ -73,7 +65,7 @@ namespace Key2Joy.Mapping
         }
         public static bool operator !=(BaseTrigger a, BaseTrigger b) => !(a == b);
 
-        internal void DoActivate(IInputBag inputBag, bool executed = false)
+        public void DoActivate(IInputBag inputBag, bool executed = false)
         {
             LastActivated = DateTime.Now;
             LastInputBag = inputBag;

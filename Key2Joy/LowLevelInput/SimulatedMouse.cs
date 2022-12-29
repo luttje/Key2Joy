@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace Key2Joy.LowLevelInput
 {
-    internal static class SimulatedMouse
+    public static class SimulatedMouse
     {
         private static MOUSEEVENTF TranslateButton(Mouse.Buttons buttons, bool keyUp = false)
         {
@@ -66,12 +66,12 @@ namespace Key2Joy.LowLevelInput
         [StructLayout(LayoutKind.Sequential)]
         public struct MOUSEINPUT
         {
-            internal int dx;
-            internal int dy;
-            internal MouseEventDataXButtons mouseData;
-            internal MOUSEEVENTF dwFlags;
-            internal uint time;
-            internal UIntPtr dwExtraInfo;
+            public int dx;
+            public int dy;
+            public MouseEventDataXButtons mouseData;
+            public MOUSEEVENTF dwFlags;
+            public uint time;
+            public UIntPtr dwExtraInfo;
         }
 
         [Flags]

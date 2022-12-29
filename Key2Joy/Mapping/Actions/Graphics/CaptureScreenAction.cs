@@ -18,7 +18,7 @@ namespace Key2Joy.Mapping
         Visibility = MappingMenuVisibility.Never,
         NameFormat = "Capture the specified Screen Region"
     )]
-    internal class CaptureScreenAction : BaseAction
+    public class CaptureScreenAction : BaseAction
     {
         public CaptureScreenAction(string name, string description)
             : base(name, description)
@@ -132,7 +132,7 @@ namespace Key2Joy.Mapping
             pixelCache.Save(savePath, format);
         }
 
-        internal override async Task Execute(IInputBag inputBag = null)
+        public override async Task Execute(IInputBag inputBag = null)
         {
             // TODO: Currently this is only a script action...
         }

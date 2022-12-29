@@ -4,8 +4,7 @@ using System;
 namespace Key2Joy.Mapping
 {
     [Trigger(
-        Description = "Mouse Move Event",
-        OptionsUserControl = typeof(MouseMoveTriggerOptionsControl)
+        Description = "Mouse Move Event"
     )]
     public class MouseMoveTrigger : BaseTrigger, IReturnInputHash
     {
@@ -19,12 +18,12 @@ namespace Key2Joy.Mapping
             : base(name, description)
         { }
 
-        internal override TriggerListener GetTriggerListener()
+        public override TriggerListener GetTriggerListener()
         {
             return MouseMoveTriggerListener.Instance;
         }
 
-        internal override string GetUniqueKey()
+        public override string GetUniqueKey()
         {
             return $"{PREFIX_UNIQUE}_{AxisBinding}";
         }

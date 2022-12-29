@@ -13,7 +13,7 @@ using System.Reflection;
 namespace Key2Joy.Mapping
 {
     [JsonObject(MemberSerialization.OptIn)]
-    internal class MappingPreset
+    public class MappingPreset
     {
         const int NO_VERSION = 0;
         const int CURRENT_VERSION = 4;
@@ -39,7 +39,7 @@ namespace Key2Joy.Mapping
         private string filePath;
 
         [JsonConstructor]
-        internal MappingPreset(string name, BindingList<MappedOption> mappedOptions = null)
+        public MappingPreset(string name, BindingList<MappedOption> mappedOptions = null)
         {
             Name = name;
 
@@ -57,29 +57,29 @@ namespace Key2Joy.Mapping
             }
         }
 
-        internal void AddMapping(MappedOption mappedOption)
+        public void AddMapping(MappedOption mappedOption)
         {
             MappedOptions.Add(mappedOption);
         }
 
-        internal void AddMappingRange(IEnumerable<MappedOption> mappedOptions)
+        public void AddMappingRange(IEnumerable<MappedOption> mappedOptions)
         {
             foreach (var mappedOption in mappedOptions)
                 MappedOptions.Add((MappedOption)mappedOption.Clone());
         }
 
-        internal void RemoveMapping(MappedOption mappedOption)
+        public void RemoveMapping(MappedOption mappedOption)
         {
             MappedOptions.Remove(mappedOption);
         }
 
-        internal bool TryGetMappedOption(BaseTrigger trigger, out MappedOption mappedOption)
+        public bool TryGetMappedOption(BaseTrigger trigger, out MappedOption mappedOption)
         {
             mappedOption = MappedOptions.FirstOrDefault(mo => mo.Trigger == trigger);
             return mappedOption != null;
         }
 
-        internal void Save()
+        public void Save()
         {
             var serializer = GetSerializer();
 
@@ -100,7 +100,7 @@ namespace Key2Joy.Mapping
             return true;
         }
 
-        internal static void ExtractDefaultIfNotExists()
+        public static void ExtractDefaultIfNotExists()
         {
             var defaultPath = Path.Combine(GetSaveDirectory(), $"{DEFAULT_PRESET_PATH}{EXTENSION}");
             
@@ -117,7 +117,7 @@ namespace Key2Joy.Mapping
                 ConfigManager.Instance.LastLoadedPreset = defaultPath;
         }
 
-        internal static MappingPreset Load(string filePath)
+        public static MappingPreset Load(string filePath)
         {
             var serializer = GetSerializer();
 
@@ -133,7 +133,7 @@ namespace Key2Joy.Mapping
             return null;
         }
 
-        internal static MappingPreset RestoreLastLoaded()
+        public static MappingPreset RestoreLastLoaded()
         {
             var lastLoadedPath = ConfigManager.Instance.LastLoadedPreset;
 
@@ -156,10 +156,10 @@ namespace Key2Joy.Mapping
             return serializer;
         }
 
-        internal static string GetSaveDirectory()
+        public static string GetSaveDirectory()
         {
             var directory = Path.Combine(
-                Program.GetAppDirectory(),
+                ConfigManager.GetAppDirectory(),
                 SAVE_DIR);
 
             if (!Directory.Exists(directory))

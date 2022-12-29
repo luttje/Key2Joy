@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 namespace Key2Joy.LowLevelInput
 {
     // Source: https://stackoverflow.com/a/48967155
-    internal static class SimulatedKeyboard
+    public static class SimulatedKeyboard
     {
         public static void PressKey(KeyboardKey scanCode)
         {
@@ -37,11 +37,11 @@ namespace Key2Joy.LowLevelInput
         [StructLayout(LayoutKind.Sequential)]
         public struct KEYBDINPUT
         {
-            internal VirtualKeyShort wVk;
-            internal KeyboardKey wScan;
-            internal KEYEVENTF dwFlags;
-            internal int time;
-            internal UIntPtr dwExtraInfo;
+            public VirtualKeyShort wVk;
+            public KeyboardKey wScan;
+            public KEYEVENTF dwFlags;
+            public int time;
+            public UIntPtr dwExtraInfo;
         }
 
         [Flags]
