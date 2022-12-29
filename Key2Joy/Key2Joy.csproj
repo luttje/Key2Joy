@@ -313,8 +313,8 @@
     <Compile Include="Mapping\IReturnInputHash.cs" />
     <Compile Include="Mapping\MappedOption.cs" />
     <Compile Include="Mapping\MappingAttribute.cs" />
-    <Compile Include="Mapping\MappingPreset.cs" />
-    <Compile Include="Mapping\MappingPresetSerializationBinder.cs" />
+    <Compile Include="Mapping\MappingProfile.cs" />
+    <Compile Include="Mapping\MappingProfileSerializationBinder.cs" />
     <Compile Include="Mapping\Triggers\BaseTrigger.cs" />
     <Compile Include="Mapping\Triggers\InputBag.cs" />
     <Compile Include="Mapping\Triggers\ITriggerOptionsControl.cs" />

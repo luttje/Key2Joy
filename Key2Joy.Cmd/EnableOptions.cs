@@ -10,29 +10,29 @@ using Key2Joy.Interop;
 
 namespace Key2Joy.Cmd
 {
-    [Verb("enable", HelpText = "Enable the provided preset profile.")]
+    [Verb("enable", HelpText = "Enable the provided mapping profile.")]
     internal class EnableOptions : Options
     {
         [Option(
             shortName: 'p', 
-            longName: "preset",
+            longName: "profile",
             Required = false,
-            HelpText = "Path of the preset to load or modify. Path can be relative to preset directory. By default the last used preset is selected (if available)."
+            HelpText = "Path of the profile to load or modify. Path can be relative to profile directory. By default the last used profile is selected (if available)."
         )]
-        public string PresetPath { get; set; }
+        public string ProfilePath { get; set; }
 
         public override void Handle()
         {
-            if (PresetPath == null)
-                PresetPath = ConfigManager.Instance.LastLoadedPreset;
+            if (ProfilePath == null)
+                ProfilePath = ConfigManager.Instance.LastLoadedProfile;
 
-            Console.WriteLine($"Commanding Key2Joy to enable the preset: {PresetPath}");
+            Console.WriteLine($"Commanding Key2Joy to enable the profile: {ProfilePath}");
             
             try 
             { 
                 InteropClient.Instance.SendCommand(new EnableCommand
                 {
-                    ProfilePath = PresetPath
+                    ProfilePath = ProfilePath
                 });
             }
             catch(TimeoutException)

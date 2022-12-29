@@ -18,7 +18,7 @@ namespace Key2Joy
     public class Key2JoyManager : IMessageFilter
     {
         private static AppCommandRunner commandRunner;
-        private MappingPreset armedPreset;
+        private MappingProfile armedProfile;
         private Form mainForm;
         private List<TriggerListener> wndProcListeners = new List<TriggerListener>();
 
@@ -100,22 +100,22 @@ namespace Key2Joy
             Application.AddMessageFilter(this);
         }
 
-        public bool GetIsArmed(MappingPreset preset = null)
+        public bool GetIsArmed(MappingProfile profile = null)
         {
-            if (preset == null)
-                return armedPreset != null;
+            if (profile == null)
+                return armedProfile != null;
             
-            return armedPreset == preset;
+            return armedProfile == profile;
         }
 
-        public void ArmMappings(MappingPreset preset)
+        public void ArmMappings(MappingProfile profile)
         {
-            armedPreset = preset;
+            armedProfile = profile;
                 
             var allListeners = GetScriptingListeners();
-            var allActions = preset.MappedOptions.Select(m => m.Action).ToList();
+            var allActions = profile.MappedOptions.Select(m => m.Action).ToList();
 
-            foreach (var mappedOption in preset.MappedOptions)
+            foreach (var mappedOption in profile.MappedOptions)
             {
                 if (mappedOption.Trigger == null)
                     continue;
@@ -141,7 +141,7 @@ namespace Key2Joy
             StatusChanged?.Invoke(this, new StatusChangedEventArgs
             {
                 IsEnabled = true,
-                Preset = armedPreset
+                Profile = armedProfile
             });
         }
 
@@ -153,7 +153,7 @@ namespace Key2Joy
             // Clear all intervals
             IdPool.CancelAll();
 
-            foreach (var mappedOption in armedPreset.MappedOptions)
+            foreach (var mappedOption in armedProfile.MappedOptions)
             {
                 if (mappedOption.Trigger == null)
                     continue;
@@ -169,7 +169,7 @@ namespace Key2Joy
                 listener.StopListening();
 
             GamePadManager.Instance.EnsureAllUnplugged();
-            armedPreset = null;
+            armedProfile = null;
 
             StatusChanged?.Invoke(this, new StatusChangedEventArgs
             {

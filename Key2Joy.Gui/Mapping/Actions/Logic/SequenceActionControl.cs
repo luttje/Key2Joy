@@ -30,7 +30,7 @@ namespace Key2Joy.Gui.Mapping
 
             foreach (var childAction in thisAction.ChildActions)
             {
-                // Clone so we don't modify the action in a preset
+                // Clone so we don't modify the action in a profile
                 AddChildAction((BaseAction)childAction.Clone());
             }
         }

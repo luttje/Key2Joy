@@ -12,7 +12,7 @@ namespace Key2Joy.Mapping
         [JsonProperty]
         public string Name { get; set; }
 
-        // Must return an input value unique in the preset. Like a Keys combination or an AxisDirection.
+        // Must return an input value unique in the profile. Like a Keys combination or an AxisDirection.
         // Will be used to quickly lookup input triggers and their corresponding action
         public abstract string GetUniqueKey();
 

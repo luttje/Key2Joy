@@ -50,15 +50,15 @@ namespace Key2Joy.Config
         private bool overrideDefaultTriggerBehaviour = true;
 
         [TextConfigControl(
-            Text = "Last loaded mapping preset file location"
+            Text = "Last loaded mapping profile file location"
         )]
         [JsonProperty]
-        public string LastLoadedPreset
+        public string LastLoadedProfile
         {
-            get => lastLoadedPreset;
-            set => SaveIfInitialized(lastLoadedPreset = value);
+            get => lastLoadedProfile;
+            set => SaveIfInitialized(lastLoadedProfile = value);
         }
-        private string lastLoadedPreset;
+        private string lastLoadedProfile;
 
         [TextConfigControl(
             Text = "Path to directory where logs are saved"

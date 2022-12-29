@@ -9,12 +9,12 @@ using Key2Joy.Interop;
 
 namespace Key2Joy.Cmd
 {
-    [Verb("disable", HelpText = "Disable whichever preset profile is active.")]
+    [Verb("disable", HelpText = "Disable whichever mapping profile is active.")]
     internal class DisableOptions : Options
     {
         public override void Handle()
         {
-            Console.WriteLine("Commanding Key2Joy to disable the active preset.");
+            Console.WriteLine("Commanding Key2Joy to disable the active profile.");
             
             try
             {

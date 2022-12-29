@@ -6,11 +6,11 @@ using System.Reflection;
 
 namespace Key2Joy.Mapping
 {
-    public class MappingPresetSerializationBinder : ISerializationBinder
+    public class MappingProfileSerializationBinder : ISerializationBinder
     {
         private IList<Type> allowedTypes;
 
-        public MappingPresetSerializationBinder()
+        public MappingProfileSerializationBinder()
         {
             allowedTypes = Assembly.GetExecutingAssembly()
                 .GetTypes()

@@ -45,8 +45,8 @@ namespace Key2Joy.Interop
         {
             Key2JoyManager.Instance.CallOnUiThread(() =>
             {
-                var preset = MappingPreset.Load(command.ProfilePath);
-                Key2JoyManager.Instance.ArmMappings(preset);
+                var profile = MappingProfile.Load(command.ProfilePath);
+                Key2JoyManager.Instance.ArmMappings(profile);
             });
         }
         

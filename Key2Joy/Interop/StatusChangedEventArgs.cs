@@ -10,6 +10,6 @@ namespace Key2Joy.Interop
     public class StatusChangedEventArgs : EventArgs
     {
         public bool IsEnabled { get; set; }
-        public MappingPreset Preset { get; set; } = null;
+        public MappingProfile Profile { get; set; } = null;
     }
 }

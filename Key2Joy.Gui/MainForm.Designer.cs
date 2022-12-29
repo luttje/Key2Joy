@@ -35,17 +35,17 @@
             this.olvColumnTrigger = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.pnlActionManagement = new System.Windows.Forms.Panel();
             this.btnCreateMapping = new System.Windows.Forms.Button();
-            this.pnlPresetManagement = new System.Windows.Forms.Panel();
-            this.txtPresetName = new System.Windows.Forms.TextBox();
-            this.lblPresetName = new System.Windows.Forms.Label();
+            this.pnlProfileManagement = new System.Windows.Forms.Panel();
+            this.txtProfileName = new System.Windows.Forms.TextBox();
+            this.lblProfileName = new System.Windows.Forms.Label();
             this.chkEnabled = new System.Windows.Forms.CheckBox();
             this.menMainMenu = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.newPresetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.loadPresetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.newProfileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadProfileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.savePresetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openPresetFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveProfileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openProfileFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitProgramToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -55,7 +55,7 @@
             this.viewLogFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewEventViewerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.fillPresetWithToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fillProfileWithToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.allGamePadJoystickActionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pressToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.releaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -83,7 +83,7 @@
             this.lblStatusActive = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.olvMappings)).BeginInit();
             this.pnlActionManagement.SuspendLayout();
-            this.pnlPresetManagement.SuspendLayout();
+            this.pnlProfileManagement.SuspendLayout();
             this.menMainMenu.SuspendLayout();
             this.pnlMainMenu.SuspendLayout();
             this.SuspendLayout();
@@ -150,36 +150,36 @@
             this.btnCreateMapping.UseVisualStyleBackColor = true;
             this.btnCreateMapping.Click += new System.EventHandler(this.btnCreateMapping_Click);
             // 
-            // pnlPresetManagement
+            // pnlProfileManagement
             // 
-            this.pnlPresetManagement.Controls.Add(this.txtPresetName);
-            this.pnlPresetManagement.Controls.Add(this.lblPresetName);
-            this.pnlPresetManagement.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlPresetManagement.Location = new System.Drawing.Point(0, 23);
-            this.pnlPresetManagement.Name = "pnlPresetManagement";
-            this.pnlPresetManagement.Padding = new System.Windows.Forms.Padding(5);
-            this.pnlPresetManagement.Size = new System.Drawing.Size(580, 30);
-            this.pnlPresetManagement.TabIndex = 82;
+            this.pnlProfileManagement.Controls.Add(this.txtProfileName);
+            this.pnlProfileManagement.Controls.Add(this.lblProfileName);
+            this.pnlProfileManagement.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlProfileManagement.Location = new System.Drawing.Point(0, 23);
+            this.pnlProfileManagement.Name = "pnlProfileManagement";
+            this.pnlProfileManagement.Padding = new System.Windows.Forms.Padding(5);
+            this.pnlProfileManagement.Size = new System.Drawing.Size(580, 30);
+            this.pnlProfileManagement.TabIndex = 82;
             // 
-            // txtPresetName
+            // txtProfileName
             // 
-            this.txtPresetName.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtPresetName.Location = new System.Drawing.Point(82, 5);
-            this.txtPresetName.Name = "txtPresetName";
-            this.txtPresetName.Size = new System.Drawing.Size(493, 20);
-            this.txtPresetName.TabIndex = 85;
-            this.txtPresetName.TextChanged += new System.EventHandler(this.TxtPresetName_TextChanged);
+            this.txtProfileName.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtProfileName.Location = new System.Drawing.Point(82, 5);
+            this.txtProfileName.Name = "txtProfileName";
+            this.txtProfileName.Size = new System.Drawing.Size(493, 20);
+            this.txtProfileName.TabIndex = 85;
+            this.txtProfileName.TextChanged += new System.EventHandler(this.TxtProfileName_TextChanged);
             // 
-            // lblPresetName
+            // lblProfileName
             // 
-            this.lblPresetName.Dock = System.Windows.Forms.DockStyle.Left;
-            this.lblPresetName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPresetName.Location = new System.Drawing.Point(5, 5);
-            this.lblPresetName.Name = "lblPresetName";
-            this.lblPresetName.Size = new System.Drawing.Size(77, 20);
-            this.lblPresetName.TabIndex = 88;
-            this.lblPresetName.Text = "Preset Name:";
-            this.lblPresetName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblProfileName.Dock = System.Windows.Forms.DockStyle.Left;
+            this.lblProfileName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblProfileName.Location = new System.Drawing.Point(5, 5);
+            this.lblProfileName.Name = "lblProfileName";
+            this.lblProfileName.Size = new System.Drawing.Size(77, 20);
+            this.lblProfileName.TabIndex = 88;
+            this.lblProfileName.Text = "Profile Name:";
+            this.lblProfileName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // chkEnabled
             // 
@@ -209,11 +209,11 @@
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.newPresetToolStripMenuItem,
-            this.loadPresetToolStripMenuItem,
+            this.newProfileToolStripMenuItem,
+            this.loadProfileToolStripMenuItem,
             this.toolStripSeparator3,
-            this.savePresetToolStripMenuItem,
-            this.openPresetFolderToolStripMenuItem,
+            this.saveProfileToolStripMenuItem,
+            this.openProfileFolderToolStripMenuItem,
             this.toolStripSeparator2,
             this.closeToolStripMenuItem,
             this.exitProgramToolStripMenuItem});
@@ -221,38 +221,38 @@
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
-            // newPresetToolStripMenuItem
+            // newProfileToolStripMenuItem
             // 
-            this.newPresetToolStripMenuItem.Name = "newPresetToolStripMenuItem";
-            this.newPresetToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
-            this.newPresetToolStripMenuItem.Text = "New Preset";
-            this.newPresetToolStripMenuItem.Click += new System.EventHandler(this.newPresetToolStripMenuItem_Click);
+            this.newProfileToolStripMenuItem.Name = "newProfileToolStripMenuItem";
+            this.newProfileToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.newProfileToolStripMenuItem.Text = "New Profile";
+            this.newProfileToolStripMenuItem.Click += new System.EventHandler(this.newProfileToolStripMenuItem_Click);
             // 
-            // loadPresetToolStripMenuItem
+            // loadProfileToolStripMenuItem
             // 
-            this.loadPresetToolStripMenuItem.Name = "loadPresetToolStripMenuItem";
-            this.loadPresetToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
-            this.loadPresetToolStripMenuItem.Text = "Load Preset";
-            this.loadPresetToolStripMenuItem.Click += new System.EventHandler(this.loadPresetToolStripMenuItem_Click);
+            this.loadProfileToolStripMenuItem.Name = "loadProfileToolStripMenuItem";
+            this.loadProfileToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.loadProfileToolStripMenuItem.Text = "Load Profile";
+            this.loadProfileToolStripMenuItem.Click += new System.EventHandler(this.loadProfileToolStripMenuItem_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(201, 6);
             // 
-            // savePresetToolStripMenuItem
+            // saveProfileToolStripMenuItem
             // 
-            this.savePresetToolStripMenuItem.Name = "savePresetToolStripMenuItem";
-            this.savePresetToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
-            this.savePresetToolStripMenuItem.Text = "Save Preset";
-            this.savePresetToolStripMenuItem.Click += new System.EventHandler(this.savePresetToolStripMenuItem_Click);
+            this.saveProfileToolStripMenuItem.Name = "saveProfileToolStripMenuItem";
+            this.saveProfileToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.saveProfileToolStripMenuItem.Text = "Save Profile";
+            this.saveProfileToolStripMenuItem.Click += new System.EventHandler(this.saveProfileToolStripMenuItem_Click);
             // 
-            // openPresetFolderToolStripMenuItem
+            // openProfileFolderToolStripMenuItem
             // 
-            this.openPresetFolderToolStripMenuItem.Name = "openPresetFolderToolStripMenuItem";
-            this.openPresetFolderToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
-            this.openPresetFolderToolStripMenuItem.Text = "Open Preset Folder";
-            this.openPresetFolderToolStripMenuItem.Click += new System.EventHandler(this.openPresetFolderToolStripMenuItem_Click);
+            this.openProfileFolderToolStripMenuItem.Name = "openProfileFolderToolStripMenuItem";
+            this.openProfileFolderToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.openProfileFolderToolStripMenuItem.Text = "Open Profile Folder";
+            this.openProfileFolderToolStripMenuItem.Click += new System.EventHandler(this.openProfileFolderToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
@@ -315,7 +315,7 @@
             // toolsToolStripMenuItem
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fillPresetWithToolStripMenuItem,
+            this.fillProfileWithToolStripMenuItem,
             this.testMappingsToolStripMenuItem,
             this.toolStripSeparator4,
             this.userConfigurationsToolStripMenuItem});
@@ -323,14 +323,14 @@
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
             // 
-            // fillPresetWithToolStripMenuItem
+            // fillProfileWithToolStripMenuItem
             // 
-            this.fillPresetWithToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fillProfileWithToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.allGamePadJoystickActionsToolStripMenuItem,
             this.allKeyboardActionsToolStripMenuItem});
-            this.fillPresetWithToolStripMenuItem.Name = "fillPresetWithToolStripMenuItem";
-            this.fillPresetWithToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.fillPresetWithToolStripMenuItem.Text = "Fill Preset With...";
+            this.fillProfileWithToolStripMenuItem.Name = "fillProfileWithToolStripMenuItem";
+            this.fillProfileWithToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.fillProfileWithToolStripMenuItem.Text = "Fill Profile With...";
             // 
             // allGamePadJoystickActionsToolStripMenuItem
             // 
@@ -541,7 +541,7 @@
             this.ClientSize = new System.Drawing.Size(580, 457);
             this.Controls.Add(this.olvMappings);
             this.Controls.Add(this.pnlActionManagement);
-            this.Controls.Add(this.pnlPresetManagement);
+            this.Controls.Add(this.pnlProfileManagement);
             this.Controls.Add(this.pnlMainMenu);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -554,8 +554,8 @@
             this.Load += new System.EventHandler(this.MainForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.olvMappings)).EndInit();
             this.pnlActionManagement.ResumeLayout(false);
-            this.pnlPresetManagement.ResumeLayout(false);
-            this.pnlPresetManagement.PerformLayout();
+            this.pnlProfileManagement.ResumeLayout(false);
+            this.pnlProfileManagement.PerformLayout();
             this.menMainMenu.ResumeLayout(false);
             this.menMainMenu.PerformLayout();
             this.pnlMainMenu.ResumeLayout(false);
@@ -567,17 +567,17 @@
         #endregion
         private System.Windows.Forms.CheckBox chkEnabled;
         private System.Windows.Forms.Panel pnlActionManagement;
-        private System.Windows.Forms.Panel pnlPresetManagement;
-        private System.Windows.Forms.TextBox txtPresetName;
-        private System.Windows.Forms.Label lblPresetName;
+        private System.Windows.Forms.Panel pnlProfileManagement;
+        private System.Windows.Forms.TextBox txtProfileName;
+        private System.Windows.Forms.Label lblProfileName;
         private BrightIdeasSoftware.ObjectListView olvMappings;
         private BrightIdeasSoftware.OLVColumn olvColumnTrigger;
         private BrightIdeasSoftware.OLVColumn olvColumnAction;
         private System.Windows.Forms.MenuStrip menMainMenu;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem loadPresetToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem loadProfileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem fillPresetWithToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem fillProfileWithToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem reportAProblemToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem viewSourceCodeToolStripMenuItem;
@@ -586,10 +586,10 @@
         private System.Windows.Forms.Button btnCreateMapping;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem openPresetFolderToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openProfileFolderToolStripMenuItem;
         private System.Windows.Forms.NotifyIcon ntfIndicator;
-        private System.Windows.Forms.ToolStripMenuItem newPresetToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem savePresetToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem newProfileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveProfileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitProgramToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem testMappingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;

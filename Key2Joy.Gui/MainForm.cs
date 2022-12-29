@@ -19,7 +19,7 @@ namespace Key2Joy.Gui
 {
     public partial class MainForm : Form, IAcceptAppCommands
     {
-        private MappingPreset selectedPreset;
+        private MappingProfile selectedProfile;
 
         public MainForm()
         {
@@ -69,21 +69,21 @@ namespace Key2Joy.Gui
             };
         }
 
-        private void SetSelectedPreset(MappingPreset preset)
+        private void SetSelectedProfile(MappingProfile profile)
         {
-            selectedPreset = preset;
-            ConfigManager.Instance.LastLoadedPreset = preset.FilePath;
+            selectedProfile = profile;
+            ConfigManager.Instance.LastLoadedProfile = profile.FilePath;
                 
-            olvMappings.SetObjects(preset.MappedOptions);
+            olvMappings.SetObjects(profile.MappedOptions);
             olvMappings.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
             olvMappings.Sort(olvColumnTrigger, SortOrder.Ascending);
             
-            UpdateSelectedPresetName();
+            UpdateSelectedProfileName();
         }
 
-        private void UpdateSelectedPresetName()
+        private void UpdateSelectedProfileName()
         {
-            txtPresetName.Text = selectedPreset.Name;
+            txtProfileName.Text = selectedProfile.Name;
         }
 
         private void SetStatusView(bool isEnabled)
@@ -96,13 +96,13 @@ namespace Key2Joy.Gui
             lblStatusInactive.Visible = !isEnabled;
         }
 
-        private MappingPreset CreateNewPreset(string nameSuffix = default)
+        private MappingProfile CreateNewProfile(string nameSuffix = default)
         {
-            var preset = new MappingPreset($"{txtPresetName.Text}{nameSuffix}", selectedPreset?.MappedOptions);
+            var profile = new MappingProfile($"{txtProfileName.Text}{nameSuffix}", selectedProfile?.MappedOptions);
 
-            SetSelectedPreset(preset);
+            SetSelectedProfile(profile);
 
-            return preset;
+            return profile;
         }
         
         private void EditMappedOption(MappedOption existingMappedOption = null)
@@ -117,9 +117,9 @@ namespace Key2Joy.Gui
             var mappedOption = mappingForm.MappedOption;
             
             if (existingMappedOption == null)
-                selectedPreset.AddMapping(mappedOption);
+                selectedProfile.AddMapping(mappedOption);
 
-            selectedPreset.Save();
+            selectedProfile.Save();
 
             if (existingMappedOption == null)
                 olvMappings.AddObject(mappedOption);
@@ -129,7 +129,7 @@ namespace Key2Joy.Gui
 
         private void RemoveMapping(MappedOption mappedOption)
         {
-            selectedPreset.RemoveMapping(mappedOption);
+            selectedProfile.RemoveMapping(mappedOption);
             olvMappings.RemoveObject(mappedOption);
         }
 
@@ -147,7 +147,7 @@ namespace Key2Joy.Gui
             foreach (OLVListItem listItem in olvMappings.SelectedItems)
                 RemoveMapping((MappedOption)listItem.RowObject);
 
-            selectedPreset.Save();
+            selectedProfile.Save();
         }
 
         public bool RunAppCommand(AppCommand command)
@@ -173,18 +173,21 @@ namespace Key2Joy.Gui
             Key2JoyManager.Instance.StatusChanged += (s, ev) =>
             {
                 SetStatusView(ev.IsEnabled);
+
+                if(ev.Profile != null)
+                    SetSelectedProfile(ev.Profile);
             };
 
-            var lastLoadedPreset = MappingPreset.RestoreLastLoaded();
+            var lastLoadedProfile = MappingProfile.RestoreLastLoaded();
 
-            if (lastLoadedPreset != null)
-                SetSelectedPreset(lastLoadedPreset);
+            if (lastLoadedProfile != null)
+                SetSelectedProfile(lastLoadedProfile);
         }
 
         private void btnCreateMapping_Click(object sender, EventArgs e)
         {
-            if (selectedPreset == null)
-                CreateNewPreset();
+            if (selectedProfile == null)
+                CreateNewProfile();
 
             EditMappedOption();
         }
@@ -260,7 +263,7 @@ namespace Key2Joy.Gui
                 removeItems.Click += (s, _) =>
                 {
                     RemoveSelectedMappings();
-                    selectedPreset.Save();
+                    selectedProfile.Save();
                 };
             }
             else if (e.Model is MappedOption mappedOption)
@@ -299,15 +302,15 @@ namespace Key2Joy.Gui
             SetStatusView(isEnabled);
 
             if (isEnabled)
-                Key2JoyManager.Instance.ArmMappings(selectedPreset);
+                Key2JoyManager.Instance.ArmMappings(selectedProfile);
             else
                 Key2JoyManager.Instance.DisarmMappings();
         }
 
-        private void TxtPresetName_TextChanged(object sender, EventArgs e)
+        private void TxtProfileName_TextChanged(object sender, EventArgs e)
         {
-            selectedPreset.Name = txtPresetName.Text;
-            selectedPreset.Save();
+            selectedProfile.Name = txtProfileName.Text;
+            selectedProfile.Save();
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -326,18 +329,18 @@ namespace Key2Joy.Gui
             }
         }
 
-        private void newPresetToolStripMenuItem_Click(object sender, EventArgs e)
+        private void newProfileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            CreateNewPreset(" - Copy");
+            CreateNewProfile(" - Copy");
         }
 
-        private void loadPresetToolStripMenuItem_Click(object sender, EventArgs e)
+        private void loadProfileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // Load a preset from the file system
+            // Load a profile from the file system
             var dialog = new OpenFileDialog();
-            dialog.Filter = "Key2Joy Presets|*" + MappingPreset.EXTENSION;
-            dialog.Title = "Load Preset";
-            dialog.InitialDirectory = MappingPreset.GetSaveDirectory();
+            dialog.Filter = "Key2Joy Profiles|*" + MappingProfile.EXTENSION;
+            dialog.Title = "Load Profile";
+            dialog.InitialDirectory = MappingProfile.GetSaveDirectory();
             dialog.RestoreDirectory = true;
             dialog.CheckFileExists = true;
             dialog.CheckPathExists = true;
@@ -346,31 +349,31 @@ namespace Key2Joy.Gui
             if (dialog.ShowDialog() != DialogResult.OK)
                 return;
             
-            var preset = MappingPreset.Load(dialog.FileName);
+            var profile = MappingProfile.Load(dialog.FileName);
                 
-            if (preset == null)
+            if (profile == null)
             {
-                MessageBox.Show("The selected preset was corrupt! If you did not modify the preset file this could be a bug.\n\nPlease help us by reporting the bug on GitHub: https://github.com/luttje/Key2Joy.", "Failed to load preset!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("The selected profile was corrupt! If you did not modify the profile file this could be a bug.\n\nPlease help us by reporting the bug on GitHub: https://github.com/luttje/Key2Joy.", "Failed to load profile!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            SetSelectedPreset(preset);
+            SetSelectedProfile(profile);
         }
 
-        private void savePresetToolStripMenuItem_Click(object sender, EventArgs e)
+        private void saveProfileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("When you make changes to a preset, changes are automatically saved. This button is only here to explain that feature to you.", "Preset already saved!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("When you make changes to a profile, changes are automatically saved. This button is only here to explain that feature to you.", "Profile already saved!", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        private void openPresetFolderToolStripMenuItem_Click(object sender, EventArgs e)
+        private void openProfileFolderToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (selectedPreset == null)
+            if (selectedProfile == null)
             {
-                Process.Start(MappingPreset.GetSaveDirectory());
+                Process.Start(MappingProfile.GetSaveDirectory());
                 return;
             }
 
-            var argument = "/select, \"" + selectedPreset.FilePath + "\"";
+            var argument = "/select, \"" + selectedProfile.FilePath + "\"";
             Process.Start("explorer.exe", argument);
         }
 
@@ -390,24 +393,24 @@ namespace Key2Joy.Gui
             range.AddRange(GamePadAction.GetAllButtonActions(PressState.Press));
             range.AddRange(GamePadAction.GetAllButtonActions(PressState.Release));
 
-            selectedPreset.AddMappingRange(range);
-            selectedPreset.Save();
+            selectedProfile.AddMappingRange(range);
+            selectedProfile.Save();
             olvMappings.AddObjects(range);
         }
 
         private void gamePadPressToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var range = GamePadAction.GetAllButtonActions(PressState.Press);
-            selectedPreset.AddMappingRange(range);
-            selectedPreset.Save();
+            selectedProfile.AddMappingRange(range);
+            selectedProfile.Save();
             olvMappings.AddObjects(range);
         }
 
         private void gamePadReleaseToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var range = GamePadAction.GetAllButtonActions(PressState.Release);
-            selectedPreset.AddMappingRange(range);
-            selectedPreset.Save();
+            selectedProfile.AddMappingRange(range);
+            selectedProfile.Save();
             olvMappings.AddObjects(range);
         }
 
@@ -417,24 +420,24 @@ namespace Key2Joy.Gui
             range.AddRange(KeyboardAction.GetAllButtonActions(PressState.Press));
             range.AddRange(KeyboardAction.GetAllButtonActions(PressState.Release));
 
-            selectedPreset.AddMappingRange(range);
-            selectedPreset.Save();
+            selectedProfile.AddMappingRange(range);
+            selectedProfile.Save();
             olvMappings.AddObjects(range);
         }
 
         private void keyboardPressToolStripMenuItem(object sender, EventArgs e)
         {
             var range = KeyboardAction.GetAllButtonActions(PressState.Press);
-            selectedPreset.AddMappingRange(range);
-            selectedPreset.Save();
+            selectedProfile.AddMappingRange(range);
+            selectedProfile.Save();
             olvMappings.AddObjects(range);
         }
 
         private void keyboardReleaseToolStripMenuItem(object sender, EventArgs e)
         {
             var range = KeyboardAction.GetAllButtonActions(PressState.Release);
-            selectedPreset.AddMappingRange(range);
-            selectedPreset.Save();
+            selectedProfile.AddMappingRange(range);
+            selectedProfile.Save();
             olvMappings.AddObjects(range);
         }
 

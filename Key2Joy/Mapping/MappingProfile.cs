@@ -13,15 +13,16 @@ using System.Reflection;
 namespace Key2Joy.Mapping
 {
     [JsonObject(MemberSerialization.OptIn)]
-    public class MappingPreset
+    public class MappingProfile
     {
         const int NO_VERSION = 0;
         const int CURRENT_VERSION = 4;
         
-        public const string DEFAULT_PRESET_PATH = "default-profile";
+        public const string DEFAULT_PROFILE_PATH = "default-profile";
         public const string EXTENSION = ".k2j.json";
 
-        public const string SAVE_DIR = "Presets";
+        public const string LEGACY_SAVE_DIR = "Presets";
+        public const string SAVE_DIR = "Profiles";
 
         [JsonProperty]
         public BindingList<MappedOption> MappedOptions { get; set; } = new BindingList<MappedOption>();
@@ -39,7 +40,7 @@ namespace Key2Joy.Mapping
         private string filePath;
 
         [JsonConstructor]
-        public MappingPreset(string name, BindingList<MappedOption> mappedOptions = null)
+        public MappingProfile(string name, BindingList<MappedOption> mappedOptions = null)
         {
             Name = name;
 
@@ -102,7 +103,7 @@ namespace Key2Joy.Mapping
 
         public static void ExtractDefaultIfNotExists()
         {
-            var defaultPath = Path.Combine(GetSaveDirectory(), $"{DEFAULT_PRESET_PATH}{EXTENSION}");
+            var defaultPath = Path.Combine(GetSaveDirectory(), $"{DEFAULT_PROFILE_PATH}{EXTENSION}");
             
             if (File.Exists(defaultPath))
                 return;
@@ -113,15 +114,15 @@ namespace Key2Joy.Mapping
                 writer.Write(Properties.Resources.default_profile_k2j);
             }
 
-            if(ConfigManager.Instance.LastLoadedPreset == null)
-                ConfigManager.Instance.LastLoadedPreset = defaultPath;
+            if(ConfigManager.Instance.LastLoadedProfile == null)
+                ConfigManager.Instance.LastLoadedProfile = defaultPath;
         }
 
-        public static MappingPreset Load(string filePath)
+        public static MappingProfile Load(string filePath)
         {
             var serializer = GetSerializer();
 
-            MappingPreset preset;
+            MappingProfile profile;
 
             if (!File.Exists(filePath))
             {
@@ -139,17 +140,17 @@ namespace Key2Joy.Mapping
 
             using (var sr = new StreamReader(filePath))
             using (var reader = new JsonTextReader(sr))
-                preset = serializer.Deserialize<MappingPreset>(reader);
+                profile = serializer.Deserialize<MappingProfile>(reader);
 
-            if (preset.PostLoad(filePath))
-                return preset;
+            if (profile.PostLoad(filePath))
+                return profile;
 
             return null;
         }
 
-        public static MappingPreset RestoreLastLoaded()
+        public static MappingProfile RestoreLastLoaded()
         {
-            var lastLoadedPath = ConfigManager.Instance.LastLoadedPreset;
+            var lastLoadedPath = ConfigManager.Instance.LastLoadedProfile;
 
             if (lastLoadedPath == null)
                 return null;
@@ -163,7 +164,7 @@ namespace Key2Joy.Mapping
         private static JsonSerializer GetSerializer()
         {
             var serializer = new JsonSerializer();
-            serializer.SerializationBinder = new MappingPresetSerializationBinder();
+            serializer.SerializationBinder = new MappingProfileSerializationBinder();
             serializer.Converters.Add(new StringEnumConverter());
             serializer.Formatting = Formatting.Indented;
 
@@ -172,11 +173,16 @@ namespace Key2Joy.Mapping
 
         public static string GetSaveDirectory()
         {
+            var legacyDirectory = Path.Combine(
+                ConfigManager.GetAppDirectory(),
+                LEGACY_SAVE_DIR);
             var directory = Path.Combine(
                 ConfigManager.GetAppDirectory(),
                 SAVE_DIR);
 
-            if (!Directory.Exists(directory))
+            if (Directory.Exists(legacyDirectory))
+                Directory.Move(legacyDirectory, directory);
+            else if (!Directory.Exists(directory))
                 Directory.CreateDirectory(directory);
 
             return directory;
