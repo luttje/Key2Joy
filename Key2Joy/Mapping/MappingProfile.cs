@@ -101,9 +101,11 @@ namespace Key2Joy.Mapping
             return true;
         }
 
+        private static string GetDefaultPath() => Path.Combine(GetSaveDirectory(), $"{DEFAULT_PROFILE_PATH}{EXTENSION}");
+
         public static void ExtractDefaultIfNotExists()
         {
-            var defaultPath = Path.Combine(GetSaveDirectory(), $"{DEFAULT_PROFILE_PATH}{EXTENSION}");
+            var defaultPath = GetDefaultPath();
             
             if (File.Exists(defaultPath))
                 return;
@@ -153,10 +155,13 @@ namespace Key2Joy.Mapping
             var lastLoadedPath = ConfigManager.Instance.LastLoadedProfile;
 
             if (lastLoadedPath == null)
-                return null;
+                lastLoadedPath = GetDefaultPath();
 
             if (!File.Exists(lastLoadedPath))
-                return null;
+            {
+                ExtractDefaultIfNotExists();
+                lastLoadedPath = GetDefaultPath();
+            }
 
             return Load(lastLoadedPath);
         }

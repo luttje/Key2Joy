@@ -27,6 +27,14 @@ namespace Key2Joy.Config
         }
         private bool isInitialized;
 
+        [JsonProperty]
+        public string LastInstallPath
+        {
+            get => lastInstallPath;
+            set => SaveIfInitialized(lastInstallPath = value);
+        }
+        private string lastInstallPath;
+
         [BooleanConfigControl(
             Text = "Mute informative message about this app minimizing by default"
         )]
@@ -109,6 +117,14 @@ namespace Key2Joy.Config
             using (var sr = new StreamReader(configPath))
             using (var reader = new JsonTextReader(sr))
                 instance = serializer.Deserialize<ConfigManager>(reader);
+
+            var executablePath = System.Reflection.Assembly.GetEntryAssembly().Location;
+            if (executablePath.EndsWith("Key2Joy.Gui.exe") 
+                && instance.LastInstallPath != executablePath)
+            {
+                instance.LastInstallPath = executablePath;
+                instance.Save();
+            }
 
             instance.isInitialized = true;
 

@@ -22,8 +22,12 @@ namespace Key2Joy.Cmd
             }
             catch (TimeoutException)
             {
-                // TODO: Start Key2Joy and try again
-                throw new NotImplementedException("TODO: Start Key2Joy");
+                SafelyRetry(() =>
+                {
+                    Console.WriteLine("Key2Joy is not running, starting it now.");
+                    Program.StartKey2Joy();
+                    Handle();
+                });
             }
         }
     }

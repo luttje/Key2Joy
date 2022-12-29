@@ -96,7 +96,7 @@ namespace Key2Joy
 
         public void SetMainForm(Form form)
         {
-            this.mainForm = form;
+            mainForm = form;
             Application.AddMessageFilter(this);
         }
 

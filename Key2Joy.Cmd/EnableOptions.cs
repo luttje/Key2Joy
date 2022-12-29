@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Key2Joy.Config;
 using Key2Joy.Interop;
+using Key2Joy.Mapping;
 
 namespace Key2Joy.Cmd
 {
@@ -23,22 +24,30 @@ namespace Key2Joy.Cmd
 
         public override void Handle()
         {
-            if (ProfilePath == null)
-                ProfilePath = ConfigManager.Instance.LastLoadedProfile;
+            MappingProfile profile;
 
-            Console.WriteLine($"Commanding Key2Joy to enable the profile: {ProfilePath}");
+            if (ProfilePath != null)
+                profile = MappingProfile.Load(ProfilePath);
+            else
+                profile = MappingProfile.RestoreLastLoaded();
+
+            Console.WriteLine($"Commanding Key2Joy to enable the profile: {profile.FilePath}");
             
             try 
-            { 
+            {
                 InteropClient.Instance.SendCommand(new EnableCommand
                 {
-                    ProfilePath = ProfilePath
+                    ProfilePath = profile.FilePath
                 });
             }
             catch(TimeoutException)
             {
-                // TODO: Start Key2Joy and try again
-                throw new NotImplementedException("TODO: Start Key2Joy");
+                SafelyRetry(() =>
+                {
+                    Console.WriteLine("Key2Joy is not running, starting it now.");
+                    Program.StartKey2Joy();
+                    Handle();
+                });
             }
         }
     }
