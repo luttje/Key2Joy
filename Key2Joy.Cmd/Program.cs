@@ -1,11 +1,6 @@
 ﻿using Key2Joy.Config;
-using Key2Joy.Mapping;
-using Key2Joy.Interop;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CommandLine;
 using System.Reflection;
 using System.Diagnostics;

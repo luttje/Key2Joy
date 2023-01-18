@@ -1,10 +1,5 @@
-﻿using CommandLine.Text;
-using CommandLine;
+﻿using CommandLine;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Key2Joy.Interop;
 
 namespace Key2Joy.Cmd
