@@ -22,7 +22,7 @@ In addition to simply simulating a button being pressed on the Joystick, you can
 
 ### Using Key2Joy with a Graphical User Interface
 
-1. Start **![](Key2Joy.Gui/Graphics/Icons/icon16.png?raw=true) Key2Joy.Gui.exe**
+1. Start **![](Key2Joy.Gui/Graphics/Icons/icon16.png?raw=true) Key2Joy.exe**
 2. *(First time only)* Accept installation of the Scp Virtual Bus Driver
 3. Use the default mappings, modify them by double-clicking a row in the mapping-list, or add new mappings.
 
@@ -44,7 +44,7 @@ In addition to simply simulating a button being pressed on the Joystick, you can
 
 1. Run `Key2Joy.Cmd.exe enable` in a command-prompt:
 
-   * This will start Key2Joy if it's not already running. *(Note: you need to have started Key2Joy.Gui.exe at least once since installing)*
+   * This will start Key2Joy if it's not already running. *(Note: you need to have started the GUI app (Key2Joy.exe) at least once since installing)*
    * By default it will enable the last used profile
    * You can use `--profile default-profile` to specify which profile file to enable (you don't have to include the `.k2j.json` extension)
 

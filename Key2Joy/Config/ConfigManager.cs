@@ -119,7 +119,7 @@ namespace Key2Joy.Config
                 instance = serializer.Deserialize<ConfigManager>(reader);
 
             var executablePath = System.Reflection.Assembly.GetEntryAssembly().Location;
-            if (executablePath.EndsWith("Key2Joy.Gui.exe") 
+            if (executablePath.EndsWith("Key2Joy.exe") 
                 && instance.LastInstallPath != executablePath)
             {
                 instance.LastInstallPath = executablePath;
