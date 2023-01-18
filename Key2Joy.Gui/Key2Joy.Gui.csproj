@@ -417,38 +417,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Graphics\Arrows_Diagonal.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Graphics\Icons\app-icons.ico" />
     <Content Include="Graphics\Icons\icon256.png" />
-    <None Include="Graphics\XboxSeriesX_Y.png" />
-    <None Include="Graphics\XboxSeriesX_X.png" />
-    <None Include="Graphics\XboxSeriesX_Start.png" />
-    <None Include="Graphics\XboxSeriesX_RightTrigger.png" />
-    <None Include="Graphics\XboxSeriesX_RightStickUp.png" />
-    <None Include="Graphics\XboxSeriesX_RightStickRight.png" />
-    <None Include="Graphics\XboxSeriesX_RightStickLeft.png" />
-    <None Include="Graphics\XboxSeriesX_RightStickDown.png" />
-    <None Include="Graphics\XboxSeriesX_RightStickClick.png" />
-    <None Include="Graphics\XboxSeriesX_RightShoulder.png" />
-    <None Include="Graphics\XboxSeriesX_LeftTrigger.png" />
-    <None Include="Graphics\XboxSeriesX_LeftStickUp.png" />
-    <None Include="Graphics\XboxSeriesX_LeftStickRight.png" />
-    <None Include="Graphics\XboxSeriesX_LeftStickLeft.png" />
-    <None Include="Graphics\XboxSeriesX_LeftStickDown.png" />
-    <None Include="Graphics\XboxSeriesX_LeftStickClick.png" />
-    <None Include="Graphics\XboxSeriesX_LeftShoulder.png" />
-    <None Include="Graphics\XboxSeriesX_DPadUp.png" />
-    <None Include="Graphics\XboxSeriesX_DPadRight.png" />
-    <None Include="Graphics\XboxSeriesX_DPadLeft.png" />
-    <None Include="Graphics\XboxSeriesX_DPadDown.png" />
-    <None Include="Graphics\XboxSeriesX_Diagram.png" />
-    <None Include="Graphics\XboxSeriesX_Back.png" />
-    <None Include="Graphics\XboxSeriesX_B.png" />
-    <None Include="Graphics\XboxSeriesX_A.png" />
-    <None Include="Graphics\NoImage.png" />
-    <None Include="Graphics\Mouse.png" />
     <None Include="Graphics\Lua.png" />
     <None Include="Graphics\JS.png" />
     <None Include="Graphics\Icons\script_code.png" />
