@@ -6,27 +6,14 @@ namespace Key2Joy.LowLevelInput
     public class GlobalMouseHookEventArgs : HandledEventArgs
     {
         public MouseState MouseState { get; private set; }
-        public LowLevelMouseInputEvent MouseData { get; private set; }
+        public LowLevelMouseInputEvent RawData { get; private set; }
 
         public GlobalMouseHookEventArgs(
             LowLevelMouseInputEvent mouseData,
             MouseState mouseState)
         {
-            MouseData = mouseData;
+            RawData = mouseData;
             MouseState = mouseState;
-        }
-
-        public bool AreButtonsDown()
-        {
-            switch (MouseState)
-            {
-                case MouseState.LeftButtonDown:
-                case MouseState.RightButtonDown:
-                case MouseState.MiddleButtonDown:
-                    return true;
-            }
-
-            return false;
         }
     }
 }

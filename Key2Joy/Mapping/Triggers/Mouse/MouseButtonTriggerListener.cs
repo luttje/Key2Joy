@@ -63,15 +63,8 @@ namespace Key2Joy.Mapping
             if (e.MouseState == MouseState.Move)
                 return;
 
-            var buttons = Mouse.Buttons.None;
             var isDown = false;
-                
-            try
-            {
-                buttons = Mouse.ButtonsFromState(e.MouseState, out isDown);
-            }
-            catch (NotImplementedException) { }
-
+            var buttons = Mouse.ButtonsFromEvent(e, out isDown);
             var dictionary = lookupRelease;
 
             if (isDown)
@@ -93,8 +86,8 @@ namespace Key2Joy.Mapping
             {
                 State = e.MouseState,
                 IsDown = isDown,
-                LastX = e.MouseData.Position.X,
-                LastY = e.MouseData.Position.Y,
+                LastX = e.RawData.Position.X,
+                LastY = e.RawData.Position.Y,
             };
 
             var hash = MouseButtonTrigger.GetInputHashFor(buttons);

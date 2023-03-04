@@ -44,7 +44,7 @@ namespace Key2Joy.Gui.Mapping
 
             try
             {
-                mouseButtons = Mouse.ButtonsFromState(e.MouseState, out isDown);
+                mouseButtons = Mouse.ButtonsFromEvent(e, out isDown);
             }
             catch (NotImplementedException ex) 
             {
