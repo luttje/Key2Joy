@@ -22,7 +22,7 @@ namespace Key2Joy.Mapping
         Name = "Mouse Move Simulation",
         Image = "mouse"
     )]
-    internal class MouseMoveAction : BaseAction
+    public class MouseMoveAction : BaseAction
     {        
         [JsonProperty]
         public Mouse.MoveType MoveType { get; set; }
@@ -75,7 +75,7 @@ namespace Key2Joy.Mapping
             await Execute();
         }
 
-        internal override async Task Execute(IInputBag inputBag = null)
+        public override async Task Execute(IInputBag inputBag = null)
         {
             SimulatedMouse.Move(X, Y, MoveType);
         }

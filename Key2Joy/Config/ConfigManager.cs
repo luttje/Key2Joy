@@ -9,12 +9,31 @@ using System.Threading.Tasks;
 namespace Key2Joy.Config
 {
     [JsonObject(MemberSerialization.OptIn)]
-    internal class ConfigManager
+    public class ConfigManager
     {
+        const string APP_DIR = "Key2Joy";
         const string CONFIG_PATH = "config.json";
 
-        public static ConfigManager Instance { get; private set; }
+        public static ConfigManager instance;
+        public static ConfigManager Instance
+        {
+            get
+            {
+                if (instance == null)
+                    instance = LoadOrCreate();
+
+                return instance;
+            }
+        }
         private bool isInitialized;
+
+        [JsonProperty]
+        public string LastInstallPath
+        {
+            get => lastInstallPath;
+            set => SaveIfInitialized(lastInstallPath = value);
+        }
+        private string lastInstallPath;
 
         [BooleanConfigControl(
             Text = "Mute informative message about this app minimizing by default"
@@ -39,15 +58,15 @@ namespace Key2Joy.Config
         private bool overrideDefaultTriggerBehaviour = true;
 
         [TextConfigControl(
-            Text = "Last loaded mapping preset file location"
+            Text = "Last loaded mapping profile file location"
         )]
         [JsonProperty]
-        public string LastLoadedPreset
+        public string LastLoadedProfile
         {
-            get => lastLoadedPreset;
-            set => SaveIfInitialized(lastLoadedPreset = value);
+            get => lastLoadedProfile;
+            set => SaveIfInitialized(lastLoadedProfile = value);
         }
-        private string lastLoadedPreset;
+        private string lastLoadedProfile;
 
         [TextConfigControl(
             Text = "Path to directory where logs are saved"
@@ -58,7 +77,7 @@ namespace Key2Joy.Config
             get => logOutputPath;
             set => SaveIfInitialized(logOutputPath = value);
         }
-        private string logOutputPath = Path.Combine(Program.GetAppDirectory(), "Logs");
+        private string logOutputPath = Path.Combine(GetAppDirectory(), "Logs");
 
         private ConfigManager() { }
         private void SaveIfInitialized(object changedValue = null)
@@ -71,35 +90,45 @@ namespace Key2Joy.Config
         {
             var serializer = GetSerializer();
             var configPath = Path.Combine(
-                Program.GetAppDirectory(),
+                GetAppDirectory(),
                 CONFIG_PATH);
 
             using (var sw = new StreamWriter(configPath))
             using (var writer = new JsonTextWriter(sw))
                 serializer.Serialize(writer, this);
         }
-
-        public static void Load()
+        
+        private static ConfigManager LoadOrCreate()
         {
             var configPath = Path.Combine(
-                Program.GetAppDirectory(),
+                GetAppDirectory(),
                 CONFIG_PATH);
 
             if (!File.Exists(configPath))
             {
-                Instance = new ConfigManager();
-                Instance.isInitialized = true;
-                Instance.Save();
-                return;
+                instance = new ConfigManager();
+                instance.isInitialized = true;
+                instance.Save();
+                return instance;
             }
             
             var serializer = GetSerializer();
                 
             using (var sr = new StreamReader(configPath))
             using (var reader = new JsonTextReader(sr))
-                Instance = serializer.Deserialize<ConfigManager>(reader);
+                instance = serializer.Deserialize<ConfigManager>(reader);
 
-            Instance.isInitialized = true;
+            var executablePath = System.Reflection.Assembly.GetEntryAssembly().Location;
+            if (executablePath.EndsWith("Key2Joy.exe") 
+                && instance.LastInstallPath != executablePath)
+            {
+                instance.LastInstallPath = executablePath;
+                instance.Save();
+            }
+
+            instance.isInitialized = true;
+
+            return instance;
         }
 
         private static JsonSerializer GetSerializer()
@@ -109,5 +138,18 @@ namespace Key2Joy.Config
 
             return serializer;
         }
+
+        public static string GetAppDirectory()
+        {
+            var directory = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                APP_DIR);
+
+            if (!Directory.Exists(directory))
+                Directory.CreateDirectory(directory);
+
+            return directory;
+        }
+
     }
 }

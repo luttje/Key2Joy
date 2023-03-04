@@ -4,7 +4,7 @@ using System.Windows.Forms;
 namespace Key2Joy.LowLevelInput
 {
     // Source: https://stackoverflow.com/a/2934866
-    internal class VirtualKeyConverter
+    public class VirtualKeyConverter
     {
         [DllImport("user32.dll")] 
         static extern short VkKeyScan(char ch);
@@ -12,17 +12,17 @@ namespace Key2Joy.LowLevelInput
         [DllImport("user32.dll")]
         static extern uint MapVirtualKey(uint uCode, MapVirtualKeyMapTypes uMapType);
 
-        internal static Keys KeysFromVirtual(int virtualKeyCode)
+        public static Keys KeysFromVirtual(int virtualKeyCode)
         {
             return (Keys)virtualKeyCode;
         }
 
-        internal static Keys KeysFromScanCode(KeyboardKey scanCode)
+        public static Keys KeysFromScanCode(KeyboardKey scanCode)
         {
             return KeysFromVirtual((int)MapVirtualKey((uint)scanCode, MapVirtualKeyMapTypes.MAPVK_VSC_TO_VK_EX));
         }
 
-        internal static Keys KeysFromChar(char keyChar)
+        public static Keys KeysFromChar(char keyChar)
         {
             var helper = new Helper { Value = VkKeyScan(keyChar) };
 
@@ -38,7 +38,7 @@ namespace Key2Joy.LowLevelInput
             return keys;
         }
 
-        internal static string KeysToString(Keys keys)
+        public static string KeysToString(Keys keys)
         {
             return new KeysConverter().ConvertToString(keys);
         }

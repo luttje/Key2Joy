@@ -30,7 +30,7 @@ namespace Key2Joy.Mapping
                 Cancellation = cancellation;
             }
 
-            internal void Cancel()
+            public void Cancel()
             {
                 Cancellation.Cancel();
             }
@@ -63,12 +63,12 @@ namespace Key2Joy.Mapping
             { }
         }
 
-        internal static IdType CreateNewId<IdType>(CancellationTokenSource cancellation) where IdType : BaseId
+        public static IdType CreateNewId<IdType>(CancellationTokenSource cancellation) where IdType : BaseId
         {
             return (IdType)Activator.CreateInstance(typeof(IdType), cancellation);
         }
 
-        internal static void CancelAll()
+        public static void CancelAll()
         {
             foreach (var id in ids)
             {

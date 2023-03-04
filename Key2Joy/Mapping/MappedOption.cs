@@ -1,5 +1,4 @@
-﻿using Key2Joy.Properties;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using SimWinInput;
 using System;
 using System.Collections.Generic;
@@ -20,7 +19,7 @@ namespace Key2Joy.Mapping
             return Action.GetNameDisplay();
         }
 
-        internal object GetTriggerDisplay()
+        public object GetTriggerDisplay()
         {
             if (Trigger == null)
                 return "<not bound to key>";

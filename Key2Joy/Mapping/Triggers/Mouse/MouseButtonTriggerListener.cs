@@ -5,10 +5,10 @@ using System.Windows.Forms;
 
 namespace Key2Joy.Mapping
 {
-    internal class MouseButtonTriggerListener : PressReleaseTriggerListener<MouseButtonTrigger>
+    public class MouseButtonTriggerListener : PressReleaseTriggerListener<MouseButtonTrigger>
     {
-        internal static MouseButtonTriggerListener instance;
-        internal static MouseButtonTriggerListener Instance
+        public static MouseButtonTriggerListener instance;
+        public static MouseButtonTriggerListener Instance
         {
             get
             {
@@ -22,7 +22,7 @@ namespace Key2Joy.Mapping
         private GlobalInputHook globalMouseButtonHook;
         private readonly Dictionary<Mouse.Buttons, bool> currentButtonsDown = new Dictionary<Mouse.Buttons, bool>();
 
-        internal bool GetButtonsDown(Mouse.Buttons buttons)
+        public bool GetButtonsDown(Mouse.Buttons buttons)
         {
             return currentButtonsDown.ContainsKey(buttons);
         }
@@ -46,7 +46,7 @@ namespace Key2Joy.Mapping
             base.Stop();
         }
         
-        internal override bool GetIsTriggered(BaseTrigger trigger)
+        public override bool GetIsTriggered(BaseTrigger trigger)
         {
             if (!(trigger is MouseButtonTrigger mouseButtonTrigger))
                 return false;
@@ -63,15 +63,8 @@ namespace Key2Joy.Mapping
             if (e.MouseState == MouseState.Move)
                 return;
 
-            var buttons = Mouse.Buttons.None;
             var isDown = false;
-                
-            try
-            {
-                buttons = Mouse.ButtonsFromState(e.MouseState, out isDown);
-            }
-            catch (NotImplementedException) { }
-
+            var buttons = Mouse.ButtonsFromEvent(e, out isDown);
             var dictionary = lookupRelease;
 
             if (isDown)
@@ -93,8 +86,8 @@ namespace Key2Joy.Mapping
             {
                 State = e.MouseState,
                 IsDown = isDown,
-                LastX = e.MouseData.Position.X,
-                LastY = e.MouseData.Position.Y,
+                LastX = e.RawData.Position.X,
+                LastY = e.RawData.Position.Y,
             };
 
             var hash = MouseButtonTrigger.GetInputHashFor(buttons);

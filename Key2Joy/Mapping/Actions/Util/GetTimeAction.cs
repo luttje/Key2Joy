@@ -13,7 +13,7 @@ namespace Key2Joy.Mapping
         Visibility = MappingMenuVisibility.Never,
         NameFormat = "Get the system time"
     )]
-    internal class GetTimeAction : BaseAction
+    public class GetTimeAction : BaseAction
     {
         public GetTimeAction(string name, string description)
             : base(name, description)
@@ -42,7 +42,7 @@ namespace Key2Joy.Mapping
             return DateTimeOffset.Now.ToUnixTimeSeconds();
         }
 
-        internal override async Task Execute(IInputBag inputBag = null)
+        public override async Task Execute(IInputBag inputBag = null)
         {
             // TODO: Currently this is only a script action...
         }

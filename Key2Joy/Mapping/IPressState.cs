@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Key2Joy.Mapping
 {
-    internal interface IPressState
+    public interface IPressState
     {
         PressState PressState { get; set; }
     }

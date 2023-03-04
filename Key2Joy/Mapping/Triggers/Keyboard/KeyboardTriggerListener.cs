@@ -6,10 +6,10 @@ using static Key2Joy.LowLevelInput.Mouse;
 
 namespace Key2Joy.Mapping
 {
-    internal class KeyboardTriggerListener : PressReleaseTriggerListener<KeyboardTrigger>
+    public class KeyboardTriggerListener : PressReleaseTriggerListener<KeyboardTrigger>
     {
-        internal static KeyboardTriggerListener instance;
-        internal static KeyboardTriggerListener Instance
+        public static KeyboardTriggerListener instance;
+        public static KeyboardTriggerListener Instance
         {
             get
             {
@@ -23,7 +23,7 @@ namespace Key2Joy.Mapping
         private GlobalInputHook globalKeyboardHook;
         private readonly Dictionary<Keys, bool> currentKeysDown = new Dictionary<Keys, bool>();
         
-        internal bool GetKeyDown(Keys key)
+        public bool GetKeyDown(Keys key)
         {
             return currentKeysDown.ContainsKey(key);
         }
@@ -49,7 +49,7 @@ namespace Key2Joy.Mapping
             base.Stop();
         }
 
-        internal override bool GetIsTriggered(BaseTrigger trigger)
+        public override bool GetIsTriggered(BaseTrigger trigger)
         {
             if (!(trigger is KeyboardTrigger keyboardTrigger))
                 return false;

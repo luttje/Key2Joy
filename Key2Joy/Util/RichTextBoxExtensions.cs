@@ -8,10 +8,10 @@ using System.Windows.Forms;
 
 namespace Key2Joy.Util
 {
-    internal static class RichTextBoxExtensions
+    public static class RichTextBoxExtensions
     {
         // Source: https://stackoverflow.com/a/1926822
-        internal static void AppendText(this RichTextBox box, string text, Color color)
+        public static void AppendText(this RichTextBox box, string text, Color color)
         {
             box.SelectionStart = box.TextLength;
             box.SelectionLength = 0;

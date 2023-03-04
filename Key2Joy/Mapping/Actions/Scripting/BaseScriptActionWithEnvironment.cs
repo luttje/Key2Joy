@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Key2Joy.Mapping
 {
-    internal abstract class BaseScriptActionWithEnvironment<TEnvironment> : BaseScriptAction
+    public abstract class BaseScriptActionWithEnvironment<TEnvironment> : BaseScriptAction
     {
         protected TEnvironment environment;
 
@@ -27,7 +27,7 @@ namespace Key2Joy.Mapping
             this.environment = environment;
         }
 
-        internal abstract TEnvironment MakeEnvironment();
+        public abstract TEnvironment MakeEnvironment();
 
         public virtual void RegisterEnvironmentObjects()
         {
@@ -67,7 +67,7 @@ namespace Key2Joy.Mapping
             }
         }
 
-        internal override void OnStartListening(TriggerListener listener, ref List<BaseAction> otherActions)
+        public override void OnStartListening(TriggerListener listener, ref List<BaseAction> otherActions)
         {
             foreach (var action in otherActions)
             {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Key2Joy.Mapping
 {
-    internal interface IReturnInputHash
+    public interface IReturnInputHash
     {
         int GetInputHash();
     }

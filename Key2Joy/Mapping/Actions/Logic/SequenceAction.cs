@@ -2,21 +2,19 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Key2Joy.Mapping
 {
     [Action(
         Description = "Multiple Actions in Sequence",
         Visibility = MappingMenuVisibility.OnlyTopLevel,
-        OptionsUserControl = typeof(SequenceActionControl),
         NameFormat = "Run Sequence: {0}"
     )]
     [Util.ObjectListViewGroup(
         Name = "Logic",
         Image = "script_code"
     )]
-    internal class SequenceAction : BaseAction
+    public class SequenceAction : BaseAction
     {
         [JsonProperty(ItemTypeNameHandling = TypeNameHandling.All)]
         public List<BaseAction> ChildActions;
@@ -27,13 +25,13 @@ namespace Key2Joy.Mapping
             ChildActions = new List<BaseAction>();
         }
 
-        internal override async Task Execute(IInputBag inputBag = null)
+        public override async Task Execute(IInputBag inputBag = null)
         {
             foreach (var childAction in ChildActions)
                 await childAction.Execute(inputBag);
         }
 
-        internal override void OnStartListening(TriggerListener listener, ref List<BaseAction> otherActions)
+        public override void OnStartListening(TriggerListener listener, ref List<BaseAction> otherActions)
         {
             base.OnStartListening(listener, ref otherActions);
 
@@ -43,7 +41,7 @@ namespace Key2Joy.Mapping
             }
         }
 
-        internal override void OnStopListening(TriggerListener listener)
+        public override void OnStopListening(TriggerListener listener)
         {
             base.OnStopListening(listener);
 

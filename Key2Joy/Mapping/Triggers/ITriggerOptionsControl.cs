@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Key2Joy.Mapping
 {
-    internal interface ITriggerOptionsControl
+    public interface ITriggerOptionsControl
     {
         /// <summary>
         /// Called to setup the options panel with a trigger

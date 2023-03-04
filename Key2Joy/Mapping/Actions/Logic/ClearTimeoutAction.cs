@@ -15,7 +15,7 @@ namespace Key2Joy.Mapping
         Name = "Logic",
         Image = "script_code"
     )]
-    internal class ClearTimeoutAction : BaseAction
+    public class ClearTimeoutAction : BaseAction
     {
         public ClearTimeoutAction(string name, string description)
             : base(name, description)
@@ -52,7 +52,7 @@ namespace Key2Joy.Mapping
             timeoutId.Cancel();
         }
 
-        internal override Task Execute(IInputBag inputBag = null)
+        public override Task Execute(IInputBag inputBag = null)
         {
             // Irrelevant because only scripts should use this function
             return null;

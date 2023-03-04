@@ -15,11 +15,9 @@ namespace Key2Joy.Mapping
 {
     [Action(
         Description = "Lua Script Action",
-        OptionsUserControl = typeof(ScriptActionControl),
-        OptionsUserControlParams = new[] { "Lua" },
         NameFormat = "Lua Script: {0}"
     )]
-    internal class LuaScriptAction : BaseScriptActionWithEnvironment<Lua>
+    public class LuaScriptAction : BaseScriptActionWithEnvironment<Lua>
     {
         public LuaScriptAction(string name, string description)
             : base(name, description)
@@ -27,7 +25,7 @@ namespace Key2Joy.Mapping
             ImageResource = "Lua";
         }
 
-        internal override async Task Execute(IInputBag inputBag)
+        public override async Task Execute(IInputBag inputBag)
         {
             try
             {
@@ -44,7 +42,7 @@ namespace Key2Joy.Mapping
             }
         }
 
-        internal override void RegisterScriptingEnum(Type enumType)
+        public override void RegisterScriptingEnum(Type enumType)
         {
             if (!enumType.IsEnum)
                 throw new ArgumentException("The type must be an enumeration!");
@@ -59,7 +57,7 @@ namespace Key2Joy.Mapping
             }
         }
 
-        internal override void RegisterScriptingMethod(string functionName, BaseAction instance, MethodInfo method)
+        public override void RegisterScriptingMethod(string functionName, BaseAction instance, MethodInfo method)
         {
             var parents = functionName.Split('.');
 
@@ -102,7 +100,7 @@ namespace Key2Joy.Mapping
                 method);
         }
 
-        internal override Lua MakeEnvironment()
+        public override Lua MakeEnvironment()
         {
             return new Lua();
         }
@@ -115,12 +113,12 @@ namespace Key2Joy.Mapping
             base.RegisterEnvironmentObjects();
         }
 
-        internal override void OnStartListening(TriggerListener listener, ref List<BaseAction> otherActions)
+        public override void OnStartListening(TriggerListener listener, ref List<BaseAction> otherActions)
         {
             base.OnStartListening(listener, ref otherActions);
         }
 
-        internal override void OnStopListening(TriggerListener listener)
+        public override void OnStopListening(TriggerListener listener)
         {
             base.OnStopListening(listener);
 

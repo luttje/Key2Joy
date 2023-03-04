@@ -9,10 +9,9 @@ namespace Key2Joy.Mapping
 {
     [Trigger(
         Description = "Multiple Triggers Combined",
-        Visibility = MappingMenuVisibility.OnlyTopLevel,
-        OptionsUserControl = typeof(CombinedTriggerOptionsControl)
+        Visibility = MappingMenuVisibility.OnlyTopLevel
     )]
-    internal class CombinedTrigger : BaseTrigger, IEquatable<CombinedTrigger>
+    public class CombinedTrigger : BaseTrigger, IEquatable<CombinedTrigger>
     {
         public const string PREFIX_UNIQUE = nameof(CombinedTrigger);
 
@@ -24,12 +23,12 @@ namespace Key2Joy.Mapping
             : base(name, description)
         { }
 
-        internal override TriggerListener GetTriggerListener()
+        public override TriggerListener GetTriggerListener()
         {
             return CombinedTriggerListener.Instance;
         }
 
-        internal override string GetUniqueKey()
+        public override string GetUniqueKey()
         {
             return ToString();
         }

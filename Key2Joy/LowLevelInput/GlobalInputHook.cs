@@ -8,7 +8,7 @@ namespace Key2Joy.LowLevelInput
     // Based on these sources:
     // - https://gist.github.com/Stasonix/3181083
     // - https://stackoverflow.com/a/34384189
-    partial class GlobalInputHook : IDisposable
+    public partial class GlobalInputHook : IDisposable
     {
         public event EventHandler<GlobalKeyboardHookEventArgs> KeyboardInputEvent;
         public event EventHandler<GlobalMouseHookEventArgs> MouseInputEvent;

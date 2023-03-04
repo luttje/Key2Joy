@@ -9,16 +9,15 @@ using Key2Joy.Util;
 using System.Text;
 using Jint.Native.Object;
 using Jint.Runtime.Interop;
+using Jint.Runtime.Descriptors;
 
 namespace Key2Joy.Mapping
 {
     [Action(
         Description = "Javascript Action",
-        OptionsUserControl = typeof(ScriptActionControl),
-        OptionsUserControlParams = new[] { "Javascript" },
         NameFormat = "Javascript Script: {0}"
     )]
-    internal class JavascriptAction : BaseScriptActionWithEnvironment<Engine>
+    public class JavascriptAction : BaseScriptActionWithEnvironment<Engine>
     {
         public JavascriptAction(string name, string description)
             : base(name, description)
@@ -26,7 +25,7 @@ namespace Key2Joy.Mapping
             ImageResource = "JS";
         }
 
-        internal override async Task Execute(IInputBag inputBag)
+        public override async Task Execute(IInputBag inputBag)
         {
             try
             {
@@ -39,7 +38,7 @@ namespace Key2Joy.Mapping
             }
         }
 
-        internal override void RegisterScriptingEnum(Type enumType)
+        public override void RegisterScriptingEnum(Type enumType)
         {
             var enumNames = Enum.GetNames(enumType);
 
@@ -64,7 +63,7 @@ namespace Key2Joy.Mapping
             environment.Execute($"Print(JSON.stringify({enumType.Name}))");
         }
 
-        internal override void RegisterScriptingMethod(string functionName, BaseAction instance, MethodInfo method)
+        public override void RegisterScriptingMethod(string functionName, BaseAction instance, MethodInfo method)
         {
             var parents = functionName.Split('.');
             var @delegate = new DelegateWrapper(environment, method.CreateDelegate(instance));
@@ -83,17 +82,17 @@ namespace Key2Joy.Mapping
                     if(i != parents.Length - 1)
                     {
                         if (!currentObject.TryGetValue(parents[i], out JsValue child))
-                            child = new ObjectInstance(environment);
+                            child = new JsObject(environment);
 
                         if (!(child is ObjectInstance childObject))
                             throw new NotImplementedException($"Tried using a non object({parents[i]}) as object parent while registering function: {functionName}!");
 
-                        currentObject.FastAddProperty(parents[i], childObject, false, true, true);
+                        currentObject.FastSetProperty(parents[i], new PropertyDescriptor(childObject, false, true, true));
                         currentObject = childObject;
                     }
                     else
                     {
-                        currentObject.FastAddProperty(parents[i], @delegate, false, true, true);
+                        currentObject.FastSetProperty(parents[i], new PropertyDescriptor(@delegate, false, true, true));
                     }
                 }
 
@@ -105,7 +104,7 @@ namespace Key2Joy.Mapping
                 @delegate);
         }
 
-        internal override Engine MakeEnvironment()
+        public override Engine MakeEnvironment()
         {
             return new Engine();
         }
@@ -117,12 +116,12 @@ namespace Key2Joy.Mapping
             base.RegisterEnvironmentObjects();
         }
 
-        internal override void OnStartListening(TriggerListener listener, ref List<BaseAction> otherActions)
+        public override void OnStartListening(TriggerListener listener, ref List<BaseAction> otherActions)
         {
             base.OnStartListening(listener, ref otherActions);
         }
 
-        internal override void OnStopListening(TriggerListener listener)
+        public override void OnStopListening(TriggerListener listener)
         {
             base.OnStopListening(listener);
 

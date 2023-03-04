@@ -11,5 +11,7 @@
 * `Left`
 * `Right`
 * `Middle`
+* `XButton1`
+* `XButton2`
 * `WheelUp`
 * `WheelDown`

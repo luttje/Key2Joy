@@ -22,7 +22,7 @@ namespace Key2Joy.Mapping
         Visibility = MappingMenuVisibility.Never,
         NameFormat = "Create a gif from a sequence of images"
     )]
-    internal class AnimationFromImagesAction : BaseAction
+    public class AnimationFromImagesAction : BaseAction
     {
         public AnimationFromImagesAction(string name, string description)
             : base(name, description)
@@ -149,7 +149,7 @@ namespace Key2Joy.Mapping
             }
         }
 
-        internal override async Task Execute(IInputBag inputBag = null)
+        public override async Task Execute(IInputBag inputBag = null)
         {
             // TODO: Currently this is only a script action...
         }

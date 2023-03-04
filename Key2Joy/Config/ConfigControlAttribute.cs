@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Key2Joy.Config
 {
@@ -15,10 +14,6 @@ namespace Key2Joy.Config
     public abstract class ConfigControlAttribute : Attribute
     {
         public string Text { get; set; }
-
-        public abstract Control MakeControl(object value, Control controlParent);
-        
-        public abstract object GetControlValue(Control control);
 
         /// <summary>
         /// Gets all configs and their property

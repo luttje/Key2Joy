@@ -19,5 +19,18 @@
 
         Wheel = 0x020A, // Wheel Up/Down
         WheelHorizontal = 0x020E, // Wheel Left/Right
+
+        /// <summary>
+        /// Posted when the user double-clicks the first or second X button while the cursor is in 
+        /// the nonclient area of a window. This message is posted to the window that contains the 
+        /// cursor. If a window has captured the mouse, this message is not posted.
+        /// </summary>
+        NonClientXButtonDoubleClick = 0x00AD,
+        NonClientXButtonDown = 0x00AB,
+        NonClientXButtonUp = 0x00AC,
+
+        XButtonDoubleClick = 0x020D,
+        XButtonDown = 0x020B,
+        XButtonUp = 0x020C,
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Key2Joy
 {
-    internal interface IAcceptAppCommands
+    public interface IAcceptAppCommands
     {
         bool RunAppCommand(AppCommand command);
     }

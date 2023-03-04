@@ -18,72 +18,63 @@ namespace Key2Joy.LowLevelInput
         public enum Buttons
         {
             None = 0,
+
             Left = 1,
             Right = 2,
             Middle = 4,
+
+            XButton1 = 5,
+            XButton2 = 6,
+
             WheelUp = 8,
             WheelDown = 16
         }
 
-        internal static Buttons ButtonsFromRaw(RawMouse rawMouse, out bool isDown)
+        private static Buttons GetXButton(int data)
         {
-            isDown = true;
-            
-            switch (rawMouse.Buttons)
-            {
-                case RawMouseButtonFlags.LeftButtonUp:
-                case RawMouseButtonFlags.LeftButtonDown:
-                    isDown = rawMouse.Buttons == RawMouseButtonFlags.LeftButtonDown;
-                    return Buttons.Left;
-                case RawMouseButtonFlags.RightButtonUp:
-                case RawMouseButtonFlags.RightButtonDown:
-                    isDown = rawMouse.Buttons == RawMouseButtonFlags.RightButtonDown;
-                    return Buttons.Right;
-                case RawMouseButtonFlags.MiddleButtonUp:
-                case RawMouseButtonFlags.MiddleButtonDown:
-                    isDown = rawMouse.Buttons == RawMouseButtonFlags.MiddleButtonDown;
-                    return Buttons.Middle;
-                case RawMouseButtonFlags.MouseWheel:
-                    if (rawMouse.ButtonData >= 0)
-                        return Buttons.WheelUp;
-                    else
-                        return Buttons.WheelDown;
-                // TODO: Support these
-                //case RawMouseButtonFlags.Button4Up:
-                //case RawMouseButtonFlags.Button4Down:
-                //    this.mouseButtons = MouseButtons.XButton1;
-                //    break;
-                //case RawMouseButtonFlags.Button5Up:
-                //case RawMouseButtonFlags.Button5Down:
-                //    this.mouseButtons = MouseButtons.XButton2;
-                //    break;
-;
-            }
+            var xButton = (data >> 16) & 0xFFFF;
 
-            throw new NotImplementedException($"Mouse button ({rawMouse.Buttons}) not yet supported!");
+            if (xButton == 1)
+                return Buttons.XButton1;
+            else if (xButton == 2)
+                return Buttons.XButton2;
+
+            return Buttons.None;
         }
-
-        internal static Buttons ButtonsFromState(MouseState mouseState, out bool isDown)
+        
+        public static Buttons ButtonsFromEvent(GlobalMouseHookEventArgs e, out bool isDown)
         {
             isDown = true;
-            
-            switch (mouseState)
+
+            switch (e.MouseState)
             {
                 case MouseState.LeftButtonUp:
                 case MouseState.LeftButtonDown:
-                    isDown = mouseState == MouseState.LeftButtonDown;
+                    isDown = e.MouseState == MouseState.LeftButtonDown;
                     return Buttons.Left;
                 case MouseState.RightButtonUp:
                 case MouseState.RightButtonDown:
-                    isDown = mouseState == MouseState.RightButtonDown;
+                    isDown = e.MouseState == MouseState.RightButtonDown;
                     return Buttons.Right;
                 case MouseState.MiddleButtonUp:
                 case MouseState.MiddleButtonDown:
-                    isDown = mouseState == MouseState.MiddleButtonDown;
+                    isDown = e.MouseState == MouseState.MiddleButtonDown;
                     return Buttons.Middle;
+                case MouseState.XButtonUp:
+                case MouseState.XButtonDown:
+                    isDown = e.MouseState == MouseState.XButtonDown;
+
+                    var xButton = GetXButton(e.RawData.MouseData);
+
+                    if (xButton != Buttons.None)
+                        return xButton;
+
+                    break;
             }
+
+            Console.WriteLine($"Mouse button ({e.RawData}) not yet supported!");
             
-            throw new NotImplementedException($"Mouse button ({mouseState}) not yet supported!");
+            return Buttons.None;
         }
     }
 }

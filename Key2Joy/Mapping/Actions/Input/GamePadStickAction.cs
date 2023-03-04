@@ -22,7 +22,7 @@ namespace Key2Joy.Mapping
         Name = "GamePad Stick Simulation",
         Image = "joystick"
     )]
-    internal class GamePadStickAction : BaseAction
+    public class GamePadStickAction : BaseAction
     {
 
         [JsonProperty]
@@ -42,7 +42,7 @@ namespace Key2Joy.Mapping
         {
         }
 
-        internal override void OnStartListening(TriggerListener listener, ref List<BaseAction> otherActions)
+        public override void OnStartListening(TriggerListener listener, ref List<BaseAction> otherActions)
         {
             base.OnStartListening(listener, ref otherActions);
 
@@ -89,7 +89,7 @@ namespace Key2Joy.Mapping
             await Execute();
         }
 
-        internal override async Task Execute(IInputBag inputBag = null)
+        public override async Task Execute(IInputBag inputBag = null)
         {
             var simPad = SimGamePad.Instance;
             var state = simPad.State[GamePadIndex];

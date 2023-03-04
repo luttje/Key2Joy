@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace Key2Joy.Util
 {
-    internal static class MethodInfoExtensions
+    public static class MethodInfoExtensions
     {
         // https://stackoverflow.com/a/40579063
         public static Delegate CreateDelegate(this MethodInfo methodInfo, object target)

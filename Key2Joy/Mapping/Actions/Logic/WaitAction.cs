@@ -3,17 +3,15 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Key2Joy.Mapping
 {
     [Action(
         Description = "Wait for a specified duration",
         Visibility = MappingMenuVisibility.UnlessTopLevel,
-        OptionsUserControl = typeof(WaitActionControl),
         NameFormat = "Wait for {0}ms"
     )]
-    internal class WaitAction : BaseAction
+    public class WaitAction : BaseAction
     {
         [JsonProperty]
         public TimeSpan WaitTime;
@@ -23,7 +21,7 @@ namespace Key2Joy.Mapping
         {
         }
 
-        internal override Task Execute(IInputBag inputBag = null)
+        public override Task Execute(IInputBag inputBag = null)
         {
             return Task.Delay(WaitTime);
         }

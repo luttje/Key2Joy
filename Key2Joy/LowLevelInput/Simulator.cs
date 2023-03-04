@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace Key2Joy.LowLevelInput
 {
-    internal class Simulator
+    public class Simulator
     {
         /// <summary>
         /// Declaration of external SendInput method
         /// </summary>
         [DllImport("user32.dll")]
-        internal static extern uint SendInput(
+        public static extern uint SendInput(
             uint nInputs,
             [MarshalAs(UnmanagedType.LPArray), In] INPUT[] pInputs,
             int cbSize);
@@ -21,12 +21,12 @@ namespace Key2Joy.LowLevelInput
         [DllImport("user32.dll")]
         static extern int GetSystemMetrics(SystemMetric smIndex);
 
-        internal static int CalculateAbsoluteCoordinateX(int x)
+        public static int CalculateAbsoluteCoordinateX(int x)
         {
             return (x * 65536) / GetSystemMetrics(SystemMetric.SM_CXSCREEN);
         }
 
-        internal static int CalculateAbsoluteCoordinateY(int y)
+        public static int CalculateAbsoluteCoordinateY(int y)
         {
             return (y * 65536) / GetSystemMetrics(SystemMetric.SM_CYSCREEN);
         }
@@ -60,11 +60,11 @@ namespace Key2Joy.LowLevelInput
         public struct InputUnion
         {
             [FieldOffset(0)]
-            internal SimulatedMouse.MOUSEINPUT mi;
+            public SimulatedMouse.MOUSEINPUT mi;
             [FieldOffset(0)]
-            internal SimulatedKeyboard.KEYBDINPUT ki;
+            public SimulatedKeyboard.KEYBDINPUT ki;
             [FieldOffset(0)]
-            internal HARDWAREINPUT hi;
+            public HARDWAREINPUT hi;
         }
 
         /// <summary>
@@ -73,9 +73,9 @@ namespace Key2Joy.LowLevelInput
         [StructLayout(LayoutKind.Sequential)]
         public struct HARDWAREINPUT
         {
-            internal int uMsg;
-            internal short wParamL;
-            internal short wParamH;
+            public int uMsg;
+            public short wParamL;
+            public short wParamH;
         }
     }
 }

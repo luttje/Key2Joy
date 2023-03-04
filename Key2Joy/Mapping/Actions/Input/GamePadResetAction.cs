@@ -8,7 +8,6 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Key2Joy.Mapping
 {
@@ -22,7 +21,7 @@ namespace Key2Joy.Mapping
         Name = "GamePad Reset Simulation",
         Image = "joystick"
     )]
-    internal class GamePadResetAction : BaseAction
+    public class GamePadResetAction : BaseAction
     {
         [JsonProperty]
         public int GamePadIndex { get; set; }
@@ -32,7 +31,7 @@ namespace Key2Joy.Mapping
         {
         }
         
-        internal override void OnStartListening(TriggerListener listener, ref List<BaseAction> otherActions)
+        public override void OnStartListening(TriggerListener listener, ref List<BaseAction> otherActions)
         {
             base.OnStartListening(listener, ref otherActions);
 
@@ -72,7 +71,7 @@ namespace Key2Joy.Mapping
             simPad.Update(GamePadIndex);
         }
 
-        internal override async Task Execute(IInputBag inputBag = null)
+        public override async Task Execute(IInputBag inputBag = null)
         {
             var simPad = SimGamePad.Instance;
             var state = simPad.State[GamePadIndex];

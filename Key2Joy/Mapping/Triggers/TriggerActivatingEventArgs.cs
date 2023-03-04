@@ -26,7 +26,7 @@ namespace Key2Joy.Mapping
             this.optionCandidateFilter = optionCandidateFilter;
         }
 
-        internal bool GetIsMappedOptionCandidate(BaseTrigger trigger)
+        public bool GetIsMappedOptionCandidate(BaseTrigger trigger)
         {
             if (trigger?.GetTriggerListener() != Listener)
                 return false;

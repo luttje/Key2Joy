@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Key2Joy.Mapping
 {
-    internal interface IActionOptionsControl
+    public interface IActionOptionsControl
     {
         /// <summary>
         /// Called to setup the options panel with a action
@@ -29,6 +29,5 @@ namespace Key2Joy.Mapping
         /// Called when the options on an action change
         /// </summary>
         event EventHandler OptionsChanged;
-        
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Key2Joy.Mapping
 {
-    internal class TriggerAttribute : MappingAttribute
+    public class TriggerAttribute : MappingAttribute
     {
 
         /// <summary>

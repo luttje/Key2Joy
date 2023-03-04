@@ -3,7 +3,7 @@
 namespace Key2Joy.LowLevelInput
 {
     // Source: https://stackoverflow.com/a/34384189
-    internal class GlobalKeyboardHookEventArgs : HandledEventArgs
+    public class GlobalKeyboardHookEventArgs : HandledEventArgs
     {
         public KeyboardState KeyboardState { get; private set; }
         public LowLevelKeyboardInputEvent KeyboardData { get; private set; }

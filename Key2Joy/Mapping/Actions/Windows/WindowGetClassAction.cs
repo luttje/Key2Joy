@@ -14,7 +14,7 @@ namespace Key2Joy.Mapping
         Visibility = MappingMenuVisibility.Never,
         NameFormat = "Get Window Class name"
     )]
-    internal class WindowGetClassAction : BaseAction
+    public class WindowGetClassAction : BaseAction
     {
         [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
         static extern int GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
@@ -50,7 +50,7 @@ namespace Key2Joy.Mapping
             return classNameBuilder.ToString();
         }
 
-        internal override async Task Execute(IInputBag inputBag = null)
+        public override async Task Execute(IInputBag inputBag = null)
         {
             // TODO: Currently this is only a script action...
         }
