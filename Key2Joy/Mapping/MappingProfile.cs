@@ -185,10 +185,21 @@ namespace Key2Joy.Mapping
                 ConfigManager.GetAppDirectory(),
                 SAVE_DIR);
 
-            if (Directory.Exists(legacyDirectory))
-                Directory.Move(legacyDirectory, directory);
+            if (Directory.Exists(legacyDirectory)) 
+            { 
+                if(Directory.Exists(directory))
+                {
+                    Directory.Move(legacyDirectory, FileSystem.FindNonExistingFile(legacyDirectory + "-%VERSION%"));
+                } 
+                else
+                {
+                    Directory.Move(legacyDirectory, directory);
+                }
+            } 
             else if (!Directory.Exists(directory))
+            {
                 Directory.CreateDirectory(directory);
+            }
 
             return directory;
         }
