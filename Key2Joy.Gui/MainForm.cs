@@ -21,9 +21,15 @@ namespace Key2Joy.Gui
     {
         private MappingProfile selectedProfile;
 
-        public MainForm()
+        public MainForm(bool shouldStartMinimized = false)
         {
             InitializeComponent();
+
+            if (shouldStartMinimized)
+            {
+                this.WindowState = FormWindowState.Minimized;
+                this.ShowInTaskbar = false;
+            }
 
             lblStatusActive.Visible = chkEnabled.Checked;
 
@@ -168,6 +174,11 @@ namespace Key2Joy.Gui
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            var lastLoadedProfile = MappingProfile.RestoreLastLoaded();
+
+            if (lastLoadedProfile != null)
+                SetSelectedProfile(lastLoadedProfile);
+
             // Ensure the manager knows which window handle catches all inputs
             Key2JoyManager.Instance.SetMainForm(this);
             Key2JoyManager.Instance.StatusChanged += (s, ev) =>
@@ -177,11 +188,6 @@ namespace Key2Joy.Gui
                 if(ev.Profile != null)
                     SetSelectedProfile(ev.Profile);
             };
-
-            var lastLoadedProfile = MappingProfile.RestoreLastLoaded();
-
-            if (lastLoadedProfile != null)
-                SetSelectedProfile(lastLoadedProfile);
         }
 
         private void btnCreateMapping_Click(object sender, EventArgs e)
@@ -473,6 +479,8 @@ namespace Key2Joy.Gui
         
         private void ntfIndicator_MouseDoubleClick(object sender, MouseEventArgs e)
         {
+            WindowState = FormWindowState.Normal;
+            ShowInTaskbar = true;
             Show();
         }
 

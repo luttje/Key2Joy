@@ -22,10 +22,22 @@ namespace Key2Joy.Gui
             Key2JoyManager.InitSafely(
                 OnRunAppCommand, 
                 () => {
+                    string[] args = Environment.GetCommandLineArgs();
+                    
                     Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault(false);
 
-                    ActiveForm = new InitForm();
+                    var shouldStartMinimized = false;
+
+                    foreach (string arg in args)
+                    {
+                        if (arg == "--minimized")
+                        {
+                            shouldStartMinimized = true;
+                        }
+                    }
+
+                    ActiveForm = new InitForm(shouldStartMinimized);
 
                     while (ActiveForm != null && !ActiveForm.IsDisposed)
                         Application.Run(ActiveForm);

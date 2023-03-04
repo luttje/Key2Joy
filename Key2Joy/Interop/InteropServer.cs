@@ -62,7 +62,15 @@ namespace Key2Joy.Interop
         private void OnClientConnected(IAsyncResult asyncResult)
         {
             var pipeServer = (NamedPipeServerStream)asyncResult.AsyncState;
-            pipeServer.EndWaitForConnection(asyncResult);
+            
+            try { 
+                pipeServer.EndWaitForConnection(asyncResult);
+            }
+            catch (ObjectDisposedException)
+            {
+                // Ignore when pipe is closed
+                return;
+            }
 
             // Read the first byte and use it to get the type struct
             var commandId = (byte)pipeServer.ReadByte();

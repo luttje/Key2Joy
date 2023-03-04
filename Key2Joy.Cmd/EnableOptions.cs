@@ -24,8 +24,6 @@ namespace Key2Joy.Cmd
                 profile = MappingProfile.Load(ProfilePath);
             else
                 profile = MappingProfile.RestoreLastLoaded();
-
-            Console.WriteLine($"Commanding Key2Joy to enable the profile: {profile.FilePath}");
             
             try 
             {
@@ -33,13 +31,15 @@ namespace Key2Joy.Cmd
                 {
                     ProfilePath = profile.FilePath
                 });
+
+                Console.WriteLine($"Commanded Key2Joy to enable the profile: {profile.FilePath}");
             }
             catch(TimeoutException)
             {
                 SafelyRetry(() =>
                 {
-                    Console.WriteLine("Key2Joy is not running, starting it now.");
-                    Program.StartKey2Joy();
+                    Console.WriteLine("Key2Joy is not running, starting it now...");
+                    Key2JoyManager.StartKey2Joy();
                     Handle();
                 });
             }

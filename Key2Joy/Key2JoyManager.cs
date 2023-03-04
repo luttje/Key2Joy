@@ -1,14 +1,13 @@
-﻿using Esprima.Ast;
-using FFMpegCore;
+﻿using FFMpegCore;
+using Key2Joy.Config;
 using Key2Joy.Interop;
 using Key2Joy.LowLevelInput;
 using Key2Joy.Mapping;
 using SimWinInput;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Key2Joy
@@ -17,6 +16,7 @@ namespace Key2Joy
         
     public class Key2JoyManager : IMessageFilter
     {
+        private const string READY_MESSAGE = "Key2Joy is ready";
         private static AppCommandRunner commandRunner;
         private MappingProfile armedProfile;
         private Form mainForm;
@@ -98,6 +98,8 @@ namespace Key2Joy
         {
             mainForm = form;
             Application.AddMessageFilter(this);
+
+            Console.WriteLine(READY_MESSAGE);
         }
 
         public bool GetIsArmed(MappingProfile profile = null)
@@ -175,6 +177,48 @@ namespace Key2Joy
             {
                 IsEnabled = false,
             });
+        }
+
+        /// <summary>
+        /// Starts Key2Joy, pausing until it's ready
+        /// </summary>
+        public static void StartKey2Joy(bool startMinimized = true, bool pauseUntilReady = true)
+        {
+            var executablePath = ConfigManager.Instance.LastInstallPath;
+
+            if (executablePath == null)
+            {
+                Console.WriteLine("Error! Key2Joy executable path is not known, please start Key2Joy at least once!");
+                return;
+            }
+
+            if (!System.IO.File.Exists(executablePath))
+            {
+                Console.WriteLine("Error! Key2Joy executable path is invalid, please start Key2Joy at least once (and don't move the executable)!");
+                return;
+            }
+
+            var process = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = executablePath,
+                    Arguments = startMinimized ? "--minimized" : "",
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true
+                }
+            };
+
+            process.Start();
+
+            if (!pauseUntilReady)
+                return;
+
+            while (!process.StandardOutput.EndOfStream)
+            {
+                if (process.StandardOutput.ReadLine() == READY_MESSAGE)
+                    break;
+            }
         }
     }
 }

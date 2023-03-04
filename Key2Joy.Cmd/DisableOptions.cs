@@ -9,18 +9,18 @@ namespace Key2Joy.Cmd
     {
         public override void Handle()
         {
-            Console.WriteLine("Commanding Key2Joy to disable the active profile.");
-            
             try
             {
                 InteropClient.Instance.SendCommand(new DisableCommand());
+                
+                Console.WriteLine("Commanded Key2Joy to disable the active profile.");
             }
             catch (TimeoutException)
             {
                 SafelyRetry(() =>
                 {
-                    Console.WriteLine("Key2Joy is not running, starting it now.");
-                    Program.StartKey2Joy();
+                    Console.WriteLine("Key2Joy is not running, starting it now...");
+                    Key2JoyManager.StartKey2Joy();
                     Handle();
                 });
             }
