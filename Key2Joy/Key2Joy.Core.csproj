@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Key2Joy</RootNamespace>
-    <AssemblyName>Key2Joy</AssemblyName>
+    <AssemblyName>Key2Joy.Core</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -35,7 +35,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\bin\Release\Key2Joy\Key2Joy.xml</DocumentationFile>
+    <DocumentationFile>..\bin\Release\Key2Joy\Key2Joy.Core.xml</DocumentationFile>
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
@@ -43,7 +43,7 @@
     <OutputPath>..\bin\x86\Debug\Key2Joy\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DocumentationFile>..\bin\x86\Debug\Key2Joy\Key2Joy.xml</DocumentationFile>
+    <DocumentationFile>..\bin\x86\Debug\Key2Joy\Key2Joy.Core.xml</DocumentationFile>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <LangVersion>latest</LangVersion>
@@ -52,7 +52,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>..\bin\x86\Release\Key2Joy\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile>..\bin\x86\Release\Key2Joy\Key2Joy.xml</DocumentationFile>
+    <DocumentationFile>..\bin\x86\Release\Key2Joy\Key2Joy.Core.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x86</PlatformTarget>

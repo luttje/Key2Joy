@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Key2Joy.Gui", "Key2Joy.Gui\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildMarkdownDocs", "BuildMarkdownDocs\BuildMarkdownDocs.csproj", "{75E34405-03B8-4123-BE76-BFF0BF1F890C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Key2Joy", "Key2Joy\Key2Joy.csproj", "{1A961914-67B8-4B11-80D4-280323BC7B25}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Key2Joy.Core", "Key2Joy\Key2Joy.Core.csproj", "{1A961914-67B8-4B11-80D4-280323BC7B25}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Key2Joy.Cmd", "Key2Joy.Cmd\Key2Joy.Cmd.csproj", "{FF955F62-E00D-46F4-A945-6677DF10FCA2}"
 EndProject
