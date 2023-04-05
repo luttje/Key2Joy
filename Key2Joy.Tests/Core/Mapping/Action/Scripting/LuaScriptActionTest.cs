@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Key2Joy.Tests.Unit.Core.Mapping.Action.Scripting
+namespace Key2Joy.Tests.Core.Mapping.Action.Scripting
 {
     [TestClass]
     public class LuaScriptActionTest

@@ -9,11 +9,12 @@
   <PropertyGroup>
     <PlatformTarget>x86</PlatformTarget>
     <BaseOutputPath>..\bin</BaseOutputPath>
-    <BaseIntermediateOutputPath>..\obj</BaseIntermediateOutputPath>
     <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <OutputType>Exe</OutputType>
+    <StartupObject>Key2Joy.Cmd.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="obj\**" />

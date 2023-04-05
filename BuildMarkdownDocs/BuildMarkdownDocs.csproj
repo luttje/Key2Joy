@@ -6,7 +6,6 @@
   <PropertyGroup>
     <PlatformTarget>x86</PlatformTarget>
     <BaseOutputPath>..\bin</BaseOutputPath>
-    <BaseIntermediateOutputPath>..\obj</BaseIntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>

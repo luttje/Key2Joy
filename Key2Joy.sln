@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Key2Joy.Cmd", "Key2Joy.Cmd\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Key2Joy.Setup", "Key2Joy.Setup\Key2Joy.Setup.csproj", "{0CFC1DBD-87E4-4DE4-94CB-A43A73B2A21B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Key2Joy.Tests.Unit", "Key2Joy.Tests.Unit\Key2Joy.Tests.Unit.csproj", "{AA7ABB23-F6E6-4BC5-B29A-3D66BC21C398}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Key2Joy.Tests", "Key2Joy.Tests\Key2Joy.Tests.csproj", "{AA7ABB23-F6E6-4BC5-B29A-3D66BC21C398}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

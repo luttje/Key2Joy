@@ -4,7 +4,7 @@ using System;
 using System.Diagnostics;
 using System.Threading;
 
-namespace Key2Joy.Tests.Unit.Core.Mapping.Action.Windows
+namespace Key2Joy.Tests.Core.Mapping.Action.Windows
 {
     [TestClass]
     public class WindowFindActionTest

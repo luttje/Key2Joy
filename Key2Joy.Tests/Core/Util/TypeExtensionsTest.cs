@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 
-namespace Key2Joy.Tests.Unit.Core.Util
+namespace Key2Joy.Tests.Core.Util
 {
     public class CoolList<T> : List<T> { }
 
