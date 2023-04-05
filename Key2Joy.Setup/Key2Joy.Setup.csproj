@@ -8,7 +8,6 @@
   </PropertyGroup>
   <PropertyGroup>
     <PlatformTarget>x86</PlatformTarget>
-    <BaseOutputPath>..\bin</BaseOutputPath>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>

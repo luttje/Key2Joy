@@ -1,0 +1,21 @@
+name: tests
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches: 
+      - '**'
+jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup .NET CLI
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 7.0.x
+      - name: Run Tests
+        run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat="lcov" /p:CoverletOutput="../coverage/"
+      - name: Coveralls for Key2Joy
+        uses: coverallsapp/github-action@v2.0.0
