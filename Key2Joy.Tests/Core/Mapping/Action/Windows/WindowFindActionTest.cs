@@ -20,9 +20,7 @@ namespace Key2Joy.Tests.Core.Mapping.Action.Windows
                 FileName = processName,
             });
 
-            Thread.Sleep(50);
-
-            var actualHandle = process.MainWindowHandle;
+            var actualHandle = WindowHelper.ResolveMainWindowHandle(process);
             var handle = action.ExecuteForScript(null, process.MainWindowTitle);
             process.Kill();
 

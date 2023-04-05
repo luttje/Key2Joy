@@ -33,8 +33,9 @@ namespace Key2Joy.Tests.Core.Mapping.Action.Windows
                 FileName = processName,
             });
 
-            Thread.Sleep(50);
-            
+            // Wait for the handle to become active
+            WindowHelper.ResolveMainWindowHandle(process);
+
             var result = action.ExecuteForScript(process.MainWindowHandle);
             process.Kill();
 
