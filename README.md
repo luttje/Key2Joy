@@ -1,7 +1,11 @@
 # ![](Key2Joy.Gui/Graphics/Icons/icon32.png?raw=true) Key2Joy
-Simulate a Joystick/Controller using your keyboard, mouse or other triggers.
 
-In addition to simply simulating a button being pressed on the Joystick, you can also write scripts with a more complex sequence of actions.
+[![tests](https://github.com/luttje/Key2Joy/actions/workflows/tests.yml/badge.svg)](https://github.com/luttje/Key2Joy/actions/workflows/tests.yml)
+[![Test Code Coverage Status](https://coveralls.io/repos/github/luttje/Key2Joy/badge.svg?branch=main)](https://coveralls.io/github/luttje/Key2Joy?branch=main)
+
+Simulate a Joystick/Controller/Gamepad using your keyboard, mouse or other triggers.
+
+In addition to simply simulating a button being pressed on the Joystick, you can also write Javascript and Lua scripts to execute a more complex sequence of actions.
 
 ---
 

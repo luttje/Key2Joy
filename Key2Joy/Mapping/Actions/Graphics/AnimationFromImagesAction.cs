@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Drawing.Imaging;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -89,12 +88,7 @@ namespace Key2Joy.Mapping
                 allFramePaths = Array.ConvertAll((object[])framePaths, fp => (string)fp);
             // End of WORKAROUND
 
-            var images = new ImageInfo[allFramePaths.Length];
-
-            for (int i = 0; i < allFramePaths.Length; i++)
-                images[i] = ImageInfo.FromPath(allFramePaths[i]);
-
-            JoinImageSequence(savePath, frameRate, images);
+            JoinImageSequence(savePath, frameRate, allFramePaths);
         }
 
         /// <remarks>
@@ -108,45 +102,9 @@ namespace Key2Joy.Mapping
         /// <param name="frameRate">FPS</param>
         /// <param name="images">Image sequence collection</param>
         /// <returns>Output video information.</returns>
-        private static bool JoinImageSequence(string output, double frameRate = 30, params ImageInfo[] images)
+        private static bool JoinImageSequence(string output, double frameRate = 30, params string[] images)
         {
-            var tempFolderName = Path.Combine(GlobalFFOptions.Current.TemporaryFilesFolder, Guid.NewGuid().ToString());
-            var temporaryImageFiles = images.Select((imageInfo, index) =>
-            {
-                using (var image = Image.FromFile(imageInfo.FullName))
-                {
-                    FFMpegHelper.ConversionSizeExceptionCheck(image);
-                    var destinationPath = Path.Combine(tempFolderName, $"{index.ToString().PadLeft(9, '0')}{imageInfo.Extension}");
-                    Directory.CreateDirectory(tempFolderName);
-                    File.Copy(imageInfo.FullName, destinationPath);
-                    return destinationPath;
-                }
-            }).ToArray();
-
-            var firstImage = images.First();
-            try
-            {
-                return FFMpegArguments
-                    .FromFileInput(Path.Combine(tempFolderName, "%09d.png"), false, inputOptions => inputOptions
-                        .WithFramerate(frameRate))
-                    .OutputToFile(output, true, options => options
-                        .ForcePixelFormat("yuv420p")
-                        .Resize(firstImage.Width, firstImage.Height))
-                    .ProcessSynchronously();
-            }
-            finally
-            {
-                Cleanup(temporaryImageFiles);
-                Directory.Delete(tempFolderName);
-            }
-        }
-        private static void Cleanup(IEnumerable<string> pathList)
-        {
-            foreach (var path in pathList)
-            {
-                if (File.Exists(path))
-                    File.Delete(path);
-            }
+            return FFMpeg.JoinImageSequence(output, frameRate, images);
         }
 
         public override async Task Execute(IInputBag inputBag = null)

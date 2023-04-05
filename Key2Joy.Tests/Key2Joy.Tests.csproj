@@ -23,4 +23,17 @@
       <Name>Key2Joy.Core</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="coverlet.msbuild" Version="3.2.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0"></PackageReference>
+    <PackageReference Include="MSTest.TestAdapter">
+      <Version>3.0.2</Version>
+    </PackageReference>
+    <PackageReference Include="MSTest.TestFramework">
+      <Version>3.0.2</Version>
+    </PackageReference>
+  </ItemGroup>
 </Project>

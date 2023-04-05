@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Instances;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -118,7 +119,16 @@ namespace Key2Joy.Config
             using (var reader = new JsonTextReader(sr))
                 instance = serializer.Deserialize<ConfigManager>(reader);
 
-            var executablePath = System.Reflection.Assembly.GetEntryAssembly().Location;
+            var assembly = System.Reflection.Assembly.GetEntryAssembly();
+
+            // If the assembly is null then we are running in a unit test
+            if (assembly == null)
+            {
+                instance.isInitialized = true;
+                return instance;
+            }
+
+            var executablePath = assembly.Location;
             if (executablePath.EndsWith("Key2Joy.exe") 
                 && instance.LastInstallPath != executablePath)
             {
