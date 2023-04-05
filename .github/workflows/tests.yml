@@ -15,8 +15,6 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: 7.0.x
-      - name: Go into root
-        run: cd ${{ github.workspace }}
       - name: Run Key2Joy Tests
         run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat="lcov" /p:CoverletOutput="../coverage/"
       - name: Coveralls for Key2Joy
