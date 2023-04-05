@@ -17,8 +17,7 @@ namespace Key2Joy.Tests.Core.Mapping.Action.Windows
         }
 
         /// <summary>
-        /// TODO: This test is super unstable because:
-        /// - The window may take longer to load
+        /// Tests if the Window Get Title Action can return the proper title.
         /// </summary>
         /// <param name="processName"></param>
         /// <param name="expectedTitle"></param>
