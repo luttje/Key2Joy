@@ -18,4 +18,4 @@ jobs:
       - name: Run Key2Joy Tests
         run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat="lcov" /p:CoverletOutput="${{ github.workspace }}/coverage/lcov.info"
       - name: Coveralls for Key2Joy
-        uses: coverallsapp/github-action@v2.0.0
+        uses: coverallsapp/github-action@v2
