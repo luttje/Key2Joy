@@ -14,6 +14,8 @@ namespace Key2Joy.Tests.Core.Mapping.Action.Scripting
         [TestMethod]
         public void Script_ExecutesLuaFunction_ChecksResult()
         {
+            ActionAttribute.BufferActions();
+            
             var action = new LuaScriptAction(string.Empty, string.Empty);
             var lua = action.SetupEnvironment();
 
