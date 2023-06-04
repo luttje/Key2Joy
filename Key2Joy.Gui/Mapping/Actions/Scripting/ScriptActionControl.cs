@@ -13,6 +13,9 @@ using System.Windows.Forms;
 
 namespace Key2Joy.Gui.Mapping
 {
+    [MappingControl(
+        ImageResourceName = "script_code"
+    )]
     public partial class ScriptActionControl : UserControl, IActionOptionsControl
     {
         public event EventHandler OptionsChanged;

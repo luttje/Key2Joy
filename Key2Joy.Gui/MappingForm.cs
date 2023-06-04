@@ -1,4 +1,5 @@
-﻿using Key2Joy.Mapping;
+﻿using Key2Joy.Gui.Mapping;
+using Key2Joy.Mapping;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -53,7 +54,7 @@ namespace Key2Joy.Gui
             if (comboBox.SelectedItem == null)
                 return null;
 
-            var selected = (KeyValuePair<TAttribute, Type>)comboBox.SelectedItem;
+            var selected = ((ImageComboBoxItem<KeyValuePair<TAttribute, Type>>)comboBox.SelectedItem).ItemValue;
             var selectedType = selected.Value;
             var attribute = selected.Key;
 
@@ -74,25 +75,11 @@ namespace Key2Joy.Gui
         private static UserControl CreateOptionsControl<TAttribute>(Type selectedType, TAttribute attribute) where TAttribute : MappingAttribute
         {
             UserControl optionsUserControl;
-            var typeName = selectedType.Name;
-            var parameters = new object[] {};
-
-            // If it's LuaScriptAction or JavascriptAction change the typename to ScriptAction
-            if (selectedType == typeof(LuaScriptAction) 
-                || selectedType == typeof(JavascriptAction))
-            {
-                typeName = "ScriptAction";
-                parameters = new object[]{
-                    selectedType == typeof(LuaScriptAction) ? "Lua" : "Javascript"
-                };
-            }
-
-            var fullName = $"{typeof(MappingForm).Namespace}.{nameof(Mapping)}.{typeName}Control";
-            var correspondingControl = Assembly.GetExecutingAssembly().GetType(fullName);
+            var correspondingControl = MappingControlAttribute.GetCorrespondingControlType(selectedType, out var parameters);
 
             if (correspondingControl == null)
                 return null;
-
+            
             optionsUserControl = (UserControl)Activator.CreateInstance(correspondingControl, parameters);
             return optionsUserControl;
         }

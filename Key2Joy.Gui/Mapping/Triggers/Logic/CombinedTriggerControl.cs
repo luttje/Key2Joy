@@ -12,6 +12,9 @@ using System.Windows.Forms;
 
 namespace Key2Joy.Gui.Mapping
 {
+    [MappingControl(
+        ImageResourceName = "link"
+    )]
     public partial class CombinedTriggerControl : UserControl, ITriggerOptionsControl
     {
         public event EventHandler OptionsChanged;

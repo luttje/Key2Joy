@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.pnlTriggerOptions = new System.Windows.Forms.Panel();
-            this.cmbTrigger = new System.Windows.Forms.ComboBox();
+            this.cmbTrigger = new ImageComboBox();
             this.SuspendLayout();
             // 
             // pnlTriggerOptions
@@ -71,6 +71,6 @@
         #endregion
 
         private System.Windows.Forms.Panel pnlTriggerOptions;
-        private System.Windows.Forms.ComboBox cmbTrigger;
+        private ImageComboBox cmbTrigger;
     }
 }

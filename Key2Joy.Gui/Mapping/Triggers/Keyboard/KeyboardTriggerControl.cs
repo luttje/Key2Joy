@@ -6,6 +6,9 @@ using Key2Joy.LowLevelInput;
 
 namespace Key2Joy.Gui.Mapping
 {
+    [MappingControl(
+        ImageResourceName = "keyboard"
+    )]
     public partial class KeyboardTriggerControl : UserControl, ITriggerOptionsControl
     {
         const string TEXT_CHANGE = "(press any key to select it as the trigger)";

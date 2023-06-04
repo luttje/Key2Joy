@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.pnlActionOptions = new System.Windows.Forms.Panel();
-            this.cmbAction = new System.Windows.Forms.ComboBox();
+            this.cmbAction = new ImageComboBox();
             this.SuspendLayout();
             // 
             // pnlActionOptions
@@ -70,6 +70,6 @@
         #endregion
 
         private System.Windows.Forms.Panel pnlActionOptions;
-        private System.Windows.Forms.ComboBox cmbAction;
+        private ImageComboBox cmbAction;
     }
 }

@@ -34,7 +34,7 @@ In addition to simply simulating a button being pressed on the Joystick, you can
 2. *(First time only)* Accept installation of the Scp Virtual Bus Driver
 3. Use the default mappings, modify them by double-clicking a row in the mapping-list, or add new mappings.
 
-   ![Screenshot showing the overview window. Off to the side the mapping dialog is showing all available actions.](.github/screenshot.png)
+   ![Screenshot showing the overview window. Off to the side the mapping dialog is showing all available actions.](Docs/screenshot.png)
 
    **A trigger** is something that Key2Joy will listen for. *E.g: a mouse move, key press, key release, etc...*
    > **⚠ Note:** The default behaviour of a trigger is disabled. This means setting the left mouse button as a trigger will make it so you can't left-click anymore until you abort this app.
