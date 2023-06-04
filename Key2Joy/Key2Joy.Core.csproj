@@ -13,6 +13,7 @@
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <DocumentationFile>..\bin\Release\Key2Joy\Key2Joy.xml</DocumentationFile>
+    <RootNamespace>Key2Joy</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="obj\**" />

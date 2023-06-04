@@ -12,6 +12,7 @@ using System.Windows.Forms;
 namespace Key2Joy.Gui.Mapping
 {
     [MappingControl(
+        ForType = typeof(Key2Joy.Mapping.SequenceAction),
         ImageResourceName = "text_list_numbers"
     )]
     public partial class SequenceActionControl : UserControl, IActionOptionsControl

@@ -3,11 +3,14 @@ using Key2Joy.Config;
 using Key2Joy.Interop;
 using Key2Joy.LowLevelInput;
 using Key2Joy.Mapping;
+using Key2Joy.Plugins;
 using SimWinInput;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace Key2Joy
@@ -20,7 +23,7 @@ namespace Key2Joy
         private static AppCommandRunner commandRunner;
         private MappingProfile armedProfile;
         private Form mainForm;
-        private List<TriggerListener> wndProcListeners = new List<TriggerListener>();
+        private readonly List<TriggerListener> wndProcListeners = new();
 
         public static Key2JoyManager instance;
         public static Key2JoyManager Instance
@@ -42,10 +45,18 @@ namespace Key2Joy
         /// <summary>
         /// Ensures Key2Joy is running and ready to accept commands as long as the main loop does not end.
         /// </summary>
-        public static void InitSafely(AppCommandRunner commandRunner, Action mainLoop)
+        public static void InitSafely(AppCommandRunner commandRunner, Action<PluginSet> mainLoop)
         {
             instance = new Key2JoyManager();
+
+            var pluginsDirectoryPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            pluginsDirectoryPath = Path.Combine(pluginsDirectoryPath, "Plugins");
             
+            var plugins = new PluginSet(pluginsDirectoryPath);
+
+            ActionAttribute.BufferActions(plugins.ActionTypes);
+            TriggerAttribute.BufferTriggers(plugins.TriggerTypes);
+
             Key2JoyManager.commandRunner = commandRunner;
 
             GlobalFFOptions.Configure(options => options.BinaryFolder = "./ffmpeg");
@@ -53,7 +64,7 @@ namespace Key2Joy
             try
             {
                 InteropServer.Instance.RestartListening();
-                mainLoop();
+                mainLoop(plugins);
             }
             finally
             {

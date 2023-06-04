@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+	<UseWindowsForms>true</UseWindowsForms>
     <TargetFramework>NET48</TargetFramework>
   </PropertyGroup>
   <PropertyGroup>
@@ -204,11 +205,6 @@
     <PackageReference Include="System.Xml.XDocument">
       <Version>4.3.0</Version>
     </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="Mapping\Actions\Logic\WaitActionControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
   </ItemGroup>
   <PropertyGroup>
     <PostBuildEvent>

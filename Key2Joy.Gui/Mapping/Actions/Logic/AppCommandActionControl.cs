@@ -12,6 +12,7 @@ using System.Windows.Forms;
 namespace Key2Joy.Gui.Mapping
 {
     [MappingControl(
+        ForType = typeof(Key2Joy.Mapping.AppCommandAction), 
         ImageResourceName = "application_xp_terminal"
     )]
     public partial class AppCommandActionControl : UserControl, IActionOptionsControl

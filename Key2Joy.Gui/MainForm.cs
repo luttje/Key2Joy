@@ -516,5 +516,15 @@ namespace Key2Joy.Gui
         {
             Process.Start("https://gamepad-tester.com/");
         }
+
+        private void openPluginsFolderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Process.Start(Program.Plugins.Folder);
+        }
+
+        private void managePluginsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new PluginsForm().ShowDialog();
+        }
     }
 }

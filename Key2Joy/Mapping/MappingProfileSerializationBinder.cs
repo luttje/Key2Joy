@@ -8,15 +8,13 @@ namespace Key2Joy.Mapping
 {
     public class MappingProfileSerializationBinder : ISerializationBinder
     {
-        private IList<Type> allowedTypes;
+        private List<Type> allowedTypes;
 
         public MappingProfileSerializationBinder()
         {
-            allowedTypes = Assembly.GetExecutingAssembly()
-                .GetTypes()
-                .Where(t => t.IsSubclassOf(typeof(BaseTrigger))
-                    || t.IsSubclassOf(typeof(BaseAction)))
-                .ToList();
+            allowedTypes = new List<Type>();
+            allowedTypes.AddRange(ActionAttribute.GetAllActions().Select(x => x.Key));
+            allowedTypes.AddRange(TriggerAttribute.GetAllTriggers().Select(x => x.Key));
         }
 
         public Type BindToType(string assemblyName, string typeName)

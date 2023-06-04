@@ -1,4 +1,5 @@
 ﻿using Key2Joy.Mapping;
+using Key2Joy.Plugins;
 using SimWinInput;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ namespace Key2Joy.Gui
     public static class Program
     {        
         public static Form ActiveForm { get; set; }
+        public static PluginSet Plugins { get; private set; }
 
         /// <summary>
         /// The main entry point for the application.
@@ -23,8 +25,10 @@ namespace Key2Joy.Gui
         {
             Key2JoyManager.InitSafely(
                 OnRunAppCommand, 
-                () => {
+                (plugins) => {
                     string[] args = Environment.GetCommandLineArgs();
+
+                    Plugins = plugins;
                     
                     Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault(false);

@@ -14,6 +14,11 @@ using System.Windows.Forms;
 namespace Key2Joy.Gui.Mapping
 {
     [MappingControl(
+        ForTypes = new[]
+        {
+            typeof(Key2Joy.Mapping.JavascriptAction),
+            typeof(Key2Joy.Mapping.LuaScriptAction),
+        },
         ImageResourceName = "script_code"
     )]
     public partial class ScriptActionControl : UserControl, IActionOptionsControl

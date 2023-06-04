@@ -7,6 +7,7 @@ using Key2Joy.Mapping;
 namespace Key2Joy.Gui.Mapping
 {
     [MappingControl(
+        ForType = typeof(Key2Joy.Mapping.MouseMoveTrigger),
         ImageResourceName = "mouse"
     )]
     public partial class MouseMoveTriggerControl : UserControl, ITriggerOptionsControl

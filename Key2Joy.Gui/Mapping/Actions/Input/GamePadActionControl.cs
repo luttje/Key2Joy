@@ -13,6 +13,7 @@ using System.Windows.Forms;
 namespace Key2Joy.Gui.Mapping
 {
     [MappingControl(
+        ForType = typeof(Key2Joy.Mapping.GamePadAction),
         ImageResourceName = "joystick"
     )]
     public partial class GamePadActionControl : UserControl, IActionOptionsControl

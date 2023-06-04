@@ -9,6 +9,35 @@ namespace Key2Joy.Mapping
 {
     public class ActionAttribute : MappingAttribute
     {
+        private static Dictionary<Type, ActionAttribute> actions;
+        
+        /// <summary>
+        /// Loads all actions in the assembly, optionally merging it with additional action types.
+        /// </summary>
+        /// <param name="additionalActions"></param>
+        public static void BufferActions(IReadOnlyList<Type> additionalActions = null)
+        {
+            actions = Assembly.GetExecutingAssembly()
+                .GetTypes()
+                .Where(t => t.GetCustomAttribute(typeof(ActionAttribute), false) != null)
+                .ToDictionary(t => t, t => t.GetCustomAttribute(typeof(ActionAttribute), false) as ActionAttribute);
+
+            if(additionalActions == null)
+            {
+                return;
+            }
+
+            foreach (var action in additionalActions)
+            {
+                if (actions.ContainsKey(action))
+                {
+                    Console.WriteLine("Action {0} already exists in the action buffer. Overwriting.", action.Name);
+                }
+
+                actions.Add(action, action.GetCustomAttribute(typeof(ActionAttribute), false) as ActionAttribute);
+            }
+        }
+        
         /// <summary>
         /// Gets all action types and their attribute annotations
         /// </summary>
@@ -16,10 +45,7 @@ namespace Key2Joy.Mapping
         /// <returns></returns>
         public static Dictionary<Type, ActionAttribute> GetAllActions()
         {
-            return Assembly.GetExecutingAssembly()
-                .GetTypes()
-                .Where(t => t.GetCustomAttribute(typeof(ActionAttribute), false) != null)
-                .ToDictionary(t => t, t => t.GetCustomAttribute(typeof(ActionAttribute), false) as ActionAttribute);
+            return actions;
         }
         
         /// <summary>
@@ -30,24 +56,23 @@ namespace Key2Joy.Mapping
         public static SortedDictionary<ActionAttribute, Type> GetAllActions(bool forTopLevel)
         {
             return new SortedDictionary<ActionAttribute, Type>(
-                Assembly.GetExecutingAssembly()
-                .GetTypes()
-                .Where(t =>
-                {
-                    var actionAttribute = t.GetCustomAttributes(typeof(ActionAttribute), false).FirstOrDefault() as ActionAttribute;
+                actions
+                    .Where(kvp =>
+                    {
+                        var actionAttribute = kvp.Value;
 
-                    if (actionAttribute == null
-                    || actionAttribute.Visibility == MappingMenuVisibility.Never)
-                        return false;
+                        if (actionAttribute == null
+                        || actionAttribute.Visibility == MappingMenuVisibility.Never)
+                            return false;
 
-                    if (forTopLevel)
-                        return actionAttribute.Visibility == MappingMenuVisibility.Always
-                            || actionAttribute.Visibility == MappingMenuVisibility.OnlyTopLevel;
+                        if (forTopLevel)
+                            return actionAttribute.Visibility == MappingMenuVisibility.Always
+                                || actionAttribute.Visibility == MappingMenuVisibility.OnlyTopLevel;
 
-                    return actionAttribute.Visibility == MappingMenuVisibility.Always || actionAttribute.Visibility == MappingMenuVisibility.UnlessTopLevel;
-                })
-                .ToDictionary(t => t.GetCustomAttribute(typeof(ActionAttribute), false) as ActionAttribute, t => t)
-            );
+                        return actionAttribute.Visibility == MappingMenuVisibility.Always || actionAttribute.Visibility == MappingMenuVisibility.UnlessTopLevel;
+                    })
+                    .ToDictionary(t => t.Value, t => t.Key)
+                );
         }
     }
 }
