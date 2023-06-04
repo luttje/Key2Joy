@@ -11,6 +11,9 @@ using System.Windows.Forms;
 
 namespace Key2Joy.Gui.Mapping
 {
+    [MappingControl(
+        ImageResourceName = "text_list_numbers"
+    )]
     public partial class SequenceActionControl : UserControl, IActionOptionsControl
     {
         public event EventHandler OptionsChanged;
@@ -59,8 +62,19 @@ namespace Key2Joy.Gui.Mapping
 
         private void RemoveChildAction(BaseAction action)
         {
+            var index = lstActions.Items.IndexOf(action);
+            
             childActions.Remove(action);
             lstActions.Items.Remove(action);
+
+            if (lstActions.Items.Count > 0)
+            {
+                if (index >= lstActions.Items.Count)
+                {
+                    index = lstActions.Items.Count - 1;
+                }
+                lstActions.SelectedIndex = index;
+            }
         }
 
         private void btnAdd_Click(object sender, EventArgs e)

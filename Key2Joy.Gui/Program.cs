@@ -2,8 +2,10 @@
 using SimWinInput;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Resources;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -50,6 +52,12 @@ namespace Key2Joy.Gui
             ActiveForm = form;
 
             oldForm.Close();
+        }
+
+        internal static Bitmap ResourceBitmapFromName(string name)
+        {
+            ResourceManager rm = Properties.Resources.ResourceManager;
+            return (Bitmap)rm.GetObject(name);
         }
 
         private static bool OnRunAppCommand(AppCommand command)

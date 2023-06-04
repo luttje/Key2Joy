@@ -11,6 +11,9 @@ using System.Windows.Forms;
 
 namespace Key2Joy.Gui.Mapping
 {
+    [MappingControl(
+        ImageResourceName = "application_xp_terminal"
+    )]
     public partial class AppCommandActionControl : UserControl, IActionOptionsControl
     {
         public event EventHandler OptionsChanged;

@@ -12,6 +12,9 @@ using System.Windows.Forms;
 
 namespace Key2Joy.Gui.Mapping
 {
+    [MappingControl(
+        ImageResourceName = "joystick"
+    )]
     public partial class GamePadActionControl : UserControl, IActionOptionsControl
     {
         public event EventHandler OptionsChanged;

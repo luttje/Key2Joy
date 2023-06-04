@@ -35,9 +35,9 @@ namespace Key2Joy.Gui.Mapping
                 return;
             }
 
-            var selected = (KeyValuePair<ActionAttribute, Type>)cmbAction.SelectedItem;
-            var selectedType = selected.Value;
-            var attribute = selected.Key;
+            var selected = (ImageComboBoxItem<KeyValuePair<ActionAttribute, Type>>)cmbAction.SelectedItem;
+            var selectedType = selected.ItemValue.Value;
+            var attribute = selected.ItemValue.Key;
 
             if (Action == null || Action.GetType() != selectedType)
                 Action = BaseAction.MakeAction(selectedType, attribute);
@@ -63,8 +63,8 @@ namespace Key2Joy.Gui.Mapping
             if (!isLoaded)
                 return;
 
-            var selected = cmbAction.Items.Cast<KeyValuePair<ActionAttribute, Type>>();
-            var selectedType = selected.FirstOrDefault(x => x.Value == action.GetType());
+            var selected = cmbAction.Items.Cast<ImageComboBoxItem<KeyValuePair<ActionAttribute, Type>>>();
+            var selectedType = selected.FirstOrDefault(x => x.ItemValue.Value == action.GetType());
             cmbAction.SelectedItem = selectedType;
         }
 
@@ -72,9 +72,16 @@ namespace Key2Joy.Gui.Mapping
         {
             var actionTypes = ActionAttribute.GetAllActions(IsTopLevel);
 
-            cmbAction.DataSource = new BindingSource(actionTypes, null);
-            cmbAction.DisplayMember = "Key";
-            cmbAction.ValueMember = "Value";
+            foreach (var keyValuePair in actionTypes)
+            {
+                var control = MappingControlAttribute.GetCorrespondingControlType(keyValuePair.Value, out _);
+                var customImage = control?.GetCustomAttribute<MappingControlAttribute>()?.ImageResourceName;
+                var image = Program.ResourceBitmapFromName(customImage ?? "error");
+                var item = new ImageComboBoxItem<KeyValuePair<ActionAttribute, Type>>(keyValuePair, new Bitmap(image), "Key");
+
+                cmbAction.Items.Add(item);
+            }
+
             cmbAction.SelectedIndex = -1;
 
             isLoaded = true;

@@ -36,11 +36,11 @@ namespace Key2Joy.Gui.Mapping
                 return;
             }
 
-            var selected = (KeyValuePair<TriggerAttribute, Type>)cmbTrigger.SelectedItem;
-            var selectedType = selected.Value;
-            var attribute = selected.Key;
+            var selected = (ImageComboBoxItem<KeyValuePair<TriggerAttribute, Type>>)cmbTrigger.SelectedItem;
+            var selectedType = selected.ItemValue.Value;
+            var attribute = selected.ItemValue.Key;
 
-            if(Trigger == null || Trigger.GetType() != selectedType)
+            if (Trigger == null || Trigger.GetType() != selectedType)
                 Trigger = (BaseTrigger)Activator.CreateInstance(selectedType, new object[]
                 {
                     attribute.NameFormat,
@@ -60,8 +60,8 @@ namespace Key2Joy.Gui.Mapping
             if (!isLoaded)
                 return;
             
-            var selected = cmbTrigger.Items.Cast<KeyValuePair<TriggerAttribute, Type>>();
-            var selectedType = selected.FirstOrDefault(x => x.Value == trigger.GetType());
+            var selected = cmbTrigger.Items.Cast<ImageComboBoxItem<KeyValuePair<TriggerAttribute, Type>>>();
+            var selectedType = selected.FirstOrDefault(x => x.ItemValue.Value == trigger.GetType());
             cmbTrigger.SelectedItem = selectedType;
         }
 
@@ -69,10 +69,15 @@ namespace Key2Joy.Gui.Mapping
         {
             var triggerTypes = TriggerAttribute.GetAllTriggers(IsTopLevel);
 
-            cmbTrigger.DataSource = new BindingSource(triggerTypes, null);
-            cmbTrigger.DisplayMember = "Key";
-            cmbTrigger.ValueMember = "Value";
-            cmbTrigger.SelectedIndex = -1;
+            foreach (var keyValuePair in triggerTypes)
+            {
+                var control = MappingControlAttribute.GetCorrespondingControlType(keyValuePair.Value, out _);
+                var customImage = control.GetCustomAttribute<MappingControlAttribute>()?.ImageResourceName;
+                var image = Program.ResourceBitmapFromName(customImage ?? "error");
+                var item = new ImageComboBoxItem<KeyValuePair<TriggerAttribute, Type>>(keyValuePair, new Bitmap(image), "Key");
+
+                cmbTrigger.Items.Add(item);
+            }
 
             isLoaded = true;
 
@@ -111,8 +116,8 @@ namespace Key2Joy.Gui.Mapping
 
         private void OnOptionsChanged(object sender, EventArgs e)
         {
-            var selected = (KeyValuePair<TriggerAttribute, Type>)cmbTrigger.SelectedItem;
-            var attribute = selected.Key;
+            var selected = (ImageComboBoxItem<KeyValuePair<TriggerAttribute, Type>>)cmbTrigger.SelectedItem;
+            var attribute = selected.ItemValue.Key;
 
             if (options == null) // TODO: what did I use this for before refactoring to seperate logic and GUI? --> || attribute.OptionsUserControl != options.GetType() 
                 return;

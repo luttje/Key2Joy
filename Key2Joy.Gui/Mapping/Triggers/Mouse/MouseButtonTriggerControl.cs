@@ -6,6 +6,9 @@ using Key2Joy.LowLevelInput;
 
 namespace Key2Joy.Gui.Mapping
 {
+    [MappingControl(
+        ImageResourceName = "mouse"
+    )]
     public partial class MouseButtonTriggerControl : UserControl, ITriggerOptionsControl
     {
         public event EventHandler OptionsChanged;
