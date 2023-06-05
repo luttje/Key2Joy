@@ -78,14 +78,12 @@ namespace Key2Joy.Gui
 
         private static UserControl CreateOptionsControl<TAttribute>(string selectedTypeName, TAttribute attribute) where TAttribute : MappingAttribute
         {
-            UserControl optionsUserControl;
-            var correspondingControl = MappingControlAttribute.GetCorrespondingControlType(selectedTypeName);
+            var mappingControlFactory = MappingControlRepository.GetMappingControlFactory(selectedTypeName);
 
-            if (correspondingControl == null)
+            if (mappingControlFactory == null)
                 return null;
-            
-            optionsUserControl = (UserControl)Activator.CreateInstance(correspondingControl);
-            return optionsUserControl;
+
+            return mappingControlFactory.CreateInstance<UserControl>();
         }
 
         private void btnSaveMapping_Click(object sender, EventArgs e)

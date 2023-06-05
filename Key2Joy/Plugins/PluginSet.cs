@@ -31,11 +31,18 @@ namespace Key2Joy.Plugins
         private readonly string[] pluginDirectoriesPaths;
         public IReadOnlyList<string> PluginAssemblyPaths => pluginDirectoriesPaths;
 
-        private readonly List<MappingTypeFactory<AbstractAction>> actionTypeFactories = new();
-        public IReadOnlyList<MappingTypeFactory<AbstractAction>> ActionTypeFactories => actionTypeFactories;
+        /**
+         * Plugin customizations
+         */
+        private readonly List<MappingTypeFactory<AbstractAction>> actionFactories = new();
+        public IReadOnlyList<MappingTypeFactory<AbstractAction>> ActionFactories => actionFactories;
 
-        private readonly List<MappingTypeFactory<AbstractTrigger>> triggerTypeFactories = new();
-        public IReadOnlyList<MappingTypeFactory<AbstractTrigger>> TriggerTypeFactories => triggerTypeFactories;
+        private readonly List<MappingTypeFactory<AbstractTrigger>> triggerFactories = new();
+        public IReadOnlyList<MappingTypeFactory<AbstractTrigger>> TriggerFactories => triggerFactories;
+
+        private readonly List<MappingControlFactory> mappingControlFactories = new();
+        public IReadOnlyList<MappingControlFactory> MappingControlFactories => mappingControlFactories;
+
 
         public string PluginsFolder { get; private set; }
 
@@ -103,19 +110,19 @@ namespace Key2Joy.Plugins
                         
                         var cecilMappingAttribute = actionType.CustomAttributes.Single(ca => ca.AttributeType.Name == nameof(ActionAttribute));
                         var actionAttribute = new ActionAttribute();
-                        foreach (var field in cecilMappingAttribute.Fields)
+                        foreach (var property in cecilMappingAttribute.Properties)
                         {
-                            if (field.Name == nameof(ActionAttribute.Description))
+                            if (property.Name == nameof(ActionAttribute.Description))
                             {
-                                actionAttribute.Description = (string)field.Argument.Value;
+                                actionAttribute.Description = (string)property.Argument.Value;
                             }
-                            else if (field.Name == nameof(ActionAttribute.NameFormat))
+                            else if (property.Name == nameof(ActionAttribute.NameFormat))
                             {
-                                actionAttribute.NameFormat = (string)field.Argument.Value;
+                                actionAttribute.NameFormat = (string)property.Argument.Value;
                             }
-                            else if (field.Name == nameof(ActionAttribute.Visibility))
+                            else if (property.Name == nameof(ActionAttribute.Visibility))
                             {
-                                actionAttribute.Visibility = (MappingMenuVisibility)field.Argument.Value;
+                                actionAttribute.Visibility = (MappingMenuVisibility)property.Argument.Value;
                             }
                         }
 
@@ -136,7 +143,7 @@ namespace Key2Joy.Plugins
                             }
                         }
 
-                        actionTypeFactories.Add(
+                        actionFactories.Add(
                             new AppDomainMappingTypeFactory<AbstractAction>(
                                 sandboxDomain,
                                 pluginAssemblyPath,
@@ -155,23 +162,23 @@ namespace Key2Joy.Plugins
                         
                         var cecilMappingAttribute = triggerType.CustomAttributes.Single(ca => ca.AttributeType.Name == nameof(TriggerAttribute));
                         var triggerAttribute = new TriggerAttribute();
-                        foreach (var field in cecilMappingAttribute.Fields)
+                        foreach (var property in cecilMappingAttribute.Properties)
                         {
-                            if (field.Name == nameof(TriggerAttribute.Description))
+                            if (property.Name == nameof(TriggerAttribute.Description))
                             {
-                                triggerAttribute.Description = (string)field.Argument.Value;
+                                triggerAttribute.Description = (string)property.Argument.Value;
                             }
-                            else if (field.Name == nameof(TriggerAttribute.NameFormat))
+                            else if (property.Name == nameof(TriggerAttribute.NameFormat))
                             {
-                                triggerAttribute.NameFormat = (string)field.Argument.Value;
+                                triggerAttribute.NameFormat = (string)property.Argument.Value;
                             }
-                            else if (field.Name == nameof(TriggerAttribute.Visibility))
+                            else if (property.Name == nameof(TriggerAttribute.Visibility))
                             {
-                                triggerAttribute.Visibility = (MappingMenuVisibility)field.Argument.Value;
+                                triggerAttribute.Visibility = (MappingMenuVisibility)property.Argument.Value;
                             }
                         }
 
-                        triggerTypeFactories.Add(
+                        triggerFactories.Add(
                             new AppDomainMappingTypeFactory<AbstractTrigger>(
                                 sandboxDomain,
                                 pluginAssemblyPath,
@@ -181,6 +188,52 @@ namespace Key2Joy.Plugins
                             )
                         );
                     }
+
+                    foreach (var type in pluginAssembly.MainModule.Types)
+                    {
+                        var cecilMappingControlAttribute = type.CustomAttributes.SingleOrDefault(ca => ca.AttributeType.Name == nameof(MappingControlAttribute));
+                        
+                        if (cecilMappingControlAttribute == null)
+                        {
+                            continue;
+                        }
+
+                        string imageResourceName = "error"; // Default value in MappingControlAttribute should make this irrelevant
+                        var forTypes = new List<string>();
+
+                        foreach (var property in cecilMappingControlAttribute.Properties)
+                        {
+                            if (property.Name == nameof(MappingControlAttribute.ImageResourceName))
+                            {
+                                imageResourceName = (string)property.Argument.Value;
+                            }
+                            else if (property.Name == nameof(MappingControlAttribute.ForTypes))
+                            {
+                                foreach (var forType in property.Argument.Value as CustomAttributeArgument[])
+                                {
+                                    forTypes.Add(((TypeDefinition)forType.Value).FullName);
+                                }
+                            }
+                            else if (property.Name == nameof(MappingControlAttribute.ForType))
+                            {
+                                forTypes.Add(((TypeDefinition)property.Argument.Value).FullName);
+                            }
+                        }
+
+                        foreach (var forType in forTypes)
+                        {
+                            var mappingControlFactory = new AppDomainMappingControlFactory(
+                                sandboxDomain,
+                                pluginAssemblyPath,
+                                type.FullName,
+                                forType,
+                                imageResourceName
+                            );
+
+                            mappingControlFactories.Add(mappingControlFactory);
+                        }
+                    }
+
                     //var action = (AbstractAction)sandboxDomain.CreateInstanceFromAndUnwrap(pluginAssemblyPath, plugin.ActionFullTypeNames[0]);
                     // To call async methods use:
                     // Source: https://stackoverflow.com/a/63824188

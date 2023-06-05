@@ -66,8 +66,9 @@ namespace Key2Joy
 
             var plugins = new PluginSet(pluginDirectoriesPaths);
 
-            ActionsRepository.Buffer(plugins.ActionTypeFactories);
-            TriggersRepository.Buffer(plugins.TriggerTypeFactories);
+            ActionsRepository.Buffer(plugins.ActionFactories);
+            TriggersRepository.Buffer(plugins.TriggerFactories);
+            MappingControlRepository.Buffer(plugins.MappingControlFactories);
 
             Key2JoyManager.commandRunner = commandRunner;
 

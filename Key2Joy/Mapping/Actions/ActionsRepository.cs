@@ -45,21 +45,20 @@ namespace Key2Joy.Mapping
                 return;
             }
 
-            foreach (var actionTypeFactory in additionalActionTypeFactories)
+            foreach (var actionFactory in additionalActionTypeFactories)
             {
-                if (actions.ContainsKey(actionTypeFactory.FullTypeName))
+                if (actions.ContainsKey(actionFactory.FullTypeName))
                 {
-                    Console.WriteLine("Action {0} already exists in the action buffer. Overwriting.", actionTypeFactory.FullTypeName);
+                    Console.WriteLine("Action {0} already exists in the action buffer. Overwriting.", actionFactory.FullTypeName);
                 }
 
-                actions.Add(actionTypeFactory.FullTypeName, actionTypeFactory);
+                actions.Add(actionFactory.FullTypeName, actionFactory);
             }
         }
 
         /// <summary>
         /// Gets all action types and their attribute annotations
         /// </summary>
-        /// <param name="forTopLevel"></param>
         /// <returns></returns>
         public static Dictionary<string, MappingTypeFactory<AbstractAction>> GetAllActions()
         {
@@ -71,7 +70,6 @@ namespace Key2Joy.Mapping
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
         internal static MappingTypeFactory<AbstractAction> GetAction(Type type)
         {
             return actions[type.FullName];

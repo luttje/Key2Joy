@@ -1,9 +1,8 @@
 ﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.Plugin.Midi.Mapping;
 using System;
 using System.Windows.Forms;
 
-namespace Key2Joy.Gui.Mapping
+namespace Key2Joy.Plugin.Midi.Mapping
 {
     [MappingControl(
         ForType = typeof(Key2Joy.Plugin.Midi.Mapping.GetHelloWorldAction),

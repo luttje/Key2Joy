@@ -33,14 +33,14 @@ namespace Key2Joy.Mapping
                 return;
             }
 
-            foreach (var triggerTypeFactory in additionalTriggerTypeFactories)
+            foreach (var triggerFactory in additionalTriggerTypeFactories)
             {
-                if (triggers.ContainsKey(triggerTypeFactory.FullTypeName))
+                if (triggers.ContainsKey(triggerFactory.FullTypeName))
                 {
-                    Console.WriteLine("Trigger {0} already exists in the trigger buffer. Overwriting.", triggerTypeFactory.FullTypeName);
+                    Console.WriteLine("Trigger {0} already exists in the trigger buffer. Overwriting.", triggerFactory.FullTypeName);
                 }
 
-                triggers.Add(triggerTypeFactory.FullTypeName, triggerTypeFactory);
+                triggers.Add(triggerFactory.FullTypeName, triggerFactory);
             }
         }
 

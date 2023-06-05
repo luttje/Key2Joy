@@ -38,18 +38,18 @@ namespace Key2Joy.Mapping
             // Register all scripting available action methods and enumerations
             foreach (var pair in actionTypes)
             {
-                var actionTypeFactory = pair.Value;
+                var actionFactory = pair.Value;
 
                 foreach (var exposedEnumeration in ExposedEnumerations)
                 {
                     RegisterScriptingEnum(exposedEnumeration);
                 }
 
-                foreach (var exposedMethods in actionTypeFactory.ExposedMethods)
+                foreach (var exposedMethods in actionFactory.ExposedMethods)
                 {
                     var instance = IsStarted ? 
-                        MakeStartedAction(actionTypeFactory) 
-                        : MakeAction(actionTypeFactory);
+                        MakeStartedAction(actionFactory) 
+                        : MakeAction(actionFactory);
 
                     RegisterScriptingMethod(
                         exposedMethods,

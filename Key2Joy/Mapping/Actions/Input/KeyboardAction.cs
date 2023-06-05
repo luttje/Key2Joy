@@ -54,12 +54,12 @@ namespace Key2Joy.Mapping
 
         public static List<MappedOption> GetAllButtonActions(PressState pressState)
         {
-            var actionTypeFactory = ActionsRepository.GetAction(typeof(KeyboardAction));
+            var actionFactory = ActionsRepository.GetAction(typeof(KeyboardAction));
 
             var actions = new List<MappedOption>();
             foreach (var key in GetAllKeys())
             {
-                var action = (KeyboardAction)MakeAction(actionTypeFactory);
+                var action = (KeyboardAction)MakeAction(actionFactory);
                 action.Key = key;
                 action.PressState = pressState;
 

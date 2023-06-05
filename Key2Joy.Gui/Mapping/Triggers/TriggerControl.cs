@@ -73,8 +73,8 @@ namespace Key2Joy.Gui.Mapping
 
             foreach (var keyValuePair in triggerTypes)
             {
-                var control = MappingControlAttribute.GetCorrespondingControlType(keyValuePair.Value.FullTypeName);
-                var customImage = control.GetCustomAttribute<MappingControlAttribute>()?.ImageResourceName;
+                var mappingControlFactory = MappingControlRepository.GetMappingControlFactory(keyValuePair.Value.FullTypeName);
+                var customImage = mappingControlFactory.ImageResourceName;
                 var image = Program.ResourceBitmapFromName(customImage ?? "error");
                 var item = new ImageComboBoxItem<KeyValuePair<TriggerAttribute, MappingTypeFactory<AbstractTrigger>>>(keyValuePair, new Bitmap(image), "Key");
 

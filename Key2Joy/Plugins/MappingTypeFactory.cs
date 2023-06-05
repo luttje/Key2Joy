@@ -24,7 +24,7 @@ namespace Key2Joy.Plugins
             ExposedMethods = exposedMethods ?? new List<ExposedMethod>();
         }
 
-        public virtual T CreateInstance<T>()
+        public virtual T CreateInstance<T>() where T : AbstractMappingAspect
         {
             return (T)Activator.CreateInstance(ToType(), new object[] 
             { 

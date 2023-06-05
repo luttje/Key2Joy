@@ -24,7 +24,7 @@ namespace Key2Joy.Mapping
             this.description = description;
         }
 
-        public static AbstractAction MakeAction(MappingTypeFactory<AbstractAction> actionTypeFactory)
+        public static AbstractAction MakeAction(MappingTypeFactory<AbstractAction> actionFactory)
         {
             //if (typeAttribute == null)
             //    typeAttribute = actionType.GetCustomAttributes(typeof(ActionAttribute), true)[0] as ActionAttribute;
@@ -35,17 +35,17 @@ namespace Key2Joy.Mapping
             //        typeAttribute.Description
             //    });
 
-            var action = actionTypeFactory.CreateInstance();
-            var typeAttribute = actionTypeFactory.Attribute;
+            var action = actionFactory.CreateInstance();
+            var typeAttribute = actionFactory.Attribute;
             action.Name = typeAttribute.NameFormat ?? action.GetType().Name;
             // TODO: description? Can we refactor, because it makes stuff needlessly hard....
             
             return action;
         }
 
-        public AbstractAction MakeStartedAction(MappingTypeFactory<AbstractAction> actionTypeFactory)
+        public AbstractAction MakeStartedAction(MappingTypeFactory<AbstractAction> actionFactory)
         {
-            var action = actionTypeFactory.CreateInstance();
+            var action = actionFactory.CreateInstance();
             action.SetStartData(listener, ref otherActions);
             return action;
         }
