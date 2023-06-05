@@ -1,4 +1,6 @@
-﻿using Key2Joy.Util;
+﻿using Key2Joy.Contracts.Mapping;
+using Key2Joy.Plugins;
+using Key2Joy.Util;
 using Newtonsoft.Json;
 using NLua;
 using System;
@@ -41,24 +43,24 @@ namespace Key2Joy.Mapping
                 Output.WriteLine(e);
             }
         }
-
-        public override void RegisterScriptingEnum(Type enumType)
+        
+        public override void RegisterScriptingEnum(ExposedEnumeration enumeration)
         {
-            if (!enumType.IsEnum)
-                throw new ArgumentException("The type must be an enumeration!");
+            environment.NewTable(enumeration.Name);
 
-            string[] names = Enum.GetNames(enumType);
-            environment.NewTable(enumType.Name);
-
-            for (int i = 0; i < names.Length; i++)
+            foreach (var kvp in enumeration.KeyValues)
             {
-                string path = enumType.Name + "." + names[i];
-                environment.SetObjectToPath(path, Enum.GetValues(enumType).GetValue(i));
+                var enumKey = kvp.Key;
+                var enumValue = kvp.Value;
+
+                string path = enumeration.Name + "." + enumKey;
+                environment.SetObjectToPath(path, enumValue);
             }
         }
 
-        public override void RegisterScriptingMethod(string functionName, BaseAction instance, MethodInfo method)
+        public override void RegisterScriptingMethod(ExposedMethod exposedMethod, AbstractAction instance)
         {
+            var functionName = exposedMethod.FunctionName;
             var parents = functionName.Split('.');
 
             if (parents.Length > 1)
@@ -79,11 +81,11 @@ namespace Key2Joy.Mapping
                     environment.NewTable(path);
             }
 
-            var parameters = method.GetParameters();
-            var paramDebug = string.Join(", ", parameters
-                .Select(p => $"{p.ParameterType.Name} {p.Name}")
-                .ToArray());
-            Output.WriteLine(Output.OutputModes.Verbose, $"lua.RegisterFunction({functionName},{instance},{method.Name}({paramDebug}):{method.ReturnType})");
+            //var parameters = method.GetParameters();
+            //var paramDebug = string.Join(", ", parameters
+            //    .Select(p => $"{p.ParameterType.Name} {p.Name}")
+            //    .ToArray());
+            //Output.WriteLine(Output.OutputModes.Verbose, $"lua.RegisterFunction({functionName},{instance},{method.Name}({paramDebug}):{method.ReturnType})");
 
             //if (parameters.Any(p => p.ParameterType.IsList()))
             //{
@@ -94,10 +96,11 @@ namespace Key2Joy.Mapping
 
             //}
 
+            // TODO: Somehow tie this to the method which may be in a different appDomain and thus cant be reflected purely
             environment.RegisterFunction(
                 functionName,
                 instance,
-                method);
+                instance.GetType().GetMethod(exposedMethod.MethodName));
         }
 
         public override Lua MakeEnvironment()
@@ -113,12 +116,12 @@ namespace Key2Joy.Mapping
             base.RegisterEnvironmentObjects();
         }
 
-        public override void OnStartListening(TriggerListener listener, ref List<BaseAction> otherActions)
+        public override void OnStartListening(AbstractTriggerListener listener, ref IList<AbstractAction> otherActions)
         {
             base.OnStartListening(listener, ref otherActions);
         }
 
-        public override void OnStopListening(TriggerListener listener)
+        public override void OnStopListening(AbstractTriggerListener listener)
         {
             base.OnStopListening(listener);
 

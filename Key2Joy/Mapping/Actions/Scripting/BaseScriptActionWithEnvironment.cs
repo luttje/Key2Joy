@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Key2Joy.Contracts.Mapping;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -31,43 +32,33 @@ namespace Key2Joy.Mapping
 
         public virtual void RegisterEnvironmentObjects()
         {
-            var actionTypes = ActionAttribute.GetAllActions();
+            var actionTypes = ActionsRepository.GetAllActions();
             cachedFile = null;
 
             // Register all scripting available action methods and enumerations
             foreach (var pair in actionTypes)
             {
-                var actionType = pair.Key;
-                var exposesEnumerationAttributes = (ExposesScriptingEnumerationAttribute[])actionType.GetCustomAttributes(typeof(ExposesScriptingEnumerationAttribute), false);
+                var actionTypeFactory = pair.Value;
 
-                foreach (var scriptingEnumAttribute in exposesEnumerationAttributes)
+                foreach (var exposedEnumeration in ExposedEnumerations)
                 {
-                    RegisterScriptingEnum(scriptingEnumAttribute.ExposedEnumeration);
+                    RegisterScriptingEnum(exposedEnumeration);
                 }
 
-                foreach (var methodInfo in actionType.GetMethods())
+                foreach (var exposedMethods in actionTypeFactory.ExposedMethods)
                 {
-                    var exposesMethodAttributes = (ExposesScriptingMethodAttribute[])methodInfo.GetCustomAttributes(typeof(ExposesScriptingMethodAttribute), false);
+                    var instance = IsStarted ? 
+                        MakeStartedAction(actionTypeFactory) 
+                        : MakeAction(actionTypeFactory);
 
-                    if (exposesMethodAttributes.Length == 0)
-                        continue;
-
-                    foreach (var scriptingMethodAttribute in exposesMethodAttributes)
-                    {
-                        var instance = IsStarted ? 
-                            MakeStartedAction(actionType) 
-                            : MakeAction(actionType);
-
-                        RegisterScriptingMethod(
-                            scriptingMethodAttribute.FunctionName,
-                            instance,
-                            methodInfo);
-                    }
+                    RegisterScriptingMethod(
+                        exposedMethods,
+                        instance);
                 }
             }
         }
 
-        public override void OnStartListening(TriggerListener listener, ref List<BaseAction> otherActions)
+        public override void OnStartListening(AbstractTriggerListener listener, ref IList<AbstractAction> otherActions)
         {
             foreach (var action in otherActions)
             {

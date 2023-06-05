@@ -1,4 +1,5 @@
 ﻿using System;
+using Key2Joy.Contracts.Mapping;
 using Key2Joy.LowLevelInput;
 using Linearstar.Windows.RawInput.Native;
 using Newtonsoft.Json;
@@ -8,7 +9,7 @@ namespace Key2Joy.Mapping
     [Trigger(
         Description = "Mouse Button Event"
     )]
-    public class MouseButtonTrigger : BaseTrigger, IPressState, IReturnInputHash, IEquatable<MouseButtonTrigger>
+    public class MouseButtonTrigger : CoreTrigger, IPressState, IReturnInputHash, IEquatable<MouseButtonTrigger>
     {
         public const string PREFIX_UNIQUE = nameof(MouseButtonTrigger);
 
@@ -23,7 +24,7 @@ namespace Key2Joy.Mapping
             : base(name, description)
         { }
 
-        public override TriggerListener GetTriggerListener()
+        public override AbstractTriggerListener GetTriggerListener()
         {
             return MouseButtonTriggerListener.Instance;
         }
@@ -44,7 +45,7 @@ namespace Key2Joy.Mapping
         }
 
         // Keep Press and Release together while sorting
-        public override int CompareTo(BaseTrigger other)
+        public override int CompareTo(AbstractMappingAspect other)
         {
             if (other == null || !(other is MouseButtonTrigger otherMouseTrigger))
                 return base.CompareTo(other);

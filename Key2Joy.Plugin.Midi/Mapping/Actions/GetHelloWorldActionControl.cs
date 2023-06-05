@@ -1,4 +1,4 @@
-﻿using Key2Joy.Mapping;
+﻿using Key2Joy.Contracts.Mapping;
 using Key2Joy.Plugin.Midi.Mapping;
 using System;
 using System.Windows.Forms;
@@ -18,21 +18,21 @@ namespace Key2Joy.Gui.Mapping
             InitializeComponent();
         }
 
-        public void Select(BaseAction action)
+        public void Select(AbstractAction action)
         {
             var thisAction = (GetHelloWorldAction)action;
 
             txtTarget.Text = thisAction.Target;
         }
 
-        public void Setup(BaseAction action)
+        public void Setup(AbstractAction action)
         { 
             var thisAction = (GetHelloWorldAction)action;
 
             thisAction.Target = txtTarget.Text;
         }
         
-        public bool CanMappingSave(BaseAction action)
+        public bool CanMappingSave(AbstractAction action)
         {
             return true;
         }

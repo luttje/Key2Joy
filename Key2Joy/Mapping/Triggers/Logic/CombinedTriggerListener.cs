@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Key2Joy.Contracts.Mapping;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Key2Joy.Mapping
 {
-    public class CombinedTriggerListener : TriggerListener
+    public class CombinedTriggerListener : CoreTriggerListener
     {
         public static CombinedTriggerListener instance;
         public static CombinedTriggerListener Instance
@@ -20,16 +21,16 @@ namespace Key2Joy.Mapping
             }
         }
 
-        protected Dictionary<CombinedTrigger, List<MappedOption>> lookup = new Dictionary<CombinedTrigger, List<MappedOption>>();
-        private Dictionary<MappedOption, CombinedTrigger> optionsToExecute;
+        protected IDictionary<CombinedTrigger, IList<AbstractMappedOption>> lookup = new Dictionary<CombinedTrigger, IList<AbstractMappedOption>>();
+        private IDictionary<AbstractMappedOption, CombinedTrigger> optionsToExecute;
 
-        public override void AddMappedOption(MappedOption mappedOption)
+        public override void AddMappedOption(AbstractMappedOption mappedOption)
         {
             var trigger = mappedOption.Trigger as CombinedTrigger;
-            List<MappedOption> mappedOptions;
+            IList<AbstractMappedOption> mappedOptions;
 
             if (!lookup.TryGetValue(trigger, out mappedOptions))
-                lookup.Add(trigger, mappedOptions = new List<MappedOption>());
+                lookup.Add(trigger, mappedOptions = new List<AbstractMappedOption>());
 
             foreach (var realTrigger in trigger.Triggers)
             {
@@ -40,7 +41,7 @@ namespace Key2Joy.Mapping
             mappedOptions.Add(mappedOption);
         }
         
-        public override bool GetIsTriggered(BaseTrigger trigger) => false;
+        public override bool GetIsTriggered(AbstractTrigger trigger) => false;
 
         protected override void Start()
         {
@@ -76,7 +77,7 @@ namespace Key2Joy.Mapping
 
         private void Listener_TriggerActivating(object sender, TriggerActivatingEventArgs e)
         {
-            optionsToExecute = new Dictionary<MappedOption, CombinedTrigger>();
+            optionsToExecute = new Dictionary<AbstractMappedOption, CombinedTrigger>();
 
             foreach (var combinedTrigger in lookup.Keys)
             {
@@ -103,7 +104,10 @@ namespace Key2Joy.Mapping
                     break;
             }
 
-            e.MappedOptionCandidates.AddRange(optionsToExecute.Keys);
+            foreach (var key in optionsToExecute.Keys)
+            {
+                e.MappedOptionCandidates.Add(key);
+            }
         }
 
         private void Listener_TriggerActivated(object sender, TriggerActivatedEventArgs e)

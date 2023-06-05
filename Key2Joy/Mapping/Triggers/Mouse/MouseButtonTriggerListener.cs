@@ -1,4 +1,5 @@
-﻿using Key2Joy.LowLevelInput;
+﻿using Key2Joy.Contracts.Mapping;
+using Key2Joy.LowLevelInput;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -46,7 +47,7 @@ namespace Key2Joy.Mapping
             base.Stop();
         }
         
-        public override bool GetIsTriggered(BaseTrigger trigger)
+        public override bool GetIsTriggered(AbstractTrigger trigger)
         {
             if (!(trigger is MouseButtonTrigger mouseButtonTrigger))
                 return false;

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Key2Joy.Contracts.Mapping;
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace Key2Joy.Mapping
         Visibility = MappingMenuVisibility.Never,
         NameFormat = "Get Window Class name"
     )]
-    public class WindowGetClassAction : BaseAction
+    public class WindowGetClassAction : CoreAction
     {
         [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
         static extern int GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);

@@ -1,4 +1,5 @@
-﻿using Key2Joy.Config;
+﻿using Key2Joy.Contracts.Mapping;
+using Key2Joy.Config;
 using Key2Joy.Mapping;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,7 @@ namespace Key2Joy.Gui.Mapping
             InitializeComponent();
         }
 
-        private CombinedTriggerControlItem AddTriggerControl(BaseTrigger trigger = null)
+        private CombinedTriggerControlItem AddTriggerControl(AbstractTrigger trigger = null)
         {
             var triggerControl = new CombinedTriggerControlItem(trigger);
             triggerControl.AutoSize = true;
@@ -54,7 +55,7 @@ namespace Key2Joy.Gui.Mapping
             OptionsChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        public void Select(BaseTrigger combinedTrigger)
+        public void Select(AbstractTrigger combinedTrigger)
         {
             var thisTrigger = (CombinedTrigger)combinedTrigger;
 
@@ -67,11 +68,11 @@ namespace Key2Joy.Gui.Mapping
             }
         }
 
-        public void Setup(BaseTrigger trigger)
+        public void Setup(AbstractTrigger trigger)
         {
             var thisTrigger = (CombinedTrigger)trigger;
 
-            thisTrigger.Triggers = new List<BaseTrigger>();
+            thisTrigger.Triggers = new List<AbstractTrigger>();
 
             foreach (var triggerControl in pnlTriggers.Controls)
             {

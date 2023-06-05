@@ -26,12 +26,14 @@ namespace Key2Joy.Gui
         {
             LoadState = loadState;
 
-            AssemblyPath = LoadState.Assembly.Location;
+            AssemblyPath = LoadState.AssemblyPath;
             Name = LoadState.Plugin?.Name ?? "n/a";
             Author = LoadState.Plugin?.Author ?? "n/a";
             Website = LoadState.Plugin?.Website ?? "n/a";
-            ActionTypes = LoadState.Plugin?.ActionTypes ?? new List<Type>();
-            TriggerTypes = LoadState.Plugin?.TriggerTypes ?? new List<Type>();
+            //ActionTypes = LoadState.Plugin?.ActionTypes ?? new List<Type>();
+            //TriggerTypes = LoadState.Plugin?.TriggerFullTypeNames ?? new List<Type>();
+            ActionTypes = new List<Type>();
+            TriggerTypes = new List<Type>();
         }
     }
     

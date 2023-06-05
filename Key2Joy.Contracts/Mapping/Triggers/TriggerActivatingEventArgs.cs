@@ -1,24 +1,25 @@
-﻿using System;
+﻿using Key2Joy.Contracts.Mapping;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Key2Joy.Mapping
+namespace Key2Joy.Contracts.Mapping
 {
     public class TriggerActivatingEventArgs : EventArgs
     {
-        public List<MappedOption> MappedOptionCandidates { get; private set; }
-        public TriggerListener Listener { get; private set; }
+        public IList<AbstractMappedOption> MappedOptionCandidates { get; private set; }
+        public AbstractTriggerListener Listener { get; private set; }
         public IInputBag InputBag { get; private set; }
 
-        private Func<BaseTrigger, bool> optionCandidateFilter;
+        private Func<AbstractTrigger, bool> optionCandidateFilter;
 
         public TriggerActivatingEventArgs(
-            TriggerListener listener, 
-            IInputBag inputBag, 
-            List<MappedOption> mappedOptions, 
-            Func<BaseTrigger, bool> optionCandidateFilter = null)
+            AbstractTriggerListener listener, 
+            IInputBag inputBag,
+            IList<AbstractMappedOption> mappedOptions, 
+            Func<AbstractTrigger, bool> optionCandidateFilter = null)
         {
             Listener = listener;
             MappedOptionCandidates = mappedOptions;
@@ -26,7 +27,7 @@ namespace Key2Joy.Mapping
             this.optionCandidateFilter = optionCandidateFilter;
         }
 
-        public bool GetIsMappedOptionCandidate(BaseTrigger trigger)
+        public bool GetIsMappedOptionCandidate(AbstractTrigger trigger)
         {
             if (trigger?.GetTriggerListener() != Listener)
                 return false;

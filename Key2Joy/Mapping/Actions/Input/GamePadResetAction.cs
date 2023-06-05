@@ -1,4 +1,6 @@
-﻿using Key2Joy.LowLevelInput;
+﻿using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Util;
+using Key2Joy.LowLevelInput;
 using Newtonsoft.Json;
 using SimWinInput;
 using System;
@@ -16,12 +18,11 @@ namespace Key2Joy.Mapping
         Visibility = MappingMenuVisibility.Never,
         NameFormat = "Reset GamePad #{0}"
     )]
-    [ExposesScriptingEnumeration(typeof(Simulator.GamePadStick))]
-    [Util.ObjectListViewGroup(
+    [ObjectListViewGroup(
         Name = "GamePad Reset Simulation",
         Image = "joystick"
     )]
-    public class GamePadResetAction : BaseAction
+    public class GamePadResetAction : CoreAction
     {
         [JsonProperty]
         public int GamePadIndex { get; set; }
@@ -31,7 +32,7 @@ namespace Key2Joy.Mapping
         {
         }
         
-        public override void OnStartListening(TriggerListener listener, ref List<BaseAction> otherActions)
+        public override void OnStartListening(AbstractTriggerListener listener, ref IList<AbstractAction> otherActions)
         {
             base.OnStartListening(listener, ref otherActions);
 

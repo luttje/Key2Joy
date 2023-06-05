@@ -1,4 +1,5 @@
-﻿using Key2Joy.LowLevelInput;
+﻿using Key2Joy.Contracts.Mapping;
+using Key2Joy.LowLevelInput;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
@@ -15,7 +16,7 @@ namespace Key2Joy.Mapping
         Visibility = MappingMenuVisibility.Never,
         NameFormat = "Get Keyboard Key Down"
     )]
-    public class KeyboardGetKeyDownAction : BaseAction
+    public class KeyboardGetKeyDownAction : CoreAction
     {
         public KeyboardGetKeyDownAction(string name, string description)
             : base(name, description)

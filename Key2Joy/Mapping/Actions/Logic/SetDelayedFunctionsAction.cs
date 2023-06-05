@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Util;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -12,11 +14,11 @@ namespace Key2Joy.Mapping
         Visibility = MappingMenuVisibility.Never,
         NameFormat = "Timeout for {0}ms"
     )]
-    [Util.ObjectListViewGroup(
+    [ObjectListViewGroup(
         Name = "Logic",
         Image = "script_code"
     )]
-    public class SetDelayedFunctionsAction : BaseAction
+    public class SetDelayedFunctionsAction : CoreAction
     {
         [JsonProperty]
         public TimeSpan WaitTime;

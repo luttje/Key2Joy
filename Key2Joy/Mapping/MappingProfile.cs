@@ -1,4 +1,5 @@
 ﻿using Key2Joy.Config;
+using Key2Joy.Contracts.Mapping;
 using Key2Joy.LowLevelInput;
 using Key2Joy.Util;
 using Newtonsoft.Json;
@@ -74,7 +75,7 @@ namespace Key2Joy.Mapping
             MappedOptions.Remove(mappedOption);
         }
 
-        public bool TryGetMappedOption(BaseTrigger trigger, out MappedOption mappedOption)
+        public bool TryGetMappedOption(AbstractTrigger trigger, out MappedOption mappedOption)
         {
             mappedOption = MappedOptions.FirstOrDefault(mo => mo.Trigger == trigger);
             return mappedOption != null;

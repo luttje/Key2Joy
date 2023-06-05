@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Key2Joy.Mapping
+namespace Key2Joy.Contracts.Mapping
 {
     [AttributeUsage(AttributeTargets.Class)]
     public abstract class MappingAttribute : Attribute, IComparable<MappingAttribute>

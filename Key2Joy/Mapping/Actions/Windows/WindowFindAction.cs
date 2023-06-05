@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Key2Joy.Contracts.Mapping;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace Key2Joy.Mapping
         Visibility = MappingMenuVisibility.Never,
         NameFormat = "Find Window '{0}' with title {1}"
     )]
-    public class WindowFindAction : BaseAction
+    public class WindowFindAction : CoreAction
     {
         [JsonProperty]
         public string ClassName { get; set; }

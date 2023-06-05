@@ -1,9 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using Key2Joy.Contracts.Mapping;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Key2Joy.Mapping
@@ -13,7 +10,7 @@ namespace Key2Joy.Mapping
         Visibility = MappingMenuVisibility.Never,
         NameFormat = "Get Foreground Window Handle"
     )]
-    public class WindowGetForegroundAction : BaseAction
+    public class WindowGetForegroundAction : CoreAction
     {
         [DllImport("user32.dll")]
         public static extern IntPtr GetForegroundWindow();

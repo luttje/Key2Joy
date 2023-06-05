@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using Key2Joy.Contracts.Mapping;
 using Key2Joy.LowLevelInput;
 using Newtonsoft.Json;
 
@@ -8,7 +9,7 @@ namespace Key2Joy.Mapping
     [Trigger(
         Description = "Keyboard Event"
     )]
-    public class KeyboardTrigger : BaseTrigger, IPressState, IReturnInputHash, IEquatable<KeyboardTrigger>
+    public class KeyboardTrigger : CoreTrigger, IPressState, IReturnInputHash, IEquatable<KeyboardTrigger>
     {
         public const string PREFIX_UNIQUE = nameof(KeyboardTrigger);
 
@@ -23,7 +24,7 @@ namespace Key2Joy.Mapping
             : base(name, description)
         { }
 
-        public override TriggerListener GetTriggerListener()
+        public override AbstractTriggerListener GetTriggerListener()
         {
             return KeyboardTriggerListener.Instance;
         }
@@ -44,7 +45,7 @@ namespace Key2Joy.Mapping
         }
 
         // Keep Press and Release together while sorting
-        public override int CompareTo(BaseTrigger other)
+        public override int CompareTo(AbstractMappingAspect other)
         {
             if (other == null || !(other is KeyboardTrigger otherKeyboardTrigger))
                 return base.CompareTo(other);

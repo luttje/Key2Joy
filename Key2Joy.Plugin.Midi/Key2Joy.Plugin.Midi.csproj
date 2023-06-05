@@ -2,6 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>NET48</TargetFramework>
+	<LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <RunPostBuildEvent>Always</RunPostBuildEvent>
@@ -37,14 +38,13 @@
     <PackageReference Include="Melanchall.DryWetMidi">
       <Version>6.1.4</Version>
     </PackageReference>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Key2Joy.Plugin\Key2Joy.Plugin.csproj" />
+    <ProjectReference Include="..\Key2Joy.Contracts\Key2Joy.Contracts.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="Mapping\Actions\GetHelloWorldActionControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Update="Mapping\Actions\GetHelloWorldActionControl.cs" />
   </ItemGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="call ../CopyPlugin.bat $(ProjectName) $(OutDir) $(TargetFileName)" />

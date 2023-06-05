@@ -1,4 +1,6 @@
-﻿using Key2Joy.LowLevelInput;
+﻿using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Util;
+using Key2Joy.LowLevelInput;
 using Newtonsoft.Json;
 using SimWinInput;
 using System;
@@ -17,12 +19,11 @@ namespace Key2Joy.Mapping
         Visibility = MappingMenuVisibility.Never,
         NameFormat = "{1} {0} on Mouse"
     )]
-    [ExposesScriptingEnumeration(typeof(Mouse.Buttons))]
-    [Util.ObjectListViewGroup(
+    [ObjectListViewGroup(
         Name = "Mouse Button Simulation",
         Image = "mouse"
     )]
-    public class MouseButtonAction : BaseAction, IPressState
+    public class MouseButtonAction : CoreAction, IPressState
     {        
         [JsonProperty]
         public Mouse.Buttons Button { get; set; }

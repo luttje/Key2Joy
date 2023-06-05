@@ -1,4 +1,6 @@
-﻿using Key2Joy.LowLevelInput;
+﻿using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Util;
+using Key2Joy.LowLevelInput;
 using Newtonsoft.Json;
 using SimWinInput;
 using System;
@@ -17,12 +19,11 @@ namespace Key2Joy.Mapping
         Visibility = MappingMenuVisibility.Never,
         NameFormat = "Move {0} Stick on GamePad #{3} by {1},{2}"
     )]
-    [ExposesScriptingEnumeration(typeof(Simulator.GamePadStick))]
-    [Util.ObjectListViewGroup(
+    [ObjectListViewGroup(
         Name = "GamePad Stick Simulation",
         Image = "joystick"
     )]
-    public class GamePadStickAction : BaseAction
+    public class GamePadStickAction : CoreAction
     {
 
         [JsonProperty]
@@ -42,7 +43,7 @@ namespace Key2Joy.Mapping
         {
         }
 
-        public override void OnStartListening(TriggerListener listener, ref List<BaseAction> otherActions)
+        public override void OnStartListening(AbstractTriggerListener listener, ref IList<AbstractAction> otherActions)
         {
             base.OnStartListening(listener, ref otherActions);
 

@@ -1,4 +1,4 @@
-﻿using FFMpegCore;
+﻿using Key2Joy.Contracts.Mapping;
 using Key2Joy.Config;
 using Key2Joy.Interop;
 using Key2Joy.LowLevelInput;
@@ -23,7 +23,7 @@ namespace Key2Joy
         private static AppCommandRunner commandRunner;
         private MappingProfile armedProfile;
         private Form mainForm;
-        private readonly List<TriggerListener> wndProcListeners = new();
+        private readonly List<IWndProcHandler> wndProcListeners = new();
 
         public static Key2JoyManager instance;
         public static Key2JoyManager Instance
@@ -49,17 +49,29 @@ namespace Key2Joy
         {
             instance = new Key2JoyManager();
 
-            var pluginsDirectoryPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            pluginsDirectoryPath = Path.Combine(pluginsDirectoryPath, "Plugins");
-            
-            var plugins = new PluginSet(pluginsDirectoryPath);
+            var pluginDirectoriesPaths = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            pluginDirectoriesPaths = Path.Combine(pluginDirectoriesPaths, "Plugins");
 
-            ActionAttribute.BufferActions(plugins.ActionTypes);
-            TriggerAttribute.BufferTriggers(plugins.TriggerTypes);
+            // TODO: Move this to a seperate method/property that the plugin can override
+            BaseScriptAction.ExposedEnumerations = (new List<Type>
+                    {
+                        typeof(Mouse.MoveType),
+                        typeof(Mouse.Buttons),
+                        typeof(GamePadControl),
+                        typeof(PressState),
+                        typeof(Simulator.GamePadStick),
+                        typeof(AppCommand),
+                        typeof(KeyboardKey)
+                    }).Select(x => ExposedEnumeration.FromType(x)).ToList();
+
+            var plugins = new PluginSet(pluginDirectoriesPaths);
+
+            ActionsRepository.Buffer(plugins.ActionTypeFactories);
+            TriggersRepository.Buffer(plugins.TriggerTypeFactories);
 
             Key2JoyManager.commandRunner = commandRunner;
 
-            GlobalFFOptions.Configure(options => options.BinaryFolder = "./ffmpeg");
+            //GlobalFFOptions.Configure(options => options.BinaryFolder = "./ffmpeg");
 
             try
             {
@@ -79,9 +91,9 @@ namespace Key2Joy
             mainForm.Invoke(action);
         }
 
-        private static List<TriggerListener> GetScriptingListeners()
+        private static IList<AbstractTriggerListener> GetScriptingListeners()
         {
-            var listeners = new List<TriggerListener>
+            var listeners = new List<AbstractTriggerListener>
             {
                 // Always add these listeners so scripts can ask them if stuff has happened.
                 KeyboardTriggerListener.Instance,
@@ -97,10 +109,12 @@ namespace Key2Joy
             return commandRunner(command);
         }
 
-        public bool PreFilterMessage(ref Message m)
+        public bool PreFilterMessage(ref System.Windows.Forms.Message m)
         {
             foreach (var wndProcListener in wndProcListeners)
-                wndProcListener.WndProc(ref m);
+            {
+                wndProcListener.WndProc(new Contracts.Mapping.Message(m.HWnd, m.Msg, m.WParam, m.LParam));
+            }
 
             return false;
         }
@@ -126,7 +140,7 @@ namespace Key2Joy
             armedProfile = profile;
                 
             var allListeners = GetScriptingListeners();
-            var allActions = profile.MappedOptions.Select(m => m.Action).ToList();
+            var allActions = (IList<AbstractAction>) profile.MappedOptions.Select(m => m.Action).ToList();
 
             foreach (var mappedOption in profile.MappedOptions)
             {
@@ -138,8 +152,8 @@ namespace Key2Joy
                 if (!allListeners.Contains(listener))
                     allListeners.Add(listener);
 
-                if (listener.HasWndProcHandle)
-                    wndProcListeners.Add(listener);
+                if (listener is IWndProcHandler listenerWndProcHAndler)
+                    wndProcListeners.Add(listenerWndProcHAndler);
 
                 mappedOption.Action.OnStartListening(listener, ref allActions);
                 listener.AddMappedOption(mappedOption);
@@ -147,7 +161,9 @@ namespace Key2Joy
 
             foreach (var listener in allListeners)
             {
-                listener.Handle = mainForm.Handle;
+                if (listener is IWndProcHandler listenerWndProcHAndler)
+                    listenerWndProcHAndler.Handle = mainForm.Handle;
+
                 listener.StartListening(ref allListeners);
             }
 

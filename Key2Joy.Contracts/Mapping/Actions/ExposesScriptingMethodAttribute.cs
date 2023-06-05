@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Key2Joy.Mapping
+namespace Key2Joy.Contracts.Mapping
 {
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
     public class ExposesScriptingMethodAttribute : Attribute
@@ -14,7 +14,7 @@ namespace Key2Joy.Mapping
         /// What the function name would be called
         /// </summary>
         /// <returns></returns>
-        public string FunctionName { get; set; }
+        public string FunctionName { get; private set; }
 
         public ExposesScriptingMethodAttribute(string functionName)
         {

@@ -1,4 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Util;
+using Key2Joy.Plugins;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -6,13 +9,18 @@ using System.Text;
 
 namespace Key2Joy.Mapping
 {
-    [Util.ObjectListViewGroup(
+    [ObjectListViewGroup(
         Name = "Scripting",
         Image = "script_code"
     )]
-    public abstract class BaseScriptAction : BaseAction
+    public abstract class BaseScriptAction : CoreAction
     {
         public static readonly object LockObject = new object();
+
+        /// <summary>
+        /// TODO: Clean this up. This is just a quick hack to get enumerations into scripts. Should move to something the plugins can affect nicely.
+        /// </summary>
+        public static IList<ExposedEnumeration> ExposedEnumerations;
 
         [JsonProperty]
         public string Script { get; set; }
@@ -39,8 +47,8 @@ namespace Key2Joy.Mapping
             return Script;
         }
 
-        public abstract void RegisterScriptingEnum(Type enumType);
-        public abstract void RegisterScriptingMethod(string functionName, BaseAction instance, MethodInfo method);
+        public abstract void RegisterScriptingEnum(ExposedEnumeration enumeration);
+        public abstract void RegisterScriptingMethod(ExposedMethod exposedMethod, AbstractAction instance);
 
         public virtual void Print(params object[] args)
         {
@@ -64,7 +72,7 @@ namespace Key2Joy.Mapping
             return Name.Replace("{0}", truncatedScript);
         }
 
-        public override void OnStartListening(TriggerListener listener, ref List<BaseAction> otherActions)
+        public override void OnStartListening(AbstractTriggerListener listener, ref IList<AbstractAction> otherActions)
         {
             base.OnStartListening(listener, ref otherActions);
         }

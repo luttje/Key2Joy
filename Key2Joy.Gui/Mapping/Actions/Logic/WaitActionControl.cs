@@ -1,4 +1,5 @@
-﻿using Key2Joy.Mapping;
+﻿using Key2Joy.Contracts.Mapping;
+using Key2Joy.Mapping;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -26,21 +27,21 @@ namespace Key2Joy.Gui.Mapping
             nudWaitTimeInMs.Maximum = decimal.MaxValue;
         }
 
-        public void Select(BaseAction action)
+        public void Select(AbstractAction action)
         {
             var thisAction = (WaitAction)action;
 
             nudWaitTimeInMs.Value = (decimal)thisAction.WaitTime.TotalMilliseconds;
         }
 
-        public void Setup(BaseAction action)
+        public void Setup(AbstractAction action)
         { 
             var thisAction = (WaitAction)action;
 
             thisAction.WaitTime = TimeSpan.FromMilliseconds((double)nudWaitTimeInMs.Value);
         }
         
-        public bool CanMappingSave(BaseAction action)
+        public bool CanMappingSave(AbstractAction action)
         {
             return true;
         }

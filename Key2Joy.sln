@@ -15,9 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Key2Joy.Setup", "Key2Joy.Se
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Key2Joy.Tests", "Key2Joy.Tests\Key2Joy.Tests.csproj", "{AA7ABB23-F6E6-4BC5-B29A-3D66BC21C398}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Key2Joy.Plugin.Midi", "Key2Joy.Plugin.Midi\Key2Joy.Plugin.Midi.csproj", "{19D06050-80E3-439D-B2A8-A7048F7D99C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Key2Joy.Plugin.Midi", "Key2Joy.Plugin.Midi\Key2Joy.Plugin.Midi.csproj", "{19D06050-80E3-439D-B2A8-A7048F7D99C9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Key2Joy.Plugin", "Key2Joy.Plugin\Key2Joy.Plugin.csproj", "{6A99DC38-6D95-44F0-8778-8BD8548778DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Key2Joy.Contracts", "Key2Joy.Contracts\Key2Joy.Contracts.csproj", "{6A99DC38-6D95-44F0-8778-8BD8548778DA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

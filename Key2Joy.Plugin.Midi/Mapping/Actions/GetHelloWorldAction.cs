@@ -1,7 +1,9 @@
-﻿using Key2Joy.Mapping;
+﻿using Key2Joy.Contracts.Mapping;
 using Newtonsoft.Json;
-using System;
 using System.Threading.Tasks;
+using System;
+using Key2Joy.Contracts.Util;
+using System.Windows.Forms;
 
 namespace Key2Joy.Plugin.Midi.Mapping
 {
@@ -9,22 +11,21 @@ namespace Key2Joy.Plugin.Midi.Mapping
         Description = "Get Hello World",
         NameFormat = "Demonstrates plugin creation by greeting {0}"
     )]
-    [Util.ObjectListViewGroup(
+    [ObjectListViewGroup(
         Name = "Logic",
         Image = "script_code"
     )]
-    public class GetHelloWorldAction : BaseAction
+    public class GetHelloWorldAction : AbstractAction
     {
         [JsonProperty]
         public string Target = "World";
 
-        public GetHelloWorldAction(string name, string description)
-            : base(name, description)
-        { }
 
+        [ExposesScriptingMethod("Hello.World")]
         public override async Task Execute(IInputBag inputBag = null)
         {
-            Output.WriteLine(Output.OutputModes.Verbose, $"Hello {Target}!");
+            MessageBox.Show("test");
+            //Output.WriteLine(Output.OutputModes.Verbose, $"Hello {Target}!");
         }
 
         public override string GetNameDisplay()
@@ -32,21 +33,12 @@ namespace Key2Joy.Plugin.Midi.Mapping
             return Name.Replace("{0}", Target.ToString());
         }
 
-        public override bool Equals(object obj)
-        {
-            if (!(obj is GetHelloWorldAction action))
-                return false;
-
-            return true;
-        }
-
         public override object Clone()
         {
-            return new GetHelloWorldAction(Name, description)
+            return new GetHelloWorldAction()
             {
-                ImageResource = ImageResource,
-                Target = Target,
                 Name = Name,
+                Target = Target,
             };
         }
     }

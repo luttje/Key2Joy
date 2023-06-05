@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Key2Joy.Contracts.Plugins;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -16,17 +17,17 @@ namespace Key2Joy.Plugins
     
     public class PluginLoadState
     {
-        public Assembly Assembly { get; set; }
+        public string AssemblyPath { get; set; }
 
         public PluginLoadStates LoadState { get; set; } = PluginLoadStates.NotLoaded;
         public string LoadErrorMessage { get; set; } = null;
 
         public Type PluginType { get; set; } = null;
-        public Plugin Plugin { get; set; } = null;
+        public AbstractPlugin Plugin { get; set; } = null;
 
-        public PluginLoadState(Assembly assembly, Type pluginType = null)
+        public PluginLoadState(string assemblyPath, Type pluginType = null)
         {
-            Assembly = assembly;
+            AssemblyPath = assemblyPath;
             PluginType = pluginType;
         }
     }

@@ -1,4 +1,5 @@
-﻿using Key2Joy.LowLevelInput;
+﻿using Key2Joy.Contracts.Mapping;
+using Key2Joy.LowLevelInput;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace Key2Joy.Mapping
         Visibility = MappingMenuVisibility.Never,
         NameFormat = "Get the Cursor Position"
     )]
-    public class GetCursorPositionAction : BaseAction
+    public class GetCursorPositionAction : CoreAction
     {
         [DllImport("user32.dll")]
         static extern bool GetCursorPos(ref Point lpPoint);

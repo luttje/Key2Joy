@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Key2Joy.Contracts.Mapping;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,19 +12,19 @@ namespace Key2Joy.Mapping
         Description = "Multiple Triggers Combined",
         Visibility = MappingMenuVisibility.OnlyTopLevel
     )]
-    public class CombinedTrigger : BaseTrigger, IEquatable<CombinedTrigger>
+    public class CombinedTrigger : CoreTrigger, IEquatable<CombinedTrigger>
     {
         public const string PREFIX_UNIQUE = nameof(CombinedTrigger);
 
         [JsonProperty(ItemTypeNameHandling = TypeNameHandling.All)]
-        public List<BaseTrigger> Triggers { get; set; }
+        public List<AbstractTrigger> Triggers { get; set; }
 
         [JsonConstructor]
         public CombinedTrigger(string name, string description)
             : base(name, description)
         { }
 
-        public override TriggerListener GetTriggerListener()
+        public override AbstractTriggerListener GetTriggerListener()
         {
             return CombinedTriggerListener.Instance;
         }

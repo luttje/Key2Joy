@@ -66,7 +66,7 @@
             this.cmbPressState.TabIndex = 12;
             this.cmbPressState.SelectedIndexChanged += new System.EventHandler(this.cmbPressedState_SelectedIndexChanged);
             // 
-            // MouseButtonTriggerOptionsControl
+            // MouseButtonTriggerControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -75,7 +75,7 @@
             this.Controls.Add(this.cmbPressState);
             this.Controls.Add(this.lblInfo);
             this.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Name = "MouseButtonTriggerOptionsControl";
+            this.Name = "MouseButtonTriggerControl";
             this.Padding = new System.Windows.Forms.Padding(5);
             this.Size = new System.Drawing.Size(394, 26);
             this.ResumeLayout(false);

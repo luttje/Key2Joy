@@ -1,12 +1,10 @@
-﻿using Key2Joy.LowLevelInput;
+﻿using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Util;
+using Key2Joy.LowLevelInput;
 using Newtonsoft.Json;
 using SimWinInput;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Key2Joy.Mapping
@@ -15,13 +13,11 @@ namespace Key2Joy.Mapping
         Description = "GamePad/Controller Simulation",
         NameFormat = "{1} {0} on GamePad #{2}"
     )]
-    [ExposesScriptingEnumeration(typeof(GamePadControl))]
-    [ExposesScriptingEnumeration(typeof(PressState))]
-    [Util.ObjectListViewGroup(
+    [ObjectListViewGroup(
         Name = "GamePad Simulation",
         Image = "joystick"
     )]
-    public class GamePadAction : BaseAction, IPressState
+    public class GamePadAction : CoreAction, IPressState
     {
         [JsonProperty]
         public GamePadControl Control { get; set; }
@@ -39,13 +35,12 @@ namespace Key2Joy.Mapping
 
         public static List<MappedOption> GetAllButtonActions(PressState pressState)
         {
-            var actionType = typeof(GamePadAction);
-            var typeAttribute = ((ActionAttribute[])actionType.GetCustomAttributes(typeof(ActionAttribute), false))[0];
+            var actionTypeFactory = ActionsRepository.GetAction(typeof(GamePadAction));
 
             var actions = new List<MappedOption>();
             foreach (var control in GetAllButtons())
             {
-                var action = (GamePadAction)MakeAction(actionType, typeAttribute);
+                var action = (GamePadAction)MakeAction(actionTypeFactory);
                 action.Control = control;
                 action.PressState = pressState;
                 
@@ -68,7 +63,7 @@ namespace Key2Joy.Mapping
             return buttons;
         }
 
-        public override void OnStartListening(TriggerListener listener, ref List<BaseAction> otherActions)
+        public override void OnStartListening(AbstractTriggerListener listener, ref IList<AbstractAction> otherActions)
         {
             base.OnStartListening(listener, ref otherActions);
 

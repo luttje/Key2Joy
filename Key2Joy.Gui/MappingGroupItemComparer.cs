@@ -23,7 +23,7 @@ namespace Key2Joy.Gui
 
             var sortDirection = primarySortOrder == SortOrder.Ascending ? 1 : -1;
 
-            if (typeof(BaseAction).IsAssignableFrom(primarySort.DataType))
+            if (typeof(CoreAction).IsAssignableFrom(primarySort.DataType))
             {
                 return mappedOptionX.Action.CompareTo(mappedOptionY.Action) * sortDirection;
             }

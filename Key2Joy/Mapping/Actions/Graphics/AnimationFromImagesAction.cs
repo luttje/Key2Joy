@@ -1,18 +1,7 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
+﻿using System;
 using System.Threading.Tasks;
-using Esprima;
-using System.Windows.Forms;
-using FFMpegCore;
-using FFMpegCore.Helpers;
-using System.IO;
-using FFMpegCore.Enums;
 using NLua;
+using Key2Joy.Contracts.Mapping;
 
 namespace Key2Joy.Mapping
 {
@@ -21,7 +10,7 @@ namespace Key2Joy.Mapping
         Visibility = MappingMenuVisibility.Never,
         NameFormat = "Create a gif from a sequence of images"
     )]
-    public class AnimationFromImagesAction : BaseAction
+    public class AnimationFromImagesAction : CoreAction
     {
         public AnimationFromImagesAction(string name, string description)
             : base(name, description)
@@ -104,7 +93,8 @@ namespace Key2Joy.Mapping
         /// <returns>Output video information.</returns>
         private static bool JoinImageSequence(string output, double frameRate = 30, params string[] images)
         {
-            return FFMpeg.JoinImageSequence(output, frameRate, images);
+            throw new NotImplementedException("This feature has been disabled as we move to a plugin");
+            //return FFMpeg.JoinImageSequence(output, frameRate, images);
         }
 
         public override async Task Execute(IInputBag inputBag = null)

@@ -1,5 +1,7 @@
-﻿using Key2Joy.Gui.Mapping;
+﻿using Key2Joy.Contracts.Mapping;
+using Key2Joy.Gui.Mapping;
 using Key2Joy.Mapping;
+using Key2Joy.Plugins;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -7,6 +9,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -40,8 +43,9 @@ namespace Key2Joy.Gui
             actionControl.SelectAction(mappedOption.Action);
         }
 
-        public static UserControl BuildOptionsForComboBox<TAttribute>(ComboBox comboBox, Panel optionsPanel)
+        public static UserControl BuildOptionsForComboBox<TAttribute, TAspect>(ComboBox comboBox, Panel optionsPanel)
             where TAttribute : MappingAttribute
+            where TAspect : AbstractMappingAspect
         {
             var optionsUserControl = optionsPanel.Controls.OfType<UserControl>().FirstOrDefault();
 
@@ -54,16 +58,16 @@ namespace Key2Joy.Gui
             if (comboBox.SelectedItem == null)
                 return null;
 
-            var selected = ((ImageComboBoxItem<KeyValuePair<TAttribute, Type>>)comboBox.SelectedItem).ItemValue;
-            var selectedType = selected.Value;
+            var selected = ((ImageComboBoxItem<KeyValuePair<TAttribute, MappingTypeFactory<TAspect>>>)comboBox.SelectedItem).ItemValue;
+            var selectedTypeFactory = selected.Value;
             var attribute = selected.Key;
 
-            optionsUserControl = CreateOptionsControl(selectedType, attribute);
+            optionsUserControl = CreateOptionsControl(selectedTypeFactory.FullTypeName, attribute);
 
             if (optionsUserControl == null)
             {
-                MessageBox.Show("Could not create options control for " + selectedType.Name + ". \n\nPlease report this issue to the developer.\n\nThe app will now crash.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                throw new NotImplementedException("Could not create options control for " + selectedType.Name);
+                MessageBox.Show("Could not create options control for " + selectedTypeFactory.FullTypeName + ". \n\nPlease report this issue to the developer.\n\nThe app will now crash.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw new NotImplementedException("Could not create options control for " + selectedTypeFactory.FullTypeName);
             }
             
             optionsPanel.Controls.Add(optionsUserControl);
@@ -72,15 +76,15 @@ namespace Key2Joy.Gui
             return optionsUserControl;
         }
 
-        private static UserControl CreateOptionsControl<TAttribute>(Type selectedType, TAttribute attribute) where TAttribute : MappingAttribute
+        private static UserControl CreateOptionsControl<TAttribute>(string selectedTypeName, TAttribute attribute) where TAttribute : MappingAttribute
         {
             UserControl optionsUserControl;
-            var correspondingControl = MappingControlAttribute.GetCorrespondingControlType(selectedType, out var parameters);
+            var correspondingControl = MappingControlAttribute.GetCorrespondingControlType(selectedTypeName);
 
             if (correspondingControl == null)
                 return null;
             
-            optionsUserControl = (UserControl)Activator.CreateInstance(correspondingControl, parameters);
+            optionsUserControl = (UserControl)Activator.CreateInstance(correspondingControl);
             return optionsUserControl;
         }
 

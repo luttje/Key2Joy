@@ -4,15 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Key2Joy.Mapping
+namespace Key2Joy.Contracts.Mapping
 {
     public class TriggerChangedEventArgs : EventArgs
     {
         public static readonly TriggerChangedEventArgs Empty = new TriggerChangedEventArgs();
 
-        public BaseTrigger Trigger { get; private set; }
+        public AbstractTrigger Trigger { get; private set; }
 
-        public TriggerChangedEventArgs(BaseTrigger trigger = null)
+        public TriggerChangedEventArgs(AbstractTrigger trigger = null)
         {
             Trigger = trigger;
         }

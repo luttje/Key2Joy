@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using Key2Joy.Mapping;
 using Key2Joy.LowLevelInput;
+using Key2Joy.Contracts.Mapping;
 
 namespace Key2Joy.Gui.Mapping
 {
@@ -55,7 +56,7 @@ namespace Key2Joy.Gui.Mapping
             StopTrapping();
         }
 
-        public void Select(BaseTrigger trigger)
+        public void Select(AbstractTrigger trigger)
         {
             var thisTrigger = (KeyboardTrigger)trigger;
 
@@ -64,7 +65,7 @@ namespace Key2Joy.Gui.Mapping
             UpdateKeys();
         }
 
-        public void Setup(BaseTrigger trigger)
+        public void Setup(AbstractTrigger trigger)
         {
             var thisTrigger = (KeyboardTrigger)trigger;
 

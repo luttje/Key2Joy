@@ -1,4 +1,6 @@
-﻿using Key2Joy.LowLevelInput;
+﻿using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Util;
+using Key2Joy.LowLevelInput;
 using Newtonsoft.Json;
 using SimWinInput;
 using System;
@@ -17,12 +19,11 @@ namespace Key2Joy.Mapping
         Visibility = MappingMenuVisibility.Never,
         NameFormat = "Move {0} {1},{2} on Mouse"
     )]
-    [ExposesScriptingEnumeration(typeof(Mouse.MoveType))]
-    [Util.ObjectListViewGroup(
+    [ObjectListViewGroup(
         Name = "Mouse Move Simulation",
         Image = "mouse"
     )]
-    public class MouseMoveAction : BaseAction
+    public class MouseMoveAction : CoreAction
     {        
         [JsonProperty]
         public Mouse.MoveType MoveType { get; set; }

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Key2Joy.Contracts.Mapping;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace Key2Joy.Mapping
         Visibility = MappingMenuVisibility.Never,
         NameFormat = "Expand Path System Variables"
     )]
-    public class PathExpandAction : BaseAction
+    public class PathExpandAction : CoreAction
     {
         public PathExpandAction(string name, string description)
             : base(name, description)

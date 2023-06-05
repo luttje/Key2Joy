@@ -10,6 +10,8 @@ using System.Text;
 using Jint.Native.Object;
 using Jint.Runtime.Interop;
 using Jint.Runtime.Descriptors;
+using Key2Joy.Contracts.Mapping;
+using Key2Joy.Plugins;
 
 namespace Key2Joy.Mapping
 {
@@ -38,40 +40,46 @@ namespace Key2Joy.Mapping
             }
         }
 
-        public override void RegisterScriptingEnum(Type enumType)
+        public override void RegisterScriptingEnum(ExposedEnumeration enumeration)
         {
-            var enumNames = Enum.GetNames(enumType);
+            var enumInjectScript = new StringBuilder();
+            enumInjectScript.Append(enumeration.Name + " = {");
 
-            // TODO: Probably should make a better way to register enums
-            environment.Execute(
-                enumType.Name + " = {" +
-                string.Join(", ", enumNames.Select((name, index) =>
-                {
-                    var underlyingType = Enum.GetUnderlyingType(enumType);
-                    var e = Enum.Parse(enumType, name);
+            foreach (var kvp in enumeration.KeyValues)
+            {
+                var enumKey = kvp.Key;
+                var enumValue = kvp.Value;
+                //var underlyingType = enumValue.GetType();
 
-                    if (underlyingType == typeof(int))
-                        return $"{name}: {(int)e}";
-                    else if (underlyingType == typeof(short))
-                        return $"{name}: {(short)e}";
-                    else
-                        throw new NotImplementedException("Enumeration was of unimplemented underlying datatype: " + underlyingType);
-                })) +
-                "    }"
-            );
+                //if (underlyingType != typeof(int) && underlyingType != typeof(short))
+                //{
+                //    throw new NotImplementedException("Enumeration was of unimplemented underlying datatype: " + underlyingType);
+                //}
 
-            environment.Execute($"Print(JSON.stringify({enumType.Name}))");
+                enumInjectScript.Append(enumKey);
+                enumInjectScript.Append(": ");
+                enumInjectScript.Append(enumValue);
+
+                enumInjectScript.Append(",\n");
+            }
+
+            enumInjectScript.Append("};");
+
+            environment.Execute(enumInjectScript.ToString());
+
+            environment.Execute($"Print(JSON.stringify({enumInjectScript}))");
         }
 
-        public override void RegisterScriptingMethod(string functionName, BaseAction instance, MethodInfo method)
+        public override void RegisterScriptingMethod(ExposedMethod exposedMethod, AbstractAction instance)
         {
+            var functionName = exposedMethod.FunctionName;
             var parents = functionName.Split('.');
-            var @delegate = new DelegateWrapper(environment, method.CreateDelegate(instance));
+            var @delegate = new DelegateWrapper(environment, exposedMethod.CreateDelegate(instance));
 
-            var paramDebug = string.Join(", ", method.GetParameters()
-                .Select(p => $"{p.ParameterType.Name} {p.Name}")
-                .ToArray());
-            Output.WriteLine(Output.OutputModes.Verbose, $"js.RegisterFunction({functionName},{instance},{method.Name}({paramDebug}):{method.ReturnType})");
+            //var paramDebug = string.Join(", ", method.GetParameters()
+            //    .Select(p => $"{p.ParameterType.Name} {p.Name}")
+            //    .ToArray());
+            //Output.WriteLine(Output.OutputModes.Verbose, $"js.RegisterFunction({functionName},{instance},{method.Name}({paramDebug}):{method.ReturnType})");
 
             if (parents.Length > 1)
             {
@@ -116,12 +124,12 @@ namespace Key2Joy.Mapping
             base.RegisterEnvironmentObjects();
         }
 
-        public override void OnStartListening(TriggerListener listener, ref List<BaseAction> otherActions)
+        public override void OnStartListening(AbstractTriggerListener listener, ref IList<AbstractAction> otherActions)
         {
             base.OnStartListening(listener, ref otherActions);
         }
 
-        public override void OnStopListening(TriggerListener listener)
+        public override void OnStopListening(AbstractTriggerListener listener)
         {
             base.OnStopListening(listener);
 

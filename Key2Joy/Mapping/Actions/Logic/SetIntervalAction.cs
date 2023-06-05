@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Util;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -11,11 +13,11 @@ namespace Key2Joy.Mapping
         Description = "Repeatedly calls a function or executes a code snippet, with a fixed time delay between each call",
         Visibility = MappingMenuVisibility.Never
     )]
-    [Util.ObjectListViewGroup(
+    [ObjectListViewGroup(
         Name = "Logic",
         Image = "script_code"
     )]
-    public class SetIntervalAction : BaseAction
+    public class SetIntervalAction : CoreAction
     {
         public delegate void CallbackAction(params object[] arguments);
             

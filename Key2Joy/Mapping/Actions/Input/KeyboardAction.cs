@@ -1,4 +1,6 @@
-﻿using Key2Joy.LowLevelInput;
+﻿using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Util;
+using Key2Joy.LowLevelInput;
 using Newtonsoft.Json;
 using SimWinInput;
 using System;
@@ -16,12 +18,11 @@ namespace Key2Joy.Mapping
         Description = "Keyboard Simulation",
         NameFormat = "{1} {0} on Keyboard"
     )]
-    [ExposesScriptingEnumeration(typeof(KeyboardKey))]
-    [Util.ObjectListViewGroup(
+    [ObjectListViewGroup(
         Name = "Keyboard Simulation",
         Image = "keyboard"
     )]
-    public class KeyboardAction : BaseAction, IPressState
+    public class KeyboardAction : CoreAction, IPressState
     {        
         [JsonProperty]
         public KeyboardKey Key { get; set; }
@@ -53,13 +54,12 @@ namespace Key2Joy.Mapping
 
         public static List<MappedOption> GetAllButtonActions(PressState pressState)
         {
-            var actionType = typeof(KeyboardAction);
-            var typeAttribute = ((ActionAttribute[])actionType.GetCustomAttributes(typeof(ActionAttribute), false))[0];
+            var actionTypeFactory = ActionsRepository.GetAction(typeof(KeyboardAction));
 
             var actions = new List<MappedOption>();
             foreach (var key in GetAllKeys())
             {
-                var action = (KeyboardAction)MakeAction(actionType, typeAttribute);
+                var action = (KeyboardAction)MakeAction(actionTypeFactory);
                 action.Key = key;
                 action.PressState = pressState;
 

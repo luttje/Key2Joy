@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Key2Joy.Contracts.Mapping;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -11,7 +12,7 @@ namespace Key2Joy.Mapping
         Visibility = MappingMenuVisibility.UnlessTopLevel,
         NameFormat = "Wait for {0}ms"
     )]
-    public class WaitAction : BaseAction
+    public class WaitAction : CoreAction
     {
         [JsonProperty]
         public TimeSpan WaitTime;

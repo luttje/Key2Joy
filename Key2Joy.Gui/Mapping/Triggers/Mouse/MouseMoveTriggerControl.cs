@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using Key2Joy.Contracts.Mapping;
 using Key2Joy.Mapping;
 
 namespace Key2Joy.Gui.Mapping
@@ -29,14 +30,14 @@ namespace Key2Joy.Gui.Mapping
             cmbMouseDirection.DataSource = directions;
         }
 
-        public void Select(BaseTrigger trigger)
+        public void Select(AbstractTrigger trigger)
         {
             var thisTrigger = (MouseMoveTrigger)trigger;
 
             cmbMouseDirection.SelectedItem = thisTrigger.AxisBinding;
         }
 
-        public void Setup(BaseTrigger trigger)
+        public void Setup(AbstractTrigger trigger)
         {
             var thisTrigger = (MouseMoveTrigger)trigger;
 

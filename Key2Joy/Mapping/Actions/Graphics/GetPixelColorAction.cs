@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Esprima;
 using System.Windows.Forms;
+using Key2Joy.Contracts.Mapping;
 
 namespace Key2Joy.Mapping
 {
@@ -17,7 +18,7 @@ namespace Key2Joy.Mapping
         Visibility = MappingMenuVisibility.Never,
         NameFormat = "Get a Pixel Color"
     )]
-    public class GetPixelColorAction : BaseAction
+    public class GetPixelColorAction : CoreAction
     {
         private Bitmap pixelCache = new Bitmap(1, 1);
         

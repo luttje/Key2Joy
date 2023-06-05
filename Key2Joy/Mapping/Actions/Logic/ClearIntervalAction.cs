@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Util;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -11,11 +13,11 @@ namespace Key2Joy.Mapping
         Description = "Cancels an interval previously established by calling SetInterval()",
         Visibility = MappingMenuVisibility.Never
     )]
-    [Util.ObjectListViewGroup(
+    [ObjectListViewGroup(
         Name = "Logic",
         Image = "script_code"
     )]
-    public class ClearIntervalAction : BaseAction
+    public class ClearIntervalAction : CoreAction
     {
         public ClearIntervalAction(string name, string description)
             : base(name, description)

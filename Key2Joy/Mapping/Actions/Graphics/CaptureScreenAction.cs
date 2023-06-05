@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Esprima;
 using System.Windows.Forms;
 using System.IO;
+using Key2Joy.Contracts.Mapping;
 
 namespace Key2Joy.Mapping
 {
@@ -18,7 +19,7 @@ namespace Key2Joy.Mapping
         Visibility = MappingMenuVisibility.Never,
         NameFormat = "Capture the specified Screen Region"
     )]
-    public class CaptureScreenAction : BaseAction
+    public class CaptureScreenAction : CoreAction
     {
         public CaptureScreenAction(string name, string description)
             : base(name, description)

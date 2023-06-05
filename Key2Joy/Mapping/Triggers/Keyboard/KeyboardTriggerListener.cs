@@ -1,4 +1,5 @@
-﻿using Key2Joy.LowLevelInput;
+﻿using Key2Joy.Contracts.Mapping;
+using Key2Joy.LowLevelInput;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -49,7 +50,7 @@ namespace Key2Joy.Mapping
             base.Stop();
         }
 
-        public override bool GetIsTriggered(BaseTrigger trigger)
+        public override bool GetIsTriggered(AbstractTrigger trigger)
         {
             if (!(trigger is KeyboardTrigger keyboardTrigger))
                 return false;
@@ -64,7 +65,7 @@ namespace Key2Joy.Mapping
 
             // Test if this is a bound key, if so halt default input behaviour
             var keys = VirtualKeyConverter.KeysFromVirtual(e.KeyboardData.VirtualCode);
-            Dictionary<int, List<MappedOption>> dictionary;
+            Dictionary<int, List<AbstractMappedOption>> dictionary;
             
             if (e.KeyboardState == KeyboardState.KeyDown) 
             { 

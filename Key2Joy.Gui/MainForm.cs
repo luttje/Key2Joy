@@ -14,6 +14,8 @@ using System.IO;
 using BrightIdeasSoftware;
 using Key2Joy.LowLevelInput;
 using Key2Joy.Config;
+using Key2Joy.Contracts.Util;
+using Key2Joy.Contracts.Mapping;
 
 namespace Key2Joy.Gui
 {
@@ -66,7 +68,7 @@ namespace Key2Joy.Gui
             olvMappings.BeforeCreatingGroups += olvMappings_BeforeCreatingGroups;
 
             olvColumnTrigger.AspectToStringConverter = delegate (object obj) {
-                var trigger = obj as BaseTrigger;
+                var trigger = obj as CoreTrigger;
 
                 if(trigger == null)
                     return "(no trigger mapped)";
@@ -213,7 +215,7 @@ namespace Key2Joy.Gui
 
         private object olvMappings_GroupKeyGetter(object rowObject)
         {
-            var option = (MappedOption)rowObject;
+            var option = (AbstractMappedOption)rowObject;
             var groupType = option.Action.GetType();
             var groupAttribute = groupType.GetCustomAttribute<ObjectListViewGroupAttribute>(true);
 
@@ -519,7 +521,7 @@ namespace Key2Joy.Gui
 
         private void openPluginsFolderToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Process.Start(Program.Plugins.Folder);
+            Process.Start(Program.Plugins.PluginsFolder);
         }
 
         private void managePluginsToolStripMenuItem_Click(object sender, EventArgs e)

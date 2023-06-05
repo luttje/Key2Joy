@@ -122,7 +122,7 @@
             this.actionControl.Padding = new System.Windows.Forms.Padding(5);
             this.actionControl.Size = new System.Drawing.Size(333, 32);
             this.actionControl.TabIndex = 1;
-            this.actionControl.ActionChanged += new System.Action<Key2Joy.Mapping.BaseAction>(this.actionControl_ActionChanged);
+            this.actionControl.ActionChanged += new System.Action<Key2Joy.Contracts.Mapping.AbstractAction>(this.actionControl_ActionChanged);
             // 
             // pnlActionOptions
             // 

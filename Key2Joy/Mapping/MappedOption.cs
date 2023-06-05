@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Key2Joy.Contracts.Mapping;
+using Newtonsoft.Json;
 using SimWinInput;
 using System;
 using System.Collections.Generic;
@@ -6,14 +7,8 @@ using System.Drawing;
 
 namespace Key2Joy.Mapping
 {
-    [JsonObject(MemberSerialization.OptIn)]
-    public class MappedOption : ICloneable
+    public class MappedOption : AbstractMappedOption
     {
-        [JsonProperty(TypeNameHandling = TypeNameHandling.All)]
-        public BaseAction Action;
-        [JsonProperty(TypeNameHandling = TypeNameHandling.All)]
-        public BaseTrigger Trigger;
-
         public string GetActionDisplay()
         {
             return Action.GetNameDisplay();
@@ -27,12 +22,12 @@ namespace Key2Joy.Mapping
             return Trigger.ToString();
         }
 
-        public object Clone()
+        public override object Clone()
         {
             return new MappedOption()
             {
-                Trigger = Trigger != null ? (BaseTrigger)Trigger.Clone() : null,
-                Action = (BaseAction)Action.Clone(),
+                Trigger = Trigger != null ? (CoreTrigger)Trigger.Clone() : null,
+                Action = (CoreAction)Action.Clone(),
             };
         }
     }

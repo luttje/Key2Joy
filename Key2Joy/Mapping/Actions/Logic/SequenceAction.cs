@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Util;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,19 +12,19 @@ namespace Key2Joy.Mapping
         Visibility = MappingMenuVisibility.OnlyTopLevel,
         NameFormat = "Run Sequence: {0}"
     )]
-    [Util.ObjectListViewGroup(
+    [ObjectListViewGroup(
         Name = "Logic",
         Image = "script_code"
     )]
-    public class SequenceAction : BaseAction
+    public class SequenceAction : CoreAction
     {
         [JsonProperty(ItemTypeNameHandling = TypeNameHandling.All)]
-        public List<BaseAction> ChildActions;
+        public IList<AbstractAction> ChildActions;
 
         public SequenceAction(string name, string description)
             : base(name, description)
         {
-            ChildActions = new List<BaseAction>();
+            ChildActions = new List<AbstractAction>();
         }
 
         public override async Task Execute(IInputBag inputBag = null)
@@ -31,7 +33,7 @@ namespace Key2Joy.Mapping
                 await childAction.Execute(inputBag);
         }
 
-        public override void OnStartListening(TriggerListener listener, ref List<BaseAction> otherActions)
+        public override void OnStartListening(AbstractTriggerListener listener, ref IList<AbstractAction> otherActions)
         {
             base.OnStartListening(listener, ref otherActions);
 
@@ -41,7 +43,7 @@ namespace Key2Joy.Mapping
             }
         }
 
-        public override void OnStopListening(TriggerListener listener)
+        public override void OnStopListening(AbstractTriggerListener listener)
         {
             base.OnStopListening(listener);
 

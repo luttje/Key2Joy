@@ -6,4 +6,4 @@ set PluginOutputPath=%2
 call set PluginOutputPath=%%PluginOutputPath:%PluginProjectName%=Key2Joy.Gui%%
 
 echo Copying Plugin (%1) to %PluginOutputPath%
-echo f | xcopy /f /y %PluginPath%%PluginFileName% %PluginOutputPath%Plugins\%PluginFileName%
+echo d | xcopy /d /y %PluginPath% %PluginOutputPath%Plugins\%PluginProjectName%

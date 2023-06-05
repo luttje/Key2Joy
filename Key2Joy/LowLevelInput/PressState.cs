@@ -1,4 +1,5 @@
-﻿using Key2Joy.Mapping;
+﻿using Key2Joy.Contracts.Mapping;
+using Key2Joy.Mapping;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -61,7 +62,7 @@ namespace Key2Joy.LowLevelInput
         public static void UpdateLegacyIfApplicable(MappingProfile profile)
         {
             bool changed = false;
-            var listCopy = new List<MappedOption>(profile.MappedOptions);
+            var listCopy = new List<AbstractMappedOption>(profile.MappedOptions);
 
             foreach (var mappedOption in listCopy)
             {

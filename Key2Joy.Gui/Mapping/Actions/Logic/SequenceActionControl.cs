@@ -1,4 +1,5 @@
-﻿using Key2Joy.Mapping;
+﻿using Key2Joy.Contracts.Mapping;
+using Key2Joy.Mapping;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,49 +20,49 @@ namespace Key2Joy.Gui.Mapping
     {
         public event EventHandler OptionsChanged;
         
-        private List<BaseAction> childActions;
+        private List<AbstractAction> childActions;
 
         public SequenceActionControl()
         {
             InitializeComponent();
 
-            childActions = new List<BaseAction>();
+            childActions = new List<AbstractAction>();
         }
 
-        public void Select(BaseAction action)
+        public void Select(AbstractAction action)
         {
             var thisAction = (SequenceAction)action;
 
             foreach (var childAction in thisAction.ChildActions)
             {
                 // Clone so we don't modify the action in a profile
-                AddChildAction((BaseAction)childAction.Clone());
+                AddChildAction((AbstractAction)childAction.Clone());
             }
         }
 
-        public void Setup(BaseAction action)
+        public void Setup(AbstractAction action)
         {
             var thisAction = (SequenceAction)action;
             thisAction.ChildActions.Clear();
 
             foreach (var childAction in childActions)
             {
-                thisAction.ChildActions.Add(childAction);
+                thisAction.ChildActions.Add(PluginAction.GetFullyFormedAction(childAction));
             }
         }
 
-        public bool CanMappingSave(BaseAction action)
+        public bool CanMappingSave(AbstractAction action)
         {
             return true;
         }
 
-        private void AddChildAction(BaseAction action)
+        private void AddChildAction(AbstractAction action)
         {
             childActions.Add(action);
             lstActions.Items.Add(action);
         }
 
-        private void RemoveChildAction(BaseAction action)
+        private void RemoveChildAction(AbstractAction action)
         {
             var index = lstActions.Items.IndexOf(action);
             
@@ -80,13 +81,13 @@ namespace Key2Joy.Gui.Mapping
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            AddChildAction((BaseAction)actionControl.Action.Clone());
+            AddChildAction((AbstractAction)actionControl.Action.Clone());
             OptionsChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void btnRemove_Click(object sender, EventArgs e)
         {
-            RemoveChildAction((BaseAction)lstActions.SelectedItem);
+            RemoveChildAction((AbstractAction)lstActions.SelectedItem);
             OptionsChanged?.Invoke(this, EventArgs.Empty);
         }
 
@@ -95,7 +96,7 @@ namespace Key2Joy.Gui.Mapping
             btnRemove.Enabled = lstActions.SelectedIndex > -1;
         }
 
-        private void actionControl_ActionChanged(BaseAction action)
+        private void actionControl_ActionChanged(AbstractAction action)
         {
             btnAdd.Enabled = action != null;
         }

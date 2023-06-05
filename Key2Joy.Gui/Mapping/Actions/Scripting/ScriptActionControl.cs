@@ -1,14 +1,7 @@
-﻿using Key2Joy.Mapping;
+﻿using Key2Joy.Contracts.Mapping;
+using Key2Joy.Mapping;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Media;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Key2Joy.Gui.Mapping
@@ -25,28 +18,40 @@ namespace Key2Joy.Gui.Mapping
     {
         public event EventHandler OptionsChanged;
 
-        private string languageName;
-
-
-        public ScriptActionControl(string languageName)
+        public ScriptActionControl()
         {
-            this.languageName = languageName;
             InitializeComponent();
 
             pnlFileInput.Visible = !chkDirectInput.Checked;
-            lblInfo.Text = $"{languageName} Script:";
         }
 
-        public void Select(BaseAction action)
+        public void Select(AbstractAction action)
         {
             var thisAction = (BaseScriptAction)action;
+
+            var mappingType = action.GetType();
+            string languageName;
+
+            // If it's LuaScriptAction or JavascriptAction change the typename to ScriptAction
+            if (mappingType == typeof(LuaScriptAction))
+            {
+                languageName = "Lua";
+            } else if (mappingType == typeof(JavascriptAction))
+            {
+                languageName = "Javascript";
+            } else
+            {
+                languageName = "Unknown Language";
+            }
+
+            lblInfo.Text = $"{languageName} Script:";
 
             txtScript.Text = txtFilePath.Text = thisAction.Script;
             chkDirectInput.Checked = !thisAction.IsScriptPath;
             pnlFileInput.Visible = !chkDirectInput.Checked;
         }
 
-        public void Setup(BaseAction action)
+        public void Setup(AbstractAction action)
         {
             var thisAction = (BaseScriptAction)action;
 
@@ -61,7 +66,7 @@ namespace Key2Joy.Gui.Mapping
             thisAction.Script = txtScript.Text;
         }
 
-        public bool CanMappingSave(BaseAction action)
+        public bool CanMappingSave(AbstractAction action)
         {
             return MessageBox.Show(
                 "Scripts can click and type like you do and therefor impersonate you. "
@@ -107,7 +112,7 @@ namespace Key2Joy.Gui.Mapping
             }
             catch (IOException)
             {
-                MessageBox.Show($"This file could not be loaded as a {languageName} script.", "Invalid script file!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"This file could not be loaded as a script.", "Invalid script file!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Key2Joy.Contracts.Mapping;
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace Key2Joy.Mapping
         Visibility = MappingMenuVisibility.Never,
         NameFormat = "Get All Window Handles"
     )]
-    public class WindowGetAllAction : BaseAction
+    public class WindowGetAllAction : CoreAction
     {
         public delegate bool EnumedWindow(IntPtr handleWindow, ArrayList handles);
 

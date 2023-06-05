@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Key2Joy.Contracts.Mapping;
+using Newtonsoft.Json;
 using System;
 
 namespace Key2Joy.Mapping
@@ -6,7 +7,7 @@ namespace Key2Joy.Mapping
     [Trigger(
         Description = "Mouse Move Event"
     )]
-    public class MouseMoveTrigger : BaseTrigger, IReturnInputHash
+    public class MouseMoveTrigger : CoreTrigger, IReturnInputHash
     {
         public const string PREFIX_UNIQUE = nameof(MouseButtonTrigger);
 
@@ -18,7 +19,7 @@ namespace Key2Joy.Mapping
             : base(name, description)
         { }
 
-        public override TriggerListener GetTriggerListener()
+        public override AbstractTriggerListener GetTriggerListener()
         {
             return MouseMoveTriggerListener.Instance;
         }

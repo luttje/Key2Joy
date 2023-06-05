@@ -1,4 +1,5 @@
-﻿using Key2Joy.Mapping;
+﻿using Key2Joy.Contracts.Mapping;
+using Key2Joy.Mapping;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,14 +16,14 @@ namespace Key2Joy.Gui.Mapping
     {
         public event EventHandler RequestedRemove;
         public event EventHandler TriggerChanged;
-        public BaseTrigger Trigger { get; private set; }
+        public AbstractTrigger Trigger { get; private set; }
 
         public CombinedTriggerControlItem()
         {
             InitializeComponent();
         }
 
-        public CombinedTriggerControlItem(BaseTrigger trigger)
+        public CombinedTriggerControlItem(AbstractTrigger trigger)
             :this()
         {
             Trigger = trigger;

@@ -1,4 +1,5 @@
-﻿using Key2Joy.Mapping;
+﻿using Key2Joy.Contracts.Mapping;
+using Key2Joy.Mapping;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -33,20 +34,20 @@ namespace Key2Joy.Gui.Mapping
             cmbAppCommand.DataSource = appCommands;
         }
 
-        public void Select(BaseAction action)
+        public void Select(AbstractAction action)
         {
             var thisAction = (AppCommandAction)action;
 
             cmbAppCommand.SelectedItem = thisAction.Command;
         }
 
-        public void Setup(BaseAction action)
+        public void Setup(AbstractAction action)
         { 
             var thisAction = (AppCommandAction)action;
 
             thisAction.Command = (AppCommand)cmbAppCommand.SelectedItem;
         }
-        public bool CanMappingSave(BaseAction action)
+        public bool CanMappingSave(AbstractAction action)
         {
             return true;
         }

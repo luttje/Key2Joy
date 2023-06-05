@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Util;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -11,11 +13,11 @@ namespace Key2Joy.Mapping
         Description = "Sets a timer which executes a function or specified piece of code once the timer expires",
         Visibility = MappingMenuVisibility.Never
     )]
-    [Util.ObjectListViewGroup(
+    [ObjectListViewGroup(
         Name = "Logic",
         Image = "script_code"
     )]
-    public class SetTimeoutAction : BaseAction
+    public class SetTimeoutAction : CoreAction
     {
         public delegate void CallbackAction(params object[] arguments);
         

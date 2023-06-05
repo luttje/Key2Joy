@@ -1,5 +1,9 @@
-﻿using Key2Joy.Util;
+﻿using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Util;
+using Key2Joy.LowLevelInput;
+using Key2Joy.Util;
 using Newtonsoft.Json;
+using SimWinInput;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -10,12 +14,11 @@ namespace Key2Joy.Mapping
         Description = "App Command",
         NameFormat = "Run App Command '{0}'"
     )]
-    [ExposesScriptingEnumeration(typeof(AppCommand))]
-    [Util.ObjectListViewGroup(
+    [ObjectListViewGroup(
         Name = "Logic",
         Image = "script_code"
     )]
-    public class AppCommandAction : BaseAction
+    public class AppCommandAction : CoreAction
     {
         [JsonProperty]
         public AppCommand Command { get; set; }
