@@ -22,7 +22,7 @@ namespace Key2Joy.Plugins
             ImageResourceName = imageResourceName;
         }
 
-        public virtual T CreateInstance<T>() where T : UserControl
+        public virtual T CreateInstance<T>() where T : Control
         {
             return (T)Activator.CreateInstance(ToType());
         }

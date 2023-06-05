@@ -1,4 +1,5 @@
 ﻿using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Plugins;
 using Key2Joy.Gui.Mapping;
 using Key2Joy.Mapping;
 using Key2Joy.Plugins;
@@ -43,11 +44,11 @@ namespace Key2Joy.Gui
             actionControl.SelectAction(mappedOption.Action);
         }
 
-        public static UserControl BuildOptionsForComboBox<TAttribute, TAspect>(ComboBox comboBox, Panel optionsPanel)
+        public static Control BuildOptionsForComboBox<TAttribute, TAspect>(ComboBox comboBox, Panel optionsPanel)
             where TAttribute : MappingAttribute
             where TAspect : AbstractMappingAspect
         {
-            var optionsUserControl = optionsPanel.Controls.OfType<UserControl>().FirstOrDefault();
+            var optionsUserControl = optionsPanel.Controls.OfType<Control>().FirstOrDefault();
 
             if (optionsUserControl != null) 
             {
@@ -69,21 +70,52 @@ namespace Key2Joy.Gui
                 MessageBox.Show("Could not create options control for " + selectedTypeFactory.FullTypeName + ". \n\nPlease report this issue to the developer.\n\nThe app will now crash.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 throw new NotImplementedException("Could not create options control for " + selectedTypeFactory.FullTypeName);
             }
-            
+
+            if (optionsUserControl is AbstractPluginForm abstractPluginForm)
+            {
+                optionsUserControl = new Panel();
+
+                foreach (var kvp in abstractPluginForm.MappingConfigValues)
+                {
+                    // Add panels with Label: TextBox for all these
+                    var panel = new Panel();
+                    panel.Dock = DockStyle.Top;
+                    optionsUserControl.Controls.Add(panel);
+                    
+                    var input = new TextBox();
+                    input.Text = kvp.Value.ToString();
+                    input.Dock = DockStyle.Fill;
+                    panel.Controls.Add(input);
+                    
+                    var label = new Label();
+                    label.Text = kvp.Key + ": ";
+                    label.AutoSize = true;
+                    label.Dock = DockStyle.Left;
+                    panel.Controls.Add(label);
+                }
+                
+                var editConfigButton = new Button();
+                editConfigButton.Text = "Edit";
+                editConfigButton.AutoSize = true;
+                editConfigButton.Dock = DockStyle.Top;
+                editConfigButton.Click += (s, e) => abstractPluginForm.Show();
+                optionsUserControl.Controls.Add(editConfigButton);
+            }
+
             optionsPanel.Controls.Add(optionsUserControl);
             optionsUserControl.Dock = DockStyle.Top;
 
             return optionsUserControl;
         }
 
-        private static UserControl CreateOptionsControl<TAttribute>(string selectedTypeName, TAttribute attribute) where TAttribute : MappingAttribute
+        private static Control CreateOptionsControl<TAttribute>(string selectedTypeName, TAttribute attribute) where TAttribute : MappingAttribute
         {
             var mappingControlFactory = MappingControlRepository.GetMappingControlFactory(selectedTypeName);
 
             if (mappingControlFactory == null)
                 return null;
 
-            return mappingControlFactory.CreateInstance<UserControl>();
+            return mappingControlFactory.CreateInstance<Control>();
         }
 
         private void btnSaveMapping_Click(object sender, EventArgs e)

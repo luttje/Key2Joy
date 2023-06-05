@@ -17,6 +17,8 @@ using System.Windows.Forms;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.LowLevelInput;
 using SimWinInput;
+using System.Net;
+using System.Diagnostics;
 
 namespace Key2Joy.Plugins
 {
@@ -72,11 +74,15 @@ namespace Key2Joy.Plugins
                 };
 
                 var evidence = new Evidence();
-                evidence.AddHostEvidence(new Zone(SecurityZone.Internet));
+                evidence.AddHostEvidence(new Zone(SecurityZone.MyComputer));
 
                 var permissions = SecurityManager.GetStandardSandbox(evidence);
                 permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.Read, pluginDirectoryPath));
                 permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.PathDiscovery, pluginDirectoryPath));
+                
+                // Allow showing a plugin form (also required SecurityZone.MyComputer above
+                permissions.AddPermission(new UIPermission(UIPermissionWindow.AllWindows, UIPermissionClipboard.AllClipboard));
+
                 // Allow writing to a sub directory
                 var pluginDataDirectory = Path.Combine(pluginDirectoryPath, "data");
                 permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.Write, pluginDataDirectory));
