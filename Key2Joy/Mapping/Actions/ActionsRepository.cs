@@ -33,7 +33,7 @@ namespace Key2Joy.Mapping
                         t.FullName,
                         t.GetCustomAttribute<ActionAttribute>(),
                         t.GetMethods()
-                            .Where(m => m.GetCustomAttribute(typeof(ExposesScriptingMethodAttribute), false) != null)
+                            .Where(m => m.GetCustomAttributes(typeof(ExposesScriptingMethodAttribute), false).Length > 0)
                             .SelectMany(m => m.GetCustomAttributes<ExposesScriptingMethodAttribute>()
                                 .Select(a => MethodInfoToTypeExposed(m, a))
                             )

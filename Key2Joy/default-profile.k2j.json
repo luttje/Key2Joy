@@ -9,7 +9,7 @@
         "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
-        "$type": "KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.KeyboardTrigger",
         "Keys": "Up",
         "PressState": "Press",
         "Name": null
@@ -24,7 +24,7 @@
         "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
-        "$type": "KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.KeyboardTrigger",
         "Keys": "Down",
         "PressState": "Press",
         "Name": null
@@ -39,7 +39,7 @@
         "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
-        "$type": "KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.KeyboardTrigger",
         "Keys": "Left",
         "PressState": "Press",
         "Name": null
@@ -54,7 +54,7 @@
         "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
-        "$type": "KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.KeyboardTrigger",
         "Keys": "Right",
         "PressState": "Press",
         "Name": null
@@ -69,7 +69,7 @@
         "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
-        "$type": "KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.KeyboardTrigger",
         "Keys": "F1",
         "PressState": "Press",
         "Name": null
@@ -84,7 +84,7 @@
         "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
-        "$type": "KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.KeyboardTrigger",
         "Keys": "F2",
         "PressState": "Press",
         "Name": null
@@ -99,7 +99,7 @@
         "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
-        "$type": "KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.KeyboardTrigger",
         "Keys": "LControlKey",
         "PressState": "Press",
         "Name": null
@@ -114,7 +114,7 @@
         "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
-        "$type": "KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.KeyboardTrigger",
         "Keys": "RControlKey",
         "PressState": "Press",
         "Name": null
@@ -129,7 +129,7 @@
         "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
-        "$type": "KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.KeyboardTrigger",
         "Keys": "Q",
         "PressState": "Press",
         "Name": null
@@ -144,7 +144,7 @@
         "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
-        "$type": "KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.KeyboardTrigger",
         "Keys": "E",
         "PressState": "Press",
         "Name": null
@@ -159,7 +159,7 @@
         "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
-        "$type": "KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.KeyboardTrigger",
         "Keys": "F",
         "PressState": "Press",
         "Name": null
@@ -174,7 +174,7 @@
         "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
-        "$type": "KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.KeyboardTrigger",
         "Keys": "Z",
         "PressState": "Press",
         "Name": null
@@ -189,7 +189,7 @@
         "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
-        "$type": "KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.KeyboardTrigger",
         "Keys": "R",
         "PressState": "Press",
         "Name": null
@@ -204,7 +204,7 @@
         "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
-        "$type": "KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.KeyboardTrigger",
         "Keys": "Y",
         "PressState": "Press",
         "Name": null
@@ -219,7 +219,7 @@
         "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
-        "$type": "KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.KeyboardTrigger",
         "Keys": "D1",
         "PressState": "Press",
         "Name": null
@@ -234,7 +234,7 @@
         "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
-        "$type": "KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.KeyboardTrigger",
         "Keys": "D2",
         "PressState": "Press",
         "Name": null
@@ -249,7 +249,7 @@
         "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
-        "$type": "KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.KeyboardTrigger",
         "Keys": "A",
         "PressState": "Press",
         "Name": null
@@ -264,7 +264,7 @@
         "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
-        "$type": "KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.KeyboardTrigger",
         "Keys": "D",
         "PressState": "Press",
         "Name": null
@@ -279,7 +279,7 @@
         "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
-        "$type": "KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.KeyboardTrigger",
         "Keys": "W",
         "PressState": "Press",
         "Name": null
@@ -294,7 +294,7 @@
         "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
-        "$type": "KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.KeyboardTrigger",
         "Keys": "S",
         "PressState": "Press",
         "Name": null
@@ -309,7 +309,7 @@
         "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
-        "$type": "MouseMoveTrigger",
+        "$type": "Key2Joy.Mapping.MouseMoveTrigger",
         "AxisBinding": "Left",
         "Name": null
       }
@@ -323,7 +323,7 @@
         "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
-        "$type": "MouseMoveTrigger",
+        "$type": "Key2Joy.Mapping.MouseMoveTrigger",
         "AxisBinding": "Right",
         "Name": null
       }
@@ -337,7 +337,7 @@
         "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
-        "$type": "MouseMoveTrigger",
+        "$type": "Key2Joy.Mapping.MouseMoveTrigger",
         "AxisBinding": "Forward",
         "Name": null
       }
@@ -351,7 +351,7 @@
         "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
-        "$type": "MouseMoveTrigger",
+        "$type": "Key2Joy.Mapping.MouseMoveTrigger",
         "AxisBinding": "Backward",
         "Name": null
       }
@@ -365,7 +365,7 @@
         "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
-        "$type": "KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.KeyboardTrigger",
         "Keys": "Up",
         "PressState": "Release",
         "Name": null
@@ -380,7 +380,7 @@
         "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
-        "$type": "KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.KeyboardTrigger",
         "Keys": "Down",
         "PressState": "Release",
         "Name": null
@@ -395,7 +395,7 @@
         "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
-        "$type": "KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.KeyboardTrigger",
         "Keys": "Left",
         "PressState": "Release",
         "Name": null
@@ -410,7 +410,7 @@
         "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
-        "$type": "KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.KeyboardTrigger",
         "Keys": "Right",
         "PressState": "Release",
         "Name": null
@@ -425,7 +425,7 @@
         "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
-        "$type": "KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.KeyboardTrigger",
         "Keys": "F1",
         "PressState": "Release",
         "Name": null
@@ -440,7 +440,7 @@
         "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
-        "$type": "KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.KeyboardTrigger",
         "Keys": "F2",
         "PressState": "Release",
         "Name": null
@@ -455,7 +455,7 @@
         "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
-        "$type": "KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.KeyboardTrigger",
         "Keys": "LControlKey",
         "PressState": "Release",
         "Name": null
@@ -470,7 +470,7 @@
         "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
-        "$type": "KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.KeyboardTrigger",
         "Keys": "RControlKey",
         "PressState": "Release",
         "Name": null
@@ -485,7 +485,7 @@
         "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
-        "$type": "KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.KeyboardTrigger",
         "Keys": "Q",
         "PressState": "Release",
         "Name": null
@@ -500,7 +500,7 @@
         "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
-        "$type": "KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.KeyboardTrigger",
         "Keys": "E",
         "PressState": "Release",
         "Name": null
@@ -515,7 +515,7 @@
         "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
-        "$type": "KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.KeyboardTrigger",
         "Keys": "F",
         "PressState": "Release",
         "Name": null
@@ -530,7 +530,7 @@
         "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
-        "$type": "KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.KeyboardTrigger",
         "Keys": "Z",
         "PressState": "Release",
         "Name": null
@@ -545,7 +545,7 @@
         "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
-        "$type": "KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.KeyboardTrigger",
         "Keys": "R",
         "PressState": "Release",
         "Name": null
@@ -560,7 +560,7 @@
         "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
-        "$type": "KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.KeyboardTrigger",
         "Keys": "Y",
         "PressState": "Release",
         "Name": null
@@ -575,7 +575,7 @@
         "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
-        "$type": "KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.KeyboardTrigger",
         "Keys": "D1",
         "PressState": "Release",
         "Name": null
@@ -590,7 +590,7 @@
         "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
-        "$type": "KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.KeyboardTrigger",
         "Keys": "D2",
         "PressState": "Release",
         "Name": null
@@ -605,7 +605,7 @@
         "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
-        "$type": "KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.KeyboardTrigger",
         "Keys": "A",
         "PressState": "Release",
         "Name": null
@@ -620,7 +620,7 @@
         "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
-        "$type": "KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.KeyboardTrigger",
         "Keys": "D",
         "PressState": "Release",
         "Name": null
@@ -635,7 +635,7 @@
         "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
-        "$type": "KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.KeyboardTrigger",
         "Keys": "W",
         "PressState": "Release",
         "Name": null
@@ -650,7 +650,7 @@
         "Name": "{1} {0} on GamePad #{2}"
       },
       "Trigger": {
-        "$type": "KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.KeyboardTrigger",
         "Keys": "S",
         "PressState": "Release",
         "Name": null
@@ -663,7 +663,7 @@
         "Name": "Run App Command '{0}'"
       },
       "Trigger": {
-        "$type": "KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.KeyboardTrigger",
         "Keys": "Escape",
         "PressState": "Release",
         "Name": null
@@ -677,16 +677,16 @@
         "Name": "Lua Script: {0}"
       },
       "Trigger": {
-        "$type": "CombinedTrigger",
+        "$type": "Key2Joy.Mapping.CombinedTrigger",
         "Triggers": [
           {
-            "$type": "KeyboardTrigger",
+            "$type": "Key2Joy.Mapping.KeyboardTrigger",
             "Keys": "A",
             "PressState": "Press",
             "Name": null
           },
           {
-            "$type": "KeyboardTrigger",
+            "$type": "Key2Joy.Mapping.KeyboardTrigger",
             "Keys": "LShiftKey",
             "PressState": "Press",
             "Name": null

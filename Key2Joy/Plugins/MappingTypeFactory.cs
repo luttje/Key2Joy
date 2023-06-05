@@ -24,10 +24,18 @@ namespace Key2Joy.Plugins
             ExposedMethods = exposedMethods ?? new List<ExposedMethod>();
         }
 
-
         public virtual T CreateInstance<T>()
         {
-            return (T)Activator.CreateInstance(Type.GetType(FullTypeName));
+            return (T)Activator.CreateInstance(ToType(), new object[] 
+            { 
+                Attribute.NameFormat,
+                Attribute.Description,
+            });
+        }
+
+        public virtual Type ToType()
+        {
+            return Type.GetType(FullTypeName);
         }
     }
     
@@ -53,16 +61,29 @@ namespace Key2Joy.Plugins
     public class AppDomainMappingTypeFactory<T> : MappingTypeFactory<T> where T : AbstractMappingAspect
     {
         private AppDomain appDomain;
+        private Type hostBaseType;
+        private string pluginAssemblyPath;
 
-        public AppDomainMappingTypeFactory(AppDomain appDomain, string fullTypeName, MappingAttribute attribute, IReadOnlyList<ExposedMethod> exposedMethods = null)
+        public AppDomainMappingTypeFactory(AppDomain appDomain, string pluginAssemblyPath, Type hostBaseType, string fullTypeName, MappingAttribute attribute, IReadOnlyList<ExposedMethod> exposedMethods = null)
             : base(fullTypeName, attribute, exposedMethods)
         {
             this.appDomain = appDomain;
+            this.pluginAssemblyPath = pluginAssemblyPath;
+            this.hostBaseType = hostBaseType;
         }
 
         public override T CreateInstance()
         {
-            return (T)appDomain.CreateInstanceAndUnwrap(typeof(T).Assembly.FullName, FullTypeName);
+            return (T)appDomain.CreateInstanceFromAndUnwrap(pluginAssemblyPath, FullTypeName);
+        }
+
+        /// <summary>
+        /// Since we can't get the Type in the other appdomain, we return the host/contract class it derives from instead.
+        /// </summary>
+        /// <returns></returns>
+        public override Type ToType()
+        {
+            return hostBaseType;
         }
     }
 }

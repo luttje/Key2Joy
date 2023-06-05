@@ -139,6 +139,8 @@ namespace Key2Joy.Plugins
                         actionTypeFactories.Add(
                             new AppDomainMappingTypeFactory<AbstractAction>(
                                 sandboxDomain,
+                                pluginAssemblyPath,
+                                typeof(AbstractAction),
                                 actionFullTypeName,
                                 actionAttribute,
                                 exposedMethods                                
@@ -172,6 +174,8 @@ namespace Key2Joy.Plugins
                         triggerTypeFactories.Add(
                             new AppDomainMappingTypeFactory<AbstractTrigger>(
                                 sandboxDomain,
+                                pluginAssemblyPath,
+                                typeof(AbstractTrigger),
                                 triggerFullTypeName,
                                 triggerAttribute
                             )

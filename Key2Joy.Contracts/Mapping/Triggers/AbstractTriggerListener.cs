@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Key2Joy.Contracts.Mapping
 {
-    public abstract class AbstractTriggerListener
+    public abstract class AbstractTriggerListener : MarshalByRefObject
     {
         public event EventHandler<TriggerActivatingEventArgs> TriggerActivating;
         public event EventHandler<TriggerActivatedEventArgs> TriggerActivated;

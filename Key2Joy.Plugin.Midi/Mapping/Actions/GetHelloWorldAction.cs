@@ -3,7 +3,6 @@ using Newtonsoft.Json;
 using System.Threading.Tasks;
 using System;
 using Key2Joy.Contracts.Util;
-using System.Windows.Forms;
 
 namespace Key2Joy.Plugin.Midi.Mapping
 {
@@ -20,11 +19,10 @@ namespace Key2Joy.Plugin.Midi.Mapping
         [JsonProperty]
         public string Target = "World";
 
-
         [ExposesScriptingMethod("Hello.World")]
         public override async Task Execute(IInputBag inputBag = null)
         {
-            MessageBox.Show("test");
+            //MessageBox.Show("test");
             //Output.WriteLine(Output.OutputModes.Verbose, $"Hello {Target}!");
         }
 

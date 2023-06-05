@@ -27,8 +27,7 @@ namespace Key2Joy.Mapping
 
         public Type BindToType(string assemblyName, string fullTypeName)
         {
-            //return allowedTypes.SingleOrDefault(t => t.FullTypeName == fullTypeName);
-            throw new NotImplementedException("TODO: Somehow create the instance elsewhere (using the above typeFactory)");
+            return allowedTypes.SingleOrDefault(t => t.FullTypeName == fullTypeName)?.ToType() ?? null;
         }
 
         public void BindToName(Type serializedType, out string assemblyName, out string typeName)
