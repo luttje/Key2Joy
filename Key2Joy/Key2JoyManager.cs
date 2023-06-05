@@ -53,7 +53,7 @@ namespace Key2Joy
             pluginDirectoriesPaths = Path.Combine(pluginDirectoriesPaths, "Plugins");
 
             // TODO: Move this to a seperate method/property that the plugin can override
-            BaseScriptAction.ExposedEnumerations = (new List<Type>
+            BaseScriptAction.ExposedEnumerations.AddRange((new List<Type>
                     {
                         typeof(Mouse.MoveType),
                         typeof(Mouse.Buttons),
@@ -62,7 +62,7 @@ namespace Key2Joy
                         typeof(Simulator.GamePadStick),
                         typeof(AppCommand),
                         typeof(KeyboardKey)
-                    }).Select(x => ExposedEnumeration.FromType(x)).ToList();
+                    }).Select(ExposedEnumeration.FromType).ToList());
 
             var plugins = new PluginSet(pluginDirectoriesPaths);
 

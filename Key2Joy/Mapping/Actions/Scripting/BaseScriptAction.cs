@@ -20,7 +20,7 @@ namespace Key2Joy.Mapping
         /// <summary>
         /// TODO: Clean this up. This is just a quick hack to get enumerations into scripts. Should move to something the plugins can affect nicely.
         /// </summary>
-        public static IList<ExposedEnumeration> ExposedEnumerations;
+        public static List<ExposedEnumeration> ExposedEnumerations = new();
 
         [JsonProperty]
         public string Script { get; set; }
