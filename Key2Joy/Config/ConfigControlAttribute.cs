@@ -21,7 +21,7 @@ namespace Key2Joy.Config
         /// <returns></returns>
         public static Dictionary<PropertyInfo, ConfigControlAttribute> GetAllProperties()
         {
-            return typeof(ConfigManager).GetProperties()
+            return typeof(ConfigState).GetProperties()
                 .Where(p => (p.GetCustomAttribute(typeof(ConfigControlAttribute), false) as ConfigControlAttribute) != null)
                 .ToDictionary(
                     p => p,

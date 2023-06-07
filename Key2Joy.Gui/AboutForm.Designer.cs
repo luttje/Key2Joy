@@ -54,15 +54,16 @@
             this.tableLayoutPanel.Controls.Add(this.okButton, 1, 4);
             this.tableLayoutPanel.Controls.Add(this.pnl, 1, 3);
             this.tableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel.Location = new System.Drawing.Point(9, 9);
+            this.tableLayoutPanel.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel.Name = "tableLayoutPanel";
+            this.tableLayoutPanel.Padding = new System.Windows.Forms.Padding(0, 0, 9, 0);
             this.tableLayoutPanel.RowCount = 5;
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel.Size = new System.Drawing.Size(417, 369);
+            this.tableLayoutPanel.Size = new System.Drawing.Size(435, 387);
             this.tableLayoutPanel.TabIndex = 0;
             // 
             // pctLogo
@@ -73,7 +74,7 @@
             this.pctLogo.Location = new System.Drawing.Point(3, 3);
             this.pctLogo.Name = "pctLogo";
             this.tableLayoutPanel.SetRowSpan(this.pctLogo, 5);
-            this.pctLogo.Size = new System.Drawing.Size(119, 312);
+            this.pctLogo.Size = new System.Drawing.Size(121, 312);
             this.pctLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pctLogo.TabIndex = 28;
             this.pctLogo.TabStop = false;
@@ -81,10 +82,11 @@
             // labelProductName
             // 
             this.labelProductName.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelProductName.Location = new System.Drawing.Point(128, 0);
+            this.labelProductName.Location = new System.Drawing.Point(130, 9);
+            this.labelProductName.Margin = new System.Windows.Forms.Padding(3, 9, 3, 0);
             this.labelProductName.MaximumSize = new System.Drawing.Size(0, 17);
             this.labelProductName.Name = "labelProductName";
-            this.labelProductName.Size = new System.Drawing.Size(286, 17);
+            this.labelProductName.Size = new System.Drawing.Size(293, 17);
             this.labelProductName.TabIndex = 19;
             this.labelProductName.Text = "<Product Name>";
             this.labelProductName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -92,10 +94,10 @@
             // labelVersion
             // 
             this.labelVersion.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelVersion.Location = new System.Drawing.Point(128, 17);
+            this.labelVersion.Location = new System.Drawing.Point(130, 26);
             this.labelVersion.MaximumSize = new System.Drawing.Size(0, 17);
             this.labelVersion.Name = "labelVersion";
-            this.labelVersion.Size = new System.Drawing.Size(286, 17);
+            this.labelVersion.Size = new System.Drawing.Size(293, 17);
             this.labelVersion.TabIndex = 0;
             this.labelVersion.Text = "<Version>";
             this.labelVersion.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -103,10 +105,10 @@
             // labelCopyright
             // 
             this.labelCopyright.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelCopyright.Location = new System.Drawing.Point(128, 34);
+            this.labelCopyright.Location = new System.Drawing.Point(130, 43);
             this.labelCopyright.MaximumSize = new System.Drawing.Size(0, 17);
             this.labelCopyright.Name = "labelCopyright";
-            this.labelCopyright.Size = new System.Drawing.Size(286, 17);
+            this.labelCopyright.Size = new System.Drawing.Size(293, 17);
             this.labelCopyright.TabIndex = 21;
             this.labelCopyright.Text = "<Copyright>";
             this.labelCopyright.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -115,7 +117,8 @@
             // 
             this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.okButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.okButton.Location = new System.Drawing.Point(339, 344);
+            this.okButton.Location = new System.Drawing.Point(348, 356);
+            this.okButton.Margin = new System.Windows.Forms.Padding(3, 9, 3, 9);
             this.okButton.Name = "okButton";
             this.okButton.Size = new System.Drawing.Size(75, 22);
             this.okButton.TabIndex = 24;
@@ -126,9 +129,9 @@
             this.pnl.Controls.Add(this.textBoxDescription);
             this.pnl.Controls.Add(this.lblAdditionalCredits);
             this.pnl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnl.Location = new System.Drawing.Point(128, 54);
+            this.pnl.Location = new System.Drawing.Point(130, 63);
             this.pnl.Name = "pnl";
-            this.pnl.Size = new System.Drawing.Size(286, 284);
+            this.pnl.Size = new System.Drawing.Size(293, 281);
             this.pnl.TabIndex = 25;
             // 
             // textBoxDescription
@@ -140,7 +143,7 @@
             this.textBoxDescription.Name = "textBoxDescription";
             this.textBoxDescription.ReadOnly = true;
             this.textBoxDescription.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBoxDescription.Size = new System.Drawing.Size(286, 267);
+            this.textBoxDescription.Size = new System.Drawing.Size(293, 264);
             this.textBoxDescription.TabIndex = 32;
             this.textBoxDescription.TabStop = false;
             this.textBoxDescription.Text = resources.GetString("textBoxDescription.Text");
@@ -153,7 +156,7 @@
             this.lblAdditionalCredits.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
             this.lblAdditionalCredits.MaximumSize = new System.Drawing.Size(0, 17);
             this.lblAdditionalCredits.Name = "lblAdditionalCredits";
-            this.lblAdditionalCredits.Size = new System.Drawing.Size(286, 17);
+            this.lblAdditionalCredits.Size = new System.Drawing.Size(293, 17);
             this.lblAdditionalCredits.TabIndex = 30;
             this.lblAdditionalCredits.Text = "Additional Credits:";
             this.lblAdditionalCredits.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -169,7 +172,6 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "AboutForm";
-            this.Padding = new System.Windows.Forms.Padding(9);
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
