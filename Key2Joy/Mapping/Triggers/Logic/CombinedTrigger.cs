@@ -14,7 +14,6 @@ namespace Key2Joy.Mapping
     {
         public const string PREFIX_UNIQUE = nameof(CombinedTrigger);
 
-        // TODO: [JsonProperty(ItemTypeNameHandling = TypeNameHandling.All)]
         public List<AbstractTrigger> Triggers { get; set; }
 
         [JsonConstructor]

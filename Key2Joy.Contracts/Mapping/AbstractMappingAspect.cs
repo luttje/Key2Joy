@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace Key2Joy.Contracts.Mapping
 {
@@ -83,7 +81,8 @@ namespace Key2Joy.Contracts.Mapping
         protected virtual void LoadOptionSetProperty(MappingAspectOptions options, PropertyInfo property)
         {
             var value = options[property.Name];
-            
+            var asd = property.PropertyType.IsGenericType ? property.PropertyType.GetGenericTypeDefinition() : null;
+
             if (property.PropertyType.IsEnum)
             {
                 value = Enum.Parse(property.PropertyType, (string)value);
@@ -91,6 +90,25 @@ namespace Key2Joy.Contracts.Mapping
             else if (property.PropertyType == typeof(DateTime))
             {
                 value = new DateTime(Convert.ToInt64(value));
+            }
+            else if (property.PropertyType.IsGenericType && asd == typeof(List<>))
+            {
+                // TODO: Store the List type somewhere and do this without reflection (it was just easier this way for now)
+                var listType = typeof(List<>);
+                var constructedListType = listType.MakeGenericType(property.PropertyType.GetGenericArguments());
+                var instance = Activator.CreateInstance(constructedListType);
+
+                var addMethod = constructedListType.GetMethod("Add");
+                foreach (var item in (List<object>)value)
+                {
+                    addMethod.Invoke(instance, new object[] { item });
+                }
+
+                value = instance;
+            }
+            else
+            {
+                value = Convert.ChangeType(value, property.PropertyType);
             }
 
             property.SetValue(this, value);

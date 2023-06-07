@@ -1,7 +1,9 @@
-﻿using Jint.Native;
+﻿using Jint;
+using Jint.Native;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.Plugins;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Remoting;
@@ -48,20 +50,18 @@ namespace Key2Joy.Mapping
         private JsonSerializerOptions GetOptionsWithoutSelf(JsonSerializerOptions options)
         {
             var newOptions = new JsonSerializerOptions(options);
-            var thisConverter = newOptions.Converters.SingleOrDefault(c => c is JsonMappingAspectConverter<T>);
+            //var thisConverter = newOptions.Converters.SingleOrDefault(c => c is JsonMappingAspectConverter<T>);
 
-            if (thisConverter != null)
-            {
-                newOptions.Converters.Remove(thisConverter);
-            }
+            //if (thisConverter != null)
+            //{
+            //    newOptions.Converters.Remove(thisConverter);
+            //}
 
             return newOptions;
         }
 
-        public override T Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        private AbstractMappingAspect ParseJson(JsonDocument json, JsonSerializerOptions options)
         {
-            var json = JsonDocument.ParseValue(ref reader);
-
             var typeProperty = json.RootElement.GetProperty("$type");
             var type = MappingTypeHelper.EnsureSimpleTypeName(typeProperty.GetString());
 
@@ -76,9 +76,8 @@ namespace Key2Joy.Mapping
                 )
             );
 
-            // Create options for all properties
-            var actionOptions = new MappingAspectOptions();
-            
+            var mappingAspectOptions = new MappingAspectOptions();
+
             foreach (var property in actionRootProperty.EnumerateObject())
             {
                 if (property.Value.ValueKind == JsonValueKind.Object)
@@ -87,19 +86,32 @@ namespace Key2Joy.Mapping
                 }
                 else if (property.Value.ValueKind == JsonValueKind.String)
                 {
-                    actionOptions.Add(property.Name, property.Value.GetString());
+                    mappingAspectOptions.Add(property.Name, property.Value.GetString());
                 }
                 else if (property.Value.ValueKind == JsonValueKind.Number)
                 {
-                    actionOptions.Add(property.Name, property.Value.GetInt32());
+                    mappingAspectOptions.Add(property.Name, property.Value.GetInt32());
                 }
                 else if (property.Value.ValueKind == JsonValueKind.True || property.Value.ValueKind == JsonValueKind.False)
                 {
-                    actionOptions.Add(property.Name, property.Value.GetBoolean());
+                    mappingAspectOptions.Add(property.Name, property.Value.GetBoolean());
                 }
                 else if (property.Value.ValueKind == JsonValueKind.Null)
                 {
-                    actionOptions.Add(property.Name, null);
+                    mappingAspectOptions.Add(property.Name, null);
+                }
+                else if (property.Value.ValueKind == JsonValueKind.Array)
+                {
+                    var list = new List<object>();
+
+                    foreach (var item in property.Value.EnumerateArray())
+                    {
+                        var rawJson = item.GetRawText();
+                        var document = JsonDocument.Parse(rawJson);
+                        list.Add(ParseJson(document, options));
+                    }
+
+                    mappingAspectOptions.Add(property.Name, list);
                 }
                 else
                 {
@@ -107,16 +119,23 @@ namespace Key2Joy.Mapping
                 }
             }
 
-            var name = actionOptions[nameof(AbstractMappingAspect.Name)] as string;
+            var name = mappingAspectOptions[nameof(AbstractMappingAspect.Name)] as string;
             //options.Remove("name");
 
-            var action = factory.CreateInstance<AbstractMappingAspect>(new object[]
+            var mappingAspect = factory.CreateInstance<AbstractMappingAspect>(new object[]
             {
                 name,
             });
-            action.LoadOptions(actionOptions);
+            mappingAspect.LoadOptions(mappingAspectOptions);
 
-            return (T)action;
+            return (T)mappingAspect;
+        }
+
+        public override T Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        {
+            var json = JsonDocument.ParseValue(ref reader);
+
+            return (T)ParseJson(json, options);
         }
 
         public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
