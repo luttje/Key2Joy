@@ -26,7 +26,7 @@ namespace Key2Joy.Gui.Mapping
             InitializeComponent();
 
             cmbKeyboard.DataSource = KeyboardAction.GetAllKeys();
-            cmbPressState.DataSource = LegacyPressStateConverter.GetPressStatesWithoutLegacy();
+            cmbPressState.DataSource = PressStates.ALL;
             cmbPressState.SelectedIndex = 0;
         }
 

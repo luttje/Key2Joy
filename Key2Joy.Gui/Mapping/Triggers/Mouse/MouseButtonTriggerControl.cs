@@ -36,7 +36,7 @@ namespace Key2Joy.Gui.Mapping
             };
             ControlRemoved += (s, e) => Dispose();
 
-            cmbPressState.DataSource = LegacyPressStateConverter.GetPressStatesWithoutLegacy();
+            cmbPressState.DataSource = PressStates.ALL;
             cmbPressState.SelectedIndex = 0;
         }
 

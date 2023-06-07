@@ -83,7 +83,7 @@
             this.lblInfo.Name = "lblInfo";
             this.lblInfo.Size = new System.Drawing.Size(254, 20);
             this.lblInfo.TabIndex = 13;
-            this.lblInfo.Text = "X Script:";
+            this.lblInfo.Text = "Script:";
             this.lblInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // pnlFileInput

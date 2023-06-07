@@ -91,8 +91,6 @@ namespace Key2Joy.Mapping
         {
             this.filePath = filePath;
 
-            LegacyPressStateConverter.UpdateLegacyIfApplicable(this);
-
             return true;
         }
 

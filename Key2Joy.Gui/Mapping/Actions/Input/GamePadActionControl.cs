@@ -26,7 +26,7 @@ namespace Key2Joy.Gui.Mapping
             InitializeComponent();
 
             cmbGamePad.DataSource = GamePadAction.GetAllButtons();
-            cmbPressState.DataSource = LegacyPressStateConverter.GetPressStatesWithoutLegacy();
+            cmbPressState.DataSource = PressStates.ALL;
             cmbPressState.SelectedIndex = 0;
             cmbGamePadIndex.DataSource = GamePadManager.Instance.GetAllGamePadIndices();
             cmbGamePadIndex.SelectedIndex = 0;
