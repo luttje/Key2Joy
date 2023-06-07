@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace Key2Joy.Plugin.Midi.Mapping
 {
@@ -30,7 +31,8 @@ namespace Key2Joy.Plugin.Midi.Mapping
         [ExposesScriptingMethod("Hello.World")]
         public override async Task Execute(AbstractInputBag inputBag = null)
         {
-            MessageBox.Show("test");
+            MessageBox.Show($"Hello {Target}!");
+            Debug.WriteLine($"Hello {Target}!");
             //Output.WriteLine(Output.OutputModes.Verbose, $"Hello {Target}!");
         }
 
