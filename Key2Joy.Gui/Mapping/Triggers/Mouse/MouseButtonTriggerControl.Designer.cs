@@ -36,12 +36,14 @@
             // txtKeyBind
             // 
             this.txtKeyBind.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtKeyBind.Enabled = false;
             this.txtKeyBind.Location = new System.Drawing.Point(87, 5);
             this.txtKeyBind.Name = "txtKeyBind";
+            this.txtKeyBind.ReadOnly = true;
             this.txtKeyBind.Size = new System.Drawing.Size(213, 20);
             this.txtKeyBind.TabIndex = 6;
             this.txtKeyBind.Text = "(click this field with any mouse button to select it as the trigger)";
+            this.txtKeyBind.MouseEnter += new System.EventHandler(this.txtKeyBind_MouseEnter);
+            this.txtKeyBind.MouseLeave += new System.EventHandler(this.txtKeyBind_MouseLeave);
             // 
             // lblInfo
             // 

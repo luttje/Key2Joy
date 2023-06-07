@@ -17,6 +17,7 @@ namespace Key2Joy.Gui.Mapping
         
         private Mouse.Buttons mouseButtons;
         private bool isShowingError;
+        private bool isMouseOver;
 
         public MouseButtonTriggerControl()
         {
@@ -41,9 +42,17 @@ namespace Key2Joy.Gui.Mapping
 
         private void OnMouseInputEvent(object sender, GlobalMouseHookEventArgs e)
         {
+            // Needed to make sure the cursor is immediately over the control, and not over a comboboxitem which is over the control.
+            if (!isMouseOver)
+            {
+                return;
+            }
+
             if (e.MouseState == MouseState.Move
                 || !txtKeyBind.ClientRectangle.Contains(txtKeyBind.PointToClient(MousePosition)))
+            {
                 return;
+            }
 
             var isDown = false;
 
@@ -60,7 +69,7 @@ namespace Key2Joy.Gui.Mapping
                     isShowingError = false;
                 }
             }
-
+            
             txtKeyBind.Text = $"{mouseButtons}";
             OptionsChanged?.Invoke(this, EventArgs.Empty);
         }
@@ -85,6 +94,16 @@ namespace Key2Joy.Gui.Mapping
         private void cmbPressedState_SelectedIndexChanged(object sender, EventArgs e)
         {
             OptionsChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void txtKeyBind_MouseEnter(object sender, EventArgs e)
+        {
+            isMouseOver = true;
+        }
+
+        private void txtKeyBind_MouseLeave(object sender, EventArgs e)
+        {
+            isMouseOver = false;
         }
     }
 }
