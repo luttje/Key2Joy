@@ -454,10 +454,22 @@
         "options": {
           "Triggers": [
             {
-              "name": null
+              "$type": "Key2Joy.Mapping.KeyboardTrigger",
+              "options": {
+                "Keys": "A",
+                "PressState": "Press",
+                "ImageResource": null,
+                "Name": null
+              }
             },
             {
-              "name": null
+              "$type": "Key2Joy.Mapping.KeyboardTrigger",
+              "options": {
+                "Keys": "LShiftKey",
+                "PressState": "Press",
+                "ImageResource": null,
+                "Name": null
+              }
             }
           ],
           "ImageResource": null,
