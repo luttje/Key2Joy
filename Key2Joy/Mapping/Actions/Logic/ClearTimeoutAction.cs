@@ -1,5 +1,4 @@
 ﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.Contracts.Util;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -10,11 +9,9 @@ namespace Key2Joy.Mapping
 {
     [Action(
         Description = "Cancels a timeout previously established by calling SetTimeout()",
-        Visibility = MappingMenuVisibility.Never
-    )]
-    [ObjectListViewGroup(
-        Name = "Logic",
-        Image = "script_code"
+        Visibility = MappingMenuVisibility.Never,
+        GroupName = "Logic",
+        GroupImage = "application_xp_terminal"
     )]
     public class ClearTimeoutAction : CoreAction
     {

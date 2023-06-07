@@ -10,7 +10,9 @@ namespace Key2Joy.Mapping
 {
     [Action(
         Description = "Lua Script Action",
-        NameFormat = "Lua Script: {0}"
+        NameFormat = "Lua Script: {0}",
+        GroupName = "Scripting",
+        GroupImage = "script_code"
     )]
     public class LuaScriptAction : BaseScriptActionWithEnvironment<Lua>
     {
@@ -73,23 +75,7 @@ namespace Key2Joy.Mapping
                 if(environment.GetTable(path) == null)
                     environment.NewTable(path);
             }
-
-            //var parameters = method.GetParameters();
-            //var paramDebug = string.Join(", ", parameters
-            //    .Select(p => $"{p.ParameterType.Name} {p.Name}")
-            //    .ToArray());
-            //Output.WriteLine(Output.OutputModes.Verbose, $"lua.RegisterFunction({functionName},{instance},{method.Name}({paramDebug}):{method.ReturnType})");
-
-            //if (parameters.Any(p => p.ParameterType.IsList()))
-            //{
-            //    var oldMethod = method;
-
-            //    // Create a wrapper method with the same parameters
-            //    method = new DynamicMethod(method.Name, method.ReturnType, parameters.Select(p => p.ParameterType.IsList() ? typeof(LuaTable) : p.ParameterType).ToArray());
-
-            //}
-
-            // TODO: Somehow tie this to the method which may be in a different appDomain and thus cant be reflected purely
+            
             environment.RegisterFunction(
                 functionName,
                 instance,

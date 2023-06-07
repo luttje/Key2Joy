@@ -1,5 +1,4 @@
 ﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.Contracts.Util;
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
@@ -11,11 +10,9 @@ namespace Key2Joy.Mapping
 {
     [Action(
         Description = "Sets a timer which executes a function or specified piece of code once the timer expires",
-        Visibility = MappingMenuVisibility.Never
-    )]
-    [ObjectListViewGroup(
-        Name = "Logic",
-        Image = "script_code"
+        Visibility = MappingMenuVisibility.Never,
+        GroupName = "Logic",
+        GroupImage = "application_xp_terminal"
     )]
     public class SetTimeoutAction : CoreAction
     {

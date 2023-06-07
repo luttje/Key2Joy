@@ -59,12 +59,33 @@ namespace Key2Joy.Mapping
         }
         
         /// <summary>
-        /// Gets all action types and their attribute annotations
+        /// Gets all action type factories
         /// </summary>
         /// <returns></returns>
-        public static Dictionary<string, MappingTypeFactory<AbstractAction>> GetAllActions()
+        public static IDictionary<string, MappingTypeFactory<AbstractAction>> GetAllActions()
         {
             return actions;
+        }
+
+        /// <summary>
+        /// Gets all action attributes
+        /// </summary>
+        /// <returns></returns>
+        public static IList<ActionAttribute> GetAllActionAttributes()
+        {
+            return actions.Values.Select(x => x.Attribute as ActionAttribute).ToList();
+        }
+
+        /// <summary>
+        /// Gets the attribute for the provided action
+        /// </summary>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        public static ActionAttribute GetAttributeForAction(AbstractAction action)
+        {
+            var realTypeName = MappingTypeHelper.GetTypeFullName(actions, action);
+            realTypeName = MappingTypeHelper.EnsureSimpleTypeName(realTypeName);
+            return actions[realTypeName].Attribute as ActionAttribute;
         }
 
         /// <summary>

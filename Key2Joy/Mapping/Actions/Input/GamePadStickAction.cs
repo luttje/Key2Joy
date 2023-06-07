@@ -1,5 +1,4 @@
 ﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.Contracts.Util;
 using Key2Joy.LowLevelInput;
 using SimWinInput;
 using System;
@@ -10,17 +9,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace Key2Joy.Mapping
 {
     [Action(
         Description = "GamePad Stick Simulation",
         Visibility = MappingMenuVisibility.Never,
-        NameFormat = "Move {0} Stick on GamePad #{3} by {1},{2}"
-    )]
-    [ObjectListViewGroup(
-        Name = "GamePad Stick Simulation",
-        Image = "joystick"
+        NameFormat = "Move {0} Stick on GamePad #{3} by {1},{2}",
+        GroupName = "GamePad Stick Simulation",
+        GroupImage = "joystick"
     )]
     public class GamePadStickAction : CoreAction
     {

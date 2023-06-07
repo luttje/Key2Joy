@@ -1,5 +1,4 @@
 ﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.Contracts.Util;
 using Key2Joy.LowLevelInput;
 using SimWinInput;
 using System;
@@ -15,11 +14,9 @@ namespace Key2Joy.Mapping
     [Action(
         Description = "GamePad Reset Simulation",
         Visibility = MappingMenuVisibility.Never,
-        NameFormat = "Reset GamePad #{0}"
-    )]
-    [ObjectListViewGroup(
-        Name = "GamePad Reset Simulation",
-        Image = "joystick"
+        NameFormat = "Reset GamePad #{0}",
+        GroupName = "GamePad Reset Simulation",
+        GroupImage = "joystick"
     )]
     public class GamePadResetAction : CoreAction
     {

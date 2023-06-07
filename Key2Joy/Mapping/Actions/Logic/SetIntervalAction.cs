@@ -1,21 +1,19 @@
 ﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.Contracts.Util;
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace Key2Joy.Mapping
 {
     [Action(
         Description = "Repeatedly calls a function or executes a code snippet, with a fixed time delay between each call",
-        Visibility = MappingMenuVisibility.Never
-    )]
-    [ObjectListViewGroup(
-        Name = "Logic",
-        Image = "script_code"
+        Visibility = MappingMenuVisibility.Never,
+        GroupName = "Logic",
+        GroupImage = "application_xp_terminal"
     )]
     public class SetIntervalAction : CoreAction
     {

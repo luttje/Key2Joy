@@ -1,19 +1,17 @@
 ﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.Contracts.Util;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Key2Joy.Mapping
 {
     [Action(
         Description = "Multiple Actions in Sequence",
         Visibility = MappingMenuVisibility.OnlyTopLevel,
-        NameFormat = "Run Sequence: {0}"
-    )]
-    [ObjectListViewGroup(
-        Name = "Logic",
-        Image = "script_code"
+        NameFormat = "Run Sequence: {0}",
+        GroupName = "Logic",
+        GroupImage = "application_xp_terminal"
     )]
     public class SequenceAction : CoreAction
     {

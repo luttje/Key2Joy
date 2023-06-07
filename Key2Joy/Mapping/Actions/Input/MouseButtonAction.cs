@@ -1,5 +1,4 @@
 ﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.Contracts.Util;
 using Key2Joy.LowLevelInput;
 using SimWinInput;
 using System;
@@ -16,11 +15,9 @@ namespace Key2Joy.Mapping
     [Action(
         Description = "Mouse Button Simulation",
         Visibility = MappingMenuVisibility.Never,
-        NameFormat = "{1} {0} on Mouse"
-    )]
-    [ObjectListViewGroup(
-        Name = "Mouse Button Simulation",
-        Image = "mouse"
+        NameFormat = "{1} {0} on Mouse",
+        GroupName = "Mouse Button Simulation",
+        GroupImage = "mouse"
     )]
     public class MouseButtonAction : CoreAction, IPressState
     {        

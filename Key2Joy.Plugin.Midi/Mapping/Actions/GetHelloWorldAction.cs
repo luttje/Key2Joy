@@ -1,7 +1,6 @@
 ﻿using Key2Joy.Contracts.Mapping;
 using System.Threading.Tasks;
 using System;
-using Key2Joy.Contracts.Util;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
@@ -12,11 +11,9 @@ namespace Key2Joy.Plugin.Midi.Mapping
 {
     [Action(
         Description = "Get Hello World",
-        NameFormat = "Demonstrates plugin creation by greeting {0}"
-    )]
-    [ObjectListViewGroup(
-        Name = "Logic",
-        Image = "script_code"
+        NameFormat = "Demonstrates plugin creation by greeting {0}",
+        GroupName = "Logic",
+        GroupImage = "application_xp_terminal"
     )]
     public class GetHelloWorldAction : AbstractAction
     {

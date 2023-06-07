@@ -1,20 +1,18 @@
 ﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.Contracts.Util;
 using Key2Joy.LowLevelInput;
 using SimWinInput;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Key2Joy.Mapping
 {
     [Action(
         Description = "GamePad/Controller Simulation",
-        NameFormat = "{1} {0} on GamePad #{2}"
-    )]
-    [ObjectListViewGroup(
-        Name = "GamePad Simulation",
-        Image = "joystick"
+        NameFormat = "{1} {0} on GamePad #{2}",
+        GroupName = "GamePad Simulation",
+        GroupImage = "joystick"
     )]
     public class GamePadAction : CoreAction, IPressState
     {

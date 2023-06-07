@@ -130,6 +130,14 @@ namespace Key2Joy.Plugins
                             {
                                 actionAttribute.Visibility = (MappingMenuVisibility)property.Argument.Value;
                             }
+                            else if (property.Name == nameof(ActionAttribute.GroupName))
+                            {
+                                actionAttribute.GroupName = (string)property.Argument.Value;
+                            }
+                            else if (property.Name == nameof(ActionAttribute.GroupImage))
+                            {
+                                actionAttribute.GroupImage = (string)property.Argument.Value;
+                            }
                         }
 
                         // Iterate all methods on the type and check where they have the ExposesScriptingMethodAttribute attribute

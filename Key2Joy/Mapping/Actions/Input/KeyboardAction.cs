@@ -1,5 +1,4 @@
 ﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.Contracts.Util;
 using Key2Joy.LowLevelInput;
 using System;
 using System.Collections.Generic;
@@ -9,11 +8,9 @@ namespace Key2Joy.Mapping
 {
     [Action(
         Description = "Keyboard Simulation",
-        NameFormat = "{1} {0} on Keyboard"
-    )]
-    [ObjectListViewGroup(
-        Name = "Keyboard Simulation",
-        Image = "keyboard"
+        NameFormat = "{1} {0} on Keyboard",
+        GroupName = "Keyboard Simulation",
+        GroupImage = "keyboard"
     )]
     public class KeyboardAction : CoreAction, IPressState
     {        

@@ -1,20 +1,18 @@
 ﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.Contracts.Util;
 using Key2Joy.Util;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using static Key2Joy.LowLevelInput.Mouse;
 
 namespace Key2Joy.Mapping
 {
     [Action(
         Description = "App Command",
-        NameFormat = "Run App Command '{0}'"
-    )]
-    [ObjectListViewGroup(
-        Name = "Logic",
-        Image = "script_code"
+        NameFormat = "Run App Command '{0}'",
+        GroupName = "Logic",
+        GroupImage = "application_xp_terminal"
     )]
     public class AppCommandAction : CoreAction
     {

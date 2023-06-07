@@ -17,7 +17,9 @@ namespace Key2Joy.Mapping
 {
     [Action(
         Description = "Javascript Action",
-        NameFormat = "Javascript Script: {0}"
+        NameFormat = "Javascript Script: {0}",
+        GroupName = "Scripting",
+        GroupImage = "script_code"
     )]
     public class JavascriptAction : BaseScriptActionWithEnvironment<Engine>
     {

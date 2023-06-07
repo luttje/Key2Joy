@@ -14,7 +14,6 @@ using System.IO;
 using BrightIdeasSoftware;
 using Key2Joy.LowLevelInput;
 using Key2Joy.Config;
-using Key2Joy.Contracts.Util;
 using Key2Joy.Contracts.Mapping;
 using System.Runtime.Remoting;
 
@@ -22,10 +21,13 @@ namespace Key2Joy.Gui
 {
     public partial class MainForm : Form, IAcceptAppCommands
     {
+        private IDictionary<string, CachedMappingGroup> cachedMappingGroups;
         private MappingProfile selectedProfile;
 
         public MainForm(bool shouldStartMinimized = false)
         {
+            cachedMappingGroups = new Dictionary<string, CachedMappingGroup>();
+
             InitializeComponent();
 
             if (shouldStartMinimized)
@@ -49,17 +51,13 @@ namespace Key2Joy.Gui
 
             ntfIndicator.ContextMenu = new ContextMenu(items);
 
-            var allAttributes = Assembly.GetExecutingAssembly()
-                .GetTypes()
-                .Where(t => t.GetCustomAttribute(typeof(ObjectListViewGroupAttribute), false) != null)
-                .Select(t => t.GetCustomAttribute(typeof(ObjectListViewGroupAttribute), false) as ObjectListViewGroupAttribute);
-            
+            var allAttributes = ActionsRepository.GetAllActionAttributes();
             var imageList = new ImageList();
             
             foreach (var attribute in allAttributes)
             {
-                if(!imageList.Images.ContainsKey(attribute.Image))
-                    imageList.Images.Add(attribute.Image, (Bitmap)Resources.ResourceManager.GetObject(attribute.Image));
+                if(attribute.GroupImage != null && !imageList.Images.ContainsKey(attribute.GroupImage))
+                    imageList.Images.Add(attribute.GroupImage, (Bitmap)Resources.ResourceManager.GetObject(attribute.GroupImage));
             }
 
             olvMappings.GroupImageList = imageList;
@@ -214,14 +212,29 @@ namespace Key2Joy.Gui
             EditMappedOption(mappedOption);
         }
 
+        private CachedMappingGroup GetGroupOrCreateInCache(ActionAttribute attribute)
+        {
+            var uniqueId = attribute.GroupName + attribute.GroupImage;
+
+            if (!cachedMappingGroups.TryGetValue(uniqueId, out CachedMappingGroup mapping))
+            {
+                cachedMappingGroups.Add(uniqueId, mapping = new CachedMappingGroup
+                {
+                    Name = attribute.GroupName,
+                    Image = attribute.GroupImage,
+                });
+            }
+
+            return mapping;
+        }
+
         private object olvMappings_GroupKeyGetter(object rowObject)
         {
             var option = (AbstractMappedOption)rowObject;
-            var groupType = option.Action.GetType();
-            var groupAttribute = groupType.GetCustomAttribute<ObjectListViewGroupAttribute>(true);
+            var actionAttribute = ActionsRepository.GetAttributeForAction(option.Action);
 
-            if (groupAttribute != null)
-                return groupAttribute;
+            if (actionAttribute != null)
+                return GetGroupOrCreateInCache(actionAttribute);
 
             return null;
         }
@@ -231,7 +244,7 @@ namespace Key2Joy.Gui
             if (groupKey == null)
                 return null;
 
-            var groupAttribute = (ObjectListViewGroupAttribute)groupKey;
+            var groupAttribute = (CachedMappingGroup)groupKey;
 
             return groupAttribute.Name;
         }
@@ -249,7 +262,7 @@ namespace Key2Joy.Gui
                 if (group.Key == null)
                     continue;
 
-                var groupAttribute = (ObjectListViewGroupAttribute)group.Key;
+                var groupAttribute = (CachedMappingGroup)group.Key;
                 group.TitleImage = groupAttribute.Image;
             }
         }

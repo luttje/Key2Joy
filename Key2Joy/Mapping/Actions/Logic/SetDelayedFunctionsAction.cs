@@ -1,5 +1,4 @@
 ﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.Contracts.Util;
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
@@ -10,11 +9,9 @@ namespace Key2Joy.Mapping
     [Action(
         Description = "Timeout for a specified duration before executing a function",
         Visibility = MappingMenuVisibility.Never,
-        NameFormat = "Timeout for {0}ms"
-    )]
-    [ObjectListViewGroup(
-        Name = "Logic",
-        Image = "script_code"
+        NameFormat = "Timeout for {0}ms",
+        GroupName = "Logic",
+        GroupImage = "application_xp_terminal"
     )]
     public class SetDelayedFunctionsAction : CoreAction
     {

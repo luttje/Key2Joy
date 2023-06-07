@@ -1,5 +1,4 @@
 ﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.Contracts.Util;
 using Key2Joy.Plugins;
 using System;
 using System.Collections.Generic;
@@ -8,10 +7,6 @@ using System.Text;
 
 namespace Key2Joy.Mapping
 {
-    [ObjectListViewGroup(
-        Name = "Scripting",
-        Image = "script_code"
-    )]
     public abstract class BaseScriptAction : CoreAction
     {
         public static readonly object LockObject = new object();

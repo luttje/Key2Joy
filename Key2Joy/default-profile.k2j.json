@@ -476,6 +476,299 @@
           "Name": null
         }
       }
+    },
+    {
+      "action": {
+        "$type": "Key2Joy.Mapping.SequenceAction",
+        "options": {
+          "ImageResource": null,
+          "Name": "Run Sequence: {0}"
+        }
+      },
+      "trigger": {
+        "$type": "Key2Joy.Mapping.MouseMoveTrigger",
+        "options": {
+          "AxisBinding": "Forward",
+          "ImageResource": null,
+          "Name": null
+        }
+      }
+    },
+    {
+      "action": {
+        "$type": "Key2Joy.Mapping.AppCommandAction",
+        "options": {
+          "Command": "Abort",
+          "ImageResource": null,
+          "Name": "Run App Command \u0027{0}\u0027"
+        }
+      },
+      "trigger": {
+        "$type": "Key2Joy.Mapping.CombinedTrigger",
+        "options": {
+          "Triggers": [
+            {
+              "$type": "Key2Joy.Mapping.KeyboardTrigger",
+              "options": {
+                "Keys": "D6",
+                "PressState": "Press",
+                "ImageResource": null,
+                "Name": null
+              }
+            }
+          ],
+          "ImageResource": null,
+          "Name": null
+        }
+      }
+    },
+    {
+      "action": {
+        "$type": "Key2Joy.Mapping.GamePadAction",
+        "options": {
+          "Control": "LeftStickUp",
+          "PressState": "Release",
+          "GamePadIndex": 0,
+          "ImageResource": null,
+          "Name": "{1} {0} on GamePad #{2}"
+        }
+      },
+      "trigger": {
+        "$type": "Key2Joy.Mapping.KeyboardTrigger",
+        "options": {
+          "Keys": "W",
+          "PressState": "Release",
+          "ImageResource": null,
+          "Name": null
+        }
+      }
+    },
+    {
+      "action": {
+        "$type": "Key2Joy.Mapping.GamePadAction",
+        "options": {
+          "Control": "LeftStickRight",
+          "PressState": "Release",
+          "GamePadIndex": 0,
+          "ImageResource": null,
+          "Name": "{1} {0} on GamePad #{2}"
+        }
+      },
+      "trigger": {
+        "$type": "Key2Joy.Mapping.KeyboardTrigger",
+        "options": {
+          "Keys": "D",
+          "PressState": "Release",
+          "ImageResource": null,
+          "Name": null
+        }
+      }
+    },
+    {
+      "action": {
+        "$type": "Key2Joy.Mapping.GamePadAction",
+        "options": {
+          "Control": "LeftStickLeft",
+          "PressState": "Release",
+          "GamePadIndex": 0,
+          "ImageResource": null,
+          "Name": "{1} {0} on GamePad #{2}"
+        }
+      },
+      "trigger": {
+        "$type": "Key2Joy.Mapping.KeyboardTrigger",
+        "options": {
+          "Keys": "A",
+          "PressState": "Release",
+          "ImageResource": null,
+          "Name": null
+        }
+      }
+    },
+    {
+      "action": {
+        "$type": "Key2Joy.Mapping.GamePadAction",
+        "options": {
+          "Control": "LeftStickDown",
+          "PressState": "Release",
+          "GamePadIndex": 0,
+          "ImageResource": null,
+          "Name": "{1} {0} on GamePad #{2}"
+        }
+      },
+      "trigger": {
+        "$type": "Key2Joy.Mapping.KeyboardTrigger",
+        "options": {
+          "Keys": "S",
+          "PressState": "Release",
+          "ImageResource": null,
+          "Name": null
+        }
+      }
+    },
+    {
+      "action": {
+        "$type": "Key2Joy.Mapping.GamePadAction",
+        "options": {
+          "Control": "RightStickUp",
+          "PressState": "Press",
+          "GamePadIndex": 0,
+          "ImageResource": null,
+          "Name": "{1} {0} on GamePad #{2}"
+        }
+      },
+      "trigger": {
+        "$type": "Key2Joy.Mapping.MouseMoveTrigger",
+        "options": {
+          "AxisBinding": "Forward",
+          "ImageResource": null,
+          "Name": null
+        }
+      }
+    },
+    {
+      "action": {
+        "$type": "Key2Joy.Mapping.GamePadAction",
+        "options": {
+          "Control": "RightStickDown",
+          "PressState": "Press",
+          "GamePadIndex": 0,
+          "ImageResource": null,
+          "Name": "{1} {0} on GamePad #{2}"
+        }
+      },
+      "trigger": {
+        "$type": "Key2Joy.Mapping.MouseMoveTrigger",
+        "options": {
+          "AxisBinding": "Backward",
+          "ImageResource": null,
+          "Name": null
+        }
+      }
+    },
+    {
+      "action": {
+        "$type": "Key2Joy.Mapping.GamePadAction",
+        "options": {
+          "Control": "RightStickLeft",
+          "PressState": "Press",
+          "GamePadIndex": 0,
+          "ImageResource": null,
+          "Name": "{1} {0} on GamePad #{2}"
+        }
+      },
+      "trigger": {
+        "$type": "Key2Joy.Mapping.MouseMoveTrigger",
+        "options": {
+          "AxisBinding": "Left",
+          "ImageResource": null,
+          "Name": null
+        }
+      }
+    },
+    {
+      "action": {
+        "$type": "Key2Joy.Mapping.GamePadAction",
+        "options": {
+          "Control": "RightStickRight",
+          "PressState": "Press",
+          "GamePadIndex": 0,
+          "ImageResource": null,
+          "Name": "{1} {0} on GamePad #{2}"
+        }
+      },
+      "trigger": {
+        "$type": "Key2Joy.Mapping.MouseMoveTrigger",
+        "options": {
+          "AxisBinding": "Right",
+          "ImageResource": null,
+          "Name": null
+        }
+      }
+    },
+    {
+      "action": {
+        "$type": "Key2Joy.Mapping.GamePadAction",
+        "options": {
+          "Control": "DPadUp",
+          "PressState": "Release",
+          "GamePadIndex": 0,
+          "ImageResource": null,
+          "Name": "{1} {0} on GamePad #{2}"
+        }
+      },
+      "trigger": {
+        "$type": "Key2Joy.Mapping.KeyboardTrigger",
+        "options": {
+          "Keys": "Up",
+          "PressState": "Release",
+          "ImageResource": null,
+          "Name": null
+        }
+      }
+    },
+    {
+      "action": {
+        "$type": "Key2Joy.Mapping.GamePadAction",
+        "options": {
+          "Control": "DPadRight",
+          "PressState": "Release",
+          "GamePadIndex": 0,
+          "ImageResource": null,
+          "Name": "{1} {0} on GamePad #{2}"
+        }
+      },
+      "trigger": {
+        "$type": "Key2Joy.Mapping.KeyboardTrigger",
+        "options": {
+          "Keys": "Right",
+          "PressState": "Release",
+          "ImageResource": null,
+          "Name": null
+        }
+      }
+    },
+    {
+      "action": {
+        "$type": "Key2Joy.Mapping.GamePadAction",
+        "options": {
+          "Control": "DPadDown",
+          "PressState": "Release",
+          "GamePadIndex": 0,
+          "ImageResource": null,
+          "Name": "{1} {0} on GamePad #{2}"
+        }
+      },
+      "trigger": {
+        "$type": "Key2Joy.Mapping.KeyboardTrigger",
+        "options": {
+          "Keys": "Down",
+          "PressState": "Release",
+          "ImageResource": null,
+          "Name": null
+        }
+      }
+    },
+    {
+      "action": {
+        "$type": "Key2Joy.Mapping.GamePadAction",
+        "options": {
+          "Control": "DPadLeft",
+          "PressState": "Release",
+          "GamePadIndex": 0,
+          "ImageResource": null,
+          "Name": "{1} {0} on GamePad #{2}"
+        }
+      },
+      "trigger": {
+        "$type": "Key2Joy.Mapping.KeyboardTrigger",
+        "options": {
+          "Keys": "Left",
+          "PressState": "Release",
+          "ImageResource": null,
+          "Name": null
+        }
+      }
     }
   ],
   "name": "Default Profile",

@@ -1,18 +1,16 @@
 ﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.Contracts.Util;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Key2Joy.Mapping
 {
     [Action(
         Description = "Cancels an interval previously established by calling SetInterval()",
-        Visibility = MappingMenuVisibility.Never
-    )]
-    [ObjectListViewGroup(
-        Name = "Logic",
-        Image = "script_code"
+        Visibility = MappingMenuVisibility.Never,
+        GroupName = "Logic",
+        GroupImage = "application_xp_terminal"
     )]
     public class ClearIntervalAction : CoreAction
     {
