@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Key2Joy.Contracts.Mapping
@@ -16,11 +17,19 @@ namespace Key2Joy.Contracts.Mapping
             Name = name;
         }
 
-        public virtual MappingAspectOptions SaveOptions()
+        private PropertyInfo[] GetProperties()
         {
+
             var type = GetType();
             var properties = type.GetProperties();
+
+            return properties.Where(p => p.GetCustomAttributes(typeof(JsonIgnoreAttribute), true).Length == 0).ToArray();
+        }
+
+        public virtual MappingAspectOptions SaveOptions()
+        {
             var options = new MappingAspectOptions();
+            var properties = GetProperties();
 
             foreach (var property in properties)
             {
@@ -53,8 +62,7 @@ namespace Key2Joy.Contracts.Mapping
 
         public virtual void LoadOptions(MappingAspectOptions options)
         {
-            var type = GetType();
-            var properties = type.GetProperties();
+            var properties = GetProperties();
 
             foreach (var property in properties)
             {

@@ -1,4 +1,5 @@
-﻿using Key2Joy.Contracts.Mapping;
+﻿using Jint.Native;
+using Key2Joy.Contracts.Mapping;
 using Key2Joy.Plugins;
 using System;
 using System.Collections.Generic;
@@ -39,11 +40,6 @@ namespace Key2Joy.Mapping
             }
         }
 
-        private static string GetFullTypeName(string typeInfoTypeName)
-        {
-            return typeInfoTypeName.Split(',')[0];
-        }
-
         /// <summary>
         /// Prevent recursion by not including this converter in child (de)serializations
         /// </summary>
@@ -67,7 +63,7 @@ namespace Key2Joy.Mapping
             var json = JsonDocument.ParseValue(ref reader);
 
             var typeProperty = json.RootElement.GetProperty("$type");
-            var type = GetFullTypeName(typeProperty.GetString());
+            var type = MappingTypeHelper.EnsureSimpleTypeName(typeProperty.GetString());
 
             if (!allowedTypes.TryGetValue(type, out var factory))
             {
@@ -125,28 +121,8 @@ namespace Key2Joy.Mapping
 
         public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
         {
-            string realTypeName;
-
-            if (RemotingServices.IsTransparentProxy(value))
-            {
-                var objRef = RemotingServices.GetObjRefForProxy(value);
-                realTypeName = objRef.TypeInfo.TypeName;
-
-                if (!allowedTypes.ContainsKey(GetFullTypeName(realTypeName)))
-                {
-                    throw new ArgumentException("Only allowed types may be serialized to the preset");
-                }
-            }
-            else
-            {
-                realTypeName = value.GetType().FullName;
-
-                if (!allowedTypes.ContainsKey(realTypeName))
-                {
-                    throw new ArgumentException("Only allowed types may be serialized to the preset");
-                }
-            }
-            var test = value.SaveOptions();
+            string realTypeName = MappingTypeHelper.GetTypeFullName(allowedTypes, value);
+            
             JsonSerializer.Serialize(writer, new JsonMappingAspectWithType
             {
                 Options = value.SaveOptions(),

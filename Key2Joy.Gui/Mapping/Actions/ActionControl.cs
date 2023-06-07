@@ -1,4 +1,5 @@
-﻿using Key2Joy.Contracts.Mapping;
+﻿using Jint.Native;
+using Key2Joy.Contracts.Mapping;
 using Key2Joy.Mapping;
 using Key2Joy.Plugins;
 using System;
@@ -65,7 +66,12 @@ namespace Key2Joy.Gui.Mapping
                 return;
 
             var selected = cmbAction.Items.Cast<ImageComboBoxItem<KeyValuePair<ActionAttribute, MappingTypeFactory<AbstractAction>>>>();
-            var actionFullTypeName = action.GetType().FullName;
+            var actionFullTypeName = MappingTypeHelper.GetTypeFullName(
+                ActionsRepository.GetAllActions(), 
+                action
+            );
+            actionFullTypeName = MappingTypeHelper.EnsureSimpleTypeName(actionFullTypeName);
+            
             var selectedType = selected.FirstOrDefault(x => x.ItemValue.Value.FullTypeName == actionFullTypeName);
             cmbAction.SelectedItem = selectedType;
         }
