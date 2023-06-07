@@ -172,6 +172,7 @@ namespace Key2Joy.Mapping
             var serializer = new JsonSerializer();
             serializer.SerializationBinder = new MappingProfileSerializationBinder();
             serializer.Converters.Add(new StringEnumConverter());
+            serializer.ContractResolver = new MappingProfileContractResolver();
             serializer.Formatting = Formatting.Indented;
 
             return serializer;

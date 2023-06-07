@@ -16,6 +16,7 @@ using Key2Joy.LowLevelInput;
 using Key2Joy.Config;
 using Key2Joy.Contracts.Util;
 using Key2Joy.Contracts.Mapping;
+using System.Runtime.Remoting;
 
 namespace Key2Joy.Gui
 {
@@ -127,6 +128,13 @@ namespace Key2Joy.Gui
             if (existingMappedOption == null)
                 selectedProfile.AddMapping(mappedOption);
 
+            if (RemotingServices.IsTransparentProxy(mappedOption.Action)) 
+            { 
+                var test =  RemotingServices.GetRealProxy(mappedOption.Action);
+                var objRef = RemotingServices.GetObjRefForProxy(mappedOption.Action);
+                // Get the typename of the actual remote class:
+                var typeName = objRef.TypeInfo.TypeName;
+            }
             selectedProfile.Save();
 
             if (existingMappedOption == null)

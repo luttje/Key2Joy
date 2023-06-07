@@ -17,7 +17,8 @@ namespace Key2Joy.Plugin.Midi.Mapping
         {
             InitializeComponent();
 
-            MappingConfigValues.Add(nameof(GetHelloWorldAction.Target), "");
+            // Always set this, so the mapping form knows what height to set the parent panel.
+            this.DesiredHeight = 25;
         }
 
         public void Select(AbstractAction action)
@@ -32,9 +33,8 @@ namespace Key2Joy.Plugin.Midi.Mapping
             var thisAction = (GetHelloWorldAction)action;
 
             thisAction.Target = txtTarget.Text;
-            MappingConfigValues[nameof(GetHelloWorldAction.Target)] = txtTarget.Text;
         }
-        
+
         public bool CanMappingSave(AbstractAction action)
         {
             return true;
@@ -47,7 +47,6 @@ namespace Key2Joy.Plugin.Midi.Mapping
 
         private void txtTarget_TextChanged(object sender, EventArgs e)
         {
-            MappingConfigValues[nameof(GetHelloWorldAction.Target)] = txtTarget.Text;
             OptionsChanged?.Invoke(this, EventArgs.Empty);
         }
     }

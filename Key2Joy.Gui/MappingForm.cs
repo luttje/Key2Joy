@@ -1,18 +1,13 @@
-﻿using Key2Joy.Contracts.Mapping;
+﻿using Esprima.Ast;
+using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Plugins;
 using Key2Joy.Gui.Mapping;
 using Key2Joy.Mapping;
 using Key2Joy.Plugins;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
+using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Key2Joy.Gui
@@ -73,33 +68,7 @@ namespace Key2Joy.Gui
 
             if (optionsUserControl is AbstractPluginForm abstractPluginForm)
             {
-                optionsUserControl = new Panel();
-
-                foreach (var kvp in abstractPluginForm.MappingConfigValues)
-                {
-                    // Add panels with Label: TextBox for all these
-                    var panel = new Panel();
-                    panel.Dock = DockStyle.Top;
-                    optionsUserControl.Controls.Add(panel);
-                    
-                    var input = new TextBox();
-                    input.Text = kvp.Value.ToString();
-                    input.Dock = DockStyle.Fill;
-                    panel.Controls.Add(input);
-                    
-                    var label = new Label();
-                    label.Text = kvp.Key + ": ";
-                    label.AutoSize = true;
-                    label.Dock = DockStyle.Left;
-                    panel.Controls.Add(label);
-                }
-                
-                var editConfigButton = new Button();
-                editConfigButton.Text = "Edit";
-                editConfigButton.AutoSize = true;
-                editConfigButton.Dock = DockStyle.Top;
-                editConfigButton.Click += (s, e) => abstractPluginForm.Show();
-                optionsUserControl.Controls.Add(editConfigButton);
+                optionsUserControl = new ActionPluginHostControl(abstractPluginForm);
             }
 
             optionsPanel.Controls.Add(optionsUserControl);
