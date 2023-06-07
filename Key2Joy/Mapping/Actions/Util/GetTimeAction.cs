@@ -39,7 +39,7 @@ namespace Key2Joy.Mapping
             return DateTimeOffset.Now.ToUnixTimeSeconds();
         }
 
-        public override async Task Execute(IInputBag inputBag = null)
+        public override async Task Execute(AbstractInputBag inputBag = null)
         {
             // TODO: Currently this is only a script action...
         }
@@ -50,14 +50,6 @@ namespace Key2Joy.Mapping
                 return false;
 
             return true;
-        }
-
-        public override object Clone()
-        {
-            return new GetTimeAction(Name, new Dictionary<string, object> 
-            { 
-                { "ImageResource", ImageResource } 
-            });
         }
     }
 }

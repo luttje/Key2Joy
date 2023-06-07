@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Key2Joy.Mapping
 {
-    public class MouseButtonInputBag : IInputBag
+    public class MouseButtonInputBag : AbstractInputBag
     {
         public MouseState State { get; set; }
         public bool IsDown { get; set; }

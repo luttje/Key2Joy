@@ -8,7 +8,7 @@ namespace Key2Joy.Mapping
         protected TEnvironment environment;
 
         public BaseScriptActionWithEnvironment(string name)
-            : base(name, actionProperties)
+            : base(name)
         { }
 
         public TEnvironment SetupEnvironment()

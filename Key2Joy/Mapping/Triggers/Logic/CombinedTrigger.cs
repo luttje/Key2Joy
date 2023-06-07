@@ -49,10 +49,5 @@ namespace Key2Joy.Mapping
         {
             return string.Join(" + ", Triggers);
         }
-
-        public override object Clone()
-        {
-            return MemberwiseClone();
-        }
     }
 }

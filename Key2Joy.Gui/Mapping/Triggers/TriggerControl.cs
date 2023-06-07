@@ -47,9 +47,7 @@ namespace Key2Joy.Gui.Mapping
                 Trigger = selectedTypeFactory.CreateInstance(new object[]
                 {
                     attribute.NameFormat,
-                    null
                 });
-                //    attribute.Description // TODO: add description to trigger attribute
             }
 
             options?.Setup(Trigger);

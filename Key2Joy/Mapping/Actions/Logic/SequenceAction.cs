@@ -26,7 +26,7 @@ namespace Key2Joy.Mapping
             ChildActions = new List<AbstractAction>();
         }
 
-        public override async Task Execute(IInputBag inputBag = null)
+        public override async Task Execute(AbstractInputBag inputBag = null)
         {
             foreach (var childAction in ChildActions)
                 await childAction.Execute(inputBag);
@@ -74,15 +74,6 @@ namespace Key2Joy.Mapping
                 return false;
 
             return action.Name == Name;
-        }
-
-        public override object Clone()
-        {
-            return new SequenceAction(Name, new Dictionary<string, object>
-            {
-                { "ChildActions", ChildActions },
-                { "ImageResource", ImageResource },
-            });
         }
     }
 }

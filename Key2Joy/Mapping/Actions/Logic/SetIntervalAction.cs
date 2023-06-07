@@ -91,7 +91,7 @@ namespace Key2Joy.Mapping
             return IdPool.CreateNewId<IdPool.IntervalId>(cancellation);
         }
 
-        public override Task Execute(IInputBag inputBag = null)
+        public override Task Execute(AbstractInputBag inputBag = null)
         {
             // Irrelevant because only scripts should use this function
             return Task.Delay(WaitTime);
@@ -101,15 +101,6 @@ namespace Key2Joy.Mapping
         {
             // Irrelevant because only scripts should use this function
             return Name.Replace("{0}", WaitTime.TotalMilliseconds.ToString());
-        }
-
-        public override object Clone()
-        {
-            return new SetIntervalAction(Name, new Dictionary<string, object>
-            {
-                { "WaitTime", WaitTime },
-                { "ImageResource", ImageResource },
-            });
         }
     }
 }

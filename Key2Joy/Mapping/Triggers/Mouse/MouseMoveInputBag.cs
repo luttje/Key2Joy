@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Key2Joy.Mapping
 {
-    public class MouseMoveInputBag : IInputBag
+    public class MouseMoveInputBag : AbstractInputBag
     {
         public int DeltaX { get; set; }
         public int DeltaY { get; set; }

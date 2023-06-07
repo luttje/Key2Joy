@@ -75,7 +75,7 @@ namespace Key2Joy.Mapping
             await this.Execute();
         }
 
-        public override async Task Execute(IInputBag inputBag = null)
+        public override async Task Execute(AbstractInputBag inputBag = null)
         {
             if (!Key2JoyManager.RunAppCommand(Command))
             {
@@ -94,15 +94,6 @@ namespace Key2Joy.Mapping
                 return false;
 
             return action.Command == Command;
-        }
-
-        public override object Clone()
-        {
-            return new AppCommandAction(Name, new Dictionary<string, object>
-            {
-                { "Command", Command },
-                { "ImageResource", ImageResource },
-            });
         }
     }
 }

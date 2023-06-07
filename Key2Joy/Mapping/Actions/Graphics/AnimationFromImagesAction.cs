@@ -98,7 +98,7 @@ namespace Key2Joy.Mapping
             //return FFMpeg.JoinImageSequence(output, frameRate, images);
         }
 
-        public override async Task Execute(IInputBag inputBag = null)
+        public override async Task Execute(AbstractInputBag inputBag = null)
         {
             // TODO: Currently this is only a script action...
         }

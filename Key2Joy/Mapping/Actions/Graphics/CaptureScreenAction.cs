@@ -132,7 +132,7 @@ namespace Key2Joy.Mapping
             pixelCache.Save(savePath, format);
         }
 
-        public override async Task Execute(IInputBag inputBag = null)
+        public override async Task Execute(AbstractInputBag inputBag = null)
         {
             // TODO: Currently this is only a script action...
         }

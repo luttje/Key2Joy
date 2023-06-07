@@ -70,7 +70,7 @@ namespace Key2Joy.Mapping
             simPad.Update(GamePadIndex);
         }
 
-        public override async Task Execute(IInputBag inputBag = null)
+        public override async Task Execute(AbstractInputBag inputBag = null)
         {
             var simPad = SimGamePad.Instance;
             var state = simPad.State[GamePadIndex];
@@ -89,15 +89,6 @@ namespace Key2Joy.Mapping
                 return false;
 
             return true;
-        }
-
-        public override object Clone()
-        {
-            return new GamePadResetAction(Name, new Dictionary<string, object>
-            {
-                { "GamePadIndex", GamePadIndex },
-                { "ImageResource", ImageResource },
-            });
         }
     }
 }

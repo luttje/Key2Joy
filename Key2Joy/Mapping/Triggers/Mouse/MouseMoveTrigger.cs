@@ -51,10 +51,5 @@ namespace Key2Joy.Mapping
             var axis = Enum.GetName(typeof(AxisDirection), AxisBinding);
             return $"(mouse) Move {axis}";
         }
-
-        public override object Clone()
-        {
-            return MemberwiseClone();
-        }
     }
 }

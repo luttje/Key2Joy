@@ -26,7 +26,7 @@ namespace Key2Joy.Tests.Core.Mapping.Action.Windows
         [DataRow("cmd.exe", @"C:\Windows\System32\cmd.exe")]
         public void Script_Returns_CreatedWindowTitle(string processName, string expectedTitle)
         {
-            var action = new WindowGetTitleAction(string.Empty, string.Empty);
+            var action = new WindowGetTitleAction(string.Empty);
             var process = Process.Start(new ProcessStartInfo
             {
                 FileName = processName,

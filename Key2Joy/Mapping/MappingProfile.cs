@@ -165,7 +165,8 @@ namespace Key2Joy.Mapping
 
             var options = new JsonSerializerOptions();
             options.Converters.Add(new JsonStringEnumConverter());
-            options.Converters.Add(new JsonActionConverter());
+            options.Converters.Add(new JsonMappingAspectConverter<AbstractAction>());
+            options.Converters.Add(new JsonMappingAspectConverter<AbstractTrigger>());
             options.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
             options.WriteIndented = true;
 

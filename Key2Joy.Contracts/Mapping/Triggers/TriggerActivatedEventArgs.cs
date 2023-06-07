@@ -11,9 +11,9 @@ namespace Key2Joy.Contracts.Mapping
     {
         public IList<AbstractMappedOption> MappedOptions { get; private set; }
         public AbstractTriggerListener Listener { get; private set; }
-        public IInputBag InputBag { get; private set; }
+        public AbstractInputBag InputBag { get; private set; }
 
-        public TriggerActivatedEventArgs(AbstractTriggerListener listener, IInputBag inputBag, IList<AbstractMappedOption> mappedOptions)
+        public TriggerActivatedEventArgs(AbstractTriggerListener listener, AbstractInputBag inputBag, IList<AbstractMappedOption> mappedOptions)
         {
             Listener = listener;
             MappedOptions = mappedOptions;

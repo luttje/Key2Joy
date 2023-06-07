@@ -68,7 +68,7 @@ namespace Key2Joy.Mapping
             await Execute();
         }
 
-        public override async Task Execute(IInputBag inputBag = null)
+        public override async Task Execute(AbstractInputBag inputBag = null)
         {
             if (PressState == PressState.Press)
                 SimulatedMouse.PressButton(Button);
@@ -89,16 +89,6 @@ namespace Key2Joy.Mapping
 
             return action.Button == Button
                 && action.PressState == PressState;
-        }
-
-        public override object Clone()
-        {
-            return new MouseButtonAction(Name, new Dictionary<string, object>
-            {
-                { "Button", Button },
-                { "PressState", PressState },
-                { "ImageResource", ImageResource },
-            });
         }
     }
 }

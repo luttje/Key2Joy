@@ -70,7 +70,7 @@ namespace Key2Joy.Mapping
             await Execute();
         }
 
-        public override async Task Execute(IInputBag inputBag = null)
+        public override async Task Execute(AbstractInputBag inputBag = null)
         {
             SimulatedMouse.Move(X, Y, MoveType);
         }
@@ -90,17 +90,6 @@ namespace Key2Joy.Mapping
             return action.MoveType == MoveType
                 && action.X == X
                 && action.Y == Y;
-        }
-
-        public override object Clone()
-        {
-            return new MouseMoveAction(Name, new Dictionary<string, object>
-            {
-                { "MoveType", MoveType },
-                { "X", X },
-                { "Y", Y },
-                { "ImageResource", ImageResource },
-            });
         }
     }
 }

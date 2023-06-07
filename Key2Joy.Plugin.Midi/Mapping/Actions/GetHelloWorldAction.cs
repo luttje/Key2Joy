@@ -5,6 +5,7 @@ using Key2Joy.Contracts.Util;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using System.Windows.Forms;
 
 namespace Key2Joy.Plugin.Midi.Mapping
 {
@@ -21,29 +22,21 @@ namespace Key2Joy.Plugin.Midi.Mapping
         public string Target { get; set; } = "World";
 
         public GetHelloWorldAction(string name)
-            : base(name, actionProperties)
+            : base(name)
         {
 
         }
 
         [ExposesScriptingMethod("Hello.World")]
-        public override async Task Execute(IInputBag inputBag = null)
+        public override async Task Execute(AbstractInputBag inputBag = null)
         {
-            //MessageBox.Show("test");
+            MessageBox.Show("test");
             //Output.WriteLine(Output.OutputModes.Verbose, $"Hello {Target}!");
         }
 
         public override string GetNameDisplay()
         {
             return Name.Replace("{0}", Target.ToString());
-        }
-
-        public override object Clone()
-        {
-            return new GetHelloWorldAction(Name, new Dictionary<string, object>
-            {
-                { "Target", Target }
-            });
         }
     }
 }

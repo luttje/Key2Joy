@@ -46,7 +46,7 @@ namespace Key2Joy.Mapping
             return windowHandle;
         }
 
-        public override async Task Execute(IInputBag inputBag = null)
+        public override async Task Execute(AbstractInputBag inputBag = null)
         {
             // TODO: Currently this is only a script action...
         }
@@ -64,16 +64,6 @@ namespace Key2Joy.Mapping
 
             return action.ClassName == ClassName
                 && action.WindowName == WindowName;
-        }
-
-        public override object Clone()
-        {
-            return new WindowFindAction(Name, new Dictionary<string, object>
-            {
-                { "ClassName", ClassName },
-                { "WindowName", WindowName },
-                { "ImageResource", ImageResource },
-            });
         }
     }
 }

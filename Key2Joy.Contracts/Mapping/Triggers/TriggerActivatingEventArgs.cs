@@ -11,13 +11,13 @@ namespace Key2Joy.Contracts.Mapping
     {
         public IList<AbstractMappedOption> MappedOptionCandidates { get; private set; }
         public AbstractTriggerListener Listener { get; private set; }
-        public IInputBag InputBag { get; private set; }
+        public AbstractInputBag InputBag { get; private set; }
 
         private Func<AbstractTrigger, bool> optionCandidateFilter;
 
         public TriggerActivatingEventArgs(
             AbstractTriggerListener listener, 
-            IInputBag inputBag,
+            AbstractInputBag inputBag,
             IList<AbstractMappedOption> mappedOptions, 
             Func<AbstractTrigger, bool> optionCandidateFilter = null)
         {

@@ -9,10 +9,8 @@ namespace Key2Joy.Contracts.Mapping
 {
     public abstract class AbstractMappedOption : ICloneable
     {
-        // TODO: [JsonProperty(TypeNameHandling = TypeNameHandling.All)]
         [JsonInclude]
         public AbstractAction Action;
-        // TODO: [JsonProperty(TypeNameHandling = TypeNameHandling.All)]
         [JsonInclude]
         public AbstractTrigger Trigger;
 

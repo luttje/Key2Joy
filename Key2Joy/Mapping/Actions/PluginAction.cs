@@ -28,7 +28,7 @@ namespace Key2Joy.Mapping
             return new PluginAction(action);
         }
 
-        public override Task Execute(IInputBag inputBag = null)
+        public override Task Execute(AbstractInputBag inputBag = null)
         {
             return action.Execute(inputBag);
         }
@@ -36,11 +36,6 @@ namespace Key2Joy.Mapping
         public override string GetNameDisplay()
         {
             return action.GetNameDisplay();
-        }
-        
-        public override object Clone()
-        {
-            return this.action.Clone();
         }
     }
 }

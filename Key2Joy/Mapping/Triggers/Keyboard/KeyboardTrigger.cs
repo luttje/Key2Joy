@@ -74,11 +74,6 @@ namespace Key2Joy.Mapping
                 .Replace("{1}", Enum.GetName(typeof(PressState), PressState));
         }
 
-        public override object Clone()
-        {
-            return MemberwiseClone();
-        }
-
         public KeyboardState GetKeyboardState()
         {
             if (PressState == PressState.Press)

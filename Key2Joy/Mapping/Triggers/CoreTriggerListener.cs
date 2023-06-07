@@ -57,7 +57,7 @@ namespace Key2Joy.Mapping
         /// <param name="optionCandidateFilter"></param>
         protected override bool DoExecuteTrigger(
             IList<AbstractMappedOption> mappedOptions,
-            IInputBag inputBag,
+            AbstractInputBag inputBag,
             Func<AbstractTrigger, bool> optionCandidateFilter = null)
         {
             var executedAny = base.DoExecuteTrigger(mappedOptions, inputBag, optionCandidateFilter);

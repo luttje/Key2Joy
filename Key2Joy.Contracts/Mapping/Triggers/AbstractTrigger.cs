@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Key2Joy.Contracts.Mapping
@@ -10,8 +11,11 @@ namespace Key2Joy.Contracts.Mapping
     {
         public event EventHandler<TriggerExecutingEventArgs> Executing;
 
-        public IInputBag LastInputBag { get; protected set; }
+        [JsonIgnore]
+        public AbstractInputBag LastInputBag { get; protected set; }
+        [JsonIgnore]
         public DateTime LastActivated { get; protected set; }
+        [JsonIgnore]
         public bool ExecutedLastActivation { get; protected set; }
 
         public AbstractTrigger(string name)
@@ -41,7 +45,7 @@ namespace Key2Joy.Contracts.Mapping
             return !eventArgs.Handled;
         }
 
-        public virtual void DoActivate(IInputBag inputBag, bool executed = false)
+        public virtual void DoActivate(AbstractInputBag inputBag, bool executed = false)
         {
             LastActivated = DateTime.Now;
             LastInputBag = inputBag;

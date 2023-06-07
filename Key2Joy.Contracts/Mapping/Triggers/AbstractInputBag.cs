@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Key2Joy.Contracts.Mapping.Actions
+namespace Key2Joy.Contracts.Mapping
 {
-    public class ActionOptions : Dictionary<string, object>
+    public abstract class AbstractInputBag : MarshalByRefObject
     {
     }
 }

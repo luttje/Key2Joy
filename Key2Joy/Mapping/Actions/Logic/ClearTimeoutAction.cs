@@ -53,7 +53,7 @@ namespace Key2Joy.Mapping
             timeoutId.Cancel();
         }
 
-        public override Task Execute(IInputBag inputBag = null)
+        public override Task Execute(AbstractInputBag inputBag = null)
         {
             // Irrelevant because only scripts should use this function
             return null;
@@ -63,15 +63,6 @@ namespace Key2Joy.Mapping
         {
             // Irrelevant because only scripts should use this function
             return null;
-        }
-
-        public override object Clone()
-        {
-            // Irrelevant because only scripts should use this function
-            return new ClearTimeoutAction(Name, new Dictionary<string, object>
-            {
-                { "ImageResource", ImageResource },
-            });
         }
     }
 }

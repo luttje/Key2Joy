@@ -21,8 +21,8 @@ namespace Key2Joy.Mapping
         {
             return new MappedOption()
             {
-                Trigger = Trigger != null ? (CoreTrigger)Trigger.Clone() : null,
-                Action = (CoreAction)Action.Clone(),
+                Trigger = Trigger != null ? (AbstractTrigger)Trigger.Clone() : null,
+                Action = (AbstractAction)Action.Clone(),
             };
         }
     }

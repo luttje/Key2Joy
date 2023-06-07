@@ -71,10 +71,5 @@ namespace Key2Joy.Mapping
             return format.Replace("{0}", MouseButtons.ToString())
                 .Replace("{1}", Enum.GetName(typeof(PressState), PressState));
         }
-
-        public override object Clone()
-        {
-            return MemberwiseClone();
-        }
     }
 }

@@ -47,7 +47,7 @@ namespace Key2Joy.Mapping
             return title.ToString();
         }
 
-        public override async Task Execute(IInputBag inputBag = null)
+        public override async Task Execute(AbstractInputBag inputBag = null)
         {
             // TODO: Currently this is only a script action...
         }
@@ -64,14 +64,6 @@ namespace Key2Joy.Mapping
 
             // TODO: Currently this is only a script action so this is irrelevant
             return false;
-        }
-
-        public override object Clone()
-        {
-            return new WindowGetTitleAction(Name, new Dictionary<string, object>
-            {
-                { "ImageResource", ImageResource }
-            });
         }
     }
 }

@@ -18,7 +18,7 @@ namespace Key2Joy.Tests.Core.Mapping.Action.Windows
         [DataRow("cmd.exe")]
         public void Script_Finds_CreatedProcess(string processName)
         {
-            var action = new WindowFindAction(string.Empty, string.Empty);
+            var action = new WindowFindAction(string.Empty);
             var process = Process.Start(new ProcessStartInfo
             {
                 FileName = processName,

@@ -102,7 +102,7 @@ namespace Key2Joy.Mapping
                 SimGamePad.Instance.ReleaseControl(Control, GamePadIndex);
         }
 
-        public override async Task Execute(IInputBag inputBag = null)
+        public override async Task Execute(AbstractInputBag inputBag = null)
         {
             if (inputBag is MouseMoveInputBag mouseMoveInputBag)
             {
@@ -157,17 +157,6 @@ namespace Key2Joy.Mapping
 
             return action.Control == Control
                 && action.PressState == PressState;
-        }
-
-        public override object Clone()
-        {
-            return new GamePadAction(Name, new Dictionary<string, object>
-            {
-                { "Control", Control },
-                { "PressState", PressState },
-                { "GamePadIndex", GamePadIndex },
-                { "ImageResource", ImageResource },
-            });
         }
     }
 }

@@ -11,20 +11,20 @@ using System.Threading.Tasks;
 
 namespace Key2Joy.Mapping
 {
-    internal struct JsonActionWithType
+    internal struct JsonMappingAspectWithType
     {
         [JsonPropertyName("$type")]
         public string FullTypeName { get; set; }
-        public AbstractAction Action { get; set; }
+        public MappingAspectOptions Options { get; set; }
 
-        public JsonActionWithType() { }
+        public JsonMappingAspectWithType() { }
     }
 
-    internal class JsonActionConverter : JsonConverter<AbstractAction>
+    internal class JsonMappingAspectConverter<T> : JsonConverter<T> where T : AbstractMappingAspect
     {
         private IDictionary<string, MappingTypeFactory> allowedTypes;
 
-        public JsonActionConverter()
+        public JsonMappingAspectConverter()
         {
             allowedTypes = new Dictionary<string, MappingTypeFactory>();
 
@@ -44,10 +44,15 @@ namespace Key2Joy.Mapping
             return typeInfoTypeName.Split(',')[0];
         }
 
+        /// <summary>
+        /// Prevent recursion by not including this converter in child (de)serializations
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
         private JsonSerializerOptions GetOptionsWithoutSelf(JsonSerializerOptions options)
         {
             var newOptions = new JsonSerializerOptions(options);
-            var thisConverter = newOptions.Converters.SingleOrDefault(c => c is JsonActionConverter);
+            var thisConverter = newOptions.Converters.SingleOrDefault(c => c is JsonMappingAspectConverter<T>);
 
             if (thisConverter != null)
             {
@@ -57,7 +62,7 @@ namespace Key2Joy.Mapping
             return newOptions;
         }
 
-        public override AbstractAction Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public override T Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             var json = JsonDocument.ParseValue(ref reader);
 
@@ -69,10 +74,14 @@ namespace Key2Joy.Mapping
                 throw new RemotingException($"The type {type} is not allowed.");
             }
 
-            var actionRootProperty = json.RootElement.GetProperty("action");
+            var actionRootProperty = json.RootElement.GetProperty(
+                options.PropertyNamingPolicy.ConvertName(
+                    nameof(JsonMappingAspectWithType.Options)
+                )
+            );
 
-            // Create a dictionary of all properties
-            var properties = new Dictionary<string, object>();
+            // Create options for all properties
+            var actionOptions = new MappingAspectOptions();
             
             foreach (var property in actionRootProperty.EnumerateObject())
             {
@@ -82,15 +91,19 @@ namespace Key2Joy.Mapping
                 }
                 else if (property.Value.ValueKind == JsonValueKind.String)
                 {
-                    properties.Add(property.Name, property.Value.GetString());
+                    actionOptions.Add(property.Name, property.Value.GetString());
                 }
                 else if (property.Value.ValueKind == JsonValueKind.Number)
                 {
-                    properties.Add(property.Name, property.Value.GetInt32());
+                    actionOptions.Add(property.Name, property.Value.GetInt32());
                 }
                 else if (property.Value.ValueKind == JsonValueKind.True || property.Value.ValueKind == JsonValueKind.False)
                 {
-                    properties.Add(property.Name, property.Value.GetBoolean());
+                    actionOptions.Add(property.Name, property.Value.GetBoolean());
+                }
+                else if (property.Value.ValueKind == JsonValueKind.Null)
+                {
+                    actionOptions.Add(property.Name, null);
                 }
                 else
                 {
@@ -98,19 +111,19 @@ namespace Key2Joy.Mapping
                 }
             }
 
-            var name = properties["name"];
-            properties.Remove("name");
+            var name = actionOptions[nameof(AbstractMappingAspect.Name)] as string;
+            //options.Remove("name");
 
-            var action = factory.CreateInstance<AbstractAction>(new object[]
+            var action = factory.CreateInstance<AbstractMappingAspect>(new object[]
             {
                 name,
-                properties,
             });
+            action.LoadOptions(actionOptions);
 
-            return action;
+            return (T)action;
         }
 
-        public override void Write(Utf8JsonWriter writer, AbstractAction value, JsonSerializerOptions options)
+        public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
         {
             string realTypeName;
 
@@ -133,10 +146,10 @@ namespace Key2Joy.Mapping
                     throw new ArgumentException("Only allowed types may be serialized to the preset");
                 }
             }
-
-            JsonSerializer.Serialize(writer, new JsonActionWithType
+            var test = value.SaveOptions();
+            JsonSerializer.Serialize(writer, new JsonMappingAspectWithType
             {
-                Action = value,
+                Options = value.SaveOptions(),
                 FullTypeName = realTypeName,
             }, GetOptionsWithoutSelf(options));
         }

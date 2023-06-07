@@ -82,7 +82,7 @@ namespace Key2Joy.Mapping
             await Execute();
         }
 
-        public override async Task Execute(IInputBag inputBag = null)
+        public override async Task Execute(AbstractInputBag inputBag = null)
         {
             var simPad = SimGamePad.Instance;
             var state = simPad.State[GamePadIndex];
@@ -120,18 +120,6 @@ namespace Key2Joy.Mapping
             return action.Stick == Stick
                 && action.DeltaX == DeltaX
                 && action.DeltaY == DeltaY;
-        }
-
-        public override object Clone()
-        {
-            return new GamePadStickAction(Name, new Dictionary<string, object>
-            {
-                { "Stick", Stick },
-                { "DeltaX", DeltaX },
-                { "DeltaY", DeltaY },
-                { "GamePadIndex", GamePadIndex },
-                { "ImageResource", ImageResource },
-            });
         }
     }
 }

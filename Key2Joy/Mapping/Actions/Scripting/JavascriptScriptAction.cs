@@ -22,12 +22,12 @@ namespace Key2Joy.Mapping
     public class JavascriptAction : BaseScriptActionWithEnvironment<Engine>
     {
         public JavascriptAction(string name)
-            : base(name, actionProperties)
+            : base(name)
         {
             ImageResource = "JS";
         }
 
-        public override async Task Execute(IInputBag inputBag)
+        public override async Task Execute(AbstractInputBag inputBag)
         {
             try
             {
@@ -143,16 +143,6 @@ namespace Key2Joy.Mapping
 
             return action.Name == Name
                 && action.Script == Script;
-        }
-
-        public override object Clone()
-        {
-            return new JavascriptAction(Name, new Dictionary<string, object>
-            {
-                { "Script", Script },
-                { "IsScriptPath", IsScriptPath },
-                { "ImageResource", ImageResource },
-            });
         }
     }
 }

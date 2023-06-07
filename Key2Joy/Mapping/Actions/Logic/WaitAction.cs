@@ -23,7 +23,7 @@ namespace Key2Joy.Mapping
         {
         }
 
-        public override Task Execute(IInputBag inputBag = null)
+        public override Task Execute(AbstractInputBag inputBag = null)
         {
             return Task.Delay(WaitTime);
         }
@@ -31,15 +31,6 @@ namespace Key2Joy.Mapping
         public override string GetNameDisplay()
         {
             return Name.Replace("{0}", WaitTime.TotalMilliseconds.ToString());
-        }
-
-        public override object Clone()
-        {
-            return new WaitAction(Name, new Dictionary<string, object>
-            {
-                { "WaitTime", WaitTime },
-                { "ImageResource", ImageResource },
-            });
         }
     }
 }

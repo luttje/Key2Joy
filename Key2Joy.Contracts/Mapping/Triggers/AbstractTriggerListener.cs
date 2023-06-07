@@ -29,7 +29,7 @@ namespace Key2Joy.Contracts.Mapping
         /// <param name="optionCandidateFilter"></param>
         protected virtual bool DoExecuteTrigger(
             IList<AbstractMappedOption> mappedOptions,
-            IInputBag inputBag,
+            AbstractInputBag inputBag,
             Func<AbstractTrigger, bool> optionCandidateFilter = null)
         {
             var eventArgs = new TriggerActivatingEventArgs(
@@ -49,7 +49,7 @@ namespace Key2Joy.Contracts.Mapping
                 if (shouldExecute)
                 {
                     executedAny = true;
-                    mappedOption.Action.Execute(inputBag);
+                    Task.Run(() => mappedOption.Action.Execute(inputBag));
                 }
             }
 

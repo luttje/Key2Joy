@@ -84,7 +84,7 @@ namespace Key2Joy.Mapping
                 SimulatedKeyboard.ReleaseKey(Key);
         }
 
-        public override async Task Execute(IInputBag inputBag = null)
+        public override async Task Execute(AbstractInputBag inputBag = null)
         {
             if (PressState == PressState.Press)
                 SimulatedKeyboard.PressKey(Key);
@@ -105,16 +105,6 @@ namespace Key2Joy.Mapping
 
             return action.Key == Key
                 && action.PressState == PressState;
-        }
-
-        public override object Clone()
-        {
-            return new KeyboardAction(Name, new Dictionary<string, object>
-            {
-                { "Key", Key },
-                { "PressState", PressState },
-                { "ImageResource", ImageResource },
-            });
         }
     }
 }

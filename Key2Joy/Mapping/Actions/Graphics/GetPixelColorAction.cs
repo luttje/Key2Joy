@@ -62,7 +62,7 @@ namespace Key2Joy.Mapping
             return pixelCache.GetPixel(0, 0);
         }
 
-        public override async Task Execute(IInputBag inputBag = null)
+        public override async Task Execute(AbstractInputBag inputBag = null)
         {
             // TODO: Currently this is only a script action...
         }
