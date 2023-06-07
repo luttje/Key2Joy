@@ -16,6 +16,7 @@ using Key2Joy.LowLevelInput;
 using Key2Joy.Config;
 using Key2Joy.Contracts.Mapping;
 using System.Runtime.Remoting;
+using Esprima;
 
 namespace Key2Joy.Gui
 {
@@ -541,6 +542,48 @@ namespace Key2Joy.Gui
         private void managePluginsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             new PluginsForm().ShowDialog();
+        }
+
+        private void generateOppositePressStateMappingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var selectedCount = olvMappings.SelectedItems.Count;
+
+            if (selectedCount == 0)
+                return;
+
+            if (selectedCount > 1)
+                if (MessageBox.Show($"Are you sure you want to create opposite press state mappings for all {selectedCount} selected mappings? New 'Release' mappings will be created for each 'Press' and vice versa.", $"Generate {selectedCount} opposite press state mappings", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                    return;
+
+            var newOptions = new List<MappedOption>();
+
+            foreach (OLVListItem listItem in olvMappings.SelectedItems)
+            {
+                var pressVariant = (MappedOption)listItem.RowObject;
+                var actionCopy = (AbstractAction)pressVariant.Action.Clone();
+                var triggerCopy = (AbstractTrigger)pressVariant.Trigger.Clone();
+
+                if (actionCopy is IPressState actionWithPressState)
+                {
+                    actionWithPressState.PressState = actionWithPressState.PressState == PressState.Press ? PressState.Release : PressState.Press;
+                }
+                
+                if (triggerCopy is IPressState triggerWithPressState)
+                {
+                    triggerWithPressState.PressState = triggerWithPressState.PressState == PressState.Press ? PressState.Release : PressState.Press;
+                }
+
+                var variantOption = new MappedOption
+                {
+                    Action = actionCopy,
+                    Trigger = triggerCopy,
+                };
+                newOptions.Add(variantOption);
+                selectedProfile.MappedOptions.Add(variantOption);
+            }
+
+            selectedProfile.Save();
+            olvMappings.AddObjects(newOptions);
         }
     }
 }
