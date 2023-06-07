@@ -1,16 +1,9 @@
 ﻿using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Util;
 using Key2Joy.LowLevelInput;
-using Newtonsoft.Json;
-using SimWinInput;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Key2Joy.Mapping
 {
@@ -24,14 +17,11 @@ namespace Key2Joy.Mapping
     )]
     public class KeyboardAction : CoreAction, IPressState
     {        
-        [JsonProperty]
         public KeyboardKey Key { get; set; }
-
-        [JsonProperty]
         public PressState PressState { get; set; }
 
-        public KeyboardAction(string name, string description)
-            : base(name, description)
+        public KeyboardAction(string name)
+            : base(name)
         {
         }
 
@@ -119,13 +109,12 @@ namespace Key2Joy.Mapping
 
         public override object Clone()
         {
-            return new KeyboardAction(Name, description)
+            return new KeyboardAction(Name, new Dictionary<string, object>
             {
-                Key = Key,
-                PressState = PressState,
-                ImageResource = ImageResource,
-                Name = Name,
-            };
+                { "Key", Key },
+                { "PressState", PressState },
+                { "ImageResource", ImageResource },
+            });
         }
     }
 }

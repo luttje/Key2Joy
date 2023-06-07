@@ -1,9 +1,4 @@
 ﻿using Key2Joy.Contracts.Mapping;
-using Newtonsoft.Json;
-using SimWinInput;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
 
 namespace Key2Joy.Mapping
 {

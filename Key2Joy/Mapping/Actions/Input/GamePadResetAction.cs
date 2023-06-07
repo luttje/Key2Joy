@@ -1,7 +1,6 @@
 ﻿using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Util;
 using Key2Joy.LowLevelInput;
-using Newtonsoft.Json;
 using SimWinInput;
 using System;
 using System.Collections.Generic;
@@ -24,11 +23,10 @@ namespace Key2Joy.Mapping
     )]
     public class GamePadResetAction : CoreAction
     {
-        [JsonProperty]
         public int GamePadIndex { get; set; }
 
-        public GamePadResetAction(string name, string description)
-            : base(name, description)
+        public GamePadResetAction(string name)
+            : base(name)
         {
         }
         
@@ -95,12 +93,11 @@ namespace Key2Joy.Mapping
 
         public override object Clone()
         {
-            return new GamePadResetAction(Name, description)
+            return new GamePadResetAction(Name, new Dictionary<string, object>
             {
-                GamePadIndex = GamePadIndex,
-                ImageResource = ImageResource,
-                Name = Name,
-            };
+                { "GamePadIndex", GamePadIndex },
+                { "ImageResource", ImageResource },
+            });
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Key2Joy.Contracts.Mapping;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,8 +15,8 @@ namespace Key2Joy.Mapping
     )]
     public class PathExpandAction : CoreAction
     {
-        public PathExpandAction(string name, string description)
-            : base(name, description)
+        public PathExpandAction(string name)
+            : base(name)
         { }
 
         /// <markdown-doc>
@@ -59,11 +58,10 @@ namespace Key2Joy.Mapping
 
         public override object Clone()
         {
-            return new PathExpandAction(Name, description)
+            return new PathExpandAction(Name, new Dictionary<string, object>
             {
-                ImageResource = ImageResource,
-                Name = Name,
-            };
+                { "ImageResource", ImageResource },
+            });
         }
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -24,13 +25,9 @@ namespace Key2Joy.Plugins
             ExposedMethods = exposedMethods ?? new List<ExposedMethod>();
         }
 
-        public virtual T CreateInstance<T>() where T : AbstractMappingAspect
+        public virtual T CreateInstance<T>(object[] constructorArguments) where T : AbstractMappingAspect
         {
-            return (T)Activator.CreateInstance(ToType(), new object[] 
-            { 
-                Attribute.NameFormat,
-                Attribute.Description,
-            });
+            return (T)Activator.CreateInstance(ToType(), constructorArguments);
         }
 
         public virtual Type ToType()
@@ -49,9 +46,9 @@ namespace Key2Joy.Plugins
         {
         }
 
-        public virtual T CreateInstance()
+        public virtual T CreateInstance(object[] constructorArguments)
         {
-            return base.CreateInstance<T>();
+            return base.CreateInstance<T>(constructorArguments);
         }
     }
 
@@ -72,9 +69,23 @@ namespace Key2Joy.Plugins
             this.hostBaseType = hostBaseType;
         }
 
-        public override T CreateInstance()
+        public override T CreateInstance(object[] constructorArguments)
         {
-            return (T)appDomain.CreateInstanceFromAndUnwrap(pluginAssemblyPath, FullTypeName);
+            return CreateInstance<T>(constructorArguments);
+        }
+        
+        public override T CreateInstance<T>(object[] constructorArguments)
+        {
+            return (T)appDomain.CreateInstanceFromAndUnwrap(
+                pluginAssemblyPath, 
+                FullTypeName, 
+                false, 
+                BindingFlags.Default,
+                null,
+                constructorArguments,
+                null,
+                null
+            );
         }
 
         /// <summary>

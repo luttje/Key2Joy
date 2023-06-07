@@ -15,7 +15,7 @@ namespace Key2Joy.Mapping
         protected AbstractAction action;
 
         internal PluginAction(AbstractAction action)
-            :base(action.Name, "")
+            :base(action.Name)
         {
             this.action = action;
         }

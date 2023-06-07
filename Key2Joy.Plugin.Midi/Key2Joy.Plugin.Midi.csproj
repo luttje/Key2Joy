@@ -38,7 +38,6 @@
     <PackageReference Include="Melanchall.DryWetMidi">
       <Version>6.1.4</Version>
     </PackageReference>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Key2Joy.Contracts\Key2Joy.Contracts.csproj" />

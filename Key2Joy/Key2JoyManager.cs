@@ -212,7 +212,7 @@ namespace Key2Joy
         /// </summary>
         public static void StartKey2Joy(bool startMinimized = true, bool pauseUntilReady = true)
         {
-            var executablePath = ConfigManager.Instance.LastInstallPath;
+            var executablePath = ConfigManager.Config.LastInstallPath;
 
             if (executablePath == null)
             {

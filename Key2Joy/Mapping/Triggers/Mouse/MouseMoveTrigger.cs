@@ -1,6 +1,7 @@
 ﻿using Key2Joy.Contracts.Mapping;
-using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Key2Joy.Mapping
 {
@@ -11,12 +12,11 @@ namespace Key2Joy.Mapping
     {
         public const string PREFIX_UNIQUE = nameof(MouseButtonTrigger);
 
-        [JsonProperty]
         public AxisDirection AxisBinding { get; set; }
 
         [JsonConstructor]
-        public MouseMoveTrigger(string name, string description)
-            : base(name, description)
+        public MouseMoveTrigger(string name)
+            : base(name)
         { }
 
         public override AbstractTriggerListener GetTriggerListener()

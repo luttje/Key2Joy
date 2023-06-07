@@ -1,6 +1,5 @@
 ﻿using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Util;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,11 +17,11 @@ namespace Key2Joy.Mapping
     )]
     public class SequenceAction : CoreAction
     {
-        [JsonProperty(ItemTypeNameHandling = TypeNameHandling.All)]
+        // TODO: [JsonProperty(ItemTypeNameHandling = TypeNameHandling.All)]
         public IList<AbstractAction> ChildActions;
 
-        public SequenceAction(string name, string description)
-            : base(name, description)
+        public SequenceAction(string name)
+            : base(name)
         {
             ChildActions = new List<AbstractAction>();
         }
@@ -79,12 +78,11 @@ namespace Key2Joy.Mapping
 
         public override object Clone()
         {
-            return new SequenceAction(Name, description)
+            return new SequenceAction(Name, new Dictionary<string, object>
             {
-                ChildActions = ChildActions,
-                ImageResource = ImageResource,
-                Name = Name,
-            };
+                { "ChildActions", ChildActions },
+                { "ImageResource", ImageResource },
+            });
         }
     }
 }

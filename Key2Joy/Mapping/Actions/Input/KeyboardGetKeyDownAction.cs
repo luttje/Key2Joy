@@ -1,12 +1,7 @@
 ﻿using Key2Joy.Contracts.Mapping;
 using Key2Joy.LowLevelInput;
-using Newtonsoft.Json;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Key2Joy.Mapping
@@ -18,8 +13,8 @@ namespace Key2Joy.Mapping
     )]
     public class KeyboardGetKeyDownAction : CoreAction
     {
-        public KeyboardGetKeyDownAction(string name, string description)
-            : base(name, description)
+        public KeyboardGetKeyDownAction(string name)
+            : base(name)
         { }
 
         /// <markdown-doc>
@@ -85,11 +80,10 @@ namespace Key2Joy.Mapping
 
         public override object Clone()
         {
-            return new KeyboardGetKeyDownAction(Name, description)
+            return new KeyboardGetKeyDownAction(Name, new Dictionary<string, object>
             {
-                ImageResource = ImageResource,
-                Name = Name,
-            };
+                { "ImageResource", ImageResource },
+            });
         }
     }
 }

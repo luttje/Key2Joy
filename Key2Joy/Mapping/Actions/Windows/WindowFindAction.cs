@@ -1,5 +1,4 @@
 ﻿using Key2Joy.Contracts.Mapping;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,17 +15,14 @@ namespace Key2Joy.Mapping
     )]
     public class WindowFindAction : CoreAction
     {
-        [JsonProperty]
-        public string ClassName { get; set; }
-        
-        [JsonProperty]
-        public string WindowName { get; set; }
-
         [DllImport("user32.dll", EntryPoint = "FindWindow")]
         private static extern IntPtr FindWindow(string className, string windowTitle);
 
-        public WindowFindAction(string name, string description)
-            : base(name, description)
+        public string ClassName { get; set; }
+        public string WindowName { get; set; }
+
+        public WindowFindAction(string name)
+            : base(name)
         { }
 
         /// <markdown-doc>
@@ -72,13 +68,12 @@ namespace Key2Joy.Mapping
 
         public override object Clone()
         {
-            return new WindowFindAction(Name, description)
+            return new WindowFindAction(Name, new Dictionary<string, object>
             {
-                ClassName = ClassName,
-                WindowName = WindowName,
-                ImageResource = ImageResource,
-                Name = Name,
-            };
+                { "ClassName", ClassName },
+                { "WindowName", WindowName },
+                { "ImageResource", ImageResource },
+            });
         }
     }
 }

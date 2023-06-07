@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using System.Windows.Forms;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.LowLevelInput;
-using Newtonsoft.Json;
 
 namespace Key2Joy.Mapping
 {
@@ -13,15 +14,13 @@ namespace Key2Joy.Mapping
     {
         public const string PREFIX_UNIQUE = nameof(KeyboardTrigger);
 
-        [JsonProperty]
         public Keys Keys { get; set; }
         
-        [JsonProperty]
         public PressState PressState { get; set; }
 
         [JsonConstructor]
-        public KeyboardTrigger(string name, string description)
-            : base(name, description)
+        public KeyboardTrigger(string name)
+            : base(name)
         { }
 
         public override AbstractTriggerListener GetTriggerListener()

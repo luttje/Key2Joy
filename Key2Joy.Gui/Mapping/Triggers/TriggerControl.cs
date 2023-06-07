@@ -43,9 +43,12 @@ namespace Key2Joy.Gui.Mapping
             var attribute = selected.ItemValue.Key;
 
             if (Trigger == null || Trigger.GetType().FullName != selectedTypeFactory.FullTypeName) 
-            { 
-                Trigger = selectedTypeFactory.CreateInstance();
-                Trigger.Name = attribute.NameFormat;
+            {
+                Trigger = selectedTypeFactory.CreateInstance(new object[]
+                {
+                    attribute.NameFormat,
+                    null
+                });
                 //    attribute.Description // TODO: add description to trigger attribute
             }
 

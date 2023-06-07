@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,7 +13,10 @@ namespace Key2Joy.Contracts.Mapping
         public IInputBag LastInputBag { get; protected set; }
         public DateTime LastActivated { get; protected set; }
         public bool ExecutedLastActivation { get; protected set; }
-        
+
+        public AbstractTrigger(string name)
+            : base(name) { }
+
         /// <summary>
         /// Must return a singleton listener that will listen for triggers.
         /// 

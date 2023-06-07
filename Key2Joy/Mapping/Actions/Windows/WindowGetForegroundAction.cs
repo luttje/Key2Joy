@@ -1,5 +1,6 @@
 ﻿using Key2Joy.Contracts.Mapping;
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
@@ -15,8 +16,8 @@ namespace Key2Joy.Mapping
         [DllImport("user32.dll")]
         public static extern IntPtr GetForegroundWindow();
 
-        public WindowGetForegroundAction(string name, string description)
-            : base(name, description)
+        public WindowGetForegroundAction(string name)
+            : base(name)
         { }
 
         /// <markdown-doc>
@@ -56,11 +57,10 @@ namespace Key2Joy.Mapping
 
         public override object Clone()
         {
-            return new WindowFindAction(Name, description)
+            return new WindowFindAction(Name, new Dictionary<string, object>
             {
-                ImageResource = ImageResource,
-                Name = Name,
-            };
+                { "ImageResource", ImageResource }
+            });
         }
     }
 }

@@ -1,11 +1,8 @@
 ﻿using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Util;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Key2Joy.Mapping
 {
@@ -19,8 +16,8 @@ namespace Key2Joy.Mapping
     )]
     public class ClearIntervalAction : CoreAction
     {
-        public ClearIntervalAction(string name, string description)
-            : base(name, description)
+        public ClearIntervalAction(string name)
+            : base(name)
         {
         }
 
@@ -73,11 +70,10 @@ namespace Key2Joy.Mapping
         public override object Clone()
         {
             // Irrelevant because only scripts should use this function
-            return new ClearIntervalAction(Name, description)
+            return new ClearIntervalAction(Name, new Dictionary<string, object>
             {
-                ImageResource = ImageResource,
-                Name = Name,
-            };
+                { "ImageResource", ImageResource },
+            });
         }
     }
 }

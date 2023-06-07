@@ -1,9 +1,5 @@
 ﻿using Key2Joy.Contracts.Mapping;
-using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Reflection;
-using System.Text;
 
 namespace Key2Joy.Mapping
 {
@@ -11,8 +7,8 @@ namespace Key2Joy.Mapping
     {
         protected TEnvironment environment;
 
-        public BaseScriptActionWithEnvironment(string name, string description)
-            : base(name, description)
+        public BaseScriptActionWithEnvironment(string name)
+            : base(name, actionProperties)
         { }
 
         public TEnvironment SetupEnvironment()

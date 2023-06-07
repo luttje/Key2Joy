@@ -1,11 +1,9 @@
 ﻿using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Util;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Threading;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Key2Joy.Mapping
 {
@@ -20,11 +18,11 @@ namespace Key2Joy.Mapping
     )]
     public class SetDelayedFunctionsAction : CoreAction
     {
-        [JsonProperty]
+        [JsonInclude]
         public TimeSpan WaitTime;
 
-        public SetDelayedFunctionsAction(string name, string description)
-            : base(name, description)
+        public SetDelayedFunctionsAction(string name)
+            : base(name)
         {
         }
 
@@ -93,12 +91,11 @@ namespace Key2Joy.Mapping
 
         public override object Clone()
         {
-            return new SetDelayedFunctionsAction(Name, description)
+            return new SetDelayedFunctionsAction(Name, new Dictionary<string, object>
             {
-                WaitTime = WaitTime,
-                ImageResource = ImageResource,
-                Name = Name,
-            };
+                { "WaitTime", WaitTime },
+                { "ImageResource", ImageResource },
+            });
         }
     }
 }

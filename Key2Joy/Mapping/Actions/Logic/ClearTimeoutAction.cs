@@ -1,6 +1,5 @@
 ﻿using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Util;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -19,8 +18,8 @@ namespace Key2Joy.Mapping
     )]
     public class ClearTimeoutAction : CoreAction
     {
-        public ClearTimeoutAction(string name, string description)
-            : base(name, description)
+        public ClearTimeoutAction(string name)
+            : base(name)
         {
         }
 
@@ -69,11 +68,10 @@ namespace Key2Joy.Mapping
         public override object Clone()
         {
             // Irrelevant because only scripts should use this function
-            return new ClearTimeoutAction(Name, description)
+            return new ClearTimeoutAction(Name, new Dictionary<string, object>
             {
-                ImageResource = ImageResource,
-                Name = Name,
-            };
+                { "ImageResource", ImageResource },
+            });
         }
     }
 }

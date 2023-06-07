@@ -1,7 +1,6 @@
 ﻿using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Util;
 using Key2Joy.Plugins;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -22,16 +21,13 @@ namespace Key2Joy.Mapping
         /// </summary>
         public static List<ExposedEnumeration> ExposedEnumerations = new();
 
-        [JsonProperty]
         public string Script { get; set; }
-
-        [JsonProperty]
         public bool IsScriptPath { get; set; }
 
         protected string cachedFile;
 
-        public BaseScriptAction(string name, string description)
-            : base(name, description)
+        public BaseScriptAction(string name)
+            : base(name)
         { }
 
         protected virtual string GetExecutableScript()

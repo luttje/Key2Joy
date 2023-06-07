@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing.Imaging;
 using System.Drawing;
@@ -21,8 +20,8 @@ namespace Key2Joy.Mapping
     )]
     public class CaptureScreenAction : CoreAction
     {
-        public CaptureScreenAction(string name, string description)
-            : base(name, description)
+        public CaptureScreenAction(string name)
+            : base(name)
         { }
 
         /// <markdown-doc>
@@ -144,15 +143,6 @@ namespace Key2Joy.Mapping
                 return false;
 
             return true;
-        }
-
-        public override object Clone()
-        {
-            return new CaptureScreenAction(Name, description)
-            {
-                ImageResource = ImageResource,
-                Name = Name,
-            };
         }
     }
 }

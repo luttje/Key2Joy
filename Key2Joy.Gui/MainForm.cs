@@ -81,7 +81,7 @@ namespace Key2Joy.Gui
         private void SetSelectedProfile(MappingProfile profile)
         {
             selectedProfile = profile;
-            ConfigManager.Instance.LastLoadedProfile = profile.FilePath;
+            ConfigManager.Config.LastLoadedProfile = profile.FilePath;
                 
             olvMappings.SetObjects(profile.MappedOptions);
             olvMappings.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
@@ -128,13 +128,6 @@ namespace Key2Joy.Gui
             if (existingMappedOption == null)
                 selectedProfile.AddMapping(mappedOption);
 
-            if (RemotingServices.IsTransparentProxy(mappedOption.Action)) 
-            { 
-                var test =  RemotingServices.GetRealProxy(mappedOption.Action);
-                var objRef = RemotingServices.GetObjRefForProxy(mappedOption.Action);
-                // Get the typename of the actual remote class:
-                var typeName = objRef.TypeInfo.TypeName;
-            }
             selectedProfile.Save();
 
             if (existingMappedOption == null)
@@ -336,12 +329,12 @@ namespace Key2Joy.Gui
                 e.Cancel = true;
                 Hide();
 
-                if (ConfigManager.Instance.MuteCloseExitMessage)
+                if (ConfigManager.Config.MuteCloseExitMessage)
                     return;
 
                 var result = MessageBox.Show("Closing this window minimizes it to the notification tray in your taskbar. You can shut down Key2Joy through File > Exit Program.\n\nContinue showing this message?", "Minimizing to notification tray.", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
 
-                ConfigManager.Instance.MuteCloseExitMessage = result != DialogResult.Yes;
+                ConfigManager.Config.MuteCloseExitMessage = result != DialogResult.Yes;
             }
         }
 

@@ -1,7 +1,6 @@
 ﻿using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Util;
 using Key2Joy.LowLevelInput;
-using Newtonsoft.Json;
 using SimWinInput;
 using System;
 using System.Collections.Generic;
@@ -25,17 +24,12 @@ namespace Key2Joy.Mapping
     )]
     public class MouseMoveAction : CoreAction
     {        
-        [JsonProperty]
         public Mouse.MoveType MoveType { get; set; }
-
-        [JsonProperty]
         public int X { get; set; }
-        
-        [JsonProperty]
         public int Y { get; set; }
 
-        public MouseMoveAction(string name, string description)
-            : base(name, description)
+        public MouseMoveAction(string name)
+            : base(name)
         {
         }
 
@@ -100,14 +94,13 @@ namespace Key2Joy.Mapping
 
         public override object Clone()
         {
-            return new MouseMoveAction(Name, description)
+            return new MouseMoveAction(Name, new Dictionary<string, object>
             {
-                MoveType = MoveType,
-                X = X,
-                Y = Y,
-                ImageResource = ImageResource,
-                Name = Name,
-            };
+                { "MoveType", MoveType },
+                { "X", X },
+                { "Y", Y },
+                { "ImageResource", ImageResource },
+            });
         }
     }
 }

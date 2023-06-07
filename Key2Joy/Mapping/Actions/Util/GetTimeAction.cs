@@ -1,10 +1,6 @@
 ﻿using Key2Joy.Contracts.Mapping;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Key2Joy.Mapping
@@ -16,8 +12,8 @@ namespace Key2Joy.Mapping
     )]
     public class GetTimeAction : CoreAction
     {
-        public GetTimeAction(string name, string description)
-            : base(name, description)
+        public GetTimeAction(string name)
+            : base(name)
         { }
 
         /// <markdown-doc>
@@ -58,11 +54,10 @@ namespace Key2Joy.Mapping
 
         public override object Clone()
         {
-            return new GetTimeAction(Name, description)
-            {
-                ImageResource = ImageResource,
-                Name = Name,
-            };
+            return new GetTimeAction(Name, new Dictionary<string, object> 
+            { 
+                { "ImageResource", ImageResource } 
+            });
         }
     }
 }

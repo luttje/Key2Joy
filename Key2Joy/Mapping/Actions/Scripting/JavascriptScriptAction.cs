@@ -21,8 +21,8 @@ namespace Key2Joy.Mapping
     )]
     public class JavascriptAction : BaseScriptActionWithEnvironment<Engine>
     {
-        public JavascriptAction(string name, string description)
-            : base(name, description)
+        public JavascriptAction(string name)
+            : base(name, actionProperties)
         {
             ImageResource = "JS";
         }
@@ -147,13 +147,12 @@ namespace Key2Joy.Mapping
 
         public override object Clone()
         {
-            return new JavascriptAction(Name, description)
+            return new JavascriptAction(Name, new Dictionary<string, object>
             {
-                Script = Script,
-                IsScriptPath = IsScriptPath,
-                ImageResource = ImageResource,
-                Name = Name,
-            };
+                { "Script", Script },
+                { "IsScriptPath", IsScriptPath },
+                { "ImageResource", ImageResource },
+            });
         }
     }
 }

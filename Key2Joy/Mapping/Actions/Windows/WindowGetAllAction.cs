@@ -1,5 +1,4 @@
 ﻿using Key2Joy.Contracts.Mapping;
-using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -23,8 +22,8 @@ namespace Key2Joy.Mapping
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool EnumWindows(EnumedWindow lpEnumFunc, ArrayList lParam);
 
-        public WindowGetAllAction(string name, string description)
-            : base(name, description)
+        public WindowGetAllAction(string name)
+            : base(name)
         { }
 
         public static ArrayList GetWindows()
@@ -79,11 +78,10 @@ namespace Key2Joy.Mapping
 
         public override object Clone()
         {
-            return new WindowGetAllAction(Name, description)
+            return new WindowGetAllAction(Name, new Dictionary<string, object>
             {
-                ImageResource = ImageResource,
-                Name = Name,
-            };
+                { "ImageResource", ImageResource }
+            });
         }
     }
 }

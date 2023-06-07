@@ -1,8 +1,8 @@
 ﻿using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Util;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -20,12 +20,12 @@ namespace Key2Joy.Mapping
     public class SetTimeoutAction : CoreAction
     {
         public delegate void CallbackAction(params object[] arguments);
-        
-        [JsonProperty]
+
+        [JsonInclude]
         public TimeSpan WaitTime;
 
-        public SetTimeoutAction(string name, string description)
-            : base(name, description)
+        public SetTimeoutAction(string name)
+            : base(name)
         {
         }
 
@@ -130,12 +130,11 @@ namespace Key2Joy.Mapping
 
         public override object Clone()
         {
-            return new SetTimeoutAction(Name, description)
+            return new SetTimeoutAction(Name, new Dictionary<string, object>
             {
-                WaitTime = WaitTime,
-                ImageResource = ImageResource,
-                Name = Name,
-            };
+                { "WaitTime", WaitTime },
+                { "ImageResource", ImageResource },
+            });
         }
     }
 }

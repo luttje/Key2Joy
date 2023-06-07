@@ -26,7 +26,7 @@ namespace Key2Joy.Gui
                 var attribute = kvp.Value;
 
                 var controlParent = new Panel();
-                var value = property.GetValue(ConfigManager.Instance);
+                var value = property.GetValue(ConfigManager.Config);
                 var control = MakeControl(attribute, value, controlParent);
                 control.Tag = kvp;
                 control.Dock = DockStyle.Top;
@@ -56,7 +56,7 @@ namespace Key2Joy.Gui
 
                     value = Convert.ChangeType(value, property.PropertyType);
 
-                    property.SetValue(ConfigManager.Instance, value);
+                    property.SetValue(ConfigManager.Config, value);
                 }
             }
 

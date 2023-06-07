@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using NLua;
 using Key2Joy.Contracts.Mapping;
+using System.Collections.Generic;
 
 namespace Key2Joy.Mapping
 {
@@ -12,8 +13,8 @@ namespace Key2Joy.Mapping
     )]
     public class AnimationFromImagesAction : CoreAction
     {
-        public AnimationFromImagesAction(string name, string description)
-            : base(name, description)
+        public AnimationFromImagesAction(string name)
+            : base(name)
         { }
 
         /// <markdown-doc>
@@ -108,15 +109,6 @@ namespace Key2Joy.Mapping
                 return false;
 
             return true;
-        }
-
-        public override object Clone()
-        {
-            return new AnimationFromImagesAction(Name, description)
-            {
-                ImageResource = ImageResource,
-                Name = Name,
-            };
         }
     }
 }

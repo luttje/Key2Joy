@@ -1,6 +1,5 @@
 ﻿using Key2Joy.Contracts.Mapping;
 using Key2Joy.LowLevelInput;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,8 +19,8 @@ namespace Key2Joy.Mapping
         [DllImport("user32.dll")]
         static extern bool GetCursorPos(ref Point lpPoint);
 
-        public GetCursorPositionAction(string name, string description)
-            : base(name, description)
+        public GetCursorPositionAction(string name)
+            : base(name)
         { }
 
         /// <markdown-doc>
@@ -71,11 +70,10 @@ namespace Key2Joy.Mapping
 
         public override object Clone()
         {
-            return new GetCursorPositionAction(Name, description)
+            return new GetCursorPositionAction(Name, new Dictionary<string, object>
             {
-                ImageResource = ImageResource,
-                Name = Name,
-            };
+                { "ImageResource", ImageResource },
+            });
         }
     }
 }

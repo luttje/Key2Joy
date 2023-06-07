@@ -1,7 +1,6 @@
 ﻿using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Util;
 using Key2Joy.LowLevelInput;
-using Newtonsoft.Json;
 using SimWinInput;
 using System;
 using System.Collections.Generic;
@@ -26,20 +25,13 @@ namespace Key2Joy.Mapping
     public class GamePadStickAction : CoreAction
     {
 
-        [JsonProperty]
         public Simulator.GamePadStick Stick { get; set; }
-
-        [JsonProperty]
         public double DeltaX { get; set; }
-        
-        [JsonProperty]
         public double DeltaY { get; set; }
-
-        [JsonProperty]
         public int GamePadIndex { get; set; }
 
-        public GamePadStickAction(string name, string description)
-            : base(name, description)
+        public GamePadStickAction(string name)
+            : base(name)
         {
         }
 
@@ -132,15 +124,14 @@ namespace Key2Joy.Mapping
 
         public override object Clone()
         {
-            return new GamePadStickAction(Name, description)
+            return new GamePadStickAction(Name, new Dictionary<string, object>
             {
-                Stick = Stick,
-                DeltaX = DeltaX,
-                DeltaY = DeltaY,
-                GamePadIndex = GamePadIndex,
-                ImageResource = ImageResource,
-                Name = Name,
-            };
+                { "Stick", Stick },
+                { "DeltaX", DeltaX },
+                { "DeltaY", DeltaY },
+                { "GamePadIndex", GamePadIndex },
+                { "ImageResource", ImageResource },
+            });
         }
     }
 }

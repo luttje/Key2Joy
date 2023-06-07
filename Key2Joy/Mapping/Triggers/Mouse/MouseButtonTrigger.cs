@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.LowLevelInput;
-using Linearstar.Windows.RawInput.Native;
-using Newtonsoft.Json;
 
 namespace Key2Joy.Mapping
 {
@@ -13,15 +13,12 @@ namespace Key2Joy.Mapping
     {
         public const string PREFIX_UNIQUE = nameof(MouseButtonTrigger);
 
-        [JsonProperty]
         public Mouse.Buttons MouseButtons { get; set; }
-
-        [JsonProperty]
         public PressState PressState { get; set; }
 
         [JsonConstructor]
-        public MouseButtonTrigger(string name, string description)
-            : base(name, description)
+        public MouseButtonTrigger(string name)
+            : base(name)
         { }
 
         public override AbstractTriggerListener GetTriggerListener()

@@ -1,8 +1,10 @@
 ﻿using Key2Joy.Contracts.Mapping;
-using Newtonsoft.Json;
 using System.Threading.Tasks;
 using System;
 using Key2Joy.Contracts.Util;
+using System.Collections;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Key2Joy.Plugin.Midi.Mapping
 {
@@ -16,8 +18,13 @@ namespace Key2Joy.Plugin.Midi.Mapping
     )]
     public class GetHelloWorldAction : AbstractAction
     {
-        [JsonProperty]
-        public string Target = "World";
+        public string Target { get; set; } = "World";
+
+        public GetHelloWorldAction(string name)
+            : base(name, actionProperties)
+        {
+
+        }
 
         [ExposesScriptingMethod("Hello.World")]
         public override async Task Execute(IInputBag inputBag = null)
@@ -33,11 +40,10 @@ namespace Key2Joy.Plugin.Midi.Mapping
 
         public override object Clone()
         {
-            return new GetHelloWorldAction()
+            return new GetHelloWorldAction(Name, new Dictionary<string, object>
             {
-                Name = Name,
-                Target = Target,
-            };
+                { "Target", Target }
+            });
         }
     }
 }

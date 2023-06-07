@@ -1,101 +1,47 @@
-﻿using Newtonsoft.Json;
+﻿using Esprima.Ast;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Key2Joy.Config
 {
-    [JsonObject(MemberSerialization.OptIn)]
     public class ConfigManager
     {
         const string APP_DIR = "Key2Joy";
         const string CONFIG_PATH = "config.json";
 
-        public static ConfigManager instance;
-        public static ConfigManager Instance
+        private static ConfigManager instance;
+        internal static ConfigManager Instance
         {
             get
             {
-                if (instance == null)
-                    instance = LoadOrCreate();
+                instance ??= LoadOrCreate();
 
                 return instance;
             }
         }
-        private bool isInitialized;
+        
+        public static ConfigState Config => Instance.configState;
 
-        [JsonProperty]
-        public string LastInstallPath
-        {
-            get => lastInstallPath;
-            set => SaveIfInitialized(lastInstallPath = value);
-        }
-        private string lastInstallPath;
+        internal bool IsInitialized { get; private set; }
+        private ConfigState configState;
 
-        [BooleanConfigControl(
-            Text = "Mute informative message about this app minimizing by default"
-        )]
-        [JsonProperty]
-        public bool MuteCloseExitMessage
-        {
-            get => muteCloseExitMessage;
-            set => SaveIfInitialized(muteCloseExitMessage = value);
-        }
-        private bool muteCloseExitMessage;
+        private ConfigManager() 
+        { }
 
-        [BooleanConfigControl(
-            Text = "Override default behaviour when trigger action is executed"
-        )]
-        [JsonProperty]
-        public bool OverrideDefaultTriggerBehaviour
+        internal void Save()
         {
-            get => overrideDefaultTriggerBehaviour;
-            set => SaveIfInitialized(overrideDefaultTriggerBehaviour = value);
-        }
-        private bool overrideDefaultTriggerBehaviour = true;
-
-        [TextConfigControl(
-            Text = "Last loaded mapping profile file location"
-        )]
-        [JsonProperty]
-        public string LastLoadedProfile
-        {
-            get => lastLoadedProfile;
-            set => SaveIfInitialized(lastLoadedProfile = value);
-        }
-        private string lastLoadedProfile;
-
-        [TextConfigControl(
-            Text = "Path to directory where logs are saved"
-        )]
-        [JsonProperty]
-        public string LogOutputPath
-        {
-            get => logOutputPath;
-            set => SaveIfInitialized(logOutputPath = value);
-        }
-        private string logOutputPath = Path.Combine(GetAppDirectory(), "Logs");
-
-        private ConfigManager() { }
-        private void SaveIfInitialized(object changedValue = null)
-        {
-            if (isInitialized)
-                Save();
-        }
-
-        private void Save()
-        {
-            var serializer = GetSerializer();
+            var options = GetSerializerOptions();
             var configPath = Path.Combine(
                 GetAppDirectory(),
                 CONFIG_PATH);
 
-            using (var sw = new StreamWriter(configPath))
-            using (var writer = new JsonTextWriter(sw))
-                serializer.Serialize(writer, this);
+            File.WriteAllText(configPath, JsonSerializer.Serialize(configState, options));
         }
         
         private static ConfigManager LoadOrCreate()
@@ -107,45 +53,44 @@ namespace Key2Joy.Config
             if (!File.Exists(configPath))
             {
                 instance = new ConfigManager();
-                instance.isInitialized = true;
+                instance.configState = new ConfigState();
+                instance.IsInitialized = true;
                 instance.Save();
                 return instance;
             }
             
-            var serializer = GetSerializer();
-                
-            using (var sr = new StreamReader(configPath))
-            using (var reader = new JsonTextReader(sr))
-                instance = serializer.Deserialize<ConfigManager>(reader);
+            var options = GetSerializerOptions();
+            instance = new ConfigManager();
+            instance.configState = JsonSerializer.Deserialize<ConfigState>(File.ReadAllText(configPath), options);
 
             var assembly = System.Reflection.Assembly.GetEntryAssembly();
 
             // If the assembly is null then we are running in a unit test
             if (assembly == null)
             {
-                instance.isInitialized = true;
+                instance.IsInitialized = true;
                 return instance;
             }
 
             var executablePath = assembly.Location;
             if (executablePath.EndsWith("Key2Joy.exe") 
-                && instance.LastInstallPath != executablePath)
+                && instance.configState.LastInstallPath != executablePath)
             {
-                instance.LastInstallPath = executablePath;
+                instance.configState.LastInstallPath = executablePath;
                 instance.Save();
             }
 
-            instance.isInitialized = true;
+            instance.IsInitialized = true;
 
             return instance;
         }
 
-        private static JsonSerializer GetSerializer()
+        private static JsonSerializerOptions GetSerializerOptions()
         {
-            var serializer = new JsonSerializer();
-            serializer.Formatting = Formatting.Indented;
+            var options = new JsonSerializerOptions();
+            options.WriteIndented = true;
 
-            return serializer;
+            return options;
         }
 
         public static string GetAppDirectory()

@@ -1,12 +1,10 @@
 ﻿using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Util;
-using Key2Joy.LowLevelInput;
 using Key2Joy.Util;
-using Newtonsoft.Json;
-using SimWinInput;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using static Key2Joy.LowLevelInput.Mouse;
 
 namespace Key2Joy.Mapping
 {
@@ -20,11 +18,10 @@ namespace Key2Joy.Mapping
     )]
     public class AppCommandAction : CoreAction
     {
-        [JsonProperty]
         public AppCommand Command { get; set; }
 
-        public AppCommandAction(string name, string description)
-            : base(name, description)
+        public AppCommandAction(string name)
+            : base(name)
         { }
 
         /// <markdown-doc>
@@ -101,12 +98,11 @@ namespace Key2Joy.Mapping
 
         public override object Clone()
         {
-            return new AppCommandAction(Name, description)
+            return new AppCommandAction(Name, new Dictionary<string, object>
             {
-                Command = Command,
-                ImageResource = ImageResource,
-                Name = Name,
-            };
+                { "Command", Command },
+                { "ImageResource", ImageResource },
+            });
         }
     }
 }

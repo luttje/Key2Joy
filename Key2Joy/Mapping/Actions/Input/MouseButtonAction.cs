@@ -1,7 +1,6 @@
 ﻿using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Util;
 using Key2Joy.LowLevelInput;
-using Newtonsoft.Json;
 using SimWinInput;
 using System;
 using System.Collections.Generic;
@@ -25,14 +24,11 @@ namespace Key2Joy.Mapping
     )]
     public class MouseButtonAction : CoreAction, IPressState
     {        
-        [JsonProperty]
         public Mouse.Buttons Button { get; set; }
-
-        [JsonProperty]
         public PressState PressState { get; set; }
 
-        public MouseButtonAction(string name, string description)
-            : base(name, description)
+        public MouseButtonAction(string name)
+            : base(name)
         {
         }
 
@@ -97,13 +93,12 @@ namespace Key2Joy.Mapping
 
         public override object Clone()
         {
-            return new MouseButtonAction(Name, description)
+            return new MouseButtonAction(Name, new Dictionary<string, object>
             {
-                Button = Button,
-                PressState = PressState,
-                ImageResource = ImageResource,
-                Name = Name,
-            };
+                { "Button", Button },
+                { "PressState", PressState },
+                { "ImageResource", ImageResource },
+            });
         }
     }
 }

@@ -1,11 +1,10 @@
 ﻿using Key2Joy.Contracts.Mapping;
 using Key2Joy.Mapping;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Key2Joy.LowLevelInput
 {
@@ -31,19 +30,19 @@ namespace Key2Joy.LowLevelInput
 
     public class LegacyPressStateConverter : JsonConverter<PressState>
     {
-        public override void WriteJson(JsonWriter writer, PressState value, JsonSerializer serializer)
+        public override PressState Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            writer.WriteValue(value.ToString());
-        }
-
-        public override PressState ReadJson(JsonReader reader, Type objectType, PressState existingValue, bool hasExistingValue, JsonSerializer serializer)
-        {
-            if ((string)reader.Value == "PressAndRelease")
+            if (reader.TokenType == JsonTokenType.String && reader.GetString() == "PressAndRelease")
             {
                 return PressState.LegacyPressAndRelease;
             }
 
-            return (PressState)Enum.Parse(typeof(PressState), reader.Value.ToString());
+            return (PressState)Enum.Parse(typeof(PressState), reader.GetString());
+        }
+
+        public override void Write(Utf8JsonWriter writer, PressState value, JsonSerializerOptions options)
+        {
+            writer.WriteStringValue(value.ToString());
         }
 
         public static PressState[] GetPressStatesWithoutLegacy()

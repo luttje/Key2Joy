@@ -1,15 +1,8 @@
 ﻿using Key2Joy.Contracts.Mapping;
 using Key2Joy.Plugins;
-using Key2Joy.Util;
-using Newtonsoft.Json;
 using NLua;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,8 +14,8 @@ namespace Key2Joy.Mapping
     )]
     public class LuaScriptAction : BaseScriptActionWithEnvironment<Lua>
     {
-        public LuaScriptAction(string name, string description)
-            : base(name, description)
+        public LuaScriptAction(string name)
+            : base(name, actionProperties)
         {
             ImageResource = "Lua";
         }
@@ -139,13 +132,12 @@ namespace Key2Joy.Mapping
 
         public override object Clone()
         {
-            return new LuaScriptAction(Name, description)
+            return new LuaScriptAction(Name, new Dictionary<string, object>
             {
-                Script = Script,
-                IsScriptPath = IsScriptPath,
-                ImageResource = ImageResource,
-                Name = Name,
-            };
+                { "Script", Script },
+                { "IsScriptPath", IsScriptPath },
+                { "ImageResource", ImageResource },
+            });
         }
     }
 }

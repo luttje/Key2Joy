@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,13 +6,14 @@ using System.Threading.Tasks;
 
 namespace Key2Joy.Contracts.Mapping
 {
-    [JsonObject(MemberSerialization.OptIn)]
-    public abstract class AbstractMappingAspect : MarshalByRefObject, ICloneable, IComparable<AbstractMappingAspect>
+    public abstract class AbstractMappingAspect : MarshalByRefObject, IComparable<AbstractMappingAspect>
     {
-        [JsonProperty]
         public string Name { get; set; }
 
-        public abstract object Clone();
+        public AbstractMappingAspect(string name)
+        {
+            Name = name;
+        }
 
         public virtual int CompareTo(AbstractMappingAspect other)
         {

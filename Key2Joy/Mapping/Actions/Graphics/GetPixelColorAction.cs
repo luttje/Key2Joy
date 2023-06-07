@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing.Imaging;
 using System.Drawing;
@@ -10,6 +9,7 @@ using System.Threading.Tasks;
 using Esprima;
 using System.Windows.Forms;
 using Key2Joy.Contracts.Mapping;
+using Key2Joy.LowLevelInput;
 
 namespace Key2Joy.Mapping
 {
@@ -22,8 +22,8 @@ namespace Key2Joy.Mapping
     {
         private Bitmap pixelCache = new Bitmap(1, 1);
         
-        public GetPixelColorAction(string name, string description)
-            : base(name, description)
+        public GetPixelColorAction(string name)
+            : base(name)
         { }
 
         /// <markdown-doc>
@@ -57,7 +57,7 @@ namespace Key2Joy.Mapping
 
             lock (BaseScriptAction.LockObject)
                 using (var g = Graphics.FromImage(pixelCache))
-                    g.CopyFromScreen(bounds.Location, Point.Empty, bounds.Size);
+                    g.CopyFromScreen(bounds.Location, System.Drawing.Point.Empty, bounds.Size);
             
             return pixelCache.GetPixel(0, 0);
         }
@@ -73,15 +73,6 @@ namespace Key2Joy.Mapping
                 return false;
 
             return true;
-        }
-
-        public override object Clone()
-        {
-            return new GetPixelColorAction(Name, description)
-            {
-                ImageResource = ImageResource,
-                Name = Name,
-            };
         }
     }
 }

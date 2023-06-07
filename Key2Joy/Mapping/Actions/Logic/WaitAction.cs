@@ -1,7 +1,8 @@
-﻿using Key2Joy.Contracts.Mapping;
-using Newtonsoft.Json;
+﻿using Esprima.Ast;
+using Key2Joy.Contracts.Mapping;
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,11 +15,11 @@ namespace Key2Joy.Mapping
     )]
     public class WaitAction : CoreAction
     {
-        [JsonProperty]
+        [JsonInclude]
         public TimeSpan WaitTime;
 
-        public WaitAction(string name, string description)
-            : base(name, description)
+        public WaitAction(string name)
+            : base(name)
         {
         }
 
@@ -34,12 +35,11 @@ namespace Key2Joy.Mapping
 
         public override object Clone()
         {
-            return new WaitAction(Name, description)
+            return new WaitAction(Name, new Dictionary<string, object>
             {
-                WaitTime = WaitTime,
-                ImageResource = ImageResource,
-                Name = Name,
-            };
+                { "WaitTime", WaitTime },
+                { "ImageResource", ImageResource },
+            });
         }
     }
 }

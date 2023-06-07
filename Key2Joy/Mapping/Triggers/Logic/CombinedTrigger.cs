@@ -1,10 +1,8 @@
 ﻿using Key2Joy.Contracts.Mapping;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.Json.Serialization;
 
 namespace Key2Joy.Mapping
 {
@@ -16,12 +14,12 @@ namespace Key2Joy.Mapping
     {
         public const string PREFIX_UNIQUE = nameof(CombinedTrigger);
 
-        [JsonProperty(ItemTypeNameHandling = TypeNameHandling.All)]
+        // TODO: [JsonProperty(ItemTypeNameHandling = TypeNameHandling.All)]
         public List<AbstractTrigger> Triggers { get; set; }
 
         [JsonConstructor]
-        public CombinedTrigger(string name, string description)
-            : base(name, description)
+        public CombinedTrigger(string name)
+            : base(name)
         { }
 
         public override AbstractTriggerListener GetTriggerListener()

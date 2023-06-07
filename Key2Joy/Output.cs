@@ -33,7 +33,7 @@ namespace Key2Joy
             if (day == null)
                 day = DateTime.Now;
 
-            var directory = ConfigManager.Instance.LogOutputPath;
+            var directory = ConfigManager.Config.LogOutputPath;
 
             if (!Directory.Exists(directory))
                 Directory.CreateDirectory(directory);

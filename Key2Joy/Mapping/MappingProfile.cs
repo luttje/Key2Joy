@@ -2,22 +2,21 @@
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.LowLevelInput;
 using Key2Joy.Util;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Key2Joy.Mapping
 {
-    [JsonObject(MemberSerialization.OptIn)]
     public class MappingProfile
     {
         const int NO_VERSION = 0;
-        const int CURRENT_VERSION = 4;
+        const int CURRENT_VERSION = 5;
         
         public const string DEFAULT_PROFILE_PATH = "default-profile";
         public const string EXTENSION = ".k2j.json";
@@ -25,17 +24,16 @@ namespace Key2Joy.Mapping
         public const string LEGACY_SAVE_DIR = "Presets";
         public const string SAVE_DIR = "Profiles";
 
-        [JsonProperty]
         public BindingList<MappedOption> MappedOptions { get; set; } = new BindingList<MappedOption>();
 
-        [JsonProperty]
         public string Name { get; set; }
 
-        [JsonProperty]
         public int Version { get; set; } = NO_VERSION; // Version is set on save
-        
+
+        [JsonIgnore]
         public string FilePath => filePath;
 
+        [JsonIgnore]
         public string Display => $"{Name} ({Path.GetFileName(filePath)})";
 
         private string filePath;
@@ -83,14 +81,10 @@ namespace Key2Joy.Mapping
 
         public void Save()
         {
-            var serializer = GetSerializer();
+            var options = GetSerializerOptions();
 
-            using (var sw = new StreamWriter(filePath))
-            using (var writer = new JsonTextWriter(sw))
-            {
-                this.Version = CURRENT_VERSION;
-                serializer.Serialize(writer, this);
-            }
+            this.Version = CURRENT_VERSION;
+            File.WriteAllText(filePath, JsonSerializer.Serialize(this, options));
         }
 
         private bool PostLoad(string filePath)
@@ -117,13 +111,13 @@ namespace Key2Joy.Mapping
                 writer.Write(Properties.Resources.default_profile_k2j);
             }
 
-            if(ConfigManager.Instance.LastLoadedProfile == null)
-                ConfigManager.Instance.LastLoadedProfile = defaultPath;
+            if(ConfigManager.Config.LastLoadedProfile == null)
+                ConfigManager.Config.LastLoadedProfile = defaultPath;
         }
 
         public static MappingProfile Load(string filePath)
         {
-            var serializer = GetSerializer();
+            var options = GetSerializerOptions();
 
             MappingProfile profile;
 
@@ -141,9 +135,7 @@ namespace Key2Joy.Mapping
                 }
             }
 
-            using (var sr = new StreamReader(filePath))
-            using (var reader = new JsonTextReader(sr))
-                profile = serializer.Deserialize<MappingProfile>(reader);
+            profile = JsonSerializer.Deserialize<MappingProfile>(File.ReadAllText(filePath), options);
 
             if (profile.PostLoad(filePath))
                 return profile;
@@ -153,7 +145,7 @@ namespace Key2Joy.Mapping
 
         public static MappingProfile RestoreLastLoaded()
         {
-            var lastLoadedPath = ConfigManager.Instance.LastLoadedProfile;
+            var lastLoadedPath = ConfigManager.Config.LastLoadedProfile;
 
             if (lastLoadedPath == null)
                 lastLoadedPath = GetDefaultPath();
@@ -167,15 +159,17 @@ namespace Key2Joy.Mapping
             return Load(lastLoadedPath);
         }
 
-        private static JsonSerializer GetSerializer()
+        private static JsonSerializerOptions GetSerializerOptions()
         {
-            var serializer = new JsonSerializer();
-            serializer.SerializationBinder = new MappingProfileSerializationBinder();
-            serializer.Converters.Add(new StringEnumConverter());
-            serializer.ContractResolver = new MappingProfileContractResolver();
-            serializer.Formatting = Formatting.Indented;
+            // TODO: serializer.SerializationBinder = new MappingProfileSerializationBinder();
 
-            return serializer;
+            var options = new JsonSerializerOptions();
+            options.Converters.Add(new JsonStringEnumConverter());
+            options.Converters.Add(new JsonActionConverter());
+            options.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+            options.WriteIndented = true;
+
+            return options;
         }
 
         public static string GetSaveDirectory()

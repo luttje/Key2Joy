@@ -1,5 +1,4 @@
 ﻿using Key2Joy.Contracts.Mapping;
-using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -23,8 +22,8 @@ namespace Key2Joy.Mapping
         [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
         static extern int GetWindowTextLength(IntPtr hWnd);
 
-        public WindowGetTitleAction(string name, string description)
-            : base(name, description)
+        public WindowGetTitleAction(string name)
+            : base(name)
         { }
 
         /// <markdown-doc>
@@ -69,11 +68,10 @@ namespace Key2Joy.Mapping
 
         public override object Clone()
         {
-            return new WindowGetTitleAction(Name, description)
+            return new WindowGetTitleAction(Name, new Dictionary<string, object>
             {
-                ImageResource = ImageResource,
-                Name = Name,
-            };
+                { "ImageResource", ImageResource }
+            });
         }
     }
 }

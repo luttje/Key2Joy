@@ -62,7 +62,7 @@ namespace Key2Joy.Mapping
         {
             var executedAny = base.DoExecuteTrigger(mappedOptions, inputBag, optionCandidateFilter);
 
-            return ConfigManager.Instance.OverrideDefaultTriggerBehaviour ? executedAny : false;
+            return ConfigManager.Config.OverrideDefaultTriggerBehaviour ? executedAny : false;
         }
     }
 }
