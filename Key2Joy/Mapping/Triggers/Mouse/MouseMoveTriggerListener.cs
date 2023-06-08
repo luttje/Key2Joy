@@ -4,6 +4,7 @@ using Linearstar.Windows.RawInput;
 using SimWinInput;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -82,13 +83,21 @@ namespace Key2Joy.Mapping
             if (m.Msg != WM_INPUT)
                 return;
 
-            var data = RawInputData.FromHandle(m.LParam);
+            try
+            {
+                var data = RawInputData.FromHandle(m.LParam);
 
-            if (!(data is RawInputMouseData mouse))
-                return;
+                if (!(data is RawInputMouseData mouse))
+                    return;
 
-            if (TryOverrideMouseMoveInput(mouse.Mouse.LastX, mouse.Mouse.LastY))
-                return;
+                if (TryOverrideMouseMoveInput(mouse.Mouse.LastX, mouse.Mouse.LastY))
+                    return;
+            }
+            catch (Linearstar.Windows.RawInput.Native.Win32ErrorException ex)
+            {
+                // This exception occurs accross AppDomain boundary, when clicking on a MessageBox OK button
+                Debug.WriteLine(ex.Message + Environment.NewLine + ex.StackTrace);
+            }
         }
         
         private bool TryOverrideMouseMoveInput(int lastX, int lastY)

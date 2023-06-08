@@ -41,11 +41,15 @@ namespace Key2Joy.Plugins
     public class AppDomainExposedMethod : ExposedMethod
     {
         public AppDomain AppDomain { get; protected set; }
+        public string AssemblyPath { get; protected set; }
+        public string TypeName { get; protected set; }
 
-        public AppDomainExposedMethod(string functionName, string methodName, AppDomain appDomain)
+        public AppDomainExposedMethod(AppDomain appDomain, string assemblyPath, string typeName, string functionName, string methodName)
             : base(functionName, methodName)
         {
             AppDomain = appDomain;
+            AssemblyPath = assemblyPath;
+            TypeName = typeName;
         }
 
         public override Delegate CreateDelegate(AbstractAction instance)

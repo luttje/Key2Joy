@@ -1,4 +1,5 @@
 ﻿using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Plugins;
 using NLua;
 using System;
@@ -75,7 +76,14 @@ namespace Key2Joy.Mapping
                 if(environment.GetTable(path) == null)
                     environment.NewTable(path);
             }
-            
+
+            if (exposedMethod is AppDomainExposedMethod methodNeedProxy)
+            {
+                var proxy = ScriptProxy.CreateProxy(methodNeedProxy.AppDomain, instance, methodNeedProxy.MethodName);
+                environment.RegisterFunction(functionName, proxy, proxy.GetExecutorMethodInfo());
+                return;
+            }
+
             environment.RegisterFunction(
                 functionName,
                 instance,

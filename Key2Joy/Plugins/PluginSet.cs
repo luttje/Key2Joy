@@ -149,9 +149,11 @@ namespace Key2Joy.Plugins
                             foreach (var methodAttribute in methodAttributes)
                             {
                                 var exposedMethod = new AppDomainExposedMethod(
+                                    sandboxDomain,
+                                    pluginAssemblyPath,
+                                    actionType.FullName,
                                     methodAttribute.ConstructorArguments[0].Value as string,
-                                    method.Name,
-                                    sandboxDomain);
+                                    method.Name);
 
                                 exposedMethods.Add(exposedMethod);
                             }
@@ -263,7 +265,7 @@ namespace Key2Joy.Plugins
                 }
             }
         }
-        
+
         private bool FindPluginEntrypoint(AssemblyDefinition pluginAssembly, out TypeReference typeReference)
         {
             foreach (TypeDefinition td in pluginAssembly.MainModule.GetTypes())

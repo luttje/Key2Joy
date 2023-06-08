@@ -25,12 +25,17 @@ namespace Key2Joy.Plugin.Midi.Mapping
 
         }
 
-        [ExposesScriptingMethod("Hello.World")]
         public override async Task Execute(AbstractInputBag inputBag = null)
         {
             MessageBox.Show($"Hello {Target}!");
             Debug.WriteLine($"Hello {Target}!");
             //Output.WriteLine(Output.OutputModes.Verbose, $"Hello {Target}!");
+        }
+
+        [ExposesScriptingMethod("Hello.World")]
+        public static void ExecuteForScript(string target)
+        {
+            MessageBox.Show($"Hello {target}!");
         }
 
         public override string GetNameDisplay()
