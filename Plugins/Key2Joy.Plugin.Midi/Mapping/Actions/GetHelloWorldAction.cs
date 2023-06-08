@@ -34,10 +34,9 @@ namespace Key2Joy.Plugin.Midi.Mapping
         }
 
         [ExposesScriptingMethod("Hello.World")]
-        public bool ExecuteForScript(string target)
+        public void ExecuteForScript(string target)
         {
             MessageBox.Show($"Hello {target} / {Target}!");
-            return true;
         }
 
         public override string GetNameDisplay()
