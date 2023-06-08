@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.Threading;
 
 namespace Key2Joy.Plugin.Midi.Mapping
 {
@@ -33,9 +34,10 @@ namespace Key2Joy.Plugin.Midi.Mapping
         }
 
         [ExposesScriptingMethod("Hello.World")]
-        public void ExecuteForScript(string target)
+        public bool ExecuteForScript(string target)
         {
             MessageBox.Show($"Hello {target} / {Target}!");
+            return true;
         }
 
         public override string GetNameDisplay()

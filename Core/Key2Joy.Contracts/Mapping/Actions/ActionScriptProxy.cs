@@ -3,23 +3,24 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Key2Joy.Contracts.Mapping.Actions
+namespace Key2Joy.Contracts.Mapping
 {
     /// <summary>
     /// Serves as a communication proxy across the AppDomain boundary. 
     /// Without this we would not be able to use GetType, since the type is not always 
     /// available in both Host and Client. Usually only client (plugin).
     /// </summary>
-    public class ScriptProxy : MarshalByRefObject
+    public class ActionScriptProxy : MarshalByRefObject
     {
         private AbstractAction instance;
         private string methodName;
 
         /// <param name="instance"></param>
         /// <param name="methodName"></param>
-        public ScriptProxy(AbstractAction instance, string methodName)
+        public ActionScriptProxy(AbstractAction instance, string methodName)
         {
             this.instance = instance;
             this.methodName = methodName;
@@ -41,17 +42,17 @@ namespace Key2Joy.Contracts.Mapping.Actions
         /// <summary>
         /// Creates a proxy that scripts can call
         /// </summary>
-        /// <seealso cref="ScriptProxy"/>
+        /// <seealso cref="ActionScriptProxy"/>
         /// <param name="otherDomain"></param>
         /// <param name="instance"></param>
         /// <param name="methodName"></param>
         /// <returns></returns>
-        public static ScriptProxy Create(AppDomain otherDomain, AbstractAction instance, string methodName)
+        public static ActionScriptProxy Create(AppDomain otherDomain, AbstractAction instance, string methodName)
         {
             Debug.WriteLine(AppDomain.CurrentDomain.FriendlyName);
-            var proxyAssemblyName = typeof(ScriptProxy).Assembly.FullName;
-            var proxyTypeName = typeof(ScriptProxy).FullName;
-            return (ScriptProxy)otherDomain.CreateInstanceAndUnwrap(
+            var proxyAssemblyName = typeof(ActionScriptProxy).Assembly.FullName;
+            var proxyTypeName = typeof(ActionScriptProxy).FullName;
+            return (ActionScriptProxy)otherDomain.CreateInstanceAndUnwrap(
                 proxyAssemblyName,
                 proxyTypeName,
                 false,
@@ -73,7 +74,7 @@ namespace Key2Joy.Contracts.Mapping.Actions
         /// <returns></returns>
         public MethodInfo GetExecutorMethodInfo()
         {
-            return typeof(ScriptProxy).GetMethod(nameof(ProxyExecute));
+            return typeof(ActionScriptProxy).GetMethod(nameof(ProxyExecute));
         }
     }
 }

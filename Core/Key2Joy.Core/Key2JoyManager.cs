@@ -112,8 +112,17 @@ namespace Key2Joy
 
         public bool PreFilterMessage(ref System.Windows.Forms.Message m)
         {
-            foreach (var wndProcListener in wndProcListeners)
+            for (int i = 0; i < wndProcListeners.Count; i++)
             {
+                // Check if the proc listeners haven't changed (this can happen when a plugin opens a MessageBox, the user aborts, and we then close the messagebox)
+                if (i >= wndProcListeners.Count)
+                {
+                    Debug.WriteLine("Key2JoyManager.PreFilterMessage: wndProcListeners changed while processing message!");
+                    break;
+                }
+
+                var wndProcListener = wndProcListeners[i];
+                
                 wndProcListener.WndProc(new Contracts.Mapping.Message(m.HWnd, m.Msg, m.WParam, m.LParam));
             }
 

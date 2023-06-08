@@ -1,9 +1,9 @@
 ﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Plugins;
 using NLua;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -32,11 +32,17 @@ namespace Key2Joy.Mapping
                     source = Script;
 
                 lock (LockObject)
+                {
+                    if (environment.State == null)
+                        Debugger.Break(); // This really shouldn't happen.
+
                     environment.DoString(GetExecutableScript(), Script);
+                }
             }
             catch (NLua.Exceptions.LuaScriptException e)
             {
                 Output.WriteLine(e);
+                Debugger.Break();
             }
         }
         
@@ -79,7 +85,7 @@ namespace Key2Joy.Mapping
 
             if (exposedMethod is AppDomainExposedMethod methodNeedProxy)
             {
-                var proxy = ScriptProxy.Create(methodNeedProxy.AppDomain, instance, methodNeedProxy.MethodName);
+                var proxy = ActionScriptProxy.Create(methodNeedProxy.AppDomain, instance, methodNeedProxy.MethodName);
                 environment.RegisterFunction(functionName, proxy, proxy.GetExecutorMethodInfo());
                 return;
             }

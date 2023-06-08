@@ -8,6 +8,7 @@
   <PropertyGroup>
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <RootNamespace>Key2Joy.Contracts</RootNamespace>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>

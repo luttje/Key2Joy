@@ -1,5 +1,4 @@
 ﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Util;
 using System;
 using System.Linq;
@@ -55,7 +54,7 @@ namespace Key2Joy.Plugins
 
         public override Delegate CreateDelegate(AbstractAction instance)
         {
-            var proxy = ScriptProxy.Create(AppDomain, instance, MethodName);
+            var proxy = ActionScriptProxy.Create(AppDomain, instance, MethodName);
             return proxy.GetExecutorMethodInfo().CreateDelegate(proxy);
         }
     }
