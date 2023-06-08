@@ -118,7 +118,7 @@ namespace Key2Joy.Mapping
         {
             base.OnStopListening(listener);
 
-            environment.Dispose();
+            // environment.Dispose(); // Uncomment this to cause NullReferenceException problem on NLua state described here: https://github.com/luttje/Key2Joy/pull/39#issuecomment-1581537603
         }
 
         public override bool Equals(object obj)

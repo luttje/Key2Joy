@@ -1,4 +1,5 @@
 ﻿using Key2Joy.Contracts.Mapping;
+using System;
 using System.Collections.Generic;
 
 namespace Key2Joy.Mapping
@@ -13,6 +14,11 @@ namespace Key2Joy.Mapping
 
         public TEnvironment SetupEnvironment()
         {
+            if(environment != null && environment is IDisposable disposableEnvironment)
+            {
+                disposableEnvironment.Dispose();
+            }
+
             environment = MakeEnvironment();
             RegisterEnvironmentObjects();
 
