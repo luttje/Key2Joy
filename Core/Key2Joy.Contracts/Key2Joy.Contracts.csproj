@@ -5,10 +5,15 @@
 	  <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <RootNamespace>Key2Joy.Contracts</RootNamespace>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="System.Text.Json" Version="7.0.2" />
   </ItemGroup>
-
+  
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />

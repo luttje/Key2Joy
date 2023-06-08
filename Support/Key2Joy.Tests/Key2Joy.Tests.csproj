@@ -2,6 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>NET48</TargetFramework>
+	  <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <PlatformTarget>x86</PlatformTarget>
@@ -18,9 +19,22 @@
     <None Remove="obj\**" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Key2Joy\Key2Joy.Core.csproj">
+    <ProjectReference Include="..\..\Core\Key2Joy.Core\Key2Joy.Core.csproj">
       <Project>{1a961914-67b8-4b11-80d4-280323bc7b25}</Project>
       <Name>Key2Joy.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="coverlet.msbuild" Version="3.2.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0"></PackageReference>
+    <PackageReference Include="MSTest.TestAdapter">
+      <Version>3.0.2</Version>
+    </PackageReference>
+    <PackageReference Include="MSTest.TestFramework">
+      <Version>3.0.2</Version>
+    </PackageReference>
   </ItemGroup>
 </Project>

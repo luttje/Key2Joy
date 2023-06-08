@@ -2,6 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>NET48</TargetFramework>
+	  <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Graphics\Icons\app-icons.ico</ApplicationIcon>
@@ -14,8 +15,6 @@
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <OutputType>Exe</OutputType>
     <StartupObject>Key2Joy.Cmd.Program</StartupObject>
-    <SignAssembly>False</SignAssembly>
-    <AssemblyOriginatorKeyFile>$(SolutionDir)keypair.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="obj\**" />
@@ -26,7 +25,7 @@
     <Content Include="Graphics\Icons\app-icons.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Key2Joy\Key2Joy.Core.csproj">
+    <ProjectReference Include="..\Core\Key2Joy.Core\Key2Joy.Core.csproj">
       <Project>{1a961914-67b8-4b11-80d4-280323bc7b25}</Project>
       <Name>Key2Joy.Core</Name>
     </ProjectReference>

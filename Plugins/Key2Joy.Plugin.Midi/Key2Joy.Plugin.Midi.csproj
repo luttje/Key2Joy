@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>NET48</TargetFramework>
-	<LangVersion>latest</LangVersion>
+	  <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <RunPostBuildEvent>Always</RunPostBuildEvent>
@@ -14,6 +14,7 @@
   <PropertyGroup>
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <OutputType>Library</OutputType>
+    <BaseOutputPath>..\..\bin\$(MSBuildProjectName)</BaseOutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="bin\**" />
@@ -40,12 +41,12 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Key2Joy.Contracts\Key2Joy.Contracts.csproj" />
+    <ProjectReference Include="..\..\Core\Key2Joy.Contracts\Key2Joy.Contracts.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Mapping\Actions\GetHelloWorldActionControl.cs" />
   </ItemGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="call ../CopyPlugin.bat $(ProjectName) $(OutDir) $(TargetFileName)" />
+    <Exec Command="call ..\..\CopyPlugin.bat $(ProjectName) $(OutDir) $(TargetFileName)" />
   </Target>
 </Project>

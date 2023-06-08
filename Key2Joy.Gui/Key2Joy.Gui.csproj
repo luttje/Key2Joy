@@ -3,6 +3,7 @@
   <PropertyGroup>
 	<UseWindowsForms>true</UseWindowsForms>
     <TargetFramework>NET48</TargetFramework>
+	  <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Graphics\Icons\app-icons.ico</ApplicationIcon>
@@ -30,7 +31,7 @@
       <Project>{ff955f62-e00d-46f4-a945-6677df10fca2}</Project>
       <Name>Key2Joy.Cmd</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Key2Joy\Key2Joy.Core.csproj">
+    <ProjectReference Include="..\Core\Key2Joy.Core\Key2Joy.Core.csproj">
       <Project>{1a961914-67b8-4b11-80d4-280323bc7b25}</Project>
       <Name>Key2Joy.Core</Name>
     </ProjectReference>
@@ -203,7 +204,5 @@
     <OutputType>WinExe</OutputType>
     <StartupObject>Key2Joy.Gui.Program</StartupObject>
     <AssemblyName>Key2Joy</AssemblyName>
-    <SignAssembly>False</SignAssembly>
-    <AssemblyOriginatorKeyFile>$(SolutionDir)keypair.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 </Project>
