@@ -79,7 +79,7 @@ namespace Key2Joy.Mapping
 
             if (exposedMethod is AppDomainExposedMethod methodNeedProxy)
             {
-                var proxy = ScriptProxy.CreateProxy(methodNeedProxy.AppDomain, instance, methodNeedProxy.MethodName);
+                var proxy = ScriptProxy.Create(methodNeedProxy.AppDomain, instance, methodNeedProxy.MethodName);
                 environment.RegisterFunction(functionName, proxy, proxy.GetExecutorMethodInfo());
                 return;
             }

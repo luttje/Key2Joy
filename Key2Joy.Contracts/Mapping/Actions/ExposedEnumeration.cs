@@ -13,15 +13,19 @@ namespace Key2Joy.Contracts.Mapping
 
         public static ExposedEnumeration FromType(Type enumType)
         {
-            var result = new ExposedEnumeration();
-            result.Name = enumType.Name;
-            result.KeyValues = new Dictionary<string, object>();
+            var result = new ExposedEnumeration
+            {
+                Name = enumType.Name,
+                KeyValues = new Dictionary<string, object>()
+            };
             var names = Enum.GetNames(enumType);
             var values = Enum.GetValues(enumType);
 
             for (int i = 0; i < names.Length; i++)
             {
-                result.KeyValues.Add(names[i], values.GetValue(i));
+                var enumValue = values.GetValue(i);
+                var intValue = Convert.ChangeType(enumValue, Enum.GetUnderlyingType(enumType));
+                result.KeyValues.Add(names[i], intValue);
             }
             
             return result;

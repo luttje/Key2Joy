@@ -51,12 +51,6 @@ namespace Key2Joy.Mapping
             {
                 var enumKey = kvp.Key;
                 var enumValue = kvp.Value;
-                //var underlyingType = enumValue.GetType();
-
-                //if (underlyingType != typeof(int) && underlyingType != typeof(short))
-                //{
-                //    throw new NotImplementedException("Enumeration was of unimplemented underlying datatype: " + underlyingType);
-                //}
 
                 enumInjectScript.Append(enumKey);
                 enumInjectScript.Append(": ");
@@ -67,9 +61,10 @@ namespace Key2Joy.Mapping
 
             enumInjectScript.Append("};");
 
-            environment.Execute(enumInjectScript.ToString());
+            var enumInjection = enumInjectScript.ToString();
+            environment.Execute(enumInjection);
 
-            environment.Execute($"Print(JSON.stringify({enumInjectScript}))");
+            environment.Execute($"Print(JSON.stringify({enumInjection}))");
         }
 
         public override void RegisterScriptingMethod(ExposedMethod exposedMethod, AbstractAction instance)
@@ -77,11 +72,6 @@ namespace Key2Joy.Mapping
             var functionName = exposedMethod.FunctionName;
             var parents = functionName.Split('.');
             var @delegate = new DelegateWrapper(environment, exposedMethod.CreateDelegate(instance));
-
-            //var paramDebug = string.Join(", ", method.GetParameters()
-            //    .Select(p => $"{p.ParameterType.Name} {p.Name}")
-            //    .ToArray());
-            //Output.WriteLine(Output.OutputModes.Verbose, $"js.RegisterFunction({functionName},{instance},{method.Name}({paramDebug}):{method.ReturnType})");
 
             if (parents.Length > 1)
             {

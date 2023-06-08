@@ -46,7 +46,7 @@ namespace Key2Joy.Contracts.Mapping.Actions
         /// <param name="instance"></param>
         /// <param name="methodName"></param>
         /// <returns></returns>
-        public static ScriptProxy CreateProxy(AppDomain otherDomain, AbstractAction instance, string methodName)
+        public static ScriptProxy Create(AppDomain otherDomain, AbstractAction instance, string methodName)
         {
             Debug.WriteLine(AppDomain.CurrentDomain.FriendlyName);
             var proxyAssemblyName = typeof(ScriptProxy).Assembly.FullName;
