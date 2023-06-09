@@ -83,6 +83,10 @@ namespace Key2Joy.Gui.Mapping
             foreach (var keyValuePair in actionTypeFactories)
             {
                 var mappingControlFactory = MappingControlRepository.GetMappingControlFactory(keyValuePair.Value.FullTypeName);
+
+                if (mappingControlFactory == null)
+                    continue;
+
                 var customImage = mappingControlFactory.ImageResourceName;
                 var image = Program.ResourceBitmapFromName(customImage ?? "error");
                 var item = new ImageComboBoxItem<KeyValuePair<ActionAttribute, MappingTypeFactory<AbstractAction>>>(keyValuePair, new Bitmap(image), "Key");

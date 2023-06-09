@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -36,24 +38,39 @@ namespace Key2Joy.Contracts.Mapping
             var type = instance.GetType();
             var types = parameters.Select(p => p.GetType()).ToArray();
             var method = type.GetMethod(methodName, types);
+            
             return method.Invoke(instance, parameters);
         }
+    }
+
+    /// <summary>
+    /// Hosts the ActionScriptProxy. This host is the one to be called and it will transform the parameters before forwarding them.
+    /// </summary>
+    public class ActionScriptProxyHost
+    {
+        private ActionScriptProxy proxy;
+        private Dictionary<Type, Func<object, object>> parameterTransformers = new();
 
         /// <summary>
-        /// Creates a proxy that scripts can call
+        /// Creates a proxy that scripts can call through this host.
         /// </summary>
-        /// <seealso cref="ActionScriptProxy"/>
         /// <param name="otherDomain"></param>
+        /// <param name="assemblyPath"></param>
         /// <param name="instance"></param>
         /// <param name="methodName"></param>
-        /// <returns></returns>
-        public static ActionScriptProxy Create(AppDomain otherDomain, AbstractAction instance, string methodName)
+        /// <seealso cref="ActionScriptProxy"/>
+        public ActionScriptProxyHost(AppDomain otherDomain, string assemblyPath, AbstractAction instance, string methodName)
         {
             Debug.WriteLine(AppDomain.CurrentDomain.FriendlyName);
-            var proxyAssemblyName = typeof(ActionScriptProxy).Assembly.FullName;
+
+            var proxyTypeAssembly = typeof(ActionScriptProxy).Assembly.Location;
             var proxyTypeName = typeof(ActionScriptProxy).FullName;
-            return (ActionScriptProxy)otherDomain.CreateInstanceAndUnwrap(
-                proxyAssemblyName,
+
+            // Use the assemblyPath of the plugin to find the proxy type assembly next to it
+            var proxyTypeSearchPath = Path.Combine(Path.GetDirectoryName(assemblyPath), Path.GetFileName(proxyTypeAssembly));
+            
+            proxy = (ActionScriptProxy)otherDomain.CreateInstanceFromAndUnwrap(
+                proxyTypeSearchPath,
                 proxyTypeName,
                 false,
                 BindingFlags.Default,
@@ -67,6 +84,35 @@ namespace Key2Joy.Contracts.Mapping
                 null,
                 null);
         }
+
+        public void RegisterParameterTransformer<T>(Func<T, object> transformer)
+        {
+            parameterTransformers.Add(typeof(T), o =>
+            {
+                return transformer((T)o);
+            });
+        }
+
+        public object TransformAndRedirect(params object[] parameters)
+        {
+            // Check if any of the parameters are not serializable/MarshalByRefObject and need to be wrapped.
+            var transformedParameters = parameters.Select(p =>
+            {
+                if (parameterTransformers.TryGetValue(p.GetType(), out var transformer))
+                {
+                    return transformer(p);
+                }
+
+                if (p is MarshalByRefObject || p is ISerializable)
+                {
+                    return p;
+                }
+
+                throw new NotImplementedException("Parameter type not supported to cross AppDomain boundary: " + p.GetType().FullName);
+            }).ToArray();
+
+            return proxy.ProxyExecute(transformedParameters);
+        }
         
         /// <summary>
         /// MethodInfo that can be bound to scripts, proxyexecute will forward calls to the created proxy.
@@ -74,7 +120,8 @@ namespace Key2Joy.Contracts.Mapping
         /// <returns></returns>
         public MethodInfo GetExecutorMethodInfo()
         {
-            return typeof(ActionScriptProxy).GetMethod(nameof(ProxyExecute));
+            return typeof(ActionScriptProxyHost).GetMethod(nameof(TransformAndRedirect));
         }
+
     }
 }

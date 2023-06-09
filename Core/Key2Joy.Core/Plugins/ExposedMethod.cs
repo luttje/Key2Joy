@@ -54,8 +54,8 @@ namespace Key2Joy.Plugins
 
         public override Delegate CreateDelegate(AbstractAction instance)
         {
-            var proxy = ActionScriptProxy.Create(AppDomain, instance, MethodName);
-            return proxy.GetExecutorMethodInfo().CreateDelegate(proxy);
+            var proxyHost = new ActionScriptProxyHost(AppDomain, AssemblyPath, instance, MethodName);
+            return proxyHost.GetExecutorMethodInfo().CreateDelegate(proxyHost);
         }
     }
 }

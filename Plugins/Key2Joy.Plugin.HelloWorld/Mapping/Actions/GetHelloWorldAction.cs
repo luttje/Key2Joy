@@ -8,7 +8,7 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using System.Threading;
 
-namespace Key2Joy.Plugin.Midi.Mapping
+namespace Key2Joy.Plugin.HelloWorld.Mapping
 {
     [Action(
         Description = "Get Hello World",

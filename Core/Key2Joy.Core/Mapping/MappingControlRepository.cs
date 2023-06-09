@@ -76,7 +76,12 @@ namespace Key2Joy.Mapping
         /// <returns></returns>
         public static MappingControlFactory GetMappingControlFactory(string typeFullName)
         {
-            return mappingControls[typeFullName];
+            if (mappingControls.TryGetValue(typeFullName, out var mappingControlFactory))
+            {
+                return mappingControlFactory;
+            }
+
+            return null;
         }
     }
 }

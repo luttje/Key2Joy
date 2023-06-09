@@ -1,11 +1,14 @@
 ﻿using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Plugins;
 using Key2Joy.Plugins;
 using NLua;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Key2Joy.Mapping
 {
@@ -39,15 +42,20 @@ namespace Key2Joy.Mapping
                     environment.DoString(GetExecutableScript(), Script);
                 }
             }
-            catch (NLua.Exceptions.LuaScriptException e)
+            catch (NLua.Exceptions.LuaScriptException ex)
             {
-                Output.WriteLine(e);
+                Output.WriteLine(ex.Message + ex.StackTrace);
                 Debugger.Break();
+                if (ex.InnerException != null)
+                {
+                    throw ex.InnerException;
+                }
             }
         }
         
         public override void RegisterScriptingEnum(ExposedEnumeration enumeration)
         {
+            // TODO: Use https://github.com/NLua/NLua/blob/3aaff863c78e89a009c21ff3aef94502018f2566/src/LuaRegistrationHelper.cs#LL76C28-L76C39
             environment.NewTable(enumeration.Name);
 
             foreach (var kvp in enumeration.KeyValues)
@@ -85,8 +93,9 @@ namespace Key2Joy.Mapping
 
             if (exposedMethod is AppDomainExposedMethod methodNeedProxy)
             {
-                var proxy = ActionScriptProxy.Create(methodNeedProxy.AppDomain, instance, methodNeedProxy.MethodName);
-                environment.RegisterFunction(functionName, proxy, proxy.GetExecutorMethodInfo());
+                var proxyHost = new ActionScriptProxyHost(methodNeedProxy.AppDomain, methodNeedProxy.AssemblyPath, instance, methodNeedProxy.MethodName);
+                proxyHost.RegisterParameterTransformer<LuaFunction>(luaFunction => new WrappedPluginType((Delegate)luaFunction.Call));
+                environment.RegisterFunction(functionName, proxyHost, proxyHost.GetExecutorMethodInfo());
                 return;
             }
 
@@ -105,6 +114,7 @@ namespace Key2Joy.Mapping
         {
             environment.RegisterFunction("print", this, typeof(LuaScriptAction).GetMethod(nameof(Print), new[] { typeof(object[]) }));
             environment.RegisterFunction("Print", this, typeof(LuaScriptAction).GetMethod(nameof(Print), new[] { typeof(object[]) }));
+            environment.RegisterFunction("collection", this, typeof(LuaScriptAction).GetMethod(nameof(CollectionIterator), new[] { typeof(ICollection) }));
 
             base.RegisterEnvironmentObjects();
         }
@@ -119,6 +129,18 @@ namespace Key2Joy.Mapping
             base.OnStopListening(listener);
 
             // environment.Dispose(); // Uncomment this to cause NullReferenceException problem on NLua state described here: https://github.com/luttje/Key2Joy/pull/39#issuecomment-1581537603
+        }
+
+        /// <summary>
+        /// Returns a function that, when called, will return the next value in the collection.
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public LuaFunction CollectionIterator(ICollection data)
+        {
+            var iterator = new LuaIterator(data);
+
+            return environment.RegisterFunction("__iterator", iterator, iterator.GetType().GetMethod(nameof(LuaIterator.Next)));
         }
 
         public override bool Equals(object obj)

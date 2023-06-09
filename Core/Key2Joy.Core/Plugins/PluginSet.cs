@@ -83,8 +83,9 @@ namespace Key2Joy.Plugins
                 // Allow showing a plugin form (also required SecurityZone.MyComputer above
                 permissions.AddPermission(new UIPermission(UIPermissionWindow.AllWindows, UIPermissionClipboard.AllClipboard));
 
-                // Allow writing to a sub directory
+                // Allow writing to the plugin directory
                 var pluginDataDirectory = Path.Combine(pluginDirectoryPath, "data");
+                Directory.CreateDirectory(pluginDataDirectory);
                 permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.Write, pluginDataDirectory));
 
                 var sandboxDomain = AppDomain.CreateDomain("Sandbox", null, sandboxDomainSetup, permissions);
@@ -249,12 +250,6 @@ namespace Key2Joy.Plugins
                             mappingControlFactories.Add(mappingControlFactory);
                         }
                     }
-
-                    //var action = (AbstractAction)sandboxDomain.CreateInstanceFromAndUnwrap(pluginAssemblyPath, plugin.ActionFullTypeNames[0]);
-                    // To call async methods use:
-                    // Source: https://stackoverflow.com/a/63824188
-                    //Task.Run(() => action.Execute());
-                    //var result = await Task.Run(()=>action.Execute(parameter));
 
                     plugin.OnLoaded();
                 }

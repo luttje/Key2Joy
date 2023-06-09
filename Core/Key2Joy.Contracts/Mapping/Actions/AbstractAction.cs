@@ -12,7 +12,8 @@ namespace Key2Joy.Contracts.Mapping
 
         protected IList<AbstractAction> otherActions;
         
-        public abstract Task Execute(AbstractInputBag inputBag = null);
+        public virtual async Task Execute(AbstractInputBag inputBag = null)
+        { }
 
         public virtual string GetNameDisplay() => Name;
 

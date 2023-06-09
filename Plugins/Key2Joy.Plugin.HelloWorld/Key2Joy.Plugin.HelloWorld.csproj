@@ -28,6 +28,16 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Key2Joy.Contracts\Key2Joy.Contracts.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Mapping\Actions\GetHelloWorldActionControl.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="call ..\..\CopyPlugin.bat $(ProjectName) $(OutDir) $(TargetFileName)" />
   </Target>

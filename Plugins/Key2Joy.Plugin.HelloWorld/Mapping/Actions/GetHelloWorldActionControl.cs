@@ -3,10 +3,10 @@ using Key2Joy.Contracts.Plugins;
 using System;
 using System.Windows.Forms;
 
-namespace Key2Joy.Plugin.Midi.Mapping
+namespace Key2Joy.Plugin.HelloWorld.Mapping
 {
     [MappingControl(
-        ForType = typeof(Key2Joy.Plugin.Midi.Mapping.GetHelloWorldAction),
+        ForType = typeof(Key2Joy.Plugin.HelloWorld.Mapping.GetHelloWorldAction),
         ImageResourceName = "clock"
     )]
     public partial class GetHelloWorldActionControl : AbstractPluginForm, IActionOptionsControl

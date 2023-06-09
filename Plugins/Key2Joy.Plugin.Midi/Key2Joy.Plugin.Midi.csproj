@@ -43,9 +43,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Key2Joy.Contracts\Key2Joy.Contracts.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Update="Mapping\Actions\GetHelloWorldActionControl.cs" />
-  </ItemGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="call ..\..\CopyPlugin.bat $(ProjectName) $(OutDir) $(TargetFileName)" />
   </Target>

@@ -1,4 +1,4 @@
-﻿namespace Key2Joy.Plugin.Midi.Mapping
+﻿namespace Key2Joy.Plugin.HelloWorld.Mapping
 {
     partial class GetHelloWorldActionControl
     {
