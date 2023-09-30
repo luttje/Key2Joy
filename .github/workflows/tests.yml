@@ -21,8 +21,7 @@ jobs:
           .\ndp48-devpack-enu.exe /quiet
       - name: Creates a SNK file for signing the assembly
         run: |
-          Add-Content $env:GITHUB_PATH "C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.8 Tools"
-          .\sn.exe -k keypair.snk
+          & "C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.8 Tools\sn.exe" -k keypair.snk
       - name: Run Key2Joy Tests
         run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat="lcov" /p:CoverletOutput="${{ github.workspace }}/coverage/lcov.info"
       - name: Coveralls for Key2Joy
