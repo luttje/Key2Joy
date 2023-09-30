@@ -18,7 +18,7 @@ jobs:
       - name: Downloads .NET Framework Tools
         run: |
           Invoke-WebRequest -Uri https://go.microsoft.com/fwlink/?linkid=2088517 -OutFile ndp48-devpack-enu.exe
-          ndp48-devpack-enu.exe /quiet
+          .\ndp48-devpack-enu.exe /quiet
           where sn.exe
       - name: Show everything in the GITUB_PATH
         run: |
