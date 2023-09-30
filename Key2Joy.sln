@@ -27,6 +27,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{5F1645F6-3
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Key2Joy.Plugin.HelloWorld", "Plugins\Key2Joy.Plugin.HelloWorld\Key2Joy.Plugin.HelloWorld.csproj", "{21AA3047-61A1-4F80-83C5-4824AEE6EC7A}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Key2Joy.PluginSandbox", "Core\Key2Joy.PluginSandbox\Key2Joy.PluginSandbox.csproj", "{C9A1FAEC-4FA6-4526-8BB2-44C6A9F0AA0E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -107,6 +109,14 @@ Global
 		{21AA3047-61A1-4F80-83C5-4824AEE6EC7A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{21AA3047-61A1-4F80-83C5-4824AEE6EC7A}.Release|x86.ActiveCfg = Release|Any CPU
 		{21AA3047-61A1-4F80-83C5-4824AEE6EC7A}.Release|x86.Build.0 = Release|Any CPU
+		{C9A1FAEC-4FA6-4526-8BB2-44C6A9F0AA0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9A1FAEC-4FA6-4526-8BB2-44C6A9F0AA0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9A1FAEC-4FA6-4526-8BB2-44C6A9F0AA0E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C9A1FAEC-4FA6-4526-8BB2-44C6A9F0AA0E}.Debug|x86.Build.0 = Debug|Any CPU
+		{C9A1FAEC-4FA6-4526-8BB2-44C6A9F0AA0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9A1FAEC-4FA6-4526-8BB2-44C6A9F0AA0E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9A1FAEC-4FA6-4526-8BB2-44C6A9F0AA0E}.Release|x86.ActiveCfg = Release|Any CPU
+		{C9A1FAEC-4FA6-4526-8BB2-44C6A9F0AA0E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -119,6 +129,7 @@ Global
 		{19D06050-80E3-439D-B2A8-A7048F7D99C9} = {3C606DDB-3F6F-43CA-8355-CF710FB52535}
 		{6A99DC38-6D95-44F0-8778-8BD8548778DA} = {5F1645F6-3578-45A6-9F33-65AA6A4A52A1}
 		{21AA3047-61A1-4F80-83C5-4824AEE6EC7A} = {3C606DDB-3F6F-43CA-8355-CF710FB52535}
+		{C9A1FAEC-4FA6-4526-8BB2-44C6A9F0AA0E} = {5F1645F6-3578-45A6-9F33-65AA6A4A52A1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4ABB971C-7631-4C3C-B501-0F1FB68F9E0F}

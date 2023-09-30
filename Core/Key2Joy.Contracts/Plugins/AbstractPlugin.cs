@@ -17,8 +17,8 @@ namespace Key2Joy.Contracts.Plugins
         public abstract IReadOnlyList<string> ActionFullTypeNames { get; }
         public abstract IReadOnlyList<string> TriggerFullTypeNames { get; }
 
-        public virtual void OnLoaded() { }
+        public virtual void Load() { }
 
-        public string pluginDataDirectory { get; set; }
+        public string PluginDataDirectory { get; set; }
     }
 }

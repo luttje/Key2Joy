@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Key2Joy.Plugins;
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
@@ -76,7 +77,7 @@ namespace Key2Joy.LowLevelInput
             for (int i = 0; i < windowsHooks.Length; i++)
             {
                 var windowsHook = windowsHooks[i];
-                
+
                 windowsHookHandles[i] = SetWindowsHookEx(windowsHook, hookProc, user32LibraryHandle, 0);
                 
                 if (windowsHookHandles[i] == IntPtr.Zero)
@@ -138,6 +139,10 @@ namespace Key2Joy.LowLevelInput
 
         public IntPtr LowLevelInputHook(int nCode, IntPtr wParam, IntPtr lParam)
         {
+            // We must catch this, since the KeyboardTriggerControl instantiates this class, but may be on a different thread (from a plugin??)
+            if (!AppDomainHelper.GetIsOwnDomain())
+                return (IntPtr)0;
+
             var isInputHandled = false;
             var wparamTyped = wParam.ToInt32();
 

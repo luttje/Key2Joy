@@ -26,10 +26,10 @@ namespace Key2Joy.Plugin.HelloWorld
             //typeof(GetHelloWorldTrigger).FullName,
         };
 
-        public override void OnLoaded() 
+        public override void Load() 
         {
-            // Write to plugin data directory (creating it if it doesn't exist)
-            File.WriteAllText($"{pluginDataDirectory}/test.txt", "Hello World!");
+            // Write to plugin data directory (will be created by Key2Joy before loading the plugin)
+            File.WriteAllText($"{PluginDataDirectory}/test.txt", "Hello World!");
         }
     }
 }

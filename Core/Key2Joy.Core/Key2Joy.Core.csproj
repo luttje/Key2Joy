@@ -12,6 +12,15 @@
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <DocumentationFile>..\..\bin\Release\Key2Joy\Key2Joy.xml</DocumentationFile>
     <RootNamespace>Key2Joy</RootNamespace>
+    <SignAssembly>False</SignAssembly>
+    <AssemblyOriginatorKeyFile></AssemblyOriginatorKeyFile>
+    <BaseOutputPath>..\..\bin\$(MSBuildProjectName)</BaseOutputPath>
+    <BaseIntermediateOutputPath>..\$(BaseIntermediateOutputPath)\</BaseIntermediateOutputPath>
+    <Authors>luttje</Authors>
+    <Title>Key2Joy</Title>
+    <Description>Simulate a game controller with your mouse and keyboard</Description>
+    <Copyright>Copyright ©  2022 luttje</Copyright>
+    <PackageProjectUrl>https://github.com/luttje/Key2Joy</PackageProjectUrl>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="obj\**" />
@@ -19,6 +28,7 @@
     <None Remove="obj\**" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
@@ -170,7 +180,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Key2Joy.Contracts\Key2Joy.Contracts.csproj" />
+    <ProjectReference Include="..\Key2Joy.PluginSandbox\Key2Joy.PluginSandbox.csproj" />
   </ItemGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="call $(SolutionDir)BuildDocumentation.bat" />

@@ -1,6 +1,7 @@
 ﻿using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Plugins;
 using System;
+using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace Key2Joy.Plugin.HelloWorld.Mapping

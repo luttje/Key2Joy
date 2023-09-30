@@ -1,24 +1,16 @@
-﻿using Key2Joy.Mapping;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Security.Permissions;
 using System.Security;
-using System.Text;
-using System.Threading.Tasks;
 using System.Security.Policy;
 using Key2Joy.Contracts.Plugins;
 using Mono.Cecil;
-using System.Configuration.Assemblies;
-using System.Linq.Expressions;
 using System.Windows.Forms;
 using Key2Joy.Contracts.Mapping;
-using Key2Joy.LowLevelInput;
-using SimWinInput;
-using System.Net;
-using System.Diagnostics;
+using Key2Joy.PluginSandbox;
+using System.Runtime.InteropServices;
 
 namespace Key2Joy.Plugins
 {
@@ -66,7 +58,8 @@ namespace Key2Joy.Plugins
             foreach (var pluginDirectoryPath in pluginDirectoriesPaths)
             {
                 var pluginsAssemblyName = Path.GetFileName(pluginDirectoryPath);
-                var pluginAssemblyPath = Path.Combine(pluginDirectoryPath, $"{pluginsAssemblyName}.dll");
+                var pluginAssemblyFileName = $"{pluginsAssemblyName}.dll";
+                var pluginAssemblyPath = Path.Combine(pluginDirectoryPath, pluginAssemblyFileName);
 
                 var sandboxDomainSetup = new AppDomainSetup
                 {
@@ -74,35 +67,53 @@ namespace Key2Joy.Plugins
                 };
 
                 var evidence = new Evidence();
-                evidence.AddHostEvidence(new Zone(SecurityZone.MyComputer));
+                evidence.AddHostEvidence(new Zone(SecurityZone.Internet));
 
                 var permissions = SecurityManager.GetStandardSandbox(evidence);
+                
+                // Required to instantiate Controls inside the plugin
                 permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.Read, pluginDirectoryPath));
                 permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.PathDiscovery, pluginDirectoryPath));
+
+                // For some reason needed by ActionOptionsChangeListener.
+                // TODO: What kind of reflection does this allow? Internal only? Or will it give plugins unsafe access?
+                permissions.AddPermission(new ReflectionPermission(ReflectionPermissionFlag.MemberAccess));
                 
                 // Allow showing a plugin form (also required SecurityZone.MyComputer above
-                permissions.AddPermission(new UIPermission(UIPermissionWindow.AllWindows, UIPermissionClipboard.AllClipboard));
+                permissions.AddPermission(new UIPermission(UIPermissionWindow.AllWindows));
 
                 // Allow writing to the plugin directory
                 var pluginDataDirectory = Path.Combine(pluginDirectoryPath, "data");
                 Directory.CreateDirectory(pluginDataDirectory);
                 permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.Write, pluginDataDirectory));
 
-                var sandboxDomain = AppDomain.CreateDomain("Sandbox", null, sandboxDomainSetup, permissions);
+                var pluginSandboxerType = typeof(PluginSandboxer);
+                
+                // We want the sandboxer assembly's strong name, so that we can add it to the full trust list.
+                // Helpful: https://github.com/ghuntley/docs-1/blob/master/docs/framework/misc/how-to-run-partially-trusted-code-in-a-sandbox.md
+                var fullTrustAssembly = pluginSandboxerType.Assembly.Evidence.GetHostEvidence<StrongName>();
+                var sandboxDomain = AppDomain.CreateDomain("Sandbox", null, sandboxDomainSetup, permissions, fullTrustAssembly);
 
                 try
                 {
                     var pluginLoadState = new PluginLoadState(pluginAssemblyPath);
                     var pluginAssembly = AssemblyDefinition.ReadAssembly(pluginAssemblyPath);
 
-                    if (!FindPluginEntrypoint(pluginAssembly, out var pluginEntryTypeReference)) 
+                    if (!FindPluginEntryType(pluginAssembly, out var pluginEntryTypeReference)) 
                     {
                         AddFailedLoad(pluginAssemblyPath, "Did not find a plugin entrypoint. Please implement IPlugin in your plugin assembly.");
                         continue;
                     }
-                    
-                    var plugin = (AbstractPlugin)sandboxDomain.CreateInstanceFromAndUnwrap(pluginAssemblyPath, pluginEntryTypeReference.FullName);
-                    plugin.pluginDataDirectory = pluginDataDirectory;
+
+                    var manager = (PluginSandboxer)Activator.CreateInstanceFrom(
+                        sandboxDomain,
+                        pluginSandboxerType.Assembly.ManifestModule.FullyQualifiedName,
+                        pluginSandboxerType.FullName).Unwrap();
+                    var plugin = manager.LoadPlugin(
+                        pluginsAssemblyName, 
+                        pluginEntryTypeReference, 
+                        pluginDataDirectory
+                    );
 
                     pluginLoadState.Plugin = plugin;
                     pluginLoadState.LoadState = PluginLoadStates.Loaded;
@@ -110,36 +121,12 @@ namespace Key2Joy.Plugins
                     pluginLoadStates.Add(pluginLoadState);
                     loadedPlugins.Add(plugin);
 
-                    // TODO: Clean up (similar as above) + unstable to maintain due to nameof if-else
                     foreach (var actionFullTypeName in plugin.ActionFullTypeNames)
                     {
                         var actionType = pluginAssembly.MainModule.GetType(actionFullTypeName);
-                        
+
                         var cecilMappingAttribute = actionType.CustomAttributes.Single(ca => ca.AttributeType.Name == nameof(ActionAttribute));
-                        var actionAttribute = new ActionAttribute();
-                        foreach (var property in cecilMappingAttribute.Properties)
-                        {
-                            if (property.Name == nameof(ActionAttribute.Description))
-                            {
-                                actionAttribute.Description = (string)property.Argument.Value;
-                            }
-                            else if (property.Name == nameof(ActionAttribute.NameFormat))
-                            {
-                                actionAttribute.NameFormat = (string)property.Argument.Value;
-                            }
-                            else if (property.Name == nameof(ActionAttribute.Visibility))
-                            {
-                                actionAttribute.Visibility = (MappingMenuVisibility)property.Argument.Value;
-                            }
-                            else if (property.Name == nameof(ActionAttribute.GroupName))
-                            {
-                                actionAttribute.GroupName = (string)property.Argument.Value;
-                            }
-                            else if (property.Name == nameof(ActionAttribute.GroupImage))
-                            {
-                                actionAttribute.GroupImage = (string)property.Argument.Value;
-                            }
-                        }
+                        var actionAttribute = BuildMappingAttribute<ActionAttribute>(cecilMappingAttribute);
 
                         // Iterate all methods on the type and check where they have the ExposesScriptingMethodAttribute attribute
                         var exposedMethods = new List<ExposedMethod>();
@@ -167,33 +154,17 @@ namespace Key2Joy.Plugins
                                 typeof(AbstractAction),
                                 actionFullTypeName,
                                 actionAttribute,
-                                exposedMethods                                
+                                exposedMethods
                             )
                         );
                     }
 
-                    // TODO: Clean up (similar as above) + unstable to maintain due to nameof if-else
                     foreach (var triggerFullTypeName in plugin.TriggerFullTypeNames)
                     {
                         var triggerType = pluginAssembly.MainModule.GetType(triggerFullTypeName);
-                        
+
                         var cecilMappingAttribute = triggerType.CustomAttributes.Single(ca => ca.AttributeType.Name == nameof(TriggerAttribute));
-                        var triggerAttribute = new TriggerAttribute();
-                        foreach (var property in cecilMappingAttribute.Properties)
-                        {
-                            if (property.Name == nameof(TriggerAttribute.Description))
-                            {
-                                triggerAttribute.Description = (string)property.Argument.Value;
-                            }
-                            else if (property.Name == nameof(TriggerAttribute.NameFormat))
-                            {
-                                triggerAttribute.NameFormat = (string)property.Argument.Value;
-                            }
-                            else if (property.Name == nameof(TriggerAttribute.Visibility))
-                            {
-                                triggerAttribute.Visibility = (MappingMenuVisibility)property.Argument.Value;
-                            }
-                        }
+                        var triggerAttribute = BuildMappingAttribute<TriggerAttribute>(cecilMappingAttribute);
 
                         triggerFactories.Add(
                             new AppDomainMappingTypeFactory<AbstractTrigger>(
@@ -209,7 +180,7 @@ namespace Key2Joy.Plugins
                     foreach (var type in pluginAssembly.MainModule.Types)
                     {
                         var cecilMappingControlAttribute = type.CustomAttributes.SingleOrDefault(ca => ca.AttributeType.Name == nameof(MappingControlAttribute));
-                        
+
                         if (cecilMappingControlAttribute == null)
                         {
                             continue;
@@ -250,24 +221,28 @@ namespace Key2Joy.Plugins
                             mappingControlFactories.Add(mappingControlFactory);
                         }
                     }
-
-                    plugin.OnLoaded();
                 }
                 catch (Exception e)
                 {
                     AddFailedLoad(pluginAssemblyPath, e.Message);
-                    MessageBox.Show(e.Message, "Failed to load plugin " + pluginAssemblyPath, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show(
+                        $"One of your plugins located at {pluginAssemblyPath} failed to load. This was the error: " +
+                        e.Message,
+                        "Failed to load plugin " + pluginsAssemblyName, 
+                        MessageBoxButtons.OK, 
+                        MessageBoxIcon.Warning
+                    );
                 }
             }
         }
 
-        private bool FindPluginEntrypoint(AssemblyDefinition pluginAssembly, out TypeReference typeReference)
+        private bool FindPluginEntryType(AssemblyDefinition pluginAssembly, out string typeReference)
         {
             foreach (TypeDefinition td in pluginAssembly.MainModule.GetTypes())
             {
                 if (td.BaseType != null && td.BaseType.FullName == typeof(AbstractPlugin).FullName)
                 {
-                    typeReference = td;
+                    typeReference = td.FullName;
                     return true;
                 }
             }
@@ -283,6 +258,28 @@ namespace Key2Joy.Plugins
                 LoadState = PluginLoadStates.FailedToLoad,
                 LoadErrorMessage = errorMessage
             });
+        }
+
+        public static T BuildMappingAttribute<T>(CustomAttribute attributeData) where T : new()
+        {
+            var attributeInstance = new T();
+
+            foreach (var property in attributeData.Properties)
+            {
+                SetPropertyValue(attributeInstance, property.Name, property.Argument.Value);
+            }
+
+            return attributeInstance;
+        }
+
+        private static void SetPropertyValue(object obj, string propertyName, object value)
+        {
+            var property = obj.GetType().GetProperty(propertyName);
+
+            if (property != null)
+            {
+                property.SetValue(obj, value);
+            }
         }
     }
 }

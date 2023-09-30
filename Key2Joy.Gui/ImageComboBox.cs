@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Key2Joy.Plugins;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -29,6 +30,9 @@ namespace Key2Joy.Gui
 
         protected override void OnDrawItem(DrawItemEventArgs e)
         {
+            if (!AppDomainHelper.GetIsOwnDomain()) 
+                return;
+            
             if (e.Index < 0)
                 return;
 
@@ -84,7 +88,8 @@ namespace Key2Joy.Gui
             if (property == null)
                 return ItemValue.ToString();
 
-            return property.GetValue(ItemValue).ToString();
+            var propertyValue = property.GetValue(ItemValue);
+            return propertyValue.ToString();
         }
     }
 

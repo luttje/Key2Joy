@@ -9,6 +9,10 @@
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <RootNamespace>Key2Joy.Contracts</RootNamespace>
     <PlatformTarget>x86</PlatformTarget>
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\keypair.snk</AssemblyOriginatorKeyFile>
+    <BaseOutputPath>..\..\bin\$(MSBuildProjectName)</BaseOutputPath>
+    <BaseIntermediateOutputPath>..\$(BaseIntermediateOutputPath)</BaseIntermediateOutputPath>
   </PropertyGroup>
 
   <ItemGroup>

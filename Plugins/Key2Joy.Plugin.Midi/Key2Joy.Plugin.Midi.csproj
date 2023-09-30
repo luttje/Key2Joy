@@ -15,6 +15,7 @@
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <OutputType>Library</OutputType>
     <BaseOutputPath>..\..\bin\$(MSBuildProjectName)</BaseOutputPath>
+    <BaseIntermediateOutputPath>..\$(BaseIntermediateOutputPath)\</BaseIntermediateOutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="bin\**" />

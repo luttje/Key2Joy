@@ -38,7 +38,7 @@ namespace Key2Joy.Contracts.Mapping
             var type = instance.GetType();
             var types = parameters.Select(p => p.GetType()).ToArray();
             var method = type.GetMethod(methodName, types);
-            
+
             return method.Invoke(instance, parameters);
         }
     }
@@ -104,6 +104,11 @@ namespace Key2Joy.Contracts.Mapping
                 }
 
                 if (p is MarshalByRefObject || p is ISerializable)
+                {
+                    return p;
+                }
+
+                if (p.GetType().IsSerializable)
                 {
                     return p;
                 }

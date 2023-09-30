@@ -38,7 +38,6 @@ namespace Key2Joy.Gui.Mapping
             
             this.abstractPluginFormWithOptionsEvent = abstractPluginFormWithOptionsEvent;
 
-
             Padding = new Padding(0, 5, 0, 5);
             Height = abstractPluginForm.DesiredHeight + this.Padding.Vertical;
 

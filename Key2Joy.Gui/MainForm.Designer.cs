@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.olvMappings = new BrightIdeasSoftware.ObjectListView();
+            this.olvMappings = new CustomObjectListView();
             this.olvColumnAction = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnTrigger = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.pnlActionManagement = new System.Windows.Forms.Panel();
@@ -73,6 +73,8 @@
             this.gamepadtestercomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.testKeyboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.testMouseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.withSelectedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.generateOppositePressStateMappingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.userConfigurationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -84,8 +86,6 @@
             this.pnlMainMenu = new System.Windows.Forms.Panel();
             this.lblStatusInactive = new System.Windows.Forms.Label();
             this.lblStatusActive = new System.Windows.Forms.Label();
-            this.withSelectedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.generateOppositePressStateMappingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.olvMappings)).BeginInit();
             this.pnlActionManagement.SuspendLayout();
             this.pnlProfileManagement.SuspendLayout();
@@ -359,7 +359,7 @@
             this.allGamePadJoystickActionsToolStripMenuItem,
             this.allKeyboardActionsToolStripMenuItem});
             this.fillProfileWithToolStripMenuItem.Name = "fillProfileWithToolStripMenuItem";
-            this.fillProfileWithToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.fillProfileWithToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.fillProfileWithToolStripMenuItem.Text = "Fill Profile With...";
             // 
             // allGamePadJoystickActionsToolStripMenuItem
@@ -431,7 +431,7 @@
             this.testKeyboardToolStripMenuItem,
             this.testMouseToolStripMenuItem});
             this.testMappingsToolStripMenuItem.Name = "testMappingsToolStripMenuItem";
-            this.testMappingsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.testMappingsToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.testMappingsToolStripMenuItem.Text = "Test Mappings";
             // 
             // testGamePadJoystickToolStripMenuItem
@@ -471,16 +471,31 @@
             this.testMouseToolStripMenuItem.Text = "Test Mouse";
             this.testMouseToolStripMenuItem.Click += new System.EventHandler(this.testMouseToolStripMenuItem_Click);
             // 
+            // withSelectedToolStripMenuItem
+            // 
+            this.withSelectedToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.generateOppositePressStateMappingsToolStripMenuItem});
+            this.withSelectedToolStripMenuItem.Name = "withSelectedToolStripMenuItem";
+            this.withSelectedToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.withSelectedToolStripMenuItem.Text = "With Selected...";
+            // 
+            // generateOppositePressStateMappingsToolStripMenuItem
+            // 
+            this.generateOppositePressStateMappingsToolStripMenuItem.Name = "generateOppositePressStateMappingsToolStripMenuItem";
+            this.generateOppositePressStateMappingsToolStripMenuItem.Size = new System.Drawing.Size(287, 22);
+            this.generateOppositePressStateMappingsToolStripMenuItem.Text = "Generate Opposite Press State Mappings";
+            this.generateOppositePressStateMappingsToolStripMenuItem.Click += new System.EventHandler(this.generateOppositePressStateMappingsToolStripMenuItem_Click);
+            // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(176, 6);
             // 
             // userConfigurationsToolStripMenuItem
             // 
             this.userConfigurationsToolStripMenuItem.Image = global::Key2Joy.Gui.Properties.Resources.cog;
             this.userConfigurationsToolStripMenuItem.Name = "userConfigurationsToolStripMenuItem";
-            this.userConfigurationsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.userConfigurationsToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.userConfigurationsToolStripMenuItem.Text = "User Configurations";
             this.userConfigurationsToolStripMenuItem.Click += new System.EventHandler(this.userConfigurationsToolStripMenuItem_Click);
             // 
@@ -562,21 +577,6 @@
             this.lblStatusActive.TabIndex = 83;
             this.lblStatusActive.Text = "(Mappings active)";
             this.lblStatusActive.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // withSelectedToolStripMenuItem
-            // 
-            this.withSelectedToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.generateOppositePressStateMappingsToolStripMenuItem});
-            this.withSelectedToolStripMenuItem.Name = "withSelectedToolStripMenuItem";
-            this.withSelectedToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.withSelectedToolStripMenuItem.Text = "With Selected...";
-            // 
-            // generateOppositePressStateMappingsToolStripMenuItem
-            // 
-            this.generateOppositePressStateMappingsToolStripMenuItem.Name = "generateOppositePressStateMappingsToolStripMenuItem";
-            this.generateOppositePressStateMappingsToolStripMenuItem.Size = new System.Drawing.Size(287, 22);
-            this.generateOppositePressStateMappingsToolStripMenuItem.Text = "Generate Opposite Press State Mappings";
-            this.generateOppositePressStateMappingsToolStripMenuItem.Click += new System.EventHandler(this.generateOppositePressStateMappingsToolStripMenuItem_Click);
             // 
             // MainForm
             // 
