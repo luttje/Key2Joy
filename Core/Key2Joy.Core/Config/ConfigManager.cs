@@ -1,12 +1,6 @@
-﻿using Esprima.Ast;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace Key2Joy.Config
 {
@@ -105,5 +99,36 @@ namespace Key2Joy.Config
             return directory;
         }
 
+        /// <summary>
+        /// Sets a plugin as enabled, the permissions checksum is stored so no changes to the permissions 
+        /// are accepted when loading the plugin later.
+        /// 
+        /// Set permissionsChecksumOrNull to null to disable the plugin.
+        /// </summary>
+        /// <param name="pluginAssemblyPath"></param>
+        /// <param name="permissionsChecksumOrNull"></param>
+        internal void SetPluginEnabled(string pluginAssemblyPath, string permissionsChecksumOrNull)
+        {
+            if (permissionsChecksumOrNull != null)
+            {
+                if (!configState.EnabledPlugins.ContainsKey(pluginAssemblyPath))
+                {
+                    configState.EnabledPlugins.Add(pluginAssemblyPath, permissionsChecksumOrNull);
+                }
+                else
+                {
+                    configState.EnabledPlugins[pluginAssemblyPath] = permissionsChecksumOrNull;
+                }
+            } 
+            else
+            {
+                if (configState.EnabledPlugins.ContainsKey(pluginAssemblyPath))
+                {
+                    configState.EnabledPlugins.Remove(pluginAssemblyPath);
+                }
+            }
+            
+            Save();
+        }
     }
 }

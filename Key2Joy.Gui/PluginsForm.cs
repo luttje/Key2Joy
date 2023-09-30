@@ -5,6 +5,8 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Security.Permissions;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -30,8 +32,6 @@ namespace Key2Joy.Gui
             Name = LoadState.Plugin?.Name ?? "n/a";
             Author = LoadState.Plugin?.Author ?? "n/a";
             Website = LoadState.Plugin?.Website ?? "n/a";
-            //ActionTypes = LoadState.Plugin?.ActionTypes ?? new List<Type>();
-            //TriggerTypes = LoadState.Plugin?.TriggerFullTypeNames ?? new List<Type>();
             ActionTypes = new List<Type>();
             TriggerTypes = new List<Type>();
         }
@@ -52,13 +52,19 @@ namespace Key2Joy.Gui
              * Therefor we do this manually:
              */
             dgvPlugins.AutoGenerateColumns = false;
+            dgvPlugins.Columns.Add(new DataGridViewButtonColumn()
+            {
+                Name = "dgvColumnToggleEnable",
+                HeaderText = "Enable/Disable",
+                DataPropertyName = "LoadState",
+            });
             dgvPlugins.Columns.Add(new DataGridViewColumn(new DataGridViewTextBoxCell())
             {
                 Name = "dgvColumnLoaded",
                 HeaderText = "",
                 DataPropertyName = "LoadState",
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader,
-                ToolTipText = "Whether the plugin loaded successfully (✔) or failed to load (✘).",
+                ToolTipText = "Whether the plugin loaded successfully (✔), failed to load (⚠) or is disabled (✘).",
                 FillWeight = 1,
             });
             dgvPlugins.Columns.Add(new DataGridViewColumn(new DataGridViewTextBoxCell())
@@ -82,21 +88,6 @@ namespace Key2Joy.Gui
                 DataPropertyName = "Website",
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
             });
-
-            dgvPlugins.Columns.Add(new DataGridViewColumn(new DataGridViewTextBoxCell())
-            {
-                Name = "dgvColumnActions",
-                HeaderText = "Action Count",
-                DataPropertyName = "ActionTypes",
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
-            });
-            dgvPlugins.Columns.Add(new DataGridViewColumn(new DataGridViewTextBoxCell())
-            {
-                Name = "dgvColumnTriggers",
-                HeaderText = "Trigger Count",
-                DataPropertyName = "TriggerTypes",
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
-            });
             dgvPlugins.Columns.Add(new DataGridViewColumn(new DataGridViewTextBoxCell())
             {
                 Name = "dgvColumnPath",
@@ -107,7 +98,12 @@ namespace Key2Joy.Gui
 
             dgvPlugins.CellFormatting += DgvPlugins_CellFormatting;
 
-            dgvPlugins.DataSource = Program.Plugins.AllPluginLoadStates.Select(
+            RefreshPlugins();
+        }
+
+        private void RefreshPlugins()
+        {
+            dgvPlugins.DataSource = Program.Plugins.AllPluginLoadStates.Values.Select(
                 pls => new PluginInfo(pls))
                 .ToList();
         }
@@ -115,18 +111,88 @@ namespace Key2Joy.Gui
         private void DgvPlugins_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             var column = dgvPlugins.Columns[e.ColumnIndex];
-            
+
+            if (column.Name == "dgvColumnToggleEnable")
+            {
+                var pluginLoadState = (PluginLoadState)e.Value;
+                e.Value = pluginLoadState.LoadState == PluginLoadStates.Loaded ? "Disable" : "Enable";
+            }
+
             if (column.Name == "dgvColumnLoaded")
             {
                 var pluginLoadState = (PluginLoadState)e.Value;
                 e.Value = pluginLoadState.LoadState == PluginLoadStates.Loaded ? "✔" : 
-                    (pluginLoadState.LoadState == PluginLoadStates.NotLoaded ? " " : "✘");
+                    (pluginLoadState.LoadState == PluginLoadStates.NotLoaded ? "✘" : "⚠");
+
+                var cell = dgvPlugins.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                cell.ToolTipText = pluginLoadState.LoadErrorMessage;
             }
 
             if (column.Name == "dgvColumnActions" || column.Name == "dgvColumnTriggers")
             {
                 var types = (IReadOnlyList<Type>)e.Value;
                 e.Value = types.Count.ToString();
+            }
+        }
+
+        private void dgvPlugins_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            var senderGrid = (DataGridView)sender;
+
+            if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn &&
+                e.RowIndex >= 0)
+            {
+                var rowItem = senderGrid.Rows[e.RowIndex];
+                var pluginInfo = (PluginInfo)rowItem.DataBoundItem;
+
+                if (pluginInfo.LoadState.LoadState == PluginLoadStates.Loaded)
+                {
+                    Program.Plugins.DisablePlugin(pluginInfo.AssemblyPath);
+                }
+                else
+                {
+                    var pluginPermissionsWithDescriptions = PluginSet.GetAllowedPermissionsWithDescriptions();
+                    var permissionsXml = PluginSet.GetAdditionalPermissionsXml(pluginInfo.AssemblyPath);
+                    var allPermissionsGranted = true;
+
+                    if (permissionsXml != null) { 
+                        var additionalPermissions = new PermissionSet(PermissionState.None);
+                        additionalPermissions.FromXml(SecurityElement.FromString(permissionsXml));
+
+                        if (additionalPermissions.Count > 0)
+                        {
+                            // Get all the indexes of pluginPermissionsWithDescriptions.AllowedPermissions that occur in additionalPermissions
+                            var relevantDescriptions = new string[additionalPermissions.Count];
+
+                            var index = 0;
+                            foreach (var permission in pluginPermissionsWithDescriptions.AllowedPermissions)
+                            {
+                                foreach (var additionalPermission in additionalPermissions)
+                                {
+                                    if (permission.Equals(additionalPermission))
+                                    {
+                                        relevantDescriptions[index] = pluginPermissionsWithDescriptions.Descriptions[index];
+                                        break;
+                                    }
+                                }
+                            }
+
+                            var confirmationDialog = new PluginPermissionsForm(relevantDescriptions);
+
+                            if (confirmationDialog.ShowDialog() != DialogResult.OK)
+                            {
+                                allPermissionsGranted = false;
+                            }
+                        }
+                    }
+
+                    if (allPermissionsGranted)
+                    {
+                        Program.Plugins.EnablePlugin(pluginInfo.AssemblyPath);
+                    }
+                }
+
+                RefreshPlugins();
             }
         }
     }

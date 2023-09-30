@@ -26,6 +26,14 @@
     <None Remove="obj\**" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="permissions.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="permissions.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\Core\Key2Joy.Contracts\Key2Joy.Contracts.csproj" />
   </ItemGroup>
 

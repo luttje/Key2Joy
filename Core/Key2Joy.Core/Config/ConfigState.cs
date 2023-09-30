@@ -56,6 +56,8 @@ namespace Key2Joy.Config
         }
         private string logOutputPath = Path.Combine(ConfigManager.GetAppDirectory(), "Logs");
 
+        public Dictionary<string, string> EnabledPlugins { get; set; } = new Dictionary<string, string>();
+
         private void SaveIfInitialized(object changedValue = null)
         {
             if (ConfigManager.Instance.IsInitialized)
