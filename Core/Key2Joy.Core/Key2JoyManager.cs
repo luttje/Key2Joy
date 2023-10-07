@@ -65,10 +65,7 @@ namespace Key2Joy
                     }).Select(ExposedEnumeration.FromType).ToList());
 
             var plugins = new PluginSet(pluginDirectoriesPaths);
-
-            ActionsRepository.Buffer(plugins.ActionFactories);
-            TriggersRepository.Buffer(plugins.TriggerFactories);
-            MappingControlRepository.Buffer(plugins.MappingControlFactories);
+            plugins.LoadAll();
 
             Key2JoyManager.commandRunner = commandRunner;
 

@@ -29,9 +29,9 @@ namespace Key2Joy.Gui
             LoadState = loadState;
 
             AssemblyPath = LoadState.AssemblyPath;
-            Name = LoadState.Plugin?.Name ?? "n/a";
-            Author = LoadState.Plugin?.Author ?? "n/a";
-            Website = LoadState.Plugin?.Website ?? "n/a";
+            Name = LoadState.Name ?? "n/a";
+            Author = LoadState.Author ?? "n/a";
+            Website = LoadState.Website ?? "n/a";
             ActionTypes = new List<Type>();
             TriggerTypes = new List<Type>();
         }
@@ -151,8 +151,8 @@ namespace Key2Joy.Gui
                 }
                 else
                 {
-                    var pluginPermissionsWithDescriptions = PluginSet.GetAllowedPermissionsWithDescriptions();
-                    var permissionsXml = PluginSet.GetAdditionalPermissionsXml(pluginInfo.AssemblyPath);
+                    var pluginPermissionsWithDescriptions = PluginHost.PluginHost.GetAllowedPermissionsWithDescriptions();
+                    var permissionsXml = PluginHost.PluginHost.GetAdditionalPermissionsXml(pluginInfo.AssemblyPath);
                     var allPermissionsGranted = true;
 
                     if (permissionsXml != null) { 
@@ -188,7 +188,7 @@ namespace Key2Joy.Gui
 
                     if (allPermissionsGranted)
                     {
-                        Program.Plugins.EnablePlugin(pluginInfo.AssemblyPath);
+                        Program.Plugins.LoadPlugin(pluginInfo.AssemblyPath);
                     }
                 }
 

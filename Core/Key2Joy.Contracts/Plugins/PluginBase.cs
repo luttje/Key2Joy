@@ -7,18 +7,16 @@ using System.Threading.Tasks;
 
 namespace Key2Joy.Contracts.Plugins
 {
-    public abstract class AbstractPlugin : MarshalByRefObject
+    public abstract class PluginBase : MarshalByRefObject
     {
         public abstract string Name { get; }
         public abstract string Description { get; }
         public abstract string Author { get; }
         public abstract string Website { get; }
 
-        public abstract IReadOnlyList<string> ActionFullTypeNames { get; }
-        public abstract IReadOnlyList<string> TriggerFullTypeNames { get; }
-
-        public virtual void Load() { }
-
         public string PluginDataDirectory { get; set; }
+
+        public virtual void Initialize()
+        { }
     }
 }

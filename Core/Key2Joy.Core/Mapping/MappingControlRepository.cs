@@ -32,14 +32,14 @@ namespace Key2Joy.Mapping
 
                 if (attribute.ForType != null)
                 {
-                    mappingControls.Add(attribute.ForType.FullName, new TypeMappingControlFactory(type, attribute.ForType.FullName, attribute.ImageResourceName));
+                    mappingControls.Add(attribute.ForType.FullName, new TypeMappingControlFactory(attribute.ForType.FullName, attribute.ImageResourceName, type));
                 }
 
                 if (attribute.ForTypes != null)
                 {
                     foreach (Type forType in attribute.ForTypes)
                     {
-                        mappingControls.Add(forType.FullName, new TypeMappingControlFactory(type, forType.FullName, attribute.ImageResourceName));
+                        mappingControls.Add(forType.FullName, new TypeMappingControlFactory(forType.FullName, attribute.ImageResourceName, type));
                     }
                 }
             }

@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
+using System.Windows.Forms.Integration;
 
 namespace Key2Joy.Gui
 {
@@ -66,9 +67,9 @@ namespace Key2Joy.Gui
                 throw new NotImplementedException("Could not create options control for " + selectedTypeFactory.FullTypeName);
             }
 
-            if (optionsUserControl is AbstractPluginForm abstractPluginForm)
+            if (optionsUserControl is ElementHostProxy pluginUserControl)
             {
-                optionsUserControl = new ActionPluginHostControl(abstractPluginForm);
+                optionsUserControl = new ActionPluginHostControl(pluginUserControl);
             }
 
             optionsPanel.Controls.Add(optionsUserControl);

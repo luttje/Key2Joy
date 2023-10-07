@@ -53,19 +53,17 @@ namespace Key2Joy.Plugins
     }
 
     /// <summary>
-    /// Creates a type using the specified AppDomain.
+    /// Creates the type by commanding the PluginHostProxy to create it.
     /// </summary>
-    public class AppDomainMappingTypeFactory<T> : MappingTypeFactory<T> where T : AbstractMappingAspect
+    public class PluginMappingTypeFactory<T> : MappingTypeFactory<T> where T : AbstractMappingAspect
     {
-        private AppDomain appDomain;
+        private PluginHostProxy pluginHost;
         private Type hostBaseType;
-        private string pluginAssemblyPath;
 
-        public AppDomainMappingTypeFactory(AppDomain appDomain, string pluginAssemblyPath, Type hostBaseType, string fullTypeName, MappingAttribute attribute, IReadOnlyList<ExposedMethod> exposedMethods = null)
+        public PluginMappingTypeFactory(PluginHostProxy pluginHost, Type hostBaseType, string fullTypeName, MappingAttribute attribute, IReadOnlyList<ExposedMethod> exposedMethods = null)
             : base(fullTypeName, attribute, exposedMethods)
         {
-            this.appDomain = appDomain;
-            this.pluginAssemblyPath = pluginAssemblyPath;
+            this.pluginHost = pluginHost;
             this.hostBaseType = hostBaseType;
         }
 
@@ -76,16 +74,7 @@ namespace Key2Joy.Plugins
         
         public override T CreateInstance<T>(object[] constructorArguments)
         {
-            return (T)appDomain.CreateInstanceFromAndUnwrap(
-                pluginAssemblyPath, 
-                FullTypeName, 
-                false, 
-                BindingFlags.Default,
-                null,
-                constructorArguments,
-                null,
-                null
-            );
+            return (T)pluginHost.CreateAspectInstance<T>(FullTypeName, constructorArguments);
         }
 
         /// <summary>

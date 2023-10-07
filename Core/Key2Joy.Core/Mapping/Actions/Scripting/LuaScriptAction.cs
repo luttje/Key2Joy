@@ -91,11 +91,12 @@ namespace Key2Joy.Mapping
                     environment.NewTable(path);
             }
 
-            if (exposedMethod is AppDomainExposedMethod methodNeedProxy)
+            if (exposedMethod is PluginExposedMethod methodNeedProxy)
             {
-                var proxyHost = new ActionScriptProxyHost(methodNeedProxy.AppDomain, methodNeedProxy.AssemblyPath, instance, methodNeedProxy.MethodName);
-                proxyHost.RegisterParameterTransformer<LuaFunction>(luaFunction => new WrappedPluginType((Delegate)luaFunction.Call));
-                environment.RegisterFunction(functionName, proxyHost, proxyHost.GetExecutorMethodInfo());
+                //var proxyHost = new ActionScriptProxyHost(methodNeedProxy.AppDomain, methodNeedProxy.AssemblyPath, instance, methodNeedProxy.MethodName);
+                //proxyHost.RegisterParameterTransformer<LuaFunction>(luaFunction => new WrappedPluginType((Delegate)luaFunction.Call));
+                //environment.RegisterFunction(functionName, proxyHost, proxyHost.GetExecutorMethodInfo());
+                throw new NotImplementedException("TODO: Proxy to plugin host");
                 return;
             }
 

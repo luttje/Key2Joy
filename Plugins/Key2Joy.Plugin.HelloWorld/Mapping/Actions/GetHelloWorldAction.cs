@@ -4,9 +4,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using System.Windows.Forms;
 using System.Diagnostics;
 using System.Threading;
+using System.Windows;
 
 namespace Key2Joy.Plugin.HelloWorld.Mapping
 {

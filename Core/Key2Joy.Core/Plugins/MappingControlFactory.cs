@@ -28,8 +28,12 @@ namespace Key2Joy.Plugins
         }
 
         public abstract Type ToType();
+        public virtual string GetTypeName()
+        {
+            return ToType().FullName;
+        }
     }
-    
+
     /// <summary>
     /// Creates instances of the Control, simply using Activator.CreateInstance
     /// </summary>
@@ -37,7 +41,7 @@ namespace Key2Joy.Plugins
     {
         private Type controlType;
 
-        public TypeMappingControlFactory(Type controlType, string forTypeFullName, string imageResourceName)
+        public TypeMappingControlFactory(string forTypeFullName, string imageResourceName, Type controlType)
             : base(forTypeFullName, imageResourceName)
         {
             this.controlType = controlType;
@@ -50,25 +54,23 @@ namespace Key2Joy.Plugins
     }
 
     /// <summary>
-    /// Creates the Control using the specified AppDomain.
+    /// Creates the Control by commanding the PluginHostProxy to create it.
     /// </summary>
-    public class AppDomainMappingControlFactory : MappingControlFactory
+    public class PluginMappingControlFactory : MappingControlFactory
     {
-        private AppDomain appDomain;
-        private string pluginAssemblyPath;
+        private PluginHostProxy pluginHost;
         private string controlTypeName;
 
-        public AppDomainMappingControlFactory(AppDomain appDomain, string pluginAssemblyPath, string controlTypeName, string forTypeFullName, string imageResourceName)
+        internal PluginMappingControlFactory(string forTypeFullName, string imageResourceName, PluginHostProxy pluginHost, string controlTypeName)
             : base(forTypeFullName, imageResourceName)
         {
-            this.appDomain = appDomain;
-            this.pluginAssemblyPath = pluginAssemblyPath;
+            this.pluginHost = pluginHost;
             this.controlTypeName = controlTypeName;
         }
 
         public override T CreateInstance<T>()
         {
-            return (T)appDomain.CreateInstanceFromAndUnwrap(pluginAssemblyPath, controlTypeName);
+            return (T)pluginHost.CreateControl(controlTypeName);
         }
 
         /// <summary>
@@ -78,6 +80,11 @@ namespace Key2Joy.Plugins
         public override Type ToType()
         {
             throw new InvalidOperationException("Cannot get Type in other appdomain.");
+        }
+
+        public override string GetTypeName()
+        {
+            return controlTypeName;
         }
     }
 }

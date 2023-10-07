@@ -38,24 +38,23 @@ namespace Key2Joy.Plugins
         }
     }
 
-    public class AppDomainExposedMethod : ExposedMethod
+    public class PluginExposedMethod : ExposedMethod
     {
-        public AppDomain AppDomain { get; protected set; }
-        public string AssemblyPath { get; protected set; }
+        private PluginHostProxy pluginHost;
         public string TypeName { get; protected set; }
 
-        public AppDomainExposedMethod(AppDomain appDomain, string assemblyPath, string typeName, string functionName, string methodName)
+        public PluginExposedMethod(PluginHostProxy pluginHost, string typeName, string functionName, string methodName)
             : base(functionName, methodName)
         {
-            AppDomain = appDomain;
-            AssemblyPath = assemblyPath;
+            this.pluginHost = pluginHost;
             TypeName = typeName;
         }
 
         public override Delegate CreateDelegate(AbstractAction instance)
         {
-            var proxyHost = new ActionScriptProxyHost(AppDomain, AssemblyPath, instance, MethodName);
-            return proxyHost.GetExecutorMethodInfo().CreateDelegate(proxyHost);
+            //var proxyHost = new ActionScriptProxyHost(AppDomain, AssemblyPath, instance, MethodName);
+            //return proxyHost.GetExecutorMethodInfo().CreateDelegate(proxyHost);
+            return null; // TODO: Create delegate that calls the plugin through its host
         }
     }
 }

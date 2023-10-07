@@ -1,8 +1,19 @@
-﻿using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Plugins;
 using System;
-using System.Diagnostics;
-using System.Windows.Forms;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
 
 namespace Key2Joy.Plugin.HelloWorld.Mapping
 {
@@ -10,30 +21,36 @@ namespace Key2Joy.Plugin.HelloWorld.Mapping
         ForType = typeof(Key2Joy.Plugin.HelloWorld.Mapping.GetHelloWorldAction),
         ImageResourceName = "clock"
     )]
-    public partial class GetHelloWorldActionControl : AbstractPluginForm, IActionOptionsControl
+    public partial class GetHelloWorldActionControl : UserControl, IPluginUserControl
     {
         public event EventHandler OptionsChanged;
         
+        public int DesiredHeight { get; set; } = 50;
+
         public GetHelloWorldActionControl()
         {
             InitializeComponent();
 
-            // Always set this, so the mapping form knows what height to set the parent panel.
-            this.DesiredHeight = 25;
+            this.DesiredHeight = 50;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Hello from GetHelloWorldActionControl!");
         }
 
         public void Select(AbstractAction action)
         {
             var thisAction = (GetHelloWorldAction)action;
 
-            txtTarget.Text = thisAction.Target;
+            txtName.Text = thisAction.Target;
         }
 
         public void Setup(AbstractAction action)
-        { 
+        {
             var thisAction = (GetHelloWorldAction)action;
 
-            thisAction.Target = txtTarget.Text;
+            thisAction.Target = txtName.Text;
         }
 
         public bool CanMappingSave(AbstractAction action)
@@ -43,7 +60,7 @@ namespace Key2Joy.Plugin.HelloWorld.Mapping
 
         private void btnHelloWorld_Click(object sender, EventArgs e)
         {
-            MessageBox.Show($"Hello {txtTarget.Text}!");
+            MessageBox.Show($"Hello {txtName.Text}!");
         }
 
         private void txtTarget_TextChanged(object sender, EventArgs e)
