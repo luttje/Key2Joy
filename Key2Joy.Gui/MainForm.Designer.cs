@@ -1,4 +1,6 @@
-﻿namespace Key2Joy.Gui
+﻿using BrightIdeasSoftware;
+
+namespace Key2Joy.Gui
 {
     partial class MainForm
     {
@@ -30,7 +32,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.olvMappings = new CustomObjectListView();
+            this.olvMappings = new ObjectListView();
             this.olvColumnAction = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnTrigger = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.pnlActionManagement = new System.Windows.Forms.Panel();

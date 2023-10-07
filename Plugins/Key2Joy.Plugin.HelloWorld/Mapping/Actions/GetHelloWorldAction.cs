@@ -33,5 +33,20 @@ namespace Key2Joy.Plugin.HelloWorld.Mapping
         {
             MessageBox.Show($"Hello {target} / {Target}!");
         }
+        
+        public override MappingAspectOptions BuildSaveOptions(MappingAspectOptions options) 
+        {
+            options.Add("Target", Target);
+
+            return options;
+        }
+        
+        public override void LoadOptions(MappingAspectOptions options) 
+        {
+            if (options.TryGetValue("Target", out var target))
+            {
+                Target = (string)target;
+            }
+        }
     }
 }

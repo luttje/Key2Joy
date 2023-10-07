@@ -177,9 +177,9 @@ namespace Key2Joy.PluginHost
             return builder.ToString();
         }
 
-        public PluginAction CreateAction(string fullTypeName, object[] constructorArguments)
+        public PluginActionInsulator CreateAction(string fullTypeName, object[] constructorArguments)
         {
-            return (PluginAction)sandboxDomain.CreateInstanceFromAndUnwrap(
+            return new PluginActionInsulator((PluginAction)sandboxDomain.CreateInstanceFromAndUnwrap(
                 pluginAssemblyPath,
                 fullTypeName,
                 false,
@@ -188,12 +188,12 @@ namespace Key2Joy.PluginHost
                 constructorArguments,
                 null,
                 null
-            );
+            ));
         }
         
-        public PluginTrigger CreateTrigger(string fullTypeName, object[] constructorArguments)
+        public PluginTriggerInsulator CreateTrigger(string fullTypeName, object[] constructorArguments)
         {
-            return (PluginTrigger)sandboxDomain.CreateInstanceFromAndUnwrap(
+            return new PluginTriggerInsulator((PluginTrigger)sandboxDomain.CreateInstanceFromAndUnwrap(
                 pluginAssemblyPath,
                 fullTypeName,
                 false,
@@ -202,7 +202,7 @@ namespace Key2Joy.PluginHost
                 constructorArguments,
                 null,
                 null
-            );
+            ));
         }
 
         public INativeHandleContract CreateFrameworkElementContract(string controlTypeName)
