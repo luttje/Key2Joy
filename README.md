@@ -119,8 +119,6 @@ The action list in the GUI uses [ObjectListView](https://objectlistview.sourcefo
 
 Some [Silk Icons](https://github.com/legacy-icons/famfamfam-silk/blob/master/LICENSE.md) are used in the GUI.
 
-The current icon uses a controller image from [Xelu's FREE Controller Prompts](https://thoseawesomeguys.com/prompts/)
-
 ---
 
 ## License
