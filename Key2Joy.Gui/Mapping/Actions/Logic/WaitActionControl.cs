@@ -27,21 +27,21 @@ namespace Key2Joy.Gui.Mapping
             nudWaitTimeInMs.Maximum = decimal.MaxValue;
         }
 
-        public void Select(AbstractAction action)
+        public void Select(object action)
         {
             var thisAction = (WaitAction)action;
 
             nudWaitTimeInMs.Value = (decimal)thisAction.WaitTime.TotalMilliseconds;
         }
 
-        public void Setup(AbstractAction action)
+        public void Setup(object action)
         { 
             var thisAction = (WaitAction)action;
 
             thisAction.WaitTime = TimeSpan.FromMilliseconds((double)nudWaitTimeInMs.Value);
         }
         
-        public bool CanMappingSave(AbstractAction action)
+        public bool CanMappingSave(object action)
         {
             return true;
         }

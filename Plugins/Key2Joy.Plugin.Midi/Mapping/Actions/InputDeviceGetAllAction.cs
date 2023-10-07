@@ -20,14 +20,8 @@ namespace Key2Joy.Plugin.Midi.Mapping
         GroupName = "Midi",
         GroupImage = "sound"
     )]
-    public class InputDeviceGetAllAction : AbstractAction
+    public class InputDeviceGetAllAction : PluginAction
     {
-        public InputDeviceGetAllAction(string name)
-            : base(name)
-        {
-
-        }
-
         /// <markdown-doc>
         /// <parent-name>Midi</parent-name>
         /// <path>Api/Plugins/Midi</path>

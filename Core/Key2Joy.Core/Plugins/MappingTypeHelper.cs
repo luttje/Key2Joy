@@ -7,6 +7,7 @@ using System.Runtime.Remoting;
 using System.Text;
 using System.Threading.Tasks;
 using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Plugins;
 
 namespace Key2Joy.Plugins
 {
@@ -32,26 +33,12 @@ namespace Key2Joy.Plugins
         public static string GetTypeFullName<T>(IDictionary<string, MappingTypeFactory<T>> typeFactories, AbstractMappingAspect instance) 
             where T : AbstractMappingAspect
         {
-            string realTypeName;
+            var realObject = GetRealObject(instance);
+            var realTypeName = GetRealTypeName(realObject);
 
-            if (RemotingServices.IsTransparentProxy(instance))
+            if (!typeFactories.ContainsKey(realTypeName))
             {
-                var objRef = RemotingServices.GetObjRefForProxy(instance);
-                realTypeName = objRef.TypeInfo.TypeName;
-
-                if (!typeFactories.ContainsKey(EnsureSimpleTypeName(realTypeName)))
-                {
-                    throw new ArgumentException("Only allowed types may be (de)serialized");
-                }
-            }
-            else
-            {
-                realTypeName = instance.GetType().FullName;
-
-                if (!typeFactories.ContainsKey(realTypeName))
-                {
-                    throw new ArgumentException("Only allowed types may be (de)serialized");
-                }
+                throw new ArgumentException("Only allowed types may be (de)serialized");
             }
 
             return realTypeName;
@@ -66,29 +53,40 @@ namespace Key2Joy.Plugins
         /// <exception cref="ArgumentException"></exception>
         public static string GetTypeFullName(IDictionary<string, MappingTypeFactory> typeFactories, AbstractMappingAspect instance)
         {
-            string realTypeName;
+            var realObject = GetRealObject(instance);
+            var realTypeName = GetRealTypeName(realObject);
 
-            if (RemotingServices.IsTransparentProxy(instance))
+            if (!typeFactories.ContainsKey(realTypeName))
             {
-                var objRef = RemotingServices.GetObjRefForProxy(instance);
-                realTypeName = objRef.TypeInfo.TypeName;
-
-                if (!typeFactories.ContainsKey(EnsureSimpleTypeName(realTypeName)))
-                {
-                    throw new ArgumentException("Only allowed types may be (de)serialized");
-                }
-            }
-            else
-            {
-                realTypeName = instance.GetType().FullName;
-
-                if (!typeFactories.ContainsKey(realTypeName))
-                {
-                    throw new ArgumentException("Only allowed types may be (de)serialized");
-                }
+                throw new ArgumentException("Only allowed types may be (de)serialized");
             }
 
             return realTypeName;
+        }
+
+        private static string GetRealTypeName(MarshalByRefObject realObject)
+        {
+            if (RemotingServices.IsTransparentProxy(realObject))
+            {
+                var objRef = RemotingServices.GetObjRefForProxy(realObject);
+                return EnsureSimpleTypeName(objRef.TypeInfo.TypeName);
+            }
+            
+            return realObject.GetType().FullName;
+        }
+
+        private static MarshalByRefObject GetRealObject(AbstractMappingAspect instance)
+        {
+            if (instance is IGetRealObject<PluginAction> pluginAction)
+            {
+                return pluginAction.GetRealObject();
+            }
+            else if (instance is IGetRealObject<PluginTrigger> pluginTrigger)
+            {
+                return pluginTrigger.GetRealObject();
+            }
+
+            return instance;
         }
     }
 }

@@ -51,14 +51,14 @@ namespace Key2Joy.PluginHost
             source.RevokeLifetimeToken(token);
         }
 
-        public void RemoteInvoke(string methodName, object[] parameters)
+        public object RemoteInvoke(string methodName, object[] parameters)
         {
-            converter.RemoteInvoke(methodName, parameters);
+            return converter.RemoteInvoke(methodName, parameters);
         }
 
-        public void RemoteInvokeUI(string methodName, object[] parameters)
+        public object RemoteInvokeUI(string methodName, object[] parameters)
         {
-            Program.AppDispatcher.Invoke(new Action(() => converter.RemoteInvoke(methodName, parameters)));
+            return Program.AppDispatcher.Invoke(new Func<object>(() => converter.RemoteInvoke(methodName, parameters)));
         }
 
         public override object InitializeLifetimeService()

@@ -29,7 +29,7 @@ namespace Key2Joy.Gui.Mapping
             childActions = new List<AbstractAction>();
         }
 
-        public void Select(AbstractAction action)
+        public void Select(object action)
         {
             var thisAction = (SequenceAction)action;
 
@@ -40,18 +40,19 @@ namespace Key2Joy.Gui.Mapping
             }
         }
 
-        public void Setup(AbstractAction action)
+        public void Setup(object action)
         {
             var thisAction = (SequenceAction)action;
             thisAction.ChildActions.Clear();
 
             foreach (var childAction in childActions)
             {
-                thisAction.ChildActions.Add(PluginAction.GetFullyFormedAction(childAction));
+                throw new NotImplementedException("TODO:::::");
+               // thisAction.ChildActions.Add(PluginAction.GetFullyFormedAction(childAction));
             }
         }
 
-        public bool CanMappingSave(AbstractAction action)
+        public bool CanMappingSave(object action)
         {
             return true;
         }

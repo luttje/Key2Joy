@@ -44,17 +44,17 @@ namespace Key2Joy.Gui.Mapping
             listener.OptionsChanged += (s, e) => OptionsChanged?.Invoke(s, e);
         }
 
-        public bool CanMappingSave(AbstractAction action)
+        public bool CanMappingSave(object action)
         {
             return pluginControlWithOptions.CanMappingSave(action);
         }
 
-        public void Select(AbstractAction action)
+        public void Select(object action)
         {
             pluginControlWithOptions.Select(action);
         }
 
-        public void Setup(AbstractAction action)
+        public void Setup(object action)
         {
             pluginControlWithOptions.Setup(action);
         }

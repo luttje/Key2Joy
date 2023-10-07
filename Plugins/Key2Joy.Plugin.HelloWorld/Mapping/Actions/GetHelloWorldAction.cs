@@ -7,6 +7,7 @@ using System.Text.Json.Serialization;
 using System.Diagnostics;
 using System.Threading;
 using System.Windows;
+using Key2Joy.Contracts.Plugins;
 
 namespace Key2Joy.Plugin.HelloWorld.Mapping
 {
@@ -16,17 +17,11 @@ namespace Key2Joy.Plugin.HelloWorld.Mapping
         GroupName = "Logic",
         GroupImage = "application_xp_terminal"
     )]
-    public class GetHelloWorldAction : AbstractAction
+    public class GetHelloWorldAction : PluginAction
     {
         public string Target { get; set; } = "World";
 
-        public GetHelloWorldAction(string name)
-            : base(name)
-        {
-
-        }
-
-        public override async Task Execute(AbstractInputBag inputBag = null)
+        public async Task Execute(AbstractInputBag inputBag = null)
         {
             MessageBox.Show($"Hello {Target}!");
             Debug.WriteLine($"Hello {Target}!");
@@ -37,11 +32,6 @@ namespace Key2Joy.Plugin.HelloWorld.Mapping
         public void ExecuteForScript(string target)
         {
             MessageBox.Show($"Hello {target} / {Target}!");
-        }
-
-        public override string GetNameDisplay()
-        {
-            return Name.Replace("{0}", Target.ToString());
         }
     }
 }

@@ -10,32 +10,32 @@ namespace Key2Joy.Mapping
     /// <summary>
     /// Wraps a plugin action to become fully formed.
     /// </summary>
-    public class PluginAction : CoreAction
-    {
-        protected AbstractAction action;
+    //public class PluginAction : CoreAction
+    //{
+    //    protected AbstractAction action;
 
-        internal PluginAction(AbstractAction action)
-            :base(action.Name)
-        {
-            this.action = action;
-        }
+    //    internal PluginAction(AbstractAction action)
+    //        :base(action.Name)
+    //    {
+    //        this.action = action;
+    //    }
 
-        public static CoreAction GetFullyFormedAction(AbstractAction action)
-        {
-            if (action is CoreAction)
-                return (CoreAction)action;
+    //    public static CoreAction GetFullyFormedAction(AbstractAction action)
+    //    {
+    //        if (action is CoreAction)
+    //            return (CoreAction)action;
 
-            return new PluginAction(action);
-        }
+    //        return new PluginAction(action);
+    //    }
 
-        public override Task Execute(AbstractInputBag inputBag = null)
-        {
-            return action.Execute(inputBag);
-        }
+    //    public override Task Execute(AbstractInputBag inputBag = null)
+    //    {
+    //        return action.Execute(inputBag);
+    //    }
 
-        public override string GetNameDisplay()
-        {
-            return action.GetNameDisplay();
-        }
-    }
+    //    public override string GetNameDisplay()
+    //    {
+    //        return action.GetNameDisplay();
+    //    }
+    //}
 }

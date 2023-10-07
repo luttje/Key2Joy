@@ -177,9 +177,23 @@ namespace Key2Joy.PluginHost
             return builder.ToString();
         }
 
-        public T CreateAspectInstance<T>(string fullTypeName, object[] constructorArguments) where T : AbstractMappingAspect
+        public PluginAction CreateAction(string fullTypeName, object[] constructorArguments)
         {
-            return (T)sandboxDomain.CreateInstanceFromAndUnwrap(
+            return (PluginAction)sandboxDomain.CreateInstanceFromAndUnwrap(
+                pluginAssemblyPath,
+                fullTypeName,
+                false,
+                BindingFlags.Default,
+                null,
+                constructorArguments,
+                null,
+                null
+            );
+        }
+        
+        public PluginTrigger CreateTrigger(string fullTypeName, object[] constructorArguments)
+        {
+            return (PluginTrigger)sandboxDomain.CreateInstanceFromAndUnwrap(
                 pluginAssemblyPath,
                 fullTypeName,
                 false,

@@ -26,7 +26,8 @@ namespace Key2Joy.Contracts.Plugins
         void LoadPlugin(string assemblyPath, string assemblyName, out string loadedChecksum, string expectedChecksum = null);
 
         INativeHandleContract CreateFrameworkElementContract(string controlType);
-        T CreateAspectInstance<T>(string fullTypeName, object[] constructorArguments) where T : AbstractMappingAspect;
+        PluginAction CreateAction(string fullTypeName, object[] constructorArguments);
+        PluginTrigger CreateTrigger(string fullTypeName, object[] constructorArguments);
 
         [OneWay]
         void Terminate();

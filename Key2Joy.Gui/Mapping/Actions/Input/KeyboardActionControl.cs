@@ -30,7 +30,7 @@ namespace Key2Joy.Gui.Mapping
             cmbPressState.SelectedIndex = 0;
         }
 
-        public void Select(AbstractAction action)
+        public void Select(object action)
         {
             var thisAction = (KeyboardAction)action;
 
@@ -38,7 +38,7 @@ namespace Key2Joy.Gui.Mapping
             cmbPressState.SelectedItem = thisAction.PressState;
         }
 
-        public void Setup(AbstractAction action)
+        public void Setup(object action)
         {
             var thisAction = (KeyboardAction)action;
 
@@ -46,7 +46,7 @@ namespace Key2Joy.Gui.Mapping
             thisAction.PressState = (PressState) cmbPressState.SelectedItem;
         }
 
-        public bool CanMappingSave(AbstractAction action)
+        public bool CanMappingSave(object action)
         {
             return true;
         }

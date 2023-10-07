@@ -34,20 +34,20 @@ namespace Key2Joy.Gui.Mapping
             cmbAppCommand.DataSource = appCommands;
         }
 
-        public void Select(AbstractAction action)
+        public void Select(object action)
         {
             var thisAction = (AppCommandAction)action;
 
             cmbAppCommand.SelectedItem = thisAction.Command;
         }
 
-        public void Setup(AbstractAction action)
+        public void Setup(object action)
         { 
             var thisAction = (AppCommandAction)action;
 
             thisAction.Command = (AppCommand)cmbAppCommand.SelectedItem;
         }
-        public bool CanMappingSave(AbstractAction action)
+        public bool CanMappingSave(object action)
         {
             return true;
         }

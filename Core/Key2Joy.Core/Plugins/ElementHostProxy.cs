@@ -23,23 +23,22 @@ namespace Key2Joy.Plugins
             this.contract = contract;
         }
 
-        public bool CanMappingSave(AbstractAction action)
+        public bool CanMappingSave(object action)
         {
-            // TODO: return ((IActionOptionsControl)Child).CanMappingSave(action);
-            contract.RemoteInvokeUI(nameof(CanMappingSave), new object[] { action }); 
-            // How do we get the return value if its executed by a dispatcher across another process and appdomain
-            
-            return false;
+            var realAction = ((PluginActionProxy)action).GetRealObject();
+            return (bool) contract.RemoteInvokeUI(nameof(CanMappingSave), new object[] { realAction });
         }
 
-        public void Select(AbstractAction action)
+        public void Select(object action)
         {
-            contract.RemoteInvokeUI(nameof(Select), new object[] { action });
+            var realAction = ((PluginActionProxy)action).GetRealObject();
+            contract.RemoteInvokeUI(nameof(Select), new object[] { realAction });
         }
 
-        public void Setup(AbstractAction action)
+        public void Setup(object action)
         {
-            contract.RemoteInvokeUI(nameof(Setup), new object[] { action });
+            var realAction = ((PluginActionProxy)action).GetRealObject();
+            contract.RemoteInvokeUI(nameof(Setup), new object[] { realAction });
         }
     }
 }

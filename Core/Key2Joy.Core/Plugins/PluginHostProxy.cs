@@ -235,7 +235,30 @@ namespace Key2Joy.Plugins
         /// <returns></returns>
         public T CreateAspectInstance<T>(string fullTypeName, object[] constructorArguments) where T : AbstractMappingAspect
         {
-            return pluginHost.CreateAspectInstance<T>(fullTypeName, constructorArguments);
+            var type = typeof(T);
+
+            if(type == typeof(AbstractMappingAspect))
+            {
+                // When loading all we get is AbstractMappingAspect and the full name
+                // Look through the factories for one that matches the type, then set to that type
+                if (actionFactories.Any(factory => factory.FullTypeName == fullTypeName))
+                    type = typeof(AbstractAction);
+                else if (triggerFactories.Any(factory => factory.FullTypeName == fullTypeName))
+                    type = typeof(AbstractTrigger);
+            }
+
+            switch (type)
+            {
+                case Type actionType when actionType == typeof(AbstractAction):
+                    var action = pluginHost.CreateAction(fullTypeName, constructorArguments);
+                    return new PluginActionProxy(fullTypeName, action) as T;
+
+                case Type actionType when actionType == typeof(AbstractTrigger):
+                    var trigger = pluginHost.CreateTrigger(fullTypeName, constructorArguments);
+                    return new PluginTriggerProxy(fullTypeName, trigger) as T;
+            }
+
+            throw new NotImplementedException($"Cannot create aspect of type {typeof(T).FullName}");
         }
         
         private static string GetTitle(string typeName)

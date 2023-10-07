@@ -39,21 +39,21 @@ namespace Key2Joy.Plugin.HelloWorld.Mapping
             MessageBox.Show("Hello from GetHelloWorldActionControl!");
         }
 
-        public void Select(AbstractAction action)
+        public void Select(object action)
         {
             var thisAction = (GetHelloWorldAction)action;
 
             txtName.Text = thisAction.Target;
         }
 
-        public void Setup(AbstractAction action)
+        public void Setup(object action)
         {
             var thisAction = (GetHelloWorldAction)action;
 
             thisAction.Target = txtName.Text;
         }
 
-        public bool CanMappingSave(AbstractAction action)
+        public bool CanMappingSave(object action)
         {
             return true;
         }

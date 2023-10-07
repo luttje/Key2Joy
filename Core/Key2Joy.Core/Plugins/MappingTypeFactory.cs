@@ -74,7 +74,7 @@ namespace Key2Joy.Plugins
         
         public override T CreateInstance<T>(object[] constructorArguments)
         {
-            return (T)pluginHost.CreateAspectInstance<T>(FullTypeName, constructorArguments);
+            return (T)pluginHost.CreateAspectInstance<T>(FullTypeName, new object[0]); // Strip the constructor arguments, as they are not supported by the plugin host.
         }
 
         /// <summary>

@@ -27,11 +27,11 @@ namespace Key2Joy.Contracts.Plugins
             return ConvertToContract((FrameworkElement)instance);
         }
 
-        public void RemoteInvoke(string methodName, object[] parameters)
+        public object RemoteInvoke(string methodName, object[] parameters)
         {
             var type = instance.GetType();
             var mi = type.GetMethod(methodName);
-            mi.Invoke(instance, parameters);
+            return mi.Invoke(instance, parameters);
         }
     }
 }

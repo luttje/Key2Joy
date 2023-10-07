@@ -32,7 +32,7 @@ namespace Key2Joy.Gui.Mapping
             cmbGamePadIndex.SelectedIndex = 0;
         }
 
-        public void Select(AbstractAction action)
+        public void Select(object action)
         {
             var thisAction = (GamePadAction)action;
 
@@ -41,7 +41,7 @@ namespace Key2Joy.Gui.Mapping
             cmbGamePadIndex.SelectedItem = thisAction.GamePadIndex;
         }
 
-        public void Setup(AbstractAction action)
+        public void Setup(object action)
         {
             var thisAction = (GamePadAction)action;
 
@@ -50,7 +50,7 @@ namespace Key2Joy.Gui.Mapping
             thisAction.GamePadIndex = (int)cmbGamePadIndex.SelectedItem;
         }
 
-        public bool CanMappingSave(AbstractAction action)
+        public bool CanMappingSave(object action)
         {
             return true;
         }

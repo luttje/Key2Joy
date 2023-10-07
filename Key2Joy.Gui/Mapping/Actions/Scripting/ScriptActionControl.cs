@@ -25,7 +25,7 @@ namespace Key2Joy.Gui.Mapping
             pnlFileInput.Visible = !chkDirectInput.Checked;
         }
 
-        public void Select(AbstractAction action)
+        public void Select(object action)
         {
             var thisAction = (BaseScriptAction)action;
 
@@ -51,7 +51,7 @@ namespace Key2Joy.Gui.Mapping
             pnlFileInput.Visible = !chkDirectInput.Checked;
         }
 
-        public void Setup(AbstractAction action)
+        public void Setup(object action)
         {
             var thisAction = (BaseScriptAction)action;
 
@@ -66,7 +66,7 @@ namespace Key2Joy.Gui.Mapping
             thisAction.Script = txtScript.Text;
         }
 
-        public bool CanMappingSave(AbstractAction action)
+        public bool CanMappingSave(object action)
         {
             return MessageBox.Show(
                 "Scripts can click and type like you do and therefor impersonate you. "
