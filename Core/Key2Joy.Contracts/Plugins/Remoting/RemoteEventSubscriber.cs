@@ -56,6 +56,11 @@ namespace Key2Joy.Contracts.Plugins
             return subscription;
         }
 
+        public static void UnsubscribeEvent(string subscriptionId)
+        {
+            subscriptions.Remove(subscriptionId);
+        }
+
         public static bool TryGetSubscription(string subscriptionId, out FullSubscriptionInfo subscription)
         {
             return subscriptions.TryGetValue(subscriptionId, out subscription);

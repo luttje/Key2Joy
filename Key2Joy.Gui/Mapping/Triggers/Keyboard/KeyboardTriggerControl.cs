@@ -33,6 +33,8 @@ namespace Key2Joy.Gui.Mapping
             // Relieve input capturing by this mapping form
             Disposed += (s, e) =>
             {
+                if (globalKeyboardHook == null) return;
+                
                 globalKeyboardHook.KeyboardInputEvent -= OnKeyInputEvent;
                 globalKeyboardHook.Dispose();
                 globalKeyboardHook = null;

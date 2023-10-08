@@ -232,13 +232,21 @@ namespace Key2Joy.Plugins
                 var contract = (NativeHandleContractInsulator)pluginHost.CreateFrameworkElementContract(controlTypeName, subscribedEvents);
                 var remoteControl = FrameworkElementAdapters.ContractToViewAdapter(contract);
                 var control = new ElementHostProxy(remoteControl, contract);
+                
                 subscribeOptionsChanged.CustomSender = control;
                 pluginHost.AnyEvent += PluginHost_AnyEvent;
+
+                // We need to unsubscribe, otherwise the plugin view will freeze up.
+                control.Disposed += (s, e) =>
+                {
+                    pluginHost.AnyEvent -= PluginHost_AnyEvent;
+                    RemoteEventSubscriber.UnsubscribeEvent(subscribeOptionsChanged.Subscription.Id);
+                };
                 return control;
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("Error creating plugin control!", $"Error creating plugin control: {ex.Message}", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error creating plugin control!", $"Error creating plugin control: {ex.Message}", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return null;
             }
         }

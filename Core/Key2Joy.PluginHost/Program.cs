@@ -35,7 +35,7 @@ namespace Key2Joy.PluginHost
             }
 
             SetConsoleCtrlHandler(ProcessExitHandler, true);
-            
+
             try
             {
                 portName = args[0];
