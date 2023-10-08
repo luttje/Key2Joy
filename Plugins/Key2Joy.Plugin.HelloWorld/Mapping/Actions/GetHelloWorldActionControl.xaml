@@ -6,8 +6,22 @@
              xmlns:local="clr-namespace:Key2Joy.Plugin.HelloWorld.Mapping"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
-    <StackPanel Orientation="Vertical">
-        <TextBox x:Name="txtName" TextChanged="txtName_TextChanged" />
-        <Button x:Name="btnHelloWorld" Click="btnHelloWorld_Click">Hello...</Button>
-    </StackPanel>
+    <DockPanel 
+        VerticalAlignment="Stretch" 
+        Height="Auto">
+        
+        <TextBox DockPanel.Dock="Top" 
+                 x:Name="txtName" 
+                 TextChanged="txtName_TextChanged" 
+                 Padding="5" />
+        
+        <Button DockPanel.Dock="Top" 
+                x:Name="btnHelloWorld" 
+                Click="btnHelloWorld_Click" 
+                Margin="0,5,0,0"
+                Padding="5" 
+                VerticalAlignment="Stretch">
+            Hello...
+        </Button>
+    </DockPanel >
 </UserControl>

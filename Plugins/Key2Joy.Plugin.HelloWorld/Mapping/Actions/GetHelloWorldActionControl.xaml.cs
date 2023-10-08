@@ -25,14 +25,12 @@ namespace Key2Joy.Plugin.HelloWorld.Mapping
     {
         public event EventHandler OptionsChanged;
         
-        public int DesiredHeight { get; set; } = 50;
-
         public GetHelloWorldActionControl()
         {
             InitializeComponent();
-
-            this.DesiredHeight = 50;
         }
+
+        public int GetDesiredHeight() => 50;
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {

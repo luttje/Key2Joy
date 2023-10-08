@@ -33,7 +33,7 @@ namespace Key2Joy.Gui.Mapping
             this.pluginControlWithOptions = pluginUserControl;
 
             Padding = new Padding(0, 5, 0, 5);
-            var desiredHeight = 50; // TODO: mappingControl.DesiredHeight
+            var desiredHeight = pluginUserControl.GetDesiredHeight() + Padding.Vertical;
             Height = desiredHeight + this.Padding.Vertical;
 
             this.Controls.Add(pluginUserControl);

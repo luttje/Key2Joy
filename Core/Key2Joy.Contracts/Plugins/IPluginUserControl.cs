@@ -8,6 +8,6 @@ namespace Key2Joy.Contracts.Plugins
 {
     public interface IPluginUserControl
     {
-        int DesiredHeight { get; set; }
+        int GetDesiredHeight();
     }
 }

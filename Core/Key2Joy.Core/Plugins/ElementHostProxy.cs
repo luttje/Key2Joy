@@ -13,7 +13,7 @@ namespace Key2Joy.Plugins
     public class ElementHostProxy : ElementHost, IActionOptionsControl
     {
         public event EventHandler OptionsChanged;
-        
+
         private NativeHandleContractInsulator contract;
 
         public ElementHostProxy(FrameworkElement child, NativeHandleContractInsulator contract)
@@ -44,6 +44,11 @@ namespace Key2Joy.Plugins
         {
             var realAction = ((PluginActionProxy)action).GetRealObject();
             contract.RemoteInvokeUI(nameof(Setup), new object[] { realAction });
+        }
+
+        public int GetDesiredHeight()
+        {
+            return (int)contract.RemoteInvokeUI(nameof(GetDesiredHeight), new object[] { });
         }
     }
 }
