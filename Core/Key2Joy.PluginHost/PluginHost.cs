@@ -99,10 +99,11 @@ namespace Key2Joy.PluginHost
             // Allow writing to the plugin directory
             var pluginDataDirectory = Path.Combine(pluginDirectory, "data");
             Directory.CreateDirectory(pluginDataDirectory);
-            permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.Write, pluginDataDirectory));
+            permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.AllAccess, pluginDataDirectory));
 
             sandboxDomain = AppDomain.CreateDomain("Sandbox", evidence, sandboxDomainSetup, permissions);
             loadedPlugin = (PluginBase)sandboxDomain.CreateInstanceAndUnwrap(assemblyName, pluginTypeName);
+            loadedPlugin.PluginDataDirectory = pluginDataDirectory;
         }
 
         public string GetPluginName()
@@ -184,7 +185,7 @@ namespace Key2Joy.PluginHost
 
         public PluginActionInsulator CreateAction(string fullTypeName, object[] constructorArguments)
         {
-            return new PluginActionInsulator((PluginAction)sandboxDomain.CreateInstanceFromAndUnwrap(
+            var pluginAction = (PluginAction)sandboxDomain.CreateInstanceFromAndUnwrap(
                 pluginAssemblyPath,
                 fullTypeName,
                 false,
@@ -193,12 +194,14 @@ namespace Key2Joy.PluginHost
                 constructorArguments,
                 null,
                 null
-            ));
+            );
+            pluginAction.Plugin = loadedPlugin;
+            return new PluginActionInsulator(pluginAction);
         }
 
         public PluginTriggerInsulator CreateTrigger(string fullTypeName, object[] constructorArguments)
         {
-            return new PluginTriggerInsulator((PluginTrigger)sandboxDomain.CreateInstanceFromAndUnwrap(
+            var pluginTrigger = (PluginTrigger)sandboxDomain.CreateInstanceFromAndUnwrap(
                 pluginAssemblyPath,
                 fullTypeName,
                 false,
@@ -207,7 +210,9 @@ namespace Key2Joy.PluginHost
                 constructorArguments,
                 null,
                 null
-            ));
+            );
+            pluginTrigger.Plugin = loadedPlugin;
+            return new PluginTriggerInsulator(pluginTrigger);
         }
 
         public void Test_AnyEvent(object sender, RemoteEventArgs e)

@@ -30,9 +30,6 @@ namespace Key2Joy.Gui
 
         protected override void OnDrawItem(DrawItemEventArgs e)
         {
-            if (!AppDomainHelper.GetIsOwnDomain()) 
-                return;
-            
             if (e.Index < 0)
                 return;
 

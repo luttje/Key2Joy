@@ -139,10 +139,6 @@ namespace Key2Joy.LowLevelInput
 
         public IntPtr LowLevelInputHook(int nCode, IntPtr wParam, IntPtr lParam)
         {
-            // We must catch this, since the KeyboardTriggerControl instantiates this class, but may be on a different thread (from a plugin??)
-            if (!AppDomainHelper.GetIsOwnDomain())
-                return (IntPtr)0;
-
             var isInputHandled = false;
             var wparamTyped = wParam.ToInt32();
 

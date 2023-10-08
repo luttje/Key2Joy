@@ -44,5 +44,19 @@ namespace Key2Joy.Plugins
         {
             return source.GetNameDisplay(Name);
         }
+
+        internal object InvokeScriptMethod(string methodName, object[] parameters)
+        {
+            try
+            {
+                return source.InvokeScriptMethod(methodName, parameters);
+            }
+            catch (Exception ex)
+            {
+                // TODO: Handle this better
+                System.Windows.Forms.MessageBox.Show(ex.ToString());
+                throw ex;
+            }
+        }
     }
 }

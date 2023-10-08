@@ -93,10 +93,8 @@ namespace Key2Joy.Mapping
 
             if (exposedMethod is PluginExposedMethod methodNeedProxy)
             {
-                //var proxyHost = new ActionScriptProxyHost(methodNeedProxy.AppDomain, methodNeedProxy.AssemblyPath, instance, methodNeedProxy.MethodName);
-                //proxyHost.RegisterParameterTransformer<LuaFunction>(luaFunction => new WrappedPluginType((Delegate)luaFunction.Call));
-                //environment.RegisterFunction(functionName, proxyHost, proxyHost.GetExecutorMethodInfo());
-                throw new NotImplementedException("TODO: Proxy to plugin host");
+                methodNeedProxy.RegisterParameterTransformer<LuaFunction>(luaFunction => new WrappedPluginType((Delegate)luaFunction.Call));
+                environment.RegisterFunction(functionName, methodNeedProxy, methodNeedProxy.GetExecutorMethodInfo((PluginActionProxy)instance));
                 return;
             }
 

@@ -1,8 +1,10 @@
 ﻿using Key2Joy.Contracts.Mapping;
 using Key2Joy.Util;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Serialization;
 
 namespace Key2Joy.Plugins
 {
@@ -40,9 +42,12 @@ namespace Key2Joy.Plugins
 
     public class PluginExposedMethod : ExposedMethod
     {
-        private PluginHostProxy pluginHost;
         public string TypeName { get; protected set; }
-
+        
+        private PluginHostProxy pluginHost;
+        private Dictionary<Type, Func<object, object>> parameterTransformers = new();
+        private PluginActionProxy currentInstance;
+        
         public PluginExposedMethod(PluginHostProxy pluginHost, string typeName, string functionName, string methodName)
             : base(functionName, methodName)
         {
@@ -52,9 +57,57 @@ namespace Key2Joy.Plugins
 
         public override Delegate CreateDelegate(AbstractAction instance)
         {
-            //var proxyHost = new ActionScriptProxyHost(AppDomain, AssemblyPath, instance, MethodName);
-            //return proxyHost.GetExecutorMethodInfo().CreateDelegate(proxyHost);
-            return null; // TODO: Create delegate that calls the plugin through its host
+            var methodInfo = GetExecutorMethodInfo((PluginActionProxy)instance);
+            var parameters = methodInfo.GetParameters();
+            var parameterTypes = parameters.Select(p => p.ParameterType).ToArray();
+            var delegateType = ExpressionUtil.GetDelegateType(parameterTypes, methodInfo.ReturnType);
+            var executor = methodInfo.CreateDelegate(delegateType, this);
+
+            return executor;
+        }
+
+        public void RegisterParameterTransformer<T>(Func<T, object> transformer)
+        {
+            parameterTransformers.Add(typeof(T), o =>
+            {
+                return transformer((T)o);
+            });
+        }
+
+        public object TransformAndRedirect(params object[] parameters)
+        {
+            // Check if any of the parameters are not serializable/MarshalByRefObject and need to be wrapped.
+            var transformedParameters = parameters.Select(p =>
+            {
+                if (parameterTransformers.TryGetValue(p.GetType(), out var transformer))
+                {
+                    return transformer(p);
+                }
+
+                if (p is MarshalByRefObject || p is ISerializable)
+                {
+                    return p;
+                }
+
+                if (p.GetType().IsSerializable)
+                {
+                    return p;
+                }
+
+                throw new NotImplementedException("Parameter type not supported to cross AppDomain boundary: " + p.GetType().FullName);
+            }).ToArray();
+
+            return this.currentInstance.InvokeScriptMethod(MethodName, transformedParameters);
+        }
+
+        /// <summary>
+        /// MethodInfo that can be bound to scripts
+        /// </summary>
+        /// <returns></returns>
+        public MethodInfo GetExecutorMethodInfo(PluginActionProxy instance)
+        {
+            this.currentInstance = instance;
+            return typeof(PluginExposedMethod).GetMethod(nameof(TransformAndRedirect));
         }
     }
 }

@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Windows;
 using Key2Joy.Contracts.Plugins;
+using System.IO;
 
 namespace Key2Joy.Plugin.HelloWorld.Mapping
 {
@@ -31,7 +32,11 @@ namespace Key2Joy.Plugin.HelloWorld.Mapping
         [ExposesScriptingMethod("Hello.World")]
         public void ExecuteForScript(string target)
         {
-            MessageBox.Show($"Hello {target} / {Target}!");
+            var fileWriter = File.AppendText(Path.Combine(Plugin.PluginDataDirectory, "test.txt"));
+            fileWriter.AutoFlush = true;
+            fileWriter.WriteLine($"Hello {target}!");
+            fileWriter.Close();
+            //MessageBox.Show($"Hello {target} / {Target}!"); // Very laggy for some reason
         }
         
         public override MappingAspectOptions BuildSaveOptions(MappingAspectOptions options)

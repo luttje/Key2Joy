@@ -17,9 +17,6 @@ namespace Key2Joy.Plugin.HelloWorld
         public override string Website => "https://github.com/luttje/Key2Joy";
 
         public override void Initialize() 
-        {
-            // Write to plugin data directory (will be created by Key2Joy before loading the plugin)
-            File.WriteAllText($"{PluginDataDirectory}/test.txt", "Hello World!");
-        }
+        { }
     }
 }
