@@ -6,115 +6,108 @@ using System.Runtime.Serialization;
 using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Util;
 
-namespace Key2Joy.Plugins
+namespace Key2Joy.Plugins;
+
+public abstract class ExposedMethod
 {
-    public abstract class ExposedMethod
+    public string FunctionName { get; protected set; }
+    public string MethodName { get; protected set; }
+
+    public ExposedMethod(string functionName, string methodName)
     {
-        public string FunctionName { get; protected set; }
-        public string MethodName { get; protected set; }
-
-        public ExposedMethod(string functionName, string methodName)
-        {
-            this.FunctionName = functionName;
-            this.MethodName = methodName;
-        }
-
-        public abstract Delegate CreateDelegate(AbstractAction instance);
+        this.FunctionName = functionName;
+        this.MethodName = methodName;
     }
 
-    public class TypeExposedMethod : ExposedMethod
+    public abstract Delegate CreateDelegate(AbstractAction instance);
+}
+
+public class TypeExposedMethod : ExposedMethod
+{
+    public Type Type { get; protected set; }
+
+    public TypeExposedMethod(string functionName, string methodName, Type type)
+        : base(functionName, methodName) => this.Type = type;
+
+    public override Delegate CreateDelegate(AbstractAction instance)
     {
-        public Type Type { get; protected set; }
+        var method = this.Type.GetMethod(this.MethodName);
 
-        public TypeExposedMethod(string functionName, string methodName, Type type)
-            : base(functionName, methodName)
-        {
-            this.Type = type;
-        }
+        return method.CreateDelegate(instance);
+    }
+}
 
-        public override Delegate CreateDelegate(AbstractAction instance)
-        {
-            var method = this.Type.GetMethod(this.MethodName);
+public class PluginExposedMethod : ExposedMethod
+{
+    public string TypeName { get; protected set; }
 
-            return method.CreateDelegate(instance);
-        }
+    private readonly PluginHostProxy pluginHost;
+    private readonly Dictionary<Type, Func<object, object>> parameterTransformers = new();
+    private PluginActionProxy currentInstance;
+
+    public PluginExposedMethod(PluginHostProxy pluginHost, string typeName, string functionName, string methodName)
+        : base(functionName, methodName)
+    {
+        this.pluginHost = pluginHost;
+        this.TypeName = typeName;
     }
 
-    public class PluginExposedMethod : ExposedMethod
+    public override Delegate CreateDelegate(AbstractAction instance)
     {
-        public string TypeName { get; protected set; }
+        var methodInfo = this.GetExecutorMethodInfo((PluginActionProxy)instance);
+        var parameters = methodInfo.GetParameters();
+        var parameterTypes = parameters.Select(p => p.ParameterType).ToArray();
+        var delegateType = ExpressionUtil.GetDelegateType(parameterTypes, methodInfo.ReturnType);
+        var executor = methodInfo.CreateDelegate(delegateType, this);
 
-        private readonly PluginHostProxy pluginHost;
-        private readonly Dictionary<Type, Func<object, object>> parameterTransformers = new();
-        private PluginActionProxy currentInstance;
+        return executor;
+    }
 
-        public PluginExposedMethod(PluginHostProxy pluginHost, string typeName, string functionName, string methodName)
-            : base(functionName, methodName)
+    public void RegisterParameterTransformer<T>(Func<T, object> transformer)
+    {
+        var key = typeof(T);
+
+        if (this.parameterTransformers.ContainsKey(key))
         {
-            this.pluginHost = pluginHost;
-            this.TypeName = typeName;
+            this.parameterTransformers.Remove(key);
         }
 
-        public override Delegate CreateDelegate(AbstractAction instance)
+        this.parameterTransformers.Add(key, o => transformer((T)o));
+    }
+
+    public object TransformAndRedirect(params object[] parameters)
+    {
+        // Check if any of the parameters are not serializable/MarshalByRefObject and need to be wrapped.
+        var transformedParameters = parameters.Select(p =>
         {
-            var methodInfo = this.GetExecutorMethodInfo((PluginActionProxy)instance);
-            var parameters = methodInfo.GetParameters();
-            var parameterTypes = parameters.Select(p => p.ParameterType).ToArray();
-            var delegateType = ExpressionUtil.GetDelegateType(parameterTypes, methodInfo.ReturnType);
-            var executor = methodInfo.CreateDelegate(delegateType, this);
-
-            return executor;
-        }
-
-        public void RegisterParameterTransformer<T>(Func<T, object> transformer)
-        {
-            var key = typeof(T);
-
-            if (this.parameterTransformers.ContainsKey(key))
+            if (this.parameterTransformers.TryGetValue(p.GetType(), out var transformer))
             {
-                this.parameterTransformers.Remove(key);
+                return transformer(p);
             }
 
-            this.parameterTransformers.Add(key, o =>
+            if (p is MarshalByRefObject or ISerializable)
             {
-                return transformer((T)o);
-            });
-        }
+                return p;
+            }
 
-        public object TransformAndRedirect(params object[] parameters)
-        {
-            // Check if any of the parameters are not serializable/MarshalByRefObject and need to be wrapped.
-            var transformedParameters = parameters.Select(p =>
+            if (p.GetType().IsSerializable)
             {
-                if (this.parameterTransformers.TryGetValue(p.GetType(), out var transformer))
-                {
-                    return transformer(p);
-                }
+                return p;
+            }
 
-                if (p is MarshalByRefObject or ISerializable)
-                {
-                    return p;
-                }
+            throw new NotImplementedException("Parameter type not supported to cross AppDomain boundary: " + p.GetType().FullName);
+        }).ToArray();
 
-                if (p.GetType().IsSerializable)
-                {
-                    return p;
-                }
+        return this.currentInstance.InvokeScriptMethod(this.MethodName, transformedParameters);
+    }
 
-                throw new NotImplementedException("Parameter type not supported to cross AppDomain boundary: " + p.GetType().FullName);
-            }).ToArray();
-
-            return this.currentInstance.InvokeScriptMethod(this.MethodName, transformedParameters);
-        }
-
-        /// <summary>
-        /// MethodInfo that can be bound to scripts
-        /// </summary>
-        /// <returns></returns>
-        public MethodInfo GetExecutorMethodInfo(PluginActionProxy instance)
-        {
-            this.currentInstance = instance;
-            return typeof(PluginExposedMethod).GetMethod(nameof(TransformAndRedirect));
-        }
+    /// <summary>
+    /// MethodInfo that can be bound to scripts
+    /// </summary>
+    /// <returns></returns>
+    public MethodInfo GetExecutorMethodInfo(PluginActionProxy instance)
+    {
+        this.currentInstance = instance;
+        return typeof(PluginExposedMethod).GetMethod(nameof(TransformAndRedirect));
     }
 }

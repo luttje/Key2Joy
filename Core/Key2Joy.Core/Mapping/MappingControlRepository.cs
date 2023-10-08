@@ -5,80 +5,76 @@ using System.Reflection;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.Plugins;
 
-namespace Key2Joy.Mapping
+namespace Key2Joy.Mapping;
+
+public static class MappingControlRepository
 {
-    public static class MappingControlRepository
+    private static Dictionary<string, MappingControlFactory> mappingControls;
+
+    /// <summary>
+    /// Check all types for the MappingControl attribute and store them for later use. Optionally merging it with additional Mapping Controls.
+    /// </summary>
+    /// <param name="additionalMappingControlFactories"></param>
+    public static void Buffer(IReadOnlyList<MappingControlFactory> additionalMappingControlFactories = null)
     {
-        private static Dictionary<string, MappingControlFactory> mappingControls;
+        mappingControls = new Dictionary<string, MappingControlFactory>();
 
-        /// <summary>
-        /// Check all types for the MappingControl attribute and store them for later use. Optionally merging it with additional Mapping Controls.
-        /// </summary>
-        /// <param name="additionalMappingControlFactories"></param>
-        public static void Buffer(IReadOnlyList<MappingControlFactory> additionalMappingControlFactories = null)
+        foreach (var type in AppDomain.CurrentDomain.GetAssemblies().SelectMany(a => a.GetTypes()))
         {
-            mappingControls = new Dictionary<string, MappingControlFactory>();
-
-            foreach (var type in AppDomain.CurrentDomain.GetAssemblies().SelectMany(a => a.GetTypes()))
+            var attribute = type.GetCustomAttribute<MappingControlAttribute>();
+            if (attribute == null)
             {
-                var attribute = type.GetCustomAttribute<MappingControlAttribute>();
-                if (attribute == null)
-                {
-                    continue;
-                }
-
-                if (attribute.ForType != null)
-                {
-                    mappingControls.Add(attribute.ForType.FullName, new TypeMappingControlFactory(attribute.ForType.FullName, attribute.ImageResourceName, type));
-                }
-
-                if (attribute.ForTypes != null)
-                {
-                    foreach (var forType in attribute.ForTypes)
-                    {
-                        mappingControls.Add(forType.FullName, new TypeMappingControlFactory(forType.FullName, attribute.ImageResourceName, type));
-                    }
-                }
+                continue;
             }
 
-            if (additionalMappingControlFactories == null)
+            if (attribute.ForType != null)
             {
-                return;
+                mappingControls.Add(attribute.ForType.FullName, new TypeMappingControlFactory(attribute.ForType.FullName, attribute.ImageResourceName, type));
             }
 
-            foreach (var mappingControlFactory in additionalMappingControlFactories)
+            if (attribute.ForTypes != null)
             {
-                if (mappingControls.ContainsKey(mappingControlFactory.ForTypeFullName))
+                foreach (var forType in attribute.ForTypes)
                 {
-                    Console.WriteLine("Mapping Control {0} already exists in the action buffer. Overwriting.", mappingControlFactory.ForTypeFullName);
+                    mappingControls.Add(forType.FullName, new TypeMappingControlFactory(forType.FullName, attribute.ImageResourceName, type));
                 }
-
-                mappingControls.Add(mappingControlFactory.ForTypeFullName, mappingControlFactory);
             }
         }
 
-        /// <summary>
-        /// Gets all mapping controls and their targetted typename
-        /// </summary>
-        /// <returns></returns>
-        public static Dictionary<string, MappingControlFactory> GetAllMappingControls()
+        if (additionalMappingControlFactories == null)
         {
-            return mappingControls;
+            return;
         }
 
-        /// <summary>
-        /// Gets a specific mapping control factory by its type name
-        /// </summary>
-        /// <param name="typeFullName"></param>
-        /// <returns></returns>
-        public static MappingControlFactory GetMappingControlFactory(string typeFullName)
+        foreach (var mappingControlFactory in additionalMappingControlFactories)
         {
-            if (mappingControls.TryGetValue(typeFullName, out var mappingControlFactory))
+            if (mappingControls.ContainsKey(mappingControlFactory.ForTypeFullName))
             {
-                return mappingControlFactory;
+                Console.WriteLine("Mapping Control {0} already exists in the action buffer. Overwriting.", mappingControlFactory.ForTypeFullName);
             }
 
-            return null;
+            mappingControls.Add(mappingControlFactory.ForTypeFullName, mappingControlFactory);
         }
+    }
+
+    /// <summary>
+    /// Gets all mapping controls and their targetted typename
+    /// </summary>
+    /// <returns></returns>
+    public static Dictionary<string, MappingControlFactory> GetAllMappingControls() => mappingControls;
+
+    /// <summary>
+    /// Gets a specific mapping control factory by its type name
+    /// </summary>
+    /// <param name="typeFullName"></param>
+    /// <returns></returns>
+    public static MappingControlFactory GetMappingControlFactory(string typeFullName)
+    {
+        if (mappingControls.TryGetValue(typeFullName, out var mappingControlFactory))
+        {
+            return mappingControlFactory;
+        }
+
+        return null;
     }
 }

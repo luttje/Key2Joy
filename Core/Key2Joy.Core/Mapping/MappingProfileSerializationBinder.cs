@@ -1,32 +1,31 @@
-﻿namespace Key2Joy.Mapping
-{
-    // TODO: ? Or will System.Text.Json figure out valid and plugin types itself?
-    //public class MappingProfileSerializationBinder : ISerializationBinder
-    //{
-    //    private List<MappingTypeFactory> allowedTypes;
+﻿namespace Key2Joy.Mapping;
 
-    //    public MappingProfileSerializationBinder()
-    //    {
-    //        allowedTypes = new List<MappingTypeFactory>();
+// TODO: ? Or will System.Text.Json figure out valid and plugin types itself?
+//public class MappingProfileSerializationBinder : ISerializationBinder
+//{
+//    private List<MappingTypeFactory> allowedTypes;
 
-    //        allowedTypes.AddRange(
-    //            ActionsRepository.GetAllActions().Select(x => x.Value).ToList()
-    //        );
+//    public MappingProfileSerializationBinder()
+//    {
+//        allowedTypes = new List<MappingTypeFactory>();
 
-    //        allowedTypes.AddRange(
-    //            TriggersRepository.GetAllTriggers().Select(x => x.Value).ToList()
-    //        );
-    //    }
+//        allowedTypes.AddRange(
+//            ActionsRepository.GetAllActions().Select(x => x.Value).ToList()
+//        );
 
-    //    public Type BindToType(string assemblyName, string fullTypeName)
-    //    {
-    //        return allowedTypes.SingleOrDefault(t => t.FullTypeName == fullTypeName)?.ToType() ?? null;
-    //    }
+//        allowedTypes.AddRange(
+//            TriggersRepository.GetAllTriggers().Select(x => x.Value).ToList()
+//        );
+//    }
 
-    //    public void BindToName(Type serializedType, out string assemblyName, out string typeName)
-    //    {
-    //        assemblyName = null;
-    //        typeName = serializedType.FullName;
-    //    }
-    //}
-}
+//    public Type BindToType(string assemblyName, string fullTypeName)
+//    {
+//        return allowedTypes.SingleOrDefault(t => t.FullTypeName == fullTypeName)?.ToType() ?? null;
+//    }
+
+//    public void BindToName(Type serializedType, out string assemblyName, out string typeName)
+//    {
+//        assemblyName = null;
+//        typeName = serializedType.FullName;
+//    }
+//}

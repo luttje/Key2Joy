@@ -1,7 +1,6 @@
-﻿namespace Key2Joy.Mapping
+﻿namespace Key2Joy.Mapping;
+
+public interface IReturnInputHash
 {
-    public interface IReturnInputHash
-    {
-        int GetInputHash();
-    }
+    int GetInputHash();
 }

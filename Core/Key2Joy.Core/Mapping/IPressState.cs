@@ -1,9 +1,8 @@
 ﻿using Key2Joy.LowLevelInput;
 
-namespace Key2Joy.Mapping
+namespace Key2Joy.Mapping;
+
+public interface IPressState
 {
-    public interface IPressState
-    {
-        PressState PressState { get; set; }
-    }
+    PressState PressState { get; set; }
 }

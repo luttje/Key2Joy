@@ -9,197 +9,188 @@ using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.Util;
 
-namespace Key2Joy.Mapping
+namespace Key2Joy.Mapping;
+
+public class MappingProfile
 {
-    public class MappingProfile
+    private const int NO_VERSION = 0;
+    private const int CURRENT_VERSION = 5;
+
+    public const string DEFAULT_PROFILE_PATH = "default-profile";
+    public const string EXTENSION = ".k2j.json";
+
+    public const string LEGACY_SAVE_DIR = "Presets";
+    public const string SAVE_DIR = "Profiles";
+
+    public BindingList<MappedOption> MappedOptions { get; set; } = new BindingList<MappedOption>();
+
+    public string Name { get; set; }
+
+    public int Version { get; set; } = NO_VERSION; // Version is set on save
+
+    [JsonIgnore]
+    public string FilePath { get; private set; }
+
+    [JsonIgnore]
+    public string Display => $"{this.Name} ({Path.GetFileName(this.FilePath)})";
+
+    [JsonConstructor]
+    public MappingProfile(string name, BindingList<MappedOption> mappedOptions = null)
     {
-        private const int NO_VERSION = 0;
-        private const int CURRENT_VERSION = 5;
+        this.Name = name;
 
-        public const string DEFAULT_PROFILE_PATH = "default-profile";
-        public const string EXTENSION = ".k2j.json";
+        var directory = GetSaveDirectory();
 
-        public const string LEGACY_SAVE_DIR = "Presets";
-        public const string SAVE_DIR = "Profiles";
+        this.FilePath ??= FileSystem.FindNonExistingFile(Path.Combine(directory, $"profile-%VERSION%{EXTENSION}"));
 
-        public BindingList<MappedOption> MappedOptions { get; set; } = new BindingList<MappedOption>();
-
-        public string Name { get; set; }
-
-        public int Version { get; set; } = NO_VERSION; // Version is set on save
-
-        [JsonIgnore]
-        public string FilePath => this.filePath;
-
-        [JsonIgnore]
-        public string Display => $"{this.Name} ({Path.GetFileName(this.filePath)})";
-
-        private string filePath;
-
-        [JsonConstructor]
-        public MappingProfile(string name, BindingList<MappedOption> mappedOptions = null)
-        {
-            this.Name = name;
-
-            var directory = GetSaveDirectory();
-
-            this.filePath ??= FileSystem.FindNonExistingFile(Path.Combine(directory, $"profile-%VERSION%{EXTENSION}"));
-
-            if (mappedOptions != null)
-            {
-                foreach (var mappedOption in mappedOptions)
-                {
-                    this.MappedOptions.Add((MappedOption)mappedOption.Clone());
-                }
-            }
-        }
-
-        public void AddMapping(MappedOption mappedOption)
-        {
-            this.MappedOptions.Add(mappedOption);
-        }
-
-        public void AddMappingRange(IEnumerable<MappedOption> mappedOptions)
+        if (mappedOptions != null)
         {
             foreach (var mappedOption in mappedOptions)
             {
                 this.MappedOptions.Add((MappedOption)mappedOption.Clone());
             }
         }
+    }
 
-        public void RemoveMapping(MappedOption mappedOption)
+    public void AddMapping(MappedOption mappedOption) => this.MappedOptions.Add(mappedOption);
+
+    public void AddMappingRange(IEnumerable<MappedOption> mappedOptions)
+    {
+        foreach (var mappedOption in mappedOptions)
         {
-            this.MappedOptions.Remove(mappedOption);
+            this.MappedOptions.Add((MappedOption)mappedOption.Clone());
+        }
+    }
+
+    public void RemoveMapping(MappedOption mappedOption) => this.MappedOptions.Remove(mappedOption);
+
+    public bool TryGetMappedOption(AbstractTrigger trigger, out MappedOption mappedOption)
+    {
+        mappedOption = this.MappedOptions.FirstOrDefault(mo => mo.Trigger == trigger);
+        return mappedOption != null;
+    }
+
+    public void Save()
+    {
+        var options = GetSerializerOptions();
+
+        this.Version = CURRENT_VERSION;
+        File.WriteAllText(this.FilePath, JsonSerializer.Serialize(this, options));
+    }
+
+    private bool PostLoad(string filePath)
+    {
+        this.FilePath = filePath;
+
+        return true;
+    }
+
+    private static string GetDefaultPath() => Path.Combine(GetSaveDirectory(), $"{DEFAULT_PROFILE_PATH}{EXTENSION}");
+
+    public static void ExtractDefaultIfNotExists()
+    {
+        var defaultPath = GetDefaultPath();
+
+        if (File.Exists(defaultPath))
+        {
+            return;
         }
 
-        public bool TryGetMappedOption(AbstractTrigger trigger, out MappedOption mappedOption)
+        using (FileStream file = new(defaultPath, FileMode.Create, FileAccess.Write))
+        using (BinaryWriter writer = new(file))
         {
-            mappedOption = this.MappedOptions.FirstOrDefault(mo => mo.Trigger == trigger);
-            return mappedOption != null;
+            writer.Write(Properties.Resources.default_profile_k2j);
         }
 
-        public void Save()
+        if (ConfigManager.Config.LastLoadedProfile == null)
         {
-            var options = GetSerializerOptions();
-
-            this.Version = CURRENT_VERSION;
-            File.WriteAllText(this.filePath, JsonSerializer.Serialize(this, options));
+            ConfigManager.Config.LastLoadedProfile = defaultPath;
         }
+    }
 
-        private bool PostLoad(string filePath)
+    public static MappingProfile Load(string filePath)
+    {
+        var options = GetSerializerOptions();
+
+        MappingProfile profile;
+
+        if (!File.Exists(filePath))
         {
-            this.filePath = filePath;
-
-            return true;
-        }
-
-        private static string GetDefaultPath() => Path.Combine(GetSaveDirectory(), $"{DEFAULT_PROFILE_PATH}{EXTENSION}");
-
-        public static void ExtractDefaultIfNotExists()
-        {
-            var defaultPath = GetDefaultPath();
-
-            if (File.Exists(defaultPath))
-            {
-                return;
-            }
-
-            using (FileStream file = new(defaultPath, FileMode.Create, FileAccess.Write))
-            using (BinaryWriter writer = new(file))
-            {
-                writer.Write(Properties.Resources.default_profile_k2j);
-            }
-
-            if (ConfigManager.Config.LastLoadedProfile == null)
-            {
-                ConfigManager.Config.LastLoadedProfile = defaultPath;
-            }
-        }
-
-        public static MappingProfile Load(string filePath)
-        {
-            var options = GetSerializerOptions();
-
-            MappingProfile profile;
+            var directory = GetSaveDirectory();
+            filePath = Path.Combine(directory, filePath);
 
             if (!File.Exists(filePath))
             {
-                var directory = GetSaveDirectory();
-                filePath = Path.Combine(directory, filePath);
+                filePath += EXTENSION;
 
                 if (!File.Exists(filePath))
                 {
-                    filePath += EXTENSION;
-
-                    if (!File.Exists(filePath))
-                    {
-                        return null;
-                    }
+                    return null;
                 }
             }
-
-            profile = JsonSerializer.Deserialize<MappingProfile>(File.ReadAllText(filePath), options);
-
-            if (profile.PostLoad(filePath))
-            {
-                return profile;
-            }
-
-            return null;
         }
 
-        public static MappingProfile RestoreLastLoaded()
+        profile = JsonSerializer.Deserialize<MappingProfile>(File.ReadAllText(filePath), options);
+
+        if (profile.PostLoad(filePath))
         {
-            var lastLoadedPath = ConfigManager.Config.LastLoadedProfile ?? GetDefaultPath();
-            if (!File.Exists(lastLoadedPath))
-            {
-                ExtractDefaultIfNotExists();
-                lastLoadedPath = GetDefaultPath();
-            }
-
-            return Load(lastLoadedPath);
+            return profile;
         }
 
-        private static JsonSerializerOptions GetSerializerOptions()
+        return null;
+    }
+
+    public static MappingProfile RestoreLastLoaded()
+    {
+        var lastLoadedPath = ConfigManager.Config.LastLoadedProfile ?? GetDefaultPath();
+        if (!File.Exists(lastLoadedPath))
         {
-            // TODO: serializer.SerializationBinder = new MappingProfileSerializationBinder();
-
-            JsonSerializerOptions options = new();
-            options.Converters.Add(new JsonStringEnumConverter());
-            options.Converters.Add(new JsonMappingAspectConverter<AbstractAction>());
-            options.Converters.Add(new JsonMappingAspectConverter<AbstractTrigger>());
-            options.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-            options.WriteIndented = true;
-
-            return options;
+            ExtractDefaultIfNotExists();
+            lastLoadedPath = GetDefaultPath();
         }
 
-        public static string GetSaveDirectory()
+        return Load(lastLoadedPath);
+    }
+
+    private static JsonSerializerOptions GetSerializerOptions()
+    {
+        // TODO: serializer.SerializationBinder = new MappingProfileSerializationBinder();
+
+        JsonSerializerOptions options = new();
+        options.Converters.Add(new JsonStringEnumConverter());
+        options.Converters.Add(new JsonMappingAspectConverter<AbstractAction>());
+        options.Converters.Add(new JsonMappingAspectConverter<AbstractTrigger>());
+        options.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+        options.WriteIndented = true;
+
+        return options;
+    }
+
+    public static string GetSaveDirectory()
+    {
+        var legacyDirectory = Path.Combine(
+            ConfigManager.GetAppDirectory(),
+            LEGACY_SAVE_DIR);
+        var directory = Path.Combine(
+            ConfigManager.GetAppDirectory(),
+            SAVE_DIR);
+
+        if (Directory.Exists(legacyDirectory))
         {
-            var legacyDirectory = Path.Combine(
-                ConfigManager.GetAppDirectory(),
-                LEGACY_SAVE_DIR);
-            var directory = Path.Combine(
-                ConfigManager.GetAppDirectory(),
-                SAVE_DIR);
-
-            if (Directory.Exists(legacyDirectory))
+            if (Directory.Exists(directory))
             {
-                if (Directory.Exists(directory))
-                {
-                    Directory.Move(legacyDirectory, FileSystem.FindNonExistingFile(legacyDirectory + "-%VERSION%"));
-                }
-                else
-                {
-                    Directory.Move(legacyDirectory, directory);
-                }
+                Directory.Move(legacyDirectory, FileSystem.FindNonExistingFile(legacyDirectory + "-%VERSION%"));
             }
-            else if (!Directory.Exists(directory))
+            else
             {
-                Directory.CreateDirectory(directory);
+                Directory.Move(legacyDirectory, directory);
             }
-
-            return directory;
         }
+        else if (!Directory.Exists(directory))
+        {
+            Directory.CreateDirectory(directory);
+        }
+
+        return directory;
     }
 }

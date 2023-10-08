@@ -1,54 +1,50 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace BuildMarkdownDocs
+namespace BuildMarkdownDocs;
+
+internal class EnumMember : Member
 {
-    internal class EnumMember : Member
+    public Type Type { get; set; }
+    public Dictionary<string, string> ValueSummaries { get; set; }
+
+    internal override string GetLinkMarkdown() => $"* [`{this.Name}`]({this.Parent.Path}{this.Name}.md)";
+
+    internal override void FillTemplateReplacements(ref Dictionary<string, string> replacements)
     {
-        public Type Type { get; set; }
-        public Dictionary<string, string> ValueSummaries;
+        base.FillTemplateReplacements(ref replacements);
 
-        internal override string GetLinkMarkdown()
+        StringBuilder allEnumerations = new();
+        string firstName = null;
+
+        foreach (var name in Enum.GetNames(this.Type))
         {
-            return $"* [`{this.Name}`]({this.Parent.Path}{this.Name}.md)";
-        }
+            var memberInfo = this.Type.GetMember(name);
+            var enumValueMemberInfo = memberInfo.FirstOrDefault(
+                m => m.DeclaringType == this.Type);
+            var valueAttributes = enumValueMemberInfo.GetCustomAttribute(typeof(ObsoleteAttribute), false);
 
-        internal override void FillTemplateReplacements(ref Dictionary<string, string> replacements)
-        {
-            base.FillTemplateReplacements(ref replacements);
-
-            StringBuilder allEnumerations = new();
-            string firstName = null;
-
-            foreach (var name in Enum.GetNames(this.Type))
+            if (valueAttributes != null)
             {
-                var memberInfo = this.Type.GetMember(name);
-                var enumValueMemberInfo = memberInfo.FirstOrDefault(
-                    m => m.DeclaringType == this.Type);
-                var valueAttributes = enumValueMemberInfo.GetCustomAttribute(typeof(ObsoleteAttribute), false);
-
-                if (valueAttributes != null)
-                {
-                    continue;
-                }
-
-                firstName ??= name;
-
-                var summary = this.ValueSummaries != null && this.ValueSummaries.ContainsKey(name)
-                    ? $": {this.ValueSummaries[name]}" : "";
-
-                allEnumerations.AppendLine($"* `{name}`{summary}");
+                continue;
             }
 
-            if (firstName != null)
-            {
-                replacements.Add("Example", $"`{this.Name}.{firstName}`");
-            }
+            firstName ??= name;
 
-            replacements.Add("Values", allEnumerations.ToString());
+            var summary = this.ValueSummaries != null && this.ValueSummaries.ContainsKey(name)
+                ? $": {this.ValueSummaries[name]}" : "";
+
+            allEnumerations.AppendLine($"* `{name}`{summary}");
         }
+
+        if (firstName != null)
+        {
+            replacements.Add("Example", $"`{this.Name}.{firstName}`");
+        }
+
+        replacements.Add("Values", allEnumerations.ToString());
     }
 }

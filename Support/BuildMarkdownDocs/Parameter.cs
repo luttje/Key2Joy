@@ -1,45 +1,44 @@
 ﻿using System;
 using System.Xml.Linq;
 
-namespace BuildMarkdownDocs
+namespace BuildMarkdownDocs;
+
+internal class Parameter
 {
-    internal class Parameter
+    public string Name { get; set; }
+    public Type Type { get; set; }
+    public string Description { get; set; }
+
+    public bool IsOptional { get; set; }
+    private Type nullableType = null;
+
+    public static Parameter FromXml(XElement element, Type type)
     {
-        public string Name { get; set; }
-        public Type Type { get; set; }
-        public string Description { get; set; }
-
-        public bool IsOptional { get; set; }
-        private Type nullableType = null;
-
-        public static Parameter FromXml(XElement element, Type type)
+        if (type == null)
         {
-            if (type == null)
-            {
-                throw new ArgumentNullException("Parameter type should be provided!");
-            }
-
-            Parameter parameter = new()
-            {
-                Name = element.Attribute("name").Value,
-                Description = element.Value,
-                Type = type,
-
-                nullableType = Nullable.GetUnderlyingType(type)
-            };
-            parameter.IsOptional = parameter.nullableType != null;
-
-            return parameter;
+            throw new ArgumentNullException("Parameter type should be provided!");
         }
 
-        internal object GetTypeName(bool includeOptionalMarkerIfApplicable = true)
+        Parameter parameter = new()
         {
-            if (this.IsOptional)
-            {
-                return $"{this.nullableType.Name}" + (includeOptionalMarkerIfApplicable ? "?" : string.Empty);
-            }
+            Name = element.Attribute("name").Value,
+            Description = element.Value,
+            Type = type,
 
-            return this.Type.Name;
+            nullableType = Nullable.GetUnderlyingType(type)
+        };
+        parameter.IsOptional = parameter.nullableType != null;
+
+        return parameter;
+    }
+
+    internal object GetTypeName(bool includeOptionalMarkerIfApplicable = true)
+    {
+        if (this.IsOptional)
+        {
+            return $"{this.nullableType.Name}" + (includeOptionalMarkerIfApplicable ? "?" : string.Empty);
         }
+
+        return this.Type.Name;
     }
 }

@@ -1,8 +1,7 @@
-﻿namespace Key2Joy.Gui
+﻿namespace Key2Joy.Gui;
+
+internal struct CachedMappingGroup
 {
-    internal struct CachedMappingGroup
-    {
-        internal string Name { get; set; }
-        internal string Image { get; set; }
-    }
+    internal string Name { get; set; }
+    internal string Image { get; set; }
 }

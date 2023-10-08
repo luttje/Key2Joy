@@ -5,79 +5,75 @@ using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Contracts.Mapping.Triggers;
 
-namespace Key2Joy.Mapping.Actions.Logic
+namespace Key2Joy.Mapping.Actions.Logic;
+
+[Action(
+    Description = "Multiple Actions in Sequence",
+    Visibility = MappingMenuVisibility.OnlyTopLevel,
+    NameFormat = "Run Sequence: {0}",
+    GroupName = "Logic",
+    GroupImage = "application_xp_terminal"
+)]
+public class SequenceAction : CoreAction
 {
-    [Action(
-        Description = "Multiple Actions in Sequence",
-        Visibility = MappingMenuVisibility.OnlyTopLevel,
-        NameFormat = "Run Sequence: {0}",
-        GroupName = "Logic",
-        GroupImage = "application_xp_terminal"
-    )]
-    public class SequenceAction : CoreAction
+    // TODO: [JsonProperty(ItemTypeNameHandling = TypeNameHandling.All)]
+    public IList<AbstractAction> ChildActions;
+
+    public SequenceAction(string name)
+        : base(name) => this.ChildActions = new List<AbstractAction>();
+
+    public override async Task Execute(AbstractInputBag inputBag = null)
     {
-        // TODO: [JsonProperty(ItemTypeNameHandling = TypeNameHandling.All)]
-        public IList<AbstractAction> ChildActions;
-
-        public SequenceAction(string name)
-            : base(name)
+        foreach (var childAction in this.ChildActions)
         {
-            this.ChildActions = new List<AbstractAction>();
+            await childAction.Execute(inputBag);
         }
+    }
 
-        public override async Task Execute(AbstractInputBag inputBag = null)
+    public override void OnStartListening(AbstractTriggerListener listener, ref IList<AbstractAction> otherActions)
+    {
+        base.OnStartListening(listener, ref otherActions);
+
+        foreach (var childAction in this.ChildActions)
         {
-            foreach (var childAction in this.ChildActions)
-            {
-                await childAction.Execute(inputBag);
-            }
+            childAction.OnStartListening(listener, ref otherActions);
         }
+    }
 
-        public override void OnStartListening(AbstractTriggerListener listener, ref IList<AbstractAction> otherActions)
+    public override void OnStopListening(AbstractTriggerListener listener)
+    {
+        base.OnStopListening(listener);
+
+        foreach (var childAction in this.ChildActions)
         {
-            base.OnStartListening(listener, ref otherActions);
-
-            foreach (var childAction in this.ChildActions)
-            {
-                childAction.OnStartListening(listener, ref otherActions);
-            }
+            childAction.OnStopListening(listener);
         }
+    }
 
-        public override void OnStopListening(AbstractTriggerListener listener)
+    public override string GetNameDisplay()
+    {
+        StringBuilder actions = new();
+
+        for (var i = 0; i < this.ChildActions.Count; i++)
         {
-            base.OnStopListening(listener);
-
-            foreach (var childAction in this.ChildActions)
+            if (i > 0)
             {
-                childAction.OnStopListening(listener);
-            }
-        }
-
-        public override string GetNameDisplay()
-        {
-            StringBuilder actions = new();
-
-            for (var i = 0; i < this.ChildActions.Count; i++)
-            {
-                if (i > 0)
-                {
-                    actions.Append(", ");
-                }
-
-                actions.Append(this.ChildActions[i].GetNameDisplay());
+                actions.Append(", ");
             }
 
-            return this.Name.Replace("{0}", actions.ToString());
+            actions.Append(this.ChildActions[i].GetNameDisplay());
         }
 
-        public override bool Equals(object obj)
+        return this.Name.Replace("{0}", actions.ToString());
+    }
+
+    public override bool Equals(object obj)
+    {
+        if (obj is not SequenceAction action)
         {
-            if (obj is not SequenceAction action)
-            {
-                return false;
-            }
-
-            return action.Name == this.Name;
+            return false;
         }
+
+        return action.Name == this.Name;
     }
 }

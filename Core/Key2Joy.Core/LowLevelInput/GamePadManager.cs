@@ -1,60 +1,56 @@
 ﻿using System.Linq;
 using SimWinInput;
 
-namespace Key2Joy.LowLevelInput
+namespace Key2Joy.LowLevelInput;
+
+public class GamePadManager
 {
-    public class GamePadManager
+    public const int MAX_GAMEPADS = 4;
+
+    private static GamePadManager instance;
+    public static GamePadManager Instance
     {
-        public const int MAX_GAMEPADS = 4;
-
-        private static GamePadManager instance;
-        public static GamePadManager Instance
+        get
         {
-            get
-            {
-                instance ??= new GamePadManager();
+            instance ??= new GamePadManager();
 
-                return instance;
-            }
+            return instance;
+        }
+    }
+
+    private readonly bool[] pluggedInGamePads = new bool[MAX_GAMEPADS];
+
+    private GamePadManager() { }
+
+    public void EnsurePluggedIn(int gamePadIndex)
+    {
+        if (this.pluggedInGamePads[gamePadIndex])
+        {
+            return;
         }
 
-        private readonly bool[] pluggedInGamePads = new bool[MAX_GAMEPADS];
+        SimGamePad.Instance.PlugIn(gamePadIndex);
+        this.pluggedInGamePads[gamePadIndex] = true;
+    }
 
-        private GamePadManager() { }
+    public int[] GetAllGamePadIndices() => Enumerable.Range(0, MAX_GAMEPADS).ToArray();
 
-        public void EnsurePluggedIn(int gamePadIndex)
+    public void EnsureUnplugged(int gamePadIndex)
+    {
+        if (!this.pluggedInGamePads[gamePadIndex])
         {
-            if (this.pluggedInGamePads[gamePadIndex])
-            {
-                return;
-            }
-
-            SimGamePad.Instance.PlugIn(gamePadIndex);
-            this.pluggedInGamePads[gamePadIndex] = true;
+            return;
         }
 
-        public int[] GetAllGamePadIndices()
-        {
-            return Enumerable.Range(0, MAX_GAMEPADS).ToArray();
-        }
+        SimGamePad.Instance.Unplug(gamePadIndex);
+        this.pluggedInGamePads[gamePadIndex] = false;
+    }
 
-        public void EnsureUnplugged(int gamePadIndex)
+    public void EnsureAllUnplugged()
+    {
+        for (var i = 0; i < MAX_GAMEPADS; i++)
         {
-            if (!this.pluggedInGamePads[gamePadIndex])
-            {
-                return;
-            }
-
-            SimGamePad.Instance.Unplug(gamePadIndex);
-            this.pluggedInGamePads[gamePadIndex] = false;
-        }
-
-        public void EnsureAllUnplugged()
-        {
-            for (var i = 0; i < MAX_GAMEPADS; i++)
-            {
-                this.EnsureUnplugged(i);
-            }
+            this.EnsureUnplugged(i);
         }
     }
 }

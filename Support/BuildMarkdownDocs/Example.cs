@@ -2,51 +2,44 @@
 using System.Xml.Linq;
 using BuildMarkdownDocs.Util;
 
-namespace BuildMarkdownDocs
+namespace BuildMarkdownDocs;
+
+internal class Example
 {
-    internal class Example
+    public List<string> TextContent { get; set; }
+
+    public Example() => this.TextContent = new List<string>();
+
+    internal static Example FromXml(XElement element)
     {
-        public List<string> TextContent { get; set; }
+        Example example = new();
+        var children = element.Nodes();
 
-        public Example()
+        foreach (var child in children)
         {
-            this.TextContent = new List<string>();
-        }
+            var value = "";
 
-        internal static Example FromXml(XElement element)
-        {
-            Example example = new();
-            var children = element.Nodes();
-
-            foreach (var child in children)
+            if (child is XText textChild)
             {
-                var value = "";
-
-                if (child is XText textChild)
+                value = textChild.Value.Trim().TrimEachLine();
+            }
+            else if (child is XElement elementChild)
+            {
+                if (elementChild.Name.LocalName == "code")
                 {
-                    value = textChild.Value.Trim().TrimEachLine();
+                    value = CodeBlock.FromXml(elementChild).ToString();
                 }
-                else if (child is XElement elementChild)
+                else
                 {
-                    if (elementChild.Name.LocalName == "code")
-                    {
-                        value = CodeBlock.FromXml(elementChild).ToString();
-                    }
-                    else
-                    {
-                        value = elementChild.Value.Trim();
-                    }
+                    value = elementChild.Value.Trim();
                 }
-
-                example.TextContent.AddRange(value.Split('\n'));
             }
 
-            return example;
+            example.TextContent.AddRange(value.Split('\n'));
         }
 
-        public override string ToString()
-        {
-            return "> " + string.Join("\n> ", this.TextContent) + "\n---";
-        }
+        return example;
     }
+
+    public override string ToString() => "> " + string.Join("\n> ", this.TextContent) + "\n---";
 }

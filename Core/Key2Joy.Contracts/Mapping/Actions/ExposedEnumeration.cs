@@ -1,31 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Key2Joy.Contracts.Mapping.Actions
+namespace Key2Joy.Contracts.Mapping.Actions;
+
+public struct ExposedEnumeration
 {
-    public struct ExposedEnumeration
+    public string Name { get; set; }
+    public IDictionary<string, object> KeyValues { get; set; }
+
+    public static ExposedEnumeration FromType(Type enumType)
     {
-        public string Name { get; set; }
-        public IDictionary<string, object> KeyValues { get; set; }
-
-        public static ExposedEnumeration FromType(Type enumType)
+        ExposedEnumeration result = new()
         {
-            ExposedEnumeration result = new()
-            {
-                Name = enumType.Name,
-                KeyValues = new Dictionary<string, object>()
-            };
-            var names = Enum.GetNames(enumType);
-            var values = Enum.GetValues(enumType);
+            Name = enumType.Name,
+            KeyValues = new Dictionary<string, object>()
+        };
+        var names = Enum.GetNames(enumType);
+        var values = Enum.GetValues(enumType);
 
-            for (var i = 0; i < names.Length; i++)
-            {
-                var enumValue = values.GetValue(i);
-                var intValue = Convert.ChangeType(enumValue, Enum.GetUnderlyingType(enumType));
-                result.KeyValues.Add(names[i], intValue);
-            }
-
-            return result;
+        for (var i = 0; i < names.Length; i++)
+        {
+            var enumValue = values.GetValue(i);
+            var intValue = Convert.ChangeType(enumValue, Enum.GetUnderlyingType(enumType));
+            result.KeyValues.Add(names[i], intValue);
         }
+
+        return result;
     }
 }

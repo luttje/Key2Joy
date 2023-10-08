@@ -4,140 +4,130 @@ using System.Linq;
 using System.Reflection;
 using System.Text.Json.Serialization;
 
-namespace Key2Joy.Contracts.Mapping
+namespace Key2Joy.Contracts.Mapping;
+
+public abstract class AbstractMappingAspect : MarshalByRefObject, ICloneable, IComparable<AbstractMappingAspect>
 {
-    public abstract class AbstractMappingAspect : MarshalByRefObject, ICloneable, IComparable<AbstractMappingAspect>
+    public string Name { get; set; }
+
+    public AbstractMappingAspect(string name) => this.Name = name;
+
+    private PropertyInfo[] GetProperties()
     {
-        public string Name { get; set; }
 
-        public AbstractMappingAspect(string name)
+        var type = this.GetType();
+        var properties = type.GetProperties();
+
+        return properties.Where(p => p.GetCustomAttributes(typeof(JsonIgnoreAttribute), true).Length == 0).ToArray();
+    }
+
+    public virtual MappingAspectOptions SaveOptions()
+    {
+        MappingAspectOptions options = new();
+        var properties = this.GetProperties();
+
+        foreach (var property in properties)
         {
-            this.Name = name;
+            this.SaveOptionsGetProperty(options, property);
         }
 
-        private PropertyInfo[] GetProperties()
+        return options;
+    }
+
+    /// <summary>
+    /// Can be overridden by child actions or triggers to allow saving more complex types.
+    /// </summary>
+    /// <param name="property"></param>
+    /// <param name="value"></param>
+    protected virtual void SaveOptionsGetProperty(MappingAspectOptions options, PropertyInfo property)
+    {
+        var value = property.GetValue(this);
+
+        switch (value)
         {
-
-            var type = this.GetType();
-            var properties = type.GetProperties();
-
-            return properties.Where(p => p.GetCustomAttributes(typeof(JsonIgnoreAttribute), true).Length == 0).ToArray();
+            case DateTime dateTime:
+                value = dateTime.Ticks;
+                break;
+            default:
+                break;
         }
 
-        public virtual MappingAspectOptions SaveOptions()
+        options.Add(property.Name, value);
+    }
+
+    public virtual void LoadOptions(MappingAspectOptions options)
+    {
+        var properties = this.GetProperties();
+
+        foreach (var property in properties)
         {
-            MappingAspectOptions options = new();
-            var properties = this.GetProperties();
-
-            foreach (var property in properties)
+            if (!options.ContainsKey(property.Name))
             {
-                this.SaveOptionsGetProperty(options, property);
+                continue;
             }
 
-            return options;
-        }
-
-        /// <summary>
-        /// Can be overridden by child actions or triggers to allow saving more complex types.
-        /// </summary>
-        /// <param name="property"></param>
-        /// <param name="value"></param>
-        protected virtual void SaveOptionsGetProperty(MappingAspectOptions options, PropertyInfo property)
-        {
-            var value = property.GetValue(this);
-
-            switch (value)
-            {
-                case DateTime dateTime:
-                    value = dateTime.Ticks;
-                    break;
-                default:
-                    break;
-            }
-
-            options.Add(property.Name, value);
-        }
-
-        public virtual void LoadOptions(MappingAspectOptions options)
-        {
-            var properties = this.GetProperties();
-
-            foreach (var property in properties)
-            {
-                if (!options.ContainsKey(property.Name))
-                {
-                    continue;
-                }
-
-                this.LoadOptionSetProperty(options, property);
-            }
-        }
-
-        /// <summary>
-        /// Can be overridden by child actions or triggers to allow loading more complex types.
-        /// </summary>
-        /// <param name="property"></param>
-        /// <param name="value"></param>
-        protected virtual void LoadOptionSetProperty(MappingAspectOptions options, PropertyInfo property)
-        {
-            var value = options[property.Name];
-            var asd = property.PropertyType.IsGenericType ? property.PropertyType.GetGenericTypeDefinition() : null;
-
-            if (property.PropertyType.IsEnum)
-            {
-                value = Enum.Parse(property.PropertyType, (string)value);
-            }
-            else if (property.PropertyType == typeof(DateTime))
-            {
-                value = new DateTime(Convert.ToInt64(value));
-            }
-            else if (property.PropertyType.IsGenericType && asd == typeof(List<>))
-            {
-                // TODO: Store the List type somewhere and do this without reflection (it was just easier this way for now)
-                var listType = typeof(List<>);
-                var constructedListType = listType.MakeGenericType(property.PropertyType.GetGenericArguments());
-                var instance = Activator.CreateInstance(constructedListType);
-
-                var addMethod = constructedListType.GetMethod("Add");
-                foreach (var item in (List<object>)value)
-                {
-                    addMethod.Invoke(instance, new object[] { item });
-                }
-
-                value = instance;
-            }
-            else
-            {
-                value = Convert.ChangeType(value, property.PropertyType);
-            }
-
-            property.SetValue(this, value);
-        }
-
-        public virtual int CompareTo(AbstractMappingAspect other)
-        {
-            return this.ToString().CompareTo(other.ToString());
-        }
-
-        public static bool operator ==(AbstractMappingAspect a, AbstractMappingAspect b)
-        {
-            if (ReferenceEquals(a, b))
-            {
-                return true;
-            }
-
-            if (a is null || b is null)
-            {
-                return false;
-            }
-
-            return a.Equals(b);
-        }
-        public static bool operator !=(AbstractMappingAspect a, AbstractMappingAspect b) => !(a == b);
-
-        public virtual object Clone()
-        {
-            return this.MemberwiseClone();
+            this.LoadOptionSetProperty(options, property);
         }
     }
+
+    /// <summary>
+    /// Can be overridden by child actions or triggers to allow loading more complex types.
+    /// </summary>
+    /// <param name="property"></param>
+    /// <param name="value"></param>
+    protected virtual void LoadOptionSetProperty(MappingAspectOptions options, PropertyInfo property)
+    {
+        var value = options[property.Name];
+        var asd = property.PropertyType.IsGenericType ? property.PropertyType.GetGenericTypeDefinition() : null;
+
+        if (property.PropertyType.IsEnum)
+        {
+            value = Enum.Parse(property.PropertyType, (string)value);
+        }
+        else if (property.PropertyType == typeof(DateTime))
+        {
+            value = new DateTime(Convert.ToInt64(value));
+        }
+        else if (property.PropertyType.IsGenericType && asd == typeof(List<>))
+        {
+            // TODO: Store the List type somewhere and do this without reflection (it was just easier this way for now)
+            var listType = typeof(List<>);
+            var constructedListType = listType.MakeGenericType(property.PropertyType.GetGenericArguments());
+            var instance = Activator.CreateInstance(constructedListType);
+
+            var addMethod = constructedListType.GetMethod("Add");
+            foreach (var item in (List<object>)value)
+            {
+                addMethod.Invoke(instance, new object[] { item });
+            }
+
+            value = instance;
+        }
+        else
+        {
+            value = Convert.ChangeType(value, property.PropertyType);
+        }
+
+        property.SetValue(this, value);
+    }
+
+    public virtual int CompareTo(AbstractMappingAspect other) => this.ToString().CompareTo(other.ToString());
+
+    public static bool operator ==(AbstractMappingAspect a, AbstractMappingAspect b)
+    {
+        if (ReferenceEquals(a, b))
+        {
+            return true;
+        }
+
+        if (a is null || b is null)
+        {
+            return false;
+        }
+
+        return a.Equals(b);
+    }
+    public static bool operator !=(AbstractMappingAspect a, AbstractMappingAspect b) => !(a == b);
+
+    public virtual object Clone() => this.MemberwiseClone();
 }

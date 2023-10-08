@@ -7,50 +7,46 @@ using Key2Joy.Mapping;
 using Key2Joy.Mapping.Triggers;
 using Key2Joy.Mapping.Triggers.Mouse;
 
-namespace Key2Joy.Gui.Mapping
+namespace Key2Joy.Gui.Mapping;
+
+[MappingControl(
+    ForType = typeof(MouseMoveTrigger),
+    ImageResourceName = "mouse"
+)]
+public partial class MouseMoveTriggerControl : UserControl, ITriggerOptionsControl
 {
-    [MappingControl(
-        ForType = typeof(MouseMoveTrigger),
-        ImageResourceName = "mouse"
-    )]
-    public partial class MouseMoveTriggerControl : UserControl, ITriggerOptionsControl
+    public event EventHandler OptionsChanged;
+
+    public MouseMoveTriggerControl()
     {
-        public event EventHandler OptionsChanged;
+        this.InitializeComponent();
 
-        public MouseMoveTriggerControl()
+        List<AxisDirection> directions = new();
+
+        foreach (AxisDirection direction in Enum.GetValues(typeof(AxisDirection)))
         {
-            this.InitializeComponent();
-
-            List<AxisDirection> directions = new();
-
-            foreach (AxisDirection direction in Enum.GetValues(typeof(AxisDirection)))
+            if (direction != AxisDirection.None)
             {
-                if (direction != AxisDirection.None)
-                {
-                    directions.Add((AxisDirection)direction);
-                }
+                directions.Add((AxisDirection)direction);
             }
-
-            this.cmbMouseDirection.DataSource = directions;
         }
 
-        public void Select(AbstractTrigger trigger)
-        {
-            var thisTrigger = (MouseMoveTrigger)trigger;
-
-            this.cmbMouseDirection.SelectedItem = thisTrigger.AxisBinding;
-        }
-
-        public void Setup(AbstractTrigger trigger)
-        {
-            var thisTrigger = (MouseMoveTrigger)trigger;
-
-            thisTrigger.AxisBinding = (AxisDirection)this.cmbMouseDirection.SelectedItem;
-        }
-
-        private void CmbMouseDirection_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            OptionsChanged?.Invoke(this, EventArgs.Empty);
-        }
+        this.cmbMouseDirection.DataSource = directions;
     }
+
+    public void Select(AbstractTrigger trigger)
+    {
+        var thisTrigger = (MouseMoveTrigger)trigger;
+
+        this.cmbMouseDirection.SelectedItem = thisTrigger.AxisBinding;
+    }
+
+    public void Setup(AbstractTrigger trigger)
+    {
+        var thisTrigger = (MouseMoveTrigger)trigger;
+
+        thisTrigger.AxisBinding = (AxisDirection)this.cmbMouseDirection.SelectedItem;
+    }
+
+    private void CmbMouseDirection_SelectedIndexChanged(object sender, EventArgs e) => OptionsChanged?.Invoke(this, EventArgs.Empty);
 }

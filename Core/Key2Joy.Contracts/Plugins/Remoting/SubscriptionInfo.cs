@@ -1,22 +1,21 @@
-﻿using System;
+using System;
 using System.Runtime.Serialization;
 
-namespace Key2Joy.Contracts.Plugins.Remoting
+namespace Key2Joy.Contracts.Plugins.Remoting;
+
+[Serializable]
+public struct SubscriptionInfo : ISafeSerializationData
 {
-    [Serializable]
-    public struct SubscriptionInfo : ISafeSerializationData
+    public string EventName { get; set; }
+    public string Id { get; set; }
+
+    public SubscriptionInfo(string eventName, string subscriptionId)
     {
-        public string EventName { get; set; }
-        public string Id { get; set; }
+        this.EventName = eventName ?? throw new ArgumentNullException(nameof(eventName));
+        this.Id = subscriptionId;
+    }
 
-        public SubscriptionInfo(string eventName, string subscriptionId)
-        {
-            this.EventName = eventName ?? throw new ArgumentNullException(nameof(eventName));
-            this.Id = subscriptionId;
-        }
-
-        public void CompleteDeserialization(object deserialized)
-        {
-        }
+    public readonly void CompleteDeserialization(object deserialized)
+    {
     }
 }

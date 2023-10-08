@@ -1,45 +1,44 @@
 ﻿using System;
 
-namespace Key2Joy.Plugins
+namespace Key2Joy.Plugins;
+
+public enum PluginLoadStates
 {
-    public enum PluginLoadStates
+    NotLoaded,
+    Loaded,
+    FailedToLoad
+}
+
+public class PluginLoadState
+{
+    public string Name { get; set; }
+    public string Author { get; set; }
+    public string Website { get; set; }
+    public string AssemblyPath { get; set; }
+
+    public PluginLoadStates LoadState { get; set; } = PluginLoadStates.NotLoaded;
+    public string LoadErrorMessage { get; set; } = null;
+
+    public Type PluginType { get; set; } = null;
+    internal PluginHostProxy PluginHost { get; private set; } = null;
+
+    public PluginLoadState(string assemblyPath, Type pluginType = null)
     {
-        NotLoaded,
-        Loaded,
-        FailedToLoad
+        this.AssemblyPath = assemblyPath;
+        this.PluginType = pluginType;
     }
 
-    public class PluginLoadState
+    internal void SetPluginHost(PluginHostProxy pluginHost)
     {
-        public string Name { get; set; }
-        public string Author { get; set; }
-        public string Website { get; set; }
-        public string AssemblyPath { get; set; }
+        this.PluginHost = pluginHost;
 
-        public PluginLoadStates LoadState { get; set; } = PluginLoadStates.NotLoaded;
-        public string LoadErrorMessage { get; set; } = null;
-
-        public Type PluginType { get; set; } = null;
-        internal PluginHostProxy PluginHost { get; private set; } = null;
-
-        public PluginLoadState(string assemblyPath, Type pluginType = null)
+        if (pluginHost == null)
         {
-            this.AssemblyPath = assemblyPath;
-            this.PluginType = pluginType;
+            return;
         }
 
-        internal void SetPluginHost(PluginHostProxy pluginHost)
-        {
-            this.PluginHost = pluginHost;
-
-            if (pluginHost == null)
-            {
-                return;
-            }
-
-            this.Name = pluginHost.GetPluginName();
-            this.Author = pluginHost.GetPluginAuthor();
-            this.Website = pluginHost.GetPluginWebsite();
-        }
+        this.Name = pluginHost.GetPluginName();
+        this.Author = pluginHost.GetPluginAuthor();
+        this.Website = pluginHost.GetPluginWebsite();
     }
 }

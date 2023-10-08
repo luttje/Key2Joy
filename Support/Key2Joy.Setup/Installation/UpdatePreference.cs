@@ -1,10 +1,9 @@
-﻿namespace Key2Joy.Setup.Installation
+﻿namespace Key2Joy.Setup.Installation;
+
+internal enum UpdatePreference
 {
-    internal enum UpdatePreference
-    {
-        DownloadAndUpdate,
-        DownloadAndUpdatePreRelease,
-        DownloadOnly,
-        ManualInstallation
-    }
+    DownloadAndUpdate,
+    DownloadAndUpdatePreRelease,
+    DownloadOnly,
+    ManualInstallation
 }

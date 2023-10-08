@@ -1,32 +1,28 @@
 ﻿using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
-namespace BuildMarkdownDocs
+namespace BuildMarkdownDocs;
+
+internal class CodeBlock
 {
-    internal class CodeBlock
+    public string Language { get; set; }
+    public string Code { get; set; }
+
+    internal static CodeBlock FromXml(XElement element)
     {
-        public string Language { get; set; }
-        public string Code { get; set; }
-
-        internal static CodeBlock FromXml(XElement element)
+        CodeBlock code = new()
         {
-            CodeBlock code = new()
-            {
-                Language = element.Attribute("language").Value
-            };
+            Language = element.Attribute("language").Value
+        };
 
-            Regex whiteSpaceToTrimPattern = new(@"^[^\S\r\n]+", RegexOptions.Multiline);
-            var whiteSpaceToTrim = whiteSpaceToTrimPattern.Match(element.Value);
+        Regex whiteSpaceToTrimPattern = new(@"^[^\S\r\n]+", RegexOptions.Multiline);
+        var whiteSpaceToTrim = whiteSpaceToTrimPattern.Match(element.Value);
 
-            Regex whiteSpaceTrimPattern = new($"^{whiteSpaceToTrim}", RegexOptions.Multiline);
-            code.Code = whiteSpaceTrimPattern.Replace(element.Value, "").Trim();
+        Regex whiteSpaceTrimPattern = new($"^{whiteSpaceToTrim}", RegexOptions.Multiline);
+        code.Code = whiteSpaceTrimPattern.Replace(element.Value, "").Trim();
 
-            return code;
-        }
-
-        public override string ToString()
-        {
-            return $"\n#### _{this.Language}_:\n```{this.Language}\n{this.Code}\n```";
-        }
+        return code;
     }
+
+    public override string ToString() => $"\n#### _{this.Language}_:\n```{this.Language}\n{this.Code}\n```";
 }

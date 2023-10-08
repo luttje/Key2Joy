@@ -2,11 +2,10 @@
 using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.LowLevelInput;
 
-namespace Key2Joy.Mapping.Triggers.Keyboard
+namespace Key2Joy.Mapping.Triggers.Keyboard;
+
+public class KeyboardInputBag : AbstractInputBag
 {
-    public class KeyboardInputBag : AbstractInputBag
-    {
-        public Keys Keys { get; set; }
-        public KeyboardState State { get; set; }
-    }
+    public Keys Keys { get; set; }
+    public KeyboardState State { get; set; }
 }

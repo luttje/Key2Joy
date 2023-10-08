@@ -1,13 +1,12 @@
 ﻿using System;
 
-namespace Key2Joy.Config
-{
-    /// <summary>
-    /// Only applied to <see cref="ConfigManager"/>
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
-    public class BooleanConfigControlAttribute : ConfigControlAttribute
-    {
+namespace Key2Joy.Config;
 
-    }
+/// <summary>
+/// Only applied to <see cref="ConfigManager"/>
+/// </summary>
+[AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
+public class BooleanConfigControlAttribute : ConfigControlAttribute
+{
+
 }

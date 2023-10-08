@@ -1,48 +1,47 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace Key2Joy.Interop
+namespace Key2Joy.Interop;
+
+public class CommandInfo
 {
-    public class CommandInfo
+    public byte Id { get; set; }
+    public Type StructType { get; set; }
+
+    public object CommandFromBytes(byte[] bytes)
     {
-        public byte Id { get; set; }
-        public Type StructType { get; set; }
+        var pointer = IntPtr.Zero;
 
-        public object CommandFromBytes(byte[] bytes)
+        try
         {
-            var pointer = IntPtr.Zero;
+            pointer = Marshal.AllocHGlobal(bytes.Length);
+            Marshal.Copy(bytes, 0, pointer, bytes.Length);
 
-            try
-            {
-                pointer = Marshal.AllocHGlobal(bytes.Length);
-                Marshal.Copy(bytes, 0, pointer, bytes.Length);
-
-                return Marshal.PtrToStructure(pointer, this.StructType);
-            }
-            finally
-            {
-                Marshal.FreeHGlobal(pointer);
-            }
+            return Marshal.PtrToStructure(pointer, this.StructType);
         }
-
-        public byte[] CommandToBytes<CommandType>(CommandType command)
+        finally
         {
-            var size = Marshal.SizeOf(command);
-            var bytes = new byte[size];
-            var pointer = IntPtr.Zero;
+            Marshal.FreeHGlobal(pointer);
+        }
+    }
 
-            try
-            {
-                pointer = Marshal.AllocHGlobal(bytes.Length);
-                Marshal.StructureToPtr(command, pointer, true);
-                Marshal.Copy(pointer, bytes, 0, size);
+    public byte[] CommandToBytes<CommandType>(CommandType command)
+    {
+        var size = Marshal.SizeOf(command);
+        var bytes = new byte[size];
+        var pointer = IntPtr.Zero;
 
-                return bytes;
-            }
-            finally
-            {
-                Marshal.FreeHGlobal(pointer);
-            }
+        try
+        {
+            pointer = Marshal.AllocHGlobal(bytes.Length);
+            Marshal.StructureToPtr(command, pointer, true);
+            Marshal.Copy(pointer, bytes, 0, size);
+
+            return bytes;
+        }
+        finally
+        {
+            Marshal.FreeHGlobal(pointer);
         }
     }
 }

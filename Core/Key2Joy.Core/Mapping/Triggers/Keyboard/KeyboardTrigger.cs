@@ -5,87 +5,71 @@ using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.LowLevelInput;
 
-namespace Key2Joy.Mapping.Triggers.Keyboard
+namespace Key2Joy.Mapping.Triggers.Keyboard;
+
+[Trigger(
+    Description = "Keyboard Event"
+)]
+public class KeyboardTrigger : CoreTrigger, IPressState, IReturnInputHash, IEquatable<KeyboardTrigger>
 {
-    [Trigger(
-        Description = "Keyboard Event"
-    )]
-    public class KeyboardTrigger : CoreTrigger, IPressState, IReturnInputHash, IEquatable<KeyboardTrigger>
+    public const string PREFIX_UNIQUE = nameof(KeyboardTrigger);
+
+    public Keys Keys { get; set; }
+
+    public PressState PressState { get; set; }
+
+    [JsonConstructor]
+    public KeyboardTrigger(string name)
+        : base(name)
+    { }
+
+    public override AbstractTriggerListener GetTriggerListener() => KeyboardTriggerListener.Instance;
+
+    public static int GetInputHashFor(Keys keys) => (int)keys;
+
+    public int GetInputHash() => GetInputHashFor(this.Keys);
+
+    public override string GetUniqueKey() => $"{PREFIX_UNIQUE}_{this.Keys}";
+
+    // Keep Press and Release together while sorting
+    public override int CompareTo(AbstractMappingAspect other)
     {
-        public const string PREFIX_UNIQUE = nameof(KeyboardTrigger);
-
-        public Keys Keys { get; set; }
-
-        public PressState PressState { get; set; }
-
-        [JsonConstructor]
-        public KeyboardTrigger(string name)
-            : base(name)
-        { }
-
-        public override AbstractTriggerListener GetTriggerListener()
+        if (other == null || other is not KeyboardTrigger otherKeyboardTrigger)
         {
-            return KeyboardTriggerListener.Instance;
+            return base.CompareTo(other);
         }
 
-        public static int GetInputHashFor(Keys keys)
+        return $"{this.Keys}#{(int)this.PressState}"
+            .CompareTo($"{otherKeyboardTrigger.Keys}#{(int)otherKeyboardTrigger.PressState}");
+    }
+
+    public override bool Equals(object obj)
+    {
+        if (obj is not KeyboardTrigger other)
         {
-            return (int)keys;
+            return false;
         }
 
-        public int GetInputHash()
+        return this.Equals(other);
+    }
+
+    public bool Equals(KeyboardTrigger other) => this.Keys == other.Keys
+            && this.PressState == other.PressState;
+
+    public override string ToString()
+    {
+        var format = "(keyboard) {1} {0}";
+        return format.Replace("{0}", this.Keys.ToString())
+            .Replace("{1}", Enum.GetName(typeof(PressState), this.PressState));
+    }
+
+    public KeyboardState GetKeyboardState()
+    {
+        if (this.PressState == PressState.Press)
         {
-            return GetInputHashFor(this.Keys);
+            return KeyboardState.KeyDown;
         }
 
-        public override string GetUniqueKey()
-        {
-            return $"{PREFIX_UNIQUE}_{this.Keys}";
-        }
-
-        // Keep Press and Release together while sorting
-        public override int CompareTo(AbstractMappingAspect other)
-        {
-            if (other == null || other is not KeyboardTrigger otherKeyboardTrigger)
-            {
-                return base.CompareTo(other);
-            }
-
-            return $"{this.Keys}#{(int)this.PressState}"
-                .CompareTo($"{otherKeyboardTrigger.Keys}#{(int)otherKeyboardTrigger.PressState}");
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (obj is not KeyboardTrigger other)
-            {
-                return false;
-            }
-
-            return this.Equals(other);
-        }
-
-        public bool Equals(KeyboardTrigger other)
-        {
-            return this.Keys == other.Keys
-                && this.PressState == other.PressState;
-        }
-
-        public override string ToString()
-        {
-            var format = "(keyboard) {1} {0}";
-            return format.Replace("{0}", this.Keys.ToString())
-                .Replace("{1}", Enum.GetName(typeof(PressState), this.PressState));
-        }
-
-        public KeyboardState GetKeyboardState()
-        {
-            if (this.PressState == PressState.Press)
-            {
-                return KeyboardState.KeyDown;
-            }
-
-            return KeyboardState.KeyUp;
-        }
+        return KeyboardState.KeyUp;
     }
 }

@@ -1,7 +1,6 @@
-﻿namespace Key2Joy.Plugins
+﻿namespace Key2Joy.Plugins;
+
+internal interface IGetRealObject<T>
 {
-    internal interface IGetRealObject<T>
-    {
-        T GetRealObject();
-    }
+    T GetRealObject();
 }

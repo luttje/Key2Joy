@@ -3,31 +3,18 @@ using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.Contracts.Plugins;
 using Key2Joy.Mapping.Triggers;
 
-namespace Key2Joy.Plugins
+namespace Key2Joy.Plugins;
+
+public class PluginTriggerProxy : CoreTrigger, IGetRealObject<PluginTrigger>
 {
-    public class PluginTriggerProxy : CoreTrigger, IGetRealObject<PluginTrigger>
-    {
-        private readonly PluginTriggerInsulator source;
+    private readonly PluginTriggerInsulator source;
 
-        public PluginTriggerProxy(string name, PluginTriggerInsulator source)
-            : base(name)
-        {
-            this.source = source;
-        }
+    public PluginTriggerProxy(string name, PluginTriggerInsulator source)
+        : base(name) => this.source = source;
 
-        public PluginTrigger GetRealObject()
-        {
-            return this.source.GetPluginTrigger;
-        }
+    public PluginTrigger GetRealObject() => this.source.PluginTrigger;
 
-        public override AbstractTriggerListener GetTriggerListener()
-        {
-            throw new NotImplementedException();
-        }
+    public override AbstractTriggerListener GetTriggerListener() => throw new NotImplementedException();
 
-        public override string GetUniqueKey()
-        {
-            throw new NotImplementedException();
-        }
-    }
+    public override string GetUniqueKey() => throw new NotImplementedException();
 }

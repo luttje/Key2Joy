@@ -1,21 +1,20 @@
 ﻿using System.Xml.Linq;
 
-namespace BuildMarkdownDocs
+namespace BuildMarkdownDocs;
+
+internal class ReturnType
 {
-    internal class ReturnType
+    public string Description { get; set; }
+    // TODO:
+    // public Type Type { get; set; }
+
+    public static ReturnType FromXml(XElement element)
     {
-        public string Description { get; set; }
-        // TODO:
-        // public Type Type { get; set; }
-
-        public static ReturnType FromXml(XElement element)
+        ReturnType returnType = new()
         {
-            ReturnType returnType = new()
-            {
-                Description = element.Value
-            };
+            Description = element.Value
+        };
 
-            return returnType;
-        }
+        return returnType;
     }
 }

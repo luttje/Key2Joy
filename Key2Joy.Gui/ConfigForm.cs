@@ -1,146 +1,151 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Windows.Forms;
 using Key2Joy.Config;
 
-namespace Key2Joy.Gui
+namespace Key2Joy.Gui;
+
+public partial class ConfigForm : Form
 {
-    public partial class ConfigForm : Form
+    public ConfigForm()
     {
-        public ConfigForm()
+        this.InitializeComponent();
+
+        var configs = ConfigControlAttribute.GetAllProperties();
+
+        foreach (var kvp in configs)
         {
-            this.InitializeComponent();
+            var property = kvp.Key;
+            var attribute = kvp.Value;
 
-            var configs = ConfigControlAttribute.GetAllProperties();
+            Panel controlParent = new();
+            var value = property.GetValue(ConfigManager.Config);
+            var control = this.MakeControl(attribute, value, controlParent);
+            control.Tag = kvp;
+            control.Dock = DockStyle.Top;
 
-            foreach (var kvp in configs)
+            controlParent.AutoSize = true;
+            controlParent.Padding = new Padding(10, 10, 10, 0);
+            controlParent.Controls.Add(control);
+
+            this.pnlConfigurations.Controls.Add(controlParent);
+            controlParent.Dock = DockStyle.Top;
+        }
+    }
+
+    private void BtnSave_Click(object sender, EventArgs e)
+    {
+        foreach (Panel parents in this.pnlConfigurations.Controls)
+        {
+            foreach (Control control in parents.Controls)
             {
+                if (control.Tag == null)
+                {
+                    continue;
+                }
+
+                var kvp = (KeyValuePair<PropertyInfo, ConfigControlAttribute>)control.Tag;
                 var property = kvp.Key;
                 var attribute = kvp.Value;
+                var value = this.GetControlValue(attribute, control);
 
-                Panel controlParent = new();
-                var value = property.GetValue(ConfigManager.Config);
-                var control = this.MakeControl(attribute, value, controlParent);
-                control.Tag = kvp;
-                control.Dock = DockStyle.Top;
+                value = Convert.ChangeType(value, property.PropertyType);
 
-                controlParent.AutoSize = true;
-                controlParent.Padding = new Padding(10, 10, 10, 0);
-                controlParent.Controls.Add(control);
-
-                this.pnlConfigurations.Controls.Add(controlParent);
-                controlParent.Dock = DockStyle.Top;
+                property.SetValue(ConfigManager.Config, value);
             }
         }
 
-        private void BtnSave_Click(object sender, EventArgs e)
+        MessageBox.Show("Configurations successfully saved!", "Configurations saved", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        this.Close();
+    }
+
+    private Control MakeControl(ConfigControlAttribute attribute, object value, Panel controlParent)
+    {
+        switch (attribute)
         {
-            foreach (Panel parents in this.pnlConfigurations.Controls)
+            case BooleanConfigControlAttribute booleanConfigControlAttribute:
             {
-                foreach (Control control in parents.Controls)
+                CheckBox control = new()
                 {
-                    if (control.Tag == null)
-                    {
-                        continue;
-                    }
+                    Text = booleanConfigControlAttribute.Text,
+                    Checked = (bool)value
+                };
 
-                    var kvp = (KeyValuePair<PropertyInfo, ConfigControlAttribute>)control.Tag;
-                    var property = kvp.Key;
-                    var attribute = kvp.Value;
-                    var value = this.GetControlValue(attribute, control);
+                return control;
+            }
+            case NumericConfigControlAttribute numericConfigControlAttribute:
+            {
+                Label label = new()
+                {
+                    AutoSize = true,
+                    Dock = DockStyle.Top,
+                    Text = $"{this.Text}: "
+                };
+                controlParent.Controls.Add(label);
 
-                    value = Convert.ChangeType(value, property.PropertyType);
+                NumericUpDown control = new()
+                {
+                    Minimum = (decimal)numericConfigControlAttribute.Minimum,
+                    Maximum = (decimal)numericConfigControlAttribute.Maximum,
+                    Value = (decimal)Convert.ChangeType(value, typeof(decimal))
+                };
 
-                    property.SetValue(ConfigManager.Config, value);
-                }
+                return control;
+            }
+            case TextConfigControlAttribute textConfigControlAttribute:
+            {
+                Label label = new()
+                {
+                    AutoSize = true,
+                    Dock = DockStyle.Top,
+                    Text = $"{this.Text}: "
+                };
+                controlParent.Controls.Add(label);
+
+                TextBox control = new()
+                {
+                    Text = value.ToString(),
+                    MaxLength = textConfigControlAttribute.MaxLength
+                };
+
+                return control;
             }
 
-            MessageBox.Show("Configurations successfully saved!", "Configurations saved", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            this.Close();
+            default:
+                break;
         }
 
-        private Control MakeControl(ConfigControlAttribute attribute, object value, Panel controlParent)
+        throw new NotImplementedException("ConfigControlAttribute type not implemented: " + attribute.GetType().Name);
+    }
+
+    private object GetControlValue(ConfigControlAttribute attribute, Control control)
+    {
+        switch (attribute)
         {
-            switch (attribute)
+            case BooleanConfigControlAttribute:
+
             {
-                case BooleanConfigControlAttribute booleanConfigControlAttribute:
-                {
-                    CheckBox control = new()
-                    {
-                        Text = booleanConfigControlAttribute.Text,
-                        Checked = (bool)value == true
-                    };
+                var checkbox = (CheckBox)control;
+                return checkbox.Checked;
+            }
+            case NumericConfigControlAttribute:
 
-                    return control;
-                }
-                case NumericConfigControlAttribute numericConfigControlAttribute:
-                {
-                    Label label = new()
-                    {
-                        AutoSize = true,
-                        Dock = DockStyle.Top,
-                        Text = $"{this.Text}: "
-                    };
-                    controlParent.Controls.Add(label);
+            {
+                var numeric = (NumericUpDown)control;
+                return numeric.Value;
+            }
+            case TextConfigControlAttribute:
 
-                    NumericUpDown control = new()
-                    {
-                        Minimum = (decimal)numericConfigControlAttribute.Minimum,
-                        Maximum = (decimal)numericConfigControlAttribute.Maximum,
-                        Value = (decimal)Convert.ChangeType(value, typeof(decimal))
-                    };
-
-                    return control;
-                }
-                case TextConfigControlAttribute textConfigControlAttribute:
-                {
-                    Label label = new()
-                    {
-                        AutoSize = true,
-                        Dock = DockStyle.Top,
-                        Text = $"{this.Text}: "
-                    };
-                    controlParent.Controls.Add(label);
-
-                    TextBox control = new()
-                    {
-                        Text = value.ToString(),
-                        MaxLength = textConfigControlAttribute.MaxLength
-                    };
-
-                    return control;
-                }
+            {
+                var textbox = (TextBox)control;
+                return textbox.Text;
             }
 
-            throw new NotImplementedException("ConfigControlAttribute type not implemented: " + attribute.GetType().Name);
+            default:
+                break;
         }
 
-        private object GetControlValue(ConfigControlAttribute attribute, Control control)
-        {
-            switch (attribute)
-            {
-                case BooleanConfigControlAttribute:
-
-                {
-                    var checkbox = (CheckBox)control;
-                    return checkbox.Checked;
-                }
-                case NumericConfigControlAttribute:
-
-                {
-                    var numeric = (NumericUpDown)control;
-                    return numeric.Value;
-                }
-                case TextConfigControlAttribute:
-
-                {
-                    var textbox = (TextBox)control;
-                    return textbox.Text;
-                }
-            }
-
-            throw new NotImplementedException("ConfigControlAttribute type not implemented: " + attribute.GetType().Name);
-        }
+        throw new NotImplementedException("ConfigControlAttribute type not implemented: " + attribute.GetType().Name);
     }
 }

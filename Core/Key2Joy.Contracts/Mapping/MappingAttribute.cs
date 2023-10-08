@@ -1,38 +1,28 @@
 ﻿using System;
 
-namespace Key2Joy.Contracts.Mapping
+namespace Key2Joy.Contracts.Mapping;
+
+[AttributeUsage(AttributeTargets.Class)]
+public abstract class MappingAttribute : Attribute, IComparable<MappingAttribute>
 {
-    [AttributeUsage(AttributeTargets.Class)]
-    public abstract class MappingAttribute : Attribute, IComparable<MappingAttribute>
-    {
-        /// <summary>
-        /// Customizable name format for the action/trigger
-        /// </summary>
-        public string NameFormat { get; set; }
+    /// <summary>
+    /// Customizable name format for the action/trigger
+    /// </summary>
+    public string NameFormat { get; set; }
 
-        /// <summary>
-        /// Description for the action/trigger
-        /// </summary>
-        public string Description { get; set; }
+    /// <summary>
+    /// Description for the action/trigger
+    /// </summary>
+    public string Description { get; set; }
 
-        /// <summary>
-        /// When this action should be visibile in menu's.
-        /// </summary>
-        public MappingMenuVisibility Visibility { get; set; } = MappingMenuVisibility.Always;
+    /// <summary>
+    /// When this action should be visibile in menu's.
+    /// </summary>
+    public MappingMenuVisibility Visibility { get; set; } = MappingMenuVisibility.Always;
 
-        public override string ToString()
-        {
-            return this.Description;
-        }
+    public override string ToString() => this.Description;
 
-        public override int GetHashCode()
-        {
-            return this.Description.GetHashCode();
-        }
+    public override int GetHashCode() => this.Description.GetHashCode();
 
-        public int CompareTo(MappingAttribute other)
-        {
-            return this.Description.CompareTo(other.Description);
-        }
-    }
+    public int CompareTo(MappingAttribute other) => this.Description.CompareTo(other.Description);
 }

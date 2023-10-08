@@ -123,7 +123,7 @@ dotnet_style_prefer_is_null_check_over_reference_equality_method = true:warning
 # Undocumented
 dotnet_style_operator_placement_when_wrapping = end_of_line:warning
 csharp_style_prefer_null_check_over_type_check = true:warning
-csharp_style_prefer_top_level_statements = false:warning
+csharp_style_prefer_top_level_statements = false
 
 # C# Style Rules
 # https://docs.microsoft.com/dotnet/fundamentals/code-analysis/style-rules/language-rules#c-style-rules
@@ -179,8 +179,8 @@ dotnet_remove_unnecessary_suppression_exclusions = none:warning
 
 # C# Unnecessary code rules
 [*.{cs,csx,cake}]
-csharp_style_unused_value_expression_statement_preference = silent
-dotnet_diagnostic.IDE0058.severity = suggestion
+csharp_style_unused_value_expression_statement_preference = discard_variable:suggestion
+dotnet_diagnostic.IDE0058.severity = none
 csharp_style_unused_value_assignment_preference = discard_variable:suggestion
 dotnet_diagnostic.IDE0059.severity = suggestion
 
@@ -276,8 +276,8 @@ dotnet_naming_style.prefix_type_parameters_with_t_style.capitalization = pascal_
 dotnet_naming_style.prefix_type_parameters_with_t_style.required_prefix = T
 # disallowed_style - Anything that has this style applied is marked as disallowed
 dotnet_naming_style.disallowed_style.capitalization  = pascal_case
-dotnet_naming_style.disallowed_style.required_prefix = ____RULE_VIOLATION____
-dotnet_naming_style.disallowed_style.required_suffix = ____RULE_VIOLATION____
+dotnet_naming_style.disallowed_style.required_prefix =
+dotnet_naming_style.disallowed_style.required_suffix =
 # internal_error_style - This style should never occur... if it does, it indicates a bug in file or in the parser using the file
 dotnet_naming_style.internal_error_style.capitalization  = pascal_case
 dotnet_naming_style.internal_error_style.required_prefix = ____INTERNAL_ERROR____

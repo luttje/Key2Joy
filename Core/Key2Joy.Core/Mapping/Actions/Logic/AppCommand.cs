@@ -1,15 +1,14 @@
-﻿namespace Key2Joy.Mapping.Actions.Logic
-{
-    public enum AppCommand
-    {
-        /// <summary>
-        /// Aborts listening for triggers
-        /// </summary>
-        Abort = 0,
+﻿namespace Key2Joy.Mapping.Actions.Logic;
 
-        /// <summary>
-        /// Recreate the scripting environment (loses all variables, functions and other changes scripts made)
-        /// </summary>
-        ResetScriptEnvironment = 10,
-    }
+public enum AppCommand
+{
+    /// <summary>
+    /// Aborts listening for triggers
+    /// </summary>
+    Abort = 0,
+
+    /// <summary>
+    /// Recreate the scripting environment (loses all variables, functions and other changes scripts made)
+    /// </summary>
+    ResetScriptEnvironment = 10,
 }

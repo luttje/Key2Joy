@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Security;
 
-namespace Key2Joy.PluginHost
+namespace Key2Joy.PluginHost;
+
+public struct AllowedPermissionsWithDescriptions
 {
-    public struct AllowedPermissionsWithDescriptions
-    {
-        public PermissionSet AllowedPermissions;
-        public List<string> Descriptions;
-    }
+    public PermissionSet AllowedPermissions { get; set; }
+    public List<string> Descriptions { get; set; }
 }

@@ -2,46 +2,45 @@
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.LowLevelInput;
 
-namespace Key2Joy.Mapping.Triggers
+namespace Key2Joy.Mapping.Triggers;
+
+public abstract class PressReleaseTriggerListener<TTrigger> : CoreTriggerListener
+    where TTrigger : class, IPressState, IReturnInputHash
 {
-    public abstract class PressReleaseTriggerListener<TTrigger> : CoreTriggerListener
-        where TTrigger : class, IPressState, IReturnInputHash
+    protected Dictionary<int, List<AbstractMappedOption>> lookupDown;
+    protected Dictionary<int, List<AbstractMappedOption>> lookupRelease;
+
+    protected PressReleaseTriggerListener()
     {
-        protected Dictionary<int, List<AbstractMappedOption>> lookupDown;
-        protected Dictionary<int, List<AbstractMappedOption>> lookupRelease;
+        this.lookupDown = new Dictionary<int, List<AbstractMappedOption>>();
+        this.lookupRelease = new Dictionary<int, List<AbstractMappedOption>>();
+    }
 
-        protected PressReleaseTriggerListener()
+    public override void AddMappedOption(AbstractMappedOption mappedOption)
+    {
+        var trigger = mappedOption.Trigger as TTrigger;
+        var dictionary = (Dictionary<int, List<AbstractMappedOption>>)null;
+
+        if (trigger.PressState == PressState.Press)
         {
-            this.lookupDown = new Dictionary<int, List<AbstractMappedOption>>();
-            this.lookupRelease = new Dictionary<int, List<AbstractMappedOption>>();
+            dictionary = this.lookupDown;
         }
 
-        public override void AddMappedOption(AbstractMappedOption mappedOption)
+        if (trigger.PressState == PressState.Release)
         {
-            var trigger = mappedOption.Trigger as TTrigger;
-            var dictionary = (Dictionary<int, List<AbstractMappedOption>>)null;
-
-            if (trigger.PressState == PressState.Press)
-            {
-                dictionary = this.lookupDown;
-            }
-
-            if (trigger.PressState == PressState.Release)
-            {
-                dictionary = this.lookupRelease;
-            }
-
-            if (dictionary == null)
-            {
-                return;
-            }
-
-            if (!dictionary.TryGetValue(trigger.GetInputHash(), out var mappedOptions))
-            {
-                dictionary.Add(trigger.GetInputHash(), mappedOptions = new List<AbstractMappedOption>());
-            }
-
-            mappedOptions.Add(mappedOption);
+            dictionary = this.lookupRelease;
         }
+
+        if (dictionary == null)
+        {
+            return;
+        }
+
+        if (!dictionary.TryGetValue(trigger.GetInputHash(), out var mappedOptions))
+        {
+            dictionary.Add(trigger.GetInputHash(), mappedOptions = new List<AbstractMappedOption>());
+        }
+
+        mappedOptions.Add(mappedOption);
     }
 }

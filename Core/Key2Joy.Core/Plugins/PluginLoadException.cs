@@ -1,11 +1,10 @@
 ﻿using System;
 
-namespace Key2Joy.Plugins
+namespace Key2Joy.Plugins;
+
+internal class PluginLoadException : Exception
 {
-    internal class PluginLoadException : Exception
+    public PluginLoadException(string message) : base(message)
     {
-        public PluginLoadException(string message) : base(message)
-        {
-        }
     }
 }

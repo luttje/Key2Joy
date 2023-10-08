@@ -1,7 +1,6 @@
-﻿namespace Key2Joy.Contracts.Plugins
+﻿namespace Key2Joy.Contracts.Plugins;
+
+public interface IPluginUserControl
 {
-    public interface IPluginUserControl
-    {
-        int GetDesiredHeight();
-    }
+    int GetDesiredHeight();
 }

@@ -1,22 +1,10 @@
-﻿using System;
+using System;
 
-namespace Key2Joy.Contracts.Plugins
+namespace Key2Joy.Contracts.Plugins;
+
+public class PluginTriggerInsulator : MarshalByRefObject
 {
-    public class PluginTriggerInsulator : MarshalByRefObject
-    {
-        private readonly PluginTrigger source;
+    public PluginTriggerInsulator(PluginTrigger source) => this.PluginTrigger = source;
 
-        public PluginTriggerInsulator(PluginTrigger source)
-        {
-            this.source = source;
-        }
-
-        public PluginTrigger GetPluginTrigger
-        {
-            get
-            {
-                return this.source;
-            }
-        }
-    }
+    public PluginTrigger PluginTrigger { get; }
 }

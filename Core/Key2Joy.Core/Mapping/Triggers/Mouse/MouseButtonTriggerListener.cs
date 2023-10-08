@@ -2,118 +2,114 @@
 using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.LowLevelInput;
 
-namespace Key2Joy.Mapping.Triggers.Mouse
+namespace Key2Joy.Mapping.Triggers.Mouse;
+
+public class MouseButtonTriggerListener : PressReleaseTriggerListener<MouseButtonTrigger>
 {
-    public class MouseButtonTriggerListener : PressReleaseTriggerListener<MouseButtonTrigger>
+    public static MouseButtonTriggerListener instance;
+    public static MouseButtonTriggerListener Instance
     {
-        public static MouseButtonTriggerListener instance;
-        public static MouseButtonTriggerListener Instance
+        get
         {
-            get
-            {
-                instance ??= new MouseButtonTriggerListener();
+            instance ??= new MouseButtonTriggerListener();
 
-                return instance;
-            }
+            return instance;
+        }
+    }
+
+    private GlobalInputHook globalMouseButtonHook;
+    private readonly Dictionary<LowLevelInput.Mouse.Buttons, bool> currentButtonsDown = new();
+
+    public bool GetButtonsDown(LowLevelInput.Mouse.Buttons buttons) => this.currentButtonsDown.ContainsKey(buttons);
+
+    protected override void Start()
+    {
+        // This captures global mouse input and blocks default behaviour by setting e.Handled
+        this.globalMouseButtonHook = new GlobalInputHook();
+        this.globalMouseButtonHook.MouseInputEvent += this.OnMouseButtonInputEvent;
+
+        base.Start();
+    }
+
+    protected override void Stop()
+    {
+        instance = null;
+        this.globalMouseButtonHook.MouseInputEvent -= this.OnMouseButtonInputEvent;
+        this.globalMouseButtonHook.Dispose();
+        this.globalMouseButtonHook = null;
+
+        base.Stop();
+    }
+
+    public override bool GetIsTriggered(AbstractTrigger trigger)
+    {
+        if (trigger is not MouseButtonTrigger mouseButtonTrigger)
+        {
+            return false;
         }
 
-        private GlobalInputHook globalMouseButtonHook;
-        private readonly Dictionary<LowLevelInput.Mouse.Buttons, bool> currentButtonsDown = new();
+        return this.currentButtonsDown.ContainsKey(mouseButtonTrigger.MouseButtons);
+    }
 
-        public bool GetButtonsDown(LowLevelInput.Mouse.Buttons buttons)
+    private void OnMouseButtonInputEvent(object sender, GlobalMouseHookEventArgs e)
+    {
+        if (!this.IsActive)
         {
-            return this.currentButtonsDown.ContainsKey(buttons);
+            return;
         }
 
-        protected override void Start()
+        // Mouse movement is handled through WndProc and TryOverrideMouseMoveInput in MouseMoveTriggerListener
+        if (e.MouseState == MouseState.Move)
         {
-            // This captures global mouse input and blocks default behaviour by setting e.Handled
-            this.globalMouseButtonHook = new GlobalInputHook();
-            this.globalMouseButtonHook.MouseInputEvent += this.OnMouseButtonInputEvent;
-
-            base.Start();
+            return;
         }
 
-        protected override void Stop()
+        var buttons = LowLevelInput.Mouse.ButtonsFromEvent(e, out var isDown);
+        var dictionary = this.lookupRelease;
+
+        if (isDown)
         {
-            instance = null;
-            this.globalMouseButtonHook.MouseInputEvent -= this.OnMouseButtonInputEvent;
-            this.globalMouseButtonHook.Dispose();
-            this.globalMouseButtonHook = null;
+            dictionary = this.lookupDown;
 
-            base.Stop();
-        }
-
-        public override bool GetIsTriggered(AbstractTrigger trigger)
-        {
-            if (trigger is not MouseButtonTrigger mouseButtonTrigger)
+            if (this.currentButtonsDown.ContainsKey(buttons))
             {
-                return false;
-            }
-
-            return this.currentButtonsDown.ContainsKey(mouseButtonTrigger.MouseButtons);
-        }
-
-        private void OnMouseButtonInputEvent(object sender, GlobalMouseHookEventArgs e)
-        {
-            if (!this.IsActive)
-            {
-                return;
-            }
-
-            // Mouse movement is handled through WndProc and TryOverrideMouseMoveInput in MouseMoveTriggerListener
-            if (e.MouseState == MouseState.Move)
-            {
-                return;
-            }
-
-            var buttons = LowLevelInput.Mouse.ButtonsFromEvent(e, out var isDown);
-            var dictionary = this.lookupRelease;
-
-            if (isDown)
-            {
-                dictionary = this.lookupDown;
-
-                if (this.currentButtonsDown.ContainsKey(buttons))
-                {
-                    return; // Prevent firing multiple times for a single key press
-                }
-                else
-                {
-                    this.currentButtonsDown.Add(buttons, true);
-                }
+                return; // Prevent firing multiple times for a single key press
             }
             else
             {
-                if (this.currentButtonsDown.ContainsKey(buttons))
-                {
-                    this.currentButtonsDown.Remove(buttons);
-                }
+                this.currentButtonsDown.Add(buttons, true);
             }
-
-            MouseButtonInputBag inputBag = new()
+        }
+        else
+        {
+            if (this.currentButtonsDown.ContainsKey(buttons))
             {
-                State = e.MouseState,
-                IsDown = isDown,
-                LastX = e.RawData.Position.X,
-                LastY = e.RawData.Position.Y,
-            };
-
-            var hash = MouseButtonTrigger.GetInputHashFor(buttons);
-            dictionary.TryGetValue(hash, out var mappedOptions);
-
-            if (this.DoExecuteTrigger(
-                mappedOptions,
-                inputBag,
-                trigger =>
-                {
-                    var mouseTrigger = trigger as MouseButtonTrigger;
-                    return mouseTrigger.GetInputHash() == hash
-                        && mouseTrigger.MouseButtons == buttons;
-                }))
-            {
-                e.Handled = true;
+                this.currentButtonsDown.Remove(buttons);
             }
+        }
+
+        MouseButtonInputBag inputBag = new()
+        {
+            State = e.MouseState,
+            IsDown = isDown,
+            LastX = e.RawData.Position.X,
+            LastY = e.RawData.Position.Y,
+        };
+
+        var hash = MouseButtonTrigger.GetInputHashFor(buttons);
+        dictionary.TryGetValue(hash, out var mappedOptions);
+
+        if (this.DoExecuteTrigger(
+            mappedOptions,
+            inputBag,
+            trigger =>
+            {
+                var mouseTrigger = trigger as MouseButtonTrigger;
+                return mouseTrigger.GetInputHash() == hash
+                    && mouseTrigger.MouseButtons == buttons;
+            }))
+        {
+            e.Handled = true;
         }
     }
 }
