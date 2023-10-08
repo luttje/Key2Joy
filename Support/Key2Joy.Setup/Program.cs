@@ -23,8 +23,11 @@ namespace Key2Joy.Setup
 
         internal static bool Elevate(string argumentString)
         {
-            var processInfo = new ProcessStartInfo(Assembly.GetExecutingAssembly().CodeBase);
-            processInfo.Verb = "runas";
+            ProcessStartInfo processInfo = new(Assembly.GetExecutingAssembly().CodeBase)
+            {
+                Verb = "runas"
+            };
+
             try
             {
                 processInfo.Arguments = argumentString;
@@ -42,7 +45,7 @@ namespace Key2Joy.Setup
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        private static void Main()
         {
             var args = Environment.GetCommandLineArgs().Skip(1).ToArray();
             var types = LoadVerbs();
@@ -55,7 +58,9 @@ namespace Key2Joy.Setup
             }
 
             if (!ShouldStart)
+            {
                 return;
+            }
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

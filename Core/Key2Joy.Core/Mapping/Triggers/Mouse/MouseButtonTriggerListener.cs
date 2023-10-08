@@ -11,15 +11,14 @@ namespace Key2Joy.Mapping
         {
             get
             {
-                if (instance == null)
-                    instance = new MouseButtonTriggerListener();
+                instance ??= new MouseButtonTriggerListener();
 
                 return instance;
             }
         }
 
         private GlobalInputHook globalMouseButtonHook;
-        private readonly Dictionary<Mouse.Buttons, bool> currentButtonsDown = new Dictionary<Mouse.Buttons, bool>();
+        private readonly Dictionary<Mouse.Buttons, bool> currentButtonsDown = new();
 
         public bool GetButtonsDown(Mouse.Buttons buttons)
         {
@@ -47,8 +46,10 @@ namespace Key2Joy.Mapping
 
         public override bool GetIsTriggered(AbstractTrigger trigger)
         {
-            if (!(trigger is MouseButtonTrigger mouseButtonTrigger))
+            if (trigger is not MouseButtonTrigger mouseButtonTrigger)
+            {
                 return false;
+            }
 
             return currentButtonsDown.ContainsKey(mouseButtonTrigger.MouseButtons);
         }
@@ -56,14 +57,17 @@ namespace Key2Joy.Mapping
         private void OnMouseButtonInputEvent(object sender, GlobalMouseHookEventArgs e)
         {
             if (!IsActive)
+            {
                 return;
+            }
 
             // Mouse movement is handled through WndProc and TryOverrideMouseMoveInput in MouseMoveTriggerListener
             if (e.MouseState == MouseState.Move)
+            {
                 return;
+            }
 
-            var isDown = false;
-            var buttons = Mouse.ButtonsFromEvent(e, out isDown);
+            var buttons = Mouse.ButtonsFromEvent(e, out var isDown);
             var dictionary = lookupRelease;
 
             if (isDown)
@@ -71,17 +75,23 @@ namespace Key2Joy.Mapping
                 dictionary = lookupDown;
 
                 if (currentButtonsDown.ContainsKey(buttons))
+                {
                     return; // Prevent firing multiple times for a single key press
+                }
                 else
+                {
                     currentButtonsDown.Add(buttons, true);
+                }
             }
             else
             {
                 if (currentButtonsDown.ContainsKey(buttons))
+                {
                     currentButtonsDown.Remove(buttons);
+                }
             }
 
-            var inputBag = new MouseButtonInputBag
+            MouseButtonInputBag inputBag = new()
             {
                 State = e.MouseState,
                 IsDown = isDown,
@@ -101,7 +111,9 @@ namespace Key2Joy.Mapping
                     return mouseTrigger.GetInputHash() == hash
                         && mouseTrigger.MouseButtons == buttons;
                 }))
+            {
                 e.Handled = true;
+            }
         }
     }
 }

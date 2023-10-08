@@ -123,14 +123,14 @@ namespace Key2Joy.Gui
                 cell.ToolTipText = pluginLoadState.LoadErrorMessage;
             }
 
-            if (column.Name == "dgvColumnActions" || column.Name == "dgvColumnTriggers")
+            if (column.Name is "dgvColumnActions" or "dgvColumnTriggers")
             {
                 var types = (IReadOnlyList<Type>)e.Value;
                 e.Value = types.Count.ToString();
             }
         }
 
-        private void dgvPlugins_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void DgvPlugins_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             var senderGrid = (DataGridView)sender;
 
@@ -152,7 +152,7 @@ namespace Key2Joy.Gui
 
                     if (permissionsXml != null)
                     {
-                        var additionalPermissions = new PermissionSet(PermissionState.None);
+                        PermissionSet additionalPermissions = new(PermissionState.None);
                         additionalPermissions.FromXml(SecurityElement.FromString(permissionsXml));
 
                         if (additionalPermissions.Count > 0)
@@ -173,7 +173,7 @@ namespace Key2Joy.Gui
                                 }
                             }
 
-                            var confirmationDialog = new PluginPermissionsForm(relevantDescriptions);
+                            PluginPermissionsForm confirmationDialog = new(relevantDescriptions);
 
                             if (confirmationDialog.ShowDialog() != DialogResult.OK)
                             {

@@ -28,12 +28,16 @@ namespace Key2Joy
         public static string GetLogPath(DateTime? day = null)
         {
             if (day == null)
+            {
                 day = DateTime.Now;
+            }
 
             var directory = ConfigManager.Config.LogOutputPath;
 
             if (!Directory.Exists(directory))
+            {
                 Directory.CreateDirectory(directory);
+            }
 
             var dayString = ((DateTime)day).ToString("yyyy-MM-dd");
             return Path.Combine(directory, $"{dayString}.log");
@@ -41,17 +45,19 @@ namespace Key2Joy
 
         public static void WriteLine(params object[] parts)
         {
-            var output = new StringBuilder();
+            StringBuilder output = new();
             output.Append("[");
             output.Append(DateTime.Now.ToString("HH:mm:ss"));
             output.Append("] ");
 
             foreach (var part in parts)
+            {
                 output.Append(part.ToString());
+            }
 
             var outputLine = output.ToString();
 
-            using (EventLog eventLog = new EventLog("Application"))
+            using (EventLog eventLog = new("Application"))
             {
                 eventLog.Source = "Application";
                 eventLog.WriteEntry(outputLine, EventLogEntryType.Information, 101, 1);
@@ -66,7 +72,9 @@ namespace Key2Joy
         public static void WriteLine(OutputModes messageMode = OutputModes.Default, params object[] parts)
         {
             if (OutputMode != OutputModes.Verbose && messageMode == OutputModes.Verbose)
+            {
                 return;
+            }
 
             WriteLine(parts);
         }

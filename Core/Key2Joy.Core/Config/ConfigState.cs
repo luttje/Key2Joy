@@ -57,7 +57,9 @@ namespace Key2Joy.Config
         private void SaveIfInitialized(object changedValue = null)
         {
             if (ConfigManager.Instance.IsInitialized)
+            {
                 ConfigManager.Instance.Save();
+            }
         }
     }
 }

@@ -7,7 +7,7 @@ namespace Key2Joy.Gui
 {
     public partial class InitForm : Form
     {
-        private bool shouldStartMinimized;
+        private readonly bool shouldStartMinimized;
 
         public InitForm(bool shouldStartMinimized = false)
         {
@@ -27,7 +27,7 @@ namespace Key2Joy.Gui
             MappingProfile.ExtractDefaultIfNotExists();
             SimGamePad.Instance.Initialize();
 
-            var mainForm = new MainForm(shouldStartMinimized);
+            MainForm mainForm = new(shouldStartMinimized);
             Program.GoToNextForm(mainForm);
         }
     }

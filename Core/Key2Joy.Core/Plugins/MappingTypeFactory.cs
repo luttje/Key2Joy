@@ -53,8 +53,8 @@ namespace Key2Joy.Plugins
     /// </summary>
     public class PluginMappingTypeFactory<T> : MappingTypeFactory<T> where T : AbstractMappingAspect
     {
-        private PluginHostProxy pluginHost;
-        private Type hostBaseType;
+        private readonly PluginHostProxy pluginHost;
+        private readonly Type hostBaseType;
 
         public PluginMappingTypeFactory(PluginHostProxy pluginHost, Type hostBaseType, string fullTypeName, MappingAttribute attribute, IReadOnlyList<ExposedMethod> exposedMethods = null)
             : base(fullTypeName, attribute, exposedMethods)

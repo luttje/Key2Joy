@@ -10,13 +10,15 @@ namespace BuildMarkdownDocs
 
         internal static CodeBlock FromXml(XElement element)
         {
-            var code = new CodeBlock();
-            code.Language = element.Attribute("language").Value;
+            CodeBlock code = new()
+            {
+                Language = element.Attribute("language").Value
+            };
 
-            var whiteSpaceToTrimPattern = new Regex(@"^[^\S\r\n]+", RegexOptions.Multiline);
+            Regex whiteSpaceToTrimPattern = new(@"^[^\S\r\n]+", RegexOptions.Multiline);
             var whiteSpaceToTrim = whiteSpaceToTrimPattern.Match(element.Value);
 
-            var whiteSpaceTrimPattern = new Regex($"^{whiteSpaceToTrim}", RegexOptions.Multiline);
+            Regex whiteSpaceTrimPattern = new($"^{whiteSpaceToTrim}", RegexOptions.Multiline);
             code.Code = whiteSpaceTrimPattern.Replace(element.Value, "").Trim();
 
             return code;

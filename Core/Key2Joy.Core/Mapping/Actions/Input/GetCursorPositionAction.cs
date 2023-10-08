@@ -14,7 +14,7 @@ namespace Key2Joy.Mapping
     public class GetCursorPositionAction : CoreAction
     {
         [DllImport("user32.dll")]
-        static extern bool GetCursorPos(ref Point lpPoint);
+        private static extern bool GetCursorPos(ref Point lpPoint);
 
         public GetCursorPositionAction(string name)
             : base(name)
@@ -47,7 +47,7 @@ namespace Key2Joy.Mapping
         [ExposesScriptingMethod("Cursor.GetPosition")]
         public Point ExecuteForScript()
         {
-            Point cursorPosition = new Point();
+            Point cursorPosition = new();
             GetCursorPos(ref cursorPosition);
             return cursorPosition;
         }
@@ -59,8 +59,10 @@ namespace Key2Joy.Mapping
 
         public override bool Equals(object obj)
         {
-            if (!(obj is GetCursorPositionAction action))
+            if (obj is not GetCursorPositionAction)
+            {
                 return false;
+            }
 
             return true;
         }

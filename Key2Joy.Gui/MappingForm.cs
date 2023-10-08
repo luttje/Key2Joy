@@ -28,7 +28,9 @@ namespace Key2Joy.Gui
             : this()
         {
             if (mappedOption == null)
+            {
                 return;
+            }
 
             MappedOption = mappedOption;
 
@@ -49,7 +51,9 @@ namespace Key2Joy.Gui
             }
 
             if (comboBox.SelectedItem == null)
+            {
                 return null;
+            }
 
             var selected = ((ImageComboBoxItem<KeyValuePair<TAttribute, MappingTypeFactory<TAspect>>>)comboBox.SelectedItem).ItemValue;
             var selectedTypeFactory = selected.Value;
@@ -78,12 +82,14 @@ namespace Key2Joy.Gui
             var mappingControlFactory = MappingControlRepository.GetMappingControlFactory(selectedTypeName);
 
             if (mappingControlFactory == null)
+            {
                 return null;
+            }
 
             return mappingControlFactory.CreateInstance<Control>();
         }
 
-        private void btnSaveMapping_Click(object sender, EventArgs e)
+        private void BtnSaveMapping_Click(object sender, EventArgs e)
         {
             var trigger = triggerControl.Trigger;
             var action = actionControl.Action;
@@ -100,12 +106,14 @@ namespace Key2Joy.Gui
                 return;
             }
 
-            MappedOption = MappedOption ?? new MappedOption();
+            MappedOption ??= new MappedOption();
             MappedOption.Trigger = trigger;
             MappedOption.Action = action;
 
             if (!actionControl.CanMappingSave(MappedOption))
+            {
                 return;
+            }
 
             DialogResult = DialogResult.OK;
 

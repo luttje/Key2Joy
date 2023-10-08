@@ -15,18 +15,18 @@ namespace Key2Joy.Util
         public static Type GetDelegateType(Type[] parameterTypes, Type returnType)
         {
             // Create a dynamic assembly
-            AssemblyName assemblyName = new AssemblyName("DynamicAssembly");
-            AssemblyBuilder assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.Run);
-            ModuleBuilder moduleBuilder = assemblyBuilder.DefineDynamicModule("DynamicModule");
+            AssemblyName assemblyName = new("DynamicAssembly");
+            var assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.Run);
+            var moduleBuilder = assemblyBuilder.DefineDynamicModule("DynamicModule");
 
             // Create a dynamic type
-            TypeBuilder typeBuilder = moduleBuilder.DefineType(
+            var typeBuilder = moduleBuilder.DefineType(
                 "DynamicDelegateType",
                 TypeAttributes.Public | TypeAttributes.Sealed | TypeAttributes.AutoClass | TypeAttributes.AnsiClass | TypeAttributes.AutoLayout,
                 typeof(MulticastDelegate));
 
             // Define a constructor for the dynamic type
-            ConstructorBuilder constructorBuilder = typeBuilder.DefineConstructor(
+            var constructorBuilder = typeBuilder.DefineConstructor(
                 MethodAttributes.Public | MethodAttributes.SpecialName | MethodAttributes.RTSpecialName,
                 CallingConventions.Standard,
                 new[] { typeof(object), typeof(IntPtr) });
@@ -34,7 +34,7 @@ namespace Key2Joy.Util
             constructorBuilder.SetImplementationFlags(MethodImplAttributes.Runtime | MethodImplAttributes.Managed);
 
             // Define the Invoke method for the dynamic type
-            MethodBuilder methodBuilder = typeBuilder.DefineMethod(
+            var methodBuilder = typeBuilder.DefineMethod(
                 "Invoke",
                 MethodAttributes.Public | MethodAttributes.HideBySig | MethodAttributes.NewSlot | MethodAttributes.Virtual,
                 returnType,
@@ -43,7 +43,7 @@ namespace Key2Joy.Util
             methodBuilder.SetImplementationFlags(MethodImplAttributes.Runtime | MethodImplAttributes.Managed);
 
             // Create the dynamic type
-            Type dynamicDelegateType = typeBuilder.CreateType();
+            var dynamicDelegateType = typeBuilder.CreateType();
 
             return dynamicDelegateType;
         }

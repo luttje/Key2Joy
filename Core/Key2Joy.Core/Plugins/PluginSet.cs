@@ -19,7 +19,7 @@ namespace Key2Joy.Plugins
 
         private readonly string[] pluginDirectoriesPaths;
         public IReadOnlyList<string> PluginAssemblyPaths => pluginDirectoriesPaths;
-        private IList<PluginHostProxy> proxiesToDispose = new List<PluginHostProxy>();
+        private readonly IList<PluginHostProxy> proxiesToDispose = new List<PluginHostProxy>();
 
         /**
          * Plugin customizations
@@ -38,6 +38,12 @@ namespace Key2Joy.Plugins
         internal PluginSet(string pluginDirectoriesPaths)
         {
             PluginsFolder = pluginDirectoriesPaths;
+
+            if (!Directory.Exists(pluginDirectoriesPaths))
+            {
+                Directory.CreateDirectory(pluginDirectoriesPaths);
+            }
+
             this.pluginDirectoriesPaths = Directory.GetDirectories(pluginDirectoriesPaths);
         }
 
@@ -57,7 +63,7 @@ namespace Key2Joy.Plugins
                     var plugin = LoadPlugin(pluginAssemblyPath, expectedChecksum);
                     AddPluginState(PluginLoadStates.Loaded, pluginAssemblyPath, null, plugin);
                 }
-                catch (PluginLoadException ex)
+                catch (PluginLoadException)
                 {
                     AddPluginState(
                         PluginLoadStates.NotLoaded,
@@ -76,9 +82,9 @@ namespace Key2Joy.Plugins
         {
             var pluginDirectoryPath = Path.GetDirectoryName(pluginAssemblyPath);
             var pluginAssemblyName = Path.GetFileName(pluginAssemblyPath).Replace(".dll", "");
-            var pluginLoadState = new PluginLoadState(pluginAssemblyPath);
+            PluginLoadState pluginLoadState = new(pluginAssemblyPath);
 
-            var pluginHost = new PluginHostProxy(pluginAssemblyPath, pluginAssemblyName);
+            PluginHostProxy pluginHost = new(pluginAssemblyPath, pluginAssemblyName);
             string loadedChecksum;
 
             try

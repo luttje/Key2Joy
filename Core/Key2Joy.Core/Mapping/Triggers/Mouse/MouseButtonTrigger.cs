@@ -43,8 +43,10 @@ namespace Key2Joy.Mapping
         // Keep Press and Release together while sorting
         public override int CompareTo(AbstractMappingAspect other)
         {
-            if (other == null || !(other is MouseButtonTrigger otherMouseTrigger))
+            if (other == null || other is not MouseButtonTrigger otherMouseTrigger)
+            {
                 return base.CompareTo(other);
+            }
 
             return $"{MouseButtons}#{(int)PressState}"
                 .CompareTo($"{otherMouseTrigger.MouseButtons}#{(int)otherMouseTrigger.PressState}");
@@ -52,8 +54,10 @@ namespace Key2Joy.Mapping
 
         public override bool Equals(object obj)
         {
-            if (!(obj is MouseButtonTrigger other))
+            if (obj is not MouseButtonTrigger other)
+            {
                 return false;
+            }
 
             return Equals(other);
         }
@@ -66,7 +70,7 @@ namespace Key2Joy.Mapping
 
         public override string ToString()
         {
-            string format = "(mouse) {1} {0}";
+            var format = "(mouse) {1} {0}";
             return format.Replace("{0}", MouseButtons.ToString())
                 .Replace("{1}", Enum.GetName(typeof(PressState), PressState));
         }

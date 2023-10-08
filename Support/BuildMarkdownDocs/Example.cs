@@ -15,7 +15,7 @@ namespace BuildMarkdownDocs
 
         internal static Example FromXml(XElement element)
         {
-            var example = new Example();
+            Example example = new();
             var children = element.Nodes();
 
             foreach (var child in children)
@@ -23,13 +23,19 @@ namespace BuildMarkdownDocs
                 var value = "";
 
                 if (child is XText textChild)
+                {
                     value = textChild.Value.Trim().TrimEachLine();
+                }
                 else if (child is XElement elementChild)
                 {
                     if (elementChild.Name.LocalName == "code")
+                    {
                         value = CodeBlock.FromXml(elementChild).ToString();
+                    }
                     else
+                    {
                         value = elementChild.Value.Trim();
+                    }
                 }
 
                 example.TextContent.AddRange(value.Split('\n'));

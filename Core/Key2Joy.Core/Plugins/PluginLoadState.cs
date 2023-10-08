@@ -33,7 +33,9 @@ namespace Key2Joy.Plugins
             this.PluginHost = pluginHost;
 
             if (pluginHost == null)
+            {
                 return;
+            }
 
             this.Name = pluginHost.GetPluginName();
             this.Author = pluginHost.GetPluginAuthor();

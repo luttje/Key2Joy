@@ -14,7 +14,9 @@ namespace Key2Joy.Mapping
         public override void StartListening(ref IList<AbstractTriggerListener> allListeners)
         {
             if (IsActive)
+            {
                 throw new Exception("Shouldn't StartListening to already active listener!");
+            }
 
             this.allListeners = allListeners;
 
@@ -24,7 +26,9 @@ namespace Key2Joy.Mapping
         public override void StopListening()
         {
             if (!IsActive)
+            {
                 return;
+            }
 
             Stop();
 
@@ -57,7 +61,7 @@ namespace Key2Joy.Mapping
         {
             var executedAny = base.DoExecuteTrigger(mappedOptions, inputBag, optionCandidateFilter);
 
-            return ConfigManager.Config.OverrideDefaultTriggerBehaviour ? executedAny : false;
+            return ConfigManager.Config.OverrideDefaultTriggerBehaviour && executedAny;
         }
     }
 }

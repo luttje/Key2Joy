@@ -25,13 +25,15 @@ namespace Key2Joy.Mapping
         public static KeyboardKey[] GetAllKeys()
         {
             var allEnums = Enum.GetValues(typeof(KeyboardKey));
-            var keys = new List<KeyboardKey>();
+            List<KeyboardKey> keys = new();
 
             // Skip the enumerations that are zero
             foreach (var keyEnum in allEnums)
             {
                 if ((short)keyEnum == 0)
+                {
                     continue;
+                }
 
                 keys.Add((KeyboardKey)keyEnum);
             }
@@ -43,7 +45,7 @@ namespace Key2Joy.Mapping
         {
             var actionFactory = ActionsRepository.GetAction(typeof(KeyboardAction));
 
-            var actions = new List<MappedOption>();
+            List<MappedOption> actions = new();
             foreach (var key in GetAllKeys())
             {
                 var action = (KeyboardAction)MakeAction(actionFactory);
@@ -75,18 +77,26 @@ namespace Key2Joy.Mapping
             PressState = pressState;
 
             if (PressState == PressState.Press)
+            {
                 SimulatedKeyboard.PressKey(Key);
+            }
 
             if (PressState == PressState.Release)
+            {
                 SimulatedKeyboard.ReleaseKey(Key);
+            }
         }
 
         public override async Task Execute(AbstractInputBag inputBag = null)
         {
             if (PressState == PressState.Press)
+            {
                 SimulatedKeyboard.PressKey(Key);
+            }
             else if (PressState == PressState.Release)
+            {
                 SimulatedKeyboard.ReleaseKey(Key);
+            }
         }
 
         public override string GetNameDisplay()
@@ -97,8 +107,10 @@ namespace Key2Joy.Mapping
 
         public override bool Equals(object obj)
         {
-            if (!(obj is KeyboardAction action))
+            if (obj is not KeyboardAction action)
+            {
                 return false;
+            }
 
             return action.Key == Key
                 && action.PressState == PressState;

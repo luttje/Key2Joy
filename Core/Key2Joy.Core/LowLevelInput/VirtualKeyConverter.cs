@@ -7,10 +7,10 @@ namespace Key2Joy.LowLevelInput
     public class VirtualKeyConverter
     {
         [DllImport("user32.dll")]
-        static extern short VkKeyScan(char ch);
+        private static extern short VkKeyScan(char ch);
 
         [DllImport("user32.dll")]
-        static extern uint MapVirtualKey(uint uCode, MapVirtualKeyMapTypes uMapType);
+        private static extern uint MapVirtualKey(uint uCode, MapVirtualKeyMapTypes uMapType);
 
         public static Keys KeysFromVirtual(int virtualKeyCode)
         {
@@ -24,12 +24,12 @@ namespace Key2Joy.LowLevelInput
 
         public static Keys KeysFromChar(char keyChar)
         {
-            var helper = new Helper { Value = VkKeyScan(keyChar) };
+            Helper helper = new() { Value = VkKeyScan(keyChar) };
 
-            byte virtualKeyCode = helper.Low;
-            byte shiftState = helper.High;
+            var virtualKeyCode = helper.Low;
+            var shiftState = helper.High;
 
-            Keys keys = (Keys)virtualKeyCode;
+            var keys = (Keys)virtualKeyCode;
 
             keys |= (shiftState & 1) != 0 ? Keys.Shift : Keys.None;
             keys |= (shiftState & 2) != 0 ? Keys.Control : Keys.None;

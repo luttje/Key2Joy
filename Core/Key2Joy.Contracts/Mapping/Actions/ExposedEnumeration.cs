@@ -10,7 +10,7 @@ namespace Key2Joy.Contracts.Mapping
 
         public static ExposedEnumeration FromType(Type enumType)
         {
-            var result = new ExposedEnumeration
+            ExposedEnumeration result = new()
             {
                 Name = enumType.Name,
                 KeyValues = new Dictionary<string, object>()
@@ -18,7 +18,7 @@ namespace Key2Joy.Contracts.Mapping
             var names = Enum.GetNames(enumType);
             var values = Enum.GetValues(enumType);
 
-            for (int i = 0; i < names.Length; i++)
+            for (var i = 0; i < names.Length; i++)
             {
                 var enumValue = values.GetValue(i);
                 var intValue = Convert.ChangeType(enumValue, Enum.GetUnderlyingType(enumType));

@@ -21,9 +21,13 @@ namespace Key2Joy.Cmd
             MappingProfile profile;
 
             if (ProfilePath != null)
+            {
                 profile = MappingProfile.Load(ProfilePath);
+            }
             else
+            {
                 profile = MappingProfile.RestoreLastLoaded();
+            }
 
             try
             {

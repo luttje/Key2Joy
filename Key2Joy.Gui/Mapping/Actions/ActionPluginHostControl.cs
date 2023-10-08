@@ -9,7 +9,7 @@ namespace Key2Joy.Gui.Mapping
     {
         public event EventHandler OptionsChanged;
 
-        private IActionOptionsControl pluginControlWithOptions;
+        private readonly IActionOptionsControl pluginControlWithOptions;
 
         public ActionPluginHostControl()
         {
@@ -29,7 +29,7 @@ namespace Key2Joy.Gui.Mapping
             pluginUserControl.Dock = DockStyle.Fill;
             pluginUserControl.PerformLayout();
 
-            var listener = new ActionOptionsChangeListener(pluginControlWithOptions);
+            ActionOptionsChangeListener listener = new(pluginControlWithOptions);
             listener.OptionsChanged += (s, e) => OptionsChanged?.Invoke(s, e);
         }
 

@@ -7,12 +7,12 @@ namespace BuildMarkdownDocs.Util
     {
         public static string FirstCharToUpper(this string input)
         {
-            switch (input)
+            return input switch
             {
-                case null: throw new ArgumentNullException(nameof(input));
-                case "": throw new ArgumentException($"{nameof(input)} cannot be empty", nameof(input));
-                default: return input[0].ToString().ToUpper() + input.Substring(1);
-            }
+                null => throw new ArgumentNullException(nameof(input)),
+                "" => throw new ArgumentException($"{nameof(input)} cannot be empty", nameof(input)),
+                _ => input[0].ToString().ToUpper() + input.Substring(1),
+            };
         }
 
         public static string TrimEachLine(this string input)

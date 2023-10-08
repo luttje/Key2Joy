@@ -20,7 +20,7 @@ namespace Key2Joy.Mapping
 
     internal class JsonMappingAspectConverter<T> : JsonConverter<T> where T : AbstractMappingAspect
     {
-        private IDictionary<string, MappingTypeFactory> allowedTypes;
+        private readonly IDictionary<string, MappingTypeFactory> allowedTypes;
 
         public JsonMappingAspectConverter()
         {
@@ -44,7 +44,7 @@ namespace Key2Joy.Mapping
         /// <returns></returns>
         private JsonSerializerOptions GetOptionsWithoutSelf(JsonSerializerOptions options)
         {
-            var newOptions = new JsonSerializerOptions(options);
+            JsonSerializerOptions newOptions = new(options);
             //var thisConverter = newOptions.Converters.SingleOrDefault(c => c is JsonMappingAspectConverter<T>);
 
             //if (thisConverter != null)
@@ -71,7 +71,7 @@ namespace Key2Joy.Mapping
                 )
             );
 
-            var mappingAspectOptions = new MappingAspectOptions();
+            MappingAspectOptions mappingAspectOptions = new();
 
             foreach (var property in actionRootProperty.EnumerateObject())
             {
@@ -87,7 +87,7 @@ namespace Key2Joy.Mapping
                 {
                     mappingAspectOptions.Add(property.Name, property.Value.GetInt32());
                 }
-                else if (property.Value.ValueKind == JsonValueKind.True || property.Value.ValueKind == JsonValueKind.False)
+                else if (property.Value.ValueKind is JsonValueKind.True or JsonValueKind.False)
                 {
                     mappingAspectOptions.Add(property.Name, property.Value.GetBoolean());
                 }
@@ -97,7 +97,7 @@ namespace Key2Joy.Mapping
                 }
                 else if (property.Value.ValueKind == JsonValueKind.Array)
                 {
-                    var list = new List<object>();
+                    List<object> list = new();
 
                     foreach (var item in property.Value.EnumerateArray())
                     {
@@ -135,7 +135,7 @@ namespace Key2Joy.Mapping
 
         public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
         {
-            string realTypeName = MappingTypeHelper.GetTypeFullName(allowedTypes, value);
+            var realTypeName = MappingTypeHelper.GetTypeFullName(allowedTypes, value);
 
             JsonSerializer.Serialize(writer, new JsonMappingAspectWithType
             {

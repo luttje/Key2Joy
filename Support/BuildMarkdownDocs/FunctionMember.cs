@@ -16,7 +16,9 @@ namespace BuildMarkdownDocs
         public string GetParametersSignature()
         {
             if (Parameters == null)
+            {
                 return string.Empty;
+            }
 
             return string.Join(", ", Parameters?
                     .Select(p => $"`{p.GetTypeName()}`"));
@@ -42,11 +44,13 @@ namespace BuildMarkdownDocs
                 parameterTypes = new Type[0];
             }
 
-            var member = new FunctionMember();
-            member.Name = element.Element("name")?.Value ?? element.Attribute("name").Value;
+            FunctionMember member = new()
+            {
+                Name = element.Element("name")?.Value ?? element.Attribute("name").Value
+            };
 
             var summaryNodes = element.Element("summary").Nodes();
-            var summary = new StringBuilder();
+            StringBuilder summary = new();
 
             foreach (var node in summaryNodes)
             {
@@ -58,15 +62,23 @@ namespace BuildMarkdownDocs
                         var cref = nodeElement.Attribute("cref")?.Value;
 
                         if (href != null)
+                        {
                             summary.Append($" [{href}]({href}) ");
+                        }
                         else
+                        {
                             summary.Append($" `{cref}` ");
+                        }
                     }
                     else
+                    {
                         summary.Append(nodeElement.Value.TrimEachLine());
+                    }
                 }
                 else
+                {
                     summary.Append(node.ToString().TrimEachLine());
+                }
             }
 
             member.Summary = summary.ToString();
@@ -76,9 +88,11 @@ namespace BuildMarkdownDocs
 
             var i = 0;
             if (parameterTypes.Length > 0)
+            {
                 member.Parameters = element.Elements("param")?
                     .Select(e => Parameter.FromXml(e, parameterTypes[i++]))
                     .ToArray();
+            }
 
             var markdownMeta = element.Element("markdown-doc");
 

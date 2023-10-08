@@ -47,8 +47,10 @@ namespace Key2Joy.Mapping
 
         public override bool Equals(object obj)
         {
-            if (!(obj is WindowFindAction action))
+            if (obj is not WindowFindAction)
+            {
                 return false;
+            }
 
             // TODO: Currently this is only a script action so this is irrelevant
             return false;

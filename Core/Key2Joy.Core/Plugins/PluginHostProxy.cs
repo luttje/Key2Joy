@@ -27,8 +27,8 @@ namespace Key2Joy.Plugins
         private IPluginHost pluginHost;
         private NamedPipeServerStream pipeServerStream;
 
-        private string pluginAssemblyPath;
-        private string pluginAssemblyName;
+        private readonly string pluginAssemblyPath;
+        private readonly string pluginAssemblyName;
 
         /**
          * Plugin customizations
@@ -43,17 +43,21 @@ namespace Key2Joy.Plugins
             this.pluginAssemblyName = pluginAssemblyName;
         }
 
-        class IpcChannelRegistration
+        private class IpcChannelRegistration
         {
-            private static object _lock = new object();
+            private static readonly object _lock = new();
             private static bool _registered;
 
             public static void RegisterChannel()
             {
                 lock (_lock)
                 {
-                    if (_registered) return;
-                    var channel = new IpcChannel();
+                    if (_registered)
+                    {
+                        return;
+                    }
+
+                    IpcChannel channel = new();
                     ChannelServices.RegisterChannel(channel, false);
                     _registered = true;
                 }
@@ -83,7 +87,9 @@ namespace Key2Joy.Plugins
             foreach (var type in pluginAssembly.MainModule.Types)
             {
                 if (type.Namespace != pluginAssemblyName && !type.Namespace.StartsWith(pluginAssemblyName + "."))
+                {
                     continue;
+                }
 
                 foreach (var customAttribute in type.CustomAttributes)
                 {
@@ -105,8 +111,8 @@ namespace Key2Joy.Plugins
 
         private void DiscoverPluginType_MappingControl(TypeDefinition controlType, CustomAttribute customAttribute)
         {
-            string imageResourceName = "error"; // Default value in MappingControlAttribute should make this irrelevant
-            var controlTargetTypes = new List<string>();
+            var imageResourceName = "error"; // Default value in MappingControlAttribute should make this irrelevant
+            List<string> controlTargetTypes = new();
 
             foreach (var property in customAttribute.Properties)
             {
@@ -155,7 +161,7 @@ namespace Key2Joy.Plugins
         private void DiscoverPluginType_Action(TypeDefinition type, CustomAttribute customAttribute)
         {
             var actionAttribute = BuildMappingAttribute<ActionAttribute>(customAttribute);
-            var exposedMethods = new List<ExposedMethod>();
+            List<ExposedMethod> exposedMethods = new();
 
             foreach (var method in type.Methods)
             {
@@ -163,7 +169,7 @@ namespace Key2Joy.Plugins
 
                 foreach (var methodAttribute in methodAttributes)
                 {
-                    var exposedMethod = new PluginExposedMethod(
+                    PluginExposedMethod exposedMethod = new(
                         this,
                         type.FullName,
                         methodAttribute.ConstructorArguments[0].Value as string,
@@ -186,7 +192,7 @@ namespace Key2Joy.Plugins
 
         public static T BuildMappingAttribute<T>(CustomAttribute attributeData) where T : new()
         {
-            var attributeInstance = new T();
+            T attributeInstance = new();
 
             foreach (var property in attributeData.Properties)
             {
@@ -200,10 +206,7 @@ namespace Key2Joy.Plugins
         {
             var property = obj.GetType().GetProperty(propertyName);
 
-            if (property != null)
-            {
-                property.SetValue(obj, value);
-            }
+            property?.SetValue(obj, value);
         }
 
         /// <summary>
@@ -223,7 +226,7 @@ namespace Key2Joy.Plugins
                 };
                 var contract = (NativeHandleContractInsulator)pluginHost.CreateFrameworkElementContract(controlTypeName, subscribedEvents);
                 var remoteControl = FrameworkElementAdapters.ContractToViewAdapter(contract);
-                var control = new ElementHostProxy(remoteControl, contract);
+                ElementHostProxy control = new(remoteControl, contract);
 
                 subscribeOptionsChanged.CustomSender = control;
                 pluginHost.AnyEvent += PluginHost_AnyEvent;
@@ -302,15 +305,21 @@ namespace Key2Joy.Plugins
 
         private static string GetTitle(string typeName)
         {
-            int dot = typeName.IndexOf('.');
-            if (dot < 0 || dot >= typeName.Length - 1) return typeName;
+            var dot = typeName.IndexOf('.');
+            if (dot < 0 || dot >= typeName.Length - 1)
+            {
+                return typeName;
+            }
+
             return typeName.Substring(dot + 1);
         }
 
         private void Start()
         {
             if (process != null)
+            {
                 return;
+            }
 
             name = "Key2Joy.PluginHost." + Guid.NewGuid().ToString();
 
@@ -328,7 +337,7 @@ namespace Key2Joy.Plugins
 
             SetupEventPipe();
 
-            var info = new ProcessStartInfo
+            ProcessStartInfo info = new()
             {
                 Arguments = name,
 #if !DEBUG
@@ -352,12 +361,12 @@ namespace Key2Joy.Plugins
                 PipeTransmissionMode.Message);
 
             // Start a new thread to listen for incoming connections on the named pipe
-            var t = new Thread(() =>
+            Thread t = new(() =>
             {
                 pipeServerStream.WaitForConnection();
                 Debug.WriteLine($"Pipe connection with plugin established");
 
-                var reader = new StreamReader(pipeServerStream);
+                StreamReader reader = new(pipeServerStream);
 
                 while (true)
                 {
@@ -372,14 +381,19 @@ namespace Key2Joy.Plugins
                         Debug.WriteLine($"-------------> Exception: {ex.Message}");
                     }
                 }
-            });
-            t.IsBackground = true;
+            })
+            {
+                IsBackground = true
+            };
             t.Start();
         }
 
         private void OpenPluginHost()
         {
-            if (pluginHost != null) return;
+            if (pluginHost != null)
+            {
+                return;
+            }
 
             if (!readyEvent.WaitOne(5000))
             {
@@ -392,7 +406,7 @@ namespace Key2Joy.Plugins
             pluginHost = (IPluginHost)Activator.GetObject(typeof(IPluginHost), url);
 
             var eventName = $"{name}.Exit";
-            var exitEvent = new EventWaitHandle(false, EventResetMode.ManualReset, eventName);
+            EventWaitHandle exitEvent = new(false, EventResetMode.ManualReset, eventName);
 
             // Wait for the exit event in another thread in the background.
             Thread closeEventListeningThread = null;
@@ -408,8 +422,10 @@ namespace Key2Joy.Plugins
                     closeEventListeningThread.Abort();
                     closeEventListeningThread = null;
                 }
-            });
-            closeEventListeningThread.IsBackground = true;
+            })
+            {
+                IsBackground = true
+            };
             closeEventListeningThread.Start();
         }
 

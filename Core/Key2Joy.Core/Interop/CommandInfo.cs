@@ -27,8 +27,8 @@ namespace Key2Joy.Interop
 
         public byte[] CommandToBytes<CommandType>(CommandType command)
         {
-            int size = Marshal.SizeOf(command);
-            byte[] bytes = new byte[size];
+            var size = Marshal.SizeOf(command);
+            var bytes = new byte[size];
             var pointer = IntPtr.Zero;
 
             try

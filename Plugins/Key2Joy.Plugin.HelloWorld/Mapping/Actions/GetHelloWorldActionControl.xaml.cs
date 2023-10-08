@@ -45,12 +45,12 @@ namespace Key2Joy.Plugin.HelloWorld.Mapping
             return true;
         }
 
-        private void btnHelloWorld_Click(object sender, EventArgs e)
+        private void BtnHelloWorld_Click(object sender, EventArgs e)
         {
             MessageBox.Show($"Hello {txtName.Text}!");
         }
 
-        private void txtName_TextChanged(object sender, EventArgs e)
+        private void TxtName_TextChanged(object sender, EventArgs e)
         {
             OptionsChanged?.Invoke(this, EventArgs.Empty);
         }

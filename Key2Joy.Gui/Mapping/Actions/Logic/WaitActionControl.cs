@@ -39,7 +39,7 @@ namespace Key2Joy.Gui.Mapping
             return true;
         }
 
-        private void nudWaitTimeInMs_ValueChanged(object sender, EventArgs e)
+        private void NudWaitTimeInMs_ValueChanged(object sender, EventArgs e)
         {
             OptionsChanged?.Invoke(this, EventArgs.Empty);
         }

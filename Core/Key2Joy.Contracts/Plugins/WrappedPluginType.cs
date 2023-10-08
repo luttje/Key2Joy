@@ -8,7 +8,7 @@ namespace Key2Joy.Contracts.Plugins
     /// </summary>
     public class WrappedPluginType : MarshalByRefObject
     {
-        private object instance;
+        private readonly object instance;
 
         public WrappedPluginType(object instance)
         {

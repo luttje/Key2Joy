@@ -42,7 +42,7 @@
             this.cmbKeyboard.Name = "cmbKeyboard";
             this.cmbKeyboard.Size = new System.Drawing.Size(228, 21);
             this.cmbKeyboard.TabIndex = 9;
-            this.cmbKeyboard.SelectedIndexChanged += new System.EventHandler(this.cmbKeyboard_SelectedIndexChanged);
+            this.cmbKeyboard.SelectedIndexChanged += new System.EventHandler(this.CmbKeyboard_SelectedIndexChanged);
             // 
             // lblInfo
             // 
@@ -63,7 +63,7 @@
             this.cmbPressState.Name = "cmbPressState";
             this.cmbPressState.Size = new System.Drawing.Size(89, 21);
             this.cmbPressState.TabIndex = 12;
-            this.cmbPressState.SelectedIndexChanged += new System.EventHandler(this.cmbPressState_SelectedIndexChanged);
+            this.cmbPressState.SelectedIndexChanged += new System.EventHandler(this.CmbPressState_SelectedIndexChanged);
             // 
             // KeyboardActionControl
             // 

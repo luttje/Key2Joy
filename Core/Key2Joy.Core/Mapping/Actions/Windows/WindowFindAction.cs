@@ -56,8 +56,10 @@ namespace Key2Joy.Mapping
 
         public override bool Equals(object obj)
         {
-            if (!(obj is WindowFindAction action))
+            if (obj is not WindowFindAction action)
+            {
                 return false;
+            }
 
             return action.ClassName == ClassName
                 && action.WindowName == WindowName;

@@ -12,8 +12,8 @@ namespace Key2Joy.Gui.Mapping
     )]
     public partial class KeyboardTriggerControl : UserControl, ITriggerOptionsControl
     {
-        const string TEXT_CHANGE = "(press any key to select it as the trigger)";
-        const string TEXT_CHANGE_INSTRUCTION = "(click here, then press any key to set it as the trigger)";
+        private const string TEXT_CHANGE = "(press any key to select it as the trigger)";
+        private const string TEXT_CHANGE_INSTRUCTION = "(click here, then press any key to set it as the trigger)";
 
         public event EventHandler OptionsChanged;
 
@@ -25,13 +25,16 @@ namespace Key2Joy.Gui.Mapping
             InitializeComponent();
 
             // This captures global keyboard input and blocks default behaviour by setting e.Handled
-            var globalKeyboardHook = new GlobalInputHook();
+            GlobalInputHook globalKeyboardHook = new();
             globalKeyboardHook.KeyboardInputEvent += OnKeyInputEvent;
 
             // Relieve input capturing by this mapping form
             Disposed += (s, e) =>
             {
-                if (globalKeyboardHook == null) return;
+                if (globalKeyboardHook == null)
+                {
+                    return;
+                }
 
                 globalKeyboardHook.KeyboardInputEvent -= OnKeyInputEvent;
                 globalKeyboardHook.Dispose();
@@ -49,7 +52,9 @@ namespace Key2Joy.Gui.Mapping
         private void OnKeyInputEvent(object sender, GlobalKeyboardHookEventArgs e)
         {
             if (!isTrapping)
+            {
                 return;
+            }
 
             keys = VirtualKeyConverter.KeysFromVirtual(e.KeyboardData.VirtualCode);
             UpdateKeys();
@@ -91,12 +96,12 @@ namespace Key2Joy.Gui.Mapping
             OptionsChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        private void cmbPressedState_SelectedIndexChanged(object sender, EventArgs e)
+        private void CmbPressedState_SelectedIndexChanged(object sender, EventArgs e)
         {
             OptionsChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        private void txtKeyBind_MouseUp(object sender, MouseEventArgs e)
+        private void TxtKeyBind_MouseUp(object sender, MouseEventArgs e)
         {
             StartTrapping();
         }

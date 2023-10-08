@@ -84,7 +84,7 @@
             this.btnBrowseInstallPath.TabIndex = 2;
             this.btnBrowseInstallPath.Text = "Browse...";
             this.btnBrowseInstallPath.UseVisualStyleBackColor = true;
-            this.btnBrowseInstallPath.Click += new System.EventHandler(this.btnBrowseInstallPath_Click);
+            this.btnBrowseInstallPath.Click += new System.EventHandler(this.BtnBrowseInstallPath_Click);
             // 
             // panel2
             // 
@@ -177,7 +177,7 @@
             this.btnInstallUpdate.TabIndex = 4;
             this.btnInstallUpdate.Text = "Install";
             this.btnInstallUpdate.UseVisualStyleBackColor = true;
-            this.btnInstallUpdate.Click += new System.EventHandler(this.btnInstallUpdate_Click);
+            this.btnInstallUpdate.Click += new System.EventHandler(this.BtnInstallUpdate_Click);
             // 
             // progressUpdate
             // 

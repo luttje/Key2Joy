@@ -55,7 +55,7 @@
             this.nudWaitTimeInMs.Name = "nudWaitTimeInMs";
             this.nudWaitTimeInMs.Size = new System.Drawing.Size(221, 20);
             this.nudWaitTimeInMs.TabIndex = 11;
-            this.nudWaitTimeInMs.ValueChanged += new System.EventHandler(this.nudWaitTimeInMs_ValueChanged);
+            this.nudWaitTimeInMs.ValueChanged += new System.EventHandler(this.NudWaitTimeInMs_ValueChanged);
             // 
             // WaitActionControl
             // 

@@ -70,8 +70,10 @@ namespace Key2Joy.Mapping
 
         public override bool Equals(object obj)
         {
-            if (!(obj is KeyboardGetKeyDownAction action))
+            if (obj is not KeyboardGetKeyDownAction)
+            {
                 return false;
+            }
 
             // TODO: Currently this is only a script action so this is irrelevant
             return false;

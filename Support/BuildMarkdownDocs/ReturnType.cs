@@ -10,8 +10,10 @@ namespace BuildMarkdownDocs
 
         public static ReturnType FromXml(XElement element)
         {
-            var returnType = new ReturnType();
-            returnType.Description = element.Value;
+            ReturnType returnType = new()
+            {
+                Description = element.Value
+            };
 
             return returnType;
         }

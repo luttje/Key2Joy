@@ -67,7 +67,7 @@ namespace Key2Joy.Mapping
         {
             WaitTime = TimeSpan.FromMilliseconds(waitTime);
 
-            var cancellation = new CancellationTokenSource();
+            CancellationTokenSource cancellation = new();
             var token = cancellation.Token;
             Task.Run(async () =>
             {

@@ -64,10 +64,12 @@ namespace Key2Joy.Mapping
         {
             WaitTime = TimeSpan.FromMilliseconds(waitTime);
 
-            for (int i = 0; i < callbacks.Length; i++)
+            for (var i = 0; i < callbacks.Length; i++)
             {
                 if (i > 0)
+                {
                     await Task.Delay(WaitTime);
+                }
 
                 callbacks[i].Invoke();
             }

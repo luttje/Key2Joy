@@ -28,7 +28,7 @@ namespace Key2Joy.Mapping
         {
             var actionFactory = ActionsRepository.GetAction(typeof(GamePadAction));
 
-            var actions = new List<MappedOption>();
+            List<MappedOption> actions = new();
             foreach (var control in GetAllButtons())
             {
                 var action = (GamePadAction)MakeAction(actionFactory);
@@ -93,10 +93,14 @@ namespace Key2Joy.Mapping
             GamePadManager.Instance.EnsurePluggedIn(GamePadIndex);
 
             if (PressState == PressState.Press)
+            {
                 SimGamePad.Instance.SetControl(Control, GamePadIndex);
+            }
 
             if (PressState == PressState.Release)
+            {
                 SimGamePad.Instance.ReleaseControl(Control, GamePadIndex);
+            }
         }
 
         public override async Task Execute(AbstractInputBag inputBag = null)
@@ -135,9 +139,13 @@ namespace Key2Joy.Mapping
             }
 
             if (PressState == PressState.Press)
+            {
                 SimGamePad.Instance.SetControl(Control, GamePadIndex);
+            }
             else if (PressState == PressState.Release)
+            {
                 SimGamePad.Instance.ReleaseControl(Control, GamePadIndex);
+            }
         }
 
         public override string GetNameDisplay()
@@ -149,8 +157,10 @@ namespace Key2Joy.Mapping
 
         public override bool Equals(object obj)
         {
-            if (!(obj is GamePadAction action))
+            if (obj is not GamePadAction action)
+            {
                 return false;
+            }
 
             return action.Control == Control
                 && action.PressState == PressState;

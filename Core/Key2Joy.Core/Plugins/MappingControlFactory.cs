@@ -34,7 +34,7 @@ namespace Key2Joy.Plugins
     /// </summary>
     public class TypeMappingControlFactory : MappingControlFactory
     {
-        private Type controlType;
+        private readonly Type controlType;
 
         public TypeMappingControlFactory(string forTypeFullName, string imageResourceName, Type controlType)
             : base(forTypeFullName, imageResourceName)
@@ -53,8 +53,8 @@ namespace Key2Joy.Plugins
     /// </summary>
     public class PluginMappingControlFactory : MappingControlFactory
     {
-        private PluginHostProxy pluginHost;
-        private string controlTypeName;
+        private readonly PluginHostProxy pluginHost;
+        private readonly string controlTypeName;
 
         internal PluginMappingControlFactory(string forTypeFullName, string imageResourceName, PluginHostProxy pluginHost, string controlTypeName)
             : base(forTypeFullName, imageResourceName)

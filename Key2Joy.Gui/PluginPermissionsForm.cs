@@ -17,7 +17,7 @@ namespace Key2Joy.Gui
 
             foreach (var permissionDescription in relevantPermissionDescriptions)
             {
-                var permissionControl = new PluginPermissionControl(permissionDescription)
+                PluginPermissionControl permissionControl = new(permissionDescription)
                 {
                     Dock = DockStyle.Top,
                     AutoSize = true,
@@ -28,12 +28,12 @@ namespace Key2Joy.Gui
             pnlPermissions.Invalidate(true);
         }
 
-        private void btnCancel_Click(object sender, EventArgs e)
+        private void BtnCancel_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
         }
 
-        private void btnEnablePlugin_Click(object sender, EventArgs e)
+        private void BtnEnablePlugin_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.OK;
         }

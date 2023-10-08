@@ -19,7 +19,7 @@ namespace Key2Joy.Mapping
         {
             mappingControls = new Dictionary<string, MappingControlFactory>();
 
-            foreach (Type type in AppDomain.CurrentDomain.GetAssemblies().SelectMany(a => a.GetTypes()))
+            foreach (var type in AppDomain.CurrentDomain.GetAssemblies().SelectMany(a => a.GetTypes()))
             {
                 var attribute = type.GetCustomAttribute<MappingControlAttribute>();
                 if (attribute == null)
@@ -34,7 +34,7 @@ namespace Key2Joy.Mapping
 
                 if (attribute.ForTypes != null)
                 {
-                    foreach (Type forType in attribute.ForTypes)
+                    foreach (var forType in attribute.ForTypes)
                     {
                         mappingControls.Add(forType.FullName, new TypeMappingControlFactory(forType.FullName, attribute.ImageResourceName, type));
                     }

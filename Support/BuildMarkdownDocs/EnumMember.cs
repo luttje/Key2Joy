@@ -20,7 +20,7 @@ namespace BuildMarkdownDocs
         {
             base.FillTemplateReplacements(ref replacements);
 
-            var allEnumerations = new StringBuilder();
+            StringBuilder allEnumerations = new();
             string firstName = null;
 
             foreach (var name in Enum.GetNames(Type))
@@ -31,10 +31,11 @@ namespace BuildMarkdownDocs
                 var valueAttributes = enumValueMemberInfo.GetCustomAttribute(typeof(ObsoleteAttribute), false);
 
                 if (valueAttributes != null)
+                {
                     continue;
+                }
 
-                if (firstName == null)
-                    firstName = name;
+                firstName ??= name;
 
                 var summary = ValueSummaries != null && ValueSummaries.ContainsKey(name)
                     ? $": {ValueSummaries[name]}" : "";
@@ -43,7 +44,10 @@ namespace BuildMarkdownDocs
             }
 
             if (firstName != null)
+            {
                 replacements.Add("Example", $"`{Name}.{firstName}`");
+            }
+
             replacements.Add("Values", allEnumerations.ToString());
         }
     }

@@ -42,8 +42,8 @@
             this.txtKeyBind.Size = new System.Drawing.Size(213, 20);
             this.txtKeyBind.TabIndex = 6;
             this.txtKeyBind.Text = "(click this field with any mouse button to select it as the trigger)";
-            this.txtKeyBind.MouseEnter += new System.EventHandler(this.txtKeyBind_MouseEnter);
-            this.txtKeyBind.MouseLeave += new System.EventHandler(this.txtKeyBind_MouseLeave);
+            this.txtKeyBind.MouseEnter += new System.EventHandler(this.TxtKeyBind_MouseEnter);
+            this.txtKeyBind.MouseLeave += new System.EventHandler(this.TxtKeyBind_MouseLeave);
             // 
             // lblInfo
             // 
@@ -66,7 +66,7 @@
             this.cmbPressState.Name = "cmbPressState";
             this.cmbPressState.Size = new System.Drawing.Size(89, 21);
             this.cmbPressState.TabIndex = 12;
-            this.cmbPressState.SelectedIndexChanged += new System.EventHandler(this.cmbPressedState_SelectedIndexChanged);
+            this.cmbPressState.SelectedIndexChanged += new System.EventHandler(this.CmbPressedState_SelectedIndexChanged);
             // 
             // MouseButtonTriggerControl
             // 

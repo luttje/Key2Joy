@@ -24,7 +24,7 @@ namespace Key2Joy.Interop
             foreach (var type in types)
             {
                 var attribute = type.GetCustomAttribute<CommandAttribute>();
-                var commandInfo = new CommandInfo
+                CommandInfo commandInfo = new()
                 {
                     Id = attribute.Id,
                     StructType = type,
@@ -36,10 +36,7 @@ namespace Key2Joy.Interop
 
         public CommandInfo GetCommandInfo<CommandType>(CommandType command)
         {
-            var commandInfo = commandTypes.Values.FirstOrDefault(c => c.StructType == command.GetType());
-            if (commandInfo == null)
-                throw new ArgumentException("Command type not found in repository");
-
+            var commandInfo = commandTypes.Values.FirstOrDefault(c => c.StructType == command.GetType()) ?? throw new ArgumentException("Command type not found in repository");
             return commandInfo;
         }
 

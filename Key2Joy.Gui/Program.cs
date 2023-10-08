@@ -16,13 +16,13 @@ namespace Key2Joy.Gui
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        private static void Main()
         {
             Key2JoyManager.InitSafely(
                 OnRunAppCommand,
                 (plugins) =>
                 {
-                    string[] args = Environment.GetCommandLineArgs();
+                    var args = Environment.GetCommandLineArgs();
 
                     Plugins = plugins;
 
@@ -31,7 +31,7 @@ namespace Key2Joy.Gui
 
                     var shouldStartMinimized = false;
 
-                    foreach (string arg in args)
+                    foreach (var arg in args)
                     {
                         if (arg == "--minimized")
                         {
@@ -42,7 +42,9 @@ namespace Key2Joy.Gui
                     ActiveForm = new InitForm(shouldStartMinimized);
 
                     while (ActiveForm != null && !ActiveForm.IsDisposed)
+                    {
                         Application.Run(ActiveForm);
+                    }
                 });
         }
 
@@ -56,7 +58,7 @@ namespace Key2Joy.Gui
 
         internal static Bitmap ResourceBitmapFromName(string name)
         {
-            ResourceManager rm = Properties.Resources.ResourceManager;
+            var rm = Properties.Resources.ResourceManager;
             return (Bitmap)rm.GetObject(name);
         }
 

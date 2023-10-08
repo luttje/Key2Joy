@@ -23,12 +23,12 @@ namespace Key2Joy.Gui.Mapping
             triggerControl.SelectTrigger(trigger);
         }
 
-        private void btnRemove_Click(object sender, EventArgs e)
+        private void BtnRemove_Click(object sender, EventArgs e)
         {
             RequestedRemove?.Invoke(this, EventArgs.Empty);
         }
 
-        private void triggerControl_TriggerChanged(object sender, TriggerChangedEventArgs e)
+        private void TriggerControl_TriggerChanged(object sender, TriggerChangedEventArgs e)
         {
             Trigger = e.Trigger;
 

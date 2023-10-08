@@ -14,7 +14,7 @@ namespace Key2Joy.LowLevelInput
             int cbSize);
 
         [DllImport("user32.dll")]
-        static extern int GetSystemMetrics(SystemMetric smIndex);
+        private static extern int GetSystemMetrics(SystemMetric smIndex);
 
         public static int CalculateAbsoluteCoordinateX(int x)
         {
@@ -32,7 +32,7 @@ namespace Key2Joy.LowLevelInput
             Right = 1,
         }
 
-        enum SystemMetric
+        private enum SystemMetric
         {
             SM_CXSCREEN = 0,
             SM_CYSCREEN = 1,

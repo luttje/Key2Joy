@@ -14,7 +14,7 @@ namespace Key2Joy.Mapping
     public class WindowGetClassAction : CoreAction
     {
         [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-        static extern int GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
+        private static extern int GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
 
         public WindowGetClassAction(string name)
             : base(name)
@@ -37,12 +37,14 @@ namespace Key2Joy.Mapping
         {
             int nRet;
             // Pre-allocate 256 characters, since this is the maximum class name length.
-            var classNameBuilder = new StringBuilder(256);
+            StringBuilder classNameBuilder = new(256);
             //Get the window class name
             nRet = GetClassName((IntPtr)handle, classNameBuilder, classNameBuilder.Capacity);
 
             if (nRet == 0)
+            {
                 throw new InvalidCastException("Invalid window handle?");
+            }
 
             return classNameBuilder.ToString();
         }
@@ -59,8 +61,10 @@ namespace Key2Joy.Mapping
 
         public override bool Equals(object obj)
         {
-            if (!(obj is WindowGetClassAction action))
+            if (obj is not WindowGetClassAction)
+            {
                 return false;
+            }
 
             // TODO: Currently this is only a script action so this is irrelevant
             return false;

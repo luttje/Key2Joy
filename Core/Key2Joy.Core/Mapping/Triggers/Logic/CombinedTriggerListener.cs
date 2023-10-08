@@ -11,8 +11,7 @@ namespace Key2Joy.Mapping
         {
             get
             {
-                if (instance == null)
-                    instance = new CombinedTriggerListener();
+                instance ??= new CombinedTriggerListener();
 
                 return instance;
             }
@@ -24,10 +23,11 @@ namespace Key2Joy.Mapping
         public override void AddMappedOption(AbstractMappedOption mappedOption)
         {
             var trigger = mappedOption.Trigger as CombinedTrigger;
-            IList<AbstractMappedOption> mappedOptions;
 
-            if (!lookup.TryGetValue(trigger, out mappedOptions))
+            if (!lookup.TryGetValue(trigger, out var mappedOptions))
+            {
                 lookup.Add(trigger, mappedOptions = new List<AbstractMappedOption>());
+            }
 
             foreach (var realTrigger in trigger.Triggers)
             {
@@ -61,7 +61,9 @@ namespace Key2Joy.Mapping
                     }
 
                     if (foundListener)
+                    {
                         break;
+                    }
                 }
 
                 if (foundListener)
@@ -78,7 +80,7 @@ namespace Key2Joy.Mapping
 
             foreach (var combinedTrigger in lookup.Keys)
             {
-                bool found = false;
+                var found = false;
 
                 foreach (var trigger in combinedTrigger.Triggers)
                 {
@@ -98,7 +100,9 @@ namespace Key2Joy.Mapping
                 }
 
                 if (found)
+                {
                     break;
+                }
             }
 
             foreach (var key in optionsToExecute.Keys)
@@ -113,7 +117,9 @@ namespace Key2Joy.Mapping
             {
                 // Skip every mapped option that we didn't add as candidates ourselves
                 if (!optionsToExecute.TryGetValue(mappedOption, out var combinedTrigger))
+                {
                     continue;
+                }
 
                 optionsToExecute.Remove(mappedOption);
 
@@ -131,7 +137,7 @@ namespace Key2Joy.Mapping
 
                 if (allTriggered)
                 {
-                    var inputBag = new CombinedInputBag()
+                    CombinedInputBag inputBag = new()
                     {
                         InputBags = combinedTrigger.Triggers.Select(t => t.LastInputBag).ToList()
                     };

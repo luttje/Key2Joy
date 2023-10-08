@@ -4,13 +4,10 @@ namespace Key2Joy.Contracts.Mapping
 {
     public class TriggerChangedEventArgs : EventArgs
     {
-        public static new readonly TriggerChangedEventArgs Empty = new TriggerChangedEventArgs();
+        public static new readonly TriggerChangedEventArgs Empty = new();
 
         public AbstractTrigger Trigger { get; private set; }
 
-        public TriggerChangedEventArgs(AbstractTrigger trigger = null)
-        {
-            Trigger = trigger;
-        }
+        public TriggerChangedEventArgs(AbstractTrigger trigger = null) => Trigger = trigger;
     }
 }

@@ -19,7 +19,7 @@ namespace BuildMarkdownDocs
 
         internal string FillTemplate(string fileTemplate)
         {
-            var replacements = new Dictionary<string, string>();
+            Dictionary<string, string> replacements = new();
 
             FillTemplateReplacements(ref replacements);
 
@@ -38,7 +38,9 @@ namespace BuildMarkdownDocs
 
                     // Removes the if-statement start and end
                     if (kvp.Value.Length > 0)
+                    {
                         replacement = match.Groups[1].Value;
+                    }
 
                     template = Regex.Replace(template, regex, replacement, RegexOptions.Singleline);
                 }

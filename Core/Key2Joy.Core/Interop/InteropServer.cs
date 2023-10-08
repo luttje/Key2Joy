@@ -23,8 +23,7 @@ namespace Key2Joy.Interop
 
         public void RestartListening()
         {
-            if (pipeServer != null)
-                pipeServer.Dispose();
+            pipeServer?.Dispose();
 
             pipeServer = new NamedPipeServerStream(PIPE_NAME, PipeDirection.InOut, 1, PipeTransmissionMode.Message, PipeOptions.Asynchronous);
             pipeServer.BeginWaitForConnection(OnClientConnected, pipeServer);
@@ -49,7 +48,9 @@ namespace Key2Joy.Interop
             Key2JoyManager.Instance.CallOnUiThread(() =>
             {
                 if (Key2JoyManager.Instance.GetIsArmed())
+                {
                     Key2JoyManager.Instance.DisarmMappings();
+                }
             });
         }
 

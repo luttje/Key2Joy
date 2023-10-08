@@ -13,11 +13,11 @@ namespace Key2Joy.LowLevelInput
         public event EventHandler<GlobalKeyboardHookEventArgs> KeyboardInputEvent;
         public event EventHandler<GlobalMouseHookEventArgs> MouseInputEvent;
 
-        private IntPtr[] windowsHookHandles;
+        private readonly IntPtr[] windowsHookHandles;
         private IntPtr user32LibraryHandle;
         private HookProc hookProc;
 
-        delegate IntPtr HookProc(int nCode, IntPtr wParam, IntPtr lParam);
+        private delegate IntPtr HookProc(int nCode, IntPtr wParam, IntPtr lParam);
 
         [DllImport("kernel32.dll")]
         private static extern IntPtr LoadLibrary(string lpFileName);
@@ -36,7 +36,7 @@ namespace Key2Joy.LowLevelInput
         /// <param name="dwThreadId">thread identifier</param>
         /// <returns>If the function succeeds, the return value is the handle to the hook procedure.</returns>
         [DllImport("USER32", SetLastError = true)]
-        static extern IntPtr SetWindowsHookEx(int idHook, HookProc lpfn, IntPtr hMod, int dwThreadId);
+        private static extern IntPtr SetWindowsHookEx(int idHook, HookProc lpfn, IntPtr hMod, int dwThreadId);
 
         /// <summary>
         /// The UnhookWindowsHookEx function removes a hook procedure installed in a hook chain by the SetWindowsHookEx function.
@@ -56,7 +56,7 @@ namespace Key2Joy.LowLevelInput
         /// <param name="lParam">value passed to hook procedure</param>
         /// <returns>If the function succeeds, the return value is true.</returns>
         [DllImport("USER32", SetLastError = true)]
-        static extern IntPtr CallNextHookEx(IntPtr hHook, int code, IntPtr wParam, IntPtr lParam);
+        private static extern IntPtr CallNextHookEx(IntPtr hHook, int code, IntPtr wParam, IntPtr lParam);
 
         public GlobalInputHook()
         {
@@ -67,13 +67,13 @@ namespace Key2Joy.LowLevelInput
             user32LibraryHandle = LoadLibrary("User32");
             if (user32LibraryHandle == IntPtr.Zero)
             {
-                int errorCode = Marshal.GetLastWin32Error();
+                var errorCode = Marshal.GetLastWin32Error();
                 throw new Win32Exception(errorCode, $"Failed to load library 'User32.dll'. Error {errorCode}: {new Win32Exception(Marshal.GetLastWin32Error()).Message}.");
             }
 
             var windowsHooks = new int[] { WH_KEYBOARD_LL, WH_MOUSE_LL };
 
-            for (int i = 0; i < windowsHooks.Length; i++)
+            for (var i = 0; i < windowsHooks.Length; i++)
             {
                 var windowsHook = windowsHooks[i];
 
@@ -81,7 +81,7 @@ namespace Key2Joy.LowLevelInput
 
                 if (windowsHookHandles[i] == IntPtr.Zero)
                 {
-                    int errorCode = Marshal.GetLastWin32Error();
+                    var errorCode = Marshal.GetLastWin32Error();
                     throw new Win32Exception(errorCode, $"Failed to adjust input hooks for '{Process.GetCurrentProcess().ProcessName}'. Error {errorCode}: {new Win32Exception(Marshal.GetLastWin32Error()).Message}.");
                 }
             }
@@ -92,7 +92,7 @@ namespace Key2Joy.LowLevelInput
             if (disposing)
             {
                 // because we can unhook only in the same thread, not in garbage collector thread
-                for (int i = 0; i < windowsHookHandles.Length; i++)
+                for (var i = 0; i < windowsHookHandles.Length; i++)
                 {
                     var windowsHookHandle = windowsHookHandles[i];
 
@@ -100,7 +100,7 @@ namespace Key2Joy.LowLevelInput
                     {
                         if (!UnhookWindowsHookEx(windowsHookHandle))
                         {
-                            int errorCode = Marshal.GetLastWin32Error();
+                            var errorCode = Marshal.GetLastWin32Error();
                             throw new Win32Exception(errorCode, $"Failed to remove input hooks for '{Process.GetCurrentProcess().ProcessName}'. Error {errorCode}: {new Win32Exception(Marshal.GetLastWin32Error()).Message}.");
                         }
                         windowsHookHandles[i] = IntPtr.Zero;
@@ -115,7 +115,7 @@ namespace Key2Joy.LowLevelInput
             {
                 if (!FreeLibrary(user32LibraryHandle)) // reduces reference to library by 1.
                 {
-                    int errorCode = Marshal.GetLastWin32Error();
+                    var errorCode = Marshal.GetLastWin32Error();
                     throw new Win32Exception(errorCode, $"Failed to unload library 'User32.dll'. Error {errorCode}: {new Win32Exception(Marshal.GetLastWin32Error()).Message}.");
                 }
                 user32LibraryHandle = IntPtr.Zero;
@@ -143,24 +143,24 @@ namespace Key2Joy.LowLevelInput
 
             if (Enum.IsDefined(typeof(KeyboardState), wparamTyped))
             {
-                object o = Marshal.PtrToStructure(lParam, typeof(LowLevelKeyboardInputEvent));
-                LowLevelKeyboardInputEvent p = (LowLevelKeyboardInputEvent)o;
+                var o = Marshal.PtrToStructure(lParam, typeof(LowLevelKeyboardInputEvent));
+                var p = (LowLevelKeyboardInputEvent)o;
 
-                var eventArguments = new GlobalKeyboardHookEventArgs(p, (KeyboardState)wparamTyped);
+                GlobalKeyboardHookEventArgs eventArguments = new(p, (KeyboardState)wparamTyped);
 
-                EventHandler<GlobalKeyboardHookEventArgs> handler = KeyboardInputEvent;
+                var handler = KeyboardInputEvent;
                 handler?.Invoke(this, eventArguments);
 
                 isInputHandled = eventArguments.Handled;
             }
             else if (Enum.IsDefined(typeof(MouseState), wparamTyped))
             {
-                object o = Marshal.PtrToStructure(lParam, typeof(LowLevelMouseInputEvent));
-                LowLevelMouseInputEvent p = (LowLevelMouseInputEvent)o;
+                var o = Marshal.PtrToStructure(lParam, typeof(LowLevelMouseInputEvent));
+                var p = (LowLevelMouseInputEvent)o;
 
-                var eventArguments = new GlobalMouseHookEventArgs(p, (MouseState)wparamTyped);
+                GlobalMouseHookEventArgs eventArguments = new(p, (MouseState)wparamTyped);
 
-                EventHandler<GlobalMouseHookEventArgs> handler = MouseInputEvent;
+                var handler = MouseInputEvent;
                 handler?.Invoke(this, eventArguments);
 
                 isInputHandled = eventArguments.Handled;

@@ -39,7 +39,7 @@ namespace Key2Joy.Mapping
             if (command == AppCommand.ResetScriptEnvironment)
             {
                 // Keep track of new environments to pass to all related script actions
-                Dictionary<Type, object> newEnvironments = new Dictionary<Type, object>();
+                Dictionary<Type, object> newEnvironments = new();
 
                 foreach (var otherAction in otherActions)
                 {
@@ -48,7 +48,7 @@ namespace Key2Joy.Mapping
                     // TODO: This is a bit hacky and could do with less reflection
                     if (typeof(BaseScriptActionWithEnvironment<>).IsSubclassOfRawGeneric(otherActionType))
                     {
-                        if (!newEnvironments.TryGetValue(otherActionType, out object environment))
+                        if (!newEnvironments.TryGetValue(otherActionType, out var environment))
                         {
                             var newEnvironmentMethod = otherActionType.GetMethod(nameof(BaseScriptActionWithEnvironment<object>.SetupEnvironment));
                             environment = newEnvironmentMethod.Invoke(otherAction, null);
@@ -86,8 +86,10 @@ namespace Key2Joy.Mapping
 
         public override bool Equals(object obj)
         {
-            if (!(obj is AppCommandAction action))
+            if (obj is not AppCommandAction action)
+            {
                 return false;
+            }
 
             return action.Command == Command;
         }

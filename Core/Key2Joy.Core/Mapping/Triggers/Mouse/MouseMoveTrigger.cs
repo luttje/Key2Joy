@@ -40,7 +40,10 @@ namespace Key2Joy.Mapping
 
         public override bool Equals(object obj)
         {
-            if (!(obj is MouseMoveTrigger other)) return false;
+            if (obj is not MouseMoveTrigger other)
+            {
+                return false;
+            }
 
             return AxisBinding == other.AxisBinding;
         }

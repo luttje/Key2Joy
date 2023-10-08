@@ -74,8 +74,10 @@ namespace Key2Joy.Mapping
 
         public override bool Equals(object obj)
         {
-            if (!(obj is MouseMoveAction action))
+            if (obj is not MouseMoveAction action)
+            {
                 return false;
+            }
 
             return action.MoveType == MoveType
                 && action.X == X

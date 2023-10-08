@@ -45,7 +45,7 @@
             this.triggerControl.Padding = new System.Windows.Forms.Padding(5);
             this.triggerControl.Size = new System.Drawing.Size(331, 31);
             this.triggerControl.TabIndex = 2;
-            this.triggerControl.TriggerChanged += new System.EventHandler<Key2Joy.Contracts.Mapping.TriggerChangedEventArgs>(this.triggerControl_TriggerChanged);
+            this.triggerControl.TriggerChanged += new System.EventHandler<Key2Joy.Contracts.Mapping.TriggerChangedEventArgs>(this.TriggerControl_TriggerChanged);
             // 
             // pnlActions
             // 
@@ -66,7 +66,7 @@
             this.btnRemove.TabIndex = 2;
             this.btnRemove.Text = "Remove";
             this.btnRemove.UseVisualStyleBackColor = true;
-            this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
+            this.btnRemove.Click += new System.EventHandler(this.BtnRemove_Click);
             // 
             // CombinedTriggerControl
             // 

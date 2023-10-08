@@ -45,8 +45,10 @@ namespace Key2Joy.Mapping
         // Keep Press and Release together while sorting
         public override int CompareTo(AbstractMappingAspect other)
         {
-            if (other == null || !(other is KeyboardTrigger otherKeyboardTrigger))
+            if (other == null || other is not KeyboardTrigger otherKeyboardTrigger)
+            {
                 return base.CompareTo(other);
+            }
 
             return $"{Keys}#{(int)PressState}"
                 .CompareTo($"{otherKeyboardTrigger.Keys}#{(int)otherKeyboardTrigger.PressState}");
@@ -54,8 +56,10 @@ namespace Key2Joy.Mapping
 
         public override bool Equals(object obj)
         {
-            if (!(obj is KeyboardTrigger other))
+            if (obj is not KeyboardTrigger other)
+            {
                 return false;
+            }
 
             return Equals(other);
         }
@@ -68,7 +72,7 @@ namespace Key2Joy.Mapping
 
         public override string ToString()
         {
-            string format = "(keyboard) {1} {0}";
+            var format = "(keyboard) {1} {0}";
             return format.Replace("{0}", Keys.ToString())
                 .Replace("{1}", Enum.GetName(typeof(PressState), PressState));
         }
@@ -76,7 +80,9 @@ namespace Key2Joy.Mapping
         public KeyboardState GetKeyboardState()
         {
             if (PressState == PressState.Press)
+            {
                 return KeyboardState.KeyDown;
+            }
 
             return KeyboardState.KeyUp;
         }

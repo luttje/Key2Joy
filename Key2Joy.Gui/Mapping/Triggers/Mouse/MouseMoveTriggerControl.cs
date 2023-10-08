@@ -18,12 +18,14 @@ namespace Key2Joy.Gui.Mapping
         {
             InitializeComponent();
 
-            var directions = new List<AxisDirection>();
+            List<AxisDirection> directions = new();
 
             foreach (AxisDirection direction in Enum.GetValues(typeof(AxisDirection)))
             {
                 if (direction != AxisDirection.None)
+                {
                     directions.Add((AxisDirection)direction);
+                }
             }
 
             cmbMouseDirection.DataSource = directions;
@@ -43,7 +45,7 @@ namespace Key2Joy.Gui.Mapping
             thisTrigger.AxisBinding = (AxisDirection)cmbMouseDirection.SelectedItem;
         }
 
-        private void cmbMouseDirection_SelectedIndexChanged(object sender, EventArgs e)
+        private void CmbMouseDirection_SelectedIndexChanged(object sender, EventArgs e)
         {
             OptionsChanged?.Invoke(this, EventArgs.Empty);
         }

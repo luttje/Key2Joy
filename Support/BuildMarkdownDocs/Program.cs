@@ -4,7 +4,7 @@ namespace BuildMarkdownDocs
 {
     internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             if (args.Length < 2)
             {
@@ -12,12 +12,12 @@ namespace BuildMarkdownDocs
                 return;
             }
 
-            string xmlFile = args[0];
-            string outputDirectory = args[1];
+            var xmlFile = args[0];
+            var outputDirectory = args[1];
             string template = null;
             string filter = null;
 
-            for (int i = 2; i < args.Length; i++)
+            for (var i = 2; i < args.Length; i++)
             {
                 if (args[i] == "--template")
                 {

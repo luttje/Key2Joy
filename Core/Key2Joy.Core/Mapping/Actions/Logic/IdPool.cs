@@ -7,7 +7,7 @@ namespace Key2Joy.Mapping
     public static class IdPool
     {
         private static int nextId = 1;
-        private static List<BaseId> ids = new List<BaseId>();
+        private static List<BaseId> ids = new();
 
         public class BaseId
         {

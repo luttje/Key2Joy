@@ -12,12 +12,12 @@
         
         <TextBox DockPanel.Dock="Top" 
                  x:Name="txtName" 
-                 TextChanged="txtName_TextChanged" 
+                 TextChanged="TxtName_TextChanged" 
                  Padding="5" />
         
         <Button DockPanel.Dock="Top" 
                 x:Name="btnHelloWorld" 
-                Click="btnHelloWorld_Click" 
+                Click="BtnHelloWorld_Click" 
                 Margin="0,5,0,0"
                 Padding="5" 
                 VerticalAlignment="Stretch">

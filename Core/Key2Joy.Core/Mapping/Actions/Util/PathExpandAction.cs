@@ -46,8 +46,10 @@ namespace Key2Joy.Mapping
 
         public override bool Equals(object obj)
         {
-            if (!(obj is PathExpandAction action))
+            if (obj is not PathExpandAction)
+            {
                 return false;
+            }
 
             return true;
         }

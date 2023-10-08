@@ -5,7 +5,7 @@ namespace Key2Joy.Contracts.Plugins
 {
     public class PluginActionInsulator : MarshalByRefObject
     {
-        private PluginAction source;
+        private readonly PluginAction source;
 
         public PluginActionInsulator(PluginAction source)
         {

@@ -12,7 +12,7 @@ namespace Key2Joy.Mapping
     )]
     public class GetPixelColorAction : CoreAction
     {
-        private Bitmap pixelCache = new Bitmap(1, 1);
+        private readonly Bitmap pixelCache = new(1, 1);
 
         public GetPixelColorAction(string name)
             : base(name)
@@ -45,11 +45,13 @@ namespace Key2Joy.Mapping
         [ExposesScriptingMethod("Graphics.GetPixelColor")]
         public Color ExecuteForScript(int x, int y)
         {
-            var bounds = new Rectangle(x, y, 1, 1);
+            Rectangle bounds = new(x, y, 1, 1);
 
             lock (BaseScriptAction.LockObject)
-                using (var g = Graphics.FromImage(pixelCache))
-                    g.CopyFromScreen(bounds.Location, System.Drawing.Point.Empty, bounds.Size);
+            {
+                using var g = Graphics.FromImage(pixelCache);
+                g.CopyFromScreen(bounds.Location, System.Drawing.Point.Empty, bounds.Size);
+            }
 
             return pixelCache.GetPixel(0, 0);
         }
@@ -61,8 +63,10 @@ namespace Key2Joy.Mapping
 
         public override bool Equals(object obj)
         {
-            if (!(obj is GetPixelColorAction action))
+            if (obj is not GetPixelColorAction)
+            {
                 return false;
+            }
 
             return true;
         }

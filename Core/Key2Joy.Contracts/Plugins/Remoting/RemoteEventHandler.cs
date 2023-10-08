@@ -21,7 +21,7 @@ namespace Key2Joy.Contracts.Plugins
 
     public class RemoteEventHandler : MarshalByRefObject
     {
-        private RemoteEventHandlerCallback callback;
+        private readonly RemoteEventHandlerCallback callback;
         private SubscriptionInfo subscription;
 
         public RemoteEventHandler(SubscriptionInfo subscription, RemoteEventHandlerCallback callback)

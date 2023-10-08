@@ -19,15 +19,20 @@ namespace Key2Joy.LowLevelInput
         public static void Send(KeyboardKey scanCode, KEYEVENTF? rawPressState = null)
         {
             var Inputs = new Simulator.INPUT[1];
-            var Input = new Simulator.INPUT();
-
-            Input.type = 1; // 1 = Keyboard Input
+            Simulator.INPUT Input = new()
+            {
+                type = 1 // 1 = Keyboard Input
+            };
             Input.U.ki.wScan = scanCode;
 
             if (rawPressState.HasValue)
+            {
                 Input.U.ki.dwFlags = rawPressState.Value | KEYEVENTF.SCANCODE;
+            }
             else
+            {
                 Input.U.ki.dwFlags = KEYEVENTF.SCANCODE;
+            }
 
             Inputs[0] = Input;
 

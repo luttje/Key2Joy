@@ -85,44 +85,60 @@ namespace Key2Joy.Mapping
             var format = ImageFormat.Jpeg;
 
             if (savePath.EndsWith(".png"))
+            {
                 format = ImageFormat.Png;
+            }
             else if (savePath.EndsWith(".bmp"))
+            {
                 format = ImageFormat.Bmp;
+            }
             else if (savePath.EndsWith(".gif"))
+            {
                 format = ImageFormat.Gif;
+            }
             else if (savePath.EndsWith(".ico"))
+            {
                 format = ImageFormat.Icon;
+            }
             else if (savePath.EndsWith(".emf"))
+            {
                 format = ImageFormat.Emf;
+            }
             else if (savePath.EndsWith(".exif"))
+            {
                 format = ImageFormat.Exif;
+            }
             else if (savePath.EndsWith(".tiff"))
+            {
                 format = ImageFormat.Tiff;
+            }
             else if (savePath.EndsWith(".wmf"))
+            {
                 format = ImageFormat.Wmf;
+            }
 
-            if (x == null)
-                x = SystemInformation.VirtualScreen.X;
+            x ??= SystemInformation.VirtualScreen.X;
 
-            if (y == null)
-                y = SystemInformation.VirtualScreen.Y;
+            y ??= SystemInformation.VirtualScreen.Y;
 
-            if (w == null)
-                w = SystemInformation.VirtualScreen.Width;
+            w ??= SystemInformation.VirtualScreen.Width;
 
-            if (h == null)
-                h = SystemInformation.VirtualScreen.Height;
+            h ??= SystemInformation.VirtualScreen.Height;
 
-            var pixelCache = new Bitmap((int)w, (int)h);
-            var bounds = new Rectangle((int)x, (int)y, (int)w, (int)h);
+            Bitmap pixelCache = new((int)w, (int)h);
+            Rectangle bounds = new((int)x, (int)y, (int)w, (int)h);
 
             lock (BaseScriptAction.LockObject)
-                using (var g = Graphics.FromImage(pixelCache))
-                    g.CopyFromScreen(bounds.Location, Point.Empty, bounds.Size);
+            {
+                using var g = Graphics.FromImage(pixelCache);
+                g.CopyFromScreen(bounds.Location, Point.Empty, bounds.Size);
+            }
 
             var directory = Path.GetDirectoryName(savePath);
             if (!Directory.Exists(directory))
+            {
                 Directory.CreateDirectory(directory);
+            }
 
             pixelCache.Save(savePath, format);
         }
@@ -134,8 +150,10 @@ namespace Key2Joy.Mapping
 
         public override bool Equals(object obj)
         {
-            if (!(obj is CaptureScreenAction action))
+            if (obj is not CaptureScreenAction)
+            {
                 return false;
+            }
 
             return true;
         }

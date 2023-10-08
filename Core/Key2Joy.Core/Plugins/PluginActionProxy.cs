@@ -7,7 +7,7 @@ namespace Key2Joy.Plugins
 {
     public class PluginActionProxy : CoreAction, IGetRealObject<PluginAction>
     {
-        private PluginActionInsulator source;
+        private readonly PluginActionInsulator source;
 
         public PluginActionProxy(string name, PluginActionInsulator source)
             : base(name)

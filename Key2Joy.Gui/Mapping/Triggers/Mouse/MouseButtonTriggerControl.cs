@@ -23,7 +23,7 @@ namespace Key2Joy.Gui.Mapping
             InitializeComponent();
 
             // This captures global keyboard input and blocks default behaviour by setting e.Handled
-            var globalMouseHook = new GlobalInputHook();
+            GlobalInputHook globalMouseHook = new();
             globalMouseHook.MouseInputEvent += OnMouseInputEvent;
 
             // Relieve input capturing by this mapping form
@@ -90,17 +90,17 @@ namespace Key2Joy.Gui.Mapping
             thisTrigger.PressState = (PressState)cmbPressState.SelectedItem;
         }
 
-        private void cmbPressedState_SelectedIndexChanged(object sender, EventArgs e)
+        private void CmbPressedState_SelectedIndexChanged(object sender, EventArgs e)
         {
             OptionsChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        private void txtKeyBind_MouseEnter(object sender, EventArgs e)
+        private void TxtKeyBind_MouseEnter(object sender, EventArgs e)
         {
             isMouseOver = true;
         }
 
-        private void txtKeyBind_MouseLeave(object sender, EventArgs e)
+        private void TxtKeyBind_MouseLeave(object sender, EventArgs e)
         {
             isMouseOver = false;
         }

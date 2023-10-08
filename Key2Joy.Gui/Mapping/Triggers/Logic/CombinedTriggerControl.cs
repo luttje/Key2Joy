@@ -21,9 +21,11 @@ namespace Key2Joy.Gui.Mapping
 
         private CombinedTriggerControlItem AddTriggerControl(AbstractTrigger trigger = null)
         {
-            var triggerControl = new CombinedTriggerControlItem(trigger);
-            triggerControl.AutoSize = true;
-            triggerControl.Dock = DockStyle.Top;
+            CombinedTriggerControlItem triggerControl = new(trigger)
+            {
+                AutoSize = true,
+                Dock = DockStyle.Top
+            };
             triggerControl.RequestedRemove += (s, _) =>
             {
                 var control = s as CombinedTriggerControlItem;
@@ -38,12 +40,12 @@ namespace Key2Joy.Gui.Mapping
             return triggerControl;
         }
 
-        private void btnAddTrigger_Click(object sender, EventArgs e)
+        private void BtnAddTrigger_Click(object sender, EventArgs e)
         {
             AddTriggerControl().BringToFront();
         }
 
-        private void nudTimeout_ValueChanged(object sender, EventArgs e)
+        private void NudTimeout_ValueChanged(object sender, EventArgs e)
         {
             OptionsChanged?.Invoke(this, EventArgs.Empty);
         }

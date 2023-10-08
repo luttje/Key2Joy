@@ -11,7 +11,7 @@ namespace Key2Joy.Interop
 
         public void SendCommand<CommandType>(CommandType command)
         {
-            using var pipeClient = new NamedPipeClientStream(".", InteropServer.PIPE_NAME,
+            using NamedPipeClientStream pipeClient = new(".", InteropServer.PIPE_NAME,
                         PipeDirection.InOut, PipeOptions.None);
             pipeClient.Connect(1000);
 

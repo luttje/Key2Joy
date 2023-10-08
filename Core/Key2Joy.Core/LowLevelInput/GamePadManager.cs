@@ -12,21 +12,22 @@ namespace Key2Joy.LowLevelInput
         {
             get
             {
-                if (instance == null)
-                    instance = new GamePadManager();
+                instance ??= new GamePadManager();
 
                 return instance;
             }
         }
 
-        private bool[] pluggedInGamePads = new bool[MAX_GAMEPADS];
+        private readonly bool[] pluggedInGamePads = new bool[MAX_GAMEPADS];
 
         private GamePadManager() { }
 
         public void EnsurePluggedIn(int gamePadIndex)
         {
             if (pluggedInGamePads[gamePadIndex])
+            {
                 return;
+            }
 
             SimGamePad.Instance.PlugIn(gamePadIndex);
             pluggedInGamePads[gamePadIndex] = true;
@@ -40,7 +41,9 @@ namespace Key2Joy.LowLevelInput
         public void EnsureUnplugged(int gamePadIndex)
         {
             if (!pluggedInGamePads[gamePadIndex])
+            {
                 return;
+            }
 
             SimGamePad.Instance.Unplug(gamePadIndex);
             pluggedInGamePads[gamePadIndex] = false;
@@ -48,8 +51,10 @@ namespace Key2Joy.LowLevelInput
 
         public void EnsureAllUnplugged()
         {
-            for (int i = 0; i < MAX_GAMEPADS; i++)
+            for (var i = 0; i < MAX_GAMEPADS; i++)
+            {
                 EnsureUnplugged(i);
+            }
         }
     }
 }

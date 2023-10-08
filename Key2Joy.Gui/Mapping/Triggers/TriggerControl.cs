@@ -56,7 +56,9 @@ namespace Key2Joy.Gui.Mapping
             selectedTrigger = trigger;
 
             if (!isLoaded)
+            {
                 return;
+            }
 
             var selected = cmbTrigger.Items.Cast<ImageComboBoxItem<KeyValuePair<TriggerAttribute, MappingTypeFactory<AbstractTrigger>>>>();
             var triggerFullTypeName = trigger.GetType().FullName;
@@ -73,7 +75,7 @@ namespace Key2Joy.Gui.Mapping
                 var mappingControlFactory = MappingControlRepository.GetMappingControlFactory(keyValuePair.Value.FullTypeName);
                 var customImage = mappingControlFactory.ImageResourceName;
                 var image = Program.ResourceBitmapFromName(customImage ?? "error");
-                var item = new ImageComboBoxItem<KeyValuePair<TriggerAttribute, MappingTypeFactory<AbstractTrigger>>>(keyValuePair, new Bitmap(image), "Key");
+                ImageComboBoxItem<KeyValuePair<TriggerAttribute, MappingTypeFactory<AbstractTrigger>>> item = new(keyValuePair, new Bitmap(image), "Key");
 
                 cmbTrigger.Items.Add(item);
             }
@@ -81,27 +83,35 @@ namespace Key2Joy.Gui.Mapping
             isLoaded = true;
 
             if (selectedTrigger != null)
+            {
                 SelectTrigger(selectedTrigger);
+            }
         }
 
-        private void cmbTrigger_SelectedIndexChanged(object sender, EventArgs e)
+        private void CmbTrigger_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (!isLoaded)
+            {
                 return;
+            }
 
             var options = MappingForm.BuildOptionsForComboBox<TriggerAttribute, AbstractTrigger>(cmbTrigger, pnlTriggerOptions);
 
             if (options != null)
             {
                 if (this.options != null)
+                {
                     this.options.OptionsChanged -= OnOptionsChanged;
+                }
 
                 this.options = options as ITriggerOptionsControl;
 
                 if (this.options != null)
                 {
                     if (selectedTrigger != null)
+                    {
                         this.options.Select(selectedTrigger);
+                    }
 
                     this.options.OptionsChanged += OnOptionsChanged;
                 }
@@ -116,10 +126,12 @@ namespace Key2Joy.Gui.Mapping
         private void OnOptionsChanged(object sender, EventArgs e)
         {
             var selected = (ImageComboBoxItem<KeyValuePair<TriggerAttribute, MappingTypeFactory<AbstractTrigger>>>)cmbTrigger.SelectedItem;
-            var attribute = selected.ItemValue.Key;
+            _ = selected.ItemValue.Key;
 
             if (options == null) // TODO: what did I use this for before refactoring to seperate logic and GUI? --> || attribute.OptionsUserControl != options.GetType() 
+            {
                 return;
+            }
 
             BuildTrigger();
         }

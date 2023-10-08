@@ -62,7 +62,7 @@
             this.lstActions.Name = "lstActions";
             this.lstActions.Size = new System.Drawing.Size(339, 82);
             this.lstActions.TabIndex = 14;
-            this.lstActions.SelectedIndexChanged += new System.EventHandler(this.lstActions_SelectedIndexChanged);
+            this.lstActions.SelectedIndexChanged += new System.EventHandler(this.LstActions_SelectedIndexChanged);
             // 
             // pnlActions
             // 
@@ -83,7 +83,7 @@
             this.btnRemove.TabIndex = 18;
             this.btnRemove.Text = "Remove";
             this.btnRemove.UseVisualStyleBackColor = true;
-            this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
+            this.btnRemove.Click += new System.EventHandler(this.BtnRemove_Click);
             // 
             // pnlPadding
             // 
@@ -122,7 +122,7 @@
             this.actionControl.Padding = new System.Windows.Forms.Padding(5);
             this.actionControl.Size = new System.Drawing.Size(333, 32);
             this.actionControl.TabIndex = 1;
-            this.actionControl.ActionChanged += new System.Action<Key2Joy.Contracts.Mapping.AbstractAction>(this.actionControl_ActionChanged);
+            this.actionControl.ActionChanged += new System.Action<Key2Joy.Contracts.Mapping.AbstractAction>(this.ActionControl_ActionChanged);
             // 
             // pnlActionOptions
             // 
@@ -153,7 +153,7 @@
             this.btnAdd.TabIndex = 17;
             this.btnAdd.Text = "Add";
             this.btnAdd.UseVisualStyleBackColor = true;
-            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
+            this.btnAdd.Click += new System.EventHandler(this.BtnAdd_Click);
             // 
             // SequenceActionControl
             // 

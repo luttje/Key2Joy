@@ -26,13 +26,15 @@ namespace Key2Joy.Mapping
         public static Mouse.Buttons[] GetAllButtons()
         {
             var allEnums = Enum.GetValues(typeof(Mouse.Buttons));
-            var buttons = new List<Mouse.Buttons>();
+            List<Mouse.Buttons> buttons = new();
 
             // Skip the enumerations that are zero
             foreach (var buttonEnum in allEnums)
             {
                 if ((short)buttonEnum == 0)
+                {
                     continue;
+                }
 
                 buttons.Add((Mouse.Buttons)buttonEnum);
             }
@@ -62,9 +64,13 @@ namespace Key2Joy.Mapping
         public override async Task Execute(AbstractInputBag inputBag = null)
         {
             if (PressState == PressState.Press)
+            {
                 SimulatedMouse.PressButton(Button);
+            }
             else if (PressState == PressState.Release)
+            {
                 SimulatedMouse.ReleaseButton(Button);
+            }
         }
 
         public override string GetNameDisplay()
@@ -75,8 +81,10 @@ namespace Key2Joy.Mapping
 
         public override bool Equals(object obj)
         {
-            if (!(obj is MouseButtonAction action))
+            if (obj is not MouseButtonAction action)
+            {
                 return false;
+            }
 
             return action.Button == Button
                 && action.PressState == PressState;

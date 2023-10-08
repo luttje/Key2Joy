@@ -12,13 +12,13 @@ namespace Key2Joy.Setup.Installation
 {
     internal class Installer
     {
-        const string REGISTRY_KEY = "Key2Joy";
+        private const string REGISTRY_KEY = "Key2Joy";
 
         internal event EventHandler<InstallProgressEventArgs> InstallProgressed;
 
-        private Release release;
-        private string installPath;
-        private UpdatePreference updatePreference;
+        private readonly Release release;
+        private readonly string installPath;
+        private readonly UpdatePreference updatePreference;
 
         internal static string GetDefaultInstallPath()
         {
@@ -33,7 +33,9 @@ namespace Key2Joy.Setup.Installation
             var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\" + REGISTRY_KEY);
 
             if (key == null)
+            {
                 return null;
+            }
 
             var updatePreference = (UpdatePreference)key.GetValue("UpdatePreference", (int)UpdatePreference.ManualInstallation);
 
@@ -48,7 +50,9 @@ namespace Key2Joy.Setup.Installation
         internal static void WipeDirectory(string installPath)
         {
             if (Directory.Exists(installPath))
+            {
                 Directory.Delete(installPath, true);
+            }
         }
 
         internal static void Uninstall()
@@ -86,7 +90,7 @@ namespace Key2Joy.Setup.Installation
         {
             var releasePackage = release.Assets.First();
             var localDownloadPath = Path.Combine(installPath, releasePackage.Name);
-            var client = new WebClient();
+            WebClient client = new();
             client.Headers.Add("User-Agent: Other");
             client.DownloadProgressChanged += (s, ev) => InstallProgressed?.Invoke(this, new InstallProgressEventArgs(ev.ProgressPercentage));
 
@@ -109,11 +113,15 @@ namespace Key2Joy.Setup.Installation
                     var destinationPath = Path.Combine(installPath, entry.FullName);
 
                     if (entry.FullName.EndsWith("/"))
+                    {
                         Directory.CreateDirectory(destinationPath);
+                    }
                     else
                     {
                         if (!Directory.Exists(Path.GetDirectoryName(destinationPath)))
+                        {
                             Directory.CreateDirectory(Path.GetDirectoryName(destinationPath));
+                        }
 
                         entry.ExtractToFile(destinationPath, true);
                     }
@@ -128,10 +136,14 @@ namespace Key2Joy.Setup.Installation
             var key = Registry.LocalMachine.CreateSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\" + REGISTRY_KEY);
 
             if (!Directory.Exists(installPath))
+            {
                 Directory.CreateDirectory(installPath);
+            }
 
             if (release == null)
+            {
                 throw new Exception("The specified release does not exist remotely.");
+            }
 
             key.SetValue("DisplayName", "Key2Joy");
             key.SetValue("DisplayIcon", Path.Combine(installPath, "Key2Joy.exe"));
@@ -139,7 +151,7 @@ namespace Key2Joy.Setup.Installation
             key.SetValue("InstallLocation", installPath);
             key.SetValue("UpdatePreference", (int)updatePreference);
 
-            string installerPath = Assembly.GetExecutingAssembly().Location;
+            var installerPath = Assembly.GetExecutingAssembly().Location;
             key.SetValue("UninstallString", $"{installerPath} uninstall");
 
             key.Close();

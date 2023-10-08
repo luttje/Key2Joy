@@ -18,7 +18,7 @@ namespace Key2Joy.Gui.Mapping
         {
             InitializeComponent();
 
-            var appCommands = new List<AppCommand>();
+            List<AppCommand> appCommands = new();
 
             foreach (AppCommand command in Enum.GetValues(typeof(AppCommand)))
             {
@@ -46,7 +46,7 @@ namespace Key2Joy.Gui.Mapping
             return true;
         }
 
-        private void cmbAppCommand_SelectedIndexChanged(object sender, EventArgs e)
+        private void CmbAppCommand_SelectedIndexChanged(object sender, EventArgs e)
         {
             OptionsChanged?.Invoke(this, EventArgs.Empty);
         }

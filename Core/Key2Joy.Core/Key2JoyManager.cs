@@ -31,7 +31,9 @@ namespace Key2Joy
             get
             {
                 if (instance == null)
+                {
                     throw new Exception("Key2JoyManager not initialized using InitSafely yet!");
+                }
 
                 return instance;
             }
@@ -64,7 +66,7 @@ namespace Key2Joy
                         typeof(KeyboardKey)
                     }).Select(ExposedEnumeration.FromType).ToList());
 
-            var plugins = new PluginSet(pluginDirectoriesPaths);
+            PluginSet plugins = new(pluginDirectoriesPaths);
             plugins.LoadAll();
 
             Key2JoyManager.commandRunner = commandRunner;
@@ -91,7 +93,7 @@ namespace Key2Joy
 
         private static IList<AbstractTriggerListener> GetScriptingListeners()
         {
-            var listeners = new List<AbstractTriggerListener>
+            List<AbstractTriggerListener> listeners = new()
             {
                 // Always add these listeners so scripts can ask them if stuff has happened.
                 KeyboardTriggerListener.Instance,
@@ -109,7 +111,7 @@ namespace Key2Joy
 
         public bool PreFilterMessage(ref System.Windows.Forms.Message m)
         {
-            for (int i = 0; i < wndProcListeners.Count; i++)
+            for (var i = 0; i < wndProcListeners.Count; i++)
             {
                 // Check if the proc listeners haven't changed (this can happen when a plugin opens a MessageBox, the user aborts, and we then close the messagebox)
                 if (i >= wndProcListeners.Count)
@@ -137,7 +139,9 @@ namespace Key2Joy
         public bool GetIsArmed(MappingProfile profile = null)
         {
             if (profile == null)
+            {
                 return armedProfile != null;
+            }
 
             return armedProfile == profile;
         }
@@ -152,15 +156,21 @@ namespace Key2Joy
             foreach (var mappedOption in profile.MappedOptions)
             {
                 if (mappedOption.Trigger == null)
+                {
                     continue;
+                }
 
                 var listener = mappedOption.Trigger.GetTriggerListener();
 
                 if (!allListeners.Contains(listener))
+                {
                     allListeners.Add(listener);
+                }
 
                 if (listener is IWndProcHandler listenerWndProcHAndler)
+                {
                     wndProcListeners.Add(listenerWndProcHAndler);
+                }
 
                 mappedOption.Action.OnStartListening(listener, ref allActions);
                 listener.AddMappedOption(mappedOption);
@@ -169,7 +179,9 @@ namespace Key2Joy
             foreach (var listener in allListeners)
             {
                 if (listener is IWndProcHandler listenerWndProcHAndler)
+                {
                     listenerWndProcHAndler.Handle = mainForm.Handle;
+                }
 
                 listener.StartListening(ref allListeners);
             }
@@ -192,17 +204,23 @@ namespace Key2Joy
             foreach (var mappedOption in armedProfile.MappedOptions)
             {
                 if (mappedOption.Trigger == null)
+                {
                     continue;
+                }
 
                 var listener = mappedOption.Trigger.GetTriggerListener();
                 mappedOption.Action.OnStopListening(listener);
 
                 if (!listeners.Contains(listener))
+                {
                     listeners.Add(listener);
+                }
             }
 
             foreach (var listener in listeners)
+            {
                 listener.StopListening();
+            }
 
             GamePadManager.Instance.EnsureAllUnplugged();
             armedProfile = null;
@@ -232,7 +250,7 @@ namespace Key2Joy
                 return;
             }
 
-            var process = new Process
+            Process process = new()
             {
                 StartInfo = new ProcessStartInfo
                 {
@@ -246,12 +264,16 @@ namespace Key2Joy
             process.Start();
 
             if (!pauseUntilReady)
+            {
                 return;
+            }
 
             while (!process.StandardOutput.EndOfStream)
             {
                 if (process.StandardOutput.ReadLine() == READY_MESSAGE)
+                {
                     break;
+                }
             }
         }
     }

@@ -10,7 +10,7 @@ namespace Key2Joy.Plugins
     {
         public event EventHandler OptionsChanged;
 
-        private NativeHandleContractInsulator contract;
+        private readonly NativeHandleContractInsulator contract;
 
         public ElementHostProxy(FrameworkElement child, NativeHandleContractInsulator contract)
             : base()

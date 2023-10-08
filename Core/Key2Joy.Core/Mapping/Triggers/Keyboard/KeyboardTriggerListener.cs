@@ -12,15 +12,14 @@ namespace Key2Joy.Mapping
         {
             get
             {
-                if (instance == null)
-                    instance = new KeyboardTriggerListener();
+                instance ??= new KeyboardTriggerListener();
 
                 return instance;
             }
         }
 
         private GlobalInputHook globalKeyboardHook;
-        private readonly Dictionary<Keys, bool> currentKeysDown = new Dictionary<Keys, bool>();
+        private readonly Dictionary<Keys, bool> currentKeysDown = new();
 
         public bool GetKeyDown(Keys key)
         {
@@ -50,8 +49,10 @@ namespace Key2Joy.Mapping
 
         public override bool GetIsTriggered(AbstractTrigger trigger)
         {
-            if (!(trigger is KeyboardTrigger keyboardTrigger))
+            if (trigger is not KeyboardTrigger keyboardTrigger)
+            {
                 return false;
+            }
 
             return currentKeysDown.ContainsKey(keyboardTrigger.Keys);
         }
@@ -59,7 +60,9 @@ namespace Key2Joy.Mapping
         private void OnKeyInputEvent(object sender, GlobalKeyboardHookEventArgs e)
         {
             if (!IsActive)
+            {
                 return;
+            }
 
             // Test if this is a bound key, if so halt default input behaviour
             var keys = VirtualKeyConverter.KeysFromVirtual(e.KeyboardData.VirtualCode);
@@ -70,19 +73,25 @@ namespace Key2Joy.Mapping
                 dictionary = lookupDown;
 
                 if (currentKeysDown.ContainsKey(keys))
+                {
                     return; // Prevent firing multiple times for a single key press
+                }
                 else
+                {
                     currentKeysDown.Add(keys, true);
+                }
             }
             else
             {
                 dictionary = lookupRelease;
 
                 if (currentKeysDown.ContainsKey(keys))
+                {
                     currentKeysDown.Remove(keys);
+                }
             }
 
-            var inputBag = new KeyboardInputBag
+            KeyboardInputBag inputBag = new()
             {
                 State = e.KeyboardState,
                 Keys = keys
@@ -100,7 +109,9 @@ namespace Key2Joy.Mapping
                     return keyboardTrigger.GetInputHash() == hash
                         && keyboardTrigger.GetKeyboardState() == e.KeyboardState;
                 }))
+            {
                 e.Handled = true;
+            }
         }
     }
 }

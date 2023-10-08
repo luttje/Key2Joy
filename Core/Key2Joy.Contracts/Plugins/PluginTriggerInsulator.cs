@@ -4,7 +4,7 @@ namespace Key2Joy.Contracts.Plugins
 {
     public class PluginTriggerInsulator : MarshalByRefObject
     {
-        private PluginTrigger source;
+        private readonly PluginTrigger source;
 
         public PluginTriggerInsulator(PluginTrigger source)
         {

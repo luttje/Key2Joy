@@ -7,7 +7,7 @@ namespace Key2Joy.Mapping
 {
     public abstract class BaseScriptAction : CoreAction
     {
-        public static readonly object LockObject = new object();
+        public static readonly object LockObject = new();
 
         /// <summary>
         /// TODO: Clean this up. This is just a quick hack to get enumerations into scripts. Should move to something the plugins can affect nicely.
@@ -27,8 +27,7 @@ namespace Key2Joy.Mapping
         {
             if (IsScriptPath)
             {
-                if (cachedFile == null)
-                    cachedFile = System.IO.File.ReadAllText(Script);
+                cachedFile ??= System.IO.File.ReadAllText(Script);
 
                 return cachedFile;
             }
@@ -41,11 +40,13 @@ namespace Key2Joy.Mapping
 
         public virtual void Print(params object[] args)
         {
-            var sb = new StringBuilder();
-            for (int i = 0; i < args.Length; i++)
+            StringBuilder sb = new();
+            for (var i = 0; i < args.Length; i++)
             {
                 if (i > 0)
+                {
                     sb.Append("\t");
+                }
 
                 sb.Append(args[i]);
             }
@@ -56,7 +57,7 @@ namespace Key2Joy.Mapping
         public override string GetNameDisplay()
         {
             // Truncate the script to be no more than 50 characters
-            string truncatedScript = Script.Length > 47 ? Script.Substring(0, 47) + "..." : Script;
+            var truncatedScript = Script.Length > 47 ? Script.Substring(0, 47) + "..." : Script;
 
             return Name.Replace("{0}", truncatedScript);
         }

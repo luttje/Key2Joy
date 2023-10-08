@@ -56,7 +56,7 @@
             this.btnAddTrigger.TabIndex = 1;
             this.btnAddTrigger.Text = "Add Trigger";
             this.btnAddTrigger.UseVisualStyleBackColor = true;
-            this.btnAddTrigger.Click += new System.EventHandler(this.btnAddTrigger_Click);
+            this.btnAddTrigger.Click += new System.EventHandler(this.BtnAddTrigger_Click);
             // 
             // pnlTriggers
             // 

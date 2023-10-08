@@ -9,7 +9,7 @@ namespace Key2Joy.Contracts.Mapping
         public AbstractTriggerListener Listener { get; private set; }
         public AbstractInputBag InputBag { get; private set; }
 
-        private Func<AbstractTrigger, bool> optionCandidateFilter;
+        private readonly Func<AbstractTrigger, bool> optionCandidateFilter;
 
         public TriggerActivatingEventArgs(
             AbstractTriggerListener listener,
@@ -26,10 +26,14 @@ namespace Key2Joy.Contracts.Mapping
         public bool GetIsMappedOptionCandidate(AbstractTrigger trigger)
         {
             if (trigger?.GetTriggerListener() != Listener)
+            {
                 return false;
+            }
 
             if (optionCandidateFilter != null)
+            {
                 return optionCandidateFilter.Invoke(trigger);
+            }
 
             return true;
         }

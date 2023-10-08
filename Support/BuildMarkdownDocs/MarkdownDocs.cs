@@ -19,7 +19,7 @@ namespace BuildMarkdownDocs
             outputDirectory = !outputDirectory.EndsWith("\\") ? $"{outputDirectory}\\" : outputDirectory;
 
             var outputFile = Path.GetFullPath(outputDirectory + "Index.md");
-            var outputParents = new SortedDictionary<MarkdownMeta, List<Member>>();
+            SortedDictionary<MarkdownMeta, List<Member>> outputParents = new();
 
             MarkdownMeta enumParent;
             List<Member> enumerations;
@@ -41,7 +41,9 @@ namespace BuildMarkdownDocs
                     var child = xmlMember.XPathSelectElement(filter);
 
                     if (child == null)
+                    {
                         continue;
+                    }
                 }
 
                 var member = (FunctionMember)FunctionMember.FromXml(xmlMember);
@@ -59,7 +61,9 @@ namespace BuildMarkdownDocs
                     foreach (var parameter in member.Parameters)
                     {
                         if (!parameter.Type.IsEnum)
+                        {
                             continue;
+                        }
 
                         var enumName = parameter.Type.Name;
                         var isTypeDescribed = enumerations.Exists(m =>
@@ -71,7 +75,7 @@ namespace BuildMarkdownDocs
                         if (!isTypeDescribed)
                         {
                             EnumMember enumMember;
-                            var valueSummaries = new Dictionary<string, string>();
+                            Dictionary<string, string> valueSummaries = new();
                             var fullXmlName = $"F:{parameter.Type.FullName}";
 
                             foreach (var m in xmlMembers)
@@ -100,7 +104,9 @@ namespace BuildMarkdownDocs
                             var enumDirectory = Path.GetDirectoryName(outputEnumFile);
 
                             if (!Directory.Exists(enumDirectory))
+                            {
                                 Directory.CreateDirectory(enumDirectory);
+                            }
 
                             File.WriteAllText(outputEnumFile, enumMember.FillTemplate(enumTemplateContent));
                         }
@@ -109,8 +115,7 @@ namespace BuildMarkdownDocs
 
                 Console.WriteLine($"Writing output to {outputMemberFile}");
 
-                if (templateFile == null)
-                    templateFile = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "DefaultTemplate.md"));
+                templateFile ??= Path.GetFullPath(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "DefaultTemplate.md"));
 
                 Console.WriteLine($"Using template {templateFile}");
 
@@ -119,15 +124,19 @@ namespace BuildMarkdownDocs
                 var memberDirectory = Path.GetDirectoryName(outputMemberFile);
 
                 if (!Directory.Exists(memberDirectory))
+                {
                     Directory.CreateDirectory(memberDirectory);
+                }
 
                 File.WriteAllText(outputMemberFile, member.FillTemplate(templateContent));
             }
 
             if (!Directory.Exists(directory))
+            {
                 Directory.CreateDirectory(directory);
+            }
 
-            var output = new StringBuilder();
+            StringBuilder output = new();
             output.AppendLine($"# Scripting API Reference\n");
 
             // Sort members

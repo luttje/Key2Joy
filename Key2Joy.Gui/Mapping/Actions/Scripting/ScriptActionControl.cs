@@ -80,17 +80,17 @@ namespace Key2Joy.Gui.Mapping
                 MessageBoxIcon.Warning) == DialogResult.Yes;
         }
 
-        private void txtScript_TextChanged(object sender, EventArgs e)
+        private void TxtScript_TextChanged(object sender, EventArgs e)
         {
             OptionsChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        private void txtFilePath_TextChanged(object sender, EventArgs e)
+        private void TxtFilePath_TextChanged(object sender, EventArgs e)
         {
             OptionsChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        private void chkDirectInput_CheckedChanged(object sender, EventArgs e)
+        private void ChkDirectInput_CheckedChanged(object sender, EventArgs e)
         {
             txtScript.Visible = chkDirectInput.Checked;
             pnlFileInput.Visible = !chkDirectInput.Checked;
@@ -98,14 +98,16 @@ namespace Key2Joy.Gui.Mapping
             PerformLayout();
         }
 
-        private void btnBrowseFile_Click(object sender, EventArgs e)
+        private void BtnBrowseFile_Click(object sender, EventArgs e)
         {
-            var filePicker = new OpenFileDialog();
+            OpenFileDialog filePicker = new();
 
             if (filePicker.ShowDialog() != DialogResult.OK)
+            {
                 return;
+            }
 
-            string file = filePicker.FileName;
+            var file = filePicker.FileName;
             try
             {
                 File.ReadAllText(file);

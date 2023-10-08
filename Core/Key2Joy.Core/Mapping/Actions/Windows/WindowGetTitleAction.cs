@@ -14,10 +14,10 @@ namespace Key2Joy.Mapping
     public class WindowGetTitleAction : CoreAction
     {
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
+        private static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
 
         [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-        static extern int GetWindowTextLength(IntPtr hWnd);
+        private static extern int GetWindowTextLength(IntPtr hWnd);
 
         public WindowGetTitleAction(string name)
             : base(name)
@@ -39,7 +39,7 @@ namespace Key2Joy.Mapping
         public string ExecuteForScript(IntPtr handle)
         {
             var length = GetWindowTextLength(handle) + 1;
-            var title = new StringBuilder(length);
+            StringBuilder title = new(length);
             GetWindowText(handle, title, length);
             return title.ToString();
         }
@@ -56,8 +56,10 @@ namespace Key2Joy.Mapping
 
         public override bool Equals(object obj)
         {
-            if (!(obj is WindowGetTitleAction action))
+            if (obj is not WindowGetTitleAction)
+            {
                 return false;
+            }
 
             // TODO: Currently this is only a script action so this is irrelevant
             return false;

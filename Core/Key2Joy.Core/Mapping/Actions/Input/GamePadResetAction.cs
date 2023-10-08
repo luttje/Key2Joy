@@ -78,8 +78,10 @@ namespace Key2Joy.Mapping
 
         public override bool Equals(object obj)
         {
-            if (!(obj is GamePadResetAction action))
+            if (obj is not GamePadResetAction)
+            {
                 return false;
+            }
 
             return true;
         }

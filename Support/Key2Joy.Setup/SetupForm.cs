@@ -23,9 +23,11 @@ namespace Key2Joy.Setup
             var releases = ReleaseManager.GetReleases();
 
             foreach (var release in releases)
+            {
                 cmbVersions.Items.Add(release.TagName);
+            }
 
-            var version = PendingInstallVersion != null ? PendingInstallVersion : Installer.GetInstalledVersion();
+            var version = PendingInstallVersion ?? Installer.GetInstalledVersion();
 
             if (version == null)
             {
@@ -64,20 +66,26 @@ namespace Key2Joy.Setup
             }
         }
 
-        private void btnBrowseInstallPath_Click(object sender, EventArgs e)
+        private void BtnBrowseInstallPath_Click(object sender, EventArgs e)
         {
-            var folderPicker = new FolderBrowserDialog();
-            folderPicker.SelectedPath = txtInstallPath.Text;
+            FolderBrowserDialog folderPicker = new()
+            {
+                SelectedPath = txtInstallPath.Text
+            };
 
             // If the path is invalid, find the nearest parent that exists
             while (!Directory.Exists(folderPicker.SelectedPath))
+            {
                 folderPicker.SelectedPath = Path.GetDirectoryName(folderPicker.SelectedPath);
+            }
 
             if (folderPicker.ShowDialog() == DialogResult.OK)
+            {
                 txtInstallPath.Text = folderPicker.SelectedPath;
+            }
         }
 
-        private async void btnInstallUpdate_Click(object sender, EventArgs e)
+        private async void BtnInstallUpdate_Click(object sender, EventArgs e)
         {
             var installPath = txtInstallPath.Text;
             var version = cmbVersions.SelectedItem.ToString();
@@ -85,13 +93,21 @@ namespace Key2Joy.Setup
             var release = ReleaseManager.GetRelease(version);
 
             if (rdoUpdateAndInstall.Checked)
+            {
                 updatePreference = UpdatePreference.DownloadAndUpdate;
+            }
             else if (rdoUpdateAndInstallPreRelease.Checked)
+            {
                 updatePreference = UpdatePreference.DownloadAndUpdatePreRelease;
+            }
             else if (rdoDownloadOnly.Checked)
+            {
                 updatePreference = UpdatePreference.DownloadOnly;
+            }
             else
+            {
                 updatePreference = UpdatePreference.ManualInstallation;
+            }
 
             if (release == null)
             {
@@ -112,8 +128,8 @@ namespace Key2Joy.Setup
                 return;
             }
 
-            var installer = new Installer(release, installPath, updatePreference);
-            bool finished = false;
+            Installer installer = new(release, installPath, updatePreference);
+            var finished = false;
             installer.InstallProgressed += (s, ev) =>
             {
                 BeginInvoke((MethodInvoker)delegate

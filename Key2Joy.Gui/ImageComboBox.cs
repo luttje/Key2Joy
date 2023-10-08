@@ -25,25 +25,27 @@ namespace Key2Joy.Gui
         protected override void OnDrawItem(DrawItemEventArgs e)
         {
             if (e.Index < 0)
+            {
                 return;
+            }
 
-            var item = Items[e.Index] as ImageComboBoxItem;
-
-            if (item == null)
+            if (Items[e.Index] is not ImageComboBoxItem item)
+            {
                 return;
+            }
 
             var text = item.ToString();
             var image = item.Image;
 
             e.DrawBackground();
 
-            Brush textColor = (e.State & DrawItemState.Selected) == DrawItemState.Selected
+            var textColor = (e.State & DrawItemState.Selected) == DrawItemState.Selected
                 ? SystemBrushes.HighlightText
                 : SystemBrushes.WindowText;
 
             if (image != null)
             {
-                var rect = new Rectangle(e.Bounds.X, e.Bounds.Y, e.Bounds.Height, e.Bounds.Height);
+                Rectangle rect = new(e.Bounds.X, e.Bounds.Y, e.Bounds.Height, e.Bounds.Height);
                 e.Graphics.DrawImage(image, Padding.Left + rect.X, Padding.Top + rect.Y, rect.Width - Padding.Left - Padding.Right, rect.Height - Padding.Top - Padding.Bottom);
                 e.Graphics.DrawString(text, e.Font, textColor, Padding.Left + Spacing + rect.Right, Padding.Top + rect.Y);
             }
@@ -72,12 +74,16 @@ namespace Key2Joy.Gui
         public override string ToString()
         {
             if (DisplayMember == null)
+            {
                 return ItemValue.ToString();
+            }
 
             var property = ItemValue.GetType().GetProperty(DisplayMember);
 
             if (property == null)
+            {
                 return ItemValue.ToString();
+            }
 
             var propertyValue = property.GetValue(ItemValue);
             return propertyValue.ToString();

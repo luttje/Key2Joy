@@ -50,7 +50,7 @@
             this.cmbTrigger.Name = "cmbTrigger";
             this.cmbTrigger.Size = new System.Drawing.Size(167, 21);
             this.cmbTrigger.TabIndex = 2;
-            this.cmbTrigger.SelectedIndexChanged += new System.EventHandler(this.cmbTrigger_SelectedIndexChanged);
+            this.cmbTrigger.SelectedIndexChanged += new System.EventHandler(this.CmbTrigger_SelectedIndexChanged);
             // 
             // TriggerControl
             // 

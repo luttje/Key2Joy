@@ -7,8 +7,8 @@ namespace Key2Joy.Gui
 {
     public class MappingGroupItemComparer : IComparer<OLVListItem>
     {
-        private OLVColumn primarySort;
-        private SortOrder primarySortOrder;
+        private readonly OLVColumn primarySort;
+        private readonly SortOrder primarySortOrder;
 
         public MappingGroupItemComparer(OLVColumn primarySort, SortOrder primarySortOrder)
         {
@@ -31,7 +31,9 @@ namespace Key2Joy.Gui
             if (mappedOptionX.Trigger != null)
             {
                 if (mappedOptionY.Trigger == null)
+                {
                     return 1 * sortDirection;
+                }
 
                 return mappedOptionX.Trigger.CompareTo(mappedOptionY.Trigger) * sortDirection;
             }

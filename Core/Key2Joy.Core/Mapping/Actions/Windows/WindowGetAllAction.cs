@@ -25,7 +25,7 @@ namespace Key2Joy.Mapping
 
         public static ArrayList GetWindows()
         {
-            var windowHandles = new ArrayList();
+            ArrayList windowHandles = new();
             EnumedWindow callBackPtr = GetWindowHandle;
             EnumWindows(callBackPtr, windowHandles);
 
@@ -66,8 +66,10 @@ namespace Key2Joy.Mapping
 
         public override bool Equals(object obj)
         {
-            if (!(obj is WindowGetAllAction action))
+            if (obj is not WindowGetAllAction)
+            {
                 return false;
+            }
 
             // TODO: Currently this is only a script action so this is irrelevant
             return false;

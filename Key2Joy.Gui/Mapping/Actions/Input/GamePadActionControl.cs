@@ -48,17 +48,17 @@ namespace Key2Joy.Gui.Mapping
             return true;
         }
 
-        private void cmbGamePad_SelectedIndexChanged(object sender, EventArgs e)
+        private void CmbGamePad_SelectedIndexChanged(object sender, EventArgs e)
         {
             OptionsChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        private void cmbPressState_SelectedIndexChanged(object sender, EventArgs e)
+        private void CmbPressState_SelectedIndexChanged(object sender, EventArgs e)
         {
             OptionsChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        private void cmbGamePadIndex_SelectedIndexChanged(object sender, EventArgs e)
+        private void CmbGamePadIndex_SelectedIndexChanged(object sender, EventArgs e)
         {
             OptionsChanged?.Invoke(this, EventArgs.Empty);
         }

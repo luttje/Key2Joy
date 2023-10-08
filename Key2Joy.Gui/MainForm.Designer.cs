@@ -115,11 +115,11 @@
             this.olvMappings.UseTranslucentHotItem = true;
             this.olvMappings.UseTranslucentSelection = true;
             this.olvMappings.View = System.Windows.Forms.View.Details;
-            this.olvMappings.AboutToCreateGroups += new System.EventHandler<BrightIdeasSoftware.CreateGroupsEventArgs>(this.olvMappings_AboutToCreateGroups);
-            this.olvMappings.CellClick += new System.EventHandler<BrightIdeasSoftware.CellClickEventArgs>(this.olvMappings_CellClick);
-            this.olvMappings.CellRightClick += new System.EventHandler<BrightIdeasSoftware.CellRightClickEventArgs>(this.olvMappings_CellRightClick);
-            this.olvMappings.FormatCell += new System.EventHandler<BrightIdeasSoftware.FormatCellEventArgs>(this.olvMappings_FormatCell);
-            this.olvMappings.KeyUp += new System.Windows.Forms.KeyEventHandler(this.olvMappings_KeyUp);
+            this.olvMappings.AboutToCreateGroups += new System.EventHandler<BrightIdeasSoftware.CreateGroupsEventArgs>(this.OlvMappings_AboutToCreateGroups);
+            this.olvMappings.CellClick += new System.EventHandler<BrightIdeasSoftware.CellClickEventArgs>(this.OlvMappings_CellClick);
+            this.olvMappings.CellRightClick += new System.EventHandler<BrightIdeasSoftware.CellRightClickEventArgs>(this.OlvMappings_CellRightClick);
+            this.olvMappings.FormatCell += new System.EventHandler<BrightIdeasSoftware.FormatCellEventArgs>(this.OlvMappings_FormatCell);
+            this.olvMappings.KeyUp += new System.Windows.Forms.KeyEventHandler(this.OlvMappings_KeyUp);
             // 
             // olvColumnAction
             // 
@@ -153,7 +153,7 @@
             this.btnCreateMapping.TabIndex = 0;
             this.btnCreateMapping.Text = "Create New Mapping";
             this.btnCreateMapping.UseVisualStyleBackColor = true;
-            this.btnCreateMapping.Click += new System.EventHandler(this.btnCreateMapping_Click);
+            this.btnCreateMapping.Click += new System.EventHandler(this.BtnCreateMapping_Click);
             // 
             // pnlProfileManagement
             // 
@@ -231,14 +231,14 @@
             this.newProfileToolStripMenuItem.Name = "newProfileToolStripMenuItem";
             this.newProfileToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
             this.newProfileToolStripMenuItem.Text = "New Profile";
-            this.newProfileToolStripMenuItem.Click += new System.EventHandler(this.newProfileToolStripMenuItem_Click);
+            this.newProfileToolStripMenuItem.Click += new System.EventHandler(this.NewProfileToolStripMenuItem_Click);
             // 
             // loadProfileToolStripMenuItem
             // 
             this.loadProfileToolStripMenuItem.Name = "loadProfileToolStripMenuItem";
             this.loadProfileToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
             this.loadProfileToolStripMenuItem.Text = "Load Profile";
-            this.loadProfileToolStripMenuItem.Click += new System.EventHandler(this.loadProfileToolStripMenuItem_Click);
+            this.loadProfileToolStripMenuItem.Click += new System.EventHandler(this.LoadProfileToolStripMenuItem_Click);
             // 
             // toolStripSeparator3
             // 
@@ -250,14 +250,14 @@
             this.saveProfileToolStripMenuItem.Name = "saveProfileToolStripMenuItem";
             this.saveProfileToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
             this.saveProfileToolStripMenuItem.Text = "Save Profile";
-            this.saveProfileToolStripMenuItem.Click += new System.EventHandler(this.saveProfileToolStripMenuItem_Click);
+            this.saveProfileToolStripMenuItem.Click += new System.EventHandler(this.SaveProfileToolStripMenuItem_Click);
             // 
             // openProfileFolderToolStripMenuItem
             // 
             this.openProfileFolderToolStripMenuItem.Name = "openProfileFolderToolStripMenuItem";
             this.openProfileFolderToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
             this.openProfileFolderToolStripMenuItem.Text = "Open Profile Folder";
-            this.openProfileFolderToolStripMenuItem.Click += new System.EventHandler(this.openProfileFolderToolStripMenuItem_Click);
+            this.openProfileFolderToolStripMenuItem.Click += new System.EventHandler(this.OpenProfileFolderToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
@@ -269,14 +269,14 @@
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
             this.closeToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
             this.closeToolStripMenuItem.Text = "Close to notification tray";
-            this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
+            this.closeToolStripMenuItem.Click += new System.EventHandler(this.CloseToolStripMenuItem_Click);
             // 
             // exitProgramToolStripMenuItem
             // 
             this.exitProgramToolStripMenuItem.Name = "exitProgramToolStripMenuItem";
             this.exitProgramToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
             this.exitProgramToolStripMenuItem.Text = "Exit Program";
-            this.exitProgramToolStripMenuItem.Click += new System.EventHandler(this.exitProgramToolStripMenuItem_Click);
+            this.exitProgramToolStripMenuItem.Click += new System.EventHandler(this.ExitProgramToolStripMenuItem_Click);
             // 
             // viewToolStripMenuItem
             // 
@@ -293,7 +293,7 @@
             this.createNewMappingToolStripMenuItem.Name = "createNewMappingToolStripMenuItem";
             this.createNewMappingToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
             this.createNewMappingToolStripMenuItem.Text = "Create New Mapping";
-            this.createNewMappingToolStripMenuItem.Click += new System.EventHandler(this.createNewMappingToolStripMenuItem_Click);
+            this.createNewMappingToolStripMenuItem.Click += new System.EventHandler(this.CreateNewMappingToolStripMenuItem_Click);
             // 
             // viewScriptOutputToolStripMenuItem
             // 
@@ -309,14 +309,14 @@
             this.viewLogFileToolStripMenuItem.Name = "viewLogFileToolStripMenuItem";
             this.viewLogFileToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.viewLogFileToolStripMenuItem.Text = "View Log File";
-            this.viewLogFileToolStripMenuItem.Click += new System.EventHandler(this.viewLogFileToolStripMenuItem_Click);
+            this.viewLogFileToolStripMenuItem.Click += new System.EventHandler(this.ViewLogFileToolStripMenuItem_Click);
             // 
             // viewEventViewerToolStripMenuItem
             // 
             this.viewEventViewerToolStripMenuItem.Name = "viewEventViewerToolStripMenuItem";
             this.viewEventViewerToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.viewEventViewerToolStripMenuItem.Text = "View Event Viewer";
-            this.viewEventViewerToolStripMenuItem.Click += new System.EventHandler(this.viewEventViewerToolStripMenuItem_Click);
+            this.viewEventViewerToolStripMenuItem.Click += new System.EventHandler(this.ViewEventViewerToolStripMenuItem_Click);
             // 
             // pluginsToolStripMenuItem
             // 
@@ -332,14 +332,14 @@
             this.managePluginsToolStripMenuItem.Name = "managePluginsToolStripMenuItem";
             this.managePluginsToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
             this.managePluginsToolStripMenuItem.Text = "Manage Plugins";
-            this.managePluginsToolStripMenuItem.Click += new System.EventHandler(this.managePluginsToolStripMenuItem_Click);
+            this.managePluginsToolStripMenuItem.Click += new System.EventHandler(this.ManagePluginsToolStripMenuItem_Click);
             // 
             // openPluginsFolderToolStripMenuItem
             // 
             this.openPluginsFolderToolStripMenuItem.Name = "openPluginsFolderToolStripMenuItem";
             this.openPluginsFolderToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
             this.openPluginsFolderToolStripMenuItem.Text = "Open Plugins Folder";
-            this.openPluginsFolderToolStripMenuItem.Click += new System.EventHandler(this.openPluginsFolderToolStripMenuItem_Click);
+            this.openPluginsFolderToolStripMenuItem.Click += new System.EventHandler(this.OpenPluginsFolderToolStripMenuItem_Click);
             // 
             // toolsToolStripMenuItem
             // 
@@ -377,21 +377,21 @@
             this.pressToolStripMenuItem.Name = "pressToolStripMenuItem";
             this.pressToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.pressToolStripMenuItem.Text = "Press";
-            this.pressToolStripMenuItem.Click += new System.EventHandler(this.gamePadPressToolStripMenuItem_Click);
+            this.pressToolStripMenuItem.Click += new System.EventHandler(this.GamePadPressToolStripMenuItem_Click);
             // 
             // releaseToolStripMenuItem
             // 
             this.releaseToolStripMenuItem.Name = "releaseToolStripMenuItem";
             this.releaseToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.releaseToolStripMenuItem.Text = "Release";
-            this.releaseToolStripMenuItem.Click += new System.EventHandler(this.gamePadReleaseToolStripMenuItem_Click);
+            this.releaseToolStripMenuItem.Click += new System.EventHandler(this.GamePadReleaseToolStripMenuItem_Click);
             // 
             // pressAndReleaseToolStripMenuItem
             // 
             this.pressAndReleaseToolStripMenuItem.Name = "pressAndReleaseToolStripMenuItem";
             this.pressAndReleaseToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.pressAndReleaseToolStripMenuItem.Text = "Both Press and Release";
-            this.pressAndReleaseToolStripMenuItem.Click += new System.EventHandler(this.gamePadPressAndReleaseToolStripMenuItem_Click);
+            this.pressAndReleaseToolStripMenuItem.Click += new System.EventHandler(this.GamePadPressAndReleaseToolStripMenuItem_Click);
             // 
             // allKeyboardActionsToolStripMenuItem
             // 
@@ -408,21 +408,21 @@
             this.pressToolStripMenuItem1.Name = "pressToolStripMenuItem1";
             this.pressToolStripMenuItem1.Size = new System.Drawing.Size(194, 22);
             this.pressToolStripMenuItem1.Text = "Press";
-            this.pressToolStripMenuItem1.Click += new System.EventHandler(this.keyboardPressToolStripMenuItem);
+            this.pressToolStripMenuItem1.Click += new System.EventHandler(this.KeyboardPressToolStripMenuItem_Click);
             // 
             // releaseToolStripMenuItem1
             // 
             this.releaseToolStripMenuItem1.Name = "releaseToolStripMenuItem1";
             this.releaseToolStripMenuItem1.Size = new System.Drawing.Size(194, 22);
             this.releaseToolStripMenuItem1.Text = "Release";
-            this.releaseToolStripMenuItem1.Click += new System.EventHandler(this.keyboardReleaseToolStripMenuItem);
+            this.releaseToolStripMenuItem1.Click += new System.EventHandler(this.KeyboardReleaseToolStripMenuItem_Click);
             // 
             // pressAndReleaseToolStripMenuItem1
             // 
             this.pressAndReleaseToolStripMenuItem1.Name = "pressAndReleaseToolStripMenuItem1";
             this.pressAndReleaseToolStripMenuItem1.Size = new System.Drawing.Size(194, 22);
             this.pressAndReleaseToolStripMenuItem1.Text = "Both Press and Release";
-            this.pressAndReleaseToolStripMenuItem1.Click += new System.EventHandler(this.keyboardPressAndReleaseToolStripMenuItem);
+            this.pressAndReleaseToolStripMenuItem1.Click += new System.EventHandler(this.KeyboardPressAndReleaseToolStripMenuItem_Click);
             // 
             // testMappingsToolStripMenuItem
             // 
@@ -448,28 +448,28 @@
             this.devicetestscomToolStripMenuItem.Name = "devicetestscomToolStripMenuItem";
             this.devicetestscomToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
             this.devicetestscomToolStripMenuItem.Text = "devicetests.com";
-            this.devicetestscomToolStripMenuItem.Click += new System.EventHandler(this.devicetestscomToolStripMenuItem_Click);
+            this.devicetestscomToolStripMenuItem.Click += new System.EventHandler(this.DevicetestscomToolStripMenuItem_Click);
             // 
             // gamepadtestercomToolStripMenuItem
             // 
             this.gamepadtestercomToolStripMenuItem.Name = "gamepadtestercomToolStripMenuItem";
             this.gamepadtestercomToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
             this.gamepadtestercomToolStripMenuItem.Text = "gamepad-tester.com";
-            this.gamepadtestercomToolStripMenuItem.Click += new System.EventHandler(this.gamepadtestercomToolStripMenuItem_Click);
+            this.gamepadtestercomToolStripMenuItem.Click += new System.EventHandler(this.GamepadtestercomToolStripMenuItem_Click);
             // 
             // testKeyboardToolStripMenuItem
             // 
             this.testKeyboardToolStripMenuItem.Name = "testKeyboardToolStripMenuItem";
             this.testKeyboardToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
             this.testKeyboardToolStripMenuItem.Text = "Test Keyboard";
-            this.testKeyboardToolStripMenuItem.Click += new System.EventHandler(this.testKeyboardToolStripMenuItem_Click);
+            this.testKeyboardToolStripMenuItem.Click += new System.EventHandler(this.TestKeyboardToolStripMenuItem_Click);
             // 
             // testMouseToolStripMenuItem
             // 
             this.testMouseToolStripMenuItem.Name = "testMouseToolStripMenuItem";
             this.testMouseToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
             this.testMouseToolStripMenuItem.Text = "Test Mouse";
-            this.testMouseToolStripMenuItem.Click += new System.EventHandler(this.testMouseToolStripMenuItem_Click);
+            this.testMouseToolStripMenuItem.Click += new System.EventHandler(this.TestMouseToolStripMenuItem_Click);
             // 
             // withSelectedToolStripMenuItem
             // 
@@ -484,7 +484,7 @@
             this.generateOppositePressStateMappingsToolStripMenuItem.Name = "generateOppositePressStateMappingsToolStripMenuItem";
             this.generateOppositePressStateMappingsToolStripMenuItem.Size = new System.Drawing.Size(287, 22);
             this.generateOppositePressStateMappingsToolStripMenuItem.Text = "Generate Opposite Press State Mappings";
-            this.generateOppositePressStateMappingsToolStripMenuItem.Click += new System.EventHandler(this.generateOppositePressStateMappingsToolStripMenuItem_Click);
+            this.generateOppositePressStateMappingsToolStripMenuItem.Click += new System.EventHandler(this.GenerateOppositePressStateMappingsToolStripMenuItem_Click);
             // 
             // toolStripSeparator4
             // 
@@ -497,7 +497,7 @@
             this.userConfigurationsToolStripMenuItem.Name = "userConfigurationsToolStripMenuItem";
             this.userConfigurationsToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.userConfigurationsToolStripMenuItem.Text = "User Configurations";
-            this.userConfigurationsToolStripMenuItem.Click += new System.EventHandler(this.userConfigurationsToolStripMenuItem_Click);
+            this.userConfigurationsToolStripMenuItem.Click += new System.EventHandler(this.UserConfigurationsToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -515,14 +515,14 @@
             this.reportAProblemToolStripMenuItem.Name = "reportAProblemToolStripMenuItem";
             this.reportAProblemToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.reportAProblemToolStripMenuItem.Text = "Report a Problem";
-            this.reportAProblemToolStripMenuItem.Click += new System.EventHandler(this.reportAProblemToolStripMenuItem_Click);
+            this.reportAProblemToolStripMenuItem.Click += new System.EventHandler(this.ReportAProblemToolStripMenuItem_Click);
             // 
             // viewSourceCodeToolStripMenuItem
             // 
             this.viewSourceCodeToolStripMenuItem.Name = "viewSourceCodeToolStripMenuItem";
             this.viewSourceCodeToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.viewSourceCodeToolStripMenuItem.Text = "View Source Code";
-            this.viewSourceCodeToolStripMenuItem.Click += new System.EventHandler(this.viewSourceCodeToolStripMenuItem_Click);
+            this.viewSourceCodeToolStripMenuItem.Click += new System.EventHandler(this.ViewSourceCodeToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
@@ -534,14 +534,14 @@
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.aboutToolStripMenuItem.Text = "About";
-            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.AboutToolStripMenuItem_Click);
             // 
             // ntfIndicator
             // 
             this.ntfIndicator.Icon = ((System.Drawing.Icon)(resources.GetObject("ntfIndicator.Icon")));
             this.ntfIndicator.Text = "Key2Joy";
             this.ntfIndicator.Visible = true;
-            this.ntfIndicator.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ntfIndicator_MouseDoubleClick);
+            this.ntfIndicator.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.NtfIndicator_MouseDoubleClick);
             // 
             // pnlMainMenu
             // 

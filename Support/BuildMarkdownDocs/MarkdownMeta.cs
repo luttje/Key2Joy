@@ -10,12 +10,16 @@ namespace BuildMarkdownDocs
 
         public static MarkdownMeta FromXml(XElement element)
         {
-            var parent = new MarkdownMeta();
-            parent.Name = element.Element("parent-name")?.Value;
-            parent.Path = element.Element("path")?.Value;
+            MarkdownMeta parent = new()
+            {
+                Name = element.Element("parent-name")?.Value,
+                Path = element.Element("path")?.Value
+            };
 
             if (parent.Path.Length > 0)
+            {
                 parent.Path = !parent.Path.EndsWith("/") ? $"{parent.Path}/" : parent.Path;
+            }
 
             return parent;
         }

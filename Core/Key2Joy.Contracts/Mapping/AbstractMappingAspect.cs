@@ -26,7 +26,7 @@ namespace Key2Joy.Contracts.Mapping
 
         public virtual MappingAspectOptions SaveOptions()
         {
-            var options = new MappingAspectOptions();
+            MappingAspectOptions options = new();
             var properties = GetProperties();
 
             foreach (var property in properties)
@@ -122,10 +122,14 @@ namespace Key2Joy.Contracts.Mapping
         public static bool operator ==(AbstractMappingAspect a, AbstractMappingAspect b)
         {
             if (ReferenceEquals(a, b))
+            {
                 return true;
+            }
 
             if (a is null || b is null)
+            {
                 return false;
+            }
 
             return a.Equals(b);
         }

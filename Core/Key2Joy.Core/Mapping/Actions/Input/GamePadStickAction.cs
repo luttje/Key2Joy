@@ -106,8 +106,10 @@ namespace Key2Joy.Mapping
 
         public override bool Equals(object obj)
         {
-            if (!(obj is GamePadStickAction action))
+            if (obj is not GamePadStickAction action)
+            {
                 return false;
+            }
 
             return action.Stick == Stick
                 && action.DeltaX == DeltaX

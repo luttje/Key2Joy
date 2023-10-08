@@ -6,8 +6,8 @@ namespace Key2Joy.Mapping
     {
         public const int INDEX_START = 1; // Lua is 1-based
 
-        private int index;
-        private IEnumerator enumerator;
+        private readonly int index;
+        private readonly IEnumerator enumerator;
 
         public LuaIterator(ICollection data)
         {

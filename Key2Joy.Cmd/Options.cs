@@ -4,7 +4,7 @@ namespace Key2Joy.Cmd
 {
     internal abstract class Options
     {
-        const int MAX_RETRIES = 1;
+        private const int MAX_RETRIES = 1;
 
         abstract public void Handle();
 
@@ -13,7 +13,9 @@ namespace Key2Joy.Cmd
         protected void SafelyRetry(Action value)
         {
             if (++retries > MAX_RETRIES)
+            {
                 return;
+            }
 
             value();
         }

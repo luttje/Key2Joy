@@ -22,15 +22,14 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{3C606DDB-3F6F-43CA-8355-CF710FB52535}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Support", "Support", "{C2536A05-CB0C-498F-88F5-EB52BFABF6C8}"
-	ProjectSection(SolutionItems) = preProject
-		Support\DeadCodeAnalysis.ruleset = Support\DeadCodeAnalysis.ruleset
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{5F1645F6-3578-45A6-9F33-65AA6A4A52A1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Key2Joy.PluginHost", "Core\Key2Joy.PluginHost\Key2Joy.PluginHost.csproj", "{28FD937C-CCA7-4E85-A29B-D723E8390E51}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Key2Joy.Plugin.HelloWorld", "Plugins\Key2Joy.Plugin.HelloWorld\Key2Joy.Plugin.HelloWorld.csproj", "{F1C12B81-C049-4AA9-A4A6-71BE10BC20F8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{54E2D12B-B69D-4EA3-A83F-219F5F111619}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

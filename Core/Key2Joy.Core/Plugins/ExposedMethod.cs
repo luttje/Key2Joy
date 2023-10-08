@@ -44,8 +44,8 @@ namespace Key2Joy.Plugins
     {
         public string TypeName { get; protected set; }
 
-        private PluginHostProxy pluginHost;
-        private Dictionary<Type, Func<object, object>> parameterTransformers = new();
+        private readonly PluginHostProxy pluginHost;
+        private readonly Dictionary<Type, Func<object, object>> parameterTransformers = new();
         private PluginActionProxy currentInstance;
 
         public PluginExposedMethod(PluginHostProxy pluginHost, string typeName, string functionName, string methodName)
@@ -91,7 +91,7 @@ namespace Key2Joy.Plugins
                     return transformer(p);
                 }
 
-                if (p is MarshalByRefObject || p is ISerializable)
+                if (p is MarshalByRefObject or ISerializable)
                 {
                     return p;
                 }

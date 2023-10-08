@@ -21,10 +21,10 @@ namespace Key2Joy.Contracts.Plugins
 
     public class RemoteEventSubscriber : MarshalByRefObject
     {
-        private static readonly Dictionary<string, FullSubscriptionInfo> subscriptions = new Dictionary<string, FullSubscriptionInfo>();
+        private static readonly Dictionary<string, FullSubscriptionInfo> subscriptions = new();
 
         public static RemoteEventSubscriber ClientInstance { get; private set; }
-        private NamedPipeClientStream pipeClientStream;
+        private readonly NamedPipeClientStream pipeClientStream;
 
         private RemoteEventSubscriber(NamedPipeClientStream pipeClientStream)
         {
@@ -34,7 +34,9 @@ namespace Key2Joy.Contracts.Plugins
         public static void InitClient(NamedPipeClientStream pipeClientStream)
         {
             if (!pipeClientStream.IsConnected)
+            {
                 throw new ArgumentException($"The pipeClientStream must be connected before calling {nameof(InitClient)}.");
+            }
 
             ClientInstance = new RemoteEventSubscriber(pipeClientStream);
         }
@@ -42,7 +44,7 @@ namespace Key2Joy.Contracts.Plugins
         public static FullSubscriptionInfo SubscribeEvent(string eventName, RemoteEventHandlerCallback handler)
         {
             var subscriptionId = Guid.NewGuid().ToString();
-            var subscription = new FullSubscriptionInfo(eventName, subscriptionId, handler);
+            FullSubscriptionInfo subscription = new(eventName, subscriptionId, handler);
 
             subscriptions.Add(subscriptionId, subscription);
 
@@ -61,8 +63,8 @@ namespace Key2Joy.Contracts.Plugins
 
         public void AskServerToInvoke(RemoteEventArgs e)
         {
-            string subscriptionId = e.Subscription.Id.ToString();
-            byte[] buffer = Encoding.UTF8.GetBytes(subscriptionId);
+            var subscriptionId = e.Subscription.Id.ToString();
+            var buffer = Encoding.UTF8.GetBytes(subscriptionId);
 
             pipeClientStream.Write(buffer, 0, buffer.Length);
             pipeClientStream.WaitForPipeDrain(); // Ensure all data is written

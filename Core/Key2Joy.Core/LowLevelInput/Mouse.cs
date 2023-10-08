@@ -30,9 +30,13 @@ namespace Key2Joy.LowLevelInput
             var xButton = (data >> 16) & 0xFFFF;
 
             if (xButton == 1)
+            {
                 return Buttons.XButton1;
+            }
             else if (xButton == 2)
+            {
                 return Buttons.XButton2;
+            }
 
             return Buttons.None;
         }
@@ -62,7 +66,9 @@ namespace Key2Joy.LowLevelInput
                     var xButton = GetXButton(e.RawData.MouseData);
 
                     if (xButton != Buttons.None)
+                    {
                         return xButton;
+                    }
 
                     break;
             }

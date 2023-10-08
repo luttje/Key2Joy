@@ -29,13 +29,13 @@ namespace Key2Joy.Contracts.Mapping
             AbstractInputBag inputBag,
             Func<AbstractTrigger, bool> optionCandidateFilter = null)
         {
-            var eventArgs = new TriggerActivatingEventArgs(
+            TriggerActivatingEventArgs eventArgs = new(
                 this,
                 inputBag,
                 mappedOptions ?? new List<AbstractMappedOption>(),
                 optionCandidateFilter);
             TriggerActivating?.Invoke(this, eventArgs);
-            bool executedAny = false;
+            var executedAny = false;
 
             foreach (var mappedOption in eventArgs.MappedOptionCandidates)
             {
@@ -55,7 +55,9 @@ namespace Key2Joy.Contracts.Mapping
                         // For some reason an exception occurs when the action is completed. (I tested it with a MessageBox.Show and Debug.WriteLine seperately, happened in both cases)
                         // Supposedly Task.Run should prevent this (source: https://stackoverflow.com/a/63824188), but it doesn't.
                         if (!ex.Message.StartsWith("Type 'System.Threading.Tasks.Task`1"))
+                        {
                             throw ex;
+                        }
                     }
                 }
             }

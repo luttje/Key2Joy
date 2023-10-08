@@ -14,7 +14,7 @@ namespace Key2Joy.Mapping
 
         public TEnvironment SetupEnvironment()
         {
-            if (environment != null && environment is IDisposable disposableEnvironment)
+            if (environment is not null and IDisposable disposableEnvironment)
             {
                 disposableEnvironment.Dispose();
             }

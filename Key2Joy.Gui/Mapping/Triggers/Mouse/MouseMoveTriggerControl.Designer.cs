@@ -41,7 +41,7 @@
             this.cmbMouseDirection.Name = "cmbMouseDirection";
             this.cmbMouseDirection.Size = new System.Drawing.Size(118, 21);
             this.cmbMouseDirection.TabIndex = 7;
-            this.cmbMouseDirection.SelectedIndexChanged += new System.EventHandler(this.cmbMouseDirection_SelectedIndexChanged);
+            this.cmbMouseDirection.SelectedIndexChanged += new System.EventHandler(this.CmbMouseDirection_SelectedIndexChanged);
             // 
             // lblInfo
             // 

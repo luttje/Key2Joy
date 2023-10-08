@@ -45,8 +45,10 @@ namespace Key2Joy.Mapping
 
         public override bool Equals(object obj)
         {
-            if (!(obj is GetTimeAction action))
+            if (obj is not GetTimeAction)
+            {
                 return false;
+            }
 
             return true;
         }

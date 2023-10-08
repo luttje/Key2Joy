@@ -35,8 +35,15 @@ namespace Key2Joy.PluginHost
         /// <exception cref="PluginLoadException">Throws when the plugin failed to load</exception>
         public void LoadPlugin(string assemblyPath, string assemblyName, out string loadedChecksum, string expectedChecksum = null)
         {
-            if (String.IsNullOrEmpty(assemblyPath)) throw new ArgumentNullException("assemblyPath");
-            if (String.IsNullOrEmpty(assemblyName)) throw new ArgumentNullException("assembly");
+            if (String.IsNullOrEmpty(assemblyPath))
+            {
+                throw new ArgumentNullException("assemblyPath");
+            }
+
+            if (String.IsNullOrEmpty(assemblyName))
+            {
+                throw new ArgumentNullException("assembly");
+            }
 
             var pluginTypeName = $"{assemblyName}.Plugin";
 
@@ -55,19 +62,19 @@ namespace Key2Joy.PluginHost
             }
 
             var pluginDirectory = Path.GetDirectoryName(assemblyPath);
-            var sandboxDomainSetup = new AppDomainSetup
+            AppDomainSetup sandboxDomainSetup = new()
             {
                 ApplicationBase = pluginDirectory,
             };
 
-            var evidence = new Evidence();
+            Evidence evidence = new();
             evidence.AddHostEvidence(new Zone(SecurityZone.Internet));
 
             var permissions = SecurityManager.GetStandardSandbox(evidence);
 
             if (permissionsXml != null)
             {
-                var additionalPermissions = new PermissionSet(PermissionState.None);
+                PermissionSet additionalPermissions = new(PermissionState.None);
                 additionalPermissions.FromXml(SecurityElement.FromString(permissionsXml));
 
                 if (additionalPermissions.Count > 0)
@@ -118,8 +125,8 @@ namespace Key2Joy.PluginHost
 
         public static AllowedPermissionsWithDescriptions GetAllowedPermissionsWithDescriptions()
         {
-            var descriptions = new List<string>();
-            var allowedPermissions = new PermissionSet(PermissionState.None);
+            List<string> descriptions = new();
+            PermissionSet allowedPermissions = new(PermissionState.None);
 
             allowedPermissions.AddPermission(new FileIOPermission(PermissionState.Unrestricted));
             descriptions.Add("unrestricted file access anywhere on your device");
@@ -170,8 +177,8 @@ namespace Key2Joy.PluginHost
         public static string CalculatePermissionsChecksum(string permissionsXml)
         {
             var hash = MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(permissionsXml ?? string.Empty));
-            var builder = new StringBuilder();
-            for (int i = 0; i < hash.Length; i++)
+            StringBuilder builder = new();
+            for (var i = 0; i < hash.Length; i++)
             {
                 builder.Append(hash[i].ToString("X2"));
             }
@@ -217,7 +224,7 @@ namespace Key2Joy.PluginHost
 
         public INativeHandleContract CreateFrameworkElementContract(string controlTypeName, SubscriptionInfo[] eventSubscriptions = null)
         {
-            var eventHandlers = new Dictionary<string, RemoteEventHandler>();
+            Dictionary<string, RemoteEventHandler> eventHandlers = new();
 
             if (eventSubscriptions != null)
             {
@@ -235,19 +242,12 @@ namespace Key2Joy.PluginHost
         {
             try
             {
-                var controlHandle = appDomain.CreateInstance(assembly, typeName);
-                if (controlHandle == null)
-                    throw new InvalidOperationException("appDomain.CreateInstance() returned null for " + assembly + "," + typeName);
-
+                var controlHandle = appDomain.CreateInstance(assembly, typeName) ?? throw new InvalidOperationException("appDomain.CreateInstance() returned null for " + assembly + "," + typeName);
                 var converterHandle = appDomain.CreateInstanceAndUnwrap(
                     typeof(ViewContractConverter).Assembly.FullName,
-                    typeof(ViewContractConverter).FullName) as ViewContractConverter;
-
-                if (converterHandle == null)
-                    throw new InvalidOperationException("appDomain.CreateInstance() returned null for ViewContractConverter");
-
+                    typeof(ViewContractConverter).FullName) as ViewContractConverter ?? throw new InvalidOperationException("appDomain.CreateInstance() returned null for ViewContractConverter");
                 var contract = converterHandle.ConvertToContract(controlHandle, eventHandlers);
-                var insulator = new NativeHandleContractInsulator(contract, converterHandle);
+                NativeHandleContractInsulator insulator = new(contract, converterHandle);
 
                 return insulator;
             }

@@ -31,7 +31,9 @@ namespace Key2Joy.Mapping
             try
             {
                 lock (LockObject)
+                {
                     environment.Execute(GetExecutableScript());
+                }
             }
             catch (Jint.Runtime.JavaScriptException e)
             {
@@ -41,7 +43,7 @@ namespace Key2Joy.Mapping
 
         public override void RegisterScriptingEnum(ExposedEnumeration enumeration)
         {
-            var enumInjectScript = new StringBuilder();
+            StringBuilder enumInjectScript = new();
             enumInjectScript.Append(enumeration.Name + " = {");
 
             foreach (var kvp in enumeration.KeyValues)
@@ -68,21 +70,25 @@ namespace Key2Joy.Mapping
         {
             var functionName = exposedMethod.FunctionName;
             var parents = functionName.Split('.');
-            var @delegate = new DelegateWrapper(environment, exposedMethod.CreateDelegate(instance));
+            DelegateWrapper @delegate = new(environment, exposedMethod.CreateDelegate(instance));
 
             if (parents.Length > 1)
             {
                 var currentObject = environment.Realm.GlobalObject;
 
-                for (int i = 0; i < parents.Length; i++)
+                for (var i = 0; i < parents.Length; i++)
                 {
                     if (i != parents.Length - 1)
                     {
-                        if (!currentObject.TryGetValue(parents[i], out JsValue child))
+                        if (!currentObject.TryGetValue(parents[i], out var child))
+                        {
                             child = new JsObject(environment);
+                        }
 
-                        if (!(child is ObjectInstance childObject))
+                        if (child is not ObjectInstance childObject)
+                        {
                             throw new NotImplementedException($"Tried using a non object({parents[i]}) as object parent while registering function: {functionName}!");
+                        }
 
                         currentObject.FastSetProperty(parents[i], new PropertyDescriptor(childObject, false, true, true));
                         currentObject = childObject;
@@ -127,8 +133,10 @@ namespace Key2Joy.Mapping
 
         public override bool Equals(object obj)
         {
-            if (!(obj is JavascriptAction action))
+            if (obj is not JavascriptAction action)
+            {
                 return false;
+            }
 
             return action.Name == Name
                 && action.Script == Script;

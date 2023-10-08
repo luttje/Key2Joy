@@ -31,12 +31,16 @@ namespace Key2Joy.Mapping
             {
                 var source = "Key2Joy.Script.Inline";
                 if (IsScriptPath)
+                {
                     source = Script;
+                }
 
                 lock (LockObject)
                 {
                     if (environment.State == null)
+                    {
                         Debugger.Break(); // This really shouldn't happen.
+                    }
 
                     environment.DoString(GetExecutableScript(), Script);
                 }
@@ -62,7 +66,7 @@ namespace Key2Joy.Mapping
                 var enumKey = kvp.Key;
                 var enumValue = kvp.Value;
 
-                string path = enumeration.Name + "." + enumKey;
+                var path = enumeration.Name + "." + enumKey;
                 environment.SetObjectToPath(path, enumValue);
             }
         }
@@ -74,12 +78,14 @@ namespace Key2Joy.Mapping
 
             if (parents.Length > 1)
             {
-                var currentPath = new StringBuilder();
+                StringBuilder currentPath = new();
 
-                for (int i = 0; i < parents.Length - 1; i++)
+                for (var i = 0; i < parents.Length - 1; i++)
                 {
                     if (i > 0)
+                    {
                         currentPath.Append('.');
+                    }
 
                     currentPath.Append(parents[i]);
                 }
@@ -87,7 +93,9 @@ namespace Key2Joy.Mapping
                 var path = currentPath.ToString();
 
                 if (environment.GetTable(path) == null)
+                {
                     environment.NewTable(path);
+                }
             }
 
             if (exposedMethod is PluginExposedMethod methodNeedProxy)
@@ -136,15 +144,17 @@ namespace Key2Joy.Mapping
         /// <returns></returns>
         public LuaFunction CollectionIterator(ICollection data)
         {
-            var iterator = new LuaIterator(data);
+            LuaIterator iterator = new(data);
 
             return environment.RegisterFunction("__iterator", iterator, iterator.GetType().GetMethod(nameof(LuaIterator.Next)));
         }
 
         public override bool Equals(object obj)
         {
-            if (!(obj is LuaScriptAction action))
+            if (obj is not LuaScriptAction action)
+            {
                 return false;
+            }
 
             return action.Name == Name
                 && action.Script == Script;

@@ -3,7 +3,7 @@
   <PropertyGroup>
 	<UseWindowsForms>true</UseWindowsForms>
     <TargetFramework>NET48</TargetFramework>
-	  <LangVersion>latest</LangVersion>
+	<LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Graphics\Icons\app-icons.ico</ApplicationIcon>

@@ -44,12 +44,12 @@ namespace Key2Joy.Gui.Mapping
             return true;
         }
 
-        private void cmbKeyboard_SelectedIndexChanged(object sender, EventArgs e)
+        private void CmbKeyboard_SelectedIndexChanged(object sender, EventArgs e)
         {
             OptionsChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        private void cmbPressState_SelectedIndexChanged(object sender, EventArgs e)
+        private void CmbPressState_SelectedIndexChanged(object sender, EventArgs e)
         {
             OptionsChanged?.Invoke(this, EventArgs.Empty);
         }

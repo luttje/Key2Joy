@@ -105,17 +105,19 @@ namespace Key2Joy.Mapping
                 actions
                     .Where(kvp =>
                     {
-                        var actionAttribute = kvp.Value.Attribute as ActionAttribute;
-
-                        if (actionAttribute == null
+                        if (kvp.Value.Attribute is not ActionAttribute actionAttribute
                         || actionAttribute.Visibility == MappingMenuVisibility.Never)
+                        {
                             return false;
+                        }
 
                         if (forTopLevel)
-                            return actionAttribute.Visibility == MappingMenuVisibility.Always
-                                || actionAttribute.Visibility == MappingMenuVisibility.OnlyTopLevel;
+                        {
+                            return actionAttribute.Visibility is MappingMenuVisibility.Always
+                                or MappingMenuVisibility.OnlyTopLevel;
+                        }
 
-                        return actionAttribute.Visibility == MappingMenuVisibility.Always || actionAttribute.Visibility == MappingMenuVisibility.UnlessTopLevel;
+                        return actionAttribute.Visibility is MappingMenuVisibility.Always or MappingMenuVisibility.UnlessTopLevel;
                     })
                     .ToDictionary(t => t.Value.Attribute as ActionAttribute, t => t.Value)
                 );

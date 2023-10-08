@@ -7,7 +7,7 @@ namespace Key2Joy.Cmd
 {
     internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             var types = LoadVerbs();
 

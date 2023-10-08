@@ -62,17 +62,19 @@ namespace Key2Joy.Mapping
                 triggers
                     .Where(kvp =>
                     {
-                        var triggerAttribute = kvp.Value.Attribute as TriggerAttribute;
-
-                        if (triggerAttribute == null
+                        if (kvp.Value.Attribute is not TriggerAttribute triggerAttribute
                         || triggerAttribute.Visibility == MappingMenuVisibility.Never)
+                        {
                             return false;
+                        }
 
                         if (forTopLevel)
-                            return triggerAttribute.Visibility == MappingMenuVisibility.Always
-                                || triggerAttribute.Visibility == MappingMenuVisibility.OnlyTopLevel;
+                        {
+                            return triggerAttribute.Visibility is MappingMenuVisibility.Always
+                                or MappingMenuVisibility.OnlyTopLevel;
+                        }
 
-                        return triggerAttribute.Visibility == MappingMenuVisibility.Always || triggerAttribute.Visibility == MappingMenuVisibility.UnlessTopLevel;
+                        return triggerAttribute.Visibility is MappingMenuVisibility.Always or MappingMenuVisibility.UnlessTopLevel;
                     })
                     .ToDictionary(t => t.Value.Attribute as TriggerAttribute, t => t.Value)
                 );

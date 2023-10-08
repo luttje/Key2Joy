@@ -27,18 +27,17 @@ namespace Key2Joy.Contracts.Plugins
 
         public static string ReadMessage(PipeStream pipe)
         {
-            byte[] buffer = new byte[1024];
-            using (var ms = new MemoryStream())
-            {
-                do
-                {
-                    var readBytes = pipe.Read(buffer, 0, buffer.Length);
-                    ms.Write(buffer, 0, readBytes);
-                }
-                while (!pipe.IsMessageComplete);
+            var buffer = new byte[1024];
+            using MemoryStream ms = new();
 
-                return Encoding.UTF8.GetString(ms.ToArray());
+            do
+            {
+                var readBytes = pipe.Read(buffer, 0, buffer.Length);
+                ms.Write(buffer, 0, readBytes);
             }
+            while (!pipe.IsMessageComplete);
+
+            return Encoding.UTF8.GetString(ms.ToArray());
         }
     }
 }

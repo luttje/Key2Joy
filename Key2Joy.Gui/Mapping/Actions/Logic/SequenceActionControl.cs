@@ -14,7 +14,7 @@ namespace Key2Joy.Gui.Mapping
     {
         public event EventHandler OptionsChanged;
 
-        private List<AbstractAction> childActions;
+        private readonly List<AbstractAction> childActions;
 
         public SequenceActionControl()
         {
@@ -74,24 +74,24 @@ namespace Key2Joy.Gui.Mapping
             }
         }
 
-        private void btnAdd_Click(object sender, EventArgs e)
+        private void BtnAdd_Click(object sender, EventArgs e)
         {
             AddChildAction((AbstractAction)actionControl.Action.Clone());
             OptionsChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        private void btnRemove_Click(object sender, EventArgs e)
+        private void BtnRemove_Click(object sender, EventArgs e)
         {
             RemoveChildAction((AbstractAction)lstActions.SelectedItem);
             OptionsChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        private void lstActions_SelectedIndexChanged(object sender, EventArgs e)
+        private void LstActions_SelectedIndexChanged(object sender, EventArgs e)
         {
             btnRemove.Enabled = lstActions.SelectedIndex > -1;
         }
 
-        private void actionControl_ActionChanged(AbstractAction action)
+        private void ActionControl_ActionChanged(AbstractAction action)
         {
             btnAdd.Enabled = action != null;
         }

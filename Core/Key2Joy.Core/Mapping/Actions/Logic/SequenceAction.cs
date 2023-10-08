@@ -26,7 +26,9 @@ namespace Key2Joy.Mapping
         public override async Task Execute(AbstractInputBag inputBag = null)
         {
             foreach (var childAction in ChildActions)
+            {
                 await childAction.Execute(inputBag);
+            }
         }
 
         public override void OnStartListening(AbstractTriggerListener listener, ref IList<AbstractAction> otherActions)
@@ -51,12 +53,14 @@ namespace Key2Joy.Mapping
 
         public override string GetNameDisplay()
         {
-            var actions = new StringBuilder();
+            StringBuilder actions = new();
 
-            for (int i = 0; i < ChildActions.Count; i++)
+            for (var i = 0; i < ChildActions.Count; i++)
             {
                 if (i > 0)
+                {
                     actions.Append(", ");
+                }
 
                 actions.Append(ChildActions[i].GetNameDisplay());
             }
@@ -66,8 +70,10 @@ namespace Key2Joy.Mapping
 
         public override bool Equals(object obj)
         {
-            if (!(obj is SequenceAction action))
+            if (obj is not SequenceAction action)
+            {
                 return false;
+            }
 
             return action.Name == Name;
         }

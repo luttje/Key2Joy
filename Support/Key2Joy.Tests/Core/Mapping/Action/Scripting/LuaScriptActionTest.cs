@@ -11,7 +11,7 @@ namespace Key2Joy.Tests.Core.Mapping.Action.Scripting
         {
             ActionsRepository.Buffer();
 
-            var action = new LuaScriptAction(string.Empty);
+            LuaScriptAction action = new(string.Empty);
             var lua = action.SetupEnvironment();
 
             action.Script = "function execute() return 1337 end\n" +

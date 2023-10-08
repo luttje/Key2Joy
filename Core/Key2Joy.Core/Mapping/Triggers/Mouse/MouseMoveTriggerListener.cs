@@ -15,8 +15,7 @@ namespace Key2Joy.Mapping
         {
             get
             {
-                if (instance == null)
-                    instance = new MouseMoveTriggerListener();
+                instance ??= new MouseMoveTriggerListener();
 
                 return instance;
             }
@@ -26,7 +25,7 @@ namespace Key2Joy.Mapping
         private const double SENSITIVITY = 0.05;
         private const int WM_INPUT = 0x00FF;
 
-        private Dictionary<int, List<AbstractMappedOption>> lookupAxis;
+        private readonly Dictionary<int, List<AbstractMappedOption>> lookupAxis;
 
         private List<int> lastDirectionHashes;
         private DateTime lastMoveTime;
@@ -55,15 +54,19 @@ namespace Key2Joy.Mapping
             var trigger = mappedOption.Trigger as MouseMoveTrigger;
 
             if (!lookupAxis.TryGetValue(trigger.GetInputHash(), out var mappedOptions))
+            {
                 lookupAxis.Add(trigger.GetInputHash(), mappedOptions = new List<AbstractMappedOption>());
+            }
 
             mappedOptions.Add(mappedOption);
         }
 
         public override bool GetIsTriggered(AbstractTrigger trigger)
         {
-            if (!(trigger is MouseMoveTrigger mouseMoveTrigger))
+            if (trigger is not MouseMoveTrigger mouseMoveTrigger)
+            {
                 return false;
+            }
 
             return (DateTime.Now - lastMoveTime < IS_MOVING_TOLERANCE)
                 && lastDirectionHashes.Contains(mouseMoveTrigger.GetInputHash());
@@ -72,20 +75,28 @@ namespace Key2Joy.Mapping
         public void WndProc(Contracts.Mapping.Message m)
         {
             if (!IsActive)
+            {
                 return;
+            }
 
             if (m.Msg != WM_INPUT)
+            {
                 return;
+            }
 
             try
             {
                 var data = RawInputData.FromHandle(m.LParam);
 
-                if (!(data is RawInputMouseData mouse))
+                if (data is not RawInputMouseData mouse)
+                {
                     return;
+                }
 
                 if (TryOverrideMouseMoveInput(mouse.Mouse.LastX, mouse.Mouse.LastY))
+                {
                     return;
+                }
             }
             catch (Linearstar.Windows.RawInput.Native.Win32ErrorException ex)
             {
@@ -99,9 +110,9 @@ namespace Key2Joy.Mapping
             var deltaX = (short)Math.Min(Math.Max(lastX * short.MaxValue * SENSITIVITY, short.MinValue), short.MaxValue);
             var deltaY = (short)-Math.Min(Math.Max(lastY * short.MaxValue * SENSITIVITY, short.MinValue), short.MaxValue);
 
-            var mappedOptions = new List<AbstractMappedOption>();
-            var directionHashes = new List<int>();
-            var directionChecks = new Dictionary<int, Func<bool>>()
+            List<AbstractMappedOption> mappedOptions = new();
+            List<int> directionHashes = new();
+            Dictionary<int, Func<bool>> directionChecks = new()
             {
                 {
                     MouseMoveTrigger.GetInputHashFor(AxisDirection.Right),
@@ -133,7 +144,7 @@ namespace Key2Joy.Mapping
                 }
             }
 
-            var inputBag = new MouseMoveInputBag
+            MouseMoveInputBag inputBag = new()
             {
                 DeltaX = deltaX,
                 DeltaY = deltaY,

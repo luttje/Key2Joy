@@ -20,7 +20,7 @@ namespace Key2Joy.PluginHost
         private static string portName;
 
         [STAThread]
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             if (args.Length != 1)
             {
@@ -37,19 +37,19 @@ namespace Key2Joy.PluginHost
 
                 AppDispatcher = Dispatcher.CurrentDispatcher;
 
-                var serverProvider = new BinaryServerFormatterSinkProvider { TypeFilterLevel = TypeFilterLevel.Full };
-                var clientProvider = new BinaryClientFormatterSinkProvider();
-                var properties = new Hashtable();
+                BinaryServerFormatterSinkProvider serverProvider = new() { TypeFilterLevel = TypeFilterLevel.Full };
+                BinaryClientFormatterSinkProvider clientProvider = new();
+                Hashtable properties = new();
                 properties["portName"] = portName;
 
                 // Note:https://github.com/microsoft/win32-app-isolation/issues/16
-                var channel = new IpcChannel(properties, clientProvider, serverProvider);
+                IpcChannel channel = new(properties, clientProvider, serverProvider);
                 ChannelServices.RegisterChannel(channel, false);
 
                 RemotingConfiguration.RegisterWellKnownServiceType(
                     typeof(PluginHost), nameof(PluginHost), WellKnownObjectMode.Singleton);
 
-                var pipeClientStream = new NamedPipeClientStream(
+                NamedPipeClientStream pipeClientStream = new(
                     ".",
                     RemotePipe.GetClientPipeName(portName),
                     PipeDirection.InOut);

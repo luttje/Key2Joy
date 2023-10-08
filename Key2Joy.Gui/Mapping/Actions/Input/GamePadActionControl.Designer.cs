@@ -44,7 +44,7 @@
             this.cmbGamePad.Name = "cmbGamePad";
             this.cmbGamePad.Size = new System.Drawing.Size(165, 21);
             this.cmbGamePad.TabIndex = 9;
-            this.cmbGamePad.SelectedIndexChanged += new System.EventHandler(this.cmbGamePad_SelectedIndexChanged);
+            this.cmbGamePad.SelectedIndexChanged += new System.EventHandler(this.CmbGamePad_SelectedIndexChanged);
             // 
             // lblInfo
             // 
@@ -65,7 +65,7 @@
             this.cmbPressState.Name = "cmbPressState";
             this.cmbPressState.Size = new System.Drawing.Size(89, 21);
             this.cmbPressState.TabIndex = 12;
-            this.cmbPressState.SelectedIndexChanged += new System.EventHandler(this.cmbPressState_SelectedIndexChanged);
+            this.cmbPressState.SelectedIndexChanged += new System.EventHandler(this.CmbPressState_SelectedIndexChanged);
             // 
             // cmbGamePadIndex
             // 
@@ -76,7 +76,7 @@
             this.cmbGamePadIndex.Name = "cmbGamePadIndex";
             this.cmbGamePadIndex.Size = new System.Drawing.Size(51, 21);
             this.cmbGamePadIndex.TabIndex = 13;
-            this.cmbGamePadIndex.SelectedIndexChanged += new System.EventHandler(this.cmbGamePadIndex_SelectedIndexChanged);
+            this.cmbGamePadIndex.SelectedIndexChanged += new System.EventHandler(this.CmbGamePadIndex_SelectedIndexChanged);
             // 
             // lblInfoButton
             // 

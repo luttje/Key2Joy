@@ -81,7 +81,7 @@
             this.btnCancel.TabIndex = 0;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            this.btnCancel.Click += new System.EventHandler(this.BtnCancel_Click);
             // 
             // btnEnablePlugin
             // 
@@ -92,7 +92,7 @@
             this.btnEnablePlugin.TabIndex = 1;
             this.btnEnablePlugin.Text = "Enable Plugin";
             this.btnEnablePlugin.UseVisualStyleBackColor = true;
-            this.btnEnablePlugin.Click += new System.EventHandler(this.btnEnablePlugin_Click);
+            this.btnEnablePlugin.Click += new System.EventHandler(this.BtnEnablePlugin_Click);
             // 
             // pictureBox1
             // 

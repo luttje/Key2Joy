@@ -22,16 +22,24 @@ namespace Key2Joy.Mapping
             var dictionary = (Dictionary<int, List<AbstractMappedOption>>)null;
 
             if (trigger.PressState == PressState.Press)
+            {
                 dictionary = lookupDown;
+            }
 
             if (trigger.PressState == PressState.Release)
+            {
                 dictionary = lookupRelease;
+            }
 
             if (dictionary == null)
+            {
                 return;
+            }
 
             if (!dictionary.TryGetValue(trigger.GetInputHash(), out var mappedOptions))
+            {
                 dictionary.Add(trigger.GetInputHash(), mappedOptions = new List<AbstractMappedOption>());
+            }
 
             mappedOptions.Add(mappedOption);
         }

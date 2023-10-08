@@ -33,8 +33,10 @@ namespace Key2Joy.Mapping
 
         public override bool Equals(object obj)
         {
-            if (!(obj is CombinedTrigger other))
+            if (obj is not CombinedTrigger other)
+            {
                 return false;
+            }
 
             return Equals(other);
         }

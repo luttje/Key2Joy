@@ -19,7 +19,7 @@ namespace Key2Joy.Gui
                 var property = kvp.Key;
                 var attribute = kvp.Value;
 
-                var controlParent = new Panel();
+                Panel controlParent = new();
                 var value = property.GetValue(ConfigManager.Config);
                 var control = MakeControl(attribute, value, controlParent);
                 control.Tag = kvp;
@@ -34,14 +34,16 @@ namespace Key2Joy.Gui
             }
         }
 
-        private void btnSave_Click(object sender, EventArgs e)
+        private void BtnSave_Click(object sender, EventArgs e)
         {
             foreach (Panel parents in pnlConfigurations.Controls)
             {
                 foreach (Control control in parents.Controls)
                 {
                     if (control.Tag == null)
+                    {
                         continue;
+                    }
 
                     var kvp = (KeyValuePair<PropertyInfo, ConfigControlAttribute>)control.Tag;
                     var property = kvp.Key;
@@ -64,38 +66,48 @@ namespace Key2Joy.Gui
             {
                 case BooleanConfigControlAttribute booleanConfigControlAttribute:
                     {
-                        var control = new CheckBox();
-                        control.Text = booleanConfigControlAttribute.Text;
-                        control.Checked = (bool)value == true;
+                        CheckBox control = new()
+                        {
+                            Text = booleanConfigControlAttribute.Text,
+                            Checked = (bool)value == true
+                        };
 
                         return control;
                     }
                 case NumericConfigControlAttribute numericConfigControlAttribute:
                     {
-                        var label = new Label();
-                        label.AutoSize = true;
-                        label.Dock = DockStyle.Top;
-                        label.Text = $"{Text}: ";
+                        Label label = new()
+                        {
+                            AutoSize = true,
+                            Dock = DockStyle.Top,
+                            Text = $"{Text}: "
+                        };
                         controlParent.Controls.Add(label);
 
-                        var control = new NumericUpDown();
-                        control.Minimum = (decimal)numericConfigControlAttribute.Minimum;
-                        control.Maximum = (decimal)numericConfigControlAttribute.Maximum;
-                        control.Value = (decimal)Convert.ChangeType(value, typeof(decimal));
+                        NumericUpDown control = new()
+                        {
+                            Minimum = (decimal)numericConfigControlAttribute.Minimum,
+                            Maximum = (decimal)numericConfigControlAttribute.Maximum,
+                            Value = (decimal)Convert.ChangeType(value, typeof(decimal))
+                        };
 
                         return control;
                     }
                 case TextConfigControlAttribute textConfigControlAttribute:
                     {
-                        var label = new Label();
-                        label.AutoSize = true;
-                        label.Dock = DockStyle.Top;
-                        label.Text = $"{Text}: ";
+                        Label label = new()
+                        {
+                            AutoSize = true,
+                            Dock = DockStyle.Top,
+                            Text = $"{Text}: "
+                        };
                         controlParent.Controls.Add(label);
 
-                        var control = new TextBox();
-                        control.Text = value.ToString();
-                        control.MaxLength = textConfigControlAttribute.MaxLength;
+                        TextBox control = new()
+                        {
+                            Text = value.ToString(),
+                            MaxLength = textConfigControlAttribute.MaxLength
+                        };
 
                         return control;
                     }
@@ -108,17 +120,20 @@ namespace Key2Joy.Gui
         {
             switch (attribute)
             {
-                case BooleanConfigControlAttribute booleanConfigControlAttribute:
+                case BooleanConfigControlAttribute:
+
                     {
                         var checkbox = (CheckBox)control;
                         return checkbox.Checked;
                     }
-                case NumericConfigControlAttribute numericConfigControlAttribute:
+                case NumericConfigControlAttribute:
+
                     {
                         var numeric = (NumericUpDown)control;
                         return numeric.Value;
                     }
-                case TextConfigControlAttribute textConfigControlAttribute:
+                case TextConfigControlAttribute:
+
                     {
                         var textbox = (TextBox)control;
                         return textbox.Text;

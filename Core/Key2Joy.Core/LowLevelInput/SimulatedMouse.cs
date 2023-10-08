@@ -7,17 +7,13 @@ namespace Key2Joy.LowLevelInput
     {
         private static MOUSEEVENTF TranslateButton(Mouse.Buttons buttons, bool keyUp = false)
         {
-            switch (buttons)
+            return buttons switch
             {
-                case Mouse.Buttons.Left:
-                    return keyUp ? MOUSEEVENTF.LEFTUP : MOUSEEVENTF.LEFTDOWN;
-                case Mouse.Buttons.Right:
-                    return keyUp ? MOUSEEVENTF.RIGHTUP : MOUSEEVENTF.RIGHTDOWN;
-                case Mouse.Buttons.Middle:
-                    return keyUp ? MOUSEEVENTF.MIDDLEUP : MOUSEEVENTF.MIDDLEDOWN;
-                default:
-                    throw new NotImplementedException($"Can't simulate {buttons} yet!");
-            }
+                Mouse.Buttons.Left => keyUp ? MOUSEEVENTF.LEFTUP : MOUSEEVENTF.LEFTDOWN,
+                Mouse.Buttons.Right => keyUp ? MOUSEEVENTF.RIGHTUP : MOUSEEVENTF.RIGHTDOWN,
+                Mouse.Buttons.Middle => keyUp ? MOUSEEVENTF.MIDDLEUP : MOUSEEVENTF.MIDDLEDOWN,
+                _ => throw new NotImplementedException($"Can't simulate {buttons} yet!"),
+            };
         }
 
         public static void PressButton(Mouse.Buttons buttons)
@@ -33,9 +29,10 @@ namespace Key2Joy.LowLevelInput
         public static void Send(MOUSEEVENTF mouseFlags, int dx = 0, int dy = 0)
         {
             var Inputs = new Simulator.INPUT[1];
-            var Input = new Simulator.INPUT();
-
-            Input.type = 0; // 0 = Mouse Input
+            Simulator.INPUT Input = new()
+            {
+                type = 0 // 0 = Mouse Input
+            };
             Input.U.mi.dwFlags = mouseFlags;
             Input.U.mi.dwExtraInfo = UIntPtr.Zero;
             Input.U.mi.dx = dx;

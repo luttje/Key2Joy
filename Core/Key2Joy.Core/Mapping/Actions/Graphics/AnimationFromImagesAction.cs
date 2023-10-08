@@ -74,7 +74,9 @@ namespace Key2Joy.Mapping
                 table.Values.CopyTo(allFramePaths, 0);
             }
             else
+            {
                 allFramePaths = Array.ConvertAll((object[])framePaths, fp => (string)fp);
+            }
             // End of WORKAROUND
 
             JoinImageSequence(savePath, frameRate, allFramePaths);
@@ -104,8 +106,10 @@ namespace Key2Joy.Mapping
 
         public override bool Equals(object obj)
         {
-            if (!(obj is AnimationFromImagesAction action))
+            if (obj is not AnimationFromImagesAction)
+            {
                 return false;
+            }
 
             return true;
         }

@@ -12,8 +12,8 @@ namespace Key2Joy.Mapping
 {
     public class MappingProfile
     {
-        const int NO_VERSION = 0;
-        const int CURRENT_VERSION = 5;
+        private const int NO_VERSION = 0;
+        private const int CURRENT_VERSION = 5;
 
         public const string DEFAULT_PROFILE_PATH = "default-profile";
         public const string EXTENSION = ".k2j.json";
@@ -42,8 +42,7 @@ namespace Key2Joy.Mapping
 
             var directory = GetSaveDirectory();
 
-            if (filePath == null)
-                filePath = FileSystem.FindNonExistingFile(Path.Combine(directory, $"profile-%VERSION%{EXTENSION}"));
+            filePath ??= FileSystem.FindNonExistingFile(Path.Combine(directory, $"profile-%VERSION%{EXTENSION}"));
 
             if (mappedOptions != null)
             {
@@ -62,7 +61,9 @@ namespace Key2Joy.Mapping
         public void AddMappingRange(IEnumerable<MappedOption> mappedOptions)
         {
             foreach (var mappedOption in mappedOptions)
+            {
                 MappedOptions.Add((MappedOption)mappedOption.Clone());
+            }
         }
 
         public void RemoveMapping(MappedOption mappedOption)
@@ -98,16 +99,20 @@ namespace Key2Joy.Mapping
             var defaultPath = GetDefaultPath();
 
             if (File.Exists(defaultPath))
+            {
                 return;
+            }
 
-            using (var file = new FileStream(defaultPath, FileMode.Create, FileAccess.Write))
-            using (var writer = new BinaryWriter(file))
+            using (FileStream file = new(defaultPath, FileMode.Create, FileAccess.Write))
+            using (BinaryWriter writer = new(file))
             {
                 writer.Write(Properties.Resources.default_profile_k2j);
             }
 
             if (ConfigManager.Config.LastLoadedProfile == null)
+            {
                 ConfigManager.Config.LastLoadedProfile = defaultPath;
+            }
         }
 
         public static MappingProfile Load(string filePath)
@@ -126,25 +131,25 @@ namespace Key2Joy.Mapping
                     filePath += EXTENSION;
 
                     if (!File.Exists(filePath))
+                    {
                         return null;
+                    }
                 }
             }
 
             profile = JsonSerializer.Deserialize<MappingProfile>(File.ReadAllText(filePath), options);
 
             if (profile.PostLoad(filePath))
+            {
                 return profile;
+            }
 
             return null;
         }
 
         public static MappingProfile RestoreLastLoaded()
         {
-            var lastLoadedPath = ConfigManager.Config.LastLoadedProfile;
-
-            if (lastLoadedPath == null)
-                lastLoadedPath = GetDefaultPath();
-
+            var lastLoadedPath = ConfigManager.Config.LastLoadedProfile ?? GetDefaultPath();
             if (!File.Exists(lastLoadedPath))
             {
                 ExtractDefaultIfNotExists();
@@ -158,7 +163,7 @@ namespace Key2Joy.Mapping
         {
             // TODO: serializer.SerializationBinder = new MappingProfileSerializationBinder();
 
-            var options = new JsonSerializerOptions();
+            JsonSerializerOptions options = new();
             options.Converters.Add(new JsonStringEnumConverter());
             options.Converters.Add(new JsonMappingAspectConverter<AbstractAction>());
             options.Converters.Add(new JsonMappingAspectConverter<AbstractTrigger>());

@@ -15,14 +15,18 @@ namespace BuildMarkdownDocs
         public static Parameter FromXml(XElement element, Type type)
         {
             if (type == null)
+            {
                 throw new ArgumentNullException("Parameter type should be provided!");
+            }
 
-            var parameter = new Parameter();
-            parameter.Name = element.Attribute("name").Value;
-            parameter.Description = element.Value;
-            parameter.Type = type;
+            Parameter parameter = new()
+            {
+                Name = element.Attribute("name").Value,
+                Description = element.Value,
+                Type = type,
 
-            parameter.nullableType = Nullable.GetUnderlyingType(type);
+                nullableType = Nullable.GetUnderlyingType(type)
+            };
             parameter.IsOptional = parameter.nullableType != null;
 
             return parameter;
@@ -31,7 +35,9 @@ namespace BuildMarkdownDocs
         internal object GetTypeName(bool includeOptionalMarkerIfApplicable = true)
         {
             if (IsOptional)
+            {
                 return $"{nullableType.Name}" + (includeOptionalMarkerIfApplicable ? "?" : string.Empty);
+            }
 
             return Type.Name;
         }

@@ -34,7 +34,7 @@ namespace Key2Joy.Contracts.Mapping
 
         public virtual bool GetShouldExecute()
         {
-            var eventArgs = new TriggerExecutingEventArgs();
+            TriggerExecutingEventArgs eventArgs = new();
 
             Executing?.Invoke(this, eventArgs);
 
