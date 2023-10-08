@@ -232,7 +232,7 @@ namespace Key2Joy.Plugins
                 var contract = (NativeHandleContractInsulator)pluginHost.CreateFrameworkElementContract(controlTypeName, subscribedEvents);
                 var remoteControl = FrameworkElementAdapters.ContractToViewAdapter(contract);
                 var control = new ElementHostProxy(remoteControl, contract);
-                
+
                 subscribeOptionsChanged.CustomSender = control;
                 pluginHost.AnyEvent += PluginHost_AnyEvent;
 
@@ -260,12 +260,12 @@ namespace Key2Joy.Plugins
         {
             var control = (ElementHostProxy)sender;
 
-            if(control.InvokeRequired)
+            if (control.InvokeRequired)
             {
                 control.Invoke(new Action(control.InvokeOptionsChanged));
                 return;
             }
-            
+
             control.InvokeOptionsChanged();
         }
 
@@ -277,27 +277,32 @@ namespace Key2Joy.Plugins
         /// <returns></returns>
         public T CreateAspectInstance<T>(string fullTypeName, object[] constructorArguments) where T : AbstractMappingAspect
         {
+            var nameFormat = (string) (constructorArguments?[0] ?? fullTypeName);
             var type = typeof(T);
 
+            // When loading all we get is AbstractMappingAspect and the full name
+            // Look through the factories for one that matches the type, then set to that type
             if (type == typeof(AbstractMappingAspect))
             {
-                // When loading all we get is AbstractMappingAspect and the full name
-                // Look through the factories for one that matches the type, then set to that type
                 if (actionFactories.Any(factory => factory.FullTypeName == fullTypeName))
+                {
                     type = typeof(AbstractAction);
-                else if (triggerFactories.Any(factory => factory.FullTypeName == fullTypeName))
+                }
+                else if(triggerFactories.Any(factory => factory.FullTypeName == fullTypeName))
+                {
                     type = typeof(AbstractTrigger);
+                }
             }
 
             switch (type)
             {
                 case Type actionType when actionType == typeof(AbstractAction):
-                    var action = pluginHost.CreateAction(fullTypeName, constructorArguments);
-                    return new PluginActionProxy(fullTypeName, action) as T;
+                    var action = pluginHost.CreateAction(fullTypeName, new object[0]);
+                    return new PluginActionProxy(nameFormat, action) as T;
 
                 case Type actionType when actionType == typeof(AbstractTrigger):
-                    var trigger = pluginHost.CreateTrigger(fullTypeName, constructorArguments);
-                    return new PluginTriggerProxy(fullTypeName, trigger) as T;
+                    var trigger = pluginHost.CreateTrigger(fullTypeName, new object[0]);
+                    return new PluginTriggerProxy(nameFormat, trigger) as T;
             }
 
             throw new NotImplementedException($"Cannot create aspect of type {typeof(T).FullName}");

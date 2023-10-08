@@ -26,5 +26,6 @@ namespace Key2Joy.Contracts.Plugins
 
         public MappingAspectOptions BuildSaveOptions(MappingAspectOptions options) => source.BuildSaveOptions(options);
         public void LoadOptions(MappingAspectOptions options) => source.LoadOptions(options);
+        public string GetNameDisplay(string name) => source.GetNameDisplay(name);
     }
 }

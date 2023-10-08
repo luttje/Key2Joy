@@ -12,5 +12,9 @@ namespace Key2Joy.Contracts.Plugins
         public virtual MappingAspectOptions BuildSaveOptions(MappingAspectOptions options) => options;
         public virtual void LoadOptions(MappingAspectOptions options) { }
 
+        public virtual string GetNameDisplay(string nameFormat)
+        {
+            return nameFormat;
+        }
     }
 }

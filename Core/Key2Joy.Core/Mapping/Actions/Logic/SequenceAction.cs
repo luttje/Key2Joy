@@ -50,7 +50,6 @@ namespace Key2Joy.Mapping
             }
         }
 
-
         public override string GetNameDisplay()
         {
             var actions = new StringBuilder();

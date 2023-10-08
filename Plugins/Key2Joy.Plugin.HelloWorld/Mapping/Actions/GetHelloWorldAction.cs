@@ -13,7 +13,7 @@ namespace Key2Joy.Plugin.HelloWorld.Mapping
 {
     [Action(
         Description = "Get Hello World",
-        NameFormat = "Demonstrates plugin creation by greeting {0}",
+        NameFormat = "Demonstrates plugin creation by greeting '{0}'",
         GroupName = "Logic",
         GroupImage = "application_xp_terminal"
     )]
@@ -47,6 +47,11 @@ namespace Key2Joy.Plugin.HelloWorld.Mapping
             {
                 Target = (string)target;
             }
+        }
+
+        public override string GetNameDisplay(string nameFormat)
+        {
+            return string.Format(nameFormat, Target);
         }
     }
 }

@@ -13,8 +13,8 @@ namespace Key2Joy.Plugins
     {
         private PluginTriggerInsulator source;
 
-        public PluginTriggerProxy(string fullTypeName, PluginTriggerInsulator source)
-            : base(fullTypeName)
+        public PluginTriggerProxy(string name, PluginTriggerInsulator source)
+            : base(name)
         {
             this.source = source;
         }

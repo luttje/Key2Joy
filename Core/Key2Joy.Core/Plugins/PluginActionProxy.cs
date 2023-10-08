@@ -13,8 +13,8 @@ namespace Key2Joy.Plugins
     {
         private PluginActionInsulator source;
 
-        public PluginActionProxy(string fullTypeName, PluginActionInsulator source)
-            : base(fullTypeName)
+        public PluginActionProxy(string name, PluginActionInsulator source)
+            : base(name)
         {
             this.source = source;
         }
@@ -38,6 +38,11 @@ namespace Key2Joy.Plugins
             base.LoadOptions(options);
 
             source.LoadOptions(options);
+        }
+        
+        public override string GetNameDisplay()
+        {
+            return source.GetNameDisplay(Name);
         }
     }
 }
