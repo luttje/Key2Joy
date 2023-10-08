@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing.Imaging;
+﻿using Key2Joy.Contracts.Mapping;
+using System;
 using System.Drawing;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using Esprima;
-using System.Windows.Forms;
+using System.Drawing.Imaging;
 using System.IO;
-using Key2Joy.Contracts.Mapping;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Key2Joy.Mapping
 {
@@ -83,8 +78,8 @@ namespace Key2Joy.Mapping
         /// <name>Graphics.CaptureScreen</name>
         [ExposesScriptingMethod("Graphics.CaptureScreen")]
         public void ExecuteForScript(
-            string savePath, 
-            int? x = null, int? y = null, 
+            string savePath,
+            int? x = null, int? y = null,
             int? w = null, int? h = null)
         {
             var format = ImageFormat.Jpeg;
@@ -117,7 +112,7 @@ namespace Key2Joy.Mapping
 
             if (h == null)
                 h = SystemInformation.VirtualScreen.Height;
-            
+
             var pixelCache = new Bitmap((int)w, (int)h);
             var bounds = new Rectangle((int)x, (int)y, (int)w, (int)h);
 

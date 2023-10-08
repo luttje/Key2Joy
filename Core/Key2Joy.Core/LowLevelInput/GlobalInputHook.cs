@@ -1,5 +1,4 @@
-﻿using Key2Joy.Plugins;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
@@ -79,7 +78,7 @@ namespace Key2Joy.LowLevelInput
                 var windowsHook = windowsHooks[i];
 
                 windowsHookHandles[i] = SetWindowsHookEx(windowsHook, hookProc, user32LibraryHandle, 0);
-                
+
                 if (windowsHookHandles[i] == IntPtr.Zero)
                 {
                     int errorCode = Marshal.GetLastWin32Error();
@@ -96,7 +95,7 @@ namespace Key2Joy.LowLevelInput
                 for (int i = 0; i < windowsHookHandles.Length; i++)
                 {
                     var windowsHookHandle = windowsHookHandles[i];
-                    
+
                     if (windowsHookHandle != IntPtr.Zero)
                     {
                         if (!UnhookWindowsHookEx(windowsHookHandle))

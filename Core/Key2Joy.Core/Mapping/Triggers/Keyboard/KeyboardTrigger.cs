@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Key2Joy.Contracts.Mapping;
+using Key2Joy.LowLevelInput;
+using System;
 using System.Text.Json.Serialization;
 using System.Windows.Forms;
-using Key2Joy.Contracts.Mapping;
-using Key2Joy.LowLevelInput;
 
 namespace Key2Joy.Mapping
 {
@@ -15,7 +14,7 @@ namespace Key2Joy.Mapping
         public const string PREFIX_UNIQUE = nameof(KeyboardTrigger);
 
         public Keys Keys { get; set; }
-        
+
         public PressState PressState { get; set; }
 
         [JsonConstructor]
@@ -48,14 +47,14 @@ namespace Key2Joy.Mapping
         {
             if (other == null || !(other is KeyboardTrigger otherKeyboardTrigger))
                 return base.CompareTo(other);
-            
+
             return $"{Keys}#{(int)PressState}"
                 .CompareTo($"{otherKeyboardTrigger.Keys}#{(int)otherKeyboardTrigger.PressState}");
         }
-        
+
         public override bool Equals(object obj)
         {
-            if(!(obj is KeyboardTrigger other)) 
+            if (!(obj is KeyboardTrigger other))
                 return false;
 
             return Equals(other);
@@ -63,7 +62,7 @@ namespace Key2Joy.Mapping
 
         public bool Equals(KeyboardTrigger other)
         {
-            return Keys == other.Keys 
+            return Keys == other.Keys
                 && PressState == other.PressState;
         }
 

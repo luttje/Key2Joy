@@ -1,16 +1,11 @@
 ﻿using Key2Joy.Plugins;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Security.Permissions;
 using System.Security;
-using System.Text;
-using System.Threading.Tasks;
+using System.Security.Permissions;
 using System.Windows.Forms;
-using System.Xml;
 
 namespace Key2Joy.Gui
 {
@@ -36,7 +31,7 @@ namespace Key2Joy.Gui
             TriggerTypes = new List<Type>();
         }
     }
-    
+
     public partial class PluginsForm : Form
     {
         public PluginsForm()
@@ -121,7 +116,7 @@ namespace Key2Joy.Gui
             if (column.Name == "dgvColumnLoaded")
             {
                 var pluginLoadState = (PluginLoadState)e.Value;
-                e.Value = pluginLoadState.LoadState == PluginLoadStates.Loaded ? "✔" : 
+                e.Value = pluginLoadState.LoadState == PluginLoadStates.Loaded ? "✔" :
                     (pluginLoadState.LoadState == PluginLoadStates.NotLoaded ? "✘" : "⚠");
 
                 var cell = dgvPlugins.Rows[e.RowIndex].Cells[e.ColumnIndex];
@@ -155,7 +150,8 @@ namespace Key2Joy.Gui
                     var permissionsXml = PluginHost.PluginHost.GetAdditionalPermissionsXml(pluginInfo.AssemblyPath);
                     var allPermissionsGranted = true;
 
-                    if (permissionsXml != null) { 
+                    if (permissionsXml != null)
+                    {
                         var additionalPermissions = new PermissionSet(PermissionState.None);
                         additionalPermissions.FromXml(SecurityElement.FromString(permissionsXml));
 

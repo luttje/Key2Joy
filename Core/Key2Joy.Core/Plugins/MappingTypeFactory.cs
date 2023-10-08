@@ -1,10 +1,6 @@
 ﻿using Key2Joy.Contracts.Mapping;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Key2Joy.Plugins
 {
@@ -35,7 +31,7 @@ namespace Key2Joy.Plugins
             return Type.GetType(FullTypeName);
         }
     }
-    
+
     /// <summary>
     /// Creates instances of types, simply using Activator.CreateInstance
     /// </summary>
@@ -71,7 +67,7 @@ namespace Key2Joy.Plugins
         {
             return CreateInstance<T>(constructorArguments);
         }
-        
+
         public override T CreateInstance<T>(object[] constructorArguments)
         {
             return pluginHost.CreateAspectInstance<T>(FullTypeName, constructorArguments);

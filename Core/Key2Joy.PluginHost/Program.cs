@@ -1,20 +1,14 @@
 ﻿using Key2Joy.Contracts.Plugins;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO.Pipes;
-using System.Linq;
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Ipc;
 using System.Runtime.Serialization.Formatters;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Threading;
-using System.Xml.Linq;
 using static Key2Joy.PluginHost.Native;
 
 namespace Key2Joy.PluginHost
@@ -24,7 +18,7 @@ namespace Key2Joy.PluginHost
         public static Dispatcher AppDispatcher { get; private set; }
 
         private static string portName;
-        
+
         [STAThread]
         static void Main(string[] args)
         {
@@ -90,7 +84,8 @@ namespace Key2Joy.PluginHost
             {
                 var signalEvent = EventWaitHandle.OpenExisting($"{name}.{eventName}");
                 signalEvent.Set();
-            } catch(WaitHandleCannotBeOpenedException ex)
+            }
+            catch (WaitHandleCannotBeOpenedException ex)
             {
                 Console.WriteLine($"{ex.Message}");
             }

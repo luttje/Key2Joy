@@ -1,16 +1,11 @@
-﻿using Jint;
-using Jint.Native;
-using Key2Joy.Contracts.Mapping;
+﻿using Key2Joy.Contracts.Mapping;
 using Key2Joy.Plugins;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Remoting;
-using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace Key2Joy.Mapping
 {
@@ -141,7 +136,7 @@ namespace Key2Joy.Mapping
         public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
         {
             string realTypeName = MappingTypeHelper.GetTypeFullName(allowedTypes, value);
-            
+
             JsonSerializer.Serialize(writer, new JsonMappingAspectWithType
             {
                 Options = value.SaveOptions(),

@@ -1,7 +1,6 @@
-﻿using System;
+﻿using Key2Joy.Contracts.Plugins;
+using System;
 using System.AddIn.Contract;
-using System.Runtime.Remoting;
-using Key2Joy.Contracts.Plugins;
 
 namespace Key2Joy.PluginHost
 {

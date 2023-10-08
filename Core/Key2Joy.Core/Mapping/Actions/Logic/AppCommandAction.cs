@@ -3,8 +3,6 @@ using Key2Joy.Util;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Xml.Linq;
-using static Key2Joy.LowLevelInput.Mouse;
 
 namespace Key2Joy.Mapping
 {
@@ -38,11 +36,11 @@ namespace Key2Joy.Mapping
         {
             Command = command;
 
-            if(command == AppCommand.ResetScriptEnvironment)
+            if (command == AppCommand.ResetScriptEnvironment)
             {
                 // Keep track of new environments to pass to all related script actions
                 Dictionary<Type, object> newEnvironments = new Dictionary<Type, object>();
-                
+
                 foreach (var otherAction in otherActions)
                 {
                     var otherActionType = otherAction.GetType();
@@ -61,7 +59,7 @@ namespace Key2Joy.Mapping
                         replaceEnvironmentMethod.Invoke(otherAction, new object[] { environment });
                     }
                 }
-                
+
                 return;
             }
 

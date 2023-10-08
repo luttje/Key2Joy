@@ -1,26 +1,21 @@
-﻿using System;
+﻿using Key2Joy.Contracts.Plugins;
+using System;
+using System.AddIn.Contract;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
+using System.Reflection;
+using System.Security;
+using System.Security.Cryptography;
 using System.Security.Permissions;
 using System.Security.Policy;
-using System.Security;
 using System.Text;
-using System.Threading.Tasks;
-using System.AddIn.Contract;
-using System.Diagnostics;
-using Key2Joy.Contracts.Plugins;
-using System.Security.Cryptography;
-using System.Reflection;
-using Key2Joy.Contracts.Mapping;
-using System.Windows;
 
 namespace Key2Joy.PluginHost
 {
     public class PluginHost : MarshalByRefObject, IPluginHost
     {
         public event RemoteEventHandlerCallback AnyEvent;
-        
+
         private PluginBase loadedPlugin;
         private AppDomain sandboxDomain;
         private string pluginAssemblyPath;
@@ -241,14 +236,14 @@ namespace Key2Joy.PluginHost
             try
             {
                 var controlHandle = appDomain.CreateInstance(assembly, typeName);
-                if (controlHandle == null) 
+                if (controlHandle == null)
                     throw new InvalidOperationException("appDomain.CreateInstance() returned null for " + assembly + "," + typeName);
 
                 var converterHandle = appDomain.CreateInstanceAndUnwrap(
                     typeof(ViewContractConverter).Assembly.FullName,
                     typeof(ViewContractConverter).FullName) as ViewContractConverter;
-                
-                if (converterHandle == null) 
+
+                if (converterHandle == null)
                     throw new InvalidOperationException("appDomain.CreateInstance() returned null for ViewContractConverter");
 
                 var contract = converterHandle.ConvertToContract(controlHandle, eventHandlers);

@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Key2Joy.Config
 {
     public class ConfigState
-    {        
+    {
         public string LastInstallPath
         {
             get => lastInstallPath;

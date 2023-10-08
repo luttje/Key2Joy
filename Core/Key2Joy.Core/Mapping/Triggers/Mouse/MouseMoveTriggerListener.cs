@@ -1,14 +1,8 @@
-﻿using Key2Joy.Config;
-using Key2Joy.Contracts.Mapping;
+﻿using Key2Joy.Contracts.Mapping;
 using Linearstar.Windows.RawInput;
-using SimWinInput;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Key2Joy.Mapping
 {
@@ -23,7 +17,7 @@ namespace Key2Joy.Mapping
             {
                 if (instance == null)
                     instance = new MouseMoveTriggerListener();
-                
+
                 return instance;
             }
         }
@@ -33,7 +27,7 @@ namespace Key2Joy.Mapping
         private const int WM_INPUT = 0x00FF;
 
         private Dictionary<int, List<AbstractMappedOption>> lookupAxis;
-        
+
         private List<int> lastDirectionHashes;
         private DateTime lastMoveTime;
 
@@ -71,7 +65,7 @@ namespace Key2Joy.Mapping
             if (!(trigger is MouseMoveTrigger mouseMoveTrigger))
                 return false;
 
-            return (DateTime.Now - lastMoveTime < IS_MOVING_TOLERANCE) 
+            return (DateTime.Now - lastMoveTime < IS_MOVING_TOLERANCE)
                 && lastDirectionHashes.Contains(mouseMoveTrigger.GetInputHash());
         }
 
@@ -79,7 +73,7 @@ namespace Key2Joy.Mapping
         {
             if (!IsActive)
                 return;
-            
+
             if (m.Msg != WM_INPUT)
                 return;
 
@@ -99,7 +93,7 @@ namespace Key2Joy.Mapping
                 Debug.WriteLine(ex.Message + Environment.NewLine + ex.StackTrace);
             }
         }
-        
+
         private bool TryOverrideMouseMoveInput(int lastX, int lastY)
         {
             var deltaX = (short)Math.Min(Math.Max(lastX * short.MaxValue * SENSITIVITY, short.MinValue), short.MaxValue);

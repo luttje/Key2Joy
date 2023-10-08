@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Key2Joy.Mapping
 {
@@ -45,11 +42,11 @@ namespace Key2Joy.Mapping
         {
             public TimeoutId()
                 : base()
-            {}
+            { }
 
             public TimeoutId(CancellationTokenSource cancellation)
                 : base(cancellation)
-            {}
+            { }
         }
 
         public class IntervalId : BaseId

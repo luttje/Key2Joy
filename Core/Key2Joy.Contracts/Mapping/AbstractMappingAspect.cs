@@ -46,7 +46,7 @@ namespace Key2Joy.Contracts.Mapping
         {
             var value = property.GetValue(this);
 
-            switch(value)
+            switch (value)
             {
                 case DateTime dateTime:
                     value = dateTime.Ticks;

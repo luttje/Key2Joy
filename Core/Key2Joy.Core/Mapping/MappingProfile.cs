@@ -1,13 +1,10 @@
 ﻿using Key2Joy.Config;
 using Key2Joy.Contracts.Mapping;
-using Key2Joy.LowLevelInput;
 using Key2Joy.Util;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -17,7 +14,7 @@ namespace Key2Joy.Mapping
     {
         const int NO_VERSION = 0;
         const int CURRENT_VERSION = 5;
-        
+
         public const string DEFAULT_PROFILE_PATH = "default-profile";
         public const string EXTENSION = ".k2j.json";
 
@@ -99,7 +96,7 @@ namespace Key2Joy.Mapping
         public static void ExtractDefaultIfNotExists()
         {
             var defaultPath = GetDefaultPath();
-            
+
             if (File.Exists(defaultPath))
                 return;
 
@@ -109,7 +106,7 @@ namespace Key2Joy.Mapping
                 writer.Write(Properties.Resources.default_profile_k2j);
             }
 
-            if(ConfigManager.Config.LastLoadedProfile == null)
+            if (ConfigManager.Config.LastLoadedProfile == null)
                 ConfigManager.Config.LastLoadedProfile = defaultPath;
         }
 
@@ -180,17 +177,17 @@ namespace Key2Joy.Mapping
                 ConfigManager.GetAppDirectory(),
                 SAVE_DIR);
 
-            if (Directory.Exists(legacyDirectory)) 
-            { 
-                if(Directory.Exists(directory))
+            if (Directory.Exists(legacyDirectory))
+            {
+                if (Directory.Exists(directory))
                 {
                     Directory.Move(legacyDirectory, FileSystem.FindNonExistingFile(legacyDirectory + "-%VERSION%"));
-                } 
+                }
                 else
                 {
                     Directory.Move(legacyDirectory, directory);
                 }
-            } 
+            }
             else if (!Directory.Exists(directory))
             {
                 Directory.CreateDirectory(directory);

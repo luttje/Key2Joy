@@ -1,13 +1,5 @@
 ﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.Mapping;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Key2Joy.Gui.Mapping
@@ -24,7 +16,7 @@ namespace Key2Joy.Gui.Mapping
         }
 
         public CombinedTriggerControlItem(AbstractTrigger trigger)
-            :this()
+            : this()
         {
             Trigger = trigger;
 

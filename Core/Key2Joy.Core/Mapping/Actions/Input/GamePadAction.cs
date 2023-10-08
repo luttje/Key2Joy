@@ -4,7 +4,6 @@ using SimWinInput;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace Key2Joy.Mapping
 {
@@ -35,7 +34,7 @@ namespace Key2Joy.Mapping
                 var action = (GamePadAction)MakeAction(actionFactory);
                 action.Control = control;
                 action.PressState = pressState;
-                
+
                 actions.Add(new MappedOption
                 {
                     Action = action
@@ -95,7 +94,7 @@ namespace Key2Joy.Mapping
 
             if (PressState == PressState.Press)
                 SimGamePad.Instance.SetControl(Control, GamePadIndex);
-            
+
             if (PressState == PressState.Release)
                 SimGamePad.Instance.ReleaseControl(Control, GamePadIndex);
         }
@@ -131,13 +130,13 @@ namespace Key2Joy.Mapping
                 }
 
                 SimGamePad.Instance.Update(GamePadIndex);
-                
+
                 return;
             }
 
             if (PressState == PressState.Press)
                 SimGamePad.Instance.SetControl(Control, GamePadIndex);
-            else if(PressState == PressState.Release)
+            else if (PressState == PressState.Release)
                 SimGamePad.Instance.ReleaseControl(Control, GamePadIndex);
         }
 

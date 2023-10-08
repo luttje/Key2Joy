@@ -1,11 +1,8 @@
-﻿using BuildMarkdownDocs.Util;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Xml.Linq;
 
 namespace BuildMarkdownDocs
 {
@@ -35,18 +32,18 @@ namespace BuildMarkdownDocs
 
                 if (valueAttributes != null)
                     continue;
-                
+
                 if (firstName == null)
                     firstName = name;
 
-                var summary = ValueSummaries != null && ValueSummaries.ContainsKey(name) 
+                var summary = ValueSummaries != null && ValueSummaries.ContainsKey(name)
                     ? $": {ValueSummaries[name]}" : "";
 
                 allEnumerations.AppendLine($"* `{name}`{summary}");
             }
 
-            if(firstName != null)
-            replacements.Add("Example", $"`{Name}.{firstName}`");
+            if (firstName != null)
+                replacements.Add("Example", $"`{Name}.{firstName}`");
             replacements.Add("Values", allEnumerations.ToString());
         }
     }

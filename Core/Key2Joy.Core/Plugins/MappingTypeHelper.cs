@@ -1,13 +1,8 @@
-﻿using Jint.Native;
-using Jint;
+﻿using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Plugins;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Remoting;
-using System.Text;
-using System.Threading.Tasks;
-using Key2Joy.Contracts.Mapping;
-using Key2Joy.Contracts.Plugins;
 
 namespace Key2Joy.Plugins
 {
@@ -30,7 +25,7 @@ namespace Key2Joy.Plugins
         /// <param name="instance"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentException"></exception>
-        public static string GetTypeFullName<T>(IDictionary<string, MappingTypeFactory<T>> typeFactories, AbstractMappingAspect instance) 
+        public static string GetTypeFullName<T>(IDictionary<string, MappingTypeFactory<T>> typeFactories, AbstractMappingAspect instance)
             where T : AbstractMappingAspect
         {
             var realObject = GetRealObject(instance);
@@ -71,7 +66,7 @@ namespace Key2Joy.Plugins
                 var objRef = RemotingServices.GetObjRefForProxy(realObject);
                 return EnsureSimpleTypeName(objRef.TypeInfo.TypeName);
             }
-            
+
             return realObject.GetType().FullName;
         }
 

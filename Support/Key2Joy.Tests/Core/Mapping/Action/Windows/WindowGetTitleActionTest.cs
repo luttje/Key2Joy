@@ -1,8 +1,6 @@
 ﻿using Key2Joy.Mapping;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.Diagnostics;
-using System.Threading;
 
 namespace Key2Joy.Tests.Core.Mapping.Action.Windows
 {

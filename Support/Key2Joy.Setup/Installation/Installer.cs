@@ -1,15 +1,12 @@
 ﻿using Key2Joy.Setup.Releases;
-using System;
-using System.Collections.Generic;
-using System.IO.Compression;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Win32;
-using System.Reflection;
+using System;
+using System.IO;
+using System.IO.Compression;
+using System.Linq;
 using System.Net;
-using System.Windows.Forms;
+using System.Reflection;
+using System.Threading.Tasks;
 
 namespace Key2Joy.Setup.Installation
 {
@@ -59,7 +56,7 @@ namespace Key2Joy.Setup.Installation
             var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\" + REGISTRY_KEY);
             var installPath = key.GetValue("InstallLocation").ToString();
             key.Close();
-            
+
             WipeDirectory(installPath);
             Registry.LocalMachine.DeleteSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\" + REGISTRY_KEY);
         }
@@ -81,7 +78,7 @@ namespace Key2Joy.Setup.Installation
         private void PrepareDirectory()
         {
             WipeDirectory(installPath);
-            
+
             Directory.CreateDirectory(installPath);
         }
 
@@ -93,14 +90,14 @@ namespace Key2Joy.Setup.Installation
             client.Headers.Add("User-Agent: Other");
             client.DownloadProgressChanged += (s, ev) => InstallProgressed?.Invoke(this, new InstallProgressEventArgs(ev.ProgressPercentage));
 
-            try 
-            { 
+            try
+            {
                 await client.DownloadFileTaskAsync(
                     new Uri(releasePackage.BrowserDownloadUrl),
                     localDownloadPath
                 );
             }
-            catch(WebException ex)
+            catch (WebException ex)
             {
                 throw new Exception("Download failed", ex);
             }
@@ -117,7 +114,7 @@ namespace Key2Joy.Setup.Installation
                     {
                         if (!Directory.Exists(Path.GetDirectoryName(destinationPath)))
                             Directory.CreateDirectory(Path.GetDirectoryName(destinationPath));
-                        
+
                         entry.ExtractToFile(destinationPath, true);
                     }
                 }

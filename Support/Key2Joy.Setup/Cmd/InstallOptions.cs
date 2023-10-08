@@ -1,12 +1,7 @@
-﻿using CommandLine.Text;
-using CommandLine;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CommandLine;
 using Key2Joy.Setup.Installation;
 using Key2Joy.Setup.Releases;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Key2Joy.Setup.Cmd

@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text.Json.Serialization;
-using Key2Joy.Contracts.Mapping;
+﻿using Key2Joy.Contracts.Mapping;
 using Key2Joy.LowLevelInput;
+using System;
+using System.Text.Json.Serialization;
 
 namespace Key2Joy.Mapping
 {
@@ -53,7 +52,7 @@ namespace Key2Joy.Mapping
 
         public override bool Equals(object obj)
         {
-            if(!(obj is MouseButtonTrigger other)) 
+            if (!(obj is MouseButtonTrigger other))
                 return false;
 
             return Equals(other);
@@ -61,7 +60,7 @@ namespace Key2Joy.Mapping
 
         public bool Equals(MouseButtonTrigger other)
         {
-            return MouseButtons == other.MouseButtons 
+            return MouseButtons == other.MouseButtons
                 && PressState == other.PressState;
         }
 

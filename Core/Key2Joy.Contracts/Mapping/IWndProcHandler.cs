@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Key2Joy.Contracts.Mapping
 {
@@ -24,7 +20,7 @@ namespace Key2Joy.Contracts.Mapping
             LParam = lParam;
         }
     }
-    
+
     public interface IWndProcHandler
     {
         public IntPtr Handle { get; set; }

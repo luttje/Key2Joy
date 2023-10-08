@@ -1,9 +1,5 @@
-﻿using Key2Joy.Contracts.Mapping;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Key2Joy.Contracts.Mapping
 {
@@ -16,9 +12,9 @@ namespace Key2Joy.Contracts.Mapping
         private Func<AbstractTrigger, bool> optionCandidateFilter;
 
         public TriggerActivatingEventArgs(
-            AbstractTriggerListener listener, 
+            AbstractTriggerListener listener,
             AbstractInputBag inputBag,
-            IList<AbstractMappedOption> mappedOptions, 
+            IList<AbstractMappedOption> mappedOptions,
             Func<AbstractTrigger, bool> optionCandidateFilter = null)
         {
             Listener = listener;
@@ -32,7 +28,7 @@ namespace Key2Joy.Contracts.Mapping
             if (trigger?.GetTriggerListener() != Listener)
                 return false;
 
-            if(optionCandidateFilter != null)
+            if (optionCandidateFilter != null)
                 return optionCandidateFilter.Invoke(trigger);
 
             return true;

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Runtime.InteropServices;
 
 namespace Key2Joy.LowLevelInput
 {
@@ -36,7 +31,7 @@ namespace Key2Joy.LowLevelInput
             Left = 0,
             Right = 1,
         }
-        
+
         enum SystemMetric
         {
             SM_CXSCREEN = 0,

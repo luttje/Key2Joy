@@ -1,19 +1,14 @@
 ﻿using Key2Joy.Mapping;
 using Key2Joy.Plugins;
-using SimWinInput;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
-using System.Linq;
 using System.Resources;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Key2Joy.Gui
 {
     public static class Program
-    {        
+    {
         public static Form ActiveForm { get; set; }
         public static PluginSet Plugins { get; private set; }
 
@@ -24,12 +19,13 @@ namespace Key2Joy.Gui
         static void Main()
         {
             Key2JoyManager.InitSafely(
-                OnRunAppCommand, 
-                (plugins) => {
+                OnRunAppCommand,
+                (plugins) =>
+                {
                     string[] args = Environment.GetCommandLineArgs();
 
                     Plugins = plugins;
-                    
+
                     Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault(false);
 
@@ -66,7 +62,7 @@ namespace Key2Joy.Gui
 
         private static bool OnRunAppCommand(AppCommand command)
         {
-            if(ActiveForm is IAcceptAppCommands form)
+            if (ActiveForm is IAcceptAppCommands form)
             {
                 return form.RunAppCommand(command);
             }

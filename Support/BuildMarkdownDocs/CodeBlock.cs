@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+﻿using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
 namespace BuildMarkdownDocs
@@ -12,7 +7,7 @@ namespace BuildMarkdownDocs
     {
         public string Language { get; set; }
         public string Code { get; set; }
-        
+
         internal static CodeBlock FromXml(XElement element)
         {
             var code = new CodeBlock();

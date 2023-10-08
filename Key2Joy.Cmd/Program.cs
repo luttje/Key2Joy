@@ -1,10 +1,7 @@
-﻿using Key2Joy.Config;
+﻿using CommandLine;
 using System;
 using System.Linq;
-using CommandLine;
 using System.Reflection;
-using System.Diagnostics;
-using System.Threading;
 
 namespace Key2Joy.Cmd
 {
@@ -17,7 +14,7 @@ namespace Key2Joy.Cmd
             Parser.Default.ParseArguments(args, types)
                   .WithParsed(Run);
         }
-        
+
         private static Type[] LoadVerbs()
         {
             return Assembly.GetExecutingAssembly().GetTypes()

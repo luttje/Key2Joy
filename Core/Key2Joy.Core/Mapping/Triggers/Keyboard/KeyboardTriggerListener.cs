@@ -1,9 +1,7 @@
 ﻿using Key2Joy.Contracts.Mapping;
 using Key2Joy.LowLevelInput;
-using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using static Key2Joy.LowLevelInput.Mouse;
 
 namespace Key2Joy.Mapping
 {
@@ -16,14 +14,14 @@ namespace Key2Joy.Mapping
             {
                 if (instance == null)
                     instance = new KeyboardTriggerListener();
-                
+
                 return instance;
             }
         }
 
         private GlobalInputHook globalKeyboardHook;
         private readonly Dictionary<Keys, bool> currentKeysDown = new Dictionary<Keys, bool>();
-        
+
         public bool GetKeyDown(Keys key)
         {
             return currentKeysDown.ContainsKey(key);
@@ -66,9 +64,9 @@ namespace Key2Joy.Mapping
             // Test if this is a bound key, if so halt default input behaviour
             var keys = VirtualKeyConverter.KeysFromVirtual(e.KeyboardData.VirtualCode);
             Dictionary<int, List<AbstractMappedOption>> dictionary;
-            
-            if (e.KeyboardState == KeyboardState.KeyDown) 
-            { 
+
+            if (e.KeyboardState == KeyboardState.KeyDown)
+            {
                 dictionary = lookupDown;
 
                 if (currentKeysDown.ContainsKey(keys))
@@ -79,7 +77,7 @@ namespace Key2Joy.Mapping
             else
             {
                 dictionary = lookupRelease;
-                
+
                 if (currentKeysDown.ContainsKey(keys))
                     currentKeysDown.Remove(keys);
             }
@@ -93,7 +91,7 @@ namespace Key2Joy.Mapping
             var hash = KeyboardTrigger.GetInputHashFor(keys);
             dictionary.TryGetValue(hash, out var mappedOptions);
 
-            if(DoExecuteTrigger(
+            if (DoExecuteTrigger(
                 mappedOptions,
                 inputBag,
                 trigger =>

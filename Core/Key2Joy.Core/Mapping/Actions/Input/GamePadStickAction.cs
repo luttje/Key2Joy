@@ -3,13 +3,7 @@ using Key2Joy.LowLevelInput;
 using SimWinInput;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Xml.Linq;
 
 namespace Key2Joy.Mapping
 {
@@ -65,8 +59,8 @@ namespace Key2Joy.Mapping
         /// <name>GamePad.SimulateMove</name>
         [ExposesScriptingMethod("GamePad.SimulateMove")]
         public async void ExecuteForScript(
-            double deltaX, 
-            double deltaY, 
+            double deltaX,
+            double deltaY,
             Simulator.GamePadStick stick = Simulator.GamePadStick.Left,
             int gamepadIndex = 0)
         {
@@ -88,8 +82,8 @@ namespace Key2Joy.Mapping
             var x = (short)(short.MinValue * DeltaX);
             var y = (short)(short.MinValue * DeltaY);
 
-            if(Stick == Simulator.GamePadStick.Right) 
-            { 
+            if (Stick == Simulator.GamePadStick.Right)
+            {
                 state.RightStickX = x;
                 state.RightStickY = y;
             }

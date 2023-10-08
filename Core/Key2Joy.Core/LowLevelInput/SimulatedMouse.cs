@@ -24,7 +24,7 @@ namespace Key2Joy.LowLevelInput
         {
             Send(TranslateButton(buttons));
         }
-        
+
         public static void ReleaseButton(Mouse.Buttons buttons)
         {
             Send(TranslateButton(buttons, true));
@@ -47,7 +47,7 @@ namespace Key2Joy.LowLevelInput
 
         public static void Move(int x, int y, Mouse.MoveType moveType)
         {
-            if(moveType == Mouse.MoveType.Absolute)
+            if (moveType == Mouse.MoveType.Absolute)
             {
                 Send(
                     MOUSEEVENTF.MOVE | MOUSEEVENTF.ABSOLUTE,
@@ -55,14 +55,14 @@ namespace Key2Joy.LowLevelInput
                     Simulator.CalculateAbsoluteCoordinateY(y));
                 return;
             }
-            
+
             Send(
                 MOUSEEVENTF.MOVE,
                 x,
                 y
             );
         }
-        
+
         [StructLayout(LayoutKind.Sequential)]
         public struct MOUSEINPUT
         {

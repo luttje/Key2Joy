@@ -1,14 +1,8 @@
 ﻿using Key2Joy.Contracts.Mapping;
 using Key2Joy.LowLevelInput;
-using SimWinInput;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Key2Joy.Mapping
 {
@@ -20,7 +14,7 @@ namespace Key2Joy.Mapping
         GroupImage = "mouse"
     )]
     public class MouseButtonAction : CoreAction, IPressState
-    {        
+    {
         public Mouse.Buttons Button { get; set; }
         public PressState PressState { get; set; }
 
@@ -69,7 +63,7 @@ namespace Key2Joy.Mapping
         {
             if (PressState == PressState.Press)
                 SimulatedMouse.PressButton(Button);
-            else if(PressState == PressState.Release)
+            else if (PressState == PressState.Release)
                 SimulatedMouse.ReleaseButton(Button);
         }
 

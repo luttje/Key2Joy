@@ -1,5 +1,5 @@
-﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.Config;
+﻿using Key2Joy.Config;
+using Key2Joy.Contracts.Mapping;
 using Key2Joy.Interop;
 using Key2Joy.LowLevelInput;
 using Key2Joy.Mapping;
@@ -16,7 +16,7 @@ using System.Windows.Forms;
 namespace Key2Joy
 {
     public delegate bool AppCommandRunner(AppCommand command);
-        
+
     public class Key2JoyManager : IMessageFilter
     {
         private const string READY_MESSAGE = "Key2Joy is ready";
@@ -32,7 +32,7 @@ namespace Key2Joy
             {
                 if (instance == null)
                     throw new Exception("Key2JoyManager not initialized using InitSafely yet!");
-                
+
                 return instance;
             }
         }
@@ -119,7 +119,7 @@ namespace Key2Joy
                 }
 
                 var wndProcListener = wndProcListeners[i];
-                
+
                 wndProcListener.WndProc(new Contracts.Mapping.Message(m.HWnd, m.Msg, m.WParam, m.LParam));
             }
 
@@ -138,16 +138,16 @@ namespace Key2Joy
         {
             if (profile == null)
                 return armedProfile != null;
-            
+
             return armedProfile == profile;
         }
 
         public void ArmMappings(MappingProfile profile)
         {
             armedProfile = profile;
-                
+
             var allListeners = GetScriptingListeners();
-            var allActions = (IList<AbstractAction>) profile.MappedOptions.Select(m => m.Action).ToList();
+            var allActions = (IList<AbstractAction>)profile.MappedOptions.Select(m => m.Action).ToList();
 
             foreach (var mappedOption in profile.MappedOptions)
             {

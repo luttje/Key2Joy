@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace BuildMarkdownDocs
@@ -20,12 +16,12 @@ namespace BuildMarkdownDocs
         {
             if (type == null)
                 throw new ArgumentNullException("Parameter type should be provided!");
-            
+
             var parameter = new Parameter();
             parameter.Name = element.Attribute("name").Value;
             parameter.Description = element.Value;
             parameter.Type = type;
-            
+
             parameter.nullableType = Nullable.GetUnderlyingType(type);
             parameter.IsOptional = parameter.nullableType != null;
 

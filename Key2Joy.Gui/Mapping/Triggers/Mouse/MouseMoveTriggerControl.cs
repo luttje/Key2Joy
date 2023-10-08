@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Forms;
-using Key2Joy.Contracts.Mapping;
+﻿using Key2Joy.Contracts.Mapping;
 using Key2Joy.Mapping;
+using System;
+using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace Key2Joy.Gui.Mapping
 {
@@ -14,14 +13,14 @@ namespace Key2Joy.Gui.Mapping
     public partial class MouseMoveTriggerControl : UserControl, ITriggerOptionsControl
     {
         public event EventHandler OptionsChanged;
-        
+
         public MouseMoveTriggerControl()
         {
             InitializeComponent();
 
             var directions = new List<AxisDirection>();
-                
-            foreach(AxisDirection direction in Enum.GetValues(typeof(AxisDirection)))
+
+            foreach (AxisDirection direction in Enum.GetValues(typeof(AxisDirection)))
             {
                 if (direction != AxisDirection.None)
                     directions.Add((AxisDirection)direction);

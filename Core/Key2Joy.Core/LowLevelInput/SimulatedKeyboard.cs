@@ -10,7 +10,7 @@ namespace Key2Joy.LowLevelInput
         {
             Send(scanCode);
         }
-        
+
         public static void ReleaseKey(KeyboardKey scanCode)
         {
             Send(scanCode, KEYEVENTF.KEYUP);
@@ -28,7 +28,7 @@ namespace Key2Joy.LowLevelInput
                 Input.U.ki.dwFlags = rawPressState.Value | KEYEVENTF.SCANCODE;
             else
                 Input.U.ki.dwFlags = KEYEVENTF.SCANCODE;
-            
+
             Inputs[0] = Input;
 
             Simulator.SendInput(1, Inputs, Simulator.INPUT.Size);

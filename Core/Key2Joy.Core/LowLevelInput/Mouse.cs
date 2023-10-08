@@ -1,9 +1,4 @@
-﻿using Linearstar.Windows.RawInput.Native;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 
 namespace Key2Joy.LowLevelInput
 {
@@ -14,7 +9,7 @@ namespace Key2Joy.LowLevelInput
             Relative = 0,
             Absolute = 1
         }
-        
+
         public enum Buttons
         {
             None = 0,
@@ -41,7 +36,7 @@ namespace Key2Joy.LowLevelInput
 
             return Buttons.None;
         }
-        
+
         public static Buttons ButtonsFromEvent(GlobalMouseHookEventArgs e, out bool isDown)
         {
             isDown = true;
@@ -73,7 +68,7 @@ namespace Key2Joy.LowLevelInput
             }
 
             Console.WriteLine($"Mouse button ({e.RawData}) not yet supported!");
-            
+
             return Buttons.None;
         }
     }

@@ -1,8 +1,6 @@
 ﻿using Key2Joy.Contracts.Mapping;
 using Key2Joy.LowLevelInput;
-using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
 
 namespace Key2Joy.Mapping
 {
@@ -15,7 +13,7 @@ namespace Key2Joy.Mapping
             {
                 if (instance == null)
                     instance = new MouseButtonTriggerListener();
-                
+
                 return instance;
             }
         }
@@ -46,7 +44,7 @@ namespace Key2Joy.Mapping
 
             base.Stop();
         }
-        
+
         public override bool GetIsTriggered(AbstractTrigger trigger)
         {
             if (!(trigger is MouseButtonTrigger mouseButtonTrigger))
@@ -93,8 +91,8 @@ namespace Key2Joy.Mapping
 
             var hash = MouseButtonTrigger.GetInputHashFor(buttons);
             dictionary.TryGetValue(hash, out var mappedOptions);
-            
-            if(DoExecuteTrigger(
+
+            if (DoExecuteTrigger(
                 mappedOptions,
                 inputBag,
                 trigger =>

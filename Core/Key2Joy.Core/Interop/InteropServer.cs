@@ -1,20 +1,14 @@
-﻿using Key2Joy.Interop;
-using Key2Joy.Mapping;
+﻿using Key2Joy.Mapping;
 using System;
-using System.Collections.Generic;
 using System.IO.Pipes;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Key2Joy.Interop
 {
     internal class InteropServer : IDisposable
     {
         public const string PIPE_NAME = "Key2JoyService";
-        
+
         public static InteropServer Instance { get; } = new InteropServer();
 
         private NamedPipeServerStream pipeServer;
@@ -49,7 +43,7 @@ namespace Key2Joy.Interop
                 Key2JoyManager.Instance.ArmMappings(profile);
             });
         }
-        
+
         private void HandleDisableCommand(DisableCommand command)
         {
             Key2JoyManager.Instance.CallOnUiThread(() =>
@@ -62,8 +56,9 @@ namespace Key2Joy.Interop
         private void OnClientConnected(IAsyncResult asyncResult)
         {
             var pipeServer = (NamedPipeServerStream)asyncResult.AsyncState;
-            
-            try { 
+
+            try
+            {
                 pipeServer.EndWaitForConnection(asyncResult);
             }
             catch (ObjectDisposedException)

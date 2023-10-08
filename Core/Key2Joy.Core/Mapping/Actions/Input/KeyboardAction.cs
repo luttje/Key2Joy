@@ -13,7 +13,7 @@ namespace Key2Joy.Mapping
         GroupImage = "keyboard"
     )]
     public class KeyboardAction : CoreAction, IPressState
-    {        
+    {
         public KeyboardKey Key { get; set; }
         public PressState PressState { get; set; }
 
@@ -76,7 +76,7 @@ namespace Key2Joy.Mapping
 
             if (PressState == PressState.Press)
                 SimulatedKeyboard.PressKey(Key);
-            
+
             if (PressState == PressState.Release)
                 SimulatedKeyboard.ReleaseKey(Key);
         }
@@ -85,7 +85,7 @@ namespace Key2Joy.Mapping
         {
             if (PressState == PressState.Press)
                 SimulatedKeyboard.PressKey(Key);
-            else if(PressState == PressState.Release)
+            else if (PressState == PressState.Release)
                 SimulatedKeyboard.ReleaseKey(Key);
         }
 

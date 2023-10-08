@@ -1,13 +1,9 @@
-﻿using Jint.Native;
-using Key2Joy.Contracts.Mapping;
+﻿using Key2Joy.Contracts.Mapping;
 using Key2Joy.Plugins;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Remoting;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Key2Joy.Mapping
 {
@@ -57,7 +53,7 @@ namespace Key2Joy.Mapping
                 actions.Add(actionFactory.FullTypeName, actionFactory);
             }
         }
-        
+
         /// <summary>
         /// Gets all action type factories
         /// </summary>

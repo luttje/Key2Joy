@@ -28,14 +28,14 @@ namespace Key2Joy.Gui
                 return mappedOptionX.Action.CompareTo(mappedOptionY.Action) * sortDirection;
             }
 
-            if(mappedOptionX.Trigger != null)
+            if (mappedOptionX.Trigger != null)
             {
                 if (mappedOptionY.Trigger == null)
                     return 1 * sortDirection;
-                
+
                 return mappedOptionX.Trigger.CompareTo(mappedOptionY.Trigger) * sortDirection;
             }
-                
+
             return mappedOptionY.Trigger == null ? 0 : -1 * sortDirection;
         }
     }

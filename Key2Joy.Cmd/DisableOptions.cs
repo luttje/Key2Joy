@@ -1,6 +1,6 @@
 ﻿using CommandLine;
-using System;
 using Key2Joy.Interop;
+using System;
 
 namespace Key2Joy.Cmd
 {
@@ -12,7 +12,7 @@ namespace Key2Joy.Cmd
             try
             {
                 InteropClient.Instance.SendCommand(new DisableCommand());
-                
+
                 Console.WriteLine("Commanded Key2Joy to disable the active profile.");
             }
             catch (TimeoutException)

@@ -1,15 +1,11 @@
-﻿using Esprima.Ast;
-using Key2Joy.Contracts.Mapping;
-using Key2Joy.Contracts.Plugins;
+﻿using Key2Joy.Contracts.Mapping;
 using Key2Joy.Gui.Mapping;
 using Key2Joy.Mapping;
 using Key2Joy.Plugins;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
-using System.Windows.Forms.Integration;
 
 namespace Key2Joy.Gui
 {
@@ -29,11 +25,11 @@ namespace Key2Joy.Gui
         }
 
         public MappingForm(MappedOption mappedOption)
-            :this()
+            : this()
         {
             if (mappedOption == null)
                 return;
-            
+
             MappedOption = mappedOption;
 
             triggerControl.SelectTrigger(mappedOption.Trigger);
@@ -46,7 +42,7 @@ namespace Key2Joy.Gui
         {
             var optionsUserControl = optionsPanel.Controls.OfType<Control>().FirstOrDefault();
 
-            if (optionsUserControl != null) 
+            if (optionsUserControl != null)
             {
                 optionsPanel.Controls.Remove(optionsUserControl);
                 optionsUserControl.Dispose();
@@ -57,9 +53,8 @@ namespace Key2Joy.Gui
 
             var selected = ((ImageComboBoxItem<KeyValuePair<TAttribute, MappingTypeFactory<TAspect>>>)comboBox.SelectedItem).ItemValue;
             var selectedTypeFactory = selected.Value;
-            var attribute = selected.Key;
 
-            optionsUserControl = CreateOptionsControl(selectedTypeFactory.FullTypeName, attribute);
+            optionsUserControl = CreateOptionsControl(selectedTypeFactory.FullTypeName);
 
             if (optionsUserControl == null)
             {
@@ -78,7 +73,7 @@ namespace Key2Joy.Gui
             return optionsUserControl;
         }
 
-        private static Control CreateOptionsControl<TAttribute>(string selectedTypeName, TAttribute attribute) where TAttribute : MappingAttribute
+        private static Control CreateOptionsControl(string selectedTypeName)
         {
             var mappingControlFactory = MappingControlRepository.GetMappingControlFactory(selectedTypeName);
 
@@ -99,8 +94,8 @@ namespace Key2Joy.Gui
                 return;
             }
 
-            if (action == null) 
-            { 
+            if (action == null)
+            {
                 MessageBox.Show("You must select an action!", "No action selected!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }

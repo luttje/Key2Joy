@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Key2Joy.Setup
@@ -13,7 +12,7 @@ namespace Key2Joy.Setup
     internal static class Program
     {
         internal static bool ShouldStart = true;
-        internal static bool IsElevated 
+        internal static bool IsElevated
         {
             get
             {
@@ -48,7 +47,8 @@ namespace Key2Joy.Setup
             var args = Environment.GetCommandLineArgs().Skip(1).ToArray();
             var types = LoadVerbs();
 
-            if(args.Length > 0) { 
+            if (args.Length > 0)
+            {
                 Parser.Default.ParseArguments(args, types)
                       .WithParsed(Run)
                       .WithNotParsed(HandleErrors);

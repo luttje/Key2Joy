@@ -1,14 +1,7 @@
 ﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.Config;
 using Key2Joy.Mapping;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Key2Joy.Gui.Mapping
@@ -59,9 +52,9 @@ namespace Key2Joy.Gui.Mapping
         {
             var thisTrigger = (CombinedTrigger)combinedTrigger;
 
-            if(thisTrigger.Triggers != null)
+            if (thisTrigger.Triggers != null)
             {
-                foreach(var trigger in thisTrigger.Triggers)
+                foreach (var trigger in thisTrigger.Triggers)
                 {
                     AddTriggerControl(trigger);
                 }

@@ -3,10 +3,6 @@ using Key2Joy.LowLevelInput;
 using SimWinInput;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Key2Joy.Mapping
@@ -26,7 +22,7 @@ namespace Key2Joy.Mapping
             : base(name)
         {
         }
-        
+
         public override void OnStartListening(AbstractTriggerListener listener, ref IList<AbstractAction> otherActions)
         {
             base.OnStartListening(listener, ref otherActions);

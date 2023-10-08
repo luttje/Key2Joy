@@ -1,10 +1,4 @@
-﻿using Key2Joy.Plugins;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 using System.Windows.Forms;
 
 namespace Key2Joy.Gui
@@ -20,7 +14,7 @@ namespace Key2Joy.Gui
         /// Spacing between text and image
         /// </summary>
         public float Spacing { get; set; } = 0;
-        
+
         public ImageComboBox()
             : base()
         {

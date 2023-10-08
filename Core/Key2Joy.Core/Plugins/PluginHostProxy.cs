@@ -1,26 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Plugins;
+using Key2Joy.PluginHost;
+using Mono.Cecil;
+using System;
+using System.AddIn.Pipeline;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+using System.IO.Pipes;
+using System.Linq;
 using System.Runtime.Remoting.Channels;
+using System.Runtime.Remoting.Channels.Ipc;
 using System.Threading;
 using System.Windows.Forms;
-using System;
-using Key2Joy.Contracts.Plugins;
-using System.Windows.Forms.Integration;
-using System.AddIn.Pipeline;
-using System.Runtime.Remoting.Channels.Ipc;
-using Key2Joy.Contracts.Mapping;
-using Mono.Cecil;
-using System.Linq;
-using System.Reflection;
-using Key2Joy.PluginHost;
-using System.Collections;
-using System.Runtime.Remoting;
-using System.Runtime.Serialization.Formatters;
-using System.IO.Pipes;
-using System.IO;
-using System.Text;
-using System.Security.AccessControl;
-using System.Security.Principal;
 
 namespace Key2Joy.Plugins
 {
@@ -56,7 +48,7 @@ namespace Key2Joy.Plugins
             private static object _lock = new object();
             private static bool _registered;
 
-            public static void RegisterChannel(string portName)
+            public static void RegisterChannel()
             {
                 lock (_lock)
                 {
@@ -253,7 +245,7 @@ namespace Key2Joy.Plugins
 
         private static void PluginHost_AnyEvent(object sender, RemoteEventArgs e)
         {
-            RemoteEventSubscriber.ClientInstance.AskServerToInvoke(sender, e);
+            RemoteEventSubscriber.ClientInstance.AskServerToInvoke(e);
         }
 
         private static void PluginHost_OptionsChanged(object sender, RemoteEventArgs e)
@@ -277,7 +269,7 @@ namespace Key2Joy.Plugins
         /// <returns></returns>
         public T CreateAspectInstance<T>(string fullTypeName, object[] constructorArguments) where T : AbstractMappingAspect
         {
-            var nameFormat = (string) (constructorArguments?[0] ?? fullTypeName);
+            var nameFormat = (string)(constructorArguments?[0] ?? fullTypeName);
             var type = typeof(T);
 
             // When loading all we get is AbstractMappingAspect and the full name
@@ -288,7 +280,7 @@ namespace Key2Joy.Plugins
                 {
                     type = typeof(AbstractAction);
                 }
-                else if(triggerFactories.Any(factory => factory.FullTypeName == fullTypeName))
+                else if (triggerFactories.Any(factory => factory.FullTypeName == fullTypeName))
                 {
                     type = typeof(AbstractTrigger);
                 }
@@ -384,7 +376,7 @@ namespace Key2Joy.Plugins
             t.IsBackground = true;
             t.Start();
         }
-        
+
         private void OpenPluginHost()
         {
             if (pluginHost != null) return;
@@ -394,7 +386,7 @@ namespace Key2Joy.Plugins
                 throw new InvalidOperationException("PluginHost process not ready");
             }
 
-            IpcChannelRegistration.RegisterChannel(name);
+            IpcChannelRegistration.RegisterChannel();
 
             var url = "ipc://" + name + "/" + nameof(PluginHost);
             pluginHost = (IPluginHost)Activator.GetObject(typeof(IPluginHost), url);

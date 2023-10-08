@@ -1,12 +1,7 @@
-﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.Config;
+﻿using Key2Joy.Config;
+using Key2Joy.Contracts.Mapping;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Key2Joy.Mapping
 {
@@ -25,7 +20,7 @@ namespace Key2Joy.Mapping
 
             Start();
         }
-        
+
         public override void StopListening()
         {
             if (!IsActive)

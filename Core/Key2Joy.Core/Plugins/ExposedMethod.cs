@@ -26,7 +26,7 @@ namespace Key2Joy.Plugins
     {
         public Type Type { get; protected set; }
 
-        public TypeExposedMethod(string functionName, string methodName, Type type) 
+        public TypeExposedMethod(string functionName, string methodName, Type type)
             : base(functionName, methodName)
         {
             Type = type;
@@ -43,11 +43,11 @@ namespace Key2Joy.Plugins
     public class PluginExposedMethod : ExposedMethod
     {
         public string TypeName { get; protected set; }
-        
+
         private PluginHostProxy pluginHost;
         private Dictionary<Type, Func<object, object>> parameterTransformers = new();
         private PluginActionProxy currentInstance;
-        
+
         public PluginExposedMethod(PluginHostProxy pluginHost, string typeName, string functionName, string methodName)
             : base(functionName, methodName)
         {
@@ -68,7 +68,14 @@ namespace Key2Joy.Plugins
 
         public void RegisterParameterTransformer<T>(Func<T, object> transformer)
         {
-            parameterTransformers.Add(typeof(T), o =>
+            var key = typeof(T);
+
+            if (parameterTransformers.ContainsKey(key))
+            {
+                parameterTransformers.Remove(key);
+            }
+
+            parameterTransformers.Add(key, o =>
             {
                 return transformer((T)o);
             });

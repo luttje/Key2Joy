@@ -1,13 +1,5 @@
-﻿using Esprima.Ast;
-using Key2Joy.Contracts;
-using Key2Joy.Contracts.Mapping;
+﻿using Key2Joy.Contracts.Mapping;
 using Key2Joy.Plugins;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Key2Joy.Mapping
 {
@@ -27,7 +19,7 @@ namespace Key2Joy.Mapping
             {
                 typeAttribute.NameFormat ?? actionFactory.FullTypeName,
             });
-            
+
             return action;
         }
 

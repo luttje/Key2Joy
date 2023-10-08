@@ -1,8 +1,6 @@
-﻿using Key2Joy.Config;
-using Key2Joy.Mapping;
+﻿using Key2Joy.Mapping;
 using SimWinInput;
 using System;
-using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace Key2Joy.Gui
@@ -10,15 +8,15 @@ namespace Key2Joy.Gui
     public partial class InitForm : Form
     {
         private bool shouldStartMinimized;
-        
+
         public InitForm(bool shouldStartMinimized = false)
         {
             this.shouldStartMinimized = shouldStartMinimized;
-            
+
             InitializeComponent();
 
-            if (shouldStartMinimized) 
-            { 
+            if (shouldStartMinimized)
+            {
                 this.WindowState = FormWindowState.Minimized;
                 this.ShowInTaskbar = false;
             }

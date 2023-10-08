@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Key2Joy.Contracts.Mapping
@@ -11,7 +10,7 @@ namespace Key2Joy.Contracts.Mapping
         protected AbstractTriggerListener listener;
 
         protected IList<AbstractAction> otherActions;
-        
+
         public virtual async Task Execute(AbstractInputBag inputBag = null)
         { }
 
@@ -19,13 +18,13 @@ namespace Key2Joy.Contracts.Mapping
 
         public AbstractAction(string name)
             : base(name) { }
-        
-        public virtual void OnStartListening(AbstractTriggerListener listener, ref IList<AbstractAction> otherActions) 
+
+        public virtual void OnStartListening(AbstractTriggerListener listener, ref IList<AbstractAction> otherActions)
         {
             SetStartData(listener, ref otherActions);
         }
 
-        public virtual void OnStopListening(AbstractTriggerListener listener) 
+        public virtual void OnStopListening(AbstractTriggerListener listener)
         {
             IsStarted = false;
 

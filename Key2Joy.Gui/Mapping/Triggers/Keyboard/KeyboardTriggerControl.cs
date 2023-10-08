@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
-using Key2Joy.Mapping;
+﻿using Key2Joy.Contracts.Mapping;
 using Key2Joy.LowLevelInput;
-using Key2Joy.Contracts.Mapping;
+using Key2Joy.Mapping;
+using System;
+using System.Windows.Forms;
 
 namespace Key2Joy.Gui.Mapping
 {
@@ -15,10 +14,9 @@ namespace Key2Joy.Gui.Mapping
     {
         const string TEXT_CHANGE = "(press any key to select it as the trigger)";
         const string TEXT_CHANGE_INSTRUCTION = "(click here, then press any key to set it as the trigger)";
-        const int WM_INPUT = 0x00FF;
 
         public event EventHandler OptionsChanged;
-        
+
         private Keys keys;
         private bool isTrapping;
 
@@ -34,7 +32,7 @@ namespace Key2Joy.Gui.Mapping
             Disposed += (s, e) =>
             {
                 if (globalKeyboardHook == null) return;
-                
+
                 globalKeyboardHook.KeyboardInputEvent -= OnKeyInputEvent;
                 globalKeyboardHook.Dispose();
                 globalKeyboardHook = null;
@@ -72,7 +70,7 @@ namespace Key2Joy.Gui.Mapping
             var thisTrigger = (KeyboardTrigger)trigger;
 
             thisTrigger.Keys = this.keys;
-            thisTrigger.PressState = (PressState) cmbPressState.SelectedItem;
+            thisTrigger.PressState = (PressState)cmbPressState.SelectedItem;
         }
 
         private void StartTrapping()
@@ -81,16 +79,10 @@ namespace Key2Joy.Gui.Mapping
             txtKeyBind.Focus();
             isTrapping = true;
         }
-        
+
         private void StopTrapping()
         {
             isTrapping = false;
-        }
-
-        private void ResetTrapping()
-        {
-            txtKeyBind.Text = TEXT_CHANGE_INSTRUCTION;
-            StopTrapping();
         }
 
         private void UpdateKeys()

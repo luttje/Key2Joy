@@ -1,10 +1,8 @@
 ﻿using Key2Joy.Contracts.Mapping;
 using System;
-using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Key2Joy.Mapping
 {
@@ -101,7 +99,7 @@ namespace Key2Joy.Mapping
             Task.Run(async () =>
             {
                 token.ThrowIfCancellationRequested();
-                
+
                 await Task.Delay(WaitTime);
 
                 token.ThrowIfCancellationRequested();

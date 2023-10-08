@@ -36,10 +36,12 @@ namespace Key2Joy.Gui.Mapping
             if (mappingType == typeof(LuaScriptAction))
             {
                 languageName = "Lua";
-            } else if (mappingType == typeof(JavascriptAction))
+            }
+            else if (mappingType == typeof(JavascriptAction))
             {
                 languageName = "Javascript";
-            } else
+            }
+            else
             {
                 languageName = "Unknown Language";
             }
@@ -62,7 +64,7 @@ namespace Key2Joy.Gui.Mapping
                 thisAction.Script = txtFilePath.Text;
                 return;
             }
-                
+
             thisAction.Script = txtScript.Text;
         }
 
@@ -99,10 +101,10 @@ namespace Key2Joy.Gui.Mapping
         private void btnBrowseFile_Click(object sender, EventArgs e)
         {
             var filePicker = new OpenFileDialog();
-            
+
             if (filePicker.ShowDialog() != DialogResult.OK)
                 return;
-            
+
             string file = filePicker.FileName;
             try
             {

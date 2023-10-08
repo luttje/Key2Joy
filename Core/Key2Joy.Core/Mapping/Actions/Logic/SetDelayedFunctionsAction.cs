@@ -1,6 +1,5 @@
 ﻿using Key2Joy.Contracts.Mapping;
 using System;
-using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
@@ -69,7 +68,7 @@ namespace Key2Joy.Mapping
             {
                 if (i > 0)
                     await Task.Delay(WaitTime);
-                
+
                 callbacks[i].Invoke();
             }
         }

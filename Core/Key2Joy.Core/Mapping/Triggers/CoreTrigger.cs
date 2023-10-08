@@ -1,6 +1,4 @@
 ﻿using Key2Joy.Contracts.Mapping;
-using System;
-using System.Drawing;
 
 namespace Key2Joy.Mapping
 {

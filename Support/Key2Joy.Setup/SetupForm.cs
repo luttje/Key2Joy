@@ -1,20 +1,11 @@
 ﻿using CommandLine;
+using Key2Joy.Setup.Cmd;
 using Key2Joy.Setup.Installation;
 using Key2Joy.Setup.Releases;
 using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Threading;
-using Key2Joy.Setup.Cmd;
 
 namespace Key2Joy.Setup
 {
@@ -36,14 +27,14 @@ namespace Key2Joy.Setup
 
             var version = PendingInstallVersion != null ? PendingInstallVersion : Installer.GetInstalledVersion();
 
-            if(version == null)
+            if (version == null)
             {
                 txtInstallPath.Text = Installer.GetDefaultInstallPath();
                 cmbVersions.SelectedIndex = 0;
                 btnInstallUpdate.Text = "Install";
                 return;
             }
-            
+
             txtInstallPath.ReadOnly = true;
             btnBrowseInstallPath.Enabled = false;
             txtInstallPath.Text = version.InstallPath;
@@ -67,7 +58,7 @@ namespace Key2Joy.Setup
                     break;
             }
 
-            if(PendingInstallVersion != null)
+            if (PendingInstallVersion != null)
             {
                 btnInstallUpdate.PerformClick();
             }
@@ -107,9 +98,9 @@ namespace Key2Joy.Setup
                 MessageBox.Show("The selected version is not available for download.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            
-            if (!Program.IsElevated) 
-            { 
+
+            if (!Program.IsElevated)
+            {
                 Program.Elevate(Parser.Default.FormatCommandLine(new InstallOptions
                 {
                     InstallPath = installPath,
@@ -125,7 +116,8 @@ namespace Key2Joy.Setup
             bool finished = false;
             installer.InstallProgressed += (s, ev) =>
             {
-                BeginInvoke((MethodInvoker)delegate {
+                BeginInvoke((MethodInvoker)delegate
+                {
                     progressUpdate.Value = ev.ProgressPercentage;
 
                     if (ev.ProgressPercentage >= 100 && !finished)

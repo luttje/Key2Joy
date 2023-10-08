@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Key2Joy.LowLevelInput
+﻿namespace Key2Joy.LowLevelInput
 {
     // Source: https://stackoverflow.com/a/34384189
     public enum KeyboardState

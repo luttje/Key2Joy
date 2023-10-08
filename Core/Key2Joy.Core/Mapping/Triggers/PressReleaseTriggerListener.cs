@@ -1,16 +1,10 @@
 ﻿using Key2Joy.Contracts.Mapping;
 using Key2Joy.LowLevelInput;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Key2Joy.Mapping
 {
-    public abstract class PressReleaseTriggerListener<TTrigger> : CoreTriggerListener 
+    public abstract class PressReleaseTriggerListener<TTrigger> : CoreTriggerListener
         where TTrigger : class, IPressState, IReturnInputHash
     {
         protected Dictionary<int, List<AbstractMappedOption>> lookupDown;

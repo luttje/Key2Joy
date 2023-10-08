@@ -6,7 +6,7 @@ namespace Key2Joy.LowLevelInput
     // Source: https://stackoverflow.com/a/2934866
     public class VirtualKeyConverter
     {
-        [DllImport("user32.dll")] 
+        [DllImport("user32.dll")]
         static extern short VkKeyScan(char ch);
 
         [DllImport("user32.dll")]

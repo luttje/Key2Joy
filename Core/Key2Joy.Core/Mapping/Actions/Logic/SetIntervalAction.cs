@@ -1,11 +1,8 @@
 ﻿using Key2Joy.Contracts.Mapping;
 using System;
-using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Xml.Linq;
 
 namespace Key2Joy.Mapping
 {
@@ -18,7 +15,7 @@ namespace Key2Joy.Mapping
     public class SetIntervalAction : CoreAction
     {
         public delegate void CallbackAction(params object[] arguments);
-            
+
         [JsonInclude]
         public TimeSpan WaitTime;
 

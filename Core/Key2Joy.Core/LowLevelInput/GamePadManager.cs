@@ -1,9 +1,5 @@
 ﻿using SimWinInput;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Key2Joy.LowLevelInput
 {
@@ -18,13 +14,13 @@ namespace Key2Joy.LowLevelInput
             {
                 if (instance == null)
                     instance = new GamePadManager();
-                        
+
                 return instance;
             }
         }
 
         private bool[] pluggedInGamePads = new bool[MAX_GAMEPADS];
-        
+
         private GamePadManager() { }
 
         public void EnsurePluggedIn(int gamePadIndex)

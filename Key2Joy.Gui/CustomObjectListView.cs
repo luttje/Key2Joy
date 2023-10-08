@@ -1,14 +1,8 @@
 ﻿using BrightIdeasSoftware;
 using BrightIdeasSoftware.Design;
-using Key2Joy.Plugins;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
 using System.Security;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Key2Joy.Gui

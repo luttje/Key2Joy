@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Key2Joy.Contracts.Mapping
 {
@@ -27,7 +24,7 @@ namespace Key2Joy.Contracts.Mapping
                 var intValue = Convert.ChangeType(enumValue, Enum.GetUnderlyingType(enumType));
                 result.KeyValues.Add(names[i], intValue);
             }
-            
+
             return result;
         }
     }

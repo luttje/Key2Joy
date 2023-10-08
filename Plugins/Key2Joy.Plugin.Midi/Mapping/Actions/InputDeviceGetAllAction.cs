@@ -1,15 +1,9 @@
 ﻿using Key2Joy.Contracts.Mapping;
-using System.Threading.Tasks;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text.Json.Serialization;
-using System.Windows.Forms;
-using System.Diagnostics;
-using System.Threading;
-using Melanchall.DryWetMidi.Multimedia;
-using System.Linq;
 using Key2Joy.Contracts.Plugins;
+using Melanchall.DryWetMidi.Multimedia;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Key2Joy.Plugin.Midi.Mapping
 {

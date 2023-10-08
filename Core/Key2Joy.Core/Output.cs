@@ -1,11 +1,8 @@
 ﻿using Key2Joy.Config;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Key2Joy
 {
@@ -68,7 +65,7 @@ namespace Key2Joy
 
         public static void WriteLine(OutputModes messageMode = OutputModes.Default, params object[] parts)
         {
-            if(OutputMode != OutputModes.Verbose && messageMode == OutputModes.Verbose)
+            if (OutputMode != OutputModes.Verbose && messageMode == OutputModes.Verbose)
                 return;
 
             WriteLine(parts);

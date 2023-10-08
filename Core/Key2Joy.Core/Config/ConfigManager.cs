@@ -19,13 +19,13 @@ namespace Key2Joy.Config
                 return instance;
             }
         }
-        
+
         public static ConfigState Config => Instance.configState;
 
         internal bool IsInitialized { get; private set; }
         private ConfigState configState;
 
-        private ConfigManager() 
+        private ConfigManager()
         { }
 
         internal void Save()
@@ -37,7 +37,7 @@ namespace Key2Joy.Config
 
             File.WriteAllText(configPath, JsonSerializer.Serialize(configState, options));
         }
-        
+
         private static ConfigManager LoadOrCreate()
         {
             var configPath = Path.Combine(
@@ -52,7 +52,7 @@ namespace Key2Joy.Config
                 instance.Save();
                 return instance;
             }
-            
+
             var options = GetSerializerOptions();
             instance = new ConfigManager();
             instance.configState = JsonSerializer.Deserialize<ConfigState>(File.ReadAllText(configPath), options);
@@ -67,7 +67,7 @@ namespace Key2Joy.Config
             }
 
             var executablePath = assembly.Location;
-            if (executablePath.EndsWith("Key2Joy.exe") 
+            if (executablePath.EndsWith("Key2Joy.exe")
                 && instance.configState.LastInstallPath != executablePath)
             {
                 instance.configState.LastInstallPath = executablePath;
@@ -119,7 +119,7 @@ namespace Key2Joy.Config
                 {
                     configState.EnabledPlugins[pluginAssemblyPath] = permissionsChecksumOrNull;
                 }
-            } 
+            }
             else
             {
                 if (configState.EnabledPlugins.ContainsKey(pluginAssemblyPath))
@@ -127,7 +127,7 @@ namespace Key2Joy.Config
                     configState.EnabledPlugins.Remove(pluginAssemblyPath);
                 }
             }
-            
+
             Save();
         }
     }

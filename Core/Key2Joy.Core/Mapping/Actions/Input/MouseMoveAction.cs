@@ -1,14 +1,7 @@
 ﻿using Key2Joy.Contracts.Mapping;
 using Key2Joy.LowLevelInput;
-using SimWinInput;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Key2Joy.Mapping
 {
@@ -16,11 +9,11 @@ namespace Key2Joy.Mapping
         Description = "Mouse Move Simulation",
         Visibility = MappingMenuVisibility.Never,
         NameFormat = "Move {0} {1},{2} on Mouse",
-        GroupName = "Mouse Move Simulation", 
+        GroupName = "Mouse Move Simulation",
         GroupImage = "mouse"
     )]
     public class MouseMoveAction : CoreAction
-    {        
+    {
         public Mouse.MoveType MoveType { get; set; }
         public int X { get; set; }
         public int Y { get; set; }
@@ -63,7 +56,7 @@ namespace Key2Joy.Mapping
             X = x;
             Y = y;
             MoveType = moveType;
-            
+
             await Execute();
         }
 

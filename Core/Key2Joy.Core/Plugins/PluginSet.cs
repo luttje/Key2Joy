@@ -1,20 +1,11 @@
-﻿using System;
+﻿using Key2Joy.Config;
+using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Plugins;
+using Key2Joy.Mapping;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Security.Permissions;
-using System.Security;
-using System.Security.Policy;
-using Key2Joy.Contracts.Plugins;
-using Mono.Cecil;
 using System.Windows.Forms;
-using Key2Joy.Contracts.Mapping;
-using System.Runtime.InteropServices;
-using Key2Joy.Config;
-using System.Configuration.Assemblies;
-using System.Security.Cryptography;
-using System.Text;
-using Key2Joy.Mapping;
 
 namespace Key2Joy.Plugins
 {
@@ -66,7 +57,7 @@ namespace Key2Joy.Plugins
                     var plugin = LoadPlugin(pluginAssemblyPath, expectedChecksum);
                     AddPluginState(PluginLoadStates.Loaded, pluginAssemblyPath, null, plugin);
                 }
-                catch(PluginLoadException ex)
+                catch (PluginLoadException ex)
                 {
                     AddPluginState(
                         PluginLoadStates.NotLoaded,
@@ -98,7 +89,8 @@ namespace Key2Joy.Plugins
                 triggerFactories.AddRange(pluginHost.GetTriggerFactories());
                 mappingControlFactories.AddRange(pluginHost.GetMappingControlFactories());
             }
-            catch (PluginLoadException ex) { 
+            catch (PluginLoadException ex)
+            {
                 pluginHost.Dispose();
 
                 AddPluginState(
@@ -138,7 +130,7 @@ namespace Key2Joy.Plugins
                     MessageBoxIcon.Warning
                 );
             }
-            
+
             if (pluginLoadStates.TryGetValue(pluginAssemblyPath, out var loadState))
             {
                 loadState.LoadState = state;

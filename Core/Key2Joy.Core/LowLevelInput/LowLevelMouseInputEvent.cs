@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using static System.Net.WebRequestMethods;
 
 namespace Key2Joy.LowLevelInput
 {

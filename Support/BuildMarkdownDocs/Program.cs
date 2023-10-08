@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BuildMarkdownDocs
 {
@@ -35,7 +31,7 @@ namespace BuildMarkdownDocs
                 }
             }
 
-            // TODO: This is hacky, but it works.
+            // TODO: This is hacky, but it works. We're making sure to have a reference to the assembly, so it's loaded.
             TypeUtil.NotifyAssemblyRelation(typeof(Key2Joy.Key2JoyManager));
 
             MarkdownDocs.Build(xmlFile, outputDirectory, template, filter);

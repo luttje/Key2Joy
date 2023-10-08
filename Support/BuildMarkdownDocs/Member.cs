@@ -1,10 +1,6 @@
-﻿using BuildMarkdownDocs.Util;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Xml.Linq;
 
 namespace BuildMarkdownDocs
 {
@@ -24,7 +20,7 @@ namespace BuildMarkdownDocs
         internal string FillTemplate(string fileTemplate)
         {
             var replacements = new Dictionary<string, string>();
-            
+
             FillTemplateReplacements(ref replacements);
 
             var template = fileTemplate;
@@ -50,7 +46,7 @@ namespace BuildMarkdownDocs
 
             return template;
         }
-        
+
         public virtual int CompareTo(Member other)
         {
             return Name.CompareTo(other.Name);

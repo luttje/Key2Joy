@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing.Imaging;
+﻿using Key2Joy.Contracts.Mapping;
+using System;
 using System.Drawing;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading.Tasks;
-using Esprima;
-using System.Windows.Forms;
-using Key2Joy.Contracts.Mapping;
-using Key2Joy.LowLevelInput;
 
 namespace Key2Joy.Mapping
 {
@@ -21,7 +13,7 @@ namespace Key2Joy.Mapping
     public class GetPixelColorAction : CoreAction
     {
         private Bitmap pixelCache = new Bitmap(1, 1);
-        
+
         public GetPixelColorAction(string name)
             : base(name)
         { }
@@ -58,7 +50,7 @@ namespace Key2Joy.Mapping
             lock (BaseScriptAction.LockObject)
                 using (var g = Graphics.FromImage(pixelCache))
                     g.CopyFromScreen(bounds.Location, System.Drawing.Point.Empty, bounds.Size);
-            
+
             return pixelCache.GetPixel(0, 0);
         }
 

@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Key2Joy.Config
 {
@@ -13,6 +8,6 @@ namespace Key2Joy.Config
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
     public class BooleanConfigControlAttribute : ConfigControlAttribute
     {
-        
+
     }
 }

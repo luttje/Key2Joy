@@ -1,25 +1,14 @@
 ﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.Contracts.Plugins;
 using Key2Joy.Plugins;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Windows.Forms.Integration;
 
 namespace Key2Joy.Gui.Mapping
 {
     public partial class ActionPluginHostControl : UserControl, IActionOptionsControl
     {
         public event EventHandler OptionsChanged;
-        
+
         private IActionOptionsControl pluginControlWithOptions;
 
         public ActionPluginHostControl()

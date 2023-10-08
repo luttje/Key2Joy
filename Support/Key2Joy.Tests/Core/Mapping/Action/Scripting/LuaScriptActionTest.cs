@@ -1,11 +1,5 @@
-﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.Mapping;
+﻿using Key2Joy.Mapping;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Key2Joy.Tests.Core.Mapping.Action.Scripting
 {
@@ -16,7 +10,7 @@ namespace Key2Joy.Tests.Core.Mapping.Action.Scripting
         public void Script_ExecutesLuaFunction_ChecksResult()
         {
             ActionsRepository.Buffer();
-            
+
             var action = new LuaScriptAction(string.Empty);
             var lua = action.SetupEnvironment();
 

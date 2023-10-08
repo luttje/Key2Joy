@@ -1,13 +1,6 @@
 ﻿using Key2Joy.Contracts.Mapping;
 using Key2Joy.Mapping;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Key2Joy.Gui.Mapping
@@ -19,7 +12,7 @@ namespace Key2Joy.Gui.Mapping
     public partial class WaitActionControl : UserControl, IActionOptionsControl
     {
         public event EventHandler OptionsChanged;
-        
+
         public WaitActionControl()
         {
             InitializeComponent();
@@ -35,12 +28,12 @@ namespace Key2Joy.Gui.Mapping
         }
 
         public void Setup(object action)
-        { 
+        {
             var thisAction = (WaitAction)action;
 
             thisAction.WaitTime = TimeSpan.FromMilliseconds((double)nudWaitTimeInMs.Value);
         }
-        
+
         public bool CanMappingSave(object action)
         {
             return true;

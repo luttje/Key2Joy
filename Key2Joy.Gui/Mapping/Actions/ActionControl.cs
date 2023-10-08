@@ -1,16 +1,11 @@
-﻿using Jint.Native;
-using Key2Joy.Contracts.Mapping;
+﻿using Key2Joy.Contracts.Mapping;
 using Key2Joy.Mapping;
 using Key2Joy.Plugins;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Key2Joy.Gui.Mapping
@@ -29,10 +24,10 @@ namespace Key2Joy.Gui.Mapping
         {
             InitializeComponent();
         }
-        
+
         private void BuildAction()
         {
-            if (cmbAction.SelectedItem == null) 
+            if (cmbAction.SelectedItem == null)
             {
                 ActionChanged?.Invoke(null);
                 return;
@@ -61,17 +56,17 @@ namespace Key2Joy.Gui.Mapping
         public void SelectAction(AbstractAction action)
         {
             selectedAction = action;
-            
+
             if (!isLoaded)
                 return;
 
             var selected = cmbAction.Items.Cast<ImageComboBoxItem<KeyValuePair<ActionAttribute, MappingTypeFactory<AbstractAction>>>>();
             var actionFullTypeName = MappingTypeHelper.GetTypeFullName(
-                ActionsRepository.GetAllActions(), 
+                ActionsRepository.GetAllActions(),
                 action
             );
             actionFullTypeName = MappingTypeHelper.EnsureSimpleTypeName(actionFullTypeName);
-            
+
             var selectedType = selected.FirstOrDefault(x => x.ItemValue.Value.FullTypeName == actionFullTypeName);
             cmbAction.SelectedItem = selectedType;
         }
@@ -98,15 +93,15 @@ namespace Key2Joy.Gui.Mapping
 
             isLoaded = true;
 
-            if(selectedAction != null)
+            if (selectedAction != null)
                 SelectAction(selectedAction);
         }
-        
+
         private void cmbAction_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (!isLoaded)
                 return;
-            
+
             var options = MappingForm.BuildOptionsForComboBox<ActionAttribute, AbstractAction>(cmbAction, pnlActionOptions);
 
             if (options != null)
@@ -115,15 +110,15 @@ namespace Key2Joy.Gui.Mapping
 
                 if (this.options != null)
                 {
-                    if(selectedAction != null)
+                    if (selectedAction != null)
                         this.options.Select(selectedAction);
 
                     this.options.OptionsChanged += (s, _) => BuildAction();
                 }
             }
-            
+
             BuildAction();
-            
+
             selectedAction = null;
             PerformLayout();
         }

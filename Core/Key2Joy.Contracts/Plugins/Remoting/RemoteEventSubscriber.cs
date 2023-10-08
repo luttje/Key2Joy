@@ -1,21 +1,14 @@
-﻿using Key2Joy.Contracts.Plugins;
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using System.IO.Pipes;
-using System.Linq;
-using System.Runtime.Serialization;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
 
 namespace Key2Joy.Contracts.Plugins
 {
     public class FullSubscriptionInfo
     {
         public SubscriptionInfo Subscription { get; private set; }
-        public RemoteEventHandlerCallback EventHandler { get; private set;  }
+        public RemoteEventHandlerCallback EventHandler { get; private set; }
         public object CustomSender { get; set; }
 
         public FullSubscriptionInfo(string eventName, string subscriptionId, RemoteEventHandlerCallback eventHandler, object customSender = null)
@@ -37,12 +30,12 @@ namespace Key2Joy.Contracts.Plugins
         {
             this.pipeClientStream = pipeClientStream;
         }
-        
+
         public static void InitClient(NamedPipeClientStream pipeClientStream)
         {
-            if(!pipeClientStream.IsConnected)
+            if (!pipeClientStream.IsConnected)
                 throw new ArgumentException($"The pipeClientStream must be connected before calling {nameof(InitClient)}.");
-            
+
             ClientInstance = new RemoteEventSubscriber(pipeClientStream);
         }
 
@@ -65,12 +58,12 @@ namespace Key2Joy.Contracts.Plugins
         {
             return subscriptions.TryGetValue(subscriptionId, out subscription);
         }
-        
-        public void AskServerToInvoke(object sender, RemoteEventArgs e)
+
+        public void AskServerToInvoke(RemoteEventArgs e)
         {
             string subscriptionId = e.Subscription.Id.ToString();
             byte[] buffer = Encoding.UTF8.GetBytes(subscriptionId);
-            
+
             pipeClientStream.Write(buffer, 0, buffer.Length);
             pipeClientStream.WaitForPipeDrain(); // Ensure all data is written
         }

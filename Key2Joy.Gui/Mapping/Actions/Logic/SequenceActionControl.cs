@@ -2,12 +2,6 @@
 using Key2Joy.Mapping;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Key2Joy.Gui.Mapping
@@ -19,7 +13,7 @@ namespace Key2Joy.Gui.Mapping
     public partial class SequenceActionControl : UserControl, IActionOptionsControl
     {
         public event EventHandler OptionsChanged;
-        
+
         private List<AbstractAction> childActions;
 
         public SequenceActionControl()
@@ -48,7 +42,7 @@ namespace Key2Joy.Gui.Mapping
             foreach (var childAction in childActions)
             {
                 throw new NotImplementedException("TODO:::::");
-               // thisAction.ChildActions.Add(PluginAction.GetFullyFormedAction(childAction));
+                // thisAction.ChildActions.Add(PluginAction.GetFullyFormedAction(childAction));
             }
         }
 
@@ -66,7 +60,7 @@ namespace Key2Joy.Gui.Mapping
         private void RemoveChildAction(AbstractAction action)
         {
             var index = lstActions.Items.IndexOf(action);
-            
+
             childActions.Remove(action);
             lstActions.Items.Remove(action);
 

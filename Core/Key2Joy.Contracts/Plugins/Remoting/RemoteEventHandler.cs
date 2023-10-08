@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Key2Joy.Contracts.Plugins
 {
@@ -20,7 +16,7 @@ namespace Key2Joy.Contracts.Plugins
         public void CompleteDeserialization(object deserialized)
         { }
     }
-    
+
     public delegate void RemoteEventHandlerCallback(object sender, RemoteEventArgs e);
 
     public class RemoteEventHandler : MarshalByRefObject

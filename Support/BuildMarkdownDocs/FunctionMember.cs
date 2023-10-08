@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
 namespace BuildMarkdownDocs
@@ -18,7 +17,7 @@ namespace BuildMarkdownDocs
         {
             if (Parameters == null)
                 return string.Empty;
-            
+
             return string.Join(", ", Parameters?
                     .Select(p => $"`{p.GetTypeName()}`"));
         }
@@ -32,8 +31,8 @@ namespace BuildMarkdownDocs
 
             if (parametersStart > -1)
             {
-                var parametersEnd = memberName.LastIndexOf(')')-1;
-                var parameters = memberName.Substring(parametersStart+1, memberName.Length - parametersStart - (memberName.Length - parametersEnd));
+                var parametersEnd = memberName.LastIndexOf(')') - 1;
+                var parameters = memberName.Substring(parametersStart + 1, memberName.Length - parametersStart - (memberName.Length - parametersEnd));
                 parameterTypes = parameters.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
                     .Select(typeName => TypeUtil.GetType(typeName))
                     .ToArray();
@@ -45,7 +44,7 @@ namespace BuildMarkdownDocs
 
             var member = new FunctionMember();
             member.Name = element.Element("name")?.Value ?? element.Attribute("name").Value;
-            
+
             var summaryNodes = element.Element("summary").Nodes();
             var summary = new StringBuilder();
 
@@ -53,12 +52,12 @@ namespace BuildMarkdownDocs
             {
                 if (node is XElement nodeElement)
                 {
-                    if(nodeElement.Name == "see")
+                    if (nodeElement.Name == "see")
                     {
                         var href = nodeElement.Attribute("href")?.Value;
                         var cref = nodeElement.Attribute("cref")?.Value;
 
-                        if(href != null)
+                        if (href != null)
                             summary.Append($" [{href}]({href}) ");
                         else
                             summary.Append($" `{cref}` ");
@@ -73,7 +72,7 @@ namespace BuildMarkdownDocs
             member.Summary = summary.ToString();
 
             var returnTypeEl = element.Element("returns");
-            member.ReturnType = returnTypeEl != null ? ReturnType.FromXml(returnTypeEl) : null ;
+            member.ReturnType = returnTypeEl != null ? ReturnType.FromXml(returnTypeEl) : null;
 
             var i = 0;
             if (parameterTypes.Length > 0)
@@ -87,7 +86,7 @@ namespace BuildMarkdownDocs
             member.MarkdownExamples = element.Elements("markdown-example")
                 .Select(e => Example.FromXml(e))
                 .ToArray();
-            
+
             return member;
         }
 
@@ -95,19 +94,19 @@ namespace BuildMarkdownDocs
         {
             return $"* [`{Name}` ({GetParametersSignature()})]({Parent.Path}{Name}.md)";
         }
-        
+
         internal override void FillTemplateReplacements(ref Dictionary<string, string> replacements)
         {
             base.FillTemplateReplacements(ref replacements);
-            
+
             var parametersSignature = GetParametersSignature();
             var parameters = "";
 
             if (Parameters != null)
             {
                 parameters = string.Join("\n", Parameters?
-                    .Select(p => 
-                        $"* **{p.Name} ("+ (p.IsOptional ? "Optional " : "") + $"`{p.GetTypeName(false)}`)** \n\n" +
+                    .Select(p =>
+                        $"* **{p.Name} (" + (p.IsOptional ? "Optional " : "") + $"`{p.GetTypeName(false)}`)** \n\n" +
                         $"\t{p.Description}\n"));
             }
 

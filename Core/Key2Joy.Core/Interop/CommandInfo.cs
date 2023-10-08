@@ -1,10 +1,5 @@
-﻿using Jint.Runtime;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Key2Joy.Interop
 {
@@ -21,7 +16,7 @@ namespace Key2Joy.Interop
             {
                 pointer = Marshal.AllocHGlobal(bytes.Length);
                 Marshal.Copy(bytes, 0, pointer, bytes.Length);
-                
+
                 return Marshal.PtrToStructure(pointer, StructType);
             }
             finally
@@ -41,7 +36,7 @@ namespace Key2Joy.Interop
                 pointer = Marshal.AllocHGlobal(bytes.Length);
                 Marshal.StructureToPtr(command, pointer, true);
                 Marshal.Copy(pointer, bytes, 0, size);
-                
+
                 return bytes;
             }
             finally

@@ -1,8 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using Key2Joy.Contracts.Mapping;
 using NLua;
-using Key2Joy.Contracts.Mapping;
-using System.Collections.Generic;
+using System;
+using System.Threading.Tasks;
 
 namespace Key2Joy.Mapping
 {
@@ -65,7 +64,7 @@ namespace Key2Joy.Mapping
         public void ExecuteForScript(string savePath, double frameRate, object framePaths)
         {
             string[] allFramePaths;
-            
+
             // WORKAROUND: for NLua not converting a table to array
             // Ideally we would just have the third parameter framePathsObj be: string[] framePaths
             // But Lua does not recognize a table as suitable for a string[] and if we use IEnumerable it mangles the type

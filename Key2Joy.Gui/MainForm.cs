@@ -1,22 +1,15 @@
-﻿using SimWinInput;
-using System;
-using System.Windows.Forms;
-using System.Drawing;
-using System.Diagnostics;
-using Key2Joy.Mapping;
-using Key2Joy.Gui.Properties;
-using System.Collections.Generic;
-using System.Linq;
-using Key2Joy.Util;
-using System.Reflection;
-using System.Threading.Tasks;
-using System.IO;
-using BrightIdeasSoftware;
-using Key2Joy.LowLevelInput;
+﻿using BrightIdeasSoftware;
 using Key2Joy.Config;
 using Key2Joy.Contracts.Mapping;
-using System.Runtime.Remoting;
-using Esprima;
+using Key2Joy.Gui.Properties;
+using Key2Joy.LowLevelInput;
+using Key2Joy.Mapping;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
+using System.IO;
+using System.Windows.Forms;
 
 namespace Key2Joy.Gui
 {
@@ -54,10 +47,10 @@ namespace Key2Joy.Gui
 
             var allAttributes = ActionsRepository.GetAllActionAttributes();
             var imageList = new ImageList();
-            
+
             foreach (var attribute in allAttributes)
             {
-                if(attribute.GroupImage != null && !imageList.Images.ContainsKey(attribute.GroupImage))
+                if (attribute.GroupImage != null && !imageList.Images.ContainsKey(attribute.GroupImage))
                     imageList.Images.Add(attribute.GroupImage, (Bitmap)Resources.ResourceManager.GetObject(attribute.GroupImage));
             }
 
@@ -67,10 +60,11 @@ namespace Key2Joy.Gui
             olvColumnAction.GroupKeyToTitleConverter += olvMappings_GroupKeyToTitleConverter;
             olvMappings.BeforeCreatingGroups += olvMappings_BeforeCreatingGroups;
 
-            olvColumnTrigger.AspectToStringConverter = delegate (object obj) {
+            olvColumnTrigger.AspectToStringConverter = delegate (object obj)
+            {
                 var trigger = obj as CoreTrigger;
 
-                if(trigger == null)
+                if (trigger == null)
                     return "(no trigger mapped)";
 
                 return trigger.ToString();
@@ -81,11 +75,11 @@ namespace Key2Joy.Gui
         {
             selectedProfile = profile;
             ConfigManager.Config.LastLoadedProfile = profile.FilePath;
-                
+
             olvMappings.SetObjects(profile.MappedOptions);
             olvMappings.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
             olvMappings.Sort(olvColumnTrigger, SortOrder.Ascending);
-            
+
             UpdateSelectedProfileName();
         }
 
@@ -112,7 +106,7 @@ namespace Key2Joy.Gui
 
             return profile;
         }
-        
+
         private void EditMappedOption(MappedOption existingMappedOption = null)
         {
             chkEnabled.Checked = false;
@@ -123,7 +117,7 @@ namespace Key2Joy.Gui
                 return;
 
             var mappedOption = mappingForm.MappedOption;
-            
+
             if (existingMappedOption == null)
                 selectedProfile.AddMapping(mappedOption);
 
@@ -148,7 +142,7 @@ namespace Key2Joy.Gui
             if (selectedCount == 0)
                 return;
 
-            if(selectedCount > 1)
+            if (selectedCount > 1)
                 if (MessageBox.Show($"Are you sure you want to remove the {selectedCount} selected mappings?", $"Remove {selectedCount} Mappings", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                     return;
 
@@ -187,7 +181,7 @@ namespace Key2Joy.Gui
             {
                 SetStatusView(ev.IsEnabled);
 
-                if(ev.Profile != null)
+                if (ev.Profile != null)
                     SetSelectedProfile(ev.Profile);
             };
         }
@@ -255,7 +249,7 @@ namespace Key2Joy.Gui
             e.Parameters.GroupComparer = new MappingGroupComparer();
             e.Parameters.ItemComparer = new MappingGroupItemComparer(e.Parameters.PrimarySort, e.Parameters.PrimarySortOrder);
         }
-        
+
         private void olvMappings_AboutToCreateGroups(object sender, CreateGroupsEventArgs e)
         {
             foreach (var group in e.Groups)
@@ -279,7 +273,7 @@ namespace Key2Joy.Gui
             };
 
             var selectedCount = olvMappings.SelectedItems.Count;
-            
+
             if (selectedCount > 1)
             {
                 var removeItems = menu.Items.Add($"Remove {selectedCount} Mappings");
@@ -371,9 +365,9 @@ namespace Key2Joy.Gui
 
             if (dialog.ShowDialog() != DialogResult.OK)
                 return;
-            
+
             var profile = MappingProfile.Load(dialog.FileName);
-                
+
             if (profile == null)
             {
                 MessageBox.Show("The selected profile was corrupt! If you did not modify the profile file this could be a bug.\n\nPlease help us by reporting the bug on GitHub: https://github.com/luttje/Key2Joy.", "Failed to load profile!", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -493,7 +487,7 @@ namespace Key2Joy.Gui
         {
             new AboutForm().ShowDialog();
         }
-        
+
         private void ntfIndicator_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             WindowState = FormWindowState.Normal;
@@ -567,7 +561,7 @@ namespace Key2Joy.Gui
                 {
                     actionWithPressState.PressState = actionWithPressState.PressState == PressState.Press ? PressState.Release : PressState.Press;
                 }
-                
+
                 if (triggerCopy is IPressState triggerWithPressState)
                 {
                     triggerWithPressState.PressState = triggerWithPressState.PressState == PressState.Press ? PressState.Release : PressState.Press;

@@ -1,14 +1,10 @@
 ﻿using Key2Joy.Contracts.Mapping;
-using System.Threading.Tasks;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text.Json.Serialization;
-using System.Diagnostics;
-using System.Threading;
-using System.Windows;
 using Key2Joy.Contracts.Plugins;
+using System;
+using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
+using System.Windows;
 
 namespace Key2Joy.Plugin.HelloWorld.Mapping
 {
@@ -38,7 +34,7 @@ namespace Key2Joy.Plugin.HelloWorld.Mapping
             fileWriter.Close();
             //MessageBox.Show($"Hello {target} / {Target}!"); // Very laggy for some reason
         }
-        
+
         public override MappingAspectOptions BuildSaveOptions(MappingAspectOptions options)
         {
             options.Add("Target", Target);

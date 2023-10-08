@@ -2,24 +2,18 @@
 using Key2Joy.Mapping;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Key2Joy.Gui.Mapping
 {
     [MappingControl(
-        ForType = typeof(Key2Joy.Mapping.AppCommandAction), 
+        ForType = typeof(Key2Joy.Mapping.AppCommandAction),
         ImageResourceName = "application_xp_terminal"
     )]
     public partial class AppCommandActionControl : UserControl, IActionOptionsControl
     {
         public event EventHandler OptionsChanged;
-        
+
         public AppCommandActionControl()
         {
             InitializeComponent();
@@ -42,7 +36,7 @@ namespace Key2Joy.Gui.Mapping
         }
 
         public void Setup(object action)
-        { 
+        {
             var thisAction = (AppCommandAction)action;
 
             thisAction.Command = (AppCommand)cmbAppCommand.SelectedItem;

@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
-using Key2Joy.Mapping;
+﻿using Key2Joy.Contracts.Mapping;
 using Key2Joy.LowLevelInput;
-using Key2Joy.Contracts.Mapping;
+using Key2Joy.Mapping;
+using System;
+using System.Windows.Forms;
 
 namespace Key2Joy.Gui.Mapping
 {
@@ -14,7 +13,7 @@ namespace Key2Joy.Gui.Mapping
     public partial class MouseButtonTriggerControl : UserControl, ITriggerOptionsControl
     {
         public event EventHandler OptionsChanged;
-        
+
         private Mouse.Buttons mouseButtons;
         private bool isShowingError;
         private bool isMouseOver;
@@ -60,7 +59,7 @@ namespace Key2Joy.Gui.Mapping
             {
                 mouseButtons = Mouse.ButtonsFromEvent(e, out isDown);
             }
-            catch (NotImplementedException ex) 
+            catch (NotImplementedException ex)
             {
                 if (!isShowingError)
                 {
@@ -69,7 +68,7 @@ namespace Key2Joy.Gui.Mapping
                     isShowingError = false;
                 }
             }
-            
+
             txtKeyBind.Text = $"{mouseButtons}";
             OptionsChanged?.Invoke(this, EventArgs.Empty);
         }
@@ -88,7 +87,7 @@ namespace Key2Joy.Gui.Mapping
             var thisTrigger = (MouseButtonTrigger)trigger;
 
             thisTrigger.MouseButtons = mouseButtons;
-            thisTrigger.PressState = (PressState) cmbPressState.SelectedItem;
+            thisTrigger.PressState = (PressState)cmbPressState.SelectedItem;
         }
 
         private void cmbPressedState_SelectedIndexChanged(object sender, EventArgs e)

@@ -2,13 +2,6 @@
 using Key2Joy.LowLevelInput;
 using Key2Joy.Mapping;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Key2Joy.Gui.Mapping
@@ -20,7 +13,7 @@ namespace Key2Joy.Gui.Mapping
     public partial class GamePadActionControl : UserControl, IActionOptionsControl
     {
         public event EventHandler OptionsChanged;
-        
+
         public GamePadActionControl()
         {
             InitializeComponent();
@@ -46,7 +39,7 @@ namespace Key2Joy.Gui.Mapping
             var thisAction = (GamePadAction)action;
 
             thisAction.Control = (SimWinInput.GamePadControl)cmbGamePad.SelectedItem;
-            thisAction.PressState = (PressState) cmbPressState.SelectedItem;
+            thisAction.PressState = (PressState)cmbPressState.SelectedItem;
             thisAction.GamePadIndex = (int)cmbGamePadIndex.SelectedItem;
         }
 

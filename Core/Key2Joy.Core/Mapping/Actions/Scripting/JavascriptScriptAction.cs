@@ -1,17 +1,14 @@
 ﻿using Jint;
 using Jint.Native;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
-using Key2Joy.Util;
-using System.Text;
 using Jint.Native.Object;
-using Jint.Runtime.Interop;
 using Jint.Runtime.Descriptors;
+using Jint.Runtime.Interop;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.Plugins;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Key2Joy.Mapping
 {
@@ -79,7 +76,7 @@ namespace Key2Joy.Mapping
 
                 for (int i = 0; i < parents.Length; i++)
                 {
-                    if(i != parents.Length - 1)
+                    if (i != parents.Length - 1)
                     {
                         if (!currentObject.TryGetValue(parents[i], out JsValue child))
                             child = new JsObject(environment);
@@ -112,7 +109,7 @@ namespace Key2Joy.Mapping
         public override void RegisterEnvironmentObjects()
         {
             environment.SetValue("Print", new Action<object[]>(Print));
-            
+
             base.RegisterEnvironmentObjects();
         }
 

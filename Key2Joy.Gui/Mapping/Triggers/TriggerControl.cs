@@ -3,13 +3,9 @@ using Key2Joy.Mapping;
 using Key2Joy.Plugins;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Key2Joy.Gui.Mapping
@@ -24,7 +20,7 @@ namespace Key2Joy.Gui.Mapping
         private ITriggerOptionsControl options;
 
         private AbstractTrigger selectedTrigger = null;
-        
+
         public TriggerControl()
         {
             InitializeComponent();
@@ -42,7 +38,7 @@ namespace Key2Joy.Gui.Mapping
             var selectedTypeFactory = selected.ItemValue.Value;
             var attribute = selected.ItemValue.Key;
 
-            if (Trigger == null || Trigger.GetType().FullName != selectedTypeFactory.FullTypeName) 
+            if (Trigger == null || Trigger.GetType().FullName != selectedTypeFactory.FullTypeName)
             {
                 Trigger = selectedTypeFactory.CreateInstance(new object[]
                 {
@@ -58,10 +54,10 @@ namespace Key2Joy.Gui.Mapping
         public void SelectTrigger(AbstractTrigger trigger)
         {
             selectedTrigger = trigger;
-            
+
             if (!isLoaded)
                 return;
-            
+
             var selected = cmbTrigger.Items.Cast<ImageComboBoxItem<KeyValuePair<TriggerAttribute, MappingTypeFactory<AbstractTrigger>>>>();
             var triggerFullTypeName = trigger.GetType().FullName;
             var selectedType = selected.FirstOrDefault(x => x.ItemValue.Value.FullTypeName == triggerFullTypeName);
@@ -87,17 +83,17 @@ namespace Key2Joy.Gui.Mapping
             if (selectedTrigger != null)
                 SelectTrigger(selectedTrigger);
         }
-        
+
         private void cmbTrigger_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (!isLoaded)
                 return;
-            
+
             var options = MappingForm.BuildOptionsForComboBox<TriggerAttribute, AbstractTrigger>(cmbTrigger, pnlTriggerOptions);
 
             if (options != null)
             {
-                if(this.options != null)
+                if (this.options != null)
                     this.options.OptionsChanged -= OnOptionsChanged;
 
                 this.options = options as ITriggerOptionsControl;
@@ -110,9 +106,9 @@ namespace Key2Joy.Gui.Mapping
                     this.options.OptionsChanged += OnOptionsChanged;
                 }
             }
-            
+
             BuildTrigger();
-            
+
             selectedTrigger = null;
             PerformLayout();
         }
@@ -124,7 +120,7 @@ namespace Key2Joy.Gui.Mapping
 
             if (options == null) // TODO: what did I use this for before refactoring to seperate logic and GUI? --> || attribute.OptionsUserControl != options.GetType() 
                 return;
-            
+
             BuildTrigger();
         }
 

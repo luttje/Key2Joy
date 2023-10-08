@@ -1,12 +1,9 @@
-﻿using Key2Joy.Contracts.Mapping;
-using System;
+﻿using System;
 using System.AddIn.Contract;
 using System.AddIn.Pipeline;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Remoting;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace Key2Joy.Contracts.Plugins
@@ -14,13 +11,13 @@ namespace Key2Joy.Contracts.Plugins
     public class ViewContractConverter : MarshalByRefObject
     {
         private object instance;
-        
+
         public INativeHandleContract ConvertToContract(FrameworkElement element)
         {
             var contract = FrameworkElementAdapters.ViewToContractAdapter(element);
             return contract;
         }
-        
+
         public INativeHandleContract ConvertToContract(ObjectHandle controlHandle, Dictionary<string, RemoteEventHandler> boundEvents)
         {
             instance = controlHandle.Unwrap();

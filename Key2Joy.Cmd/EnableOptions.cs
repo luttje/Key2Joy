@@ -1,7 +1,7 @@
 ﻿using CommandLine;
-using System;
 using Key2Joy.Interop;
 using Key2Joy.Mapping;
+using System;
 
 namespace Key2Joy.Cmd
 {
@@ -9,7 +9,7 @@ namespace Key2Joy.Cmd
     internal class EnableOptions : Options
     {
         [Option(
-            shortName: 'p', 
+            shortName: 'p',
             longName: "profile",
             Required = false,
             HelpText = "Path of the profile to load or modify. Path can be relative to profile directory. By default the last used profile is selected (if available)."
@@ -24,8 +24,8 @@ namespace Key2Joy.Cmd
                 profile = MappingProfile.Load(ProfilePath);
             else
                 profile = MappingProfile.RestoreLastLoaded();
-            
-            try 
+
+            try
             {
                 InteropClient.Instance.SendCommand(new EnableCommand
                 {
@@ -34,7 +34,7 @@ namespace Key2Joy.Cmd
 
                 Console.WriteLine($"Commanded Key2Joy to enable the profile: {profile.FilePath}");
             }
-            catch(TimeoutException)
+            catch (TimeoutException)
             {
                 SafelyRetry(() =>
                 {

@@ -1,25 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace BuildMarkdownDocs
 {
     internal static class TypeUtil
     {
-        public static void NotifyAssemblyRelation(Type type) 
+        public static void NotifyAssemblyRelation(Type type)
         {
             // The content of this is irrelevant. We only want to be sure that the assembly is referenced.
+            if (type is null)
+            {
+                throw new ArgumentNullException(nameof(type));
+            }
         }
 
         public static Type GetType(string typeName)
         {
             typeName = Regex.Replace(typeName, @"System\.Nullable{(.+)}", "System.Nullable`1[$1]");
-            
+
             var type = Type.GetType(typeName);
-            
+
             if (type != null)
                 return type;
 
@@ -27,7 +27,7 @@ namespace BuildMarkdownDocs
             {
                 foreach (var parentType in assembly.GetTypes())
                 {
-                    if(parentType.Name == typeName)
+                    if (parentType.Name == typeName)
                         return type;
 
                     foreach (var childType in parentType.GetNestedTypes())
@@ -36,7 +36,7 @@ namespace BuildMarkdownDocs
                             return childType;
                     }
                 }
-                
+
                 var referencedAssemblies = assembly.GetReferencedAssemblies();
 
                 foreach (var referencedAssembly in referencedAssemblies)
@@ -48,7 +48,7 @@ namespace BuildMarkdownDocs
                 }
 
             }
-            
+
             return null;
         }
     }

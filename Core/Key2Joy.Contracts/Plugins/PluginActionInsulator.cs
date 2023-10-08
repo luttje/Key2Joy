@@ -1,11 +1,5 @@
 ﻿using Key2Joy.Contracts.Mapping;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace Key2Joy.Contracts.Plugins
 {

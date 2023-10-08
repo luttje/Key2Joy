@@ -2,9 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
@@ -22,7 +20,7 @@ namespace BuildMarkdownDocs
 
             var outputFile = Path.GetFullPath(outputDirectory + "Index.md");
             var outputParents = new SortedDictionary<MarkdownMeta, List<Member>>();
-            
+
             MarkdownMeta enumParent;
             List<Member> enumerations;
             outputParents.Add(
@@ -30,7 +28,7 @@ namespace BuildMarkdownDocs
                 {
                     Name = "All Enumerations",
                     Path = "Api/Enumerations/"
-                }, 
+                },
                 enumerations = new List<Member>()
             );
 
@@ -75,12 +73,12 @@ namespace BuildMarkdownDocs
                             EnumMember enumMember;
                             var valueSummaries = new Dictionary<string, string>();
                             var fullXmlName = $"F:{parameter.Type.FullName}";
-                            
+
                             foreach (var m in xmlMembers)
                             {
                                 var name = m.Attribute("name").Value;
-                                
-                                if(name.StartsWith(fullXmlName))
+
+                                if (name.StartsWith(fullXmlName))
                                 {
                                     var summary = m.Element("summary").Value.TrimEachLine().Trim('\n');
                                     valueSummaries.Add(name.Substring(fullXmlName.Length + 1), summary);
@@ -113,7 +111,7 @@ namespace BuildMarkdownDocs
 
                 if (templateFile == null)
                     templateFile = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "DefaultTemplate.md"));
-                
+
                 Console.WriteLine($"Using template {templateFile}");
 
                 var templateContent = File.ReadAllText(templateFile);
@@ -125,7 +123,7 @@ namespace BuildMarkdownDocs
 
                 File.WriteAllText(outputMemberFile, member.FillTemplate(templateContent));
             }
-            
+
             if (!Directory.Exists(directory))
                 Directory.CreateDirectory(directory);
 

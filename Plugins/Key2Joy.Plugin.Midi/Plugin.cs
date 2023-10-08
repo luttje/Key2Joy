@@ -1,7 +1,4 @@
 ﻿using Key2Joy.Contracts.Plugins;
-using Key2Joy.Plugin.Midi.Mapping;
-using System;
-using System.Collections.Generic;
 
 namespace Key2Joy.Plugin.Midi
 {

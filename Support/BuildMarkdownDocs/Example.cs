@@ -1,9 +1,5 @@
 ﻿using BuildMarkdownDocs.Util;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace BuildMarkdownDocs
@@ -16,7 +12,7 @@ namespace BuildMarkdownDocs
         {
             TextContent = new List<string>();
         }
-        
+
         internal static Example FromXml(XElement element)
         {
             var example = new Example();
@@ -38,7 +34,7 @@ namespace BuildMarkdownDocs
 
                 example.TextContent.AddRange(value.Split('\n'));
             }
-            
+
             return example;
         }
 

@@ -1,9 +1,6 @@
 ﻿using Key2Joy.Contracts.Mapping;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Key2Joy.Mapping
 {
@@ -40,7 +37,7 @@ namespace Key2Joy.Mapping
 
             mappedOptions.Add(mappedOption);
         }
-        
+
         public override bool GetIsTriggered(AbstractTrigger trigger) => false;
 
         protected override void Start()
@@ -60,7 +57,7 @@ namespace Key2Joy.Mapping
                         {
                             foundListener = true;
                             break;
-                        }                       
+                        }
                     }
 
                     if (foundListener)
@@ -125,8 +122,8 @@ namespace Key2Joy.Mapping
 
                 foreach (var trigger in combinedTrigger.Triggers)
                 {
-                    if(!trigger.GetTriggerListener().GetIsTriggered(trigger))
-                    { 
+                    if (!trigger.GetTriggerListener().GetIsTriggered(trigger))
+                    {
                         allTriggered = false;
                         break;
                     }

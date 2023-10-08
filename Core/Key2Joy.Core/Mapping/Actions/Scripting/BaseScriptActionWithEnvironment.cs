@@ -14,7 +14,7 @@ namespace Key2Joy.Mapping
 
         public TEnvironment SetupEnvironment()
         {
-            if(environment != null && environment is IDisposable disposableEnvironment)
+            if (environment != null && environment is IDisposable disposableEnvironment)
             {
                 disposableEnvironment.Dispose();
             }
@@ -49,8 +49,8 @@ namespace Key2Joy.Mapping
 
                 foreach (var exposedMethods in actionFactory.ExposedMethods)
                 {
-                    var instance = IsStarted ? 
-                        MakeStartedAction(actionFactory) 
+                    var instance = IsStarted ?
+                        MakeStartedAction(actionFactory)
                         : MakeAction(actionFactory);
 
                     RegisterScriptingMethod(

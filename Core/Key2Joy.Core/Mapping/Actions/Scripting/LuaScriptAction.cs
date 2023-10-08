@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Key2Joy.Mapping
 {
@@ -52,7 +51,7 @@ namespace Key2Joy.Mapping
                 }
             }
         }
-        
+
         public override void RegisterScriptingEnum(ExposedEnumeration enumeration)
         {
             // TODO: Use https://github.com/NLua/NLua/blob/3aaff863c78e89a009c21ff3aef94502018f2566/src/LuaRegistrationHelper.cs#LL76C28-L76C39
@@ -76,7 +75,7 @@ namespace Key2Joy.Mapping
             if (parents.Length > 1)
             {
                 var currentPath = new StringBuilder();
-                
+
                 for (int i = 0; i < parents.Length - 1; i++)
                 {
                     if (i > 0)
@@ -87,7 +86,7 @@ namespace Key2Joy.Mapping
 
                 var path = currentPath.ToString();
 
-                if(environment.GetTable(path) == null)
+                if (environment.GetTable(path) == null)
                     environment.NewTable(path);
             }
 
