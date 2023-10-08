@@ -1,11 +1,13 @@
-﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.Plugins;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Remoting;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Key2Joy.Contracts.Mapping;
+using Key2Joy.Mapping.Actions;
+using Key2Joy.Mapping.Triggers;
+using Key2Joy.Plugins;
 
 namespace Key2Joy.Mapping
 {
@@ -24,16 +26,16 @@ namespace Key2Joy.Mapping
 
         public JsonMappingAspectConverter()
         {
-            allowedTypes = new Dictionary<string, MappingTypeFactory>();
+            this.allowedTypes = new Dictionary<string, MappingTypeFactory>();
 
             foreach (var actionFactory in ActionsRepository.GetAllActions().Select(x => x.Value))
             {
-                allowedTypes.Add(actionFactory.FullTypeName, actionFactory);
+                this.allowedTypes.Add(actionFactory.FullTypeName, actionFactory);
             }
 
             foreach (var triggerFactory in TriggersRepository.GetAllTriggers().Select(x => x.Value))
             {
-                allowedTypes.Add(triggerFactory.FullTypeName, triggerFactory);
+                this.allowedTypes.Add(triggerFactory.FullTypeName, triggerFactory);
             }
         }
 
@@ -60,7 +62,7 @@ namespace Key2Joy.Mapping
             var typeProperty = json.RootElement.GetProperty("$type");
             var type = MappingTypeHelper.EnsureSimpleTypeName(typeProperty.GetString());
 
-            if (!allowedTypes.TryGetValue(type, out var factory))
+            if (!this.allowedTypes.TryGetValue(type, out var factory))
             {
                 throw new RemotingException($"The type {type} is not allowed.");
             }
@@ -103,7 +105,7 @@ namespace Key2Joy.Mapping
                     {
                         var rawJson = item.GetRawText();
                         var document = JsonDocument.Parse(rawJson);
-                        list.Add(ParseJson(document, options));
+                        list.Add(this.ParseJson(document, options));
                     }
 
                     mappingAspectOptions.Add(property.Name, list);
@@ -130,18 +132,18 @@ namespace Key2Joy.Mapping
         {
             var json = JsonDocument.ParseValue(ref reader);
 
-            return (T)ParseJson(json, options);
+            return (T)this.ParseJson(json, options);
         }
 
         public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
         {
-            var realTypeName = MappingTypeHelper.GetTypeFullName(allowedTypes, value);
+            var realTypeName = MappingTypeHelper.GetTypeFullName(this.allowedTypes, value);
 
             JsonSerializer.Serialize(writer, new JsonMappingAspectWithType
             {
                 Options = value.SaveOptions(),
                 FullTypeName = realTypeName,
-            }, GetOptionsWithoutSelf(options));
+            }, this.GetOptionsWithoutSelf(options));
         }
     }
 }

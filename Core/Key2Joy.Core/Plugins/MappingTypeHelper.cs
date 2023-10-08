@@ -1,8 +1,8 @@
-﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.Contracts.Plugins;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Remoting;
+using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Plugins;
 
 namespace Key2Joy.Plugins
 {

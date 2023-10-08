@@ -1,8 +1,8 @@
-﻿using Key2Joy.Config;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Windows.Forms;
+using Key2Joy.Config;
 
 namespace Key2Joy.Gui
 {
@@ -10,7 +10,7 @@ namespace Key2Joy.Gui
     {
         public ConfigForm()
         {
-            InitializeComponent();
+            this.InitializeComponent();
 
             var configs = ConfigControlAttribute.GetAllProperties();
 
@@ -21,7 +21,7 @@ namespace Key2Joy.Gui
 
                 Panel controlParent = new();
                 var value = property.GetValue(ConfigManager.Config);
-                var control = MakeControl(attribute, value, controlParent);
+                var control = this.MakeControl(attribute, value, controlParent);
                 control.Tag = kvp;
                 control.Dock = DockStyle.Top;
 
@@ -29,14 +29,14 @@ namespace Key2Joy.Gui
                 controlParent.Padding = new Padding(10, 10, 10, 0);
                 controlParent.Controls.Add(control);
 
-                pnlConfigurations.Controls.Add(controlParent);
+                this.pnlConfigurations.Controls.Add(controlParent);
                 controlParent.Dock = DockStyle.Top;
             }
         }
 
         private void BtnSave_Click(object sender, EventArgs e)
         {
-            foreach (Panel parents in pnlConfigurations.Controls)
+            foreach (Panel parents in this.pnlConfigurations.Controls)
             {
                 foreach (Control control in parents.Controls)
                 {
@@ -48,7 +48,7 @@ namespace Key2Joy.Gui
                     var kvp = (KeyValuePair<PropertyInfo, ConfigControlAttribute>)control.Tag;
                     var property = kvp.Key;
                     var attribute = kvp.Value;
-                    var value = GetControlValue(attribute, control);
+                    var value = this.GetControlValue(attribute, control);
 
                     value = Convert.ChangeType(value, property.PropertyType);
 
@@ -57,7 +57,7 @@ namespace Key2Joy.Gui
             }
 
             MessageBox.Show("Configurations successfully saved!", "Configurations saved", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            Close();
+            this.Close();
         }
 
         private Control MakeControl(ConfigControlAttribute attribute, object value, Panel controlParent)
@@ -65,52 +65,52 @@ namespace Key2Joy.Gui
             switch (attribute)
             {
                 case BooleanConfigControlAttribute booleanConfigControlAttribute:
+                {
+                    CheckBox control = new()
                     {
-                        CheckBox control = new()
-                        {
-                            Text = booleanConfigControlAttribute.Text,
-                            Checked = (bool)value == true
-                        };
+                        Text = booleanConfigControlAttribute.Text,
+                        Checked = (bool)value == true
+                    };
 
-                        return control;
-                    }
+                    return control;
+                }
                 case NumericConfigControlAttribute numericConfigControlAttribute:
+                {
+                    Label label = new()
                     {
-                        Label label = new()
-                        {
-                            AutoSize = true,
-                            Dock = DockStyle.Top,
-                            Text = $"{Text}: "
-                        };
-                        controlParent.Controls.Add(label);
+                        AutoSize = true,
+                        Dock = DockStyle.Top,
+                        Text = $"{this.Text}: "
+                    };
+                    controlParent.Controls.Add(label);
 
-                        NumericUpDown control = new()
-                        {
-                            Minimum = (decimal)numericConfigControlAttribute.Minimum,
-                            Maximum = (decimal)numericConfigControlAttribute.Maximum,
-                            Value = (decimal)Convert.ChangeType(value, typeof(decimal))
-                        };
+                    NumericUpDown control = new()
+                    {
+                        Minimum = (decimal)numericConfigControlAttribute.Minimum,
+                        Maximum = (decimal)numericConfigControlAttribute.Maximum,
+                        Value = (decimal)Convert.ChangeType(value, typeof(decimal))
+                    };
 
-                        return control;
-                    }
+                    return control;
+                }
                 case TextConfigControlAttribute textConfigControlAttribute:
+                {
+                    Label label = new()
                     {
-                        Label label = new()
-                        {
-                            AutoSize = true,
-                            Dock = DockStyle.Top,
-                            Text = $"{Text}: "
-                        };
-                        controlParent.Controls.Add(label);
+                        AutoSize = true,
+                        Dock = DockStyle.Top,
+                        Text = $"{this.Text}: "
+                    };
+                    controlParent.Controls.Add(label);
 
-                        TextBox control = new()
-                        {
-                            Text = value.ToString(),
-                            MaxLength = textConfigControlAttribute.MaxLength
-                        };
+                    TextBox control = new()
+                    {
+                        Text = value.ToString(),
+                        MaxLength = textConfigControlAttribute.MaxLength
+                    };
 
-                        return control;
-                    }
+                    return control;
+                }
             }
 
             throw new NotImplementedException("ConfigControlAttribute type not implemented: " + attribute.GetType().Name);
@@ -122,22 +122,22 @@ namespace Key2Joy.Gui
             {
                 case BooleanConfigControlAttribute:
 
-                    {
-                        var checkbox = (CheckBox)control;
-                        return checkbox.Checked;
-                    }
+                {
+                    var checkbox = (CheckBox)control;
+                    return checkbox.Checked;
+                }
                 case NumericConfigControlAttribute:
 
-                    {
-                        var numeric = (NumericUpDown)control;
-                        return numeric.Value;
-                    }
+                {
+                    var numeric = (NumericUpDown)control;
+                    return numeric.Value;
+                }
                 case TextConfigControlAttribute:
 
-                    {
-                        var textbox = (TextBox)control;
-                        return textbox.Text;
-                    }
+                {
+                    var textbox = (TextBox)control;
+                    return textbox.Text;
+                }
             }
 
             throw new NotImplementedException("ConfigControlAttribute type not implemented: " + attribute.GetType().Name);

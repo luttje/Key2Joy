@@ -1,8 +1,8 @@
-﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.PluginHost;
-using System;
+﻿using System;
 using System.Windows;
 using System.Windows.Forms.Integration;
+using Key2Joy.Contracts.Mapping.Actions;
+using Key2Joy.PluginHost;
 
 namespace Key2Joy.Plugins
 {
@@ -27,24 +27,24 @@ namespace Key2Joy.Plugins
         public bool CanMappingSave(object action)
         {
             var realAction = ((PluginActionProxy)action).GetRealObject();
-            return (bool)contract.RemoteInvokeUI(nameof(CanMappingSave), new object[] { realAction });
+            return (bool)this.contract.RemoteInvokeUI(nameof(CanMappingSave), new object[] { realAction });
         }
 
         public void Select(object action)
         {
             var realAction = ((PluginActionProxy)action).GetRealObject();
-            contract.RemoteInvokeUI(nameof(Select), new object[] { realAction });
+            this.contract.RemoteInvokeUI(nameof(Select), new object[] { realAction });
         }
 
         public void Setup(object action)
         {
             var realAction = ((PluginActionProxy)action).GetRealObject();
-            contract.RemoteInvokeUI(nameof(Setup), new object[] { realAction });
+            this.contract.RemoteInvokeUI(nameof(Setup), new object[] { realAction });
         }
 
         public int GetDesiredHeight()
         {
-            return (int)contract.RemoteInvokeUI(nameof(GetDesiredHeight), new object[] { });
+            return (int)this.contract.RemoteInvokeUI(nameof(GetDesiredHeight), new object[] { });
         }
     }
 }

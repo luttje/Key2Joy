@@ -7,8 +7,8 @@ namespace Key2Joy.Config
     {
         public string LastInstallPath
         {
-            get => lastInstallPath;
-            set => SaveIfInitialized(lastInstallPath = value);
+            get => this.lastInstallPath;
+            set => this.SaveIfInitialized(this.lastInstallPath = value);
         }
         private string lastInstallPath;
 
@@ -17,8 +17,8 @@ namespace Key2Joy.Config
         )]
         public bool MuteCloseExitMessage
         {
-            get => muteCloseExitMessage;
-            set => SaveIfInitialized(muteCloseExitMessage = value);
+            get => this.muteCloseExitMessage;
+            set => this.SaveIfInitialized(this.muteCloseExitMessage = value);
         }
         private bool muteCloseExitMessage;
 
@@ -27,8 +27,8 @@ namespace Key2Joy.Config
         )]
         public bool OverrideDefaultTriggerBehaviour
         {
-            get => overrideDefaultTriggerBehaviour;
-            set => SaveIfInitialized(overrideDefaultTriggerBehaviour = value);
+            get => this.overrideDefaultTriggerBehaviour;
+            set => this.SaveIfInitialized(this.overrideDefaultTriggerBehaviour = value);
         }
         private bool overrideDefaultTriggerBehaviour = true;
 
@@ -37,8 +37,8 @@ namespace Key2Joy.Config
         )]
         public string LastLoadedProfile
         {
-            get => lastLoadedProfile;
-            set => SaveIfInitialized(lastLoadedProfile = value);
+            get => this.lastLoadedProfile;
+            set => this.SaveIfInitialized(this.lastLoadedProfile = value);
         }
         private string lastLoadedProfile;
 
@@ -47,8 +47,8 @@ namespace Key2Joy.Config
         )]
         public string LogOutputPath
         {
-            get => logOutputPath;
-            set => SaveIfInitialized(logOutputPath = value);
+            get => this.logOutputPath;
+            set => this.SaveIfInitialized(this.logOutputPath = value);
         }
         private string logOutputPath = Path.Combine(ConfigManager.GetAppDirectory(), "Logs");
 

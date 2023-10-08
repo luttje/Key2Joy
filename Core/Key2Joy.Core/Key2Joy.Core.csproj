@@ -27,6 +27,14 @@
     <None Remove="obj\**" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="default-profile.k2j.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="default-profile.k2j.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System.AddIn.Contract" />

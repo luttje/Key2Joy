@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Key2Joy.Contracts.Mapping
+namespace Key2Joy.Contracts.Mapping.Actions
 {
     /// <summary>
     /// This listener is used as a proxy, so we can listen to the event across the AppDomain boundary.

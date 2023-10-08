@@ -1,10 +1,12 @@
-﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.LowLevelInput;
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Mapping.Actions;
+using Key2Joy.Contracts.Mapping.Triggers;
+using Key2Joy.LowLevelInput;
 
-namespace Key2Joy.Mapping
+namespace Key2Joy.Mapping.Actions.Input
 {
     [Action(
         Description = "Get Cursor Position",

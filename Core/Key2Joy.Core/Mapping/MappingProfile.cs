@@ -1,12 +1,13 @@
-﻿using Key2Joy.Config;
-using Key2Joy.Contracts.Mapping;
-using Key2Joy.Util;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Key2Joy.Config;
+using Key2Joy.Contracts.Mapping.Actions;
+using Key2Joy.Contracts.Mapping.Triggers;
+using Key2Joy.Util;
 
 namespace Key2Joy.Mapping
 {
@@ -28,52 +29,52 @@ namespace Key2Joy.Mapping
         public int Version { get; set; } = NO_VERSION; // Version is set on save
 
         [JsonIgnore]
-        public string FilePath => filePath;
+        public string FilePath => this.filePath;
 
         [JsonIgnore]
-        public string Display => $"{Name} ({Path.GetFileName(filePath)})";
+        public string Display => $"{this.Name} ({Path.GetFileName(this.filePath)})";
 
         private string filePath;
 
         [JsonConstructor]
         public MappingProfile(string name, BindingList<MappedOption> mappedOptions = null)
         {
-            Name = name;
+            this.Name = name;
 
             var directory = GetSaveDirectory();
 
-            filePath ??= FileSystem.FindNonExistingFile(Path.Combine(directory, $"profile-%VERSION%{EXTENSION}"));
+            this.filePath ??= FileSystem.FindNonExistingFile(Path.Combine(directory, $"profile-%VERSION%{EXTENSION}"));
 
             if (mappedOptions != null)
             {
                 foreach (var mappedOption in mappedOptions)
                 {
-                    MappedOptions.Add((MappedOption)mappedOption.Clone());
+                    this.MappedOptions.Add((MappedOption)mappedOption.Clone());
                 }
             }
         }
 
         public void AddMapping(MappedOption mappedOption)
         {
-            MappedOptions.Add(mappedOption);
+            this.MappedOptions.Add(mappedOption);
         }
 
         public void AddMappingRange(IEnumerable<MappedOption> mappedOptions)
         {
             foreach (var mappedOption in mappedOptions)
             {
-                MappedOptions.Add((MappedOption)mappedOption.Clone());
+                this.MappedOptions.Add((MappedOption)mappedOption.Clone());
             }
         }
 
         public void RemoveMapping(MappedOption mappedOption)
         {
-            MappedOptions.Remove(mappedOption);
+            this.MappedOptions.Remove(mappedOption);
         }
 
         public bool TryGetMappedOption(AbstractTrigger trigger, out MappedOption mappedOption)
         {
-            mappedOption = MappedOptions.FirstOrDefault(mo => mo.Trigger == trigger);
+            mappedOption = this.MappedOptions.FirstOrDefault(mo => mo.Trigger == trigger);
             return mappedOption != null;
         }
 
@@ -82,7 +83,7 @@ namespace Key2Joy.Mapping
             var options = GetSerializerOptions();
 
             this.Version = CURRENT_VERSION;
-            File.WriteAllText(filePath, JsonSerializer.Serialize(this, options));
+            File.WriteAllText(this.filePath, JsonSerializer.Serialize(this, options));
         }
 
         private bool PostLoad(string filePath)

@@ -1,9 +1,11 @@
-﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.LowLevelInput;
-using System;
+﻿using System;
 using System.Threading.Tasks;
+using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Mapping.Actions;
+using Key2Joy.Contracts.Mapping.Triggers;
+using Key2Joy.LowLevelInput;
 
-namespace Key2Joy.Mapping
+namespace Key2Joy.Mapping.Actions.Input
 {
     [Action(
         Description = "Mouse Move Simulation",
@@ -53,23 +55,23 @@ namespace Key2Joy.Mapping
         [ExposesScriptingMethod("Mouse.SimulateMove")]
         public async void ExecuteForScript(int x, int y, Mouse.MoveType moveType = Mouse.MoveType.Relative)
         {
-            X = x;
-            Y = y;
-            MoveType = moveType;
+            this.X = x;
+            this.Y = y;
+            this.MoveType = moveType;
 
-            await Execute();
+            await this.Execute();
         }
 
         public override async Task Execute(AbstractInputBag inputBag = null)
         {
-            SimulatedMouse.Move(X, Y, MoveType);
+            SimulatedMouse.Move(this.X, this.Y, this.MoveType);
         }
 
         public override string GetNameDisplay()
         {
-            return Name.Replace("{0}", MoveType == Mouse.MoveType.Absolute ? "To" : "By")
-                .Replace("{1}", X.ToString())
-                .Replace("{2}", Y.ToString());
+            return this.Name.Replace("{0}", this.MoveType == Mouse.MoveType.Absolute ? "To" : "By")
+                .Replace("{1}", this.X.ToString())
+                .Replace("{2}", this.Y.ToString());
         }
 
         public override bool Equals(object obj)
@@ -79,9 +81,9 @@ namespace Key2Joy.Mapping
                 return false;
             }
 
-            return action.MoveType == MoveType
-                && action.X == X
-                && action.Y == Y;
+            return action.MoveType == this.MoveType
+                && action.X == this.X
+                && action.Y == this.Y;
         }
     }
 }

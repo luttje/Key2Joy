@@ -1,10 +1,12 @@
-﻿using Key2Joy.Contracts.Mapping;
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Mapping.Actions;
+using Key2Joy.Contracts.Mapping.Triggers;
 
-namespace Key2Joy.Mapping
+namespace Key2Joy.Mapping.Actions.Windows
 {
     [Action(
         Description = "Get Window Class name",
@@ -39,7 +41,7 @@ namespace Key2Joy.Mapping
             // Pre-allocate 256 characters, since this is the maximum class name length.
             StringBuilder classNameBuilder = new(256);
             //Get the window class name
-            nRet = GetClassName((IntPtr)handle, classNameBuilder, classNameBuilder.Capacity);
+            nRet = GetClassName(handle, classNameBuilder, classNameBuilder.Capacity);
 
             if (nRet == 0)
             {
@@ -56,7 +58,7 @@ namespace Key2Joy.Mapping
 
         public override string GetNameDisplay()
         {
-            return Name;
+            return this.Name;
         }
 
         public override bool Equals(object obj)

@@ -1,7 +1,7 @@
-﻿using Key2Joy.Util;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Key2Joy.Util;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Key2Joy.Tests.Core.Util
 {

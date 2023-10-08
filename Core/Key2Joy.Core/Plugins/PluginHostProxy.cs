@@ -1,8 +1,4 @@
-﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.Contracts.Plugins;
-using Key2Joy.PluginHost;
-using Mono.Cecil;
-using System;
+﻿using System;
 using System.AddIn.Pipeline;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -13,6 +9,13 @@ using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Ipc;
 using System.Threading;
 using System.Windows.Forms;
+using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Mapping.Actions;
+using Key2Joy.Contracts.Mapping.Triggers;
+using Key2Joy.Contracts.Plugins;
+using Key2Joy.Contracts.Plugins.Remoting;
+using Key2Joy.PluginHost;
+using Mono.Cecil;
 
 namespace Key2Joy.Plugins
 {
@@ -72,21 +75,21 @@ namespace Key2Joy.Plugins
         /// <exception cref="PluginLoadException"></exception>
         public void LoadPlugin(out string loadedChecksum, string expectedChecksum = null)
         {
-            Start();
-            OpenPluginHost();
+            this.Start();
+            this.OpenPluginHost();
 
-            pluginHost.LoadPlugin(pluginAssemblyPath, pluginAssemblyName, out loadedChecksum, expectedChecksum);
+            this.pluginHost.LoadPlugin(this.pluginAssemblyPath, this.pluginAssemblyName, out loadedChecksum, expectedChecksum);
 
-            DiscoverPluginTypes();
+            this.DiscoverPluginTypes();
         }
 
         private void DiscoverPluginTypes()
         {
-            var pluginAssembly = AssemblyDefinition.ReadAssembly(pluginAssemblyPath);
+            var pluginAssembly = AssemblyDefinition.ReadAssembly(this.pluginAssemblyPath);
 
             foreach (var type in pluginAssembly.MainModule.Types)
             {
-                if (type.Namespace != pluginAssemblyName && !type.Namespace.StartsWith(pluginAssemblyName + "."))
+                if (type.Namespace != this.pluginAssemblyName && !type.Namespace.StartsWith(this.pluginAssemblyName + "."))
                 {
                     continue;
                 }
@@ -95,15 +98,15 @@ namespace Key2Joy.Plugins
                 {
                     if (customAttribute.AttributeType.Name == nameof(MappingControlAttribute))
                     {
-                        DiscoverPluginType_MappingControl(type, customAttribute);
+                        this.DiscoverPluginType_MappingControl(type, customAttribute);
                     }
                     else if (customAttribute.AttributeType.Name == nameof(ActionAttribute))
                     {
-                        DiscoverPluginType_Action(type, customAttribute);
+                        this.DiscoverPluginType_Action(type, customAttribute);
                     }
                     else if (customAttribute.AttributeType.Name == nameof(TriggerAttribute))
                     {
-                        DiscoverPluginType_Trigger(type, customAttribute);
+                        this.DiscoverPluginType_Trigger(type, customAttribute);
                     }
                 }
             }
@@ -135,7 +138,7 @@ namespace Key2Joy.Plugins
 
             foreach (var targetActionType in controlTargetTypes)
             {
-                mappingControlFactories.Add(new PluginMappingControlFactory(
+                this.mappingControlFactories.Add(new PluginMappingControlFactory(
                     targetActionType,
                     imageResourceName,
                     this,
@@ -148,7 +151,7 @@ namespace Key2Joy.Plugins
         {
             var triggerAttribute = BuildMappingAttribute<TriggerAttribute>(customAttribute);
 
-            triggerFactories.Add(
+            this.triggerFactories.Add(
                 new PluginMappingTypeFactory<AbstractTrigger>(
                     this,
                     typeof(AbstractTrigger),
@@ -179,7 +182,7 @@ namespace Key2Joy.Plugins
                 }
             }
 
-            actionFactories.Add(
+            this.actionFactories.Add(
                 new PluginMappingTypeFactory<AbstractAction>(
                     this,
                     typeof(AbstractAction),
@@ -224,17 +227,17 @@ namespace Key2Joy.Plugins
                 {
                     subscribeOptionsChanged.Subscription,
                 };
-                var contract = (NativeHandleContractInsulator)pluginHost.CreateFrameworkElementContract(controlTypeName, subscribedEvents);
+                var contract = (NativeHandleContractInsulator)this.pluginHost.CreateFrameworkElementContract(controlTypeName, subscribedEvents);
                 var remoteControl = FrameworkElementAdapters.ContractToViewAdapter(contract);
                 ElementHostProxy control = new(remoteControl, contract);
 
                 subscribeOptionsChanged.CustomSender = control;
-                pluginHost.AnyEvent += PluginHost_AnyEvent;
+                this.pluginHost.AnyEvent += PluginHost_AnyEvent;
 
                 // We need to unsubscribe, otherwise the plugin view will freeze up.
                 control.Disposed += (s, e) =>
                 {
-                    pluginHost.AnyEvent -= PluginHost_AnyEvent;
+                    this.pluginHost.AnyEvent -= PluginHost_AnyEvent;
                     RemoteEventSubscriber.UnsubscribeEvent(subscribeOptionsChanged.Subscription.Id);
                 };
                 return control;
@@ -279,11 +282,11 @@ namespace Key2Joy.Plugins
             // Look through the factories for one that matches the type, then set to that type
             if (type == typeof(AbstractMappingAspect))
             {
-                if (actionFactories.Any(factory => factory.FullTypeName == fullTypeName))
+                if (this.actionFactories.Any(factory => factory.FullTypeName == fullTypeName))
                 {
                     type = typeof(AbstractAction);
                 }
-                else if (triggerFactories.Any(factory => factory.FullTypeName == fullTypeName))
+                else if (this.triggerFactories.Any(factory => factory.FullTypeName == fullTypeName))
                 {
                     type = typeof(AbstractTrigger);
                 }
@@ -292,11 +295,11 @@ namespace Key2Joy.Plugins
             switch (type)
             {
                 case Type actionType when actionType == typeof(AbstractAction):
-                    var action = pluginHost.CreateAction(fullTypeName, new object[0]);
+                    var action = this.pluginHost.CreateAction(fullTypeName, new object[0]);
                     return new PluginActionProxy(nameFormat, action) as T;
 
                 case Type actionType when actionType == typeof(AbstractTrigger):
-                    var trigger = pluginHost.CreateTrigger(fullTypeName, new object[0]);
+                    var trigger = this.pluginHost.CreateTrigger(fullTypeName, new object[0]);
                     return new PluginTriggerProxy(nameFormat, trigger) as T;
             }
 
@@ -316,15 +319,15 @@ namespace Key2Joy.Plugins
 
         private void Start()
         {
-            if (process != null)
+            if (this.process != null)
             {
                 return;
             }
 
-            name = "Key2Joy.PluginHost." + Guid.NewGuid().ToString();
+            this.name = "Key2Joy.PluginHost." + Guid.NewGuid().ToString();
 
-            var eventName = $"{name}.Ready";
-            readyEvent = new EventWaitHandle(false, EventResetMode.ManualReset, eventName);
+            var eventName = $"{this.name}.Ready";
+            this.readyEvent = new EventWaitHandle(false, EventResetMode.ManualReset, eventName);
 
             var processName = "Key2Joy.PluginHost.exe";
 
@@ -335,11 +338,11 @@ namespace Key2Joy.Plugins
                 System.Windows.Forms.MessageBox.Show("Key2Joy.PluginHost.exe not found at " + path);
             }
 
-            SetupEventPipe();
+            this.SetupEventPipe();
 
             ProcessStartInfo info = new()
             {
-                Arguments = name,
+                Arguments = this.name,
 #if !DEBUG
                 CreateNoWindow = true,
 #endif
@@ -347,15 +350,15 @@ namespace Key2Joy.Plugins
                 FileName = processName
             };
 
-            process = Process.Start(info);
+            this.process = Process.Start(info);
         }
 
         private void SetupEventPipe()
         {
             // Expose a named pipe endpoint corresponding to the portName parameter for events
             // TODO: Clean up pipeServerStream when this proxy disposes
-            pipeServerStream = new NamedPipeServerStream(
-                RemotePipe.GetAbsolutePipeName(name),
+            this.pipeServerStream = new NamedPipeServerStream(
+                RemotePipe.GetAbsolutePipeName(this.name),
                 PipeDirection.InOut,
                 1,
                 PipeTransmissionMode.Message);
@@ -363,16 +366,16 @@ namespace Key2Joy.Plugins
             // Start a new thread to listen for incoming connections on the named pipe
             Thread t = new(() =>
             {
-                pipeServerStream.WaitForConnection();
+                this.pipeServerStream.WaitForConnection();
                 Debug.WriteLine($"Pipe connection with plugin established");
 
-                StreamReader reader = new(pipeServerStream);
+                StreamReader reader = new(this.pipeServerStream);
 
                 while (true)
                 {
                     try
                     {
-                        var subscriptionId = RemotePipe.ReadMessage(pipeServerStream);
+                        var subscriptionId = RemotePipe.ReadMessage(this.pipeServerStream);
                         Debug.WriteLine($"ReadMessage: {subscriptionId}");
                         RemoteEventSubscriber.HandleInvoke(subscriptionId);
                     }
@@ -390,22 +393,22 @@ namespace Key2Joy.Plugins
 
         private void OpenPluginHost()
         {
-            if (pluginHost != null)
+            if (this.pluginHost != null)
             {
                 return;
             }
 
-            if (!readyEvent.WaitOne(5000))
+            if (!this.readyEvent.WaitOne(5000))
             {
                 throw new InvalidOperationException("PluginHost process not ready");
             }
 
             IpcChannelRegistration.RegisterChannel();
 
-            var url = "ipc://" + name + "/" + nameof(PluginHost);
-            pluginHost = (IPluginHost)Activator.GetObject(typeof(IPluginHost), url);
+            var url = "ipc://" + this.name + "/" + nameof(PluginHost);
+            this.pluginHost = (IPluginHost)Activator.GetObject(typeof(IPluginHost), url);
 
-            var eventName = $"{name}.Exit";
+            var eventName = $"{this.name}.Exit";
             EventWaitHandle exitEvent = new(false, EventResetMode.ManualReset, eventName);
 
             // Wait for the exit event in another thread in the background.
@@ -431,42 +434,42 @@ namespace Key2Joy.Plugins
 
         public void Dispose()
         {
-            IsDisposing = true;
+            this.IsDisposing = true;
             Disposing?.Invoke(this, EventArgs.Empty);
 
-            pluginHost.Terminate();
-            pluginHost = null;
-            process = null;
+            this.pluginHost.Terminate();
+            this.pluginHost = null;
+            this.process = null;
         }
 
         internal string GetPluginName()
         {
-            return pluginHost.GetPluginName();
+            return this.pluginHost.GetPluginName();
         }
 
         internal string GetPluginAuthor()
         {
-            return pluginHost.GetPluginAuthor();
+            return this.pluginHost.GetPluginAuthor();
         }
 
         internal string GetPluginWebsite()
         {
-            return pluginHost.GetPluginWebsite();
+            return this.pluginHost.GetPluginWebsite();
         }
 
         internal IEnumerable<MappingTypeFactory<AbstractAction>> GetActionFactories()
         {
-            return actionFactories;
+            return this.actionFactories;
         }
 
         internal IEnumerable<MappingTypeFactory<AbstractTrigger>> GetTriggerFactories()
         {
-            return triggerFactories;
+            return this.triggerFactories;
         }
 
         internal IEnumerable<MappingControlFactory> GetMappingControlFactories()
         {
-            return mappingControlFactories;
+            return this.mappingControlFactories;
         }
     }
 }

@@ -1,16 +1,17 @@
-﻿using Jint;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
+using Jint;
 using Jint.Native;
 using Jint.Native.Object;
 using Jint.Runtime.Descriptors;
 using Jint.Runtime.Interop;
-using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Mapping.Actions;
+using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.Plugins;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Key2Joy.Mapping
+namespace Key2Joy.Mapping.Actions.Scripting
 {
     [Action(
         Description = "Javascript Action",
@@ -23,7 +24,7 @@ namespace Key2Joy.Mapping
         public JavascriptAction(string name)
             : base(name)
         {
-            ImageResource = "JS";
+            this.ImageResource = "JS";
         }
 
         public override async Task Execute(AbstractInputBag inputBag)
@@ -32,7 +33,7 @@ namespace Key2Joy.Mapping
             {
                 lock (LockObject)
                 {
-                    environment.Execute(GetExecutableScript());
+                    this.environment.Execute(this.GetExecutableScript());
                 }
             }
             catch (Jint.Runtime.JavaScriptException e)
@@ -61,20 +62,20 @@ namespace Key2Joy.Mapping
             enumInjectScript.Append("};");
 
             var enumInjection = enumInjectScript.ToString();
-            environment.Execute(enumInjection);
+            this.environment.Execute(enumInjection);
 
-            environment.Execute($"Print(JSON.stringify({enumInjection}))");
+            this.environment.Execute($"Print(JSON.stringify({enumInjection}))");
         }
 
         public override void RegisterScriptingMethod(ExposedMethod exposedMethod, AbstractAction instance)
         {
             var functionName = exposedMethod.FunctionName;
             var parents = functionName.Split('.');
-            DelegateWrapper @delegate = new(environment, exposedMethod.CreateDelegate(instance));
+            DelegateWrapper @delegate = new(this.environment, exposedMethod.CreateDelegate(instance));
 
             if (parents.Length > 1)
             {
-                var currentObject = environment.Realm.GlobalObject;
+                var currentObject = this.environment.Realm.GlobalObject;
 
                 for (var i = 0; i < parents.Length; i++)
                 {
@@ -82,7 +83,7 @@ namespace Key2Joy.Mapping
                     {
                         if (!currentObject.TryGetValue(parents[i], out var child))
                         {
-                            child = new JsObject(environment);
+                            child = new JsObject(this.environment);
                         }
 
                         if (child is not ObjectInstance childObject)
@@ -102,7 +103,7 @@ namespace Key2Joy.Mapping
                 return;
             }
 
-            environment.SetValue(
+            this.environment.SetValue(
                 functionName,
                 @delegate);
         }
@@ -114,7 +115,7 @@ namespace Key2Joy.Mapping
 
         public override void RegisterEnvironmentObjects()
         {
-            environment.SetValue("Print", new Action<object[]>(Print));
+            this.environment.SetValue("Print", new Action<object[]>(this.Print));
 
             base.RegisterEnvironmentObjects();
         }
@@ -128,7 +129,7 @@ namespace Key2Joy.Mapping
         {
             base.OnStopListening(listener);
 
-            environment = null;
+            this.environment = null;
         }
 
         public override bool Equals(object obj)
@@ -138,8 +139,8 @@ namespace Key2Joy.Mapping
                 return false;
             }
 
-            return action.Name == Name
-                && action.Script == Script;
+            return action.Name == this.Name
+                && action.Script == this.Script;
         }
     }
 }

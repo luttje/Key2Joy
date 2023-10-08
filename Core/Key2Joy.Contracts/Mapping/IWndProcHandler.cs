@@ -14,10 +14,10 @@ namespace Key2Joy.Contracts.Mapping
 
         public Message(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam)
         {
-            HWnd = hWnd;
-            Msg = msg;
-            WParam = wParam;
-            LParam = lParam;
+            this.HWnd = hWnd;
+            this.Msg = msg;
+            this.WParam = wParam;
+            this.LParam = lParam;
         }
     }
 

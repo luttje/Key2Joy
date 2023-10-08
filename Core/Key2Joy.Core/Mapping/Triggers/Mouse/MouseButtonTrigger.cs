@@ -1,9 +1,10 @@
-﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.LowLevelInput;
-using System;
+﻿using System;
 using System.Text.Json.Serialization;
+using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Mapping.Triggers;
+using Key2Joy.LowLevelInput;
 
-namespace Key2Joy.Mapping
+namespace Key2Joy.Mapping.Triggers.Mouse
 {
     [Trigger(
         Description = "Mouse Button Event"
@@ -12,7 +13,7 @@ namespace Key2Joy.Mapping
     {
         public const string PREFIX_UNIQUE = nameof(MouseButtonTrigger);
 
-        public Mouse.Buttons MouseButtons { get; set; }
+        public LowLevelInput.Mouse.Buttons MouseButtons { get; set; }
         public PressState PressState { get; set; }
 
         [JsonConstructor]
@@ -27,17 +28,17 @@ namespace Key2Joy.Mapping
 
         public override string GetUniqueKey()
         {
-            return $"{PREFIX_UNIQUE}_{MouseButtons}";
+            return $"{PREFIX_UNIQUE}_{this.MouseButtons}";
         }
 
-        public static int GetInputHashFor(Mouse.Buttons mouseButtons)
+        public static int GetInputHashFor(LowLevelInput.Mouse.Buttons mouseButtons)
         {
             return (int)mouseButtons;
         }
 
         public int GetInputHash()
         {
-            return GetInputHashFor(MouseButtons);
+            return GetInputHashFor(this.MouseButtons);
         }
 
         // Keep Press and Release together while sorting
@@ -48,7 +49,7 @@ namespace Key2Joy.Mapping
                 return base.CompareTo(other);
             }
 
-            return $"{MouseButtons}#{(int)PressState}"
+            return $"{this.MouseButtons}#{(int)this.PressState}"
                 .CompareTo($"{otherMouseTrigger.MouseButtons}#{(int)otherMouseTrigger.PressState}");
         }
 
@@ -59,20 +60,20 @@ namespace Key2Joy.Mapping
                 return false;
             }
 
-            return Equals(other);
+            return this.Equals(other);
         }
 
         public bool Equals(MouseButtonTrigger other)
         {
-            return MouseButtons == other.MouseButtons
-                && PressState == other.PressState;
+            return this.MouseButtons == other.MouseButtons
+                && this.PressState == other.PressState;
         }
 
         public override string ToString()
         {
             var format = "(mouse) {1} {0}";
-            return format.Replace("{0}", MouseButtons.ToString())
-                .Replace("{1}", Enum.GetName(typeof(PressState), PressState));
+            return format.Replace("{0}", this.MouseButtons.ToString())
+                .Replace("{1}", Enum.GetName(typeof(PressState), this.PressState));
         }
     }
 }

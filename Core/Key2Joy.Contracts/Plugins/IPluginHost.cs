@@ -1,6 +1,7 @@
 ﻿using System;
 using System.AddIn.Contract;
 using System.Runtime.Remoting.Messaging;
+using Key2Joy.Contracts.Plugins.Remoting;
 
 namespace Key2Joy.Contracts.Plugins
 {

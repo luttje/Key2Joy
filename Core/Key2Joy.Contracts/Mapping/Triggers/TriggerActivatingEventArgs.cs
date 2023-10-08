@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Key2Joy.Contracts.Mapping
+namespace Key2Joy.Contracts.Mapping.Triggers
 {
     public class TriggerActivatingEventArgs : EventArgs
     {
@@ -17,22 +17,22 @@ namespace Key2Joy.Contracts.Mapping
             IList<AbstractMappedOption> mappedOptions,
             Func<AbstractTrigger, bool> optionCandidateFilter = null)
         {
-            Listener = listener;
-            MappedOptionCandidates = mappedOptions;
-            InputBag = inputBag;
+            this.Listener = listener;
+            this.MappedOptionCandidates = mappedOptions;
+            this.InputBag = inputBag;
             this.optionCandidateFilter = optionCandidateFilter;
         }
 
         public bool GetIsMappedOptionCandidate(AbstractTrigger trigger)
         {
-            if (trigger?.GetTriggerListener() != Listener)
+            if (trigger?.GetTriggerListener() != this.Listener)
             {
                 return false;
             }
 
-            if (optionCandidateFilter != null)
+            if (this.optionCandidateFilter != null)
             {
-                return optionCandidateFilter.Invoke(trigger);
+                return this.optionCandidateFilter.Invoke(trigger);
             }
 
             return true;

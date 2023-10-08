@@ -1,10 +1,11 @@
-﻿using Key2Joy.Contracts.Mapping;
-using Linearstar.Windows.RawInput;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Mapping.Triggers;
+using Linearstar.Windows.RawInput;
 
-namespace Key2Joy.Mapping
+namespace Key2Joy.Mapping.Triggers.Mouse
 {
     public class MouseMoveTriggerListener : CoreTriggerListener, IWndProcHandler
     {
@@ -32,12 +33,12 @@ namespace Key2Joy.Mapping
 
         private MouseMoveTriggerListener()
         {
-            lookupAxis = new Dictionary<int, List<AbstractMappedOption>>();
+            this.lookupAxis = new Dictionary<int, List<AbstractMappedOption>>();
         }
 
         protected override void Start()
         {
-            RawInputDevice.RegisterDevice(HidUsageAndPage.Mouse, RawInputDeviceFlags.InputSink, Handle);
+            RawInputDevice.RegisterDevice(HidUsageAndPage.Mouse, RawInputDeviceFlags.InputSink, this.Handle);
 
             base.Start();
         }
@@ -53,9 +54,9 @@ namespace Key2Joy.Mapping
         {
             var trigger = mappedOption.Trigger as MouseMoveTrigger;
 
-            if (!lookupAxis.TryGetValue(trigger.GetInputHash(), out var mappedOptions))
+            if (!this.lookupAxis.TryGetValue(trigger.GetInputHash(), out var mappedOptions))
             {
-                lookupAxis.Add(trigger.GetInputHash(), mappedOptions = new List<AbstractMappedOption>());
+                this.lookupAxis.Add(trigger.GetInputHash(), mappedOptions = new List<AbstractMappedOption>());
             }
 
             mappedOptions.Add(mappedOption);
@@ -68,13 +69,13 @@ namespace Key2Joy.Mapping
                 return false;
             }
 
-            return (DateTime.Now - lastMoveTime < IS_MOVING_TOLERANCE)
-                && lastDirectionHashes.Contains(mouseMoveTrigger.GetInputHash());
+            return DateTime.Now - this.lastMoveTime < IS_MOVING_TOLERANCE
+                && this.lastDirectionHashes.Contains(mouseMoveTrigger.GetInputHash());
         }
 
-        public void WndProc(Contracts.Mapping.Message m)
+        public void WndProc(Message m)
         {
-            if (!IsActive)
+            if (!this.IsActive)
             {
                 return;
             }
@@ -93,7 +94,7 @@ namespace Key2Joy.Mapping
                     return;
                 }
 
-                if (TryOverrideMouseMoveInput(mouse.Mouse.LastX, mouse.Mouse.LastY))
+                if (this.TryOverrideMouseMoveInput(mouse.Mouse.LastX, mouse.Mouse.LastY))
                 {
                     return;
                 }
@@ -136,7 +137,7 @@ namespace Key2Joy.Mapping
             {
                 if (directionCheck.Value.Invoke())
                 {
-                    if (lookupAxis.TryGetValue(directionCheck.Key, out var matchedOptions))
+                    if (this.lookupAxis.TryGetValue(directionCheck.Key, out var matchedOptions))
                     {
                         mappedOptions.AddRange(matchedOptions);
                         directionHashes.Add(directionCheck.Key);
@@ -150,14 +151,14 @@ namespace Key2Joy.Mapping
                 DeltaY = deltaY,
             };
 
-            DoExecuteTrigger(
+            this.DoExecuteTrigger(
                 mappedOptions,
                 inputBag,
                 trigger => directionHashes.Contains((trigger as IReturnInputHash).GetInputHash())
             );
 
-            lastDirectionHashes = directionHashes;
-            lastMoveTime = DateTime.Now;
+            this.lastDirectionHashes = directionHashes;
+            this.lastMoveTime = DateTime.Now;
 
             return true;
         }

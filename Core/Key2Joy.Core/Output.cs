@@ -1,8 +1,8 @@
-﻿using Key2Joy.Config;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using Key2Joy.Config;
 
 namespace Key2Joy
 {

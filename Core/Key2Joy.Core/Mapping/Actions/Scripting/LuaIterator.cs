@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace Key2Joy.Mapping
+namespace Key2Joy.Mapping.Actions.Scripting
 {
     public class LuaIterator
     {
@@ -11,8 +11,8 @@ namespace Key2Joy.Mapping
 
         public LuaIterator(ICollection data)
         {
-            index = INDEX_START;
-            enumerator = data.GetEnumerator();
+            this.index = INDEX_START;
+            this.enumerator = data.GetEnumerator();
         }
 
         /// <summary>
@@ -32,10 +32,10 @@ namespace Key2Joy.Mapping
         /// <returns>The key/index of the collection</returns>
         public object Next(object collection, int? currentIndex, out object value)
         {
-            if (enumerator.MoveNext())
+            if (this.enumerator.MoveNext())
             {
-                value = enumerator.Current;
-                return index;
+                value = this.enumerator.Current;
+                return this.index;
             }
 
             value = null;

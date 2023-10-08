@@ -1,10 +1,11 @@
-﻿using Key2Joy.Contracts.Mapping;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
+using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Mapping.Triggers;
 
-namespace Key2Joy.Mapping
+namespace Key2Joy.Mapping.Triggers.Logic
 {
     [Trigger(
         Description = "Multiple Triggers Combined",
@@ -28,7 +29,7 @@ namespace Key2Joy.Mapping
 
         public override string GetUniqueKey()
         {
-            return ToString();
+            return this.ToString();
         }
 
         public override bool Equals(object obj)
@@ -38,17 +39,17 @@ namespace Key2Joy.Mapping
                 return false;
             }
 
-            return Equals(other);
+            return this.Equals(other);
         }
 
         public bool Equals(CombinedTrigger other)
         {
-            return Triggers.SequenceEqual(other.Triggers);
+            return this.Triggers.SequenceEqual(other.Triggers);
         }
 
         public override string ToString()
         {
-            return string.Join(" + ", Triggers);
+            return string.Join(" + ", this.Triggers);
         }
     }
 }

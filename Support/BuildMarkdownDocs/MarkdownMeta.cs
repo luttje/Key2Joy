@@ -26,7 +26,7 @@ namespace BuildMarkdownDocs
 
         public int CompareTo(MarkdownMeta other)
         {
-            return Name.CompareTo(other.Name);
+            return this.Name.CompareTo(other.Name);
         }
     }
 }

@@ -1,8 +1,9 @@
-﻿using Key2Joy.Contracts.Mapping;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Mapping.Triggers;
 
-namespace Key2Joy.Mapping
+namespace Key2Joy.Mapping.Triggers.Logic
 {
     public class CombinedTriggerListener : CoreTriggerListener
     {
@@ -24,9 +25,9 @@ namespace Key2Joy.Mapping
         {
             var trigger = mappedOption.Trigger as CombinedTrigger;
 
-            if (!lookup.TryGetValue(trigger, out var mappedOptions))
+            if (!this.lookup.TryGetValue(trigger, out var mappedOptions))
             {
-                lookup.Add(trigger, mappedOptions = new List<AbstractMappedOption>());
+                this.lookup.Add(trigger, mappedOptions = new List<AbstractMappedOption>());
             }
 
             foreach (var realTrigger in trigger.Triggers)
@@ -45,11 +46,11 @@ namespace Key2Joy.Mapping
             base.Start();
 
             // Only listen to listeners that we have triggers for
-            foreach (var listener in allListeners)
+            foreach (var listener in this.allListeners)
             {
                 var foundListener = false;
 
-                foreach (var combinedTrigger in lookup.Keys)
+                foreach (var combinedTrigger in this.lookup.Keys)
                 {
                     foreach (var trigger in combinedTrigger.Triggers)
                     {
@@ -68,17 +69,17 @@ namespace Key2Joy.Mapping
 
                 if (foundListener)
                 {
-                    listener.TriggerActivating += Listener_TriggerActivating;
-                    listener.TriggerActivated += Listener_TriggerActivated;
+                    listener.TriggerActivating += this.Listener_TriggerActivating;
+                    listener.TriggerActivated += this.Listener_TriggerActivated;
                 }
             }
         }
 
         private void Listener_TriggerActivating(object sender, TriggerActivatingEventArgs e)
         {
-            optionsToExecute = new Dictionary<AbstractMappedOption, CombinedTrigger>();
+            this.optionsToExecute = new Dictionary<AbstractMappedOption, CombinedTrigger>();
 
-            foreach (var combinedTrigger in lookup.Keys)
+            foreach (var combinedTrigger in this.lookup.Keys)
             {
                 var found = false;
 
@@ -86,9 +87,9 @@ namespace Key2Joy.Mapping
                 {
                     if (e.GetIsMappedOptionCandidate(trigger))
                     {
-                        foreach (var mappedOption in lookup[combinedTrigger])
+                        foreach (var mappedOption in this.lookup[combinedTrigger])
                         {
-                            optionsToExecute.Add(new MappedOption()
+                            this.optionsToExecute.Add(new MappedOption()
                             {
                                 Trigger = trigger,
                                 Action = mappedOption.Action
@@ -105,7 +106,7 @@ namespace Key2Joy.Mapping
                 }
             }
 
-            foreach (var key in optionsToExecute.Keys)
+            foreach (var key in this.optionsToExecute.Keys)
             {
                 e.MappedOptionCandidates.Add(key);
             }
@@ -116,12 +117,12 @@ namespace Key2Joy.Mapping
             foreach (var mappedOption in e.MappedOptions)
             {
                 // Skip every mapped option that we didn't add as candidates ourselves
-                if (!optionsToExecute.TryGetValue(mappedOption, out var combinedTrigger))
+                if (!this.optionsToExecute.TryGetValue(mappedOption, out var combinedTrigger))
                 {
                     continue;
                 }
 
-                optionsToExecute.Remove(mappedOption);
+                this.optionsToExecute.Remove(mappedOption);
 
                 // Check if all triggers for this mapped option are matched. Only then Executes the actions.
                 var allTriggered = true;
@@ -143,8 +144,8 @@ namespace Key2Joy.Mapping
                     };
 
                     // TODO: Test: If we don't provide a filter, will we get an infinite loop for events that try to add options to CombinedTriggerListener?
-                    DoExecuteTrigger(
-                        lookup[combinedTrigger],
+                    this.DoExecuteTrigger(
+                        this.lookup[combinedTrigger],
                         inputBag);
 
                     break;

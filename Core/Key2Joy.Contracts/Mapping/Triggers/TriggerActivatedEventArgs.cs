@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Key2Joy.Contracts.Mapping
+namespace Key2Joy.Contracts.Mapping.Triggers
 {
     public class TriggerActivatedEventArgs : EventArgs
     {
@@ -11,9 +11,9 @@ namespace Key2Joy.Contracts.Mapping
 
         public TriggerActivatedEventArgs(AbstractTriggerListener listener, AbstractInputBag inputBag, IList<AbstractMappedOption> mappedOptions)
         {
-            Listener = listener;
-            MappedOptions = mappedOptions;
-            InputBag = inputBag;
+            this.Listener = listener;
+            this.MappedOptions = mappedOptions;
+            this.InputBag = inputBag;
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Key2Joy.Gui.Mapping
+﻿using Key2Joy.Contracts.Mapping.Actions;
+
+namespace Key2Joy.Gui.Mapping
 {
     partial class SequenceActionControl
     {
@@ -122,7 +124,7 @@
             this.actionControl.Padding = new System.Windows.Forms.Padding(5);
             this.actionControl.Size = new System.Drawing.Size(333, 32);
             this.actionControl.TabIndex = 1;
-            this.actionControl.ActionChanged += new System.Action<Key2Joy.Contracts.Mapping.AbstractAction>(this.ActionControl_ActionChanged);
+            this.actionControl.ActionChanged += new System.Action<AbstractAction>(this.ActionControl_ActionChanged);
             // 
             // pnlActionOptions
             // 

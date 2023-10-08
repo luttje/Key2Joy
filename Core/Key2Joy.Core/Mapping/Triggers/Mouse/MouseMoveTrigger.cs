@@ -1,8 +1,8 @@
-﻿using Key2Joy.Contracts.Mapping;
-using System;
+﻿using System;
 using System.Text.Json.Serialization;
+using Key2Joy.Contracts.Mapping.Triggers;
 
-namespace Key2Joy.Mapping
+namespace Key2Joy.Mapping.Triggers.Mouse
 {
     [Trigger(
         Description = "Mouse Move Event"
@@ -25,7 +25,7 @@ namespace Key2Joy.Mapping
 
         public override string GetUniqueKey()
         {
-            return $"{PREFIX_UNIQUE}_{AxisBinding}";
+            return $"{PREFIX_UNIQUE}_{this.AxisBinding}";
         }
 
         public static int GetInputHashFor(AxisDirection axisBinding)
@@ -35,7 +35,7 @@ namespace Key2Joy.Mapping
 
         public int GetInputHash()
         {
-            return GetInputHashFor(AxisBinding);
+            return GetInputHashFor(this.AxisBinding);
         }
 
         public override bool Equals(object obj)
@@ -45,12 +45,12 @@ namespace Key2Joy.Mapping
                 return false;
             }
 
-            return AxisBinding == other.AxisBinding;
+            return this.AxisBinding == other.AxisBinding;
         }
 
         public override string ToString()
         {
-            var axis = Enum.GetName(typeof(AxisDirection), AxisBinding);
+            var axis = Enum.GetName(typeof(AxisDirection), this.AxisBinding);
             return $"(mouse) Move {axis}";
         }
     }

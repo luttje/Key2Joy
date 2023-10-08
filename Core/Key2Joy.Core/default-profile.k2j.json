@@ -2,7 +2,7 @@
   "mappedOptions": [
     {
       "action": {
-        "$type": "Key2Joy.Mapping.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
         "options": {
           "Control": "DPadUp",
           "PressState": "Press",
@@ -12,7 +12,7 @@
         }
       },
       "trigger": {
-        "$type": "Key2Joy.Mapping.KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.Triggers.Keyboard.KeyboardTrigger",
         "options": {
           "Keys": "Up",
           "PressState": "Press",
@@ -23,7 +23,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
         "options": {
           "Control": "DPadDown",
           "PressState": "Press",
@@ -33,7 +33,7 @@
         }
       },
       "trigger": {
-        "$type": "Key2Joy.Mapping.KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.Triggers.Keyboard.KeyboardTrigger",
         "options": {
           "Keys": "Down",
           "PressState": "Press",
@@ -44,7 +44,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
         "options": {
           "Control": "DPadLeft",
           "PressState": "Press",
@@ -54,7 +54,7 @@
         }
       },
       "trigger": {
-        "$type": "Key2Joy.Mapping.KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.Triggers.Keyboard.KeyboardTrigger",
         "options": {
           "Keys": "Left",
           "PressState": "Press",
@@ -65,7 +65,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
         "options": {
           "Control": "DPadRight",
           "PressState": "Press",
@@ -75,7 +75,7 @@
         }
       },
       "trigger": {
-        "$type": "Key2Joy.Mapping.KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.Triggers.Keyboard.KeyboardTrigger",
         "options": {
           "Keys": "Right",
           "PressState": "Press",
@@ -86,7 +86,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
         "options": {
           "Control": "Start",
           "PressState": "Press",
@@ -96,7 +96,7 @@
         }
       },
       "trigger": {
-        "$type": "Key2Joy.Mapping.KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.Triggers.Keyboard.KeyboardTrigger",
         "options": {
           "Keys": "F1",
           "PressState": "Press",
@@ -107,7 +107,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
         "options": {
           "Control": "Back",
           "PressState": "Press",
@@ -117,7 +117,7 @@
         }
       },
       "trigger": {
-        "$type": "Key2Joy.Mapping.KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.Triggers.Keyboard.KeyboardTrigger",
         "options": {
           "Keys": "F2",
           "PressState": "Press",
@@ -128,7 +128,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
         "options": {
           "Control": "LeftStickClick",
           "PressState": "Press",
@@ -138,7 +138,7 @@
         }
       },
       "trigger": {
-        "$type": "Key2Joy.Mapping.KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.Triggers.Keyboard.KeyboardTrigger",
         "options": {
           "Keys": "LControlKey",
           "PressState": "Press",
@@ -149,7 +149,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
         "options": {
           "Control": "RightStickClick",
           "PressState": "Press",
@@ -159,7 +159,7 @@
         }
       },
       "trigger": {
-        "$type": "Key2Joy.Mapping.KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.Triggers.Keyboard.KeyboardTrigger",
         "options": {
           "Keys": "RControlKey",
           "PressState": "Press",
@@ -170,7 +170,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
         "options": {
           "Control": "LeftShoulder",
           "PressState": "Press",
@@ -180,7 +180,7 @@
         }
       },
       "trigger": {
-        "$type": "Key2Joy.Mapping.KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.Triggers.Keyboard.KeyboardTrigger",
         "options": {
           "Keys": "Q",
           "PressState": "Press",
@@ -191,7 +191,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
         "options": {
           "Control": "RightShoulder",
           "PressState": "Press",
@@ -201,7 +201,7 @@
         }
       },
       "trigger": {
-        "$type": "Key2Joy.Mapping.KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.Triggers.Keyboard.KeyboardTrigger",
         "options": {
           "Keys": "E",
           "PressState": "Press",
@@ -212,7 +212,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
         "options": {
           "Control": "A",
           "PressState": "Press",
@@ -222,7 +222,7 @@
         }
       },
       "trigger": {
-        "$type": "Key2Joy.Mapping.KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.Triggers.Keyboard.KeyboardTrigger",
         "options": {
           "Keys": "F",
           "PressState": "Press",
@@ -233,7 +233,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
         "options": {
           "Control": "B",
           "PressState": "Press",
@@ -243,7 +243,7 @@
         }
       },
       "trigger": {
-        "$type": "Key2Joy.Mapping.KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.Triggers.Keyboard.KeyboardTrigger",
         "options": {
           "Keys": "Z",
           "PressState": "Press",
@@ -254,7 +254,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
         "options": {
           "Control": "X",
           "PressState": "Press",
@@ -264,7 +264,7 @@
         }
       },
       "trigger": {
-        "$type": "Key2Joy.Mapping.KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.Triggers.Keyboard.KeyboardTrigger",
         "options": {
           "Keys": "R",
           "PressState": "Press",
@@ -275,7 +275,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
         "options": {
           "Control": "Y",
           "PressState": "Press",
@@ -285,7 +285,7 @@
         }
       },
       "trigger": {
-        "$type": "Key2Joy.Mapping.KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.Triggers.Keyboard.KeyboardTrigger",
         "options": {
           "Keys": "Y",
           "PressState": "Press",
@@ -296,7 +296,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
         "options": {
           "Control": "LeftTrigger",
           "PressState": "Press",
@@ -306,7 +306,7 @@
         }
       },
       "trigger": {
-        "$type": "Key2Joy.Mapping.KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.Triggers.Keyboard.KeyboardTrigger",
         "options": {
           "Keys": "D1",
           "PressState": "Press",
@@ -317,7 +317,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
         "options": {
           "Control": "RightTrigger",
           "PressState": "Press",
@@ -327,7 +327,7 @@
         }
       },
       "trigger": {
-        "$type": "Key2Joy.Mapping.KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.Triggers.Keyboard.KeyboardTrigger",
         "options": {
           "Keys": "D2",
           "PressState": "Press",
@@ -338,7 +338,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
         "options": {
           "Control": "LeftStickLeft",
           "PressState": "Press",
@@ -348,7 +348,7 @@
         }
       },
       "trigger": {
-        "$type": "Key2Joy.Mapping.KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.Triggers.Keyboard.KeyboardTrigger",
         "options": {
           "Keys": "A",
           "PressState": "Press",
@@ -359,7 +359,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
         "options": {
           "Control": "LeftStickRight",
           "PressState": "Press",
@@ -369,7 +369,7 @@
         }
       },
       "trigger": {
-        "$type": "Key2Joy.Mapping.KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.Triggers.Keyboard.KeyboardTrigger",
         "options": {
           "Keys": "D",
           "PressState": "Press",
@@ -380,7 +380,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
         "options": {
           "Control": "LeftStickUp",
           "PressState": "Press",
@@ -390,7 +390,7 @@
         }
       },
       "trigger": {
-        "$type": "Key2Joy.Mapping.KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.Triggers.Keyboard.KeyboardTrigger",
         "options": {
           "Keys": "W",
           "PressState": "Press",
@@ -401,7 +401,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
         "options": {
           "Control": "LeftStickDown",
           "PressState": "Press",
@@ -411,7 +411,7 @@
         }
       },
       "trigger": {
-        "$type": "Key2Joy.Mapping.KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.Triggers.Keyboard.KeyboardTrigger",
         "options": {
           "Keys": "S",
           "PressState": "Press",
@@ -422,7 +422,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.AppCommandAction",
+        "$type": "Key2Joy.Mapping.Actions.Logic.AppCommandAction",
         "options": {
           "Command": "Abort",
           "ImageResource": null,
@@ -430,7 +430,7 @@
         }
       },
       "trigger": {
-        "$type": "Key2Joy.Mapping.KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.Triggers.Keyboard.KeyboardTrigger",
         "options": {
           "Keys": "Escape",
           "PressState": "Press",
@@ -441,7 +441,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.LuaScriptAction",
+        "$type": "Key2Joy.Mapping.Actions.Scripting.LuaScriptAction",
         "options": {
           "Script": "print(\u0022Shift \u002B A was pressed\u0022)",
           "IsScriptPath": false,
@@ -450,11 +450,11 @@
         }
       },
       "trigger": {
-        "$type": "Key2Joy.Mapping.CombinedTrigger",
+        "$type": "Key2Joy.Mapping.Triggers.Logic.CombinedTrigger",
         "options": {
           "Triggers": [
             {
-              "$type": "Key2Joy.Mapping.KeyboardTrigger",
+              "$type": "Key2Joy.Mapping.Triggers.Keyboard.KeyboardTrigger",
               "options": {
                 "Keys": "A",
                 "PressState": "Press",
@@ -463,7 +463,7 @@
               }
             },
             {
-              "$type": "Key2Joy.Mapping.KeyboardTrigger",
+              "$type": "Key2Joy.Mapping.Triggers.Keyboard.KeyboardTrigger",
               "options": {
                 "Keys": "LShiftKey",
                 "PressState": "Press",
@@ -479,14 +479,14 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.SequenceAction",
+        "$type": "Key2Joy.Mapping.Actions.Logic.SequenceAction",
         "options": {
           "ImageResource": null,
           "Name": "Run Sequence: {0}"
         }
       },
       "trigger": {
-        "$type": "Key2Joy.Mapping.MouseMoveTrigger",
+        "$type": "Key2Joy.Mapping.Triggers.Mouse.MouseMoveTrigger",
         "options": {
           "AxisBinding": "Forward",
           "ImageResource": null,
@@ -496,7 +496,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.AppCommandAction",
+        "$type": "Key2Joy.Mapping.Actions.Logic.AppCommandAction",
         "options": {
           "Command": "Abort",
           "ImageResource": null,
@@ -504,11 +504,11 @@
         }
       },
       "trigger": {
-        "$type": "Key2Joy.Mapping.CombinedTrigger",
+        "$type": "Key2Joy.Mapping.Triggers.Logic.CombinedTrigger",
         "options": {
           "Triggers": [
             {
-              "$type": "Key2Joy.Mapping.KeyboardTrigger",
+              "$type": "Key2Joy.Mapping.Triggers.Keyboard.KeyboardTrigger",
               "options": {
                 "Keys": "D6",
                 "PressState": "Press",
@@ -524,7 +524,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
         "options": {
           "Control": "LeftStickUp",
           "PressState": "Release",
@@ -534,7 +534,7 @@
         }
       },
       "trigger": {
-        "$type": "Key2Joy.Mapping.KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.Triggers.Keyboard.KeyboardTrigger",
         "options": {
           "Keys": "W",
           "PressState": "Release",
@@ -545,7 +545,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
         "options": {
           "Control": "LeftStickRight",
           "PressState": "Release",
@@ -555,7 +555,7 @@
         }
       },
       "trigger": {
-        "$type": "Key2Joy.Mapping.KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.Triggers.Keyboard.KeyboardTrigger",
         "options": {
           "Keys": "D",
           "PressState": "Release",
@@ -566,7 +566,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
         "options": {
           "Control": "LeftStickLeft",
           "PressState": "Release",
@@ -576,7 +576,7 @@
         }
       },
       "trigger": {
-        "$type": "Key2Joy.Mapping.KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.Triggers.Keyboard.KeyboardTrigger",
         "options": {
           "Keys": "A",
           "PressState": "Release",
@@ -587,7 +587,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
         "options": {
           "Control": "LeftStickDown",
           "PressState": "Release",
@@ -597,7 +597,7 @@
         }
       },
       "trigger": {
-        "$type": "Key2Joy.Mapping.KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.Triggers.Keyboard.KeyboardTrigger",
         "options": {
           "Keys": "S",
           "PressState": "Release",
@@ -608,7 +608,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
         "options": {
           "Control": "RightStickUp",
           "PressState": "Press",
@@ -618,7 +618,7 @@
         }
       },
       "trigger": {
-        "$type": "Key2Joy.Mapping.MouseMoveTrigger",
+        "$type": "Key2Joy.Mapping.Triggers.Mouse.MouseMoveTrigger",
         "options": {
           "AxisBinding": "Forward",
           "ImageResource": null,
@@ -628,7 +628,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
         "options": {
           "Control": "RightStickDown",
           "PressState": "Press",
@@ -638,7 +638,7 @@
         }
       },
       "trigger": {
-        "$type": "Key2Joy.Mapping.MouseMoveTrigger",
+        "$type": "Key2Joy.Mapping.Triggers.Mouse.MouseMoveTrigger",
         "options": {
           "AxisBinding": "Backward",
           "ImageResource": null,
@@ -648,7 +648,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
         "options": {
           "Control": "RightStickLeft",
           "PressState": "Press",
@@ -658,7 +658,7 @@
         }
       },
       "trigger": {
-        "$type": "Key2Joy.Mapping.MouseMoveTrigger",
+        "$type": "Key2Joy.Mapping.Triggers.Mouse.MouseMoveTrigger",
         "options": {
           "AxisBinding": "Left",
           "ImageResource": null,
@@ -668,7 +668,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
         "options": {
           "Control": "RightStickRight",
           "PressState": "Press",
@@ -678,7 +678,7 @@
         }
       },
       "trigger": {
-        "$type": "Key2Joy.Mapping.MouseMoveTrigger",
+        "$type": "Key2Joy.Mapping.Triggers.Mouse.MouseMoveTrigger",
         "options": {
           "AxisBinding": "Right",
           "ImageResource": null,
@@ -688,7 +688,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
         "options": {
           "Control": "DPadUp",
           "PressState": "Release",
@@ -698,7 +698,7 @@
         }
       },
       "trigger": {
-        "$type": "Key2Joy.Mapping.KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.Triggers.Keyboard.KeyboardTrigger",
         "options": {
           "Keys": "Up",
           "PressState": "Release",
@@ -709,7 +709,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
         "options": {
           "Control": "DPadRight",
           "PressState": "Release",
@@ -719,7 +719,7 @@
         }
       },
       "trigger": {
-        "$type": "Key2Joy.Mapping.KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.Triggers.Keyboard.KeyboardTrigger",
         "options": {
           "Keys": "Right",
           "PressState": "Release",
@@ -730,7 +730,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
         "options": {
           "Control": "DPadDown",
           "PressState": "Release",
@@ -740,7 +740,7 @@
         }
       },
       "trigger": {
-        "$type": "Key2Joy.Mapping.KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.Triggers.Keyboard.KeyboardTrigger",
         "options": {
           "Keys": "Down",
           "PressState": "Release",
@@ -751,7 +751,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
         "options": {
           "Control": "DPadLeft",
           "PressState": "Release",
@@ -761,7 +761,7 @@
         }
       },
       "trigger": {
-        "$type": "Key2Joy.Mapping.KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.Triggers.Keyboard.KeyboardTrigger",
         "options": {
           "Keys": "Left",
           "PressState": "Release",
@@ -772,7 +772,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
         "options": {
           "Control": "LeftTrigger",
           "PressState": "Release",
@@ -782,7 +782,7 @@
         }
       },
       "trigger": {
-        "$type": "Key2Joy.Mapping.KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.Triggers.Keyboard.KeyboardTrigger",
         "options": {
           "Keys": "D1",
           "PressState": "Release",
@@ -793,7 +793,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
         "options": {
           "Control": "DPadRight",
           "PressState": "Release",
@@ -803,7 +803,7 @@
         }
       },
       "trigger": {
-        "$type": "Key2Joy.Mapping.KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.Triggers.Keyboard.KeyboardTrigger",
         "options": {
           "Keys": "Right",
           "PressState": "Release",
@@ -814,7 +814,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
         "options": {
           "Control": "Start",
           "PressState": "Release",
@@ -824,7 +824,7 @@
         }
       },
       "trigger": {
-        "$type": "Key2Joy.Mapping.KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.Triggers.Keyboard.KeyboardTrigger",
         "options": {
           "Keys": "F1",
           "PressState": "Release",
@@ -835,7 +835,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
         "options": {
           "Control": "Back",
           "PressState": "Release",
@@ -845,7 +845,7 @@
         }
       },
       "trigger": {
-        "$type": "Key2Joy.Mapping.KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.Triggers.Keyboard.KeyboardTrigger",
         "options": {
           "Keys": "F2",
           "PressState": "Release",
@@ -856,7 +856,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
         "options": {
           "Control": "LeftStickClick",
           "PressState": "Release",
@@ -866,7 +866,7 @@
         }
       },
       "trigger": {
-        "$type": "Key2Joy.Mapping.KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.Triggers.Keyboard.KeyboardTrigger",
         "options": {
           "Keys": "LControlKey",
           "PressState": "Release",
@@ -877,7 +877,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
         "options": {
           "Control": "RightStickClick",
           "PressState": "Release",
@@ -887,7 +887,7 @@
         }
       },
       "trigger": {
-        "$type": "Key2Joy.Mapping.KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.Triggers.Keyboard.KeyboardTrigger",
         "options": {
           "Keys": "RControlKey",
           "PressState": "Release",
@@ -898,7 +898,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
         "options": {
           "Control": "LeftShoulder",
           "PressState": "Release",
@@ -908,7 +908,7 @@
         }
       },
       "trigger": {
-        "$type": "Key2Joy.Mapping.KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.Triggers.Keyboard.KeyboardTrigger",
         "options": {
           "Keys": "Q",
           "PressState": "Release",
@@ -919,7 +919,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
         "options": {
           "Control": "RightShoulder",
           "PressState": "Release",
@@ -929,7 +929,7 @@
         }
       },
       "trigger": {
-        "$type": "Key2Joy.Mapping.KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.Triggers.Keyboard.KeyboardTrigger",
         "options": {
           "Keys": "E",
           "PressState": "Release",
@@ -940,7 +940,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
         "options": {
           "Control": "A",
           "PressState": "Release",
@@ -950,7 +950,7 @@
         }
       },
       "trigger": {
-        "$type": "Key2Joy.Mapping.KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.Triggers.Keyboard.KeyboardTrigger",
         "options": {
           "Keys": "F",
           "PressState": "Release",
@@ -961,7 +961,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
         "options": {
           "Control": "B",
           "PressState": "Release",
@@ -971,7 +971,7 @@
         }
       },
       "trigger": {
-        "$type": "Key2Joy.Mapping.KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.Triggers.Keyboard.KeyboardTrigger",
         "options": {
           "Keys": "Z",
           "PressState": "Release",
@@ -982,7 +982,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
         "options": {
           "Control": "X",
           "PressState": "Release",
@@ -992,7 +992,7 @@
         }
       },
       "trigger": {
-        "$type": "Key2Joy.Mapping.KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.Triggers.Keyboard.KeyboardTrigger",
         "options": {
           "Keys": "R",
           "PressState": "Release",
@@ -1003,7 +1003,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
         "options": {
           "Control": "Y",
           "PressState": "Release",
@@ -1013,7 +1013,7 @@
         }
       },
       "trigger": {
-        "$type": "Key2Joy.Mapping.KeyboardTrigger",
+        "$type": "Key2Joy.Mapping.Triggers.Keyboard.KeyboardTrigger",
         "options": {
           "Keys": "Y",
           "PressState": "Release",
@@ -1024,7 +1024,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
         "options": {
           "Control": "RightStickDown",
           "PressState": "Release",
@@ -1034,7 +1034,7 @@
         }
       },
       "trigger": {
-        "$type": "Key2Joy.Mapping.MouseMoveTrigger",
+        "$type": "Key2Joy.Mapping.Triggers.Mouse.MouseMoveTrigger",
         "options": {
           "AxisBinding": "Backward",
           "ImageResource": null,

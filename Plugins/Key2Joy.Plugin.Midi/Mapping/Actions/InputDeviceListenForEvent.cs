@@ -1,10 +1,11 @@
-﻿using Key2Joy.Contracts.Mapping;
+using System;
+using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Contracts.Plugins;
 using Melanchall.DryWetMidi.Core;
 using Melanchall.DryWetMidi.Multimedia;
-using System;
 
-namespace Key2Joy.Plugin.Midi.Mapping
+namespace Key2Joy.Plugin.Midi.Mapping.Actions
 {
     [Action(
         Description = "MidiInputDevice.InputDeviceListenForEvent",

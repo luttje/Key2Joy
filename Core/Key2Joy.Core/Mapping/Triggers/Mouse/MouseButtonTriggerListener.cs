@@ -1,8 +1,8 @@
-﻿using Key2Joy.Contracts.Mapping;
+﻿using System.Collections.Generic;
+using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.LowLevelInput;
-using System.Collections.Generic;
 
-namespace Key2Joy.Mapping
+namespace Key2Joy.Mapping.Triggers.Mouse
 {
     public class MouseButtonTriggerListener : PressReleaseTriggerListener<MouseButtonTrigger>
     {
@@ -18,18 +18,18 @@ namespace Key2Joy.Mapping
         }
 
         private GlobalInputHook globalMouseButtonHook;
-        private readonly Dictionary<Mouse.Buttons, bool> currentButtonsDown = new();
+        private readonly Dictionary<LowLevelInput.Mouse.Buttons, bool> currentButtonsDown = new();
 
-        public bool GetButtonsDown(Mouse.Buttons buttons)
+        public bool GetButtonsDown(LowLevelInput.Mouse.Buttons buttons)
         {
-            return currentButtonsDown.ContainsKey(buttons);
+            return this.currentButtonsDown.ContainsKey(buttons);
         }
 
         protected override void Start()
         {
             // This captures global mouse input and blocks default behaviour by setting e.Handled
-            globalMouseButtonHook = new GlobalInputHook();
-            globalMouseButtonHook.MouseInputEvent += OnMouseButtonInputEvent;
+            this.globalMouseButtonHook = new GlobalInputHook();
+            this.globalMouseButtonHook.MouseInputEvent += this.OnMouseButtonInputEvent;
 
             base.Start();
         }
@@ -37,9 +37,9 @@ namespace Key2Joy.Mapping
         protected override void Stop()
         {
             instance = null;
-            globalMouseButtonHook.MouseInputEvent -= OnMouseButtonInputEvent;
-            globalMouseButtonHook.Dispose();
-            globalMouseButtonHook = null;
+            this.globalMouseButtonHook.MouseInputEvent -= this.OnMouseButtonInputEvent;
+            this.globalMouseButtonHook.Dispose();
+            this.globalMouseButtonHook = null;
 
             base.Stop();
         }
@@ -51,12 +51,12 @@ namespace Key2Joy.Mapping
                 return false;
             }
 
-            return currentButtonsDown.ContainsKey(mouseButtonTrigger.MouseButtons);
+            return this.currentButtonsDown.ContainsKey(mouseButtonTrigger.MouseButtons);
         }
 
         private void OnMouseButtonInputEvent(object sender, GlobalMouseHookEventArgs e)
         {
-            if (!IsActive)
+            if (!this.IsActive)
             {
                 return;
             }
@@ -67,27 +67,27 @@ namespace Key2Joy.Mapping
                 return;
             }
 
-            var buttons = Mouse.ButtonsFromEvent(e, out var isDown);
-            var dictionary = lookupRelease;
+            var buttons = LowLevelInput.Mouse.ButtonsFromEvent(e, out var isDown);
+            var dictionary = this.lookupRelease;
 
             if (isDown)
             {
-                dictionary = lookupDown;
+                dictionary = this.lookupDown;
 
-                if (currentButtonsDown.ContainsKey(buttons))
+                if (this.currentButtonsDown.ContainsKey(buttons))
                 {
                     return; // Prevent firing multiple times for a single key press
                 }
                 else
                 {
-                    currentButtonsDown.Add(buttons, true);
+                    this.currentButtonsDown.Add(buttons, true);
                 }
             }
             else
             {
-                if (currentButtonsDown.ContainsKey(buttons))
+                if (this.currentButtonsDown.ContainsKey(buttons))
                 {
-                    currentButtonsDown.Remove(buttons);
+                    this.currentButtonsDown.Remove(buttons);
                 }
             }
 
@@ -102,7 +102,7 @@ namespace Key2Joy.Mapping
             var hash = MouseButtonTrigger.GetInputHashFor(buttons);
             dictionary.TryGetValue(hash, out var mappedOptions);
 
-            if (DoExecuteTrigger(
+            if (this.DoExecuteTrigger(
                 mappedOptions,
                 inputBag,
                 trigger =>

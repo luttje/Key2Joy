@@ -1,7 +1,7 @@
-﻿using Key2Joy.Contracts.Mapping;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Key2Joy.Contracts.Mapping.Triggers;
 
-namespace Key2Joy.Mapping
+namespace Key2Joy.Mapping.Triggers.Logic
 {
     public class CombinedInputBag : AbstractInputBag
     {

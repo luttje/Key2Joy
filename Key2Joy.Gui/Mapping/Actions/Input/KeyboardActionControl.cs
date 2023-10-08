@@ -1,13 +1,14 @@
-﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.LowLevelInput;
-using Key2Joy.Mapping;
-using System;
+﻿using System;
 using System.Windows.Forms;
+using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Mapping.Actions;
+using Key2Joy.LowLevelInput;
+using Key2Joy.Mapping.Actions.Input;
 
 namespace Key2Joy.Gui.Mapping
 {
     [MappingControl(
-        ForType = typeof(Key2Joy.Mapping.KeyboardAction),
+        ForType = typeof(KeyboardAction),
         ImageResourceName = "keyboard"
     )]
     public partial class KeyboardActionControl : UserControl, IActionOptionsControl
@@ -16,27 +17,27 @@ namespace Key2Joy.Gui.Mapping
 
         public KeyboardActionControl()
         {
-            InitializeComponent();
+            this.InitializeComponent();
 
-            cmbKeyboard.DataSource = KeyboardAction.GetAllKeys();
-            cmbPressState.DataSource = PressStates.ALL;
-            cmbPressState.SelectedIndex = 0;
+            this.cmbKeyboard.DataSource = KeyboardAction.GetAllKeys();
+            this.cmbPressState.DataSource = PressStates.ALL;
+            this.cmbPressState.SelectedIndex = 0;
         }
 
         public void Select(object action)
         {
             var thisAction = (KeyboardAction)action;
 
-            cmbKeyboard.SelectedItem = thisAction.Key;
-            cmbPressState.SelectedItem = thisAction.PressState;
+            this.cmbKeyboard.SelectedItem = thisAction.Key;
+            this.cmbPressState.SelectedItem = thisAction.PressState;
         }
 
         public void Setup(object action)
         {
             var thisAction = (KeyboardAction)action;
 
-            thisAction.Key = (KeyboardKey)cmbKeyboard.SelectedItem;
-            thisAction.PressState = (PressState)cmbPressState.SelectedItem;
+            thisAction.Key = (KeyboardKey)this.cmbKeyboard.SelectedItem;
+            thisAction.PressState = (PressState)this.cmbPressState.SelectedItem;
         }
 
         public bool CanMappingSave(object action)

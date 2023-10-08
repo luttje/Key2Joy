@@ -6,13 +6,13 @@ namespace Key2Joy.Gui
     {
         public PluginPermissionControl()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         public PluginPermissionControl(string permissionDescription)
             : this()
         {
-            lblPermission.Text = permissionDescription;
+            this.lblPermission.Text = permissionDescription;
         }
     }
 }

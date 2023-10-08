@@ -1,13 +1,15 @@
-﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.Mapping;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Mapping.Triggers;
+using Key2Joy.Mapping.Triggers;
+using Key2Joy.Mapping.Triggers.Logic;
 
 namespace Key2Joy.Gui.Mapping
 {
     [MappingControl(
-        ForType = typeof(Key2Joy.Mapping.CombinedTrigger),
+        ForType = typeof(CombinedTrigger),
         ImageResourceName = "link"
     )]
     public partial class CombinedTriggerControl : UserControl, ITriggerOptionsControl
@@ -16,7 +18,7 @@ namespace Key2Joy.Gui.Mapping
 
         public CombinedTriggerControl()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         private CombinedTriggerControlItem AddTriggerControl(AbstractTrigger trigger = null)
@@ -29,20 +31,20 @@ namespace Key2Joy.Gui.Mapping
             triggerControl.RequestedRemove += (s, _) =>
             {
                 var control = s as CombinedTriggerControlItem;
-                pnlTriggers.Controls.Remove(control);
+                this.pnlTriggers.Controls.Remove(control);
                 control.Dispose();
-                PerformLayout();
+                this.PerformLayout();
             };
             triggerControl.TriggerChanged += (s, _) => this.OptionsChanged?.Invoke(this, EventArgs.Empty);
-            pnlTriggers.Controls.Add(triggerControl);
-            PerformLayout();
+            this.pnlTriggers.Controls.Add(triggerControl);
+            this.PerformLayout();
 
             return triggerControl;
         }
 
         private void BtnAddTrigger_Click(object sender, EventArgs e)
         {
-            AddTriggerControl().BringToFront();
+            this.AddTriggerControl().BringToFront();
         }
 
         private void NudTimeout_ValueChanged(object sender, EventArgs e)
@@ -58,7 +60,7 @@ namespace Key2Joy.Gui.Mapping
             {
                 foreach (var trigger in thisTrigger.Triggers)
                 {
-                    AddTriggerControl(trigger);
+                    this.AddTriggerControl(trigger);
                 }
             }
         }
@@ -69,7 +71,7 @@ namespace Key2Joy.Gui.Mapping
 
             thisTrigger.Triggers = new List<AbstractTrigger>();
 
-            foreach (var triggerControl in pnlTriggers.Controls)
+            foreach (var triggerControl in this.pnlTriggers.Controls)
             {
                 thisTrigger.Triggers.Add((triggerControl as CombinedTriggerControlItem).Trigger);
             }

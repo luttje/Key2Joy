@@ -35,7 +35,7 @@ namespace Key2Joy.Config
                 GetAppDirectory(),
                 CONFIG_PATH);
 
-            File.WriteAllText(configPath, JsonSerializer.Serialize(configState, options));
+            File.WriteAllText(configPath, JsonSerializer.Serialize(this.configState, options));
         }
 
         private static ConfigManager LoadOrCreate()
@@ -119,24 +119,24 @@ namespace Key2Joy.Config
         {
             if (permissionsChecksumOrNull != null)
             {
-                if (!configState.EnabledPlugins.ContainsKey(pluginAssemblyPath))
+                if (!this.configState.EnabledPlugins.ContainsKey(pluginAssemblyPath))
                 {
-                    configState.EnabledPlugins.Add(pluginAssemblyPath, permissionsChecksumOrNull);
+                    this.configState.EnabledPlugins.Add(pluginAssemblyPath, permissionsChecksumOrNull);
                 }
                 else
                 {
-                    configState.EnabledPlugins[pluginAssemblyPath] = permissionsChecksumOrNull;
+                    this.configState.EnabledPlugins[pluginAssemblyPath] = permissionsChecksumOrNull;
                 }
             }
             else
             {
-                if (configState.EnabledPlugins.ContainsKey(pluginAssemblyPath))
+                if (this.configState.EnabledPlugins.ContainsKey(pluginAssemblyPath))
                 {
-                    configState.EnabledPlugins.Remove(pluginAssemblyPath);
+                    this.configState.EnabledPlugins.Remove(pluginAssemblyPath);
                 }
             }
 
-            Save();
+            this.Save();
         }
     }
 }

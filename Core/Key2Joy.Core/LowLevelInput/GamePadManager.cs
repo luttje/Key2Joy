@@ -1,5 +1,5 @@
-﻿using SimWinInput;
-using System.Linq;
+﻿using System.Linq;
+using SimWinInput;
 
 namespace Key2Joy.LowLevelInput
 {
@@ -24,13 +24,13 @@ namespace Key2Joy.LowLevelInput
 
         public void EnsurePluggedIn(int gamePadIndex)
         {
-            if (pluggedInGamePads[gamePadIndex])
+            if (this.pluggedInGamePads[gamePadIndex])
             {
                 return;
             }
 
             SimGamePad.Instance.PlugIn(gamePadIndex);
-            pluggedInGamePads[gamePadIndex] = true;
+            this.pluggedInGamePads[gamePadIndex] = true;
         }
 
         public int[] GetAllGamePadIndices()
@@ -40,20 +40,20 @@ namespace Key2Joy.LowLevelInput
 
         public void EnsureUnplugged(int gamePadIndex)
         {
-            if (!pluggedInGamePads[gamePadIndex])
+            if (!this.pluggedInGamePads[gamePadIndex])
             {
                 return;
             }
 
             SimGamePad.Instance.Unplug(gamePadIndex);
-            pluggedInGamePads[gamePadIndex] = false;
+            this.pluggedInGamePads[gamePadIndex] = false;
         }
 
         public void EnsureAllUnplugged()
         {
             for (var i = 0; i < MAX_GAMEPADS; i++)
             {
-                EnsureUnplugged(i);
+                this.EnsureUnplugged(i);
             }
         }
     }

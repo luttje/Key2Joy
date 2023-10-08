@@ -1,7 +1,7 @@
-﻿using Key2Joy.Contracts.Mapping;
+﻿using System;
+using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Plugins;
-using Key2Joy.Mapping;
-using System;
+using Key2Joy.Mapping.Actions;
 
 namespace Key2Joy.Plugins
 {
@@ -17,14 +17,14 @@ namespace Key2Joy.Plugins
 
         public PluginAction GetRealObject()
         {
-            return source.GetPluginAction;
+            return this.source.GetPluginAction;
         }
 
         public override MappingAspectOptions SaveOptions()
         {
             var options = base.SaveOptions();
 
-            options = source.BuildSaveOptions(options);
+            options = this.source.BuildSaveOptions(options);
 
             return options;
         }
@@ -33,19 +33,19 @@ namespace Key2Joy.Plugins
         {
             base.LoadOptions(options);
 
-            source.LoadOptions(options);
+            this.source.LoadOptions(options);
         }
 
         public override string GetNameDisplay()
         {
-            return source.GetNameDisplay(Name);
+            return this.source.GetNameDisplay(this.Name);
         }
 
         internal object InvokeScriptMethod(string methodName, object[] parameters)
         {
             try
             {
-                return source.InvokeScriptMethod(methodName, parameters);
+                return this.source.InvokeScriptMethod(methodName, parameters);
             }
             catch (Exception ex)
             {

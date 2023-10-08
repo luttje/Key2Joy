@@ -1,13 +1,14 @@
-﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.Mapping;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Mapping.Actions;
+using Key2Joy.Mapping.Actions.Logic;
 
 namespace Key2Joy.Gui.Mapping
 {
     [MappingControl(
-        ForType = typeof(Key2Joy.Mapping.AppCommandAction),
+        ForType = typeof(AppCommandAction),
         ImageResourceName = "application_xp_terminal"
     )]
     public partial class AppCommandActionControl : UserControl, IActionOptionsControl
@@ -16,7 +17,7 @@ namespace Key2Joy.Gui.Mapping
 
         public AppCommandActionControl()
         {
-            InitializeComponent();
+            this.InitializeComponent();
 
             List<AppCommand> appCommands = new();
 
@@ -25,21 +26,21 @@ namespace Key2Joy.Gui.Mapping
                 appCommands.Add(command);
             }
 
-            cmbAppCommand.DataSource = appCommands;
+            this.cmbAppCommand.DataSource = appCommands;
         }
 
         public void Select(object action)
         {
             var thisAction = (AppCommandAction)action;
 
-            cmbAppCommand.SelectedItem = thisAction.Command;
+            this.cmbAppCommand.SelectedItem = thisAction.Command;
         }
 
         public void Setup(object action)
         {
             var thisAction = (AppCommandAction)action;
 
-            thisAction.Command = (AppCommand)cmbAppCommand.SelectedItem;
+            thisAction.Command = (AppCommand)this.cmbAppCommand.SelectedItem;
         }
         public bool CanMappingSave(object action)
         {

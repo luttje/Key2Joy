@@ -26,7 +26,7 @@ namespace BuildMarkdownDocs
 
         public override string ToString()
         {
-            return $"\n#### _{Language}_:\n```{Language}\n{Code}\n```";
+            return $"\n#### _{this.Language}_:\n```{this.Language}\n{this.Code}\n```";
         }
     }
 }

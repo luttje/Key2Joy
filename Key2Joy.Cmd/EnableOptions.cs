@@ -1,7 +1,7 @@
-﻿using CommandLine;
+﻿using System;
+using CommandLine;
 using Key2Joy.Interop;
 using Key2Joy.Mapping;
-using System;
 
 namespace Key2Joy.Cmd
 {
@@ -20,9 +20,9 @@ namespace Key2Joy.Cmd
         {
             MappingProfile profile;
 
-            if (ProfilePath != null)
+            if (this.ProfilePath != null)
             {
-                profile = MappingProfile.Load(ProfilePath);
+                profile = MappingProfile.Load(this.ProfilePath);
             }
             else
             {
@@ -40,11 +40,11 @@ namespace Key2Joy.Cmd
             }
             catch (TimeoutException)
             {
-                SafelyRetry(() =>
+                this.SafelyRetry(() =>
                 {
                     Console.WriteLine("Key2Joy is not running, starting it now...");
                     Key2JoyManager.StartKey2Joy();
-                    Handle();
+                    this.Handle();
                 });
             }
         }

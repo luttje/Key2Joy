@@ -1,7 +1,8 @@
-﻿using BrightIdeasSoftware;
-using Key2Joy.Mapping;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Windows.Forms;
+using BrightIdeasSoftware;
+using Key2Joy.Mapping;
+using Key2Joy.Mapping.Actions;
 
 namespace Key2Joy.Gui
 {
@@ -21,9 +22,9 @@ namespace Key2Joy.Gui
             var mappedOptionX = x.RowObject as MappedOption;
             var mappedOptionY = y.RowObject as MappedOption;
 
-            var sortDirection = primarySortOrder == SortOrder.Ascending ? 1 : -1;
+            var sortDirection = this.primarySortOrder == SortOrder.Ascending ? 1 : -1;
 
-            if (typeof(CoreAction).IsAssignableFrom(primarySort.DataType))
+            if (typeof(CoreAction).IsAssignableFrom(this.primarySort.DataType))
             {
                 return mappedOptionX.Action.CompareTo(mappedOptionY.Action) * sortDirection;
             }

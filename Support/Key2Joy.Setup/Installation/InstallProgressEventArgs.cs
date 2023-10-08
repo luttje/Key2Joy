@@ -4,7 +4,7 @@
     {
         internal InstallProgressEventArgs(int progress)
         {
-            ProgressPercentage = progress;
+            this.ProgressPercentage = progress;
         }
 
         internal int ProgressPercentage { get; private set; }

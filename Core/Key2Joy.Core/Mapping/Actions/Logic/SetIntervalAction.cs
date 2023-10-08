@@ -1,10 +1,12 @@
-﻿using Key2Joy.Contracts.Mapping;
-using System;
+﻿using System;
 using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
+using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Mapping.Actions;
+using Key2Joy.Contracts.Mapping.Triggers;
 
-namespace Key2Joy.Mapping
+namespace Key2Joy.Mapping.Actions.Logic
 {
     [Action(
         Description = "Repeatedly calls a function or executes a code snippet, with a fixed time delay between each call",
@@ -65,7 +67,7 @@ namespace Key2Joy.Mapping
         [ExposesScriptingMethod("setInterval")] // Alias to conform to JS standard
         public IdPool.IntervalId ExecuteForScript(CallbackAction callback, long waitTime, params object[] arguments)
         {
-            WaitTime = TimeSpan.FromMilliseconds(waitTime);
+            this.WaitTime = TimeSpan.FromMilliseconds(waitTime);
 
             CancellationTokenSource cancellation = new();
             var token = cancellation.Token;
@@ -75,7 +77,7 @@ namespace Key2Joy.Mapping
                 {
                     token.ThrowIfCancellationRequested();
 
-                    await Task.Delay(WaitTime);
+                    await Task.Delay(this.WaitTime);
 
                     token.ThrowIfCancellationRequested();
 
@@ -89,13 +91,13 @@ namespace Key2Joy.Mapping
         public override Task Execute(AbstractInputBag inputBag = null)
         {
             // Irrelevant because only scripts should use this function
-            return Task.Delay(WaitTime);
+            return Task.Delay(this.WaitTime);
         }
 
         public override string GetNameDisplay()
         {
             // Irrelevant because only scripts should use this function
-            return Name.Replace("{0}", WaitTime.TotalMilliseconds.ToString());
+            return this.Name.Replace("{0}", this.WaitTime.TotalMilliseconds.ToString());
         }
     }
 }

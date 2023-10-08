@@ -1,9 +1,10 @@
-﻿using Key2Joy.Config;
-using Key2Joy.Contracts.Mapping;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Key2Joy.Config;
+using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Mapping.Triggers;
 
-namespace Key2Joy.Mapping
+namespace Key2Joy.Mapping.Triggers
 {
     public abstract class CoreTriggerListener : AbstractTriggerListener
     {
@@ -13,36 +14,36 @@ namespace Key2Joy.Mapping
 
         public override void StartListening(ref IList<AbstractTriggerListener> allListeners)
         {
-            if (IsActive)
+            if (this.IsActive)
             {
                 throw new Exception("Shouldn't StartListening to already active listener!");
             }
 
             this.allListeners = allListeners;
 
-            Start();
+            this.Start();
         }
 
         public override void StopListening()
         {
-            if (!IsActive)
+            if (!this.IsActive)
             {
                 return;
             }
 
-            Stop();
+            this.Stop();
 
-            allListeners = null;
+            this.allListeners = null;
         }
 
         protected virtual void Start()
         {
-            IsActive = true;
+            this.IsActive = true;
         }
 
         protected virtual void Stop()
         {
-            IsActive = false;
+            this.IsActive = false;
         }
 
         /// <summary>

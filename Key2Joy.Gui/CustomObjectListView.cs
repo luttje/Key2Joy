@@ -1,9 +1,9 @@
-﻿using BrightIdeasSoftware;
-using BrightIdeasSoftware.Design;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Diagnostics;
 using System.Security;
 using System.Windows.Forms;
+using BrightIdeasSoftware;
+using BrightIdeasSoftware.Design;
 
 namespace Key2Joy.Gui
 {

@@ -1,7 +1,7 @@
-﻿using Key2Joy.Contracts.Mapping;
-using System;
+﻿using System;
+using Key2Joy.Contracts.Mapping.Triggers;
 
-namespace Key2Joy.Mapping
+namespace Key2Joy.Mapping.Triggers
 {
     public interface ITriggerOptionsControl
     {

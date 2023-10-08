@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Key2Joy.Contracts.Mapping
+namespace Key2Joy.Contracts.Mapping.Triggers
 {
     public class TriggerChangedEventArgs : EventArgs
     {
@@ -8,6 +8,6 @@ namespace Key2Joy.Contracts.Mapping
 
         public AbstractTrigger Trigger { get; private set; }
 
-        public TriggerChangedEventArgs(AbstractTrigger trigger = null) => Trigger = trigger;
+        public TriggerChangedEventArgs(AbstractTrigger trigger = null) => this.Trigger = trigger;
     }
 }

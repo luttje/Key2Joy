@@ -1,13 +1,16 @@
-﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.Mapping;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Mapping.Triggers;
+using Key2Joy.Mapping;
+using Key2Joy.Mapping.Triggers;
+using Key2Joy.Mapping.Triggers.Mouse;
 
 namespace Key2Joy.Gui.Mapping
 {
     [MappingControl(
-        ForType = typeof(Key2Joy.Mapping.MouseMoveTrigger),
+        ForType = typeof(MouseMoveTrigger),
         ImageResourceName = "mouse"
     )]
     public partial class MouseMoveTriggerControl : UserControl, ITriggerOptionsControl
@@ -16,7 +19,7 @@ namespace Key2Joy.Gui.Mapping
 
         public MouseMoveTriggerControl()
         {
-            InitializeComponent();
+            this.InitializeComponent();
 
             List<AxisDirection> directions = new();
 
@@ -28,21 +31,21 @@ namespace Key2Joy.Gui.Mapping
                 }
             }
 
-            cmbMouseDirection.DataSource = directions;
+            this.cmbMouseDirection.DataSource = directions;
         }
 
         public void Select(AbstractTrigger trigger)
         {
             var thisTrigger = (MouseMoveTrigger)trigger;
 
-            cmbMouseDirection.SelectedItem = thisTrigger.AxisBinding;
+            this.cmbMouseDirection.SelectedItem = thisTrigger.AxisBinding;
         }
 
         public void Setup(AbstractTrigger trigger)
         {
             var thisTrigger = (MouseMoveTrigger)trigger;
 
-            thisTrigger.AxisBinding = (AxisDirection)cmbMouseDirection.SelectedItem;
+            thisTrigger.AxisBinding = (AxisDirection)this.cmbMouseDirection.SelectedItem;
         }
 
         private void CmbMouseDirection_SelectedIndexChanged(object sender, EventArgs e)

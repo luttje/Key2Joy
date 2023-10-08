@@ -17,7 +17,7 @@ namespace Key2Joy.Interop
                 pointer = Marshal.AllocHGlobal(bytes.Length);
                 Marshal.Copy(bytes, 0, pointer, bytes.Length);
 
-                return Marshal.PtrToStructure(pointer, StructType);
+                return Marshal.PtrToStructure(pointer, this.StructType);
             }
             finally
             {

@@ -1,5 +1,4 @@
-﻿using Key2Joy.Contracts.Plugins;
-using System;
+﻿using System;
 using System.Collections;
 using System.Diagnostics;
 using System.IO.Pipes;
@@ -9,6 +8,7 @@ using System.Runtime.Remoting.Channels.Ipc;
 using System.Runtime.Serialization.Formatters;
 using System.Threading;
 using System.Windows.Threading;
+using Key2Joy.Contracts.Plugins.Remoting;
 using static Key2Joy.PluginHost.Native;
 
 namespace Key2Joy.PluginHost

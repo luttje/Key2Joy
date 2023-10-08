@@ -1,13 +1,15 @@
-﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.LowLevelInput;
-using Key2Joy.Mapping;
-using System;
+﻿using System;
 using System.Windows.Forms;
+using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Mapping.Triggers;
+using Key2Joy.LowLevelInput;
+using Key2Joy.Mapping.Triggers;
+using Key2Joy.Mapping.Triggers.Keyboard;
 
 namespace Key2Joy.Gui.Mapping
 {
     [MappingControl(
-        ForType = typeof(Key2Joy.Mapping.KeyboardTrigger),
+        ForType = typeof(KeyboardTrigger),
         ImageResourceName = "keyboard"
     )]
     public partial class KeyboardTriggerControl : UserControl, ITriggerOptionsControl
@@ -22,11 +24,11 @@ namespace Key2Joy.Gui.Mapping
 
         public KeyboardTriggerControl()
         {
-            InitializeComponent();
+            this.InitializeComponent();
 
             // This captures global keyboard input and blocks default behaviour by setting e.Handled
             GlobalInputHook globalKeyboardHook = new();
-            globalKeyboardHook.KeyboardInputEvent += OnKeyInputEvent;
+            globalKeyboardHook.KeyboardInputEvent += this.OnKeyInputEvent;
 
             // Relieve input capturing by this mapping form
             Disposed += (s, e) =>
@@ -36,14 +38,14 @@ namespace Key2Joy.Gui.Mapping
                     return;
                 }
 
-                globalKeyboardHook.KeyboardInputEvent -= OnKeyInputEvent;
+                globalKeyboardHook.KeyboardInputEvent -= this.OnKeyInputEvent;
                 globalKeyboardHook.Dispose();
                 globalKeyboardHook = null;
             };
-            ControlRemoved += (s, e) => Dispose();
+            ControlRemoved += (s, e) => this.Dispose();
 
-            cmbPressState.DataSource = PressStates.ALL;
-            cmbPressState.SelectedIndex = 0;
+            this.cmbPressState.DataSource = PressStates.ALL;
+            this.cmbPressState.SelectedIndex = 0;
 
             // Removed because this is annoying when you want to just edit code
             //StartTrapping();
@@ -51,14 +53,14 @@ namespace Key2Joy.Gui.Mapping
 
         private void OnKeyInputEvent(object sender, GlobalKeyboardHookEventArgs e)
         {
-            if (!isTrapping)
+            if (!this.isTrapping)
             {
                 return;
             }
 
-            keys = VirtualKeyConverter.KeysFromVirtual(e.KeyboardData.VirtualCode);
-            UpdateKeys();
-            StopTrapping();
+            this.keys = VirtualKeyConverter.KeysFromVirtual(e.KeyboardData.VirtualCode);
+            this.UpdateKeys();
+            this.StopTrapping();
         }
 
         public void Select(AbstractTrigger trigger)
@@ -66,8 +68,8 @@ namespace Key2Joy.Gui.Mapping
             var thisTrigger = (KeyboardTrigger)trigger;
 
             this.keys = thisTrigger.Keys;
-            cmbPressState.SelectedItem = thisTrigger.PressState;
-            UpdateKeys();
+            this.cmbPressState.SelectedItem = thisTrigger.PressState;
+            this.UpdateKeys();
         }
 
         public void Setup(AbstractTrigger trigger)
@@ -75,24 +77,24 @@ namespace Key2Joy.Gui.Mapping
             var thisTrigger = (KeyboardTrigger)trigger;
 
             thisTrigger.Keys = this.keys;
-            thisTrigger.PressState = (PressState)cmbPressState.SelectedItem;
+            thisTrigger.PressState = (PressState)this.cmbPressState.SelectedItem;
         }
 
         private void StartTrapping()
         {
-            txtKeyBind.Text = TEXT_CHANGE;
-            txtKeyBind.Focus();
-            isTrapping = true;
+            this.txtKeyBind.Text = TEXT_CHANGE;
+            this.txtKeyBind.Focus();
+            this.isTrapping = true;
         }
 
         private void StopTrapping()
         {
-            isTrapping = false;
+            this.isTrapping = false;
         }
 
         private void UpdateKeys()
         {
-            txtKeyBind.Text = $"{keys} {TEXT_CHANGE_INSTRUCTION}";
+            this.txtKeyBind.Text = $"{this.keys} {TEXT_CHANGE_INSTRUCTION}";
             OptionsChanged?.Invoke(this, EventArgs.Empty);
         }
 
@@ -103,7 +105,7 @@ namespace Key2Joy.Gui.Mapping
 
         private void TxtKeyBind_MouseUp(object sender, MouseEventArgs e)
         {
-            StartTrapping();
+            this.StartTrapping();
         }
     }
 }

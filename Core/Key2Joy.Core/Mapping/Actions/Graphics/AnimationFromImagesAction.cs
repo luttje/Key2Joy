@@ -1,9 +1,11 @@
-﻿using Key2Joy.Contracts.Mapping;
-using NLua;
-using System;
+﻿using System;
 using System.Threading.Tasks;
+using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Mapping.Actions;
+using Key2Joy.Contracts.Mapping.Triggers;
+using NLua;
 
-namespace Key2Joy.Mapping
+namespace Key2Joy.Mapping.Actions.Graphics
 {
     [Action(
         Description = "Create a gif from a sequence of images",

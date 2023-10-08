@@ -1,10 +1,10 @@
-﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.Util;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
+using Key2Joy.Contracts.Mapping.Actions;
+using Key2Joy.Util;
 
 namespace Key2Joy.Plugins
 {
@@ -15,8 +15,8 @@ namespace Key2Joy.Plugins
 
         public ExposedMethod(string functionName, string methodName)
         {
-            FunctionName = functionName;
-            MethodName = methodName;
+            this.FunctionName = functionName;
+            this.MethodName = methodName;
         }
 
         public abstract Delegate CreateDelegate(AbstractAction instance);
@@ -29,12 +29,12 @@ namespace Key2Joy.Plugins
         public TypeExposedMethod(string functionName, string methodName, Type type)
             : base(functionName, methodName)
         {
-            Type = type;
+            this.Type = type;
         }
 
         public override Delegate CreateDelegate(AbstractAction instance)
         {
-            var method = Type.GetMethod(MethodName);
+            var method = this.Type.GetMethod(this.MethodName);
 
             return method.CreateDelegate(instance);
         }
@@ -52,12 +52,12 @@ namespace Key2Joy.Plugins
             : base(functionName, methodName)
         {
             this.pluginHost = pluginHost;
-            TypeName = typeName;
+            this.TypeName = typeName;
         }
 
         public override Delegate CreateDelegate(AbstractAction instance)
         {
-            var methodInfo = GetExecutorMethodInfo((PluginActionProxy)instance);
+            var methodInfo = this.GetExecutorMethodInfo((PluginActionProxy)instance);
             var parameters = methodInfo.GetParameters();
             var parameterTypes = parameters.Select(p => p.ParameterType).ToArray();
             var delegateType = ExpressionUtil.GetDelegateType(parameterTypes, methodInfo.ReturnType);
@@ -70,12 +70,12 @@ namespace Key2Joy.Plugins
         {
             var key = typeof(T);
 
-            if (parameterTransformers.ContainsKey(key))
+            if (this.parameterTransformers.ContainsKey(key))
             {
-                parameterTransformers.Remove(key);
+                this.parameterTransformers.Remove(key);
             }
 
-            parameterTransformers.Add(key, o =>
+            this.parameterTransformers.Add(key, o =>
             {
                 return transformer((T)o);
             });
@@ -86,7 +86,7 @@ namespace Key2Joy.Plugins
             // Check if any of the parameters are not serializable/MarshalByRefObject and need to be wrapped.
             var transformedParameters = parameters.Select(p =>
             {
-                if (parameterTransformers.TryGetValue(p.GetType(), out var transformer))
+                if (this.parameterTransformers.TryGetValue(p.GetType(), out var transformer))
                 {
                     return transformer(p);
                 }
@@ -104,7 +104,7 @@ namespace Key2Joy.Plugins
                 throw new NotImplementedException("Parameter type not supported to cross AppDomain boundary: " + p.GetType().FullName);
             }).ToArray();
 
-            return this.currentInstance.InvokeScriptMethod(MethodName, transformedParameters);
+            return this.currentInstance.InvokeScriptMethod(this.MethodName, transformedParameters);
         }
 
         /// <summary>

@@ -1,9 +1,12 @@
-﻿using Key2Joy.Contracts.Mapping;
-using System;
+﻿using System;
 using System.Drawing;
 using System.Threading.Tasks;
+using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Mapping.Actions;
+using Key2Joy.Contracts.Mapping.Triggers;
+using Key2Joy.Mapping.Actions.Scripting;
 
-namespace Key2Joy.Mapping
+namespace Key2Joy.Mapping.Actions.Graphics
 {
     [Action(
         Description = "Get Pixel Color",
@@ -49,11 +52,11 @@ namespace Key2Joy.Mapping
 
             lock (BaseScriptAction.LockObject)
             {
-                using var g = Graphics.FromImage(pixelCache);
-                g.CopyFromScreen(bounds.Location, System.Drawing.Point.Empty, bounds.Size);
+                using var g = System.Drawing.Graphics.FromImage(this.pixelCache);
+                g.CopyFromScreen(bounds.Location, Point.Empty, bounds.Size);
             }
 
-            return pixelCache.GetPixel(0, 0);
+            return this.pixelCache.GetPixel(0, 0);
         }
 
         public override async Task Execute(AbstractInputBag inputBag = null)

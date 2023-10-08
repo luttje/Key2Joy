@@ -13,7 +13,7 @@ namespace BuildMarkdownDocs
 
         internal override string GetLinkMarkdown()
         {
-            return $"* [`{Name}`]({Parent.Path}{Name}.md)";
+            return $"* [`{this.Name}`]({this.Parent.Path}{this.Name}.md)";
         }
 
         internal override void FillTemplateReplacements(ref Dictionary<string, string> replacements)
@@ -23,11 +23,11 @@ namespace BuildMarkdownDocs
             StringBuilder allEnumerations = new();
             string firstName = null;
 
-            foreach (var name in Enum.GetNames(Type))
+            foreach (var name in Enum.GetNames(this.Type))
             {
-                var memberInfo = Type.GetMember(name);
+                var memberInfo = this.Type.GetMember(name);
                 var enumValueMemberInfo = memberInfo.FirstOrDefault(
-                    m => m.DeclaringType == Type);
+                    m => m.DeclaringType == this.Type);
                 var valueAttributes = enumValueMemberInfo.GetCustomAttribute(typeof(ObsoleteAttribute), false);
 
                 if (valueAttributes != null)
@@ -37,15 +37,15 @@ namespace BuildMarkdownDocs
 
                 firstName ??= name;
 
-                var summary = ValueSummaries != null && ValueSummaries.ContainsKey(name)
-                    ? $": {ValueSummaries[name]}" : "";
+                var summary = this.ValueSummaries != null && this.ValueSummaries.ContainsKey(name)
+                    ? $": {this.ValueSummaries[name]}" : "";
 
                 allEnumerations.AppendLine($"* `{name}`{summary}");
             }
 
             if (firstName != null)
             {
-                replacements.Add("Example", $"`{Name}.{firstName}`");
+                replacements.Add("Example", $"`{this.Name}.{firstName}`");
             }
 
             replacements.Add("Values", allEnumerations.ToString());

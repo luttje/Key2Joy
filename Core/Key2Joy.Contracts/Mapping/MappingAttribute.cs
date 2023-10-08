@@ -22,17 +22,17 @@ namespace Key2Joy.Contracts.Mapping
 
         public override string ToString()
         {
-            return Description;
+            return this.Description;
         }
 
         public override int GetHashCode()
         {
-            return Description.GetHashCode();
+            return this.Description.GetHashCode();
         }
 
         public int CompareTo(MappingAttribute other)
         {
-            return Description.CompareTo(other.Description);
+            return this.Description.CompareTo(other.Description);
         }
     }
 }

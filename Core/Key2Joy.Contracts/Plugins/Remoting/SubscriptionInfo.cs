@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace Key2Joy.Contracts.Plugins
+namespace Key2Joy.Contracts.Plugins.Remoting
 {
     [Serializable]
     public struct SubscriptionInfo : ISafeSerializationData
@@ -11,8 +11,8 @@ namespace Key2Joy.Contracts.Plugins
 
         public SubscriptionInfo(string eventName, string subscriptionId)
         {
-            EventName = eventName ?? throw new ArgumentNullException(nameof(eventName));
-            Id = subscriptionId;
+            this.EventName = eventName ?? throw new ArgumentNullException(nameof(eventName));
+            this.Id = subscriptionId;
         }
 
         public void CompleteDeserialization(object deserialized)

@@ -1,11 +1,12 @@
-﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.Plugins;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Mapping.Actions;
+using Key2Joy.Plugins;
 
-namespace Key2Joy.Mapping
+namespace Key2Joy.Mapping.Actions
 {
     public static class ActionsRepository
     {

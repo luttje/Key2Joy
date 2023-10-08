@@ -1,6 +1,6 @@
-﻿using Key2Joy.Contracts.Mapping;
+﻿using Key2Joy.Contracts.Mapping.Triggers;
 
-namespace Key2Joy.Mapping
+namespace Key2Joy.Mapping.Triggers
 {
     public abstract class CoreTrigger : AbstractTrigger
     {

@@ -1,9 +1,11 @@
-﻿using Key2Joy.Contracts.Mapping;
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Mapping.Actions;
+using Key2Joy.Contracts.Mapping.Triggers;
 
-namespace Key2Joy.Mapping
+namespace Key2Joy.Mapping.Actions.Windows
 {
     [Action(
         Description = "Find Window Handle",
@@ -36,10 +38,10 @@ namespace Key2Joy.Mapping
         [ExposesScriptingMethod("Window.Find")]
         public IntPtr ExecuteForScript(string className, string windowTitle = null)
         {
-            ClassName = className;
-            WindowName = windowTitle;
+            this.ClassName = className;
+            this.WindowName = windowTitle;
 
-            var windowHandle = FindWindow(ClassName, WindowName);
+            var windowHandle = FindWindow(this.ClassName, this.WindowName);
             return windowHandle;
         }
 
@@ -50,8 +52,8 @@ namespace Key2Joy.Mapping
 
         public override string GetNameDisplay()
         {
-            return Name.Replace("{0}", ClassName)
-                .Replace("{1}", WindowName);
+            return this.Name.Replace("{0}", this.ClassName)
+                .Replace("{1}", this.WindowName);
         }
 
         public override bool Equals(object obj)
@@ -61,8 +63,8 @@ namespace Key2Joy.Mapping
                 return false;
             }
 
-            return action.ClassName == ClassName
-                && action.WindowName == WindowName;
+            return action.ClassName == this.ClassName
+                && action.WindowName == this.WindowName;
         }
     }
 }

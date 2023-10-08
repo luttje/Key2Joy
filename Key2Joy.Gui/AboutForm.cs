@@ -8,13 +8,13 @@ namespace Key2Joy.Gui
     {
         public AboutForm()
         {
-            InitializeComponent();
-            this.Text = String.Format("About {0}", AssemblyTitle);
-            this.labelProductName.Text = AssemblyProduct;
-            this.labelVersion.Text = String.Format("Version {0}", AssemblyVersion);
-            this.labelCopyright.Text = AssemblyCopyright;
+            this.InitializeComponent();
+            this.Text = String.Format("About {0}", this.AssemblyTitle);
+            this.labelProductName.Text = this.AssemblyProduct;
+            this.labelVersion.Text = String.Format("Version {0}", this.AssemblyVersion);
+            this.labelCopyright.Text = this.AssemblyCopyright;
 
-            CalculateLogoSize();
+            this.CalculateLogoSize();
         }
 
         #region Assembly Attribute Accessors
@@ -99,12 +99,12 @@ namespace Key2Joy.Gui
 
         private void AboutForm_Resize(object sender, EventArgs e)
         {
-            CalculateLogoSize();
+            this.CalculateLogoSize();
         }
 
         private void CalculateLogoSize()
         {
-            pctLogo.Height = pctLogo.Width;
+            this.pctLogo.Height = this.pctLogo.Width;
         }
     }
 }

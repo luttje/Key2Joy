@@ -1,7 +1,7 @@
-﻿using Key2Joy.Mapping;
-using System;
+﻿using System;
 using System.IO.Pipes;
 using System.Runtime.InteropServices;
+using Key2Joy.Mapping;
 
 namespace Key2Joy.Interop
 {
@@ -18,20 +18,20 @@ namespace Key2Joy.Interop
 
         public void Dispose()
         {
-            StopListening();
+            this.StopListening();
         }
 
         public void RestartListening()
         {
-            pipeServer?.Dispose();
+            this.pipeServer?.Dispose();
 
-            pipeServer = new NamedPipeServerStream(PIPE_NAME, PipeDirection.InOut, 1, PipeTransmissionMode.Message, PipeOptions.Asynchronous);
-            pipeServer.BeginWaitForConnection(OnClientConnected, pipeServer);
+            this.pipeServer = new NamedPipeServerStream(PIPE_NAME, PipeDirection.InOut, 1, PipeTransmissionMode.Message, PipeOptions.Asynchronous);
+            this.pipeServer.BeginWaitForConnection(this.OnClientConnected, this.pipeServer);
         }
 
         public void StopListening()
         {
-            pipeServer.Dispose();
+            this.pipeServer.Dispose();
         }
 
         private void HandleEnableCommand(EnableCommand command)
@@ -80,15 +80,15 @@ namespace Key2Joy.Interop
             switch (command)
             {
                 case EnableCommand enableCommand:
-                    HandleEnableCommand(enableCommand);
+                    this.HandleEnableCommand(enableCommand);
                     break;
                 case DisableCommand disableCommand:
-                    HandleDisableCommand(disableCommand);
+                    this.HandleDisableCommand(disableCommand);
                     break;
             }
 
             // Restore the connection for the next client
-            RestartListening();
+            this.RestartListening();
         }
     }
 }

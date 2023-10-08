@@ -1,11 +1,12 @@
-﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.Contracts.Plugins;
-using Melanchall.DryWetMidi.Multimedia;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Mapping.Actions;
+using Key2Joy.Contracts.Plugins;
+using Melanchall.DryWetMidi.Multimedia;
 
-namespace Key2Joy.Plugin.Midi.Mapping
+namespace Key2Joy.Plugin.Midi.Mapping.Actions
 {
     [Action(
         Description = "MidiInputDevice.GetAll",

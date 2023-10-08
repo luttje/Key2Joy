@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.Json.Serialization;
 
-namespace Key2Joy.Contracts.Mapping
+namespace Key2Joy.Contracts.Mapping.Triggers
 {
     public abstract class AbstractTrigger : AbstractMappingAspect
     {
@@ -43,9 +43,9 @@ namespace Key2Joy.Contracts.Mapping
 
         public virtual void DoActivate(AbstractInputBag inputBag, bool executed = false)
         {
-            LastActivated = DateTime.Now;
-            LastInputBag = inputBag;
-            ExecutedLastActivation = executed;
+            this.LastActivated = DateTime.Now;
+            this.LastInputBag = inputBag;
+            this.ExecutedLastActivation = executed;
         }
     }
 }

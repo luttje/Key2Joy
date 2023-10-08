@@ -24,8 +24,8 @@ namespace Key2Joy.Plugins
 
         public PluginLoadState(string assemblyPath, Type pluginType = null)
         {
-            AssemblyPath = assemblyPath;
-            PluginType = pluginType;
+            this.AssemblyPath = assemblyPath;
+            this.PluginType = pluginType;
         }
 
         internal void SetPluginHost(PluginHostProxy pluginHost)

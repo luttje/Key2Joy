@@ -1,9 +1,12 @@
-﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.LowLevelInput;
-using System;
+﻿using System;
 using System.Threading.Tasks;
+using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Mapping.Actions;
+using Key2Joy.Contracts.Mapping.Triggers;
+using Key2Joy.LowLevelInput;
+using Key2Joy.Mapping.Triggers.Mouse;
 
-namespace Key2Joy.Mapping
+namespace Key2Joy.Mapping.Actions.Input
 {
     [Action(
         Description = "Get Mouse Button Down",
@@ -53,7 +56,7 @@ namespace Key2Joy.Mapping
 
         public override string GetNameDisplay()
         {
-            return Name;
+            return this.Name;
         }
 
         public override bool Equals(object obj)

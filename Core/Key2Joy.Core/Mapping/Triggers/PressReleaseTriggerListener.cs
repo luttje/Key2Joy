@@ -1,8 +1,8 @@
-﻿using Key2Joy.Contracts.Mapping;
+﻿using System.Collections.Generic;
+using Key2Joy.Contracts.Mapping;
 using Key2Joy.LowLevelInput;
-using System.Collections.Generic;
 
-namespace Key2Joy.Mapping
+namespace Key2Joy.Mapping.Triggers
 {
     public abstract class PressReleaseTriggerListener<TTrigger> : CoreTriggerListener
         where TTrigger : class, IPressState, IReturnInputHash
@@ -12,8 +12,8 @@ namespace Key2Joy.Mapping
 
         protected PressReleaseTriggerListener()
         {
-            lookupDown = new Dictionary<int, List<AbstractMappedOption>>();
-            lookupRelease = new Dictionary<int, List<AbstractMappedOption>>();
+            this.lookupDown = new Dictionary<int, List<AbstractMappedOption>>();
+            this.lookupRelease = new Dictionary<int, List<AbstractMappedOption>>();
         }
 
         public override void AddMappedOption(AbstractMappedOption mappedOption)
@@ -23,12 +23,12 @@ namespace Key2Joy.Mapping
 
             if (trigger.PressState == PressState.Press)
             {
-                dictionary = lookupDown;
+                dictionary = this.lookupDown;
             }
 
             if (trigger.PressState == PressState.Release)
             {
-                dictionary = lookupRelease;
+                dictionary = this.lookupRelease;
             }
 
             if (dictionary == null)

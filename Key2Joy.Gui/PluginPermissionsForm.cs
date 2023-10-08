@@ -7,13 +7,13 @@ namespace Key2Joy.Gui
     {
         private PluginPermissionsForm()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         public PluginPermissionsForm(string[] relevantPermissionDescriptions)
             : this()
         {
-            pnlPermissions.Controls.Clear();
+            this.pnlPermissions.Controls.Clear();
 
             foreach (var permissionDescription in relevantPermissionDescriptions)
             {
@@ -22,20 +22,20 @@ namespace Key2Joy.Gui
                     Dock = DockStyle.Top,
                     AutoSize = true,
                 };
-                pnlPermissions.Controls.Add(permissionControl);
+                this.pnlPermissions.Controls.Add(permissionControl);
             }
 
-            pnlPermissions.Invalidate(true);
+            this.pnlPermissions.Invalidate(true);
         }
 
         private void BtnCancel_Click(object sender, EventArgs e)
         {
-            DialogResult = DialogResult.Cancel;
+            this.DialogResult = DialogResult.Cancel;
         }
 
         private void BtnEnablePlugin_Click(object sender, EventArgs e)
         {
-            DialogResult = DialogResult.OK;
+            this.DialogResult = DialogResult.OK;
         }
     }
 }

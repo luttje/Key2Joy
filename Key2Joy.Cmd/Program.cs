@@ -1,7 +1,7 @@
-﻿using CommandLine;
-using System;
+﻿using System;
 using System.Linq;
 using System.Reflection;
+using CommandLine;
 
 namespace Key2Joy.Cmd
 {

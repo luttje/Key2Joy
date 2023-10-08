@@ -1,7 +1,7 @@
-﻿using Key2Joy.Contracts.Mapping;
+﻿using System;
+using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.Contracts.Plugins;
-using Key2Joy.Mapping;
-using System;
+using Key2Joy.Mapping.Triggers;
 
 namespace Key2Joy.Plugins
 {
@@ -17,7 +17,7 @@ namespace Key2Joy.Plugins
 
         public PluginTrigger GetRealObject()
         {
-            return source.GetPluginTrigger;
+            return this.source.GetPluginTrigger;
         }
 
         public override AbstractTriggerListener GetTriggerListener()

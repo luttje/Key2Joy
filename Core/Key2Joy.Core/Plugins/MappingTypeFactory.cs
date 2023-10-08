@@ -1,6 +1,6 @@
-﻿using Key2Joy.Contracts.Mapping;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Key2Joy.Contracts.Mapping;
 
 namespace Key2Joy.Plugins
 {
@@ -16,19 +16,19 @@ namespace Key2Joy.Plugins
 
         public MappingTypeFactory(string fullTypeName, MappingAttribute attribute, IEnumerable<ExposedMethod> exposedMethods = null)
         {
-            FullTypeName = fullTypeName;
-            Attribute = attribute;
-            ExposedMethods = exposedMethods ?? new List<ExposedMethod>();
+            this.FullTypeName = fullTypeName;
+            this.Attribute = attribute;
+            this.ExposedMethods = exposedMethods ?? new List<ExposedMethod>();
         }
 
         public virtual T CreateInstance<T>(object[] constructorArguments) where T : AbstractMappingAspect
         {
-            return (T)Activator.CreateInstance(ToType(), constructorArguments);
+            return (T)Activator.CreateInstance(this.ToType(), constructorArguments);
         }
 
         public virtual Type ToType()
         {
-            return Type.GetType(FullTypeName);
+            return Type.GetType(this.FullTypeName);
         }
     }
 
@@ -65,12 +65,12 @@ namespace Key2Joy.Plugins
 
         public override T CreateInstance(object[] constructorArguments)
         {
-            return CreateInstance<T>(constructorArguments);
+            return this.CreateInstance<T>(constructorArguments);
         }
 
         public override T CreateInstance<T>(object[] constructorArguments)
         {
-            return pluginHost.CreateAspectInstance<T>(FullTypeName, constructorArguments);
+            return this.pluginHost.CreateAspectInstance<T>(this.FullTypeName, constructorArguments);
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace Key2Joy.Plugins
         /// <returns></returns>
         public override Type ToType()
         {
-            return hostBaseType;
+            return this.hostBaseType;
         }
     }
 }

@@ -1,11 +1,11 @@
-﻿using CommandLine;
-using Key2Joy.Setup.Cmd;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
+using CommandLine;
+using Key2Joy.Setup.Cmd;
 
 namespace Key2Joy.Setup
 {

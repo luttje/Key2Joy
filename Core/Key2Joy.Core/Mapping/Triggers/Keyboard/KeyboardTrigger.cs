@@ -1,10 +1,11 @@
-﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.LowLevelInput;
-using System;
+﻿using System;
 using System.Text.Json.Serialization;
 using System.Windows.Forms;
+using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Mapping.Triggers;
+using Key2Joy.LowLevelInput;
 
-namespace Key2Joy.Mapping
+namespace Key2Joy.Mapping.Triggers.Keyboard
 {
     [Trigger(
         Description = "Keyboard Event"
@@ -34,12 +35,12 @@ namespace Key2Joy.Mapping
 
         public int GetInputHash()
         {
-            return GetInputHashFor(Keys);
+            return GetInputHashFor(this.Keys);
         }
 
         public override string GetUniqueKey()
         {
-            return $"{PREFIX_UNIQUE}_{Keys}";
+            return $"{PREFIX_UNIQUE}_{this.Keys}";
         }
 
         // Keep Press and Release together while sorting
@@ -50,7 +51,7 @@ namespace Key2Joy.Mapping
                 return base.CompareTo(other);
             }
 
-            return $"{Keys}#{(int)PressState}"
+            return $"{this.Keys}#{(int)this.PressState}"
                 .CompareTo($"{otherKeyboardTrigger.Keys}#{(int)otherKeyboardTrigger.PressState}");
         }
 
@@ -61,25 +62,25 @@ namespace Key2Joy.Mapping
                 return false;
             }
 
-            return Equals(other);
+            return this.Equals(other);
         }
 
         public bool Equals(KeyboardTrigger other)
         {
-            return Keys == other.Keys
-                && PressState == other.PressState;
+            return this.Keys == other.Keys
+                && this.PressState == other.PressState;
         }
 
         public override string ToString()
         {
             var format = "(keyboard) {1} {0}";
-            return format.Replace("{0}", Keys.ToString())
-                .Replace("{1}", Enum.GetName(typeof(PressState), PressState));
+            return format.Replace("{0}", this.Keys.ToString())
+                .Replace("{1}", Enum.GetName(typeof(PressState), this.PressState));
         }
 
         public KeyboardState GetKeyboardState()
         {
-            if (PressState == PressState.Press)
+            if (this.PressState == PressState.Press)
             {
                 return KeyboardState.KeyDown;
             }

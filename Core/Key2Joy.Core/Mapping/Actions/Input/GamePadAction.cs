@@ -1,11 +1,13 @@
-﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.LowLevelInput;
-using SimWinInput;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Key2Joy.Contracts.Mapping.Actions;
+using Key2Joy.Contracts.Mapping.Triggers;
+using Key2Joy.LowLevelInput;
+using Key2Joy.Mapping.Triggers.Mouse;
+using SimWinInput;
 
-namespace Key2Joy.Mapping
+namespace Key2Joy.Mapping.Actions.Input
 {
     [Action(
         Description = "GamePad/Controller Simulation",
@@ -58,7 +60,7 @@ namespace Key2Joy.Mapping
         {
             base.OnStartListening(listener, ref otherActions);
 
-            GamePadManager.Instance.EnsurePluggedIn(GamePadIndex);
+            GamePadManager.Instance.EnsurePluggedIn(this.GamePadIndex);
         }
 
         /// <markdown-doc>
@@ -86,20 +88,20 @@ namespace Key2Joy.Mapping
         [ExposesScriptingMethod("GamePad.Simulate")]
         public async void ExecuteForScript(GamePadControl control, PressState pressState, int gamepadIndex = 0)
         {
-            Control = control;
-            PressState = pressState;
-            GamePadIndex = gamepadIndex;
+            this.Control = control;
+            this.PressState = pressState;
+            this.GamePadIndex = gamepadIndex;
 
-            GamePadManager.Instance.EnsurePluggedIn(GamePadIndex);
+            GamePadManager.Instance.EnsurePluggedIn(this.GamePadIndex);
 
-            if (PressState == PressState.Press)
+            if (this.PressState == PressState.Press)
             {
-                SimGamePad.Instance.SetControl(Control, GamePadIndex);
+                SimGamePad.Instance.SetControl(this.Control, this.GamePadIndex);
             }
 
-            if (PressState == PressState.Release)
+            if (this.PressState == PressState.Release)
             {
-                SimGamePad.Instance.ReleaseControl(Control, GamePadIndex);
+                SimGamePad.Instance.ReleaseControl(this.Control, this.GamePadIndex);
             }
         }
 
@@ -109,9 +111,9 @@ namespace Key2Joy.Mapping
             {
                 // TODO: Sensitivity should be tweakable by user
                 // TODO: Support non axis buttons when delta is over a threshold?
-                var state = SimGamePad.Instance.State[GamePadIndex];
+                var state = SimGamePad.Instance.State[this.GamePadIndex];
 
-                switch (Control)
+                switch (this.Control)
                 {
                     case GamePadControl.LeftStickLeft:
                     case GamePadControl.LeftStickRight:
@@ -133,26 +135,26 @@ namespace Key2Joy.Mapping
                         throw new NotImplementedException("This control does not (yet) support mouse axis input");
                 }
 
-                SimGamePad.Instance.Update(GamePadIndex);
+                SimGamePad.Instance.Update(this.GamePadIndex);
 
                 return;
             }
 
-            if (PressState == PressState.Press)
+            if (this.PressState == PressState.Press)
             {
-                SimGamePad.Instance.SetControl(Control, GamePadIndex);
+                SimGamePad.Instance.SetControl(this.Control, this.GamePadIndex);
             }
-            else if (PressState == PressState.Release)
+            else if (this.PressState == PressState.Release)
             {
-                SimGamePad.Instance.ReleaseControl(Control, GamePadIndex);
+                SimGamePad.Instance.ReleaseControl(this.Control, this.GamePadIndex);
             }
         }
 
         public override string GetNameDisplay()
         {
-            return Name.Replace("{0}", Control.ToString())
-                .Replace("{1}", Enum.GetName(typeof(PressState), PressState))
-                .Replace("{2}", GamePadIndex.ToString());
+            return this.Name.Replace("{0}", this.Control.ToString())
+                .Replace("{1}", Enum.GetName(typeof(PressState), this.PressState))
+                .Replace("{2}", this.GamePadIndex.ToString());
         }
 
         public override bool Equals(object obj)
@@ -162,8 +164,8 @@ namespace Key2Joy.Mapping
                 return false;
             }
 
-            return action.Control == Control
-                && action.PressState == PressState;
+            return action.Control == this.Control
+                && action.PressState == this.PressState;
         }
     }
 }

@@ -1,6 +1,6 @@
-﻿using CommandLine;
+﻿using System.Windows.Forms;
+using CommandLine;
 using Key2Joy.Setup.Installation;
-using System.Windows.Forms;
 
 namespace Key2Joy.Setup.Cmd
 {

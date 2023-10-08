@@ -1,16 +1,17 @@
-﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.Mapping;
-using System;
+﻿using System;
 using System.IO;
 using System.Windows.Forms;
+using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Mapping.Actions;
+using Key2Joy.Mapping.Actions.Scripting;
 
 namespace Key2Joy.Gui.Mapping
 {
     [MappingControl(
         ForTypes = new[]
         {
-            typeof(Key2Joy.Mapping.JavascriptAction),
-            typeof(Key2Joy.Mapping.LuaScriptAction),
+            typeof(JavascriptAction),
+            typeof(LuaScriptAction),
         },
         ImageResourceName = "script_code"
     )]
@@ -20,9 +21,9 @@ namespace Key2Joy.Gui.Mapping
 
         public ScriptActionControl()
         {
-            InitializeComponent();
+            this.InitializeComponent();
 
-            pnlFileInput.Visible = !chkDirectInput.Checked;
+            this.pnlFileInput.Visible = !this.chkDirectInput.Checked;
         }
 
         public void Select(object action)
@@ -46,26 +47,26 @@ namespace Key2Joy.Gui.Mapping
                 languageName = "Unknown Language";
             }
 
-            lblInfo.Text = $"{languageName} Script:";
+            this.lblInfo.Text = $"{languageName} Script:";
 
-            txtScript.Text = txtFilePath.Text = thisAction.Script;
-            chkDirectInput.Checked = !thisAction.IsScriptPath;
-            pnlFileInput.Visible = !chkDirectInput.Checked;
+            this.txtScript.Text = this.txtFilePath.Text = thisAction.Script;
+            this.chkDirectInput.Checked = !thisAction.IsScriptPath;
+            this.pnlFileInput.Visible = !this.chkDirectInput.Checked;
         }
 
         public void Setup(object action)
         {
             var thisAction = (BaseScriptAction)action;
 
-            thisAction.IsScriptPath = !chkDirectInput.Checked;
+            thisAction.IsScriptPath = !this.chkDirectInput.Checked;
 
             if (thisAction.IsScriptPath)
             {
-                thisAction.Script = txtFilePath.Text;
+                thisAction.Script = this.txtFilePath.Text;
                 return;
             }
 
-            thisAction.Script = txtScript.Text;
+            thisAction.Script = this.txtScript.Text;
         }
 
         public bool CanMappingSave(object action)
@@ -92,10 +93,10 @@ namespace Key2Joy.Gui.Mapping
 
         private void ChkDirectInput_CheckedChanged(object sender, EventArgs e)
         {
-            txtScript.Visible = chkDirectInput.Checked;
-            pnlFileInput.Visible = !chkDirectInput.Checked;
+            this.txtScript.Visible = this.chkDirectInput.Checked;
+            this.pnlFileInput.Visible = !this.chkDirectInput.Checked;
             OptionsChanged?.Invoke(this, EventArgs.Empty);
-            PerformLayout();
+            this.PerformLayout();
         }
 
         private void BtnBrowseFile_Click(object sender, EventArgs e)
@@ -111,7 +112,7 @@ namespace Key2Joy.Gui.Mapping
             try
             {
                 File.ReadAllText(file);
-                txtFilePath.Text = file;
+                this.txtFilePath.Text = file;
                 OptionsChanged?.Invoke(this, EventArgs.Empty);
             }
             catch (IOException)

@@ -60,12 +60,12 @@ namespace Key2Joy.LowLevelInput
 
         public GlobalInputHook()
         {
-            windowsHookHandles = new IntPtr[2];
-            user32LibraryHandle = IntPtr.Zero;
-            hookProc = LowLevelInputHook; // we must keep alive hookProc, because GC is not aware about SetWindowsHookEx behaviour.
+            this.windowsHookHandles = new IntPtr[2];
+            this.user32LibraryHandle = IntPtr.Zero;
+            this.hookProc = this.LowLevelInputHook; // we must keep alive hookProc, because GC is not aware about SetWindowsHookEx behaviour.
 
-            user32LibraryHandle = LoadLibrary("User32");
-            if (user32LibraryHandle == IntPtr.Zero)
+            this.user32LibraryHandle = LoadLibrary("User32");
+            if (this.user32LibraryHandle == IntPtr.Zero)
             {
                 var errorCode = Marshal.GetLastWin32Error();
                 throw new Win32Exception(errorCode, $"Failed to load library 'User32.dll'. Error {errorCode}: {new Win32Exception(Marshal.GetLastWin32Error()).Message}.");
@@ -77,9 +77,9 @@ namespace Key2Joy.LowLevelInput
             {
                 var windowsHook = windowsHooks[i];
 
-                windowsHookHandles[i] = SetWindowsHookEx(windowsHook, hookProc, user32LibraryHandle, 0);
+                this.windowsHookHandles[i] = SetWindowsHookEx(windowsHook, this.hookProc, this.user32LibraryHandle, 0);
 
-                if (windowsHookHandles[i] == IntPtr.Zero)
+                if (this.windowsHookHandles[i] == IntPtr.Zero)
                 {
                     var errorCode = Marshal.GetLastWin32Error();
                     throw new Win32Exception(errorCode, $"Failed to adjust input hooks for '{Process.GetCurrentProcess().ProcessName}'. Error {errorCode}: {new Win32Exception(Marshal.GetLastWin32Error()).Message}.");
@@ -92,9 +92,9 @@ namespace Key2Joy.LowLevelInput
             if (disposing)
             {
                 // because we can unhook only in the same thread, not in garbage collector thread
-                for (var i = 0; i < windowsHookHandles.Length; i++)
+                for (var i = 0; i < this.windowsHookHandles.Length; i++)
                 {
-                    var windowsHookHandle = windowsHookHandles[i];
+                    var windowsHookHandle = this.windowsHookHandles[i];
 
                     if (windowsHookHandle != IntPtr.Zero)
                     {
@@ -103,33 +103,33 @@ namespace Key2Joy.LowLevelInput
                             var errorCode = Marshal.GetLastWin32Error();
                             throw new Win32Exception(errorCode, $"Failed to remove input hooks for '{Process.GetCurrentProcess().ProcessName}'. Error {errorCode}: {new Win32Exception(Marshal.GetLastWin32Error()).Message}.");
                         }
-                        windowsHookHandles[i] = IntPtr.Zero;
+                        this.windowsHookHandles[i] = IntPtr.Zero;
 
                         // ReSharper disable once DelegateSubtraction
-                        hookProc -= LowLevelInputHook;
+                        this.hookProc -= this.LowLevelInputHook;
                     }
                 }
             }
 
-            if (user32LibraryHandle != IntPtr.Zero)
+            if (this.user32LibraryHandle != IntPtr.Zero)
             {
-                if (!FreeLibrary(user32LibraryHandle)) // reduces reference to library by 1.
+                if (!FreeLibrary(this.user32LibraryHandle)) // reduces reference to library by 1.
                 {
                     var errorCode = Marshal.GetLastWin32Error();
                     throw new Win32Exception(errorCode, $"Failed to unload library 'User32.dll'. Error {errorCode}: {new Win32Exception(Marshal.GetLastWin32Error()).Message}.");
                 }
-                user32LibraryHandle = IntPtr.Zero;
+                this.user32LibraryHandle = IntPtr.Zero;
             }
         }
 
         ~GlobalInputHook()
         {
-            Dispose(false);
+            this.Dispose(false);
         }
 
         public void Dispose()
         {
-            Dispose(true);
+            this.Dispose(true);
             GC.SuppressFinalize(this);
         }
 

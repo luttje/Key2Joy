@@ -1,15 +1,16 @@
-﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.Contracts.Plugins;
-using Key2Joy.Plugins;
-using NLua;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
+using Key2Joy.Contracts.Mapping.Actions;
+using Key2Joy.Contracts.Mapping.Triggers;
+using Key2Joy.Contracts.Plugins;
+using Key2Joy.Plugins;
+using NLua;
 
-namespace Key2Joy.Mapping
+namespace Key2Joy.Mapping.Actions.Scripting
 {
     [Action(
         Description = "Lua Script Action",
@@ -22,7 +23,7 @@ namespace Key2Joy.Mapping
         public LuaScriptAction(string name)
             : base(name)
         {
-            ImageResource = "Lua";
+            this.ImageResource = "Lua";
         }
 
         public override async Task Execute(AbstractInputBag inputBag)
@@ -30,19 +31,19 @@ namespace Key2Joy.Mapping
             try
             {
                 var source = "Key2Joy.Script.Inline";
-                if (IsScriptPath)
+                if (this.IsScriptPath)
                 {
-                    source = Script;
+                    source = this.Script;
                 }
 
                 lock (LockObject)
                 {
-                    if (environment.State == null)
+                    if (this.environment.State == null)
                     {
                         Debugger.Break(); // This really shouldn't happen.
                     }
 
-                    environment.DoString(GetExecutableScript(), Script);
+                    this.environment.DoString(this.GetExecutableScript(), this.Script);
                 }
             }
             catch (NLua.Exceptions.LuaScriptException ex)
@@ -59,7 +60,7 @@ namespace Key2Joy.Mapping
         public override void RegisterScriptingEnum(ExposedEnumeration enumeration)
         {
             // TODO: Use https://github.com/NLua/NLua/blob/3aaff863c78e89a009c21ff3aef94502018f2566/src/LuaRegistrationHelper.cs#LL76C28-L76C39
-            environment.NewTable(enumeration.Name);
+            this.environment.NewTable(enumeration.Name);
 
             foreach (var kvp in enumeration.KeyValues)
             {
@@ -67,7 +68,7 @@ namespace Key2Joy.Mapping
                 var enumValue = kvp.Value;
 
                 var path = enumeration.Name + "." + enumKey;
-                environment.SetObjectToPath(path, enumValue);
+                this.environment.SetObjectToPath(path, enumValue);
             }
         }
 
@@ -92,20 +93,20 @@ namespace Key2Joy.Mapping
 
                 var path = currentPath.ToString();
 
-                if (environment.GetTable(path) == null)
+                if (this.environment.GetTable(path) == null)
                 {
-                    environment.NewTable(path);
+                    this.environment.NewTable(path);
                 }
             }
 
             if (exposedMethod is PluginExposedMethod methodNeedProxy)
             {
-                methodNeedProxy.RegisterParameterTransformer<LuaFunction>(luaFunction => new WrappedPluginType((Delegate)luaFunction.Call));
-                environment.RegisterFunction(functionName, methodNeedProxy, methodNeedProxy.GetExecutorMethodInfo((PluginActionProxy)instance));
+                methodNeedProxy.RegisterParameterTransformer<LuaFunction>(luaFunction => new WrappedPluginType(luaFunction.Call));
+                this.environment.RegisterFunction(functionName, methodNeedProxy, methodNeedProxy.GetExecutorMethodInfo((PluginActionProxy)instance));
                 return;
             }
 
-            environment.RegisterFunction(
+            this.environment.RegisterFunction(
                 functionName,
                 instance,
                 instance.GetType().GetMethod(exposedMethod.MethodName));
@@ -118,9 +119,9 @@ namespace Key2Joy.Mapping
 
         public override void RegisterEnvironmentObjects()
         {
-            environment.RegisterFunction("print", this, typeof(LuaScriptAction).GetMethod(nameof(Print), new[] { typeof(object[]) }));
-            environment.RegisterFunction("Print", this, typeof(LuaScriptAction).GetMethod(nameof(Print), new[] { typeof(object[]) }));
-            environment.RegisterFunction("collection", this, typeof(LuaScriptAction).GetMethod(nameof(CollectionIterator), new[] { typeof(ICollection) }));
+            this.environment.RegisterFunction("print", this, typeof(LuaScriptAction).GetMethod(nameof(Print), new[] { typeof(object[]) }));
+            this.environment.RegisterFunction("Print", this, typeof(LuaScriptAction).GetMethod(nameof(Print), new[] { typeof(object[]) }));
+            this.environment.RegisterFunction("collection", this, typeof(LuaScriptAction).GetMethod(nameof(CollectionIterator), new[] { typeof(ICollection) }));
 
             base.RegisterEnvironmentObjects();
         }
@@ -146,7 +147,7 @@ namespace Key2Joy.Mapping
         {
             LuaIterator iterator = new(data);
 
-            return environment.RegisterFunction("__iterator", iterator, iterator.GetType().GetMethod(nameof(LuaIterator.Next)));
+            return this.environment.RegisterFunction("__iterator", iterator, iterator.GetType().GetMethod(nameof(LuaIterator.Next)));
         }
 
         public override bool Equals(object obj)
@@ -156,8 +157,8 @@ namespace Key2Joy.Mapping
                 return false;
             }
 
-            return action.Name == Name
-                && action.Script == Script;
+            return action.Name == this.Name
+                && action.Script == this.Script;
         }
     }
 }

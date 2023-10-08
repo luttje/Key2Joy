@@ -1,7 +1,7 @@
-﻿using Key2Joy.Contracts.Mapping;
+﻿using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Plugins;
 
-namespace Key2Joy.Mapping
+namespace Key2Joy.Mapping.Actions
 {
     public abstract class CoreAction : AbstractAction
     {
@@ -30,13 +30,13 @@ namespace Key2Joy.Mapping
             {
                 typeAttribute.NameFormat ?? actionFactory.FullTypeName,
             });
-            action.SetStartData(listener, ref otherActions);
+            action.SetStartData(this.listener, ref this.otherActions);
             return action;
         }
 
         public override string ToString()
         {
-            return GetNameDisplay();
+            return this.GetNameDisplay();
         }
     }
 }

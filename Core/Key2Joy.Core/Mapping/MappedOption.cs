@@ -1,4 +1,6 @@
 ﻿using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Mapping.Actions;
+using Key2Joy.Contracts.Mapping.Triggers;
 
 namespace Key2Joy.Mapping
 {
@@ -8,8 +10,8 @@ namespace Key2Joy.Mapping
         {
             return new MappedOption()
             {
-                Trigger = Trigger != null ? (AbstractTrigger)Trigger.Clone() : null,
-                Action = (AbstractAction)Action.Clone(),
+                Trigger = this.Trigger != null ? (AbstractTrigger)this.Trigger.Clone() : null,
+                Action = (AbstractAction)this.Action.Clone(),
             };
         }
     }

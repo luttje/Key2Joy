@@ -1,11 +1,11 @@
-﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.Gui.Mapping;
-using Key2Joy.Mapping;
-using Key2Joy.Plugins;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using Key2Joy.Contracts.Mapping;
+using Key2Joy.Gui.Mapping;
+using Key2Joy.Mapping;
+using Key2Joy.Plugins;
 
 namespace Key2Joy.Gui
 {
@@ -15,13 +15,13 @@ namespace Key2Joy.Gui
 
         public MappingForm()
         {
-            InitializeComponent();
-            DialogResult = DialogResult.Cancel;
+            this.InitializeComponent();
+            this.DialogResult = DialogResult.Cancel;
 
-            actionControl.IsTopLevel = true;
-            triggerControl.IsTopLevel = true;
+            this.actionControl.IsTopLevel = true;
+            this.triggerControl.IsTopLevel = true;
 
-            FormClosed += (s, e) => Dispose();
+            FormClosed += (s, e) => this.Dispose();
         }
 
         public MappingForm(MappedOption mappedOption)
@@ -32,10 +32,10 @@ namespace Key2Joy.Gui
                 return;
             }
 
-            MappedOption = mappedOption;
+            this.MappedOption = mappedOption;
 
-            triggerControl.SelectTrigger(mappedOption.Trigger);
-            actionControl.SelectAction(mappedOption.Action);
+            this.triggerControl.SelectTrigger(mappedOption.Trigger);
+            this.actionControl.SelectAction(mappedOption.Action);
         }
 
         public static Control BuildOptionsForComboBox<TAttribute, TAspect>(ComboBox comboBox, Panel optionsPanel)
@@ -91,8 +91,8 @@ namespace Key2Joy.Gui
 
         private void BtnSaveMapping_Click(object sender, EventArgs e)
         {
-            var trigger = triggerControl.Trigger;
-            var action = actionControl.Action;
+            var trigger = this.triggerControl.Trigger;
+            var action = this.actionControl.Action;
 
             if (trigger == null)
             {
@@ -106,18 +106,18 @@ namespace Key2Joy.Gui
                 return;
             }
 
-            MappedOption ??= new MappedOption();
-            MappedOption.Trigger = trigger;
-            MappedOption.Action = action;
+            this.MappedOption ??= new MappedOption();
+            this.MappedOption.Trigger = trigger;
+            this.MappedOption.Action = action;
 
-            if (!actionControl.CanMappingSave(MappedOption))
+            if (!this.actionControl.CanMappingSave(this.MappedOption))
             {
                 return;
             }
 
-            DialogResult = DialogResult.OK;
+            this.DialogResult = DialogResult.OK;
 
-            Close();
+            this.Close();
         }
     }
 }

@@ -9,6 +9,8 @@
   </PropertyGroup>
   <PropertyGroup>
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <OutputType>Exe</OutputType>
+    <BaseOutputPath>bin\$(MSBuildProjectName)</BaseOutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="bin\**" />
@@ -17,6 +19,18 @@
     <EmbeddedResource Remove="obj\**" />
     <None Remove="bin\**" />
     <None Remove="obj\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="DefaultEnumTemplate.md" />
+    <None Remove="DefaultTemplate.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DefaultEnumTemplate.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DefaultTemplate.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Key2Joy.Core\Key2Joy.Core.csproj">

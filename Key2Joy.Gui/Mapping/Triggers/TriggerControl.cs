@@ -1,12 +1,13 @@
-﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.Mapping;
-using Key2Joy.Plugins;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using Key2Joy.Contracts.Mapping.Triggers;
+using Key2Joy.Mapping;
+using Key2Joy.Mapping.Triggers;
+using Key2Joy.Plugins;
 
 namespace Key2Joy.Gui.Mapping
 {
@@ -23,52 +24,52 @@ namespace Key2Joy.Gui.Mapping
 
         public TriggerControl()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         private void BuildTrigger()
         {
-            if (cmbTrigger.SelectedItem == null)
+            if (this.cmbTrigger.SelectedItem == null)
             {
                 TriggerChanged?.Invoke(this, TriggerChangedEventArgs.Empty);
                 return;
             }
 
-            var selected = (ImageComboBoxItem<KeyValuePair<TriggerAttribute, MappingTypeFactory<AbstractTrigger>>>)cmbTrigger.SelectedItem;
+            var selected = (ImageComboBoxItem<KeyValuePair<TriggerAttribute, MappingTypeFactory<AbstractTrigger>>>)this.cmbTrigger.SelectedItem;
             var selectedTypeFactory = selected.ItemValue.Value;
             var attribute = selected.ItemValue.Key;
 
-            if (Trigger == null || Trigger.GetType().FullName != selectedTypeFactory.FullTypeName)
+            if (this.Trigger == null || this.Trigger.GetType().FullName != selectedTypeFactory.FullTypeName)
             {
-                Trigger = selectedTypeFactory.CreateInstance(new object[]
+                this.Trigger = selectedTypeFactory.CreateInstance(new object[]
                 {
                     attribute.NameFormat,
                 });
             }
 
-            options?.Setup(Trigger);
+            this.options?.Setup(this.Trigger);
 
-            TriggerChanged?.Invoke(this, new TriggerChangedEventArgs(Trigger));
+            TriggerChanged?.Invoke(this, new TriggerChangedEventArgs(this.Trigger));
         }
 
         public void SelectTrigger(AbstractTrigger trigger)
         {
-            selectedTrigger = trigger;
+            this.selectedTrigger = trigger;
 
-            if (!isLoaded)
+            if (!this.isLoaded)
             {
                 return;
             }
 
-            var selected = cmbTrigger.Items.Cast<ImageComboBoxItem<KeyValuePair<TriggerAttribute, MappingTypeFactory<AbstractTrigger>>>>();
+            var selected = this.cmbTrigger.Items.Cast<ImageComboBoxItem<KeyValuePair<TriggerAttribute, MappingTypeFactory<AbstractTrigger>>>>();
             var triggerFullTypeName = trigger.GetType().FullName;
             var selectedType = selected.FirstOrDefault(x => x.ItemValue.Value.FullTypeName == triggerFullTypeName);
-            cmbTrigger.SelectedItem = selectedType;
+            this.cmbTrigger.SelectedItem = selectedType;
         }
 
         private void LoadTriggers()
         {
-            var triggerTypes = TriggersRepository.GetAllTriggers(IsTopLevel);
+            var triggerTypes = TriggersRepository.GetAllTriggers(this.IsTopLevel);
 
             foreach (var keyValuePair in triggerTypes)
             {
@@ -77,68 +78,68 @@ namespace Key2Joy.Gui.Mapping
                 var image = Program.ResourceBitmapFromName(customImage ?? "error");
                 ImageComboBoxItem<KeyValuePair<TriggerAttribute, MappingTypeFactory<AbstractTrigger>>> item = new(keyValuePair, new Bitmap(image), "Key");
 
-                cmbTrigger.Items.Add(item);
+                this.cmbTrigger.Items.Add(item);
             }
 
-            isLoaded = true;
+            this.isLoaded = true;
 
-            if (selectedTrigger != null)
+            if (this.selectedTrigger != null)
             {
-                SelectTrigger(selectedTrigger);
+                this.SelectTrigger(this.selectedTrigger);
             }
         }
 
         private void CmbTrigger_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!isLoaded)
+            if (!this.isLoaded)
             {
                 return;
             }
 
-            var options = MappingForm.BuildOptionsForComboBox<TriggerAttribute, AbstractTrigger>(cmbTrigger, pnlTriggerOptions);
+            var options = MappingForm.BuildOptionsForComboBox<TriggerAttribute, AbstractTrigger>(this.cmbTrigger, this.pnlTriggerOptions);
 
             if (options != null)
             {
                 if (this.options != null)
                 {
-                    this.options.OptionsChanged -= OnOptionsChanged;
+                    this.options.OptionsChanged -= this.OnOptionsChanged;
                 }
 
                 this.options = options as ITriggerOptionsControl;
 
                 if (this.options != null)
                 {
-                    if (selectedTrigger != null)
+                    if (this.selectedTrigger != null)
                     {
-                        this.options.Select(selectedTrigger);
+                        this.options.Select(this.selectedTrigger);
                     }
 
-                    this.options.OptionsChanged += OnOptionsChanged;
+                    this.options.OptionsChanged += this.OnOptionsChanged;
                 }
             }
 
-            BuildTrigger();
+            this.BuildTrigger();
 
-            selectedTrigger = null;
-            PerformLayout();
+            this.selectedTrigger = null;
+            this.PerformLayout();
         }
 
         private void OnOptionsChanged(object sender, EventArgs e)
         {
-            var selected = (ImageComboBoxItem<KeyValuePair<TriggerAttribute, MappingTypeFactory<AbstractTrigger>>>)cmbTrigger.SelectedItem;
+            var selected = (ImageComboBoxItem<KeyValuePair<TriggerAttribute, MappingTypeFactory<AbstractTrigger>>>)this.cmbTrigger.SelectedItem;
             _ = selected.ItemValue.Key;
 
-            if (options == null) // TODO: what did I use this for before refactoring to seperate logic and GUI? --> || attribute.OptionsUserControl != options.GetType() 
+            if (this.options == null) // TODO: what did I use this for before refactoring to seperate logic and GUI? --> || attribute.OptionsUserControl != options.GetType() 
             {
                 return;
             }
 
-            BuildTrigger();
+            this.BuildTrigger();
         }
 
         private void TriggerControl_Load(object sender, EventArgs e)
         {
-            LoadTriggers();
+            this.LoadTriggers();
         }
     }
 }

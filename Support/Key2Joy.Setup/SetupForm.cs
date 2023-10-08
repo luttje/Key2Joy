@@ -1,11 +1,11 @@
-﻿using CommandLine;
-using Key2Joy.Setup.Cmd;
-using Key2Joy.Setup.Installation;
-using Key2Joy.Setup.Releases;
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using CommandLine;
+using Key2Joy.Setup.Cmd;
+using Key2Joy.Setup.Installation;
+using Key2Joy.Setup.Releases;
 
 namespace Key2Joy.Setup
 {
@@ -15,7 +15,7 @@ namespace Key2Joy.Setup
 
         public SetupForm()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         private void SetupForm_Load(object sender, EventArgs e)
@@ -24,45 +24,45 @@ namespace Key2Joy.Setup
 
             foreach (var release in releases)
             {
-                cmbVersions.Items.Add(release.TagName);
+                this.cmbVersions.Items.Add(release.TagName);
             }
 
             var version = PendingInstallVersion ?? Installer.GetInstalledVersion();
 
             if (version == null)
             {
-                txtInstallPath.Text = Installer.GetDefaultInstallPath();
-                cmbVersions.SelectedIndex = 0;
-                btnInstallUpdate.Text = "Install";
+                this.txtInstallPath.Text = Installer.GetDefaultInstallPath();
+                this.cmbVersions.SelectedIndex = 0;
+                this.btnInstallUpdate.Text = "Install";
                 return;
             }
 
-            txtInstallPath.ReadOnly = true;
-            btnBrowseInstallPath.Enabled = false;
-            txtInstallPath.Text = version.InstallPath;
-            cmbVersions.SelectedIndex = releases.Where(r => r.TagName == version.VersionTagName).Select((r, i) => i).FirstOrDefault();
-            btnInstallUpdate.Text = "Update";
+            this.txtInstallPath.ReadOnly = true;
+            this.btnBrowseInstallPath.Enabled = false;
+            this.txtInstallPath.Text = version.InstallPath;
+            this.cmbVersions.SelectedIndex = releases.Where(r => r.TagName == version.VersionTagName).Select((r, i) => i).FirstOrDefault();
+            this.btnInstallUpdate.Text = "Update";
 
             switch (version.UpdatePreference)
             {
                 case UpdatePreference.DownloadAndUpdate:
-                    rdoUpdateAndInstall.Checked = true;
+                    this.rdoUpdateAndInstall.Checked = true;
                     break;
                 case UpdatePreference.DownloadAndUpdatePreRelease:
-                    rdoUpdateAndInstallPreRelease.Checked = true;
+                    this.rdoUpdateAndInstallPreRelease.Checked = true;
                     break;
                 case UpdatePreference.DownloadOnly:
-                    rdoDownloadOnly.Checked = true;
+                    this.rdoDownloadOnly.Checked = true;
                     break;
                 case UpdatePreference.ManualInstallation:
                 default:
-                    rdoManualInstallation.Checked = true;
+                    this.rdoManualInstallation.Checked = true;
                     break;
             }
 
             if (PendingInstallVersion != null)
             {
-                btnInstallUpdate.PerformClick();
+                this.btnInstallUpdate.PerformClick();
             }
         }
 
@@ -70,7 +70,7 @@ namespace Key2Joy.Setup
         {
             FolderBrowserDialog folderPicker = new()
             {
-                SelectedPath = txtInstallPath.Text
+                SelectedPath = this.txtInstallPath.Text
             };
 
             // If the path is invalid, find the nearest parent that exists
@@ -81,26 +81,26 @@ namespace Key2Joy.Setup
 
             if (folderPicker.ShowDialog() == DialogResult.OK)
             {
-                txtInstallPath.Text = folderPicker.SelectedPath;
+                this.txtInstallPath.Text = folderPicker.SelectedPath;
             }
         }
 
         private async void BtnInstallUpdate_Click(object sender, EventArgs e)
         {
-            var installPath = txtInstallPath.Text;
-            var version = cmbVersions.SelectedItem.ToString();
+            var installPath = this.txtInstallPath.Text;
+            var version = this.cmbVersions.SelectedItem.ToString();
             var updatePreference = UpdatePreference.ManualInstallation;
             var release = ReleaseManager.GetRelease(version);
 
-            if (rdoUpdateAndInstall.Checked)
+            if (this.rdoUpdateAndInstall.Checked)
             {
                 updatePreference = UpdatePreference.DownloadAndUpdate;
             }
-            else if (rdoUpdateAndInstallPreRelease.Checked)
+            else if (this.rdoUpdateAndInstallPreRelease.Checked)
             {
                 updatePreference = UpdatePreference.DownloadAndUpdatePreRelease;
             }
-            else if (rdoDownloadOnly.Checked)
+            else if (this.rdoDownloadOnly.Checked)
             {
                 updatePreference = UpdatePreference.DownloadOnly;
             }
@@ -132,21 +132,21 @@ namespace Key2Joy.Setup
             var finished = false;
             installer.InstallProgressed += (s, ev) =>
             {
-                BeginInvoke((MethodInvoker)delegate
+                this.BeginInvoke((MethodInvoker)delegate
                 {
-                    progressUpdate.Value = ev.ProgressPercentage;
+                    this.progressUpdate.Value = ev.ProgressPercentage;
 
                     if (ev.ProgressPercentage >= 100 && !finished)
                     {
                         finished = true;
-                        btnInstallUpdate.Enabled = true;
+                        this.btnInstallUpdate.Enabled = true;
                         MessageBox.Show("Done downloading and installing!");
                     }
                 });
             };
 
-            progressUpdate.Value = 0;
-            btnInstallUpdate.Enabled = false;
+            this.progressUpdate.Value = 0;
+            this.btnInstallUpdate.Enabled = false;
 
             try
             {

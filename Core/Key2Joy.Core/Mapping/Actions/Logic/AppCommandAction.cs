@@ -1,10 +1,12 @@
-﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.Util;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Key2Joy.Contracts.Mapping.Actions;
+using Key2Joy.Contracts.Mapping.Triggers;
+using Key2Joy.Mapping.Actions.Scripting;
+using Key2Joy.Util;
 
-namespace Key2Joy.Mapping
+namespace Key2Joy.Mapping.Actions.Logic
 {
     [Action(
         Description = "App Command",
@@ -34,14 +36,14 @@ namespace Key2Joy.Mapping
         [ExposesScriptingMethod("App.Command")]
         public async void ExecuteForScript(AppCommand command)
         {
-            Command = command;
+            this.Command = command;
 
             if (command == AppCommand.ResetScriptEnvironment)
             {
                 // Keep track of new environments to pass to all related script actions
                 Dictionary<Type, object> newEnvironments = new();
 
-                foreach (var otherAction in otherActions)
+                foreach (var otherAction in this.otherActions)
                 {
                     var otherActionType = otherAction.GetType();
 
@@ -73,7 +75,7 @@ namespace Key2Joy.Mapping
 
         public override async Task Execute(AbstractInputBag inputBag = null)
         {
-            if (!Key2JoyManager.RunAppCommand(Command))
+            if (!Key2JoyManager.RunAppCommand(this.Command))
             {
                 throw new NotImplementedException("This app command is invalid!");
             }
@@ -81,7 +83,7 @@ namespace Key2Joy.Mapping
 
         public override string GetNameDisplay()
         {
-            return Name.Replace("{0}", Enum.GetName(typeof(AppCommand), Command));
+            return this.Name.Replace("{0}", Enum.GetName(typeof(AppCommand), this.Command));
         }
 
         public override bool Equals(object obj)
@@ -91,7 +93,7 @@ namespace Key2Joy.Mapping
                 return false;
             }
 
-            return action.Command == Command;
+            return action.Command == this.Command;
         }
     }
 }

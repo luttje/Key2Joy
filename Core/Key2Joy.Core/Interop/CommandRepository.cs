@@ -16,7 +16,7 @@ namespace Key2Joy.Interop
 
         private CommandRepository()
         {
-            commandTypes = new Dictionary<byte, CommandInfo>();
+            this.commandTypes = new Dictionary<byte, CommandInfo>();
 
             var types = Assembly.GetExecutingAssembly().GetTypes()
                 .Where(t => t.GetCustomAttributes(typeof(CommandAttribute), false).Length > 0);
@@ -30,24 +30,24 @@ namespace Key2Joy.Interop
                     StructType = type,
                 };
 
-                commandTypes.Add(attribute.Id, commandInfo);
+                this.commandTypes.Add(attribute.Id, commandInfo);
             }
         }
 
         public CommandInfo GetCommandInfo<CommandType>(CommandType command)
         {
-            var commandInfo = commandTypes.Values.FirstOrDefault(c => c.StructType == command.GetType()) ?? throw new ArgumentException("Command type not found in repository");
+            var commandInfo = this.commandTypes.Values.FirstOrDefault(c => c.StructType == command.GetType()) ?? throw new ArgumentException("Command type not found in repository");
             return commandInfo;
         }
 
         public CommandInfo GetCommandInfo(byte id)
         {
-            if (!commandTypes.ContainsKey(id))
+            if (!this.commandTypes.ContainsKey(id))
             {
                 throw new ArgumentException("Command with id " + id + " not registered");
             }
 
-            return commandTypes[id];
+            return this.commandTypes[id];
         }
     }
 }

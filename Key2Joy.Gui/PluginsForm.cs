@@ -1,11 +1,11 @@
-﻿using Key2Joy.Plugins;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Security;
 using System.Security.Permissions;
 using System.Windows.Forms;
+using Key2Joy.Plugins;
 
 namespace Key2Joy.Gui
 {
@@ -21,14 +21,14 @@ namespace Key2Joy.Gui
 
         public PluginInfo(PluginLoadState loadState)
         {
-            LoadState = loadState;
+            this.LoadState = loadState;
 
-            AssemblyPath = LoadState.AssemblyPath;
-            Name = LoadState.Name ?? "n/a";
-            Author = LoadState.Author ?? "n/a";
-            Website = LoadState.Website ?? "n/a";
-            ActionTypes = new List<Type>();
-            TriggerTypes = new List<Type>();
+            this.AssemblyPath = this.LoadState.AssemblyPath;
+            this.Name = this.LoadState.Name ?? "n/a";
+            this.Author = this.LoadState.Author ?? "n/a";
+            this.Website = this.LoadState.Website ?? "n/a";
+            this.ActionTypes = new List<Type>();
+            this.TriggerTypes = new List<Type>();
         }
     }
 
@@ -36,7 +36,7 @@ namespace Key2Joy.Gui
     {
         public PluginsForm()
         {
-            InitializeComponent();
+            this.InitializeComponent();
 
             /**
              * For some reason the designer fails with:
@@ -46,14 +46,14 @@ namespace Key2Joy.Gui
              * 
              * Therefor we do this manually:
              */
-            dgvPlugins.AutoGenerateColumns = false;
-            dgvPlugins.Columns.Add(new DataGridViewButtonColumn()
+            this.dgvPlugins.AutoGenerateColumns = false;
+            this.dgvPlugins.Columns.Add(new DataGridViewButtonColumn()
             {
                 Name = "dgvColumnToggleEnable",
                 HeaderText = "Enable/Disable",
                 DataPropertyName = "LoadState",
             });
-            dgvPlugins.Columns.Add(new DataGridViewColumn(new DataGridViewTextBoxCell())
+            this.dgvPlugins.Columns.Add(new DataGridViewColumn(new DataGridViewTextBoxCell())
             {
                 Name = "dgvColumnLoaded",
                 HeaderText = "",
@@ -62,28 +62,28 @@ namespace Key2Joy.Gui
                 ToolTipText = "Whether the plugin loaded successfully (✔), failed to load (⚠) or is disabled (✘).",
                 FillWeight = 1,
             });
-            dgvPlugins.Columns.Add(new DataGridViewColumn(new DataGridViewTextBoxCell())
+            this.dgvPlugins.Columns.Add(new DataGridViewColumn(new DataGridViewTextBoxCell())
             {
                 Name = "dgvColumnName",
                 HeaderText = "Name",
                 DataPropertyName = "Name",
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
             });
-            dgvPlugins.Columns.Add(new DataGridViewColumn(new DataGridViewTextBoxCell())
+            this.dgvPlugins.Columns.Add(new DataGridViewColumn(new DataGridViewTextBoxCell())
             {
                 Name = "dgvColumnAuthor",
                 HeaderText = "Author",
                 DataPropertyName = "Author",
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
             });
-            dgvPlugins.Columns.Add(new DataGridViewColumn(new DataGridViewTextBoxCell())
+            this.dgvPlugins.Columns.Add(new DataGridViewColumn(new DataGridViewTextBoxCell())
             {
                 Name = "dgvColumnWebsite",
                 HeaderText = "Website",
                 DataPropertyName = "Website",
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
             });
-            dgvPlugins.Columns.Add(new DataGridViewColumn(new DataGridViewTextBoxCell())
+            this.dgvPlugins.Columns.Add(new DataGridViewColumn(new DataGridViewTextBoxCell())
             {
                 Name = "dgvColumnPath",
                 HeaderText = "Path",
@@ -91,21 +91,21 @@ namespace Key2Joy.Gui
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
             });
 
-            dgvPlugins.CellFormatting += DgvPlugins_CellFormatting;
+            this.dgvPlugins.CellFormatting += this.DgvPlugins_CellFormatting;
 
-            RefreshPlugins();
+            this.RefreshPlugins();
         }
 
         private void RefreshPlugins()
         {
-            dgvPlugins.DataSource = Program.Plugins.AllPluginLoadStates.Values.Select(
+            this.dgvPlugins.DataSource = Program.Plugins.AllPluginLoadStates.Values.Select(
                 pls => new PluginInfo(pls))
                 .ToList();
         }
 
         private void DgvPlugins_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            var column = dgvPlugins.Columns[e.ColumnIndex];
+            var column = this.dgvPlugins.Columns[e.ColumnIndex];
 
             if (column.Name == "dgvColumnToggleEnable")
             {
@@ -119,7 +119,7 @@ namespace Key2Joy.Gui
                 e.Value = pluginLoadState.LoadState == PluginLoadStates.Loaded ? "✔" :
                     (pluginLoadState.LoadState == PluginLoadStates.NotLoaded ? "✘" : "⚠");
 
-                var cell = dgvPlugins.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                var cell = this.dgvPlugins.Rows[e.RowIndex].Cells[e.ColumnIndex];
                 cell.ToolTipText = pluginLoadState.LoadErrorMessage;
             }
 
@@ -188,7 +188,7 @@ namespace Key2Joy.Gui
                     }
                 }
 
-                RefreshPlugins();
+                this.RefreshPlugins();
             }
         }
     }

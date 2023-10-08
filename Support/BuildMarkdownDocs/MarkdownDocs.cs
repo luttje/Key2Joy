@@ -1,10 +1,10 @@
-﻿using BuildMarkdownDocs.Util;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Xml.Linq;
 using System.Xml.XPath;
+using BuildMarkdownDocs.Util;
 
 namespace BuildMarkdownDocs
 {

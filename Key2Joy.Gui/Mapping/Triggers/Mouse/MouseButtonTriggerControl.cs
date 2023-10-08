@@ -1,13 +1,15 @@
-﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.LowLevelInput;
-using Key2Joy.Mapping;
-using System;
+﻿using System;
 using System.Windows.Forms;
+using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Mapping.Triggers;
+using Key2Joy.LowLevelInput;
+using Key2Joy.Mapping.Triggers;
+using Key2Joy.Mapping.Triggers.Mouse;
 
 namespace Key2Joy.Gui.Mapping
 {
     [MappingControl(
-        ForType = typeof(Key2Joy.Mapping.MouseButtonTrigger),
+        ForType = typeof(MouseButtonTrigger),
         ImageResourceName = "mouse"
     )]
     public partial class MouseButtonTriggerControl : UserControl, ITriggerOptionsControl
@@ -20,35 +22,35 @@ namespace Key2Joy.Gui.Mapping
 
         public MouseButtonTriggerControl()
         {
-            InitializeComponent();
+            this.InitializeComponent();
 
             // This captures global keyboard input and blocks default behaviour by setting e.Handled
             GlobalInputHook globalMouseHook = new();
-            globalMouseHook.MouseInputEvent += OnMouseInputEvent;
+            globalMouseHook.MouseInputEvent += this.OnMouseInputEvent;
 
             // Relieve input capturing by this mapping form
             Disposed += (s, e) =>
             {
-                globalMouseHook.MouseInputEvent -= OnMouseInputEvent;
+                globalMouseHook.MouseInputEvent -= this.OnMouseInputEvent;
                 globalMouseHook.Dispose();
                 globalMouseHook = null;
             };
-            ControlRemoved += (s, e) => Dispose();
+            ControlRemoved += (s, e) => this.Dispose();
 
-            cmbPressState.DataSource = PressStates.ALL;
-            cmbPressState.SelectedIndex = 0;
+            this.cmbPressState.DataSource = PressStates.ALL;
+            this.cmbPressState.SelectedIndex = 0;
         }
 
         private void OnMouseInputEvent(object sender, GlobalMouseHookEventArgs e)
         {
             // Needed to make sure the cursor is immediately over the control, and not over a comboboxitem which is over the control.
-            if (!isMouseOver)
+            if (!this.isMouseOver)
             {
                 return;
             }
 
             if (e.MouseState == MouseState.Move
-                || !txtKeyBind.ClientRectangle.Contains(txtKeyBind.PointToClient(MousePosition)))
+                || !this.txtKeyBind.ClientRectangle.Contains(this.txtKeyBind.PointToClient(MousePosition)))
             {
                 return;
             }
@@ -57,19 +59,19 @@ namespace Key2Joy.Gui.Mapping
 
             try
             {
-                mouseButtons = Mouse.ButtonsFromEvent(e, out isDown);
+                this.mouseButtons = Mouse.ButtonsFromEvent(e, out isDown);
             }
             catch (NotImplementedException ex)
             {
-                if (!isShowingError)
+                if (!this.isShowingError)
                 {
-                    isShowingError = true;
+                    this.isShowingError = true;
                     MessageBox.Show($"{ex.Message}. Can't map this (yet).", "Unknown mouse button!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    isShowingError = false;
+                    this.isShowingError = false;
                 }
             }
 
-            txtKeyBind.Text = $"{mouseButtons}";
+            this.txtKeyBind.Text = $"{this.mouseButtons}";
             OptionsChanged?.Invoke(this, EventArgs.Empty);
         }
 
@@ -77,17 +79,17 @@ namespace Key2Joy.Gui.Mapping
         {
             var thisTrigger = (MouseButtonTrigger)trigger;
 
-            mouseButtons = thisTrigger.MouseButtons;
-            cmbPressState.SelectedItem = thisTrigger.PressState;
-            txtKeyBind.Text = $"{mouseButtons}";
+            this.mouseButtons = thisTrigger.MouseButtons;
+            this.cmbPressState.SelectedItem = thisTrigger.PressState;
+            this.txtKeyBind.Text = $"{this.mouseButtons}";
         }
 
         public void Setup(AbstractTrigger trigger)
         {
             var thisTrigger = (MouseButtonTrigger)trigger;
 
-            thisTrigger.MouseButtons = mouseButtons;
-            thisTrigger.PressState = (PressState)cmbPressState.SelectedItem;
+            thisTrigger.MouseButtons = this.mouseButtons;
+            thisTrigger.PressState = (PressState)this.cmbPressState.SelectedItem;
         }
 
         private void CmbPressedState_SelectedIndexChanged(object sender, EventArgs e)
@@ -97,12 +99,12 @@ namespace Key2Joy.Gui.Mapping
 
         private void TxtKeyBind_MouseEnter(object sender, EventArgs e)
         {
-            isMouseOver = true;
+            this.isMouseOver = true;
         }
 
         private void TxtKeyBind_MouseLeave(object sender, EventArgs e)
         {
-            isMouseOver = false;
+            this.isMouseOver = false;
         }
     }
 }

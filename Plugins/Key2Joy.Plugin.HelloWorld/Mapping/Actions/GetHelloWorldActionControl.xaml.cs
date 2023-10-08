@@ -1,13 +1,15 @@
-using Key2Joy.Contracts.Mapping;
-using Key2Joy.Contracts.Plugins;
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Mapping.Actions;
+using Key2Joy.Contracts.Plugins;
+using Key2Joy.Plugin.HelloWorld.Mapping.Actions;
 
 namespace Key2Joy.Plugin.HelloWorld.Mapping
 {
     [MappingControl(
-        ForType = typeof(Key2Joy.Plugin.HelloWorld.Mapping.GetHelloWorldAction),
+        ForType = typeof(GetHelloWorldAction),
         ImageResourceName = "clock"
     )]
     public partial class GetHelloWorldActionControl : UserControl, IPluginUserControl, IActionOptionsControl
@@ -16,7 +18,7 @@ namespace Key2Joy.Plugin.HelloWorld.Mapping
 
         public GetHelloWorldActionControl()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         public int GetDesiredHeight() => 50;
@@ -30,14 +32,14 @@ namespace Key2Joy.Plugin.HelloWorld.Mapping
         {
             var thisAction = (GetHelloWorldAction)action;
 
-            txtName.Text = thisAction.Target;
+            this.txtName.Text = thisAction.Target;
         }
 
         public void Setup(object action)
         {
             var thisAction = (GetHelloWorldAction)action;
 
-            thisAction.Target = txtName.Text;
+            thisAction.Target = this.txtName.Text;
         }
 
         public bool CanMappingSave(object action)
@@ -47,7 +49,7 @@ namespace Key2Joy.Plugin.HelloWorld.Mapping
 
         private void BtnHelloWorld_Click(object sender, EventArgs e)
         {
-            MessageBox.Show($"Hello {txtName.Text}!");
+            MessageBox.Show($"Hello {this.txtName.Text}!");
         }
 
         private void TxtName_TextChanged(object sender, EventArgs e)

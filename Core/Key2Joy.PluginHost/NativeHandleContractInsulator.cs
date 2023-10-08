@@ -1,6 +1,6 @@
-﻿using Key2Joy.Contracts.Plugins;
-using System;
+﻿using System;
 using System.AddIn.Contract;
+using Key2Joy.Contracts.Plugins.Remoting;
 
 namespace Key2Joy.PluginHost
 {
@@ -17,47 +17,47 @@ namespace Key2Joy.PluginHost
 
         public IntPtr GetHandle()
         {
-            return source.GetHandle();
+            return this.source.GetHandle();
         }
 
         public int AcquireLifetimeToken()
         {
-            return source.AcquireLifetimeToken();
+            return this.source.AcquireLifetimeToken();
         }
 
         public int GetRemoteHashCode()
         {
-            return source.GetRemoteHashCode();
+            return this.source.GetRemoteHashCode();
         }
 
         public IContract QueryContract(string contractIdentifier)
         {
-            return source.QueryContract(contractIdentifier);
+            return this.source.QueryContract(contractIdentifier);
         }
 
         public bool RemoteEquals(IContract contract)
         {
-            return source.RemoteEquals(contract);
+            return this.source.RemoteEquals(contract);
         }
 
         public string RemoteToString()
         {
-            return source.RemoteToString();
+            return this.source.RemoteToString();
         }
 
         public void RevokeLifetimeToken(int token)
         {
-            source.RevokeLifetimeToken(token);
+            this.source.RevokeLifetimeToken(token);
         }
 
         public object RemoteInvoke(string methodName, object[] parameters)
         {
-            return converter.RemoteInvoke(methodName, parameters);
+            return this.converter.RemoteInvoke(methodName, parameters);
         }
 
         public object RemoteInvokeUI(string methodName, object[] parameters)
         {
-            return Program.AppDispatcher.Invoke(new Func<object>(() => converter.RemoteInvoke(methodName, parameters)));
+            return Program.AppDispatcher.Invoke(new Func<object>(() => this.converter.RemoteInvoke(methodName, parameters)));
         }
 
         public override object InitializeLifetimeService()

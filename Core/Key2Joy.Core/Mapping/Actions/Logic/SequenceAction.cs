@@ -1,9 +1,11 @@
-﻿using Key2Joy.Contracts.Mapping;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Mapping.Actions;
+using Key2Joy.Contracts.Mapping.Triggers;
 
-namespace Key2Joy.Mapping
+namespace Key2Joy.Mapping.Actions.Logic
 {
     [Action(
         Description = "Multiple Actions in Sequence",
@@ -20,12 +22,12 @@ namespace Key2Joy.Mapping
         public SequenceAction(string name)
             : base(name)
         {
-            ChildActions = new List<AbstractAction>();
+            this.ChildActions = new List<AbstractAction>();
         }
 
         public override async Task Execute(AbstractInputBag inputBag = null)
         {
-            foreach (var childAction in ChildActions)
+            foreach (var childAction in this.ChildActions)
             {
                 await childAction.Execute(inputBag);
             }
@@ -35,7 +37,7 @@ namespace Key2Joy.Mapping
         {
             base.OnStartListening(listener, ref otherActions);
 
-            foreach (var childAction in ChildActions)
+            foreach (var childAction in this.ChildActions)
             {
                 childAction.OnStartListening(listener, ref otherActions);
             }
@@ -45,7 +47,7 @@ namespace Key2Joy.Mapping
         {
             base.OnStopListening(listener);
 
-            foreach (var childAction in ChildActions)
+            foreach (var childAction in this.ChildActions)
             {
                 childAction.OnStopListening(listener);
             }
@@ -55,17 +57,17 @@ namespace Key2Joy.Mapping
         {
             StringBuilder actions = new();
 
-            for (var i = 0; i < ChildActions.Count; i++)
+            for (var i = 0; i < this.ChildActions.Count; i++)
             {
                 if (i > 0)
                 {
                     actions.Append(", ");
                 }
 
-                actions.Append(ChildActions[i].GetNameDisplay());
+                actions.Append(this.ChildActions[i].GetNameDisplay());
             }
 
-            return Name.Replace("{0}", actions.ToString());
+            return this.Name.Replace("{0}", actions.ToString());
         }
 
         public override bool Equals(object obj)
@@ -75,7 +77,7 @@ namespace Key2Joy.Mapping
                 return false;
             }
 
-            return action.Name == Name;
+            return action.Name == this.Name;
         }
     }
 }

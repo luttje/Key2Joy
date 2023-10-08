@@ -1,17 +1,23 @@
-﻿using Key2Joy.Config;
-using Key2Joy.Contracts.Mapping;
-using Key2Joy.Interop;
-using Key2Joy.LowLevelInput;
-using Key2Joy.Mapping;
-using Key2Joy.Plugins;
-using SimWinInput;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
+using Key2Joy.Config;
+using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Mapping.Actions;
+using Key2Joy.Contracts.Mapping.Triggers;
+using Key2Joy.Interop;
+using Key2Joy.LowLevelInput;
+using Key2Joy.Mapping;
+using Key2Joy.Mapping.Actions.Logic;
+using Key2Joy.Mapping.Actions.Scripting;
+using Key2Joy.Mapping.Triggers.Keyboard;
+using Key2Joy.Mapping.Triggers.Mouse;
+using Key2Joy.Plugins;
+using SimWinInput;
 
 namespace Key2Joy
 {
@@ -88,7 +94,7 @@ namespace Key2Joy
         // Run the event on the same thread as the main form
         internal void CallOnUiThread(Action action)
         {
-            mainForm.Invoke(action);
+            this.mainForm.Invoke(action);
         }
 
         private static IList<AbstractTriggerListener> GetScriptingListeners()
@@ -111,16 +117,16 @@ namespace Key2Joy
 
         public bool PreFilterMessage(ref System.Windows.Forms.Message m)
         {
-            for (var i = 0; i < wndProcListeners.Count; i++)
+            for (var i = 0; i < this.wndProcListeners.Count; i++)
             {
                 // Check if the proc listeners haven't changed (this can happen when a plugin opens a MessageBox, the user aborts, and we then close the messagebox)
-                if (i >= wndProcListeners.Count)
+                if (i >= this.wndProcListeners.Count)
                 {
                     Debug.WriteLine("Key2JoyManager.PreFilterMessage: wndProcListeners changed while processing message!");
                     break;
                 }
 
-                var wndProcListener = wndProcListeners[i];
+                var wndProcListener = this.wndProcListeners[i];
 
                 wndProcListener.WndProc(new Contracts.Mapping.Message(m.HWnd, m.Msg, m.WParam, m.LParam));
             }
@@ -130,7 +136,7 @@ namespace Key2Joy
 
         public void SetMainForm(Form form)
         {
-            mainForm = form;
+            this.mainForm = form;
             Application.AddMessageFilter(this);
 
             Console.WriteLine(READY_MESSAGE);
@@ -140,15 +146,15 @@ namespace Key2Joy
         {
             if (profile == null)
             {
-                return armedProfile != null;
+                return this.armedProfile != null;
             }
 
-            return armedProfile == profile;
+            return this.armedProfile == profile;
         }
 
         public void ArmMappings(MappingProfile profile)
         {
-            armedProfile = profile;
+            this.armedProfile = profile;
 
             var allListeners = GetScriptingListeners();
             var allActions = (IList<AbstractAction>)profile.MappedOptions.Select(m => m.Action).ToList();
@@ -169,7 +175,7 @@ namespace Key2Joy
 
                 if (listener is IWndProcHandler listenerWndProcHAndler)
                 {
-                    wndProcListeners.Add(listenerWndProcHAndler);
+                    this.wndProcListeners.Add(listenerWndProcHAndler);
                 }
 
                 mappedOption.Action.OnStartListening(listener, ref allActions);
@@ -180,7 +186,7 @@ namespace Key2Joy
             {
                 if (listener is IWndProcHandler listenerWndProcHAndler)
                 {
-                    listenerWndProcHAndler.Handle = mainForm.Handle;
+                    listenerWndProcHAndler.Handle = this.mainForm.Handle;
                 }
 
                 listener.StartListening(ref allListeners);
@@ -189,19 +195,19 @@ namespace Key2Joy
             StatusChanged?.Invoke(this, new StatusChangedEventArgs
             {
                 IsEnabled = true,
-                Profile = armedProfile
+                Profile = this.armedProfile
             });
         }
 
         public void DisarmMappings()
         {
             var listeners = GetScriptingListeners();
-            wndProcListeners.Clear();
+            this.wndProcListeners.Clear();
 
             // Clear all intervals
             IdPool.CancelAll();
 
-            foreach (var mappedOption in armedProfile.MappedOptions)
+            foreach (var mappedOption in this.armedProfile.MappedOptions)
             {
                 if (mappedOption.Trigger == null)
                 {
@@ -223,7 +229,7 @@ namespace Key2Joy
             }
 
             GamePadManager.Instance.EnsureAllUnplugged();
-            armedProfile = null;
+            this.armedProfile = null;
 
             StatusChanged?.Invoke(this, new StatusChangedEventArgs
             {

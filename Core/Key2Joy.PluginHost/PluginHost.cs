@@ -1,5 +1,4 @@
-﻿using Key2Joy.Contracts.Plugins;
-using System;
+﻿using System;
 using System.AddIn.Contract;
 using System.Collections.Generic;
 using System.IO;
@@ -9,6 +8,8 @@ using System.Security.Cryptography;
 using System.Security.Permissions;
 using System.Security.Policy;
 using System.Text;
+using Key2Joy.Contracts.Plugins;
+using Key2Joy.Contracts.Plugins.Remoting;
 
 namespace Key2Joy.PluginHost
 {
@@ -47,13 +48,13 @@ namespace Key2Joy.PluginHost
 
             var pluginTypeName = $"{assemblyName}.Plugin";
 
-            pluginAssemblyPath = assemblyPath;
-            pluginAssemblyName = assemblyName;
+            this.pluginAssemblyPath = assemblyPath;
+            this.pluginAssemblyName = assemblyName;
 
             Console.WriteLine("Loading plugin {0},{1}", assemblyName, pluginTypeName);
 
             // Let plugins specify additional permissions
-            var permissionsXml = GetAdditionalPermissionsXml(pluginAssemblyPath);
+            var permissionsXml = GetAdditionalPermissionsXml(this.pluginAssemblyPath);
             loadedChecksum = CalculatePermissionsChecksum(permissionsXml);
 
             if (expectedChecksum != null && loadedChecksum != expectedChecksum)
@@ -103,24 +104,24 @@ namespace Key2Joy.PluginHost
             Directory.CreateDirectory(pluginDataDirectory);
             permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.AllAccess, pluginDataDirectory));
 
-            sandboxDomain = AppDomain.CreateDomain("Sandbox", evidence, sandboxDomainSetup, permissions);
-            loadedPlugin = (PluginBase)sandboxDomain.CreateInstanceAndUnwrap(assemblyName, pluginTypeName);
-            loadedPlugin.PluginDataDirectory = pluginDataDirectory;
+            this.sandboxDomain = AppDomain.CreateDomain("Sandbox", evidence, sandboxDomainSetup, permissions);
+            this.loadedPlugin = (PluginBase)this.sandboxDomain.CreateInstanceAndUnwrap(assemblyName, pluginTypeName);
+            this.loadedPlugin.PluginDataDirectory = pluginDataDirectory;
         }
 
         public string GetPluginName()
         {
-            return loadedPlugin.Name;
+            return this.loadedPlugin.Name;
         }
 
         public string GetPluginAuthor()
         {
-            return loadedPlugin.Author;
+            return this.loadedPlugin.Author;
         }
 
         public string GetPluginWebsite()
         {
-            return loadedPlugin.Website;
+            return this.loadedPlugin.Website;
         }
 
         public static AllowedPermissionsWithDescriptions GetAllowedPermissionsWithDescriptions()
@@ -187,8 +188,8 @@ namespace Key2Joy.PluginHost
 
         public PluginActionInsulator CreateAction(string fullTypeName, object[] constructorArguments)
         {
-            var pluginAction = (PluginAction)sandboxDomain.CreateInstanceFromAndUnwrap(
-                pluginAssemblyPath,
+            var pluginAction = (PluginAction)this.sandboxDomain.CreateInstanceFromAndUnwrap(
+                this.pluginAssemblyPath,
                 fullTypeName,
                 false,
                 BindingFlags.Default,
@@ -197,14 +198,14 @@ namespace Key2Joy.PluginHost
                 null,
                 null
             );
-            pluginAction.Plugin = loadedPlugin;
+            pluginAction.Plugin = this.loadedPlugin;
             return new PluginActionInsulator(pluginAction);
         }
 
         public PluginTriggerInsulator CreateTrigger(string fullTypeName, object[] constructorArguments)
         {
-            var pluginTrigger = (PluginTrigger)sandboxDomain.CreateInstanceFromAndUnwrap(
-                pluginAssemblyPath,
+            var pluginTrigger = (PluginTrigger)this.sandboxDomain.CreateInstanceFromAndUnwrap(
+                this.pluginAssemblyPath,
                 fullTypeName,
                 false,
                 BindingFlags.Default,
@@ -213,7 +214,7 @@ namespace Key2Joy.PluginHost
                 null,
                 null
             );
-            pluginTrigger.Plugin = loadedPlugin;
+            pluginTrigger.Plugin = this.loadedPlugin;
             return new PluginTriggerInsulator(pluginTrigger);
         }
 
@@ -230,11 +231,11 @@ namespace Key2Joy.PluginHost
             {
                 foreach (var subscription in eventSubscriptions)
                 {
-                    eventHandlers.Add(subscription.EventName, new RemoteEventHandler(subscription, Test_AnyEvent));
+                    eventHandlers.Add(subscription.EventName, new RemoteEventHandler(subscription, this.Test_AnyEvent));
                 }
             }
 
-            var contract = (INativeHandleContract)Program.AppDispatcher.Invoke(CreateOnUiThread, pluginAssemblyName, controlTypeName, sandboxDomain, eventHandlers);
+            var contract = (INativeHandleContract)Program.AppDispatcher.Invoke(CreateOnUiThread, this.pluginAssemblyName, controlTypeName, this.sandboxDomain, eventHandlers);
             return contract;
         }
 

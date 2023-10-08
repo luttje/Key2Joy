@@ -1,9 +1,10 @@
-﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.Plugins;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
+using Key2Joy.Contracts.Mapping.Actions;
+using Key2Joy.Contracts.Mapping.Triggers;
+using Key2Joy.Plugins;
 
-namespace Key2Joy.Mapping
+namespace Key2Joy.Mapping.Actions.Scripting
 {
     public abstract class BaseScriptAction : CoreAction
     {
@@ -25,14 +26,14 @@ namespace Key2Joy.Mapping
 
         protected virtual string GetExecutableScript()
         {
-            if (IsScriptPath)
+            if (this.IsScriptPath)
             {
-                cachedFile ??= System.IO.File.ReadAllText(Script);
+                this.cachedFile ??= System.IO.File.ReadAllText(this.Script);
 
-                return cachedFile;
+                return this.cachedFile;
             }
 
-            return Script;
+            return this.Script;
         }
 
         public abstract void RegisterScriptingEnum(ExposedEnumeration enumeration);
@@ -57,9 +58,9 @@ namespace Key2Joy.Mapping
         public override string GetNameDisplay()
         {
             // Truncate the script to be no more than 50 characters
-            var truncatedScript = Script.Length > 47 ? Script.Substring(0, 47) + "..." : Script;
+            var truncatedScript = this.Script.Length > 47 ? this.Script.Substring(0, 47) + "..." : this.Script;
 
-            return Name.Replace("{0}", truncatedScript);
+            return this.Name.Replace("{0}", truncatedScript);
         }
 
         public override void OnStartListening(AbstractTriggerListener listener, ref IList<AbstractAction> otherActions)

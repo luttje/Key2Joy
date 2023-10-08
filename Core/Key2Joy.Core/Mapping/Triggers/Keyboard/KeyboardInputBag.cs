@@ -1,8 +1,8 @@
-﻿using Key2Joy.Contracts.Mapping;
+﻿using System.Windows.Forms;
+using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.LowLevelInput;
-using System.Windows.Forms;
 
-namespace Key2Joy.Mapping
+namespace Key2Joy.Mapping.Triggers.Keyboard
 {
     public class KeyboardInputBag : AbstractInputBag
     {

@@ -1,4 +1,4 @@
-﻿namespace Key2Joy.Contracts.Mapping
+﻿namespace Key2Joy.Contracts.Mapping.Triggers
 {
     public class TriggerAttribute : MappingAttribute
     {

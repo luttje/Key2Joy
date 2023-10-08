@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace Key2Joy.Contracts.Plugins
+namespace Key2Joy.Contracts.Plugins.Remoting
 {
     [Serializable]
     public class RemoteEventArgs : ISafeSerializationData
@@ -10,7 +10,7 @@ namespace Key2Joy.Contracts.Plugins
 
         public RemoteEventArgs(SubscriptionInfo subscription)
         {
-            Subscription = subscription;
+            this.Subscription = subscription;
         }
 
         public void CompleteDeserialization(object deserialized)
@@ -42,7 +42,7 @@ namespace Key2Joy.Contracts.Plugins
 
         public void Invoke(object sender, EventArgs e)
         {
-            callback?.Invoke(sender, new RemoteEventArgs(subscription));
+            this.callback?.Invoke(sender, new RemoteEventArgs(this.subscription));
         }
     }
 }

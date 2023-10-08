@@ -15,11 +15,11 @@ namespace Key2Joy.Contracts.Plugins
             this.instance = instance;
         }
 
-        public T GetInstance<T>() => (T)instance;
+        public T GetInstance<T>() => (T)this.instance;
 
         public void AsDelegateInvoke(params object[] args)
         {
-            var action = GetInstance<Delegate>();
+            var action = this.GetInstance<Delegate>();
             action.DynamicInvoke(new object[] { args }); // Extra wrap needed for params: http://deploytonenyures.blogspot.com/2011/11/c-params-and-methodinfoinvoke.html
         }
     }

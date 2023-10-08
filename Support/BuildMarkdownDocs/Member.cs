@@ -13,15 +13,15 @@ namespace BuildMarkdownDocs
         internal abstract string GetLinkMarkdown();
         internal virtual void FillTemplateReplacements(ref Dictionary<string, string> replacements)
         {
-            replacements.Add("Name", Name);
-            replacements.Add("Summary", Summary);
+            replacements.Add("Name", this.Name);
+            replacements.Add("Summary", this.Summary);
         }
 
         internal string FillTemplate(string fileTemplate)
         {
             Dictionary<string, string> replacements = new();
 
-            FillTemplateReplacements(ref replacements);
+            this.FillTemplateReplacements(ref replacements);
 
             var template = fileTemplate;
 
@@ -51,7 +51,7 @@ namespace BuildMarkdownDocs
 
         public virtual int CompareTo(Member other)
         {
-            return Name.CompareTo(other.Name);
+            return this.Name.CompareTo(other.Name);
         }
     }
 }

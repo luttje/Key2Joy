@@ -1,11 +1,13 @@
-﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.LowLevelInput;
-using SimWinInput;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Mapping.Actions;
+using Key2Joy.Contracts.Mapping.Triggers;
+using Key2Joy.LowLevelInput;
+using SimWinInput;
 
-namespace Key2Joy.Mapping
+namespace Key2Joy.Mapping.Actions.Input
 {
     [Action(
         Description = "GamePad Stick Simulation",
@@ -31,7 +33,7 @@ namespace Key2Joy.Mapping
         {
             base.OnStartListening(listener, ref otherActions);
 
-            GamePadManager.Instance.EnsurePluggedIn(GamePadIndex);
+            GamePadManager.Instance.EnsurePluggedIn(this.GamePadIndex);
         }
 
         /// <markdown-doc>
@@ -64,25 +66,25 @@ namespace Key2Joy.Mapping
             Simulator.GamePadStick stick = Simulator.GamePadStick.Left,
             int gamepadIndex = 0)
         {
-            DeltaX = deltaX;
-            DeltaY = deltaY;
-            Stick = stick;
-            GamePadIndex = gamepadIndex;
+            this.DeltaX = deltaX;
+            this.DeltaY = deltaY;
+            this.Stick = stick;
+            this.GamePadIndex = gamepadIndex;
 
-            GamePadManager.Instance.EnsurePluggedIn(GamePadIndex);
+            GamePadManager.Instance.EnsurePluggedIn(this.GamePadIndex);
 
-            await Execute();
+            await this.Execute();
         }
 
         public override async Task Execute(AbstractInputBag inputBag = null)
         {
             var simPad = SimGamePad.Instance;
-            var state = simPad.State[GamePadIndex];
+            var state = simPad.State[this.GamePadIndex];
 
-            var x = (short)(short.MinValue * DeltaX);
-            var y = (short)(short.MinValue * DeltaY);
+            var x = (short)(short.MinValue * this.DeltaX);
+            var y = (short)(short.MinValue * this.DeltaY);
 
-            if (Stick == Simulator.GamePadStick.Right)
+            if (this.Stick == Simulator.GamePadStick.Right)
             {
                 state.RightStickX = x;
                 state.RightStickY = y;
@@ -93,15 +95,15 @@ namespace Key2Joy.Mapping
                 state.LeftStickY = y;
             }
 
-            simPad.Update(GamePadIndex);
+            simPad.Update(this.GamePadIndex);
         }
 
         public override string GetNameDisplay()
         {
-            return Name.Replace("{0}", Stick == Simulator.GamePadStick.Left ? "Left" : "Right")
-                .Replace("{1}", DeltaX.ToString())
-                .Replace("{2}", DeltaY.ToString())
-                .Replace("{3}", GamePadIndex.ToString());
+            return this.Name.Replace("{0}", this.Stick == Simulator.GamePadStick.Left ? "Left" : "Right")
+                .Replace("{1}", this.DeltaX.ToString())
+                .Replace("{2}", this.DeltaY.ToString())
+                .Replace("{3}", this.GamePadIndex.ToString());
         }
 
         public override bool Equals(object obj)
@@ -111,9 +113,9 @@ namespace Key2Joy.Mapping
                 return false;
             }
 
-            return action.Stick == Stick
-                && action.DeltaX == DeltaX
-                && action.DeltaY == DeltaY;
+            return action.Stick == this.Stick
+                && action.DeltaX == this.DeltaX
+                && action.DeltaY == this.DeltaY;
         }
     }
 }

@@ -1,10 +1,12 @@
-﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.LowLevelInput;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Mapping.Actions;
+using Key2Joy.Contracts.Mapping.Triggers;
+using Key2Joy.LowLevelInput;
 
-namespace Key2Joy.Mapping
+namespace Key2Joy.Mapping.Actions.Input
 {
     [Action(
         Description = "Mouse Button Simulation",
@@ -55,28 +57,28 @@ namespace Key2Joy.Mapping
         [ExposesScriptingMethod("Mouse.Simulate")]
         public async void ExecuteForScript(Mouse.Buttons button, PressState pressState)
         {
-            Button = button;
-            PressState = pressState;
+            this.Button = button;
+            this.PressState = pressState;
 
-            await Execute();
+            await this.Execute();
         }
 
         public override async Task Execute(AbstractInputBag inputBag = null)
         {
-            if (PressState == PressState.Press)
+            if (this.PressState == PressState.Press)
             {
-                SimulatedMouse.PressButton(Button);
+                SimulatedMouse.PressButton(this.Button);
             }
-            else if (PressState == PressState.Release)
+            else if (this.PressState == PressState.Release)
             {
-                SimulatedMouse.ReleaseButton(Button);
+                SimulatedMouse.ReleaseButton(this.Button);
             }
         }
 
         public override string GetNameDisplay()
         {
-            return Name.Replace("{0}", Enum.GetName(typeof(Mouse.Buttons), Button))
-                .Replace("{1}", Enum.GetName(typeof(Mouse.Buttons), PressState));
+            return this.Name.Replace("{0}", Enum.GetName(typeof(Mouse.Buttons), this.Button))
+                .Replace("{1}", Enum.GetName(typeof(Mouse.Buttons), this.PressState));
         }
 
         public override bool Equals(object obj)
@@ -86,8 +88,8 @@ namespace Key2Joy.Mapping
                 return false;
             }
 
-            return action.Button == Button
-                && action.PressState == PressState;
+            return action.Button == this.Button
+                && action.PressState == this.PressState;
         }
     }
 }

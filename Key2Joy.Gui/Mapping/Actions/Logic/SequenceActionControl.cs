@@ -1,13 +1,14 @@
-﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.Mapping;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Mapping.Actions;
+using Key2Joy.Mapping.Actions.Logic;
 
 namespace Key2Joy.Gui.Mapping
 {
     [MappingControl(
-        ForType = typeof(Key2Joy.Mapping.SequenceAction),
+        ForType = typeof(SequenceAction),
         ImageResourceName = "text_list_numbers"
     )]
     public partial class SequenceActionControl : UserControl, IActionOptionsControl
@@ -18,9 +19,9 @@ namespace Key2Joy.Gui.Mapping
 
         public SequenceActionControl()
         {
-            InitializeComponent();
+            this.InitializeComponent();
 
-            childActions = new List<AbstractAction>();
+            this.childActions = new List<AbstractAction>();
         }
 
         public void Select(object action)
@@ -30,7 +31,7 @@ namespace Key2Joy.Gui.Mapping
             foreach (var childAction in thisAction.ChildActions)
             {
                 // Clone so we don't modify the action in a profile
-                AddChildAction((AbstractAction)childAction.Clone());
+                this.AddChildAction((AbstractAction)childAction.Clone());
             }
         }
 
@@ -39,7 +40,7 @@ namespace Key2Joy.Gui.Mapping
             var thisAction = (SequenceAction)action;
             thisAction.ChildActions.Clear();
 
-            foreach (var childAction in childActions)
+            foreach (var childAction in this.childActions)
             {
                 throw new NotImplementedException("TODO:::::");
                 // thisAction.ChildActions.Add(PluginAction.GetFullyFormedAction(childAction));
@@ -53,47 +54,47 @@ namespace Key2Joy.Gui.Mapping
 
         private void AddChildAction(AbstractAction action)
         {
-            childActions.Add(action);
-            lstActions.Items.Add(action);
+            this.childActions.Add(action);
+            this.lstActions.Items.Add(action);
         }
 
         private void RemoveChildAction(AbstractAction action)
         {
-            var index = lstActions.Items.IndexOf(action);
+            var index = this.lstActions.Items.IndexOf(action);
 
-            childActions.Remove(action);
-            lstActions.Items.Remove(action);
+            this.childActions.Remove(action);
+            this.lstActions.Items.Remove(action);
 
-            if (lstActions.Items.Count > 0)
+            if (this.lstActions.Items.Count > 0)
             {
-                if (index >= lstActions.Items.Count)
+                if (index >= this.lstActions.Items.Count)
                 {
-                    index = lstActions.Items.Count - 1;
+                    index = this.lstActions.Items.Count - 1;
                 }
-                lstActions.SelectedIndex = index;
+                this.lstActions.SelectedIndex = index;
             }
         }
 
         private void BtnAdd_Click(object sender, EventArgs e)
         {
-            AddChildAction((AbstractAction)actionControl.Action.Clone());
+            this.AddChildAction((AbstractAction)this.actionControl.Action.Clone());
             OptionsChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void BtnRemove_Click(object sender, EventArgs e)
         {
-            RemoveChildAction((AbstractAction)lstActions.SelectedItem);
+            this.RemoveChildAction((AbstractAction)this.lstActions.SelectedItem);
             OptionsChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void LstActions_SelectedIndexChanged(object sender, EventArgs e)
         {
-            btnRemove.Enabled = lstActions.SelectedIndex > -1;
+            this.btnRemove.Enabled = this.lstActions.SelectedIndex > -1;
         }
 
         private void ActionControl_ActionChanged(AbstractAction action)
         {
-            btnAdd.Enabled = action != null;
+            this.btnAdd.Enabled = action != null;
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace Key2Joy.Mapping
+﻿namespace Key2Joy.Mapping.Actions.Logic
 {
     public enum AppCommand
     {

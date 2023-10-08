@@ -1,4 +1,6 @@
-﻿namespace Key2Joy.Gui.Mapping
+﻿using Key2Joy.Contracts.Mapping.Triggers;
+
+namespace Key2Joy.Gui.Mapping
 {
     partial class CombinedTriggerControlItem
     {
@@ -45,7 +47,7 @@
             this.triggerControl.Padding = new System.Windows.Forms.Padding(5);
             this.triggerControl.Size = new System.Drawing.Size(331, 31);
             this.triggerControl.TabIndex = 2;
-            this.triggerControl.TriggerChanged += new System.EventHandler<Key2Joy.Contracts.Mapping.TriggerChangedEventArgs>(this.TriggerControl_TriggerChanged);
+            this.triggerControl.TriggerChanged += new System.EventHandler<TriggerChangedEventArgs>(this.TriggerControl_TriggerChanged);
             // 
             // pnlActions
             // 

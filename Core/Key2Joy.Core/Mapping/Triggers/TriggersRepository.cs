@@ -1,11 +1,12 @@
-﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.Plugins;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Mapping.Triggers;
+using Key2Joy.Plugins;
 
-namespace Key2Joy.Mapping
+namespace Key2Joy.Mapping.Triggers
 {
     public class TriggersRepository
     {
@@ -22,7 +23,7 @@ namespace Key2Joy.Mapping
                 .Where(t => t.GetCustomAttribute(typeof(TriggerAttribute), false) != null)
                 .ToDictionary(
                     t => t.FullName,
-                    t => new MappingTypeFactory<AbstractTrigger>(t.FullName, (MappingAttribute)t.GetCustomAttribute<TriggerAttribute>())
+                    t => new MappingTypeFactory<AbstractTrigger>(t.FullName, t.GetCustomAttribute<TriggerAttribute>())
                 );
 
             if (additionalTriggerTypeFactories == null)

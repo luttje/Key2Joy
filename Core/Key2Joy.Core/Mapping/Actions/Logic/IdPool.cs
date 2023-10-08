@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 
-namespace Key2Joy.Mapping
+namespace Key2Joy.Mapping.Actions.Logic
 {
     public static class IdPool
     {
@@ -16,7 +16,7 @@ namespace Key2Joy.Mapping
 
             public BaseId()
             {
-                Id = nextId++;
+                this.Id = nextId++;
 
                 ids.Add(this);
             }
@@ -24,17 +24,17 @@ namespace Key2Joy.Mapping
             public BaseId(CancellationTokenSource cancellation)
                 : this()
             {
-                Cancellation = cancellation;
+                this.Cancellation = cancellation;
             }
 
             public void Cancel()
             {
-                Cancellation.Cancel();
+                this.Cancellation.Cancel();
             }
 
             override public string ToString()
             {
-                return Id.ToString();
+                return this.Id.ToString();
             }
         }
 

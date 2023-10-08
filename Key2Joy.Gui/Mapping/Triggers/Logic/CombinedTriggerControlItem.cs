@@ -1,6 +1,6 @@
-﻿using Key2Joy.Contracts.Mapping;
-using System;
+﻿using System;
 using System.Windows.Forms;
+using Key2Joy.Contracts.Mapping.Triggers;
 
 namespace Key2Joy.Gui.Mapping
 {
@@ -12,15 +12,15 @@ namespace Key2Joy.Gui.Mapping
 
         public CombinedTriggerControlItem()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         public CombinedTriggerControlItem(AbstractTrigger trigger)
             : this()
         {
-            Trigger = trigger;
+            this.Trigger = trigger;
 
-            triggerControl.SelectTrigger(trigger);
+            this.triggerControl.SelectTrigger(trigger);
         }
 
         private void BtnRemove_Click(object sender, EventArgs e)
@@ -30,7 +30,7 @@ namespace Key2Joy.Gui.Mapping
 
         private void TriggerControl_TriggerChanged(object sender, TriggerChangedEventArgs e)
         {
-            Trigger = e.Trigger;
+            this.Trigger = e.Trigger;
 
             TriggerChanged?.Invoke(this, EventArgs.Empty);
         }

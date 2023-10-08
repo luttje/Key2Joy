@@ -12,8 +12,8 @@ namespace Key2Joy.LowLevelInput
             LowLevelMouseInputEvent mouseData,
             MouseState mouseState)
         {
-            RawData = mouseData;
-            MouseState = mouseState;
+            this.RawData = mouseData;
+            this.MouseState = mouseState;
         }
     }
 }

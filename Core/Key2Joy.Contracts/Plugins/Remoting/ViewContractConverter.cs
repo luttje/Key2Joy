@@ -6,7 +6,7 @@ using System.Linq;
 using System.Runtime.Remoting;
 using System.Windows;
 
-namespace Key2Joy.Contracts.Plugins
+namespace Key2Joy.Contracts.Plugins.Remoting
 {
     public class ViewContractConverter : MarshalByRefObject
     {
@@ -20,10 +20,10 @@ namespace Key2Joy.Contracts.Plugins
 
         public INativeHandleContract ConvertToContract(ObjectHandle controlHandle, Dictionary<string, RemoteEventHandler> boundEvents)
         {
-            instance = controlHandle.Unwrap();
+            this.instance = controlHandle.Unwrap();
 
             // Iterate the events in this type and bind to them. Call AnyEvent when one happens
-            var type = instance.GetType();
+            var type = this.instance.GetType();
             var events = type.GetEvents();
 
             foreach (var e in events)
@@ -34,7 +34,7 @@ namespace Key2Joy.Contracts.Plugins
                     //if (IsValidDelegateType(e.EventHandlerType))
                     //{
                     var handler = RemoteEventHandler.CreateProxyHandler(controlHandle, boundEvents[e.Name].Invoke);
-                    e.AddEventHandler(instance, handler);
+                    e.AddEventHandler(this.instance, handler);
                     Console.WriteLine($"Binding to event: {e.Name}");
                     //}
                     //else
@@ -51,7 +51,7 @@ namespace Key2Joy.Contracts.Plugins
                 Console.WriteLine($"Event {unknownEvent} is specified in bound events but does not exist in the actual type {type.FullName}.");
             }
 
-            return ConvertToContract((FrameworkElement)instance);
+            return this.ConvertToContract((FrameworkElement)this.instance);
         }
 
         // Helper method to check if the delegate type is compatible with EventHandler
@@ -74,9 +74,9 @@ namespace Key2Joy.Contracts.Plugins
 
         public object RemoteInvoke(string methodName, object[] parameters)
         {
-            var type = instance.GetType();
+            var type = this.instance.GetType();
             var mi = type.GetMethod(methodName);
-            return mi.Invoke(instance, parameters);
+            return mi.Invoke(this.instance, parameters);
         }
     }
 }

@@ -2,7 +2,7 @@
 using System.IO.Pipes;
 using System.Text;
 
-namespace Key2Joy.Contracts.Plugins
+namespace Key2Joy.Contracts.Plugins.Remoting
 {
     public class RemotePipe
     {

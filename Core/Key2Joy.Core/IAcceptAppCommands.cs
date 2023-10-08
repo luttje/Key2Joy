@@ -1,4 +1,4 @@
-﻿using Key2Joy.Mapping;
+﻿using Key2Joy.Mapping.Actions.Logic;
 
 namespace Key2Joy
 {

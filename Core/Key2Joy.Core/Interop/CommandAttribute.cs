@@ -9,7 +9,7 @@ namespace Key2Joy.Interop
 
         public CommandAttribute(byte id)
         {
-            Id = id;
+            this.Id = id;
         }
     }
 }

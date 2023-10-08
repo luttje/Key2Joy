@@ -1,8 +1,8 @@
-﻿using CommandLine;
+﻿using System.Linq;
+using System.Windows.Forms;
+using CommandLine;
 using Key2Joy.Setup.Installation;
 using Key2Joy.Setup.Releases;
-using System.Linq;
-using System.Windows.Forms;
 
 namespace Key2Joy.Setup.Cmd
 {
@@ -38,19 +38,19 @@ namespace Key2Joy.Setup.Cmd
         public override void Handle()
         {
             var releases = ReleaseManager.GetReleases();
-            var release = releases.FirstOrDefault(r => r.TagName == Version);
+            var release = releases.FirstOrDefault(r => r.TagName == this.Version);
 
             if (release == null)
             {
-                MessageBox.Show($"The version {Version} is not available. Please select a version from the list.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"The version {this.Version} is not available. Please select a version from the list.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
             SetupForm.PendingInstallVersion = new InstallVersion
             {
-                InstallPath = InstallPath,
-                VersionTagName = Version,
-                UpdatePreference = UpdatePreference
+                InstallPath = this.InstallPath,
+                VersionTagName = this.Version,
+                UpdatePreference = this.UpdatePreference
             };
         }
     }

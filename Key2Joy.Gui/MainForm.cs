@@ -1,15 +1,21 @@
-﻿using BrightIdeasSoftware;
-using Key2Joy.Config;
-using Key2Joy.Contracts.Mapping;
-using Key2Joy.Gui.Properties;
-using Key2Joy.LowLevelInput;
-using Key2Joy.Mapping;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+using BrightIdeasSoftware;
+using Key2Joy.Config;
+using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Mapping.Actions;
+using Key2Joy.Contracts.Mapping.Triggers;
+using Key2Joy.Gui.Properties;
+using Key2Joy.LowLevelInput;
+using Key2Joy.Mapping;
+using Key2Joy.Mapping.Actions;
+using Key2Joy.Mapping.Actions.Input;
+using Key2Joy.Mapping.Actions.Logic;
+using Key2Joy.Mapping.Triggers;
 
 namespace Key2Joy.Gui
 {
@@ -20,9 +26,9 @@ namespace Key2Joy.Gui
 
         public MainForm(bool shouldStartMinimized = false)
         {
-            cachedMappingGroups = new Dictionary<string, CachedMappingGroup>();
+            this.cachedMappingGroups = new Dictionary<string, CachedMappingGroup>();
 
-            InitializeComponent();
+            this.InitializeComponent();
 
             if (shouldStartMinimized)
             {
@@ -30,18 +36,18 @@ namespace Key2Joy.Gui
                 this.ShowInTaskbar = false;
             }
 
-            lblStatusActive.Visible = chkEnabled.Checked;
+            this.lblStatusActive.Visible = this.chkEnabled.Checked;
 
             var items = new MenuItem[]{
                 new MenuItem("Show", (s, e) => {
-                    Show();
-                    BringToFront();
+                    this.Show();
+                    this.BringToFront();
 
-                    if (WindowState == FormWindowState.Minimized) { WindowState = FormWindowState.Normal; } }),
-                new MenuItem("Exit", ExitProgramToolStripMenuItem_Click)
+                    if (this.WindowState == FormWindowState.Minimized) { this.WindowState = FormWindowState.Normal; } }),
+                new MenuItem("Exit", this.ExitProgramToolStripMenuItem_Click)
             };
 
-            ntfIndicator.ContextMenu = new ContextMenu(items);
+            this.ntfIndicator.ContextMenu = new ContextMenu(items);
 
             var allAttributes = ActionsRepository.GetAllActionAttributes();
             ImageList imageList = new();
@@ -54,13 +60,13 @@ namespace Key2Joy.Gui
                 }
             }
 
-            olvMappings.GroupImageList = imageList;
+            this.olvMappings.GroupImageList = imageList;
 
-            olvColumnAction.GroupKeyGetter += OlvMappings_GroupKeyGetter;
-            olvColumnAction.GroupKeyToTitleConverter += OlvMappings_GroupKeyToTitleConverter;
-            olvMappings.BeforeCreatingGroups += OlvMappings_BeforeCreatingGroups;
+            this.olvColumnAction.GroupKeyGetter += this.OlvMappings_GroupKeyGetter;
+            this.olvColumnAction.GroupKeyToTitleConverter += this.OlvMappings_GroupKeyToTitleConverter;
+            this.olvMappings.BeforeCreatingGroups += this.OlvMappings_BeforeCreatingGroups;
 
-            olvColumnTrigger.AspectToStringConverter = delegate (object obj)
+            this.olvColumnTrigger.AspectToStringConverter = delegate (object obj)
             {
                 var trigger = obj as CoreTrigger;
 
@@ -75,43 +81,43 @@ namespace Key2Joy.Gui
 
         private void SetSelectedProfile(MappingProfile profile)
         {
-            selectedProfile = profile;
+            this.selectedProfile = profile;
             ConfigManager.Config.LastLoadedProfile = profile.FilePath;
 
-            olvMappings.SetObjects(profile.MappedOptions);
-            olvMappings.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
-            olvMappings.Sort(olvColumnTrigger, SortOrder.Ascending);
+            this.olvMappings.SetObjects(profile.MappedOptions);
+            this.olvMappings.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+            this.olvMappings.Sort(this.olvColumnTrigger, SortOrder.Ascending);
 
-            UpdateSelectedProfileName();
+            this.UpdateSelectedProfileName();
         }
 
         private void UpdateSelectedProfileName()
         {
-            txtProfileName.Text = selectedProfile.Name;
+            this.txtProfileName.Text = this.selectedProfile.Name;
         }
 
         private void SetStatusView(bool isEnabled)
         {
-            chkEnabled.CheckedChanged -= ChkEnabled_CheckedChanged;
-            chkEnabled.Checked = isEnabled;
-            chkEnabled.CheckedChanged += ChkEnabled_CheckedChanged;
+            this.chkEnabled.CheckedChanged -= this.ChkEnabled_CheckedChanged;
+            this.chkEnabled.Checked = isEnabled;
+            this.chkEnabled.CheckedChanged += this.ChkEnabled_CheckedChanged;
 
-            lblStatusActive.Visible = isEnabled;
-            lblStatusInactive.Visible = !isEnabled;
+            this.lblStatusActive.Visible = isEnabled;
+            this.lblStatusInactive.Visible = !isEnabled;
         }
 
         private MappingProfile CreateNewProfile(string nameSuffix = default)
         {
-            MappingProfile profile = new($"{txtProfileName.Text}{nameSuffix}", selectedProfile?.MappedOptions);
+            MappingProfile profile = new($"{this.txtProfileName.Text}{nameSuffix}", this.selectedProfile?.MappedOptions);
 
-            SetSelectedProfile(profile);
+            this.SetSelectedProfile(profile);
 
             return profile;
         }
 
         private void EditMappedOption(MappedOption existingMappedOption = null)
         {
-            chkEnabled.Checked = false;
+            this.chkEnabled.Checked = false;
             MappingForm mappingForm = new(existingMappedOption);
             var result = mappingForm.ShowDialog();
 
@@ -124,30 +130,30 @@ namespace Key2Joy.Gui
 
             if (existingMappedOption == null)
             {
-                selectedProfile.AddMapping(mappedOption);
+                this.selectedProfile.AddMapping(mappedOption);
             }
 
-            selectedProfile.Save();
+            this.selectedProfile.Save();
 
             if (existingMappedOption == null)
             {
-                olvMappings.AddObject(mappedOption);
+                this.olvMappings.AddObject(mappedOption);
             }
             else
             {
-                olvMappings.UpdateObject(mappedOption);
+                this.olvMappings.UpdateObject(mappedOption);
             }
         }
 
         private void RemoveMapping(MappedOption mappedOption)
         {
-            selectedProfile.RemoveMapping(mappedOption);
-            olvMappings.RemoveObject(mappedOption);
+            this.selectedProfile.RemoveMapping(mappedOption);
+            this.olvMappings.RemoveObject(mappedOption);
         }
 
         private void RemoveSelectedMappings()
         {
-            var selectedCount = olvMappings.SelectedItems.Count;
+            var selectedCount = this.olvMappings.SelectedItems.Count;
 
             if (selectedCount == 0)
             {
@@ -162,12 +168,12 @@ namespace Key2Joy.Gui
                 }
             }
 
-            foreach (OLVListItem listItem in olvMappings.SelectedItems)
+            foreach (OLVListItem listItem in this.olvMappings.SelectedItems)
             {
-                RemoveMapping((MappedOption)listItem.RowObject);
+                this.RemoveMapping((MappedOption)listItem.RowObject);
             }
 
-            selectedProfile.Save();
+            this.selectedProfile.Save();
         }
 
         public bool RunAppCommand(AppCommand command)
@@ -175,9 +181,9 @@ namespace Key2Joy.Gui
             switch (command)
             {
                 case AppCommand.Abort:
-                    BeginInvoke(new MethodInvoker(delegate
+                    this.BeginInvoke(new MethodInvoker(delegate
                     {
-                        chkEnabled.Checked = false;
+                        this.chkEnabled.Checked = false;
                     }));
 
                     return true;
@@ -192,30 +198,30 @@ namespace Key2Joy.Gui
 
             if (lastLoadedProfile != null)
             {
-                SetSelectedProfile(lastLoadedProfile);
+                this.SetSelectedProfile(lastLoadedProfile);
             }
 
             // Ensure the manager knows which window handle catches all inputs
             Key2JoyManager.Instance.SetMainForm(this);
             Key2JoyManager.Instance.StatusChanged += (s, ev) =>
             {
-                SetStatusView(ev.IsEnabled);
+                this.SetStatusView(ev.IsEnabled);
 
                 if (ev.Profile != null)
                 {
-                    SetSelectedProfile(ev.Profile);
+                    this.SetSelectedProfile(ev.Profile);
                 }
             };
         }
 
         private void BtnCreateMapping_Click(object sender, EventArgs e)
         {
-            if (selectedProfile == null)
+            if (this.selectedProfile == null)
             {
-                CreateNewProfile();
+                this.CreateNewProfile();
             }
 
-            EditMappedOption();
+            this.EditMappedOption();
         }
 
         private void OlvMappings_CellClick(object sender, BrightIdeasSoftware.CellClickEventArgs e)
@@ -225,21 +231,21 @@ namespace Key2Joy.Gui
                 return;
             }
 
-            if (olvMappings.SelectedObject is not MappedOption mappedOption)
+            if (this.olvMappings.SelectedObject is not MappedOption mappedOption)
             {
                 return;
             }
 
-            EditMappedOption(mappedOption);
+            this.EditMappedOption(mappedOption);
         }
 
         private CachedMappingGroup GetGroupOrCreateInCache(ActionAttribute attribute)
         {
             var uniqueId = attribute.GroupName + attribute.GroupImage;
 
-            if (!cachedMappingGroups.TryGetValue(uniqueId, out var mapping))
+            if (!this.cachedMappingGroups.TryGetValue(uniqueId, out var mapping))
             {
-                cachedMappingGroups.Add(uniqueId, mapping = new CachedMappingGroup
+                this.cachedMappingGroups.Add(uniqueId, mapping = new CachedMappingGroup
                 {
                     Name = attribute.GroupName,
                     Image = attribute.GroupImage,
@@ -256,7 +262,7 @@ namespace Key2Joy.Gui
 
             if (actionAttribute != null)
             {
-                return GetGroupOrCreateInCache(actionAttribute);
+                return this.GetGroupOrCreateInCache(actionAttribute);
             }
 
             return null;
@@ -301,18 +307,18 @@ namespace Key2Joy.Gui
             var addItem = menu.Items.Add("Add New Mapping");
             addItem.Click += (s, _) =>
             {
-                EditMappedOption();
+                this.EditMappedOption();
             };
 
-            var selectedCount = olvMappings.SelectedItems.Count;
+            var selectedCount = this.olvMappings.SelectedItems.Count;
 
             if (selectedCount > 1)
             {
                 var removeItems = menu.Items.Add($"Remove {selectedCount} Mappings");
                 removeItems.Click += (s, _) =>
                 {
-                    RemoveSelectedMappings();
-                    selectedProfile.Save();
+                    this.RemoveSelectedMappings();
+                    this.selectedProfile.Save();
                 };
             }
             else if (e.Model is MappedOption mappedOption)
@@ -320,7 +326,7 @@ namespace Key2Joy.Gui
                 var removeItem = menu.Items.Add("Remove Mapping");
                 removeItem.Click += (s, _) =>
                 {
-                    RemoveMapping(mappedOption);
+                    this.RemoveMapping(mappedOption);
                 };
             }
 
@@ -334,7 +340,7 @@ namespace Key2Joy.Gui
                 return;
             }
 
-            RemoveSelectedMappings();
+            this.RemoveSelectedMappings();
         }
 
         private void OlvMappings_FormatCell(object sender, FormatCellEventArgs e)
@@ -350,13 +356,13 @@ namespace Key2Joy.Gui
 
         private void ChkEnabled_CheckedChanged(object sender, EventArgs e)
         {
-            var isEnabled = chkEnabled.Checked;
+            var isEnabled = this.chkEnabled.Checked;
 
-            SetStatusView(isEnabled);
+            this.SetStatusView(isEnabled);
 
             if (isEnabled)
             {
-                Key2JoyManager.Instance.ArmMappings(selectedProfile);
+                Key2JoyManager.Instance.ArmMappings(this.selectedProfile);
             }
             else
             {
@@ -366,8 +372,8 @@ namespace Key2Joy.Gui
 
         private void TxtProfileName_TextChanged(object sender, EventArgs e)
         {
-            selectedProfile.Name = txtProfileName.Text;
-            selectedProfile.Save();
+            this.selectedProfile.Name = this.txtProfileName.Text;
+            this.selectedProfile.Save();
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -375,7 +381,7 @@ namespace Key2Joy.Gui
             if (e.CloseReason == CloseReason.UserClosing)
             {
                 e.Cancel = true;
-                Hide();
+                this.Hide();
 
                 if (ConfigManager.Config.MuteCloseExitMessage)
                 {
@@ -390,7 +396,7 @@ namespace Key2Joy.Gui
 
         private void NewProfileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            CreateNewProfile(" - Copy");
+            this.CreateNewProfile(" - Copy");
         }
 
         private void LoadProfileToolStripMenuItem_Click(object sender, EventArgs e)
@@ -420,7 +426,7 @@ namespace Key2Joy.Gui
                 return;
             }
 
-            SetSelectedProfile(profile);
+            this.SetSelectedProfile(profile);
         }
 
         private void SaveProfileToolStripMenuItem_Click(object sender, EventArgs e)
@@ -430,13 +436,13 @@ namespace Key2Joy.Gui
 
         private void OpenProfileFolderToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (selectedProfile == null)
+            if (this.selectedProfile == null)
             {
                 Process.Start(MappingProfile.GetSaveDirectory());
                 return;
             }
 
-            var argument = "/select, \"" + selectedProfile.FilePath + "\"";
+            var argument = "/select, \"" + this.selectedProfile.FilePath + "\"";
             Process.Start("explorer.exe", argument);
         }
 
@@ -447,7 +453,7 @@ namespace Key2Joy.Gui
 
         private void CreateNewMappingToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            BtnCreateMapping_Click(sender, e);
+            this.BtnCreateMapping_Click(sender, e);
         }
 
         private void GamePadPressAndReleaseToolStripMenuItem_Click(object sender, EventArgs e)
@@ -456,25 +462,25 @@ namespace Key2Joy.Gui
             range.AddRange(GamePadAction.GetAllButtonActions(PressState.Press));
             range.AddRange(GamePadAction.GetAllButtonActions(PressState.Release));
 
-            selectedProfile.AddMappingRange(range);
-            selectedProfile.Save();
-            olvMappings.AddObjects(range);
+            this.selectedProfile.AddMappingRange(range);
+            this.selectedProfile.Save();
+            this.olvMappings.AddObjects(range);
         }
 
         private void GamePadPressToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var range = GamePadAction.GetAllButtonActions(PressState.Press);
-            selectedProfile.AddMappingRange(range);
-            selectedProfile.Save();
-            olvMappings.AddObjects(range);
+            this.selectedProfile.AddMappingRange(range);
+            this.selectedProfile.Save();
+            this.olvMappings.AddObjects(range);
         }
 
         private void GamePadReleaseToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var range = GamePadAction.GetAllButtonActions(PressState.Release);
-            selectedProfile.AddMappingRange(range);
-            selectedProfile.Save();
-            olvMappings.AddObjects(range);
+            this.selectedProfile.AddMappingRange(range);
+            this.selectedProfile.Save();
+            this.olvMappings.AddObjects(range);
         }
 
         private void KeyboardPressAndReleaseToolStripMenuItem_Click(object sender, EventArgs e)
@@ -483,25 +489,25 @@ namespace Key2Joy.Gui
             range.AddRange(KeyboardAction.GetAllButtonActions(PressState.Press));
             range.AddRange(KeyboardAction.GetAllButtonActions(PressState.Release));
 
-            selectedProfile.AddMappingRange(range);
-            selectedProfile.Save();
-            olvMappings.AddObjects(range);
+            this.selectedProfile.AddMappingRange(range);
+            this.selectedProfile.Save();
+            this.olvMappings.AddObjects(range);
         }
 
         private void KeyboardPressToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var range = KeyboardAction.GetAllButtonActions(PressState.Press);
-            selectedProfile.AddMappingRange(range);
-            selectedProfile.Save();
-            olvMappings.AddObjects(range);
+            this.selectedProfile.AddMappingRange(range);
+            this.selectedProfile.Save();
+            this.olvMappings.AddObjects(range);
         }
 
         private void KeyboardReleaseToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var range = KeyboardAction.GetAllButtonActions(PressState.Release);
-            selectedProfile.AddMappingRange(range);
-            selectedProfile.Save();
-            olvMappings.AddObjects(range);
+            this.selectedProfile.AddMappingRange(range);
+            this.selectedProfile.Save();
+            this.olvMappings.AddObjects(range);
         }
 
         private void TestKeyboardToolStripMenuItem_Click(object sender, EventArgs e)
@@ -536,14 +542,14 @@ namespace Key2Joy.Gui
 
         private void NtfIndicator_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            WindowState = FormWindowState.Normal;
-            ShowInTaskbar = true;
-            Show();
+            this.WindowState = FormWindowState.Normal;
+            this.ShowInTaskbar = true;
+            this.Show();
         }
 
         private void CloseToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Close();
+            this.Close();
         }
 
         private void ViewLogFileToolStripMenuItem_Click(object sender, EventArgs e)
@@ -586,7 +592,7 @@ namespace Key2Joy.Gui
 
         private void GenerateOppositePressStateMappingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var selectedCount = olvMappings.SelectedItems.Count;
+            var selectedCount = this.olvMappings.SelectedItems.Count;
 
             if (selectedCount == 0)
             {
@@ -603,7 +609,7 @@ namespace Key2Joy.Gui
 
             List<MappedOption> newOptions = new();
 
-            foreach (OLVListItem listItem in olvMappings.SelectedItems)
+            foreach (OLVListItem listItem in this.olvMappings.SelectedItems)
             {
                 var pressVariant = (MappedOption)listItem.RowObject;
                 var actionCopy = (AbstractAction)pressVariant.Action.Clone();
@@ -625,11 +631,11 @@ namespace Key2Joy.Gui
                     Trigger = triggerCopy,
                 };
                 newOptions.Add(variantOption);
-                selectedProfile.MappedOptions.Add(variantOption);
+                this.selectedProfile.MappedOptions.Add(variantOption);
             }
 
-            selectedProfile.Save();
-            olvMappings.AddObjects(newOptions);
+            this.selectedProfile.Save();
+            this.olvMappings.AddObjects(newOptions);
         }
     }
 }

@@ -12,13 +12,13 @@ namespace Key2Joy.Contracts.Mapping
 
         public AbstractMappingAspect(string name)
         {
-            Name = name;
+            this.Name = name;
         }
 
         private PropertyInfo[] GetProperties()
         {
 
-            var type = GetType();
+            var type = this.GetType();
             var properties = type.GetProperties();
 
             return properties.Where(p => p.GetCustomAttributes(typeof(JsonIgnoreAttribute), true).Length == 0).ToArray();
@@ -27,11 +27,11 @@ namespace Key2Joy.Contracts.Mapping
         public virtual MappingAspectOptions SaveOptions()
         {
             MappingAspectOptions options = new();
-            var properties = GetProperties();
+            var properties = this.GetProperties();
 
             foreach (var property in properties)
             {
-                SaveOptionsGetProperty(options, property);
+                this.SaveOptionsGetProperty(options, property);
             }
 
             return options;
@@ -60,7 +60,7 @@ namespace Key2Joy.Contracts.Mapping
 
         public virtual void LoadOptions(MappingAspectOptions options)
         {
-            var properties = GetProperties();
+            var properties = this.GetProperties();
 
             foreach (var property in properties)
             {
@@ -69,7 +69,7 @@ namespace Key2Joy.Contracts.Mapping
                     continue;
                 }
 
-                LoadOptionSetProperty(options, property);
+                this.LoadOptionSetProperty(options, property);
             }
         }
 
@@ -116,7 +116,7 @@ namespace Key2Joy.Contracts.Mapping
 
         public virtual int CompareTo(AbstractMappingAspect other)
         {
-            return ToString().CompareTo(other.ToString());
+            return this.ToString().CompareTo(other.ToString());
         }
 
         public static bool operator ==(AbstractMappingAspect a, AbstractMappingAspect b)
@@ -137,7 +137,7 @@ namespace Key2Joy.Contracts.Mapping
 
         public virtual object Clone()
         {
-            return MemberwiseClone();
+            return this.MemberwiseClone();
         }
     }
 }

@@ -1,12 +1,14 @@
-﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.Contracts.Plugins;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
+using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Mapping.Actions;
+using Key2Joy.Contracts.Mapping.Triggers;
+using Key2Joy.Contracts.Plugins;
 
-namespace Key2Joy.Plugin.HelloWorld.Mapping
+namespace Key2Joy.Plugin.HelloWorld.Mapping.Actions
 {
     [Action(
         Description = "Get Hello World",
@@ -20,15 +22,15 @@ namespace Key2Joy.Plugin.HelloWorld.Mapping
 
         public async Task Execute(AbstractInputBag inputBag = null)
         {
-            MessageBox.Show($"Hello {Target}!");
-            Debug.WriteLine($"Hello {Target}!");
+            MessageBox.Show($"Hello {this.Target}!");
+            Debug.WriteLine($"Hello {this.Target}!");
             //Output.WriteLine(Output.OutputModes.Verbose, $"Hello {Target}!");
         }
 
         [ExposesScriptingMethod("Hello.World")]
         public void ExecuteForScript(string target)
         {
-            var fileWriter = File.AppendText(Path.Combine(Plugin.PluginDataDirectory, "test.txt"));
+            var fileWriter = File.AppendText(Path.Combine(this.Plugin.PluginDataDirectory, "test.txt"));
             fileWriter.AutoFlush = true;
             fileWriter.WriteLine($"Hello {target}!");
             fileWriter.Close();
@@ -37,7 +39,7 @@ namespace Key2Joy.Plugin.HelloWorld.Mapping
 
         public override MappingAspectOptions BuildSaveOptions(MappingAspectOptions options)
         {
-            options.Add("Target", Target);
+            options.Add("Target", this.Target);
 
             return options;
         }
@@ -46,13 +48,13 @@ namespace Key2Joy.Plugin.HelloWorld.Mapping
         {
             if (options.TryGetValue("Target", out var target))
             {
-                Target = (string)target;
+                this.Target = (string)target;
             }
         }
 
         public override string GetNameDisplay(string nameFormat)
         {
-            return string.Format(nameFormat, Target);
+            return string.Format(nameFormat, this.Target);
         }
     }
 }

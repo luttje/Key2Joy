@@ -12,7 +12,7 @@ namespace Key2Joy.Cmd
 
         protected void SafelyRetry(Action value)
         {
-            if (++retries > MAX_RETRIES)
+            if (++this.retries > MAX_RETRIES)
             {
                 return;
             }

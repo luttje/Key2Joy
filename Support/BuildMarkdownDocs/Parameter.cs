@@ -34,12 +34,12 @@ namespace BuildMarkdownDocs
 
         internal object GetTypeName(bool includeOptionalMarkerIfApplicable = true)
         {
-            if (IsOptional)
+            if (this.IsOptional)
             {
-                return $"{nullableType.Name}" + (includeOptionalMarkerIfApplicable ? "?" : string.Empty);
+                return $"{this.nullableType.Name}" + (includeOptionalMarkerIfApplicable ? "?" : string.Empty);
             }
 
-            return Type.Name;
+            return this.Type.Name;
         }
     }
 }

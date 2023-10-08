@@ -15,7 +15,7 @@ namespace Key2Joy.Contracts.Plugins
         {
             get
             {
-                return source;
+                return this.source;
             }
         }
     }

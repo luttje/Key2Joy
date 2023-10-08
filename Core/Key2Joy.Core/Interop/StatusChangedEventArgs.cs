@@ -1,5 +1,5 @@
-﻿using Key2Joy.Mapping;
-using System;
+﻿using System;
+using Key2Joy.Mapping;
 
 namespace Key2Joy.Interop
 {

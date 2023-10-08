@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Key2Joy.Contracts.Mapping
+namespace Key2Joy.Contracts.Mapping.Triggers
 {
     public abstract class AbstractInputBag : MarshalByRefObject
     {

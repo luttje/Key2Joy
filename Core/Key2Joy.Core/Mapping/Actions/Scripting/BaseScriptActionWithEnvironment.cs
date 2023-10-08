@@ -1,8 +1,9 @@
-﻿using Key2Joy.Contracts.Mapping;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Key2Joy.Contracts.Mapping.Actions;
+using Key2Joy.Contracts.Mapping.Triggers;
 
-namespace Key2Joy.Mapping
+namespace Key2Joy.Mapping.Actions.Scripting
 {
     public abstract class BaseScriptActionWithEnvironment<TEnvironment> : BaseScriptAction
     {
@@ -14,15 +15,15 @@ namespace Key2Joy.Mapping
 
         public TEnvironment SetupEnvironment()
         {
-            if (environment is not null and IDisposable disposableEnvironment)
+            if (this.environment is not null and IDisposable disposableEnvironment)
             {
                 disposableEnvironment.Dispose();
             }
 
-            environment = MakeEnvironment();
-            RegisterEnvironmentObjects();
+            this.environment = this.MakeEnvironment();
+            this.RegisterEnvironmentObjects();
 
-            return environment;
+            return this.environment;
         }
 
         public void ReplaceEnvironment(TEnvironment environment)
@@ -35,7 +36,7 @@ namespace Key2Joy.Mapping
         public virtual void RegisterEnvironmentObjects()
         {
             var actionTypes = ActionsRepository.GetAllActions();
-            cachedFile = null;
+            this.cachedFile = null;
 
             // Register all scripting available action methods and enumerations
             foreach (var pair in actionTypes)
@@ -44,16 +45,16 @@ namespace Key2Joy.Mapping
 
                 foreach (var exposedEnumeration in ExposedEnumerations)
                 {
-                    RegisterScriptingEnum(exposedEnumeration);
+                    this.RegisterScriptingEnum(exposedEnumeration);
                 }
 
                 foreach (var exposedMethods in actionFactory.ExposedMethods)
                 {
-                    var instance = IsStarted ?
-                        MakeStartedAction(actionFactory)
+                    var instance = this.IsStarted ?
+                        this.MakeStartedAction(actionFactory)
                         : MakeAction(actionFactory);
 
-                    RegisterScriptingMethod(
+                    this.RegisterScriptingMethod(
                         exposedMethods,
                         instance);
                 }
@@ -64,19 +65,19 @@ namespace Key2Joy.Mapping
         {
             foreach (var action in otherActions)
             {
-                if (action.GetType() == GetType()
+                if (action.GetType() == this.GetType()
                     && action.IsStarted)
                 {
                     // Use an existing environment if it exists
                     var otherAction = (BaseScriptActionWithEnvironment<TEnvironment>)action;
-                    environment = otherAction.environment;
+                    this.environment = otherAction.environment;
                     return;
                 }
             }
 
             base.OnStartListening(listener, ref otherActions);
 
-            SetupEnvironment();
+            this.SetupEnvironment();
         }
     }
 }

@@ -1,12 +1,14 @@
-﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.Mapping;
-using Key2Joy.Plugins;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Mapping.Actions;
+using Key2Joy.Mapping;
+using Key2Joy.Mapping.Actions;
+using Key2Joy.Plugins;
 
 namespace Key2Joy.Gui.Mapping
 {
@@ -22,35 +24,35 @@ namespace Key2Joy.Gui.Mapping
 
         public ActionControl()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         private void BuildAction()
         {
-            if (cmbAction.SelectedItem == null)
+            if (this.cmbAction.SelectedItem == null)
             {
                 ActionChanged?.Invoke(null);
                 return;
             }
 
-            var selected = (ImageComboBoxItem<KeyValuePair<ActionAttribute, MappingTypeFactory<AbstractAction>>>)cmbAction.SelectedItem;
+            var selected = (ImageComboBoxItem<KeyValuePair<ActionAttribute, MappingTypeFactory<AbstractAction>>>)this.cmbAction.SelectedItem;
             var selectedTypeFactory = selected.ItemValue.Value;
 
-            if (Action == null || Action.GetType().FullName != selectedTypeFactory.FullTypeName)
+            if (this.Action == null || this.Action.GetType().FullName != selectedTypeFactory.FullTypeName)
             {
-                Action = CoreAction.MakeAction(selectedTypeFactory);
+                this.Action = CoreAction.MakeAction(selectedTypeFactory);
             }
 
-            options?.Setup(Action);
+            this.options?.Setup(this.Action);
 
-            ActionChanged?.Invoke(Action);
+            ActionChanged?.Invoke(this.Action);
         }
 
         public bool CanMappingSave(AbstractMappedOption mappedOption)
         {
-            if (options != null)
+            if (this.options != null)
             {
-                return options.CanMappingSave(mappedOption.Action);
+                return this.options.CanMappingSave(mappedOption.Action);
             }
 
             return false;
@@ -58,14 +60,14 @@ namespace Key2Joy.Gui.Mapping
 
         public void SelectAction(AbstractAction action)
         {
-            selectedAction = action;
+            this.selectedAction = action;
 
-            if (!isLoaded)
+            if (!this.isLoaded)
             {
                 return;
             }
 
-            var selected = cmbAction.Items.Cast<ImageComboBoxItem<KeyValuePair<ActionAttribute, MappingTypeFactory<AbstractAction>>>>();
+            var selected = this.cmbAction.Items.Cast<ImageComboBoxItem<KeyValuePair<ActionAttribute, MappingTypeFactory<AbstractAction>>>>();
             var actionFullTypeName = MappingTypeHelper.GetTypeFullName(
                 ActionsRepository.GetAllActions(),
                 action
@@ -73,12 +75,12 @@ namespace Key2Joy.Gui.Mapping
             actionFullTypeName = MappingTypeHelper.EnsureSimpleTypeName(actionFullTypeName);
 
             var selectedType = selected.FirstOrDefault(x => x.ItemValue.Value.FullTypeName == actionFullTypeName);
-            cmbAction.SelectedItem = selectedType;
+            this.cmbAction.SelectedItem = selectedType;
         }
 
         private void LoadActions()
         {
-            var actionTypeFactories = ActionsRepository.GetAllActions(IsTopLevel);
+            var actionTypeFactories = ActionsRepository.GetAllActions(this.IsTopLevel);
 
             foreach (var keyValuePair in actionTypeFactories)
             {
@@ -93,27 +95,27 @@ namespace Key2Joy.Gui.Mapping
                 var image = Program.ResourceBitmapFromName(customImage ?? "error");
                 ImageComboBoxItem<KeyValuePair<ActionAttribute, MappingTypeFactory<AbstractAction>>> item = new(keyValuePair, new Bitmap(image), "Key");
 
-                cmbAction.Items.Add(item);
+                this.cmbAction.Items.Add(item);
             }
 
-            cmbAction.SelectedIndex = -1;
+            this.cmbAction.SelectedIndex = -1;
 
-            isLoaded = true;
+            this.isLoaded = true;
 
-            if (selectedAction != null)
+            if (this.selectedAction != null)
             {
-                SelectAction(selectedAction);
+                this.SelectAction(this.selectedAction);
             }
         }
 
         private void CmbAction_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!isLoaded)
+            if (!this.isLoaded)
             {
                 return;
             }
 
-            var options = MappingForm.BuildOptionsForComboBox<ActionAttribute, AbstractAction>(cmbAction, pnlActionOptions);
+            var options = MappingForm.BuildOptionsForComboBox<ActionAttribute, AbstractAction>(this.cmbAction, this.pnlActionOptions);
 
             if (options != null)
             {
@@ -121,24 +123,24 @@ namespace Key2Joy.Gui.Mapping
 
                 if (this.options != null)
                 {
-                    if (selectedAction != null)
+                    if (this.selectedAction != null)
                     {
-                        this.options.Select(selectedAction);
+                        this.options.Select(this.selectedAction);
                     }
 
-                    this.options.OptionsChanged += (s, _) => BuildAction();
+                    this.options.OptionsChanged += (s, _) => this.BuildAction();
                 }
             }
 
-            BuildAction();
+            this.BuildAction();
 
-            selectedAction = null;
-            PerformLayout();
+            this.selectedAction = null;
+            this.PerformLayout();
         }
 
         private void ActionControl_Load(object sender, EventArgs e)
         {
-            LoadActions();
+            this.LoadActions();
         }
     }
 }

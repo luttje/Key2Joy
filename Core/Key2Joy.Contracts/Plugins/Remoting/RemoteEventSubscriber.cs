@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO.Pipes;
 using System.Text;
 
-namespace Key2Joy.Contracts.Plugins
+namespace Key2Joy.Contracts.Plugins.Remoting
 {
     public class FullSubscriptionInfo
     {
@@ -13,9 +13,9 @@ namespace Key2Joy.Contracts.Plugins
 
         public FullSubscriptionInfo(string eventName, string subscriptionId, RemoteEventHandlerCallback eventHandler, object customSender = null)
         {
-            Subscription = new SubscriptionInfo(eventName, subscriptionId);
-            EventHandler = eventHandler;
-            CustomSender = customSender;
+            this.Subscription = new SubscriptionInfo(eventName, subscriptionId);
+            this.EventHandler = eventHandler;
+            this.CustomSender = customSender;
         }
     }
 
@@ -66,8 +66,8 @@ namespace Key2Joy.Contracts.Plugins
             var subscriptionId = e.Subscription.Id.ToString();
             var buffer = Encoding.UTF8.GetBytes(subscriptionId);
 
-            pipeClientStream.Write(buffer, 0, buffer.Length);
-            pipeClientStream.WaitForPipeDrain(); // Ensure all data is written
+            this.pipeClientStream.Write(buffer, 0, buffer.Length);
+            this.pipeClientStream.WaitForPipeDrain(); // Ensure all data is written
         }
 
         public static void HandleInvoke(string subscriptionId)

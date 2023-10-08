@@ -1,9 +1,8 @@
-﻿using Key2Joy.Mapping;
-using Key2Joy.Plugins;
 using System;
 using System.Drawing;
-using System.Resources;
 using System.Windows.Forms;
+using Key2Joy.Mapping.Actions.Logic;
+using Key2Joy.Plugins;
 
 namespace Key2Joy.Gui
 {
@@ -16,9 +15,7 @@ namespace Key2Joy.Gui
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        private static void Main()
-        {
-            Key2JoyManager.InitSafely(
+        private static void Main() => Key2JoyManager.InitSafely(
                 OnRunAppCommand,
                 (plugins) =>
                 {
@@ -46,7 +43,6 @@ namespace Key2Joy.Gui
                         Application.Run(ActiveForm);
                     }
                 });
-        }
 
         internal static void GoToNextForm(Form form)
         {

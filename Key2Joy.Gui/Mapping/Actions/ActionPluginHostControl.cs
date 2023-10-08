@@ -1,7 +1,7 @@
-﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.Plugins;
-using System;
+﻿using System;
 using System.Windows.Forms;
+using Key2Joy.Contracts.Mapping.Actions;
+using Key2Joy.Plugins;
 
 namespace Key2Joy.Gui.Mapping
 {
@@ -13,7 +13,7 @@ namespace Key2Joy.Gui.Mapping
 
         public ActionPluginHostControl()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         public ActionPluginHostControl(ElementHostProxy pluginUserControl)
@@ -21,31 +21,31 @@ namespace Key2Joy.Gui.Mapping
         {
             this.pluginControlWithOptions = pluginUserControl;
 
-            Padding = new Padding(0, 5, 0, 5);
-            var desiredHeight = pluginUserControl.GetDesiredHeight() + Padding.Vertical;
-            Height = desiredHeight + this.Padding.Vertical;
+            this.Padding = new Padding(0, 5, 0, 5);
+            var desiredHeight = pluginUserControl.GetDesiredHeight() + this.Padding.Vertical;
+            this.Height = desiredHeight + this.Padding.Vertical;
 
             this.Controls.Add(pluginUserControl);
             pluginUserControl.Dock = DockStyle.Fill;
             pluginUserControl.PerformLayout();
 
-            ActionOptionsChangeListener listener = new(pluginControlWithOptions);
+            ActionOptionsChangeListener listener = new(this.pluginControlWithOptions);
             listener.OptionsChanged += (s, e) => OptionsChanged?.Invoke(s, e);
         }
 
         public bool CanMappingSave(object action)
         {
-            return pluginControlWithOptions.CanMappingSave(action);
+            return this.pluginControlWithOptions.CanMappingSave(action);
         }
 
         public void Select(object action)
         {
-            pluginControlWithOptions.Select(action);
+            this.pluginControlWithOptions.Select(action);
         }
 
         public void Setup(object action)
         {
-            pluginControlWithOptions.Setup(action);
+            this.pluginControlWithOptions.Setup(action);
         }
     }
 }

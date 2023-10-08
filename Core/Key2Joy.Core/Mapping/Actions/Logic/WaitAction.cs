@@ -1,9 +1,11 @@
-﻿using Key2Joy.Contracts.Mapping;
-using System;
+﻿using System;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Mapping.Actions;
+using Key2Joy.Contracts.Mapping.Triggers;
 
-namespace Key2Joy.Mapping
+namespace Key2Joy.Mapping.Actions.Logic
 {
     [Action(
         Description = "Wait for a specified duration",
@@ -22,12 +24,12 @@ namespace Key2Joy.Mapping
 
         public override Task Execute(AbstractInputBag inputBag = null)
         {
-            return Task.Delay(WaitTime);
+            return Task.Delay(this.WaitTime);
         }
 
         public override string GetNameDisplay()
         {
-            return Name.Replace("{0}", WaitTime.TotalMilliseconds.ToString());
+            return this.Name.Replace("{0}", this.WaitTime.TotalMilliseconds.ToString());
         }
     }
 }

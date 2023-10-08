@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Key2Joy.Contracts.Mapping
+namespace Key2Joy.Contracts.Mapping.Actions
 {
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
     public class ExposesScriptingMethodAttribute : Attribute
@@ -13,7 +13,7 @@ namespace Key2Joy.Contracts.Mapping
 
         public ExposesScriptingMethodAttribute(string functionName)
         {
-            FunctionName = functionName;
+            this.FunctionName = functionName;
         }
     }
 }

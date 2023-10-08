@@ -1,9 +1,9 @@
-﻿using BuildMarkdownDocs.Util;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+using BuildMarkdownDocs.Util;
 
 namespace BuildMarkdownDocs
 {
@@ -15,12 +15,12 @@ namespace BuildMarkdownDocs
 
         public string GetParametersSignature()
         {
-            if (Parameters == null)
+            if (this.Parameters == null)
             {
                 return string.Empty;
             }
 
-            return string.Join(", ", Parameters?
+            return string.Join(", ", this.Parameters?
                     .Select(p => $"`{p.GetTypeName()}`"));
         }
 
@@ -106,29 +106,29 @@ namespace BuildMarkdownDocs
 
         internal override string GetLinkMarkdown()
         {
-            return $"* [`{Name}` ({GetParametersSignature()})]({Parent.Path}{Name}.md)";
+            return $"* [`{this.Name}` ({this.GetParametersSignature()})]({this.Parent.Path}{this.Name}.md)";
         }
 
         internal override void FillTemplateReplacements(ref Dictionary<string, string> replacements)
         {
             base.FillTemplateReplacements(ref replacements);
 
-            var parametersSignature = GetParametersSignature();
+            var parametersSignature = this.GetParametersSignature();
             var parameters = "";
 
-            if (Parameters != null)
+            if (this.Parameters != null)
             {
-                parameters = string.Join("\n", Parameters?
+                parameters = string.Join("\n", this.Parameters?
                     .Select(p =>
                         $"* **{p.Name} (" + (p.IsOptional ? "Optional " : "") + $"`{p.GetTypeName(false)}`)** \n\n" +
                         $"\t{p.Description}\n"));
             }
 
-            var examples = string.Join<Example>("\n\n", MarkdownExamples);
+            var examples = string.Join<Example>("\n\n", this.MarkdownExamples);
 
             replacements.Add("ParametersSignature", parametersSignature);
             replacements.Add("Parameters", parameters);
-            replacements.Add("ReturnType", $"{ReturnType?.Description ?? ""}");
+            replacements.Add("ReturnType", $"{this.ReturnType?.Description ?? ""}");
             replacements.Add("Examples", examples);
 
         }

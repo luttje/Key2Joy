@@ -1,5 +1,5 @@
-﻿using Key2Joy.Contracts.Mapping;
-using System;
+﻿using System;
+using Key2Joy.Contracts.Mapping;
 
 namespace Key2Joy.Contracts.Plugins
 {

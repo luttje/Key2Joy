@@ -13,19 +13,19 @@ namespace Key2Joy.Plugins
 
         public MappingControlFactory(string forTypeFullName, string imageResourceName)
         {
-            ForTypeFullName = forTypeFullName;
-            ImageResourceName = imageResourceName;
+            this.ForTypeFullName = forTypeFullName;
+            this.ImageResourceName = imageResourceName;
         }
 
         public virtual T CreateInstance<T>() where T : Control
         {
-            return (T)Activator.CreateInstance(ToType());
+            return (T)Activator.CreateInstance(this.ToType());
         }
 
         public abstract Type ToType();
         public virtual string GetTypeName()
         {
-            return ToType().FullName;
+            return this.ToType().FullName;
         }
     }
 
@@ -44,7 +44,7 @@ namespace Key2Joy.Plugins
 
         public override Type ToType()
         {
-            return controlType;
+            return this.controlType;
         }
     }
 
@@ -65,7 +65,7 @@ namespace Key2Joy.Plugins
 
         public override T CreateInstance<T>()
         {
-            return (T)pluginHost.CreateControl(controlTypeName);
+            return (T)this.pluginHost.CreateControl(this.controlTypeName);
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace Key2Joy.Plugins
 
         public override string GetTypeName()
         {
-            return controlTypeName;
+            return this.controlTypeName;
         }
     }
 }

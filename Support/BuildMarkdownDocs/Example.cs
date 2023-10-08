@@ -1,6 +1,6 @@
-﻿using BuildMarkdownDocs.Util;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Xml.Linq;
+using BuildMarkdownDocs.Util;
 
 namespace BuildMarkdownDocs
 {
@@ -10,7 +10,7 @@ namespace BuildMarkdownDocs
 
         public Example()
         {
-            TextContent = new List<string>();
+            this.TextContent = new List<string>();
         }
 
         internal static Example FromXml(XElement element)
@@ -46,7 +46,7 @@ namespace BuildMarkdownDocs
 
         public override string ToString()
         {
-            return "> " + string.Join("\n> ", TextContent) + "\n---";
+            return "> " + string.Join("\n> ", this.TextContent) + "\n---";
         }
     }
 }

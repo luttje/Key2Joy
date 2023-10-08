@@ -1,11 +1,13 @@
-﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.LowLevelInput;
-using SimWinInput;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Mapping.Actions;
+using Key2Joy.Contracts.Mapping.Triggers;
+using Key2Joy.LowLevelInput;
+using SimWinInput;
 
-namespace Key2Joy.Mapping
+namespace Key2Joy.Mapping.Actions.Input
 {
     [Action(
         Description = "GamePad Reset Simulation",
@@ -27,7 +29,7 @@ namespace Key2Joy.Mapping
         {
             base.OnStartListening(listener, ref otherActions);
 
-            GamePadManager.Instance.EnsurePluggedIn(GamePadIndex);
+            GamePadManager.Instance.EnsurePluggedIn(this.GamePadIndex);
         }
 
         /// <markdown-doc>
@@ -53,27 +55,27 @@ namespace Key2Joy.Mapping
         [ExposesScriptingMethod("GamePad.Reset")]
         public async void ExecuteForScript(int gamepadIndex = 0)
         {
-            GamePadIndex = gamepadIndex;
+            this.GamePadIndex = gamepadIndex;
 
-            GamePadManager.Instance.EnsurePluggedIn(GamePadIndex);
+            GamePadManager.Instance.EnsurePluggedIn(this.GamePadIndex);
 
             var simPad = SimGamePad.Instance;
-            var state = simPad.State[GamePadIndex];
+            var state = simPad.State[this.GamePadIndex];
             state.Reset();
-            simPad.Update(GamePadIndex);
+            simPad.Update(this.GamePadIndex);
         }
 
         public override async Task Execute(AbstractInputBag inputBag = null)
         {
             var simPad = SimGamePad.Instance;
-            var state = simPad.State[GamePadIndex];
+            var state = simPad.State[this.GamePadIndex];
             state.Reset();
-            simPad.Update(GamePadIndex);
+            simPad.Update(this.GamePadIndex);
         }
 
         public override string GetNameDisplay()
         {
-            return Name.Replace("{0}", GamePadIndex.ToString());
+            return this.Name.Replace("{0}", this.GamePadIndex.ToString());
         }
 
         public override bool Equals(object obj)

@@ -12,8 +12,8 @@ namespace Key2Joy.LowLevelInput
             LowLevelKeyboardInputEvent keyboardData,
             KeyboardState keyboardState)
         {
-            KeyboardData = keyboardData;
-            KeyboardState = keyboardState;
+            this.KeyboardData = keyboardData;
+            this.KeyboardState = keyboardState;
         }
     }
 }

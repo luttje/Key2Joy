@@ -1,10 +1,11 @@
-﻿using Key2Joy.Contracts.Mapping;
-using Key2Joy.LowLevelInput;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Key2Joy.Contracts.Mapping.Actions;
+using Key2Joy.Contracts.Mapping.Triggers;
+using Key2Joy.LowLevelInput;
 
-namespace Key2Joy.Mapping
+namespace Key2Joy.Mapping.Actions.Input
 {
     [Action(
         Description = "Keyboard Simulation",
@@ -73,36 +74,36 @@ namespace Key2Joy.Mapping
         [ExposesScriptingMethod("Keyboard.Simulate")]
         public async void ExecuteForScript(KeyboardKey key, PressState pressState)
         {
-            Key = key;
-            PressState = pressState;
+            this.Key = key;
+            this.PressState = pressState;
 
-            if (PressState == PressState.Press)
+            if (this.PressState == PressState.Press)
             {
-                SimulatedKeyboard.PressKey(Key);
+                SimulatedKeyboard.PressKey(this.Key);
             }
 
-            if (PressState == PressState.Release)
+            if (this.PressState == PressState.Release)
             {
-                SimulatedKeyboard.ReleaseKey(Key);
+                SimulatedKeyboard.ReleaseKey(this.Key);
             }
         }
 
         public override async Task Execute(AbstractInputBag inputBag = null)
         {
-            if (PressState == PressState.Press)
+            if (this.PressState == PressState.Press)
             {
-                SimulatedKeyboard.PressKey(Key);
+                SimulatedKeyboard.PressKey(this.Key);
             }
-            else if (PressState == PressState.Release)
+            else if (this.PressState == PressState.Release)
             {
-                SimulatedKeyboard.ReleaseKey(Key);
+                SimulatedKeyboard.ReleaseKey(this.Key);
             }
         }
 
         public override string GetNameDisplay()
         {
-            return Name.Replace("{0}", Enum.GetName(typeof(KeyboardKey), Key))
-                .Replace("{1}", Enum.GetName(typeof(PressState), PressState));
+            return this.Name.Replace("{0}", Enum.GetName(typeof(KeyboardKey), this.Key))
+                .Replace("{1}", Enum.GetName(typeof(PressState), this.PressState));
         }
 
         public override bool Equals(object obj)
@@ -112,8 +113,8 @@ namespace Key2Joy.Mapping
                 return false;
             }
 
-            return action.Key == Key
-                && action.PressState == PressState;
+            return action.Key == this.Key
+                && action.PressState == this.PressState;
         }
     }
 }

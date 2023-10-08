@@ -1,7 +1,7 @@
-﻿using Key2Joy.Mapping;
-using SimWinInput;
-using System;
+﻿using System;
 using System.Windows.Forms;
+using Key2Joy.Mapping;
+using SimWinInput;
 
 namespace Key2Joy.Gui
 {
@@ -13,7 +13,7 @@ namespace Key2Joy.Gui
         {
             this.shouldStartMinimized = shouldStartMinimized;
 
-            InitializeComponent();
+            this.InitializeComponent();
 
             if (shouldStartMinimized)
             {
@@ -27,7 +27,7 @@ namespace Key2Joy.Gui
             MappingProfile.ExtractDefaultIfNotExists();
             SimGamePad.Instance.Initialize();
 
-            MainForm mainForm = new(shouldStartMinimized);
+            MainForm mainForm = new(this.shouldStartMinimized);
             Program.GoToNextForm(mainForm);
         }
     }

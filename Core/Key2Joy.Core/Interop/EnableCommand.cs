@@ -1,5 +1,5 @@
-﻿using Key2Joy.Util;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
+using Key2Joy.Util;
 
 namespace Key2Joy.Interop
 {
