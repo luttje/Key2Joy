@@ -41,8 +41,7 @@ namespace Key2Joy.Gui.Mapping
             pluginUserControl.PerformLayout();
 
             var listener = new ActionOptionsChangeListener(pluginControlWithOptions);
-            listener.OptionsChanged += (s, e) => 
-                OptionsChanged?.Invoke(s, e);
+            listener.OptionsChanged += (s, e) => OptionsChanged?.Invoke(s, e);
         }
 
         public bool CanMappingSave(object action)

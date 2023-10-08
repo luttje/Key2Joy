@@ -11,9 +11,9 @@ namespace Key2Joy.Plugins
 {
     public class PluginTriggerProxy : CoreTrigger, IGetRealObject<PluginTrigger>
     {
-        private PluginTriggerInsulator source;
+        private PluginTrigger source;
         
-        public PluginTriggerProxy(string fullTypeName, PluginTriggerInsulator source)
+        public PluginTriggerProxy(string fullTypeName, PluginTrigger source)
             : base(fullTypeName)
         {
             this.source = source;
@@ -21,7 +21,7 @@ namespace Key2Joy.Plugins
 
         public PluginTrigger GetRealObject()
         {
-            return source.GetPluginTrigger;
+            return source;
         }
         
         public override AbstractTriggerListener GetTriggerListener()

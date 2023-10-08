@@ -21,7 +21,7 @@ namespace Key2Joy.Plugin.HelloWorld.Mapping
         ForType = typeof(Key2Joy.Plugin.HelloWorld.Mapping.GetHelloWorldAction),
         ImageResourceName = "clock"
     )]
-    public partial class GetHelloWorldActionControl : UserControl, IPluginUserControl, IActionOptionsControl
+    public partial class GetHelloWorldActionControl : UserControl, IPluginUserControl
     {
         public event EventHandler OptionsChanged;
         
@@ -30,7 +30,7 @@ namespace Key2Joy.Plugin.HelloWorld.Mapping
         public GetHelloWorldActionControl()
         {
             InitializeComponent();
-            
+
             this.DesiredHeight = 50;
         }
 

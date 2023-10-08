@@ -14,9 +14,10 @@ namespace Key2Joy.Contracts.Mapping
         {
             Name = name;
         }
-        
+
         private PropertyInfo[] GetProperties()
         {
+
             var type = GetType();
             var properties = type.GetProperties();
 

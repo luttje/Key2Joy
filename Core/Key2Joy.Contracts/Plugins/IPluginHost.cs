@@ -26,8 +26,8 @@ namespace Key2Joy.Contracts.Plugins
         void LoadPlugin(string assemblyPath, string assemblyName, out string loadedChecksum, string expectedChecksum = null);
 
         INativeHandleContract CreateFrameworkElementContract(string controlType);
-        PluginActionInsulator CreateAction(string fullTypeName, object[] constructorArguments);
-        PluginTriggerInsulator CreateTrigger(string fullTypeName, object[] constructorArguments);
+        PluginAction CreateAction(string fullTypeName, object[] constructorArguments);
+        PluginTrigger CreateTrigger(string fullTypeName, object[] constructorArguments);
 
         [OneWay]
         void Terminate();

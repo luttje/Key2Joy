@@ -7,8 +7,7 @@
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
     <StackPanel Orientation="Vertical">
-         <!-- Two way bind to Target -->
-        <TextBox x:Name="txtName" TextChanged="txtTarget_TextChanged"/>
+        <TextBox x:Name="txtName" />
         <Button x:Name="btnHelloWorld" Click="btnHelloWorld_Click">Hello...</Button>
     </StackPanel>
 </UserControl>

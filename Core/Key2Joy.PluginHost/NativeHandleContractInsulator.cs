@@ -1,9 +1,6 @@
 ﻿using System;
 using System.AddIn.Contract;
-using System.Reflection;
 using System.Runtime.Remoting;
-using System.Security.Cryptography;
-using System.Windows;
 using Key2Joy.Contracts.Plugins;
 
 namespace Key2Joy.PluginHost
@@ -62,26 +59,6 @@ namespace Key2Joy.PluginHost
         public object RemoteInvokeUI(string methodName, object[] parameters)
         {
             return Program.AppDispatcher.Invoke(new Func<object>(() => converter.RemoteInvoke(methodName, parameters)));
-        }
-
-        public event EventHandler OnEventTest; // TODO: testing only
-        private RemoteInvokee handler;
-        public void AddRemoteEventHandler(string eventName, RemoteInvokee handler)
-        {
-            this.handler = handler;
-            OnEventTest += NativeHandleContractInsulator_OnEventTest;
-            Program.AppDispatcher.Invoke(new Action(() => converter.AddRemoteEventHandler(eventName, new RemoteInvokee(Converter_OnEventTest))));
-        }
-
-        private void Converter_OnEventTest()
-        {
-            OnEventTest?.Invoke(null, EventArgs.Empty);
-        }
-
-        private void NativeHandleContractInsulator_OnEventTest(object sender, EventArgs e)
-        {
-            MessageBox.Show($"{AppDomain.CurrentDomain.FriendlyName} received event from {sender}");
-            handler?.Invoke();
         }
 
         public override object InitializeLifetimeService()
