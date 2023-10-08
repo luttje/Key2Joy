@@ -15,7 +15,6 @@
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <OutputType>Library</OutputType>
     <BaseOutputPath>..\..\bin\$(MSBuildProjectName)</BaseOutputPath>
-    <BaseIntermediateOutputPath>..\$(BaseIntermediateOutputPath)\</BaseIntermediateOutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="bin\**" />
@@ -51,7 +50,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="call ..\..\CopyPlugin.bat $(ProjectName) $(OutDir) $(TargetFileName)" />
+    <Exec Command="call ..\..\CopyPlugin.bat $(ProjectName) $(OutDir)" />
   </Target>
 
 </Project>

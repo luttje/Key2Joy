@@ -17,6 +17,7 @@
     <StartupObject>Key2Joy.Cmd.Program</StartupObject>
     <SignAssembly>False</SignAssembly>
     <AssemblyOriginatorKeyFile></AssemblyOriginatorKeyFile>
+    <BaseOutputPath>bin\$(MSBuildProjectName)</BaseOutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="obj\**" />

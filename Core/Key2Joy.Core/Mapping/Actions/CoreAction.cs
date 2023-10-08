@@ -42,11 +42,6 @@ namespace Key2Joy.Mapping
             return action;
         }
 
-        public virtual string GetNameDisplay()
-        {
-            return Name;
-        }
-
         public override string ToString()
         {
             return GetNameDisplay();

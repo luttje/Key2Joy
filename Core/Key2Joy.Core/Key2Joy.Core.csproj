@@ -15,7 +15,6 @@
     <SignAssembly>False</SignAssembly>
     <AssemblyOriginatorKeyFile></AssemblyOriginatorKeyFile>
     <BaseOutputPath>bin\$(MSBuildProjectName)</BaseOutputPath>
-    <BaseIntermediateOutputPath>$(BaseIntermediateOutputPath)\</BaseIntermediateOutputPath>
     <Authors>luttje</Authors>
     <Title>Key2Joy</Title>
     <Description>Simulate a game controller with your mouse and keyboard</Description>

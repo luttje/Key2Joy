@@ -389,7 +389,7 @@ namespace Key2Joy.Plugins
         {
             if (pluginHost != null) return;
 
-            if (!readyEvent.WaitOne(15000))
+            if (!readyEvent.WaitOne(5000))
             {
                 throw new InvalidOperationException("PluginHost process not ready");
             }

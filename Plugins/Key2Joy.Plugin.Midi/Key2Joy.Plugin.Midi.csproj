@@ -15,7 +15,6 @@
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <OutputType>Library</OutputType>
     <BaseOutputPath>..\..\bin\$(MSBuildProjectName)</BaseOutputPath>
-    <BaseIntermediateOutputPath>..\$(BaseIntermediateOutputPath)\</BaseIntermediateOutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="bin\**" />
@@ -45,6 +44,6 @@
     <ProjectReference Include="..\..\Core\Key2Joy.Contracts\Key2Joy.Contracts.csproj" />
   </ItemGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="call ..\..\CopyPlugin.bat $(ProjectName) $(OutDir) $(TargetFileName)" />
+    <Exec Command="call ..\..\CopyPlugin.bat $(ProjectName) $(OutDir)" />
   </Target>
 </Project>

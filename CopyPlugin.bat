@@ -1,5 +1,4 @@
 set PluginProjectName=%1
-set PluginFileName=%3
 
 set PluginPath=%2
 set PluginOutputPath=%2

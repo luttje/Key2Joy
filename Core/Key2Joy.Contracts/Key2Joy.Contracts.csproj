@@ -12,7 +12,6 @@
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\keypair.snk</AssemblyOriginatorKeyFile>
     <BaseOutputPath>bin\$(MSBuildProjectName)</BaseOutputPath>
-    <BaseIntermediateOutputPath>$(BaseIntermediateOutputPath)</BaseIntermediateOutputPath>
   </PropertyGroup>
 
   <ItemGroup>

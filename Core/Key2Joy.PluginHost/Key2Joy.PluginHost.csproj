@@ -1,68 +1,50 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>NET48</TargetFramework>
+		<LangVersion>latest</LangVersion>
+	</PropertyGroup>
+	<PropertyGroup>
+		<RunPostBuildEvent>Always</RunPostBuildEvent>
+	</PropertyGroup>
+	<PropertyGroup>
+		<PlatformTarget>x86</PlatformTarget>
+		<GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
+	</PropertyGroup>
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{28FD937C-CCA7-4E85-A29B-D723E8390E51}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Key2Joy.PluginHost</RootNamespace>
-    <AssemblyName>Key2Joy.PluginHost</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <Deterministic>true</Deterministic>
+    <AssemblyTitle>Key2Joy.PluginHost</AssemblyTitle>
+    <Product>Key2Joy.PluginHost</Product>
+    <Copyright>Copyright ©  2023</Copyright>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
   </PropertyGroup>
   <PropertyGroup>
-    <LangVersion>latest</LangVersion>
+    <EnableNETAnalyzers>False</EnableNETAnalyzers>
+    <AnalysisLevel>none</AnalysisLevel>
+    <BaseOutputPath>bin\$(MSBuildProjectName)</BaseOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.AddIn.Contract" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Runtime.Remoting" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AllowedPermissionsWithDescriptions.cs" />
-    <Compile Include="Native.cs" />
-    <Compile Include="NativeHandleContractInsulator.cs" />
-    <Compile Include="PluginHost.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <ProjectReference Include="..\Key2Joy.Contracts\Key2Joy.Contracts.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+	  <Reference Include="System" />
+	  <Reference Include="System.AddIn.Contract" />
+	  <Reference Include="System.Core" />
+	  <Reference Include="System.Runtime.Remoting" />
+	  <Reference Include="System.Xml.Linq" />
+	  <Reference Include="System.Data" />
+	  <Reference Include="System.Xml" />
+	  <Reference Include="WindowsBase" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Key2Joy.Contracts\Key2Joy.Contracts.csproj">
-      <Project>{6a99dc38-6d95-44f0-8778-8bd8548778da}</Project>
-      <Name>Key2Joy.Contracts</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -51,7 +51,7 @@ namespace Key2Joy.Contracts.Mapping
                     executedAny = true;
                     try
                     {
-                        mappedOption.Action.Execute(inputBag);
+                        _ = mappedOption.Action.Execute(inputBag);
                     }
                     catch (System.Runtime.Serialization.SerializationException ex)
                     {
