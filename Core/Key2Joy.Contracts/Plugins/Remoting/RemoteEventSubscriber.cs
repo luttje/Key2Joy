@@ -65,7 +65,7 @@ namespace Key2Joy.Contracts.Plugins
         {
             string subscriptionId = e.Subscription.Id.ToString();
             byte[] buffer = Encoding.UTF8.GetBytes(subscriptionId);
-
+            
             pipeClientStream.Write(buffer, 0, buffer.Length);
             pipeClientStream.WaitForPipeDrain(); // Ensure all data is written
         }
