@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Key2Joy.Contracts.Plugins;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO.Pipes;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Ipc;
@@ -13,16 +14,15 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+using System.Xml.Linq;
 using static Key2Joy.PluginHost.Native;
 
 namespace Key2Joy.PluginHost
 {
     internal class Program
     {
-        static HandlerRoutine handler;
-
         public static Dispatcher AppDispatcher { get; private set; }
-        
+
         private static string portName;
         
         [STAThread]
@@ -53,7 +53,17 @@ namespace Key2Joy.PluginHost
                 ChannelServices.RegisterChannel(channel, false);
 
                 RemotingConfiguration.RegisterWellKnownServiceType(
-                    typeof(PluginHost), "PluginHost", WellKnownObjectMode.Singleton);
+                    typeof(PluginHost), nameof(PluginHost), WellKnownObjectMode.Singleton);
+
+                var pipeClientStream = new NamedPipeClientStream(
+                    ".",
+                    RemotePipe.GetClientPipeName(portName),
+                    PipeDirection.InOut);
+
+                Console.WriteLine($"Connecting to pipe @ {RemotePipe.GetClientPipeName(portName)}");
+                pipeClientStream.Connect();
+                Console.WriteLine($"Connected");
+                RemoteEventSubscriber.InitClient(pipeClientStream);
 
                 Signal(portName, "Ready");
 
@@ -61,6 +71,7 @@ namespace Key2Joy.PluginHost
             }
             catch (Exception ex)
             {
+                Debugger.Launch();
                 var mostInnerException = ex;
 
                 while (mostInnerException.InnerException != null)

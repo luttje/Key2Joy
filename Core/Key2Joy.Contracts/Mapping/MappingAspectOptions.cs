@@ -8,15 +8,15 @@ using System.Threading.Tasks;
 namespace Key2Joy.Contracts.Mapping
 {
     [Serializable]
-    public class MappingAspectOptions : Dictionary<string, object>, ISerializable
+    public class MappingAspectOptions : Dictionary<string, object>, ISafeSerializationData
     {
         public MappingAspectOptions() { }
 
         protected MappingAspectOptions(SerializationInfo info, StreamingContext context) : base(info, context) { }
 
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        public void CompleteDeserialization(object deserialized)
         {
-            base.GetObjectData(info, context);
+
         }
     }
 }

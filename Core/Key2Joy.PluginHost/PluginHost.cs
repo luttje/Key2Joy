@@ -13,11 +13,14 @@ using Key2Joy.Contracts.Plugins;
 using System.Security.Cryptography;
 using System.Reflection;
 using Key2Joy.Contracts.Mapping;
+using System.Windows;
 
 namespace Key2Joy.PluginHost
 {
     public class PluginHost : MarshalByRefObject, IPluginHost
     {
+        public event RemoteEventHandlerCallback AnyEvent;
+        
         private PluginBase loadedPlugin;
         private AppDomain sandboxDomain;
         private string pluginAssemblyPath;
@@ -90,13 +93,15 @@ namespace Key2Joy.PluginHost
             permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.PathDiscovery, pluginDirectory));
             permissions.AddPermission(new UIPermission(UIPermissionWindow.AllWindows));
             permissions.AddPermission(new ReflectionPermission(ReflectionPermissionFlag.MemberAccess));
+            // Needed to serialize objects back to the host app
+            permissions.AddPermission(new SecurityPermission(SecurityPermissionFlag.SerializationFormatter));
 
             // Allow writing to the plugin directory
             var pluginDataDirectory = Path.Combine(pluginDirectory, "data");
             Directory.CreateDirectory(pluginDataDirectory);
             permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.Write, pluginDataDirectory));
 
-            sandboxDomain = AppDomain.CreateDomain("Sandbox", null, sandboxDomainSetup, permissions);
+            sandboxDomain = AppDomain.CreateDomain("Sandbox", evidence, sandboxDomainSetup, permissions);
             loadedPlugin = (PluginBase)sandboxDomain.CreateInstanceAndUnwrap(assemblyName, pluginTypeName);
         }
 
@@ -177,9 +182,9 @@ namespace Key2Joy.PluginHost
             return builder.ToString();
         }
 
-        public PluginAction CreateAction(string fullTypeName, object[] constructorArguments)
+        public PluginActionInsulator CreateAction(string fullTypeName, object[] constructorArguments)
         {
-            return (PluginAction)sandboxDomain.CreateInstanceFromAndUnwrap(
+            return new PluginActionInsulator((PluginAction)sandboxDomain.CreateInstanceFromAndUnwrap(
                 pluginAssemblyPath,
                 fullTypeName,
                 false,
@@ -188,31 +193,45 @@ namespace Key2Joy.PluginHost
                 constructorArguments,
                 null,
                 null
-            );
-        }
-        
-        public PluginTrigger CreateTrigger(string fullTypeName, object[] constructorArguments)
-        {
-            return (PluginTrigger)sandboxDomain.CreateInstanceFromAndUnwrap(
-                pluginAssemblyPath,
-                fullTypeName,
-                false,
-                BindingFlags.Default,
-                null,
-                constructorArguments,
-                null,
-                null
-            );
+            ));
         }
 
-        public INativeHandleContract CreateFrameworkElementContract(string controlTypeName)
+        public PluginTriggerInsulator CreateTrigger(string fullTypeName, object[] constructorArguments)
         {
-            Func<string, string, AppDomain, INativeHandleContract> createOnUiThread = CreateOnUiThread;
-            var contract = (INativeHandleContract)Program.AppDispatcher.Invoke(createOnUiThread, pluginAssemblyName, controlTypeName, sandboxDomain);
+            return new PluginTriggerInsulator((PluginTrigger)sandboxDomain.CreateInstanceFromAndUnwrap(
+                pluginAssemblyPath,
+                fullTypeName,
+                false,
+                BindingFlags.Default,
+                null,
+                constructorArguments,
+                null,
+                null
+            ));
+        }
+
+        public void Test_AnyEvent(object sender, RemoteEventArgs e)
+        {
+            AnyEvent?.Invoke(sender, e);
+        }
+
+        public INativeHandleContract CreateFrameworkElementContract(string controlTypeName, SubscriptionInfo[] eventSubscriptions = null)
+        {
+            var eventHandlers = new Dictionary<string, RemoteEventHandler>();
+
+            if (eventSubscriptions != null)
+            {
+                foreach (var subscription in eventSubscriptions)
+                {
+                    eventHandlers.Add(subscription.EventName, new RemoteEventHandler(subscription, Test_AnyEvent));
+                }
+            }
+
+            var contract = (INativeHandleContract)Program.AppDispatcher.Invoke(CreateOnUiThread, pluginAssemblyName, controlTypeName, sandboxDomain, eventHandlers);
             return contract;
         }
 
-        private static NativeHandleContractInsulator CreateOnUiThread(string assembly, string typeName, AppDomain appDomain)
+        private static NativeHandleContractInsulator CreateOnUiThread(string assembly, string typeName, AppDomain appDomain, Dictionary<string, RemoteEventHandler> eventHandlers)
         {
             try
             {
@@ -226,10 +245,10 @@ namespace Key2Joy.PluginHost
                 
                 if (converterHandle == null) 
                     throw new InvalidOperationException("appDomain.CreateInstance() returned null for ViewContractConverter");
-                
-                var contract = converterHandle.ConvertToContract(controlHandle);
+
+                var contract = converterHandle.ConvertToContract(controlHandle, eventHandlers);
                 var insulator = new NativeHandleContractInsulator(contract, converterHandle);
-                
+
                 return insulator;
             }
             catch (Exception ex)

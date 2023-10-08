@@ -21,7 +21,7 @@ namespace Key2Joy.Plugin.HelloWorld.Mapping
         ForType = typeof(Key2Joy.Plugin.HelloWorld.Mapping.GetHelloWorldAction),
         ImageResourceName = "clock"
     )]
-    public partial class GetHelloWorldActionControl : UserControl, IPluginUserControl
+    public partial class GetHelloWorldActionControl : UserControl, IPluginUserControl, IActionOptionsControl
     {
         public event EventHandler OptionsChanged;
         
@@ -63,7 +63,7 @@ namespace Key2Joy.Plugin.HelloWorld.Mapping
             MessageBox.Show($"Hello {txtName.Text}!");
         }
 
-        private void txtTarget_TextChanged(object sender, EventArgs e)
+        private void txtName_TextChanged(object sender, EventArgs e)
         {
             OptionsChanged?.Invoke(this, EventArgs.Empty);
         }

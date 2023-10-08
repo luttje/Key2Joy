@@ -7,7 +7,7 @@
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
     <StackPanel Orientation="Vertical">
-        <TextBox x:Name="txtName" />
+        <TextBox x:Name="txtName" TextChanged="txtName_TextChanged" />
         <Button x:Name="btnHelloWorld" Click="btnHelloWorld_Click">Hello...</Button>
     </StackPanel>
 </UserControl>

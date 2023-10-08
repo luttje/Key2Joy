@@ -23,6 +23,11 @@ namespace Key2Joy.Plugins
             this.contract = contract;
         }
 
+        public void InvokeOptionsChanged()
+        {
+            OptionsChanged?.Invoke(this, EventArgs.Empty);
+        }
+
         public bool CanMappingSave(object action)
         {
             var realAction = ((PluginActionProxy)action).GetRealObject();

@@ -13,6 +13,14 @@ using Mono.Cecil;
 using System.Linq;
 using System.Reflection;
 using Key2Joy.PluginHost;
+using System.Collections;
+using System.Runtime.Remoting;
+using System.Runtime.Serialization.Formatters;
+using System.IO.Pipes;
+using System.IO;
+using System.Text;
+using System.Security.AccessControl;
+using System.Security.Principal;
 
 namespace Key2Joy.Plugins
 {
@@ -25,10 +33,11 @@ namespace Key2Joy.Plugins
         private EventWaitHandle readyEvent;
         private Process process;
         private IPluginHost pluginHost;
-        
+        private NamedPipeServerStream pipeServerStream;
+
         private string pluginAssemblyPath;
         private string pluginAssemblyName;
-        
+
         /**
          * Plugin customizations
          */
@@ -47,7 +56,7 @@ namespace Key2Joy.Plugins
             private static object _lock = new object();
             private static bool _registered;
 
-            public static void RegisterChannel()
+            public static void RegisterChannel(string portName)
             {
                 lock (_lock)
                 {
@@ -69,7 +78,7 @@ namespace Key2Joy.Plugins
         {
             Start();
             OpenPluginHost();
-            
+
             pluginHost.LoadPlugin(pluginAssemblyPath, pluginAssemblyName, out loadedChecksum, expectedChecksum);
 
             DiscoverPluginTypes();
@@ -83,7 +92,7 @@ namespace Key2Joy.Plugins
             {
                 if (type.Namespace != pluginAssemblyName && !type.Namespace.StartsWith(pluginAssemblyName + "."))
                     continue;
-                
+
                 foreach (var customAttribute in type.CustomAttributes)
                 {
                     if (customAttribute.AttributeType.Name == nameof(MappingControlAttribute))
@@ -159,7 +168,7 @@ namespace Key2Joy.Plugins
             foreach (var method in type.Methods)
             {
                 var methodAttributes = method.CustomAttributes.Where(ca => ca.AttributeType.Name == nameof(ExposesScriptingMethodAttribute));
-                
+
                 foreach (var methodAttribute in methodAttributes)
                 {
                     var exposedMethod = new PluginExposedMethod(
@@ -215,16 +224,41 @@ namespace Key2Joy.Plugins
         {
             try
             {
-                var contract = (NativeHandleContractInsulator) pluginHost.CreateFrameworkElementContract(controlTypeName);
+                var subscribeOptionsChanged = RemoteEventSubscriber.SubscribeEvent("OptionsChanged", PluginHost_OptionsChanged);
+                var subscribedEvents = new SubscriptionInfo[]
+                {
+                    subscribeOptionsChanged.Subscription,
+                };
+                var contract = (NativeHandleContractInsulator)pluginHost.CreateFrameworkElementContract(controlTypeName, subscribedEvents);
                 var remoteControl = FrameworkElementAdapters.ContractToViewAdapter(contract);
-
-                return new ElementHostProxy(remoteControl, contract);
+                var control = new ElementHostProxy(remoteControl, contract);
+                subscribeOptionsChanged.CustomSender = control;
+                pluginHost.AnyEvent += PluginHost_AnyEvent;
+                return control;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error creating plugin control!", $"Error creating plugin control: {ex.Message}", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                System.Windows.Forms.MessageBox.Show("Error creating plugin control!", $"Error creating plugin control: {ex.Message}", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return null;
             }
+        }
+
+        private static void PluginHost_AnyEvent(object sender, RemoteEventArgs e)
+        {
+            RemoteEventSubscriber.ClientInstance.AskServerToInvoke(sender, e);
+        }
+
+        private static void PluginHost_OptionsChanged(object sender, RemoteEventArgs e)
+        {
+            var control = (ElementHostProxy)sender;
+
+            if(control.InvokeRequired)
+            {
+                control.Invoke(new Action(control.InvokeOptionsChanged));
+                return;
+            }
+            
+            control.InvokeOptionsChanged();
         }
 
         /// <summary>
@@ -237,7 +271,7 @@ namespace Key2Joy.Plugins
         {
             var type = typeof(T);
 
-            if(type == typeof(AbstractMappingAspect))
+            if (type == typeof(AbstractMappingAspect))
             {
                 // When loading all we get is AbstractMappingAspect and the full name
                 // Look through the factories for one that matches the type, then set to that type
@@ -260,7 +294,7 @@ namespace Key2Joy.Plugins
 
             throw new NotImplementedException($"Cannot create aspect of type {typeof(T).FullName}");
         }
-        
+
         private static string GetTitle(string typeName)
         {
             int dot = typeName.IndexOf('.');
@@ -284,8 +318,10 @@ namespace Key2Joy.Plugins
 
             if (!System.IO.File.Exists(path))
             {
-                MessageBox.Show("Key2Joy.PluginHost.exe not found at " + path);
+                System.Windows.Forms.MessageBox.Show("Key2Joy.PluginHost.exe not found at " + path);
             }
+
+            SetupEventPipe();
 
             var info = new ProcessStartInfo
             {
@@ -300,18 +336,54 @@ namespace Key2Joy.Plugins
             process = Process.Start(info);
         }
 
+        private void SetupEventPipe()
+        {
+            // Expose a named pipe endpoint corresponding to the portName parameter for events
+            // TODO: Clean up pipeServerStream when this proxy disposes
+            pipeServerStream = new NamedPipeServerStream(
+                RemotePipe.GetAbsolutePipeName(name),
+                PipeDirection.InOut,
+                1,
+                PipeTransmissionMode.Message);
+
+            // Start a new thread to listen for incoming connections on the named pipe
+            var t = new Thread(() =>
+            {
+                pipeServerStream.WaitForConnection();
+                Debug.WriteLine($"Pipe connection with plugin established");
+
+                var reader = new StreamReader(pipeServerStream);
+
+                while (true)
+                {
+                    try
+                    {
+                        var subscriptionId = RemotePipe.ReadMessage(pipeServerStream);
+                        Debug.WriteLine($"ReadMessage: {subscriptionId}");
+                        RemoteEventSubscriber.HandleInvoke(subscriptionId);
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine($"-------------> Exception: {ex.Message}");
+                    }
+                }
+            });
+            t.IsBackground = true;
+            t.Start();
+        }
+        
         private void OpenPluginHost()
         {
             if (pluginHost != null) return;
 
-            if (!readyEvent.WaitOne(5000))
+            if (!readyEvent.WaitOne(15000))
             {
                 throw new InvalidOperationException("PluginHost process not ready");
             }
 
-            IpcChannelRegistration.RegisterChannel();
+            IpcChannelRegistration.RegisterChannel(name);
 
-            var url = "ipc://" + name + "/PluginHost";
+            var url = "ipc://" + name + "/" + nameof(PluginHost);
             pluginHost = (IPluginHost)Activator.GetObject(typeof(IPluginHost), url);
 
             var eventName = $"{name}.Exit";
@@ -335,7 +407,7 @@ namespace Key2Joy.Plugins
             closeEventListeningThread.IsBackground = true;
             closeEventListeningThread.Start();
         }
-        
+
         public void Dispose()
         {
             IsDisposing = true;
@@ -360,7 +432,7 @@ namespace Key2Joy.Plugins
         {
             return pluginHost.GetPluginWebsite();
         }
-        
+
         internal IEnumerable<MappingTypeFactory<AbstractAction>> GetActionFactories()
         {
             return actionFactories;
