@@ -1,10 +1,14 @@
-﻿using System;
+using System;
+using System.Runtime.Serialization;
 
 namespace Key2Joy.Contracts.Plugins;
 
-public class PluginLoadException : Exception
+[Serializable]
+public class PluginLoadException : Exception, ISafeSerializationData
 {
     public PluginLoadException(string message) : base(message)
     {
     }
+
+    public void CompleteDeserialization(object deserialized) => throw new NotImplementedException();
 }

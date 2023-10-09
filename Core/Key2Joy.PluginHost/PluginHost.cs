@@ -1,6 +1,7 @@
 using System;
 using System.AddIn.Contract;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Security;
@@ -82,7 +83,7 @@ public class PluginHost : MarshalByRefObject, IPluginHost
             {
                 var intersection = additionalPermissions.Intersect(GetAllowedPermissionsWithDescriptions().AllowedPermissions);
 
-                if (!intersection.Equals(additionalPermissions))
+                if (intersection == null || !intersection.Equals(additionalPermissions))
                 {
                     throw new PluginLoadException($"Some plugin permissions are not allowed: {additionalPermissions}");
                 }
@@ -138,10 +139,11 @@ public class PluginHost : MarshalByRefObject, IPluginHost
         allowedPermissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.AllAccess, ""));
         descriptions.Add("file full access anywhere on your device");
 
+        allowedPermissions.AddPermission(new EnvironmentPermission(PermissionState.Unrestricted));  // Wildcards are not valid for this permission
+        descriptions.Add("unrestricted environment access"); // Needed for the test runner
+
         // Note: https://github.com/microsoft/referencesource/tree/master/mscorlib/system/security/permissions
         //allowedPermissions.AddPermission(new RegistryPermission(RegistryPermissionAccess.Read, "*")); // Wildcards are not valid for this permission
-        //descriptions.Add(...)
-        //allowedPermissions.AddPermission(new EnvironmentPermission(EnvironmentPermissionAccess.Read, "*"));  // Wildcards are not valid for this permission
         //descriptions.Add(...)
 
         return new AllowedPermissionsWithDescriptions
