@@ -6,9 +6,20 @@ namespace Key2Joy.Contracts.Plugins;
 [Serializable]
 public class PluginLoadException : Exception, ISafeSerializationData
 {
-    public PluginLoadException(string message) : base(message)
+    public PluginLoadException()
+        : base()
+    { }
+
+    public PluginLoadException(string message)
+        : base(message)
+    { }
+
+    protected PluginLoadException(SerializationInfo info, StreamingContext context)
+        : base(info, context)
     {
     }
 
-    public void CompleteDeserialization(object deserialized) => throw new NotImplementedException();
+    public void CompleteDeserialization(object deserialized)
+    {
+    }
 }

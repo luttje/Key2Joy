@@ -79,7 +79,14 @@ public class PluginHostProxy : IDisposable
         this.Start();
         this.OpenPluginHost();
 
-        this.pluginHost.LoadPlugin(this.pluginAssemblyPath, this.pluginAssemblyName, out loadedChecksum, expectedChecksum);
+        try
+        {
+            this.pluginHost.LoadPlugin(this.pluginAssemblyPath, this.pluginAssemblyName, out loadedChecksum, expectedChecksum);
+        }
+        catch (PluginLoadException ex)
+        {
+            throw ex;
+        }
 
         this.DiscoverPluginTypes();
     }

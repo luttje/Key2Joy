@@ -8,7 +8,9 @@ public class PluginAction : MarshalByRefObject
     public PluginBase Plugin { get; set; }
 
     public virtual MappingAspectOptions BuildSaveOptions(MappingAspectOptions options) => options;
-    public virtual void LoadOptions(MappingAspectOptions options) { }
+
+    public virtual void LoadOptions(MappingAspectOptions options)
+    { }
 
     public virtual string GetNameDisplay(string nameFormat) => nameFormat;
 

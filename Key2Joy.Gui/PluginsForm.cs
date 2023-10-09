@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -41,9 +41,9 @@ public partial class PluginsForm : Form
         /**
          * For some reason the designer fails with:
          * 'Error using the dropdown: Could not load file or assembly 'Key2Joy.Core, version=...'
-         * 
+         *
          * Additionally the designer seems to keep the copied dll in memory, so following builds fail.
-         * 
+         *
          * Therefor we do this manually:
          */
         this.dgvPlugins.AutoGenerateColumns = false;
@@ -182,6 +182,7 @@ public partial class PluginsForm : Form
                 if (allPermissionsGranted)
                 {
                     Program.Plugins.LoadPlugin(pluginInfo.AssemblyPath);
+                    Program.Plugins.RefreshPluginTypes();
                 }
             }
 

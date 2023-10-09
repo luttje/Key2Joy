@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Actions;
@@ -22,7 +22,7 @@ public class PathExpandAction : CoreAction
     /// <path>Api/Util</path>
     /// </markdown-doc>
     /// <summary>
-    /// Expands system environment variables (See also: https://ss64.com/nt/syntax-variables.html). 
+    /// Expands system environment variables (See also: https://ss64.com/nt/syntax-variables.html).
     /// </summary>
     /// <markdown-example>
     /// Demonstrates how to get the home drive

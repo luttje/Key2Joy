@@ -1,0 +1,5 @@
+<PermissionSet>
+  <IPermission
+    class="Key2Joy.Contracts.Plugins.SecurityOverride, Key2Joy.Contracts, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+    Unrestricted="true" />
+</PermissionSet>

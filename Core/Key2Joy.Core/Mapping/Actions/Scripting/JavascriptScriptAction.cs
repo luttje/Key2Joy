@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Jint;
@@ -9,7 +10,9 @@ using Jint.Runtime.Descriptors;
 using Jint.Runtime.Interop;
 using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Contracts.Mapping.Triggers;
+using Key2Joy.Contracts.Plugins;
 using Key2Joy.Plugins;
+using Key2Joy.Util;
 
 namespace Key2Joy.Mapping.Actions.Scripting;
 
@@ -61,14 +64,26 @@ public class JavascriptAction : BaseScriptActionWithEnvironment<Engine>
         var enumInjection = enumInjectScript.ToString();
         this.environment.Execute(enumInjection);
 
-        this.environment.Execute($"Print(JSON.stringify({enumInjection}))");
+        //this.environment.Execute($"Print(JSON.stringify({enumInjection}))");
     }
 
     public override void RegisterScriptingMethod(ExposedMethod exposedMethod, AbstractAction instance)
     {
         var functionName = exposedMethod.FunctionName;
         var parents = functionName.Split('.');
-        DelegateWrapper @delegate = new(this.environment, exposedMethod.CreateDelegate(instance));
+        var methodInfo = exposedMethod.GetExecutorMethodInfo(instance);
+        DelegateWrapper @delegate;
+
+        if (exposedMethod is PluginExposedMethod methodNeedProxy)
+        {
+            @delegate = new DelegateWrapper(this.environment, methodInfo.CreateDelegate(methodNeedProxy));
+            //methodNeedProxy.RegisterParameterTransformer<LuaFunction>(luaFunction => new WrappedPluginType(luaFunction.Call));
+            //this.environment.RegisterFunction(functionName, methodNeedProxy, methodNeedProxy.GetExecutorMethodInfo((PluginActionProxy)instance));
+        }
+        else
+        {
+            @delegate = new DelegateWrapper(this.environment, methodInfo.CreateDelegate(instance));
+        }
 
         if (parents.Length > 1)
         {
@@ -102,10 +117,13 @@ public class JavascriptAction : BaseScriptActionWithEnvironment<Engine>
 
         this.environment.SetValue(
             functionName,
-            @delegate);
+            methodInfo);
     }
 
-    public override Engine MakeEnvironment() => new Engine();
+    public override Engine MakeEnvironment() => new Engine(options =>
+    {
+        options.Interop.AllowSystemReflection = true;
+    });
 
     public override void RegisterEnvironmentObjects()
     {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -32,6 +32,7 @@ public class Key2JoyManager : IMessageFilter
     private readonly List<IWndProcHandler> wndProcListeners = new();
 
     public static Key2JoyManager instance;
+
     public static Key2JoyManager Instance
     {
         get
@@ -74,10 +75,9 @@ public class Key2JoyManager : IMessageFilter
 
         PluginSet plugins = new(pluginDirectoriesPaths);
         plugins.LoadAll();
+        plugins.RefreshPluginTypes();
 
         Key2JoyManager.commandRunner = commandRunner;
-
-        //GlobalFFOptions.Configure(options => options.BinaryFolder = "./ffmpeg");
 
         try
         {

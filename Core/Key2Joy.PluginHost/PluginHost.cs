@@ -1,7 +1,6 @@
 using System;
 using System.AddIn.Contract;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Security;
@@ -60,19 +59,25 @@ public class PluginHost : MarshalByRefObject, IPluginHost
 
         if (expectedChecksum != null && loadedChecksum != expectedChecksum)
         {
-            throw new PluginLoadException($"Plugin permissions checksum mismatch. Expected '{expectedChecksum}',  got '{loadedChecksum}'");
+            throw new PluginLoadException($"Plugin permissions checksum mismatch! \n\nExpected '{expectedChecksum}',  got '{loadedChecksum}'.\n\nThis plugin will be disabled for you. If you trust it you can re-enable it later.");
         }
 
         var pluginDirectory = Path.GetDirectoryName(assemblyPath);
+
+        var pluginDataDirectory = Path.Combine(pluginDirectory, "data");
+        Directory.CreateDirectory(pluginDataDirectory);
+
         AppDomainSetup sandboxDomainSetup = new()
         {
             ApplicationBase = pluginDirectory,
+            PrivateBinPath = pluginDirectory,
         };
 
         Evidence evidence = new();
         evidence.AddHostEvidence(new Zone(SecurityZone.Internet));
 
         var permissions = SecurityManager.GetStandardSandbox(evidence);
+        bool isUnrestricted = false;
 
         if (permissionsXml != null)
         {
@@ -81,33 +86,56 @@ public class PluginHost : MarshalByRefObject, IPluginHost
 
             if (additionalPermissions.Count > 0)
             {
-                var intersection = additionalPermissions.Intersect(GetAllowedPermissionsWithDescriptions().AllowedPermissions);
+                var securityOverride = additionalPermissions.GetPermission(typeof(SecurityOverride));
 
-                if (intersection == null || !intersection.Equals(additionalPermissions))
+                if (securityOverride != null)
                 {
-                    throw new PluginLoadException($"Some plugin permissions are not allowed: {additionalPermissions}");
+                    isUnrestricted = ((SecurityOverride)securityOverride).IsUnrestricted;
                 }
+                else
+                {
+                    var intersection = additionalPermissions.Intersect(GetAllowedPermissionsWithDescriptions().AllowedPermissions);
 
-                permissions = permissions.Union(additionalPermissions);
+                    if (intersection == null || !intersection.Equals(additionalPermissions))
+                    {
+                        throw new PluginLoadException($"Some plugin permissions are not allowed: {additionalPermissions}");
+                    }
+
+                    permissions = permissions.Union(additionalPermissions);
+                }
             }
         }
 
-        // Required to instantiate Controls inside the plugin
-        permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.Read, pluginDirectory));
-        permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.PathDiscovery, pluginDirectory));
-        permissions.AddPermission(new UIPermission(UIPermissionWindow.AllWindows));
-        permissions.AddPermission(new ReflectionPermission(ReflectionPermissionFlag.MemberAccess));
-        // Needed to serialize objects back to the host app
-        permissions.AddPermission(new SecurityPermission(SecurityPermissionFlag.SerializationFormatter));
+        if (isUnrestricted)
+        {
+            permissions = new PermissionSet(PermissionState.Unrestricted);
+        }
+        else
+        {
+            // Required to instantiate Controls inside the plugin
+            permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.Read, pluginDirectory));
+            permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.PathDiscovery, pluginDirectory));
+            permissions.AddPermission(new UIPermission(UIPermissionWindow.AllWindows));
+            permissions.AddPermission(new ReflectionPermission(ReflectionPermissionFlag.MemberAccess));
+            // Needed to serialize objects back to the host app
+            permissions.AddPermission(new SecurityPermission(SecurityPermissionFlag.SerializationFormatter));
 
-        // Allow writing to the plugin directory
-        var pluginDataDirectory = Path.Combine(pluginDirectory, "data");
-        Directory.CreateDirectory(pluginDataDirectory);
-        permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.AllAccess, pluginDataDirectory));
+            permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.AllAccess, pluginDataDirectory));
+        }
 
         this.sandboxDomain = AppDomain.CreateDomain("Sandbox", evidence, sandboxDomainSetup, permissions);
+
+        var pluginAssemblyResolver = (PluginAssemblyResolver)this.sandboxDomain.CreateInstanceAndUnwrap(
+            typeof(PluginAssemblyResolver).Assembly.FullName,
+            typeof(PluginAssemblyResolver).FullName);
+        pluginAssemblyResolver.SetPluginDirectory(pluginDirectory);
+
+        this.sandboxDomain.AssemblyResolve += pluginAssemblyResolver.ResolveAssembly;
+
         this.loadedPlugin = (PluginBase)this.sandboxDomain.CreateInstanceAndUnwrap(assemblyName, pluginTypeName);
+        this.loadedPlugin.PluginDirectory = pluginDirectory;
         this.loadedPlugin.PluginDataDirectory = pluginDataDirectory;
+        this.loadedPlugin.Initialize();
     }
 
     public string GetPluginName() => this.loadedPlugin.Name;
@@ -140,7 +168,11 @@ public class PluginHost : MarshalByRefObject, IPluginHost
         descriptions.Add("file full access anywhere on your device");
 
         allowedPermissions.AddPermission(new EnvironmentPermission(PermissionState.Unrestricted));  // Wildcards are not valid for this permission
-        descriptions.Add("unrestricted environment access"); // Needed for the test runner
+        descriptions.Add("unrestricted access to load external assemblies (potentially dangerous)"); // Needed for the test runner and Assembly.LoadFrom (for plugins that want to use external libraries like FFmpeg)
+
+        // Custom override permission to grant unrestricted access
+        allowedPermissions.AddPermission(new SecurityOverride(PermissionState.Unrestricted));
+        descriptions.Add("unrestricted (potentially dangerous)");
 
         // Note: https://github.com/microsoft/referencesource/tree/master/mscorlib/system/security/permissions
         //allowedPermissions.AddPermission(new RegistryPermission(RegistryPermissionAccess.Read, "*")); // Wildcards are not valid for this permission

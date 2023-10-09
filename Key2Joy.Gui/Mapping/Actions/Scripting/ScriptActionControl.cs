@@ -1,6 +1,8 @@
-﻿using System;
+using System;
+using System.Data;
 using System.IO;
 using System.Windows.Forms;
+using Esprima;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Mapping.Actions.Scripting;
@@ -69,7 +71,32 @@ public partial class ScriptActionControl : UserControl, IActionOptionsControl
         thisAction.Script = this.txtScript.Text;
     }
 
-    public bool CanMappingSave(object action) => MessageBox.Show(
+    public bool CanMappingSave(object action)
+    {
+        var thisAction = (BaseScriptAction)action;
+        var mappingType = action.GetType();
+
+        if (mappingType == typeof(LuaScriptAction))
+        {
+            // TODO: Parse Lua and check for errors
+        }
+        else if (mappingType == typeof(JavascriptAction))
+        {
+            // Since we only get a ParserError somewhere inside Esprima.dll, we check for errors here
+            var parser = new JavaScriptParser();
+
+            try
+            {
+                parser.ParseScript(thisAction.Script);
+            }
+            catch (ParserException ex)
+            {
+                MessageBox.Show(ex.Message, "Script Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+        }
+
+        return MessageBox.Show(
             "Scripts can click and type like you do and therefor impersonate you. "
             + "Scripts could cause harm to your pc, you or else. "
             + "For that reason you should only run scripts that you trust!"
@@ -77,6 +104,7 @@ public partial class ScriptActionControl : UserControl, IActionOptionsControl
             "Warning:! Scripts can be dangerous!",
             MessageBoxButtons.YesNoCancel,
             MessageBoxIcon.Warning) == DialogResult.Yes;
+    }
 
     private void TxtScript_TextChanged(object sender, EventArgs e) => OptionsChanged?.Invoke(this, EventArgs.Empty);
 

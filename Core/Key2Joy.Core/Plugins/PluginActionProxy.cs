@@ -40,9 +40,9 @@ public class PluginActionProxy : CoreAction, IGetRealObject<PluginAction>
         }
         catch (Exception ex)
         {
-            // TODO: Handle this better by logging to some common plugin log
-            //System.Windows.Forms.MessageBox.Show(ex.ToString());
-            throw ex.InnerException ?? ex;
+            var exception = ex.InnerException ?? ex;
+            Output.WriteLine(exception.ToString());
+            throw exception;
         }
     }
 
@@ -54,9 +54,9 @@ public class PluginActionProxy : CoreAction, IGetRealObject<PluginAction>
         }
         catch (Exception ex)
         {
-            // TODO: Handle this better by logging to some common plugin log
-            //System.Windows.Forms.MessageBox.Show(ex.ToString());
-            throw ex.InnerException ?? ex;
+            var exception = ex.InnerException ?? ex;
+            Output.WriteLine(exception.ToString());
+            throw exception;
         }
     }
 }

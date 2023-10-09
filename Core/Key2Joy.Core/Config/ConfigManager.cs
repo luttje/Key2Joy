@@ -156,5 +156,11 @@ public class ConfigManager
         this.Save();
     }
 
-    internal bool IsPluginEnabled(string pluginAssemblyPath) => this.configState.EnabledPlugins.ContainsKey(this.NormalizePluginPath(pluginAssemblyPath));
+    internal bool IsPluginEnabled(string pluginAssemblyPath)
+        => this.configState.EnabledPlugins.ContainsKey(this.NormalizePluginPath(pluginAssemblyPath));
+
+    internal string GetExpectedChecksum(string pluginAssemblyPath)
+        => this.configState.EnabledPlugins.ContainsKey(this.NormalizePluginPath(pluginAssemblyPath))
+            ? this.configState.EnabledPlugins[this.NormalizePluginPath(pluginAssemblyPath)]
+            : null;
 }

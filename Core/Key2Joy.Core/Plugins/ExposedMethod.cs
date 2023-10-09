@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
@@ -20,7 +19,11 @@ public abstract class ExposedMethod
         this.MethodName = methodName;
     }
 
-    public abstract Delegate CreateDelegate(AbstractAction instance);
+    /// <summary>
+    /// MethodInfo that can be bound to scripts
+    /// </summary>
+    /// <returns></returns>
+    public abstract MethodInfo GetExecutorMethodInfo(object instance);
 }
 
 public class TypeExposedMethod : ExposedMethod
@@ -30,12 +33,11 @@ public class TypeExposedMethod : ExposedMethod
     public TypeExposedMethod(string functionName, string methodName, Type type)
         : base(functionName, methodName) => this.Type = type;
 
-    public override Delegate CreateDelegate(AbstractAction instance)
-    {
-        var method = this.Type.GetMethod(this.MethodName);
-
-        return method.CreateDelegate(instance);
-    }
+    /// <summary>
+    /// MethodInfo that can be bound to scripts
+    /// </summary>
+    /// <returns></returns>
+    public override MethodInfo GetExecutorMethodInfo(object instance) => instance.GetType().GetMethod(this.MethodName);
 }
 
 public class PluginExposedMethod : ExposedMethod
@@ -51,17 +53,6 @@ public class PluginExposedMethod : ExposedMethod
     {
         this.pluginHost = pluginHost;
         this.TypeName = typeName;
-    }
-
-    public override Delegate CreateDelegate(AbstractAction instance)
-    {
-        var methodInfo = this.GetExecutorMethodInfo((PluginActionProxy)instance);
-        var parameters = methodInfo.GetParameters();
-        var parameterTypes = parameters.Select(p => p.ParameterType).ToArray();
-        var delegateType = ExpressionUtil.GetDelegateType(parameterTypes, methodInfo.ReturnType);
-        var executor = methodInfo.CreateDelegate(delegateType, this);
-
-        return executor;
     }
 
     public void RegisterParameterTransformer<T>(Func<T, object> transformer)
@@ -106,9 +97,9 @@ public class PluginExposedMethod : ExposedMethod
     /// MethodInfo that can be bound to scripts
     /// </summary>
     /// <returns></returns>
-    public MethodInfo GetExecutorMethodInfo(PluginActionProxy instance)
+    public override MethodInfo GetExecutorMethodInfo(object instance)
     {
-        this.currentInstance = instance;
+        this.currentInstance = (PluginActionProxy)instance;
         return typeof(PluginExposedMethod).GetMethod(nameof(TransformAndRedirect));
     }
 }

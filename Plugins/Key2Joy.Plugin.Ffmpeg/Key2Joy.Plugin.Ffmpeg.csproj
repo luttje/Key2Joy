@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
@@ -37,19 +37,35 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ffmpeg\x64\ffmpeg.exe" />
+    <None Remove="ffmpeg\x64\ffprobe.exe" />
+    <None Remove="ffmpeg\x86\ffmpeg.exe" />
+    <None Remove="ffmpeg\x86\ffprobe.exe" />
     <None Remove="permissions.xml" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="ffmpeg\x64\ffmpeg.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ffmpeg\x64\ffprobe.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ffmpeg\x86\ffmpeg.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ffmpeg\x86\ffprobe.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="permissions.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -59,9 +75,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Melanchall.DryWetMidi">
-      <Version>6.1.4</Version>
-    </PackageReference>
+    <PackageReference Include="FFMpegCore" Version="5.1.0" />
   </ItemGroup>
 
   <ItemGroup>

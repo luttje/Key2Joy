@@ -59,7 +59,7 @@ public class PluginSet : IDisposable
             var pluginAssemblyName = Path.GetFileName(pluginDirectoryPath);
             var pluginAssemblyFileName = $"{pluginAssemblyName}.dll";
             var pluginAssemblyPath = Path.Combine(pluginDirectoryPath, pluginAssemblyFileName);
-            var expectedChecksum = enabledPlugins.ContainsKey(pluginAssemblyPath) ? enabledPlugins[pluginAssemblyPath] : null;
+            var expectedChecksum = ConfigManager.Instance.GetExpectedChecksum(pluginAssemblyPath);
 
             if (ConfigManager.Instance.IsPluginEnabled(pluginAssemblyPath))
             {
@@ -75,7 +75,10 @@ public class PluginSet : IDisposable
                 );
             }
         }
+    }
 
+    public void RefreshPluginTypes()
+    {
         ActionsRepository.Buffer(this.actionFactories);
         TriggersRepository.Buffer(this.triggerFactories);
         MappingControlRepository.Buffer(this.mappingControlFactories);
