@@ -19,10 +19,11 @@ using Mono.Cecil;
 
 namespace Key2Joy.Plugins;
 
-public class PluginHostProxy
+public class PluginHostProxy : IDisposable
 {
     public event EventHandler Disposing;
-    public bool IsDisposing { get; internal set; }
+
+    public bool IsDisposing { get; private set; }
 
     private string name;
     private EventWaitHandle readyEvent;
@@ -68,7 +69,7 @@ public class PluginHostProxy
     }
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     /// <param name="loadedChecksum"></param>
     /// <param name="expectedChecksum"></param>
@@ -298,6 +299,7 @@ public class PluginHostProxy
             case Type actionType when actionType == typeof(AbstractTrigger):
                 var trigger = this.pluginHost.CreateTrigger(fullTypeName, new object[0]);
                 return new PluginTriggerProxy(nameFormat, trigger) as T;
+
             default:
                 break;
         }

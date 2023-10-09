@@ -15,7 +15,9 @@ public static class Program
     /// The main entry point for the application.
     /// </summary>
     [STAThread]
-    private static void Main() => Key2JoyManager.InitSafely(
+    private static void Main()
+    {
+        Key2JoyManager.InitSafely(
             OnRunAppCommand,
             (plugins) =>
             {
@@ -42,7 +44,11 @@ public static class Program
                 {
                     Application.Run(ActiveForm);
                 }
-            });
+            }
+        );
+
+        Plugins.Dispose();
+    }
 
     internal static void GoToNextForm(Form form)
     {

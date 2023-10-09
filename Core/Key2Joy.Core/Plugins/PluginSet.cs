@@ -12,7 +12,7 @@ using Key2Joy.Mapping.Triggers;
 
 namespace Key2Joy.Plugins;
 
-public class PluginSet
+public class PluginSet : IDisposable
 {
     private readonly List<PluginBase> loadedPlugins = new();
     public IReadOnlyList<PluginBase> LoadedPlugins => this.loadedPlugins;
@@ -115,7 +115,6 @@ public class PluginSet
 
         ConfigManager.Instance.SetPluginEnabled(pluginAssemblyPath, loadedChecksum);
 
-        pluginHost.Disposing += this.PluginHost_Disposing;
         this.proxiesToDispose.Add(pluginHost);
 
         return pluginHost;
@@ -161,29 +160,12 @@ public class PluginSet
         );
     }
 
-    private void PluginHost_Disposing(object sender, EventArgs e)
+    public void Dispose()
     {
-        //if (this.Disposing || this.IsDisposed)
-        //    return;
-
-        //var pluginHost = (PluginHostProxy)sender;
-
-        //if (proxiesToDispose.Contains(pluginHost))
-        //    proxiesToDispose.Remove(pluginHost);
-
-        //this.Invoke((MethodInvoker)delegate
-        //{
-        //    if (this.Controls.Contains(tbcPlugins))
-        //        this.Controls.Remove(tbcPlugins);
-
-        //    // This wont work, since the tabpage being removed causes a WndProc which triggers other dipsosed plugin controls to get called (which causes an error)
-        //    //if (tbcPlugins.TabPages.Contains(tabPage))
-        //    //    tbcPlugins.TabPages.Remove(tabPage);
-
-        //    // Trigger a rebuild for the tab control
-        //    LoadAllPlugins();
-
-        //    MessageBox.Show(this, $"A plugin unloaded unexpectedly, it may have crashed or been forcefully shut down. All plugins have been reloaded.", "Plugin unloaded unexpectedly!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-        //});
+        foreach (var keyValuePair in this.pluginLoadStates)
+        {
+            var pluginLoadState = keyValuePair.Value;
+            pluginLoadState.PluginHost?.Dispose();
+        }
     }
 }
