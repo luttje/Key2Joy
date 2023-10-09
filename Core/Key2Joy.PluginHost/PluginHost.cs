@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.AddIn.Contract;
 using System.Collections.Generic;
 using System.IO;
@@ -23,7 +23,7 @@ public class PluginHost : MarshalByRefObject, IPluginHost
     private string pluginAssemblyName;
 
     /// <summary>
-    /// This method can't just return the PluginBase, since it's created in an AppDomain in the PluginHost process. Passing it 
+    /// This method can't just return the PluginBase, since it's created in an AppDomain in the PluginHost process. Passing it
     /// upwards to the main app would not work, since it has no remote connection to it. Therefor we store the plugin and let
     /// the main app call functions on this loader to interact with it.
     /// </summary>

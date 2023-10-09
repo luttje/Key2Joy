@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Plugins;
 using Key2Joy.Mapping.Actions;
@@ -32,7 +32,7 @@ public class PluginActionProxy : CoreAction, IGetRealObject<PluginAction>
 
     public override string GetNameDisplay() => this.source.GetNameDisplay(this.Name);
 
-    internal object InvokeScriptMethod(string methodName, object[] parameters)
+    public object InvokeScriptMethod(string methodName, object[] parameters)
     {
         try
         {
@@ -40,9 +40,23 @@ public class PluginActionProxy : CoreAction, IGetRealObject<PluginAction>
         }
         catch (Exception ex)
         {
-            // TODO: Handle this better
-            System.Windows.Forms.MessageBox.Show(ex.ToString());
-            throw ex;
+            // TODO: Handle this better by logging to some common plugin log
+            //System.Windows.Forms.MessageBox.Show(ex.ToString());
+            throw ex.InnerException ?? ex;
+        }
+    }
+
+    public object GetPublicPropertyValue(string propertyName)
+    {
+        try
+        {
+            return this.source.GetPublicPropertyValue(propertyName);
+        }
+        catch (Exception ex)
+        {
+            // TODO: Handle this better by logging to some common plugin log
+            //System.Windows.Forms.MessageBox.Show(ex.ToString());
+            throw ex.InnerException ?? ex;
         }
     }
 }

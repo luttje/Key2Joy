@@ -14,4 +14,5 @@ public class PluginActionInsulator : MarshalByRefObject
     public string GetNameDisplay(string name) => this.PluginAction.GetNameDisplay(name);
 
     public object InvokeScriptMethod(string methodName, object[] parameters) => this.PluginAction.InvokeScriptMethod(methodName, parameters);
+    public object GetPublicPropertyValue(string propertyName) => this.PluginAction.GetPublicPropertyValue(propertyName);
 }

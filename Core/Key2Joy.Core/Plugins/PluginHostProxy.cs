@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.AddIn.Pipeline;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -375,6 +375,11 @@ public class PluginHostProxy
                 try
                 {
                     var subscriptionId = RemotePipe.ReadMessage(this.pipeServerStream);
+
+                    if (string.IsNullOrEmpty(subscriptionId))
+                    {
+                        continue;
+                    }
                     Debug.WriteLine($"ReadMessage: {subscriptionId}");
                     RemoteEventSubscriber.HandleInvoke(subscriptionId);
                 }
@@ -447,9 +452,9 @@ public class PluginHostProxy
 
     internal string GetPluginWebsite() => this.pluginHost.GetPluginWebsite();
 
-    internal IEnumerable<MappingTypeFactory<AbstractAction>> GetActionFactories() => this.actionFactories;
+    public IReadOnlyList<MappingTypeFactory<AbstractAction>> GetActionFactories() => this.actionFactories;
 
-    internal IEnumerable<MappingTypeFactory<AbstractTrigger>> GetTriggerFactories() => this.triggerFactories;
+    public IReadOnlyList<MappingTypeFactory<AbstractTrigger>> GetTriggerFactories() => this.triggerFactories;
 
-    internal IEnumerable<MappingControlFactory> GetMappingControlFactories() => this.mappingControlFactories;
+    public IReadOnlyList<MappingControlFactory> GetMappingControlFactories() => this.mappingControlFactories;
 }

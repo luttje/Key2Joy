@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Key2Joy.Contracts.Mapping;
 
 namespace Key2Joy.Contracts.Plugins;
@@ -16,5 +16,11 @@ public class PluginAction : MarshalByRefObject
     {
         var method = this.GetType().GetMethod(methodName);
         return method.Invoke(this, parameters);
+    }
+
+    internal object GetPublicPropertyValue(string propertyName)
+    {
+        var property = this.GetType().GetProperty(propertyName);
+        return property.GetValue(this);
     }
 }
