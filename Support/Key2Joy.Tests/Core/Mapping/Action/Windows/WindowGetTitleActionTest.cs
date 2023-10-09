@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using Key2Joy.Mapping.Actions.Windows;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -36,6 +36,6 @@ public class WindowGetTitleActionTest
         var result = action.ExecuteForScript(process.MainWindowHandle);
         process.Kill();
 
-        Assert.AreEqual(expectedTitle, result);
+        Assert.AreEqual(expectedTitle, result.Replace("Administrator: ", string.Empty)); // On CI, the process is run as Administrator
     }
 }
