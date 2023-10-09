@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
@@ -30,7 +30,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Core\Key2Joy.Contracts\Key2Joy.Contracts.csproj" />
     <ProjectReference Include="..\..\Core\Key2Joy.Core\Key2Joy.Core.csproj" />
+    <ProjectReference Include="..\..\Core\Key2Joy.PluginHost\Key2Joy.PluginHost.csproj" />
+    <ProjectReference Include="..\..\Key2Joy.Cmd\Key2Joy.Cmd.csproj" />
+    <ProjectReference Include="..\..\Key2Joy.Gui\Key2Joy.Gui.csproj" />
   </ItemGroup>
 
   <ItemGroup>
