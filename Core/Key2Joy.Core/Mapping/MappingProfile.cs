@@ -169,10 +169,10 @@ public class MappingProfile
     public static string GetSaveDirectory()
     {
         var legacyDirectory = Path.Combine(
-            ConfigManager.GetAppDirectory(),
+            ConfigManager.GetAppDataDirectory(),
             LEGACY_SAVE_DIR);
         var directory = Path.Combine(
-            ConfigManager.GetAppDirectory(),
+            ConfigManager.GetAppDataDirectory(),
             SAVE_DIR);
 
         if (Directory.Exists(legacyDirectory))

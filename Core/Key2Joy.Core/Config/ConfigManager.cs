@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Text.Json;
 
@@ -10,6 +10,7 @@ public class ConfigManager
     private const string CONFIG_PATH = "config.json";
 
     private static ConfigManager instance;
+
     internal static ConfigManager Instance
     {
         get
@@ -32,7 +33,7 @@ public class ConfigManager
     {
         var options = GetSerializerOptions();
         var configPath = Path.Combine(
-            GetAppDirectory(),
+            GetAppDataDirectory(),
             CONFIG_PATH);
 
         File.WriteAllText(configPath, JsonSerializer.Serialize(this.configState, options));
@@ -41,7 +42,7 @@ public class ConfigManager
     private static ConfigManager LoadOrCreate()
     {
         var configPath = Path.Combine(
-            GetAppDirectory(),
+            GetAppDataDirectory(),
             CONFIG_PATH);
 
         if (!File.Exists(configPath))
@@ -93,7 +94,7 @@ public class ConfigManager
         return options;
     }
 
-    public static string GetAppDirectory()
+    public static string GetAppDataDirectory()
     {
         var directory = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
@@ -108,15 +109,31 @@ public class ConfigManager
     }
 
     /// <summary>
-    /// Sets a plugin as enabled, the permissions checksum is stored so no changes to the permissions 
+    /// Turns the plugin path into a relative one from the app directory
+    /// </summary>
+    /// <param name="pluginAssemblyPath"></param>
+    /// <returns></returns>
+    private string NormalizePluginPath(string pluginAssemblyPath)
+    {
+        var appDirectory = Path.GetDirectoryName(this.configState.LastInstallPath);
+        var pluginPath = Path.GetFullPath(pluginAssemblyPath);
+        var relativePath = pluginPath.Replace(appDirectory, string.Empty).TrimStart('\\');
+
+        return relativePath;
+    }
+
+    /// <summary>
+    /// Sets a plugin as enabled, the permissions checksum is stored so no changes to the permissions
     /// are accepted when loading the plugin later.
-    /// 
+    ///
     /// Set permissionsChecksumOrNull to null to disable the plugin.
     /// </summary>
     /// <param name="pluginAssemblyPath"></param>
     /// <param name="permissionsChecksumOrNull"></param>
     internal void SetPluginEnabled(string pluginAssemblyPath, string permissionsChecksumOrNull)
     {
+        pluginAssemblyPath = this.NormalizePluginPath(pluginAssemblyPath);
+
         if (permissionsChecksumOrNull != null)
         {
             if (!this.configState.EnabledPlugins.ContainsKey(pluginAssemblyPath))
@@ -138,4 +155,6 @@ public class ConfigManager
 
         this.Save();
     }
+
+    internal bool IsPluginEnabled(string pluginAssemblyPath) => this.configState.EnabledPlugins.ContainsKey(this.NormalizePluginPath(pluginAssemblyPath));
 }

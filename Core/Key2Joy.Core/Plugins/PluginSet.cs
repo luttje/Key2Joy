@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
@@ -61,12 +61,12 @@ public class PluginSet
             var pluginAssemblyPath = Path.Combine(pluginDirectoryPath, pluginAssemblyFileName);
             var expectedChecksum = enabledPlugins.ContainsKey(pluginAssemblyPath) ? enabledPlugins[pluginAssemblyPath] : null;
 
-            try
+            if (ConfigManager.Instance.IsPluginEnabled(pluginAssemblyPath))
             {
                 var plugin = this.LoadPlugin(pluginAssemblyPath, expectedChecksum);
                 this.AddPluginState(PluginLoadStates.Loaded, pluginAssemblyPath, null, plugin);
             }
-            catch (PluginLoadException)
+            else
             {
                 this.AddPluginState(
                     PluginLoadStates.NotLoaded,

@@ -50,7 +50,7 @@ public class ConfigState
         get => this.logOutputPath;
         set => this.SaveIfInitialized(this.logOutputPath = value);
     }
-    private string logOutputPath = Path.Combine(ConfigManager.GetAppDirectory(), "Logs");
+    private string logOutputPath = Path.Combine(ConfigManager.GetAppDataDirectory(), "Logs");
 
     public Dictionary<string, string> EnabledPlugins { get; set; } = new Dictionary<string, string>();
 
