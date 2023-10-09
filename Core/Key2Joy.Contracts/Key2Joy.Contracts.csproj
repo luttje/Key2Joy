@@ -15,8 +15,8 @@
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <RootNamespace>Key2Joy.Contracts</RootNamespace>
     <PlatformTarget>x86</PlatformTarget>
-    <SignAssembly>True</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\keypair.snk</AssemblyOriginatorKeyFile>
+    <SignAssembly>False</SignAssembly>
+    <AssemblyOriginatorKeyFile></AssemblyOriginatorKeyFile>
     <BaseOutputPath>bin\$(MSBuildProjectName)</BaseOutputPath>
   </PropertyGroup>
 

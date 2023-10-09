@@ -33,6 +33,7 @@
 * [`App.Command` (`AppCommand`)](Api/Logic/App.Command.md)
 * [`ClearInterval` (`IntervalId`)](Api/Logic/ClearInterval.md)
 * [`ClearTimeout` (`TimeoutId`)](Api/Logic/ClearTimeout.md)
+* [`MessageBox.Show` (`String`)](Api/Logic/MessageBox.Show.md)
 * [`SetDelayedFunctions` (`Int64`, `Action[]`)](Api/Logic/SetDelayedFunctions.md)
 * [`SetInterval` (`CallbackAction`, `Int64`, `Object[]`)](Api/Logic/SetInterval.md)
 * [`SetTimeout` (`CallbackAction`, `Int64`, `Object[]`)](Api/Logic/SetTimeout.md)
