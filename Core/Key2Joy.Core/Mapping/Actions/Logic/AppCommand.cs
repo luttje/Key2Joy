@@ -1,6 +1,6 @@
-﻿namespace Key2Joy.Mapping.Actions.Logic;
+namespace Key2Joy.Mapping.Actions.Logic;
 
-public enum AppCommand
+public enum AppCommand : int
 {
     /// <summary>
     /// Aborts listening for triggers

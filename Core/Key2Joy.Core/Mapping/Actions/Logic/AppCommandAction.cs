@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Key2Joy.Contracts.Mapping.Actions;
@@ -28,17 +28,17 @@ public class AppCommandAction : CoreAction
     /// </markdown-doc>
     /// <summary>
     /// Execute a command in this app
-    /// 
+    ///
     /// TODO: Make commands Enumerations and show those in the docs.
     /// </summary>
     /// <param name="command">Command to execute</param>
     /// <name>App.Command</name>
     [ExposesScriptingMethod("App.Command")]
-    public async void ExecuteForScript(AppCommand command)
+    public async void ExecuteForScript(int command)
     {
-        this.Command = command;
+        this.Command = (AppCommand)command;
 
-        if (command == AppCommand.ResetScriptEnvironment)
+        if (this.Command == AppCommand.ResetScriptEnvironment)
         {
             // Keep track of new environments to pass to all related script actions
             Dictionary<Type, object> newEnvironments = new();
@@ -64,11 +64,6 @@ public class AppCommandAction : CoreAction
 
             return;
         }
-
-        // Wait a frame so we don't get an Access Violation on the lua.DoString
-        // TODO: Figure out if there's a nicer way
-        // TODO: Do we still need this?
-        await Task.Delay(0);
 
         await this.Execute();
     }
