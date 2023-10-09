@@ -1,21 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Authors>luttje</Authors>
+    <Title>Key2Joy</Title>
+    <Product>Key2Joy Hello World Plugin</Product>
+    <Description></Description>
+    <Copyright>Copyright © 2022 luttje</Copyright>
+    <PackageProjectUrl>https://github.com/luttje/Key2Joy</PackageProjectUrl>
+  </PropertyGroup>
+
   <PropertyGroup>
     <TargetFramework>NET48</TargetFramework>
 	  <LangVersion>latest</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup>
     <RunPostBuildEvent>Always</RunPostBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup>
     <PlatformTarget>x86</PlatformTarget>
     <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
-  </PropertyGroup>
-  <PropertyGroup>
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <OutputType>Library</OutputType>
     <BaseOutputPath>..\..\bin\$(MSBuildProjectName)</BaseOutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
   </PropertyGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="call $(SolutionDir)\Support\CopyPlugin.bat $(ProjectName) $(OutDir)" />
+  </Target>
+
   <ItemGroup>
     <Compile Remove="bin\**" />
     <Compile Remove="obj\**" />
@@ -24,24 +35,29 @@
     <None Remove="bin\**" />
     <None Remove="obj\**" />
   </ItemGroup>
+
   <ItemGroup>
     <None Remove="Mapping\Actions\GetHelloWorldActionControl.xaml" />
     <None Remove="permissions.xml" />
   </ItemGroup>
+
   <ItemGroup>
     <Content Include="permissions.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+
   <ItemGroup>
     <Page Include="Mapping\Actions\GetHelloWorldActionControl.xaml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <Generator>XamlIntelliSenseFileGenerator</Generator>
     </Page>
   </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Key2Joy.Contracts\Key2Joy.Contracts.csproj" />
   </ItemGroup>
+
   <ItemGroup>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -49,8 +65,5 @@
     <Reference Include="System.Xaml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="call ..\..\CopyPlugin.bat $(ProjectName) $(OutDir)" />
-  </Target>
 
 </Project>

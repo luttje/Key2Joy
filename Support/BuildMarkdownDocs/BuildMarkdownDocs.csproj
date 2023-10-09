@@ -1,17 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Authors>luttje</Authors>
+    <Title>Key2Joy</Title>
+    <Product>Key2Joy</Product>
+    <Description>Simulate a game controller with your mouse and keyboard</Description>
+    <Copyright>Copyright © 2022 luttje</Copyright>
+    <PackageProjectUrl>https://github.com/luttje/Key2Joy</PackageProjectUrl>
+  </PropertyGroup>
+
   <PropertyGroup>
     <TargetFramework>NET48</TargetFramework>
 	  <LangVersion>latest</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup>
     <PlatformTarget>x86</PlatformTarget>
-  </PropertyGroup>
-  <PropertyGroup>
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <OutputType>Exe</OutputType>
     <BaseOutputPath>bin\$(MSBuildProjectName)</BaseOutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
   </PropertyGroup>
+
   <ItemGroup>
     <Compile Remove="bin\**" />
     <Compile Remove="obj\**" />
@@ -20,10 +29,12 @@
     <None Remove="bin\**" />
     <None Remove="obj\**" />
   </ItemGroup>
+
   <ItemGroup>
     <None Remove="DefaultEnumTemplate.md" />
     <None Remove="DefaultTemplate.md" />
   </ItemGroup>
+
   <ItemGroup>
     <Content Include="DefaultEnumTemplate.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -32,10 +43,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Key2Joy.Core\Key2Joy.Core.csproj">
-      <Project>{1a961914-67b8-4b11-80d4-280323bc7b25}</Project>
-      <Name>Key2Joy.Core</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\..\Core\Key2Joy.Core\Key2Joy.Core.csproj" />
   </ItemGroup>
+
 </Project>

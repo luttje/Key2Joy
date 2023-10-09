@@ -1,13 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Authors>luttje</Authors>
+    <Title>Key2Joy</Title>
+    <Product>Key2Joy</Product>
+    <Description>Simulate a game controller with your mouse and keyboard</Description>
+    <Copyright>Copyright © 2022 luttje</Copyright>
+    <PackageProjectUrl>https://github.com/luttje/Key2Joy</PackageProjectUrl>
+  </PropertyGroup>
+
   <PropertyGroup>
     <TargetFramework>NET48</TargetFramework>
 	  <LangVersion>latest</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup>
     <PlatformTarget>x86</PlatformTarget>
-  </PropertyGroup>
-  <PropertyGroup>
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <DocumentationFile>..\..\bin\Release\Key2Joy\Key2Joy.xml</DocumentationFile>
@@ -15,25 +21,30 @@
     <SignAssembly>False</SignAssembly>
     <AssemblyOriginatorKeyFile></AssemblyOriginatorKeyFile>
     <BaseOutputPath>bin\$(MSBuildProjectName)</BaseOutputPath>
-    <Authors>luttje</Authors>
-    <Title>Key2Joy</Title>
-    <Description>Simulate a game controller with your mouse and keyboard</Description>
-    <Copyright>Copyright ©  2022 luttje</Copyright>
-    <PackageProjectUrl>https://github.com/luttje/Key2Joy</PackageProjectUrl>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
   </PropertyGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="call $(SolutionDir)\Support\BuildDocumentation.bat $(ConfigurationName)" />
+  </Target>
+
   <ItemGroup>
     <Compile Remove="obj\**" />
     <EmbeddedResource Remove="obj\**" />
     <None Remove="obj\**" />
   </ItemGroup>
+
   <ItemGroup>
     <None Remove="default-profile.k2j.json" />
   </ItemGroup>
+
   <ItemGroup>
     <Content Include="default-profile.k2j.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+
   <ItemGroup>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -45,6 +56,14 @@
     <Reference Include="WindowsBase" />
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Key2Joy.Contracts\Key2Joy.Contracts.csproj" />
+    <ProjectReference Include="..\Key2Joy.PluginHost\Key2Joy.PluginHost.csproj">
+      <TreatAsUsed>true</TreatAsUsed>
+    </ProjectReference>
+  </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="Jint">
       <Version>3.0.0-preview-390</Version>
@@ -126,13 +145,4 @@
       <Version>4.3.0</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Key2Joy.Contracts\Key2Joy.Contracts.csproj" />
-    <ProjectReference Include="..\Key2Joy.PluginHost\Key2Joy.PluginHost.csproj">
-      <TreatAsUsed>true</TreatAsUsed>
-    </ProjectReference>
-  </ItemGroup>
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="call $(SolutionDir)BuildDocumentation.bat" />
-  </Target>
 </Project>

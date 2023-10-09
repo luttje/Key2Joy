@@ -1,41 +1,47 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Authors>luttje</Authors>
+    <Title>Key2Joy</Title>
+    <Product>Key2Joy</Product>
+    <Description>Simulate a game controller with your mouse and keyboard</Description>
+    <Copyright>Copyright © 2022 luttje</Copyright>
+    <PackageProjectUrl>https://github.com/luttje/Key2Joy</PackageProjectUrl>
+  </PropertyGroup>
+
   <PropertyGroup>
     <TargetFramework>NET48</TargetFramework>
 	  <LangVersion>latest</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup>
     <ApplicationIcon>Graphics\Icons\app-icons.ico</ApplicationIcon>
-  </PropertyGroup>
-  <PropertyGroup>
     <PlatformTarget>x86</PlatformTarget>
     <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
-  </PropertyGroup>
-  <PropertyGroup>
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <OutputType>Exe</OutputType>
     <StartupObject>Key2Joy.Cmd.Program</StartupObject>
-    <SignAssembly>False</SignAssembly>
-    <AssemblyOriginatorKeyFile></AssemblyOriginatorKeyFile>
     <BaseOutputPath>bin\$(MSBuildProjectName)</BaseOutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
   </PropertyGroup>
+
   <ItemGroup>
     <Compile Remove="obj\**" />
     <EmbeddedResource Remove="obj\**" />
     <None Remove="obj\**" />
   </ItemGroup>
+
   <ItemGroup>
     <Content Include="Graphics\Icons\app-icons.ico" />
   </ItemGroup>
+
   <ItemGroup>
-    <ProjectReference Include="..\Core\Key2Joy.Core\Key2Joy.Core.csproj">
-      <Project>{1a961914-67b8-4b11-80d4-280323bc7b25}</Project>
-      <Name>Key2Joy.Core</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\Core\Key2Joy.Core\Key2Joy.Core.csproj" />
   </ItemGroup>
+
   <ItemGroup>
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="CommandLineParser">
       <Version>2.9.1</Version>
@@ -47,6 +53,7 @@
       <Version>6.0.0</Version>
     </PackageReference>
   </ItemGroup>
+
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -54,10 +61,12 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
   </ItemGroup>
+
   <ItemGroup>
     <EmbeddedResource Update="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+
 </Project>

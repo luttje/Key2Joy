@@ -1,42 +1,47 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Authors>luttje</Authors>
+    <Title>Key2Joy</Title>
+    <Product>Key2Joy</Product>
+    <Description>Simulate a game controller with your mouse and keyboard</Description>
+    <Copyright>Copyright © 2022 luttje</Copyright>
+    <PackageProjectUrl>https://github.com/luttje/Key2Joy</PackageProjectUrl>
+  </PropertyGroup>
+
 	<PropertyGroup>
+    <AssemblyTitle>Key2Joy.PluginHost</AssemblyTitle>
 		<TargetFramework>NET48</TargetFramework>
 		<LangVersion>latest</LangVersion>
-	</PropertyGroup>
-	<PropertyGroup>
 		<RunPostBuildEvent>Always</RunPostBuildEvent>
-	</PropertyGroup>
-	<PropertyGroup>
 		<PlatformTarget>x86</PlatformTarget>
 		<GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
-	</PropertyGroup>
-  <PropertyGroup>
     <ProjectGuid>{28FD937C-CCA7-4E85-A29B-D723E8390E51}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <AssemblyTitle>Key2Joy.PluginHost</AssemblyTitle>
-    <Product>Key2Joy.PluginHost</Product>
-    <Copyright>Copyright ©  2023</Copyright>
     <OutputPath>bin\$(Configuration)\</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup>
-    <EnableNETAnalyzers>False</EnableNETAnalyzers>
-    <AnalysisLevel>none</AnalysisLevel>
     <BaseOutputPath>bin\$(MSBuildProjectName)</BaseOutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
   </PropertyGroup>
+
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
   </PropertyGroup>
+
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
   </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
   </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\Key2Joy.Contracts\Key2Joy.Contracts.csproj" />
   </ItemGroup>
+
   <ItemGroup>
 	  <Reference Include="System" />
 	  <Reference Include="System.AddIn.Contract" />
@@ -47,4 +52,5 @@
 	  <Reference Include="System.Xml" />
 	  <Reference Include="WindowsBase" />
   </ItemGroup>
+
 </Project>

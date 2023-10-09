@@ -1,11 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>NET48</TargetFramework>
-	  <LangVersion>latest</LangVersion>
+    <Authors>luttje</Authors>
+    <Title>Key2Joy</Title>
+    <Product>Key2Joy</Product>
+    <Description>Simulate a game controller with your mouse and keyboard</Description>
+    <Copyright>Copyright © 2022 luttje</Copyright>
+    <PackageProjectUrl>https://github.com/luttje/Key2Joy</PackageProjectUrl>
   </PropertyGroup>
 
   <PropertyGroup>
+    <TargetFramework>NET48</TargetFramework>
+	  <LangVersion>latest</LangVersion>
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <RootNamespace>Key2Joy.Contracts</RootNamespace>
     <PlatformTarget>x86</PlatformTarget>
@@ -17,7 +23,7 @@
   <ItemGroup>
     <PackageReference Include="System.Text.Json" Version="7.0.2" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -34,5 +40,5 @@
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
-  
+
 </Project>
