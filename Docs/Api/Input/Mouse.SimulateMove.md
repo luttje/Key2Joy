@@ -7,15 +7,12 @@ Simulate moving the mouse
 ## Parameters
 
 * **x (`Int32`)** 
-
 	X coordinate to move by/to
 
 * **y (`Int32`)** 
-
 	Y coordinate to move by/to
 
 * **moveType (`MoveType`)** 
-
 	Whether to move relative to the current cursor position (default) or to an absolute position on screen
 
 

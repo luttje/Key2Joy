@@ -1,4 +1,7 @@
-﻿using System;
+using System;
+using System.IO;
+using System.Text;
+using BuildMarkdownDocs.Util;
 
 namespace BuildMarkdownDocs;
 
@@ -8,12 +11,13 @@ internal class Program
     {
         if (args.Length < 2)
         {
-            Console.WriteLine("Usage: BuildMarkdownDocs.exe <xml doc file> <output directory> --template [template] --filter [xpath filter]");
+            Console.WriteLine("Usage: BuildMarkdownDocs.exe <directory containing all referenced assemblies> <directory containing xml documentation files> <output directory> --template [template] --filter [xpath filter]");
             return;
         }
 
-        var xmlFile = args[0];
-        var outputDirectory = args[1];
+        var assemblyDirectory = args[0];
+        var xmlFilesDirectory = args[1];
+        var outputDirectory = args[2];
         string template = null;
         string filter = null;
 
@@ -31,9 +35,16 @@ internal class Program
             }
         }
 
-        // TODO: This is hacky, but it works. We're making sure to have a reference to the assembly, so it's loaded.
-        TypeUtil.NotifyAssemblyRelation(typeof(Key2Joy.Key2JoyManager));
+        var outputFile = Path.GetFullPath(outputDirectory + "/Index.md");
 
-        MarkdownDocs.Build(xmlFile, outputDirectory, template, filter);
+        StringBuilder indexOutput = new();
+        indexOutput.AppendLine($"# Scripting API Reference\n");
+
+        foreach (var xmlFile in Directory.GetFiles(xmlFilesDirectory, "*.xml"))
+        {
+            MarkdownDocs.BuildWithIndex(xmlFile, assemblyDirectory, outputDirectory, indexOutput, template, filter);
+        }
+
+        FileHelper.WriteToFile(outputFile, indexOutput.ToString());
     }
 }

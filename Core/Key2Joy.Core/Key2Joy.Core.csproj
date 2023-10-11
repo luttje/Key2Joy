@@ -16,17 +16,17 @@
     <PlatformTarget>x86</PlatformTarget>
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <DocumentationFile>..\..\bin\Release\Key2Joy\Key2Joy.xml</DocumentationFile>
     <RootNamespace>Key2Joy</RootNamespace>
     <SignAssembly>False</SignAssembly>
     <AssemblyOriginatorKeyFile></AssemblyOriginatorKeyFile>
     <BaseOutputPath>bin\$(MSBuildProjectName)</BaseOutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <DocumentationFile>..\..\bin\DocumentationFiles\Key2Joy.Core.xml</DocumentationFile>
   </PropertyGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="call $(SolutionDir)\Support\BuildDocumentation.bat $(ConfigurationName)" />
+    <Exec Command="call $(SolutionDir)\Support\BuildDocumentation.bat $(OutDir) $(ConfigurationName)" />
   </Target>
 
   <ItemGroup>

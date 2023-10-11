@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Xml.Linq;
 
 namespace BuildMarkdownDocs;
@@ -7,6 +7,7 @@ internal struct MarkdownMeta : IComparable<MarkdownMeta>
 {
     public string Name { get; set; }
     public string Path { get; set; }
+    public int LevelModifier { get; set; }
 
     public static MarkdownMeta FromXml(XElement element)
     {

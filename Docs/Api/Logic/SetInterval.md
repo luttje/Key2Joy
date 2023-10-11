@@ -7,15 +7,12 @@ Repeatedly calls a function or executes a code snippet, with a fixed time delay 
 ## Parameters
 
 * **callback (`CallbackAction`)** 
-
 	Function to execute after each wait
 
 * **waitTime (`Int64`)** 
-
 	Time to wait (in milliseconds)
 
 * **arguments (`Object[]`)** 
-
 	Zero or more extra parameters to pass to the function
 
 

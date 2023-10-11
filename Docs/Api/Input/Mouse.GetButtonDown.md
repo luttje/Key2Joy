@@ -3,13 +3,12 @@
 
 Tests if the provided mouse button is currently pressed.
 
-You can find the button codes in [../Enumerations/Buttons.md](../Enumerations/Buttons.md) .
+You can find the button codes in [../Enumerations/Buttons.md](../Enumerations/Buttons.md).
 
 
 ## Parameters
 
 * **button (`Buttons`)** 
-
 	The button to test for
 
 ## Returns

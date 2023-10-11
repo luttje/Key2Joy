@@ -7,7 +7,6 @@ Expands system environment variables (See also: https://ss64.com/nt/syntax-varia
 ## Parameters
 
 * **path (`String`)** 
-
 	The path to expand
 
 ## Returns

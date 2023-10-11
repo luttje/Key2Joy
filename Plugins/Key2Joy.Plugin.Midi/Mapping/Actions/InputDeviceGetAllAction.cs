@@ -25,15 +25,18 @@ public class InputDeviceGetAllAction : PluginAction
     /// Gets all Midi input devices
     /// </summary>
     /// <markdown-example>
+    /// Loops all input devices and displays their name in the logs.
+    /// <code language="lua">
     /// <![CDATA[
     /// local devices = Midi.InputDeviceGetAll()
     /// for k, v in collection(devices) do
     ///     print(v)
     /// end
     /// ]]>
+    /// </code>
     /// </markdown-example>
     /// <returns>A collection with input devices</returns>
-    /// <name>InputDeviceGetAll</name>
+    /// <name>Midi.InputDeviceGetAll</name>
     [ExposesScriptingMethod("Midi.InputDeviceGetAll")]
     public ICollection<WrappedPluginType> ExecuteForScript() => InputDevice.GetAll().Select(input => new WrappedPluginType(input)).ToList();
 }

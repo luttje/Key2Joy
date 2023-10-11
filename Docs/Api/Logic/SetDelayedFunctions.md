@@ -9,11 +9,9 @@ The first function is executed immediately.
 ## Parameters
 
 * **waitTime (`Int64`)** 
-
 	Time to wait (in milliseconds) between function calls
 
 * **callbacks (`Action[]`)** 
-
 	One or more functions to execute
 
 

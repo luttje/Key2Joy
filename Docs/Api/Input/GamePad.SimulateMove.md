@@ -7,19 +7,15 @@ Simulate moving a gamepad joystick
 ## Parameters
 
 * **deltaX (`Double`)** 
-
 	The fraction by which to move the stick forward (negative) or backward (positive)
 
 * **deltaY (`Double`)** 
-
 	The fraction by which to move the stick right (positive) or left (negative)
 
 * **stick (`GamePadStick`)** 
-
 	Which gamepad stick to move, either GamePadStick.Left (default) or .Right
 
 * **gamepadIndex (`Int32`)** 
-
 	Which of 4 possible gamepads to simulate: 0 (default), 1, 2 or 3
 
 

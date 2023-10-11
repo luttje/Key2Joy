@@ -1,5 +1,7 @@
-# `Graphics.AnimationFromImages` (`String`, `Double`, `Object`)
-
+# `Ffmpeg.AnimationFromImages` (`String`, `Double`, `Object`)
+> **Note**
+> This is a plugin, meaning it's functionality is disabled by default.
+> You can enable plugins by going to `View` > `Plugins` > `Manage Plugins`.
 
 Encodes a sequence of images into an animation (like a gif).
 
@@ -11,15 +13,12 @@ Depending on the amount of frames this will take a bit of time. It may cause a s
 ## Parameters
 
 * **savePath (`String`)** 
-
 	File path on device where to save the animation. The file extension instructs the format (e.g: .gif).
 
 * **frameRate (`Double`)** 
-
 	Framecount per second.
 
 * **framePaths (`Object`)** 
-
 	Array/Table of paths to where the frames are located
 
 
@@ -31,25 +30,29 @@ Depending on the amount of frames this will take a bit of time. It may cause a s
 > 
 > #### _lua_:
 > ```lua
-> local desktopDir = Util.PathExpand("%HOMEDRIVE%%HOMEPATH%/Desktop/")
+> -- Only works if the FFmpeg plugin has access to desktop:
+> -- local targetDirectory = Util.PathExpand("%HOMEDRIVE%%HOMEPATH%/Desktop/")
+> local targetDirectory = "./"
 > local images = {}
-> 
-> for i=1,30 do 
->   images[i] = desktopDir.."frames/"..i..".png"
+>             
+> for i=1,30 do
+>   images[i] = targetDirectory.."frames/"..i..".png"
 > end
-> 
-> Graphics.AnimationFromImages(desktopDir.."animated.gif", 30, images)
+>             
+> Ffmpeg.AnimationFromImages(targetDirectory.."animated.gif", 30, images)
 > ```
 > 
 > #### _js_:
 > ```js
-> let desktopDir = Util.PathExpand("%HOMEDRIVE%%HOMEPATH%/Desktop/")
+> // Only works if the FFmpeg plugin has access to desktop:
+> // let targetDirectory = Util.PathExpand("%HOMEDRIVE%%HOMEPATH%/Desktop/")
+> let targetDirectory = "./"
 > let images = []
-> 
-> for(let i=1; i<=30; i++){ 
->   images[i] = desktopDir+"frames/"+i+".png"
+>             
+> for(let i=1; i<=30; i++){
+>   images[i-1] = targetDirectory+"frames/"+i+".png"
 > }
-> 
-> Graphics.AnimationFromImages(desktopDir+"animated.gif", 30, images)
+>             
+> Ffmpeg.AnimationFromImages(targetDirectory+"animated.gif", 30, images)
 > ```
 ---

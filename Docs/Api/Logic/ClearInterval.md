@@ -7,7 +7,6 @@ Cancels an interval previously established by calling SetInterval()
 ## Parameters
 
 * **intervalId (`IntervalId`)** 
-
 	Id returned by SetInterval to cancel
 
 

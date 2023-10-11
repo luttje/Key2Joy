@@ -43,9 +43,7 @@ public class PluginActionProxy : CoreAction, IGetRealObject<PluginAction>
         {
             var exception = ex.InnerException ?? ex;
             Output.WriteLine(exception.ToString());
-#if DEBUG
             throw exception;
-#endif
         }
     }
 
@@ -59,9 +57,7 @@ public class PluginActionProxy : CoreAction, IGetRealObject<PluginAction>
         {
             var exception = ex.InnerException ?? ex;
             Output.WriteLine(exception.ToString());
-#if DEBUG
             throw exception;
-#endif
         }
     }
 }

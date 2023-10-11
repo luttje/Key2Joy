@@ -7,7 +7,6 @@ Cancels a timeout previously established by calling SetTimeout()
 ## Parameters
 
 * **timeoutId (`TimeoutId`)** 
-
 	Id returned by SetTimeout to cancel
 
 

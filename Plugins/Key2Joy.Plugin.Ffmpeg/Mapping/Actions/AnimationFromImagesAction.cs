@@ -15,7 +15,7 @@ public class AnimationFromImagesAction : PluginAction
 {
     /// <markdown-doc>
     /// <parent-name>Ffmpeg</parent-name>
-    /// <path>Api/Ffmpeg</path>
+    /// <path>Api/Plugins/Ffmpeg</path>
     /// </markdown-doc>
     /// <summary>
     /// Encodes a sequence of images into an animation (like a gif).

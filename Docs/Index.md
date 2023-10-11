@@ -1,8 +1,7 @@
 # Scripting API Reference
 
-## All Enumerations
+## Enumerations
 
-* [`AppCommand`](Api/Enumerations/AppCommand.md)
 * [`Buttons`](Api/Enumerations/Buttons.md)
 * [`GamePadControl`](Api/Enumerations/GamePadControl.md)
 * [`GamePadStick`](Api/Enumerations/GamePadStick.md)
@@ -12,7 +11,6 @@
 
 ## Graphics
 
-* [`Graphics.AnimationFromImages` (`String`, `Double`, `Object`)](Api/Graphics/Graphics.AnimationFromImages.md)
 * [`Graphics.CaptureScreen` (`String`, `Int32?`, `Int32?`, `Int32?`, `Int32?`)](Api/Graphics/Graphics.CaptureScreen.md)
 * [`Graphics.GetPixelColor` (`Int32`, `Int32`)](Api/Graphics/Graphics.GetPixelColor.md)
 
@@ -30,7 +28,7 @@
 
 ## Logic
 
-* [`App.Command` (`AppCommand`)](Api/Logic/App.Command.md)
+* [`App.Command` (`Int32`)](Api/Logic/App.Command.md)
 * [`ClearInterval` (`IntervalId`)](Api/Logic/ClearInterval.md)
 * [`ClearTimeout` (`TimeoutId`)](Api/Logic/ClearTimeout.md)
 * [`MessageBox.Show` (`String`)](Api/Logic/MessageBox.Show.md)
@@ -50,4 +48,13 @@
 * [`Window.GetClass` (`IntPtr`)](Api/Windows/Window.GetClass.md)
 * [`Window.GetForeground` ()](Api/Windows/Window.GetForeground.md)
 * [`Window.GetTitle` (`IntPtr`)](Api/Windows/Window.GetTitle.md)
+
+## Ffmpeg
+
+* [`Ffmpeg.AnimationFromImages` (`String`, `Double`, `Object`)](Api/Plugins/Ffmpeg/Ffmpeg.AnimationFromImages.md)
+
+## Midi
+
+* [`Midi.InputDeviceGetAll` ()](Api/Plugins/Midi/Midi.InputDeviceGetAll.md)
+* [`Midi.InputDeviceListenForEvent` ()](Api/Plugins/Midi/Midi.InputDeviceListenForEvent.md)
 

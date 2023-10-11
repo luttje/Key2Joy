@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -10,7 +10,17 @@ namespace BuildMarkdownDocs;
 
 internal class MarkdownDocs
 {
-    internal static void Build(string xmlFile, string outputDirectory, string templateFile = null, string filter = null)
+    /// <summary>
+    /// Builds the individual files, returning a string to append to the index.
+    /// </summary>
+    /// <param name="xmlFile"></param>
+    /// <param name="assemblyDirectory"></param>
+    /// <param name="outputDirectory"></param>
+    /// <param name="indexBuilder"></param>
+    /// <param name="templateFile"></param>
+    /// <param name="filter"></param>
+    /// <returns></returns>
+    internal static void BuildWithIndex(string xmlFile, string assemblyDirectory, string outputDirectory, StringBuilder indexBuilder, string templateFile = null, string filter = null)
     {
         var xml = XDocument.Load(xmlFile);
         var root = xml.Root;
@@ -18,21 +28,22 @@ internal class MarkdownDocs
         var xmlMembers = membersContainer.Elements("member");
         outputDirectory = !outputDirectory.EndsWith("\\") ? $"{outputDirectory}\\" : outputDirectory;
 
-        var outputFile = Path.GetFullPath(outputDirectory + "Index.md");
         SortedDictionary<MarkdownMeta, List<Member>> outputParents = new();
+
+        var assemblyName = root.Element("assembly").Element("name").Value;
+        AssemblyHelper.LoadWithRelated(assemblyDirectory, assemblyName, out var isPlugin);
 
         MarkdownMeta enumParent;
         List<Member> enumerations;
         outputParents.Add(
             enumParent = new MarkdownMeta()
             {
-                Name = "All Enumerations",
-                Path = "Api/Enumerations/"
+                Name = "Enumerations",
+                Path = "Api/Enumerations/",
+                LevelModifier = isPlugin ? 1 : 0
             },
             enumerations = new List<Member>()
         );
-
-        var directory = Path.GetDirectoryName(outputFile);
 
         foreach (var xmlMember in xmlMembers)
         {
@@ -46,7 +57,7 @@ internal class MarkdownDocs
                 }
             }
 
-            var member = (FunctionMember)FunctionMember.FromXml(xmlMember);
+            var member = (FunctionMember)FunctionMember.FromXml(xmlMember, isPlugin);
             var outputMemberFile = Path.GetFullPath(outputDirectory + member.Parent.Path + member.Name.FirstCharToUpper() + ".md");
 
             if (!outputParents.TryGetValue(member.Parent, out var parent))
@@ -108,7 +119,7 @@ internal class MarkdownDocs
                             Directory.CreateDirectory(enumDirectory);
                         }
 
-                        File.WriteAllText(outputEnumFile, enumMember.FillTemplate(enumTemplateContent));
+                        FileHelper.WriteToFile(outputEnumFile, enumMember.FillTemplate(enumTemplateContent));
                     }
                 }
             }
@@ -128,33 +139,35 @@ internal class MarkdownDocs
                 Directory.CreateDirectory(memberDirectory);
             }
 
-            File.WriteAllText(outputMemberFile, member.FillTemplate(templateContent));
+            FileHelper.WriteToFile(outputMemberFile, member.FillTemplate(templateContent));
         }
 
-        if (!Directory.Exists(directory))
+        if (!Directory.Exists(outputDirectory))
         {
-            Directory.CreateDirectory(directory);
+            Directory.CreateDirectory(outputDirectory);
         }
 
-        StringBuilder output = new();
-        output.AppendLine($"# Scripting API Reference\n");
-
-        // Sort members
         foreach (var outputParent in outputParents)
         {
             var parent = outputParent.Key;
             var members = outputParent.Value;
+
+            if (members.Count == 0)
+            {
+                continue;
+            }
+
             members.Sort();
 
-            output.AppendLine($"## {parent.Name}\n");
+            var headingMarkers = new string('#', parent.LevelModifier + 2);
+
+            indexBuilder.AppendLine($"{headingMarkers} {parent.Name}\n");
 
             foreach (var member in members)
             {
-                output.AppendLine(member.GetLinkMarkdown());
+                indexBuilder.AppendLine(member.GetLinkMarkdown());
             }
-            output.AppendLine("");
+            indexBuilder.AppendLine("");
         }
-
-        File.WriteAllText(outputFile, output.ToString());
     }
 }

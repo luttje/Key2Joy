@@ -7,7 +7,6 @@ Reset the gamepad so the stick returns to the resting position (0,0)
 ## Parameters
 
 * **gamepadIndex (`Int32`)** 
-
 	Which of 4 possible gamepads to simulate: 0 (default), 1, 2 or 3
 
 

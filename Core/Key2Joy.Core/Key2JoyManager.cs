@@ -25,6 +25,11 @@ public delegate bool AppCommandRunner(AppCommand command);
 
 public class Key2JoyManager : IMessageFilter
 {
+    /// <summary>
+    /// Directory where plugins are located
+    /// </summary>
+    public const string PluginsDirectory = "Plugins";
+
     private const string READY_MESSAGE = "Key2Joy is ready";
     private static AppCommandRunner commandRunner;
     private MappingProfile armedProfile;
@@ -59,7 +64,7 @@ public class Key2JoyManager : IMessageFilter
         instance = new Key2JoyManager();
 
         var pluginDirectoriesPaths = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-        pluginDirectoriesPaths = Path.Combine(pluginDirectoriesPaths, "Plugins");
+        pluginDirectoriesPaths = Path.Combine(pluginDirectoriesPaths, PluginsDirectory);
 
         // TODO: Move this to a seperate method/property that the plugin can override
         BaseScriptAction.ExposedEnumerations.AddRange(new List<Type>

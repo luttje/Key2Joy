@@ -7,11 +7,9 @@ Gets the color of a pixel at the given x and y position
 ## Parameters
 
 * **x (`Int32`)** 
-
 	X position on screen
 
 * **y (`Int32`)** 
-
 	Y position on screen
 
 ## Returns

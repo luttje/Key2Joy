@@ -12,6 +12,7 @@ internal class FunctionMember : Member
     public Example[] MarkdownExamples { get; set; }
     public Parameter[] Parameters { get; set; }
     public ReturnType ReturnType { get; set; }
+    public bool IsPlugin { get; set; }
 
     public string GetParametersSignature()
     {
@@ -24,9 +25,9 @@ internal class FunctionMember : Member
                 .Select(p => $"`{p.GetTypeName()}`"));
     }
 
-    internal static Member FromXml(XElement element)
+    internal static Member FromXml(XElement element, bool isPlugin = false)
     {
-        // Get the parameter types from member attribute: <member name="M:Key2Joy.Mapping.KeyboardAction.ExecuteForScript(System.Windows.Forms.Keys,Key2Joy.Input.PressState)">
+        // Get the parameter types from member attribute, e.g: <member name="M:Key2Joy.Mapping.KeyboardAction.ExecuteForScript(System.Windows.Forms.Keys,Key2Joy.Input.PressState)">
         var memberName = element.Attribute("name").Value;
         var parametersStart = memberName.IndexOf('(');
         Type[] parameterTypes;
@@ -63,11 +64,11 @@ internal class FunctionMember : Member
 
                     if (href != null)
                     {
-                        summary.Append($" [{href}]({href}) ");
+                        summary.Append($" [{href}]({href})");
                     }
                     else
                     {
-                        summary.Append($" `{cref}` ");
+                        summary.Append($" `{cref}`");
                     }
                 }
                 else
@@ -96,6 +97,7 @@ internal class FunctionMember : Member
 
         var markdownMeta = element.Element("markdown-doc");
 
+        member.IsPlugin = isPlugin;
         member.Parent = MarkdownMeta.FromXml(markdownMeta);
         member.MarkdownExamples = element.Elements("markdown-example")
             .Select(Example.FromXml)
@@ -117,7 +119,7 @@ internal class FunctionMember : Member
         {
             parameters = string.Join("\n", this.Parameters?
                 .Select(p =>
-                    $"* **{p.Name} (" + (p.IsOptional ? "Optional " : "") + $"`{p.GetTypeName(false)}`)** \n\n" +
+                    $"* **{p.Name} (" + (p.IsOptional ? "Optional " : "") + $"`{p.GetTypeName(false)}`)** \n" +
                     $"\t{p.Description}\n"));
         }
 
@@ -127,6 +129,6 @@ internal class FunctionMember : Member
         replacements.Add("Parameters", parameters);
         replacements.Add("ReturnType", $"{this.ReturnType?.Description ?? ""}");
         replacements.Add("Examples", examples);
-
+        replacements.Add("IsPlugin", IsPlugin ? "true" : "");
     }
 }
