@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 using Key2Joy.Config;
+using Key2Joy.Contracts;
 using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.Contracts.Plugins;
@@ -98,6 +99,7 @@ public class PluginSet : IDisposable
         }
         catch (PluginLoadException ex)
         {
+            Output.WriteLine(ex);
             pluginHost.Dispose();
 
             this.AddPluginState(

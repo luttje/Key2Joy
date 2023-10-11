@@ -7,6 +7,7 @@ using Jint.Native;
 using Jint.Native.Object;
 using Jint.Runtime.Descriptors;
 using Jint.Runtime.Interop;
+using Key2Joy.Contracts;
 using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.Plugins;
@@ -34,9 +35,9 @@ public class JavascriptAction : BaseScriptActionWithEnvironment<Engine>
                 this.environment.Execute(this.GetExecutableScript());
             }
         }
-        catch (Jint.Runtime.JavaScriptException e)
+        catch (Jint.Runtime.JavaScriptException ex)
         {
-            Output.WriteLine(e);
+            Output.WriteLine(ex);
         }
     }
 

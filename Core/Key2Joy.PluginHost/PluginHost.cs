@@ -8,6 +8,7 @@ using System.Security.Cryptography;
 using System.Security.Permissions;
 using System.Security.Policy;
 using System.Text;
+using Key2Joy.Contracts;
 using Key2Joy.Contracts.Plugins;
 using Key2Joy.Contracts.Plugins.Remoting;
 
@@ -279,6 +280,7 @@ public class PluginHost : MarshalByRefObject, IPluginHost
             var message = string.Format("Error loading type '{0}' from assembly '{1}'. {2}",
                 assembly, typeName, ex.Message);
 
+            Output.WriteLine(message);
             throw new ApplicationException(message, ex);
         }
     }

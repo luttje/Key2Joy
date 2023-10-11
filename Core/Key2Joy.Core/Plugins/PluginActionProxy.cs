@@ -1,4 +1,5 @@
 using System;
+using Key2Joy.Contracts;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Plugins;
 using Key2Joy.Mapping.Actions;
@@ -41,8 +42,10 @@ public class PluginActionProxy : CoreAction, IGetRealObject<PluginAction>
         catch (Exception ex)
         {
             var exception = ex.InnerException ?? ex;
-            // Output.WriteLine(exception.ToString()); // Fails because sometimes we're in a domain that cant reach the config manager. This logger tries to reach that.
+            Output.WriteLine(exception.ToString());
+#if DEBUG
             throw exception;
+#endif
         }
     }
 
@@ -55,8 +58,10 @@ public class PluginActionProxy : CoreAction, IGetRealObject<PluginAction>
         catch (Exception ex)
         {
             var exception = ex.InnerException ?? ex;
-            // Output.WriteLine(exception.ToString()); // Fails because sometimes we're in a domain that cant reach the config manager. This logger tries to reach that.
+            Output.WriteLine(exception.ToString());
+#if DEBUG
             throw exception;
+#endif
         }
     }
 }

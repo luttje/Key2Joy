@@ -10,6 +10,7 @@ using System.Runtime.Remoting.Channels.Ipc;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Key2Joy.Contracts;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Contracts.Mapping.Triggers;
@@ -123,6 +124,7 @@ public class PluginHostProxy : IDisposable
         }
         catch (PluginLoadException ex)
         {
+            Output.WriteLine(ex);
             throw ex;
         }
 
@@ -290,6 +292,7 @@ public class PluginHostProxy : IDisposable
         }
         catch (Exception ex)
         {
+            Output.WriteLine(ex);
             MessageBox.Show("Error creating plugin control!", $"Error creating plugin control: {ex.Message}", MessageBoxButtons.OK, MessageBoxIcon.Error);
             return null;
         }

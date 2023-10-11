@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Text;
+using Key2Joy.Contracts;
 using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.Plugins;
@@ -37,6 +38,7 @@ public abstract class BaseScriptAction : CoreAction
     }
 
     public abstract void RegisterScriptingEnum(ExposedEnumeration enumeration);
+
     public abstract void RegisterScriptingMethod(ExposedMethod exposedMethod, AbstractAction instance);
 
     public virtual void Print(params object[] args)

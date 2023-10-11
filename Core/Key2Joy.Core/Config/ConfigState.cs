@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Key2Joy.Config;
@@ -10,6 +10,7 @@ public class ConfigState
         get => this.lastInstallPath;
         set => this.SaveIfInitialized(this.lastInstallPath = value);
     }
+
     private string lastInstallPath;
 
     [BooleanConfigControl(
@@ -20,6 +21,7 @@ public class ConfigState
         get => this.muteCloseExitMessage;
         set => this.SaveIfInitialized(this.muteCloseExitMessage = value);
     }
+
     private bool muteCloseExitMessage;
 
     [BooleanConfigControl(
@@ -30,6 +32,7 @@ public class ConfigState
         get => this.overrideDefaultTriggerBehaviour;
         set => this.SaveIfInitialized(this.overrideDefaultTriggerBehaviour = value);
     }
+
     private bool overrideDefaultTriggerBehaviour = true;
 
     [TextConfigControl(
@@ -40,17 +43,8 @@ public class ConfigState
         get => this.lastLoadedProfile;
         set => this.SaveIfInitialized(this.lastLoadedProfile = value);
     }
-    private string lastLoadedProfile;
 
-    [TextConfigControl(
-        Text = "Path to directory where logs are saved"
-    )]
-    public string LogOutputPath
-    {
-        get => this.logOutputPath;
-        set => this.SaveIfInitialized(this.logOutputPath = value);
-    }
-    private string logOutputPath = Path.Combine(ConfigManager.GetAppDataDirectory(), "Logs");
+    private string lastLoadedProfile;
 
     public Dictionary<string, string> EnabledPlugins { get; set; } = new Dictionary<string, string>();
 

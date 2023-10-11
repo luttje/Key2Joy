@@ -1,12 +1,12 @@
 using System;
 using System.IO;
 using System.Text.Json;
+using Key2Joy.Contracts;
 
 namespace Key2Joy.Config;
 
 public class ConfigManager
 {
-    private const string APP_DIR = "Key2Joy";
     private const string CONFIG_PATH = "config.json";
 
     private static ConfigManager instance;
@@ -33,7 +33,7 @@ public class ConfigManager
     {
         var options = GetSerializerOptions();
         var configPath = Path.Combine(
-            GetAppDataDirectory(),
+            Output.GetAppDataDirectory(),
             CONFIG_PATH);
 
         File.WriteAllText(configPath, JsonSerializer.Serialize(this.configState, options));
@@ -42,7 +42,7 @@ public class ConfigManager
     private static ConfigManager LoadOrCreate()
     {
         var configPath = Path.Combine(
-            GetAppDataDirectory(),
+            Output.GetAppDataDirectory(),
             CONFIG_PATH);
 
         if (!File.Exists(configPath))
@@ -92,20 +92,6 @@ public class ConfigManager
         };
 
         return options;
-    }
-
-    public static string GetAppDataDirectory()
-    {
-        var directory = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-            APP_DIR);
-
-        if (!Directory.Exists(directory))
-        {
-            Directory.CreateDirectory(directory);
-        }
-
-        return directory;
     }
 
     /// <summary>

@@ -1,5 +1,4 @@
 using System;
-using System.Windows;
 using FFMpegCore;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Actions;
@@ -80,7 +79,7 @@ public class AnimationFromImagesAction : PluginAction
         allFramePaths = Array.ConvertAll((object[])framePaths, fp => (string)fp);
         // End of WORKAROUND
 
-        JoinImageSequence(savePath, frameRate, allFramePaths);
+        this.JoinImageSequence(savePath, frameRate, allFramePaths);
     }
 
     /// <remarks>
@@ -94,7 +93,7 @@ public class AnimationFromImagesAction : PluginAction
     /// <param name="frameRate">FPS</param>
     /// <param name="images">Image sequence collection</param>
     /// <returns>Output video information.</returns>
-    private static bool JoinImageSequence(string output, double frameRate = 30, params string[] images)
+    private bool JoinImageSequence(string output, double frameRate = 30, params string[] images)
     {
         try
         {
@@ -102,9 +101,8 @@ public class AnimationFromImagesAction : PluginAction
         }
         catch (Exception ex)
         {
-            MessageBox.Show(ex.ToString());
+            throw PluginException.FromException(this.Plugin, ex);
         }
-        return false;
     }
 
     public override bool Equals(object obj)

@@ -7,6 +7,8 @@ using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Ipc;
 using System.Runtime.Serialization.Formatters;
 using System.Windows.Threading;
+using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts;
 using Key2Joy.Contracts.Plugins.Remoting;
 using static Key2Joy.PluginHost.Native;
 
@@ -56,6 +58,7 @@ internal class Program
         }
         catch (Exception ex)
         {
+            Output.WriteLine(ex);
             Debugger.Launch();
             var mostInnerException = ex;
 

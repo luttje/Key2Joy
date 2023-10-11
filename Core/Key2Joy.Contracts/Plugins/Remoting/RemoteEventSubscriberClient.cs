@@ -49,18 +49,22 @@ public class RemoteEventSubscriberClient
         // Registers heartbeats from the host.
         var pipeListenerBackgroundThread = Task.Run(() =>
         {
-            while (!this.pipeCancellation.IsCancellationRequested)
+            try
             {
-                var message = RemotePipe.ReadMessage(this.pipeStream);
-
-                if (string.IsNullOrEmpty(message))
+                while (!this.pipeCancellation.IsCancellationRequested)
                 {
-                    continue;
-                }
+                    var message = RemotePipe.ReadMessage(this.pipeStream);
 
-                Console.WriteLine($"Remote Message: {message}");
-                this.lastHeartbeatAt = DateTime.Now;
+                    if (string.IsNullOrEmpty(message))
+                    {
+                        continue;
+                    }
+
+                    Console.WriteLine($"Remote Message: {message}");
+                    this.lastHeartbeatAt = DateTime.Now;
+                }
             }
+            catch (ObjectDisposedException) { } // in case pipe closed
         });
 
         // Checks if the last heartbeat was too long ago.
@@ -93,6 +97,7 @@ public class RemoteEventSubscriberClient
         }
         catch (IOException ex)
         {
+            Output.WriteLine(ex);
             Debug.WriteLine(ex);
         }
 

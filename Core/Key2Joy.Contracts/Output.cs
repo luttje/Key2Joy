@@ -1,13 +1,15 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
-using Key2Joy.Config;
 
-namespace Key2Joy;
+namespace Key2Joy.Contracts;
 
 public static class Output
 {
+    private const string APP_DIR = "Key2Joy";
+    private const string LogOutputPath = "Logs";
+
     public enum OutputModes
     {
         /// <summary>
@@ -25,6 +27,20 @@ public static class Output
 
     public static OutputModes OutputMode { get; set; } = OutputModes.Verbose;
 
+    public static string GetAppDataDirectory()
+    {
+        var directory = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+            APP_DIR);
+
+        if (!Directory.Exists(directory))
+        {
+            Directory.CreateDirectory(directory);
+        }
+
+        return directory;
+    }
+
     public static string GetLogPath(DateTime? day = null)
     {
         if (day == null)
@@ -32,7 +48,7 @@ public static class Output
             day = DateTime.Now;
         }
 
-        var directory = ConfigManager.Config.LogOutputPath;
+        var directory = Path.Combine(GetAppDataDirectory(), LogOutputPath);
 
         if (!Directory.Exists(directory))
         {

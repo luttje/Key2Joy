@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Key2Joy.Config;
+using Key2Joy.Contracts;
 using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.Util;
@@ -169,10 +170,10 @@ public class MappingProfile
     public static string GetSaveDirectory()
     {
         var legacyDirectory = Path.Combine(
-            ConfigManager.GetAppDataDirectory(),
+            Output.GetAppDataDirectory(),
             LEGACY_SAVE_DIR);
         var directory = Path.Combine(
-            ConfigManager.GetAppDataDirectory(),
+            Output.GetAppDataDirectory(),
             SAVE_DIR);
 
         if (Directory.Exists(legacyDirectory))

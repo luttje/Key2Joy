@@ -6,6 +6,7 @@ using System.IO;
 using System.Windows.Forms;
 using BrightIdeasSoftware;
 using Key2Joy.Config;
+using Key2Joy.Contracts;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Contracts.Mapping.Triggers;
@@ -184,8 +185,10 @@ public partial class MainForm : Form, IAcceptAppCommands
                 }));
 
                 return true;
+
             case AppCommand.ResetScriptEnvironment:
                 break;
+
             default:
                 break;
         }

@@ -1,4 +1,4 @@
-﻿namespace Key2Joy.Gui
+namespace Key2Joy.Gui
 {
     partial class MainForm
     {
@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.olvMappings = new Key2Joy.Gui.CustomObjectListView();
+            this.olvMappings = new BrightIdeasSoftware.ObjectListView();
             this.olvColumnAction = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnTrigger = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.pnlActionManagement = new System.Windows.Forms.Panel();
@@ -668,7 +668,7 @@
         private System.Windows.Forms.ToolStripMenuItem openPluginsFolderToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem withSelectedToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem generateOppositePressStateMappingsToolStripMenuItem;
-        private CustomObjectListView olvMappings;
+        private BrightIdeasSoftware.ObjectListView olvMappings;
     }
 }
 

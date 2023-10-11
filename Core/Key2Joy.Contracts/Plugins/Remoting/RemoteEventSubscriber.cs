@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 
 namespace Key2Joy.Contracts.Plugins.Remoting;
@@ -32,6 +31,7 @@ public class RemoteEventSubscriber
         }
         catch (IOException ex)
         {
+            Output.WriteLine(ex.ToString());
             Console.WriteLine(ex);
         }
     }

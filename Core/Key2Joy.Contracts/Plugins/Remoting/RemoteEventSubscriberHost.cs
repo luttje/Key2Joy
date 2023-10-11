@@ -71,6 +71,7 @@ public class RemoteEventSubscriberHost : IDisposable
                 }
                 catch (Exception ex)
                 {
+                    Output.WriteLine(ex);
                     Debug.WriteLine($"-------------> Exception: {ex.Message}");
                     return;
                 }
@@ -101,6 +102,7 @@ public class RemoteEventSubscriberHost : IDisposable
                 }
                 catch (Exception ex)
                 {
+                    Output.WriteLine(ex);
                     Debug.WriteLine($"-------------> Exception: {ex.Message}");
                     return;
                 }

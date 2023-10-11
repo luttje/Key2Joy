@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Key2Joy.Contracts;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Triggers;
 using Linearstar.Windows.RawInput;
@@ -12,6 +13,7 @@ public class MouseMoveTriggerListener : CoreTriggerListener, IWndProcHandler
     public IntPtr Handle { get; set; }
 
     public static MouseMoveTriggerListener instance;
+
     public static MouseMoveTriggerListener Instance
     {
         get
@@ -98,7 +100,8 @@ public class MouseMoveTriggerListener : CoreTriggerListener, IWndProcHandler
         }
         catch (Linearstar.Windows.RawInput.Native.Win32ErrorException ex)
         {
-            // This exception occurs accross AppDomain boundary, when clicking on a MessageBox OK button
+            Output.WriteLine(ex);
+            // This exception seems to occur accross AppDomain boundary, when clicking on a MessageBox OK button
             Debug.WriteLine(ex.Message + Environment.NewLine + ex.StackTrace);
         }
     }
