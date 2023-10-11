@@ -30,7 +30,7 @@ public class AnimationFromImagesAction : PluginAction
     /// Since the framerate is set to 30 and there are 30 images, the gif will last 1 second.
     /// <code language="lua">
     /// <![CDATA[
-    /// -- Only works if the FFmpeg plugin has access to desktop (disabled by default):
+    /// -- Only works if the FFmpeg plugin has access to desktop:
     /// -- local targetDirectory = Util.PathExpand("%HOMEDRIVE%%HOMEPATH%/Desktop/")
     /// local targetDirectory = "./"
     /// local images = {}
@@ -44,7 +44,7 @@ public class AnimationFromImagesAction : PluginAction
     /// </code>
     /// <code language="js">
     /// <![CDATA[
-    /// // Only works if the FFmpeg plugin has access to desktop (disabled by default):
+    /// // Only works if the FFmpeg plugin has access to desktop:
     /// // let targetDirectory = Util.PathExpand("%HOMEDRIVE%%HOMEPATH%/Desktop/")
     /// let targetDirectory = "./"
     /// let images = []

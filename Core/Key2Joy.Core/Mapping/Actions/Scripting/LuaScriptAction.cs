@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Key2Joy.Contracts;
@@ -9,6 +10,7 @@ using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.Contracts.Plugins;
 using Key2Joy.Plugins;
+using Key2Joy.Util;
 using NLua;
 
 namespace Key2Joy.Mapping.Actions.Scripting;
@@ -99,6 +101,38 @@ public class LuaScriptAction : BaseScriptActionWithEnvironment<Lua>
 
         if (exposedMethod is PluginExposedMethod methodNeedProxy)
         {
+            methodNeedProxy.RegisterParameterTransformer<LuaTable>(luaTable =>
+            {
+                var dictionary = new Dictionary<object, object>();
+                var areKeysSequential = true;
+                var sequentialKey = 1L;
+
+                foreach (var key in luaTable.Keys)
+                {
+                    var keyAsLong = key as long?;
+                    var value = luaTable[key];
+
+                    if (areKeysSequential
+                    && keyAsLong != null
+                    && keyAsLong == sequentialKey)
+                    {
+                        dictionary.Add(sequentialKey, value);
+                        sequentialKey++;
+                    }
+                    else
+                    {
+                        areKeysSequential = false;
+                        dictionary.Add(key, value);
+                    }
+                }
+
+                if (areKeysSequential)
+                {
+                    return dictionary.Values.ToArray();
+                }
+
+                return dictionary;
+            });
             methodNeedProxy.RegisterParameterTransformer<LuaFunction>(luaFunction => new WrappedPluginType(luaFunction.Call));
             this.environment.RegisterFunction(functionName, methodNeedProxy, methodNeedProxy.GetExecutorMethodInfo((PluginActionProxy)instance));
             return;
