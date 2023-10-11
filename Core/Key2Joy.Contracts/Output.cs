@@ -80,7 +80,15 @@ public static class Output
         }
 
         Debug.WriteLine(outputLine);
-        File.AppendAllText(GetLogPath(), outputLine + Environment.NewLine);
+        try
+        {
+            File.AppendAllText(GetLogPath(), outputLine + Environment.NewLine);
+        }
+        catch (IOException)
+        {
+            Debug.WriteLine("LOG WAS IN USE! COULDN'T WRITE");
+            // TODO: Handle differently? Like coming back after a bit?
+        }
 
         OnNewLogLine?.Invoke(outputLine);
     }

@@ -32,13 +32,15 @@ public class JavascriptAction : BaseScriptActionWithEnvironment<Engine>
         {
             lock (LockObject)
             {
-                this.environment.Execute(this.GetExecutableScript());
+                this.Environment.Execute(this.GetExecutableScript());
             }
         }
         catch (Jint.Runtime.JavaScriptException ex)
         {
             Output.WriteLine(ex);
         }
+
+        await base.Execute(inputBag);
     }
 
     public override void RegisterScriptingEnum(ExposedEnumeration enumeration)
@@ -61,32 +63,23 @@ public class JavascriptAction : BaseScriptActionWithEnvironment<Engine>
         enumInjectScript.Append("};");
 
         var enumInjection = enumInjectScript.ToString();
-        this.environment.Execute(enumInjection);
+        this.Environment.Execute(enumInjection);
 
         //this.environment.Execute($"Print(JSON.stringify({enumInjection}))");
     }
 
     public override void RegisterScriptingMethod(ExposedMethod exposedMethod, AbstractAction instance)
     {
+        exposedMethod.Prepare(instance);
+
         var functionName = exposedMethod.FunctionName;
         var parents = functionName.Split('.');
-        var methodInfo = exposedMethod.GetExecutorMethodInfo(instance);
-        DelegateWrapper @delegate;
-
-        if (exposedMethod is PluginExposedMethod methodNeedProxy)
-        {
-            @delegate = new DelegateWrapper(this.environment, methodInfo.CreateDelegate(methodNeedProxy));
-            //methodNeedProxy.RegisterParameterTransformer<LuaFunction>(luaFunction => new WrappedPluginType(luaFunction.Call));
-            //this.environment.RegisterFunction(functionName, methodNeedProxy, methodNeedProxy.GetExecutorMethodInfo((PluginActionProxy)instance));
-        }
-        else
-        {
-            @delegate = new DelegateWrapper(this.environment, methodInfo.CreateDelegate(instance));
-        }
+        var methodInfo = exposedMethod.GetExecutorMethodInfo();
+        var @delegate = new DelegateWrapper(this.Environment, methodInfo.CreateDelegate(exposedMethod));
 
         if (parents.Length > 1)
         {
-            var currentObject = this.environment.Realm.GlobalObject;
+            var currentObject = this.Environment.Realm.GlobalObject;
 
             for (var i = 0; i < parents.Length; i++)
             {
@@ -94,7 +87,7 @@ public class JavascriptAction : BaseScriptActionWithEnvironment<Engine>
                 {
                     if (!currentObject.TryGetValue(parents[i], out var child))
                     {
-                        child = new JsObject(this.environment);
+                        child = new JsObject(this.Environment);
                     }
 
                     if (child is not ObjectInstance childObject)
@@ -114,7 +107,7 @@ public class JavascriptAction : BaseScriptActionWithEnvironment<Engine>
             return;
         }
 
-        this.environment.SetValue(
+        this.Environment.SetValue(
             functionName,
             methodInfo);
     }
@@ -126,7 +119,7 @@ public class JavascriptAction : BaseScriptActionWithEnvironment<Engine>
 
     public override void RegisterEnvironmentObjects()
     {
-        this.environment.SetValue("Print", new Action<object[]>(this.Print));
+        this.Environment.SetValue("Print", new Action<object[]>(this.Print));
 
         base.RegisterEnvironmentObjects();
     }
@@ -137,7 +130,7 @@ public class JavascriptAction : BaseScriptActionWithEnvironment<Engine>
     {
         base.OnStopListening(listener);
 
-        this.environment = null;
+        this.Environment = null;
     }
 
     public override bool Equals(object obj)

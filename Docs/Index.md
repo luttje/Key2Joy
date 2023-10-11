@@ -2,6 +2,7 @@
 
 ## Enumerations
 
+* [`AppCommand`](Api/Enumerations/AppCommand.md)
 * [`Buttons`](Api/Enumerations/Buttons.md)
 * [`GamePadControl`](Api/Enumerations/GamePadControl.md)
 * [`GamePadStick`](Api/Enumerations/GamePadStick.md)
@@ -28,7 +29,7 @@
 
 ## Logic
 
-* [`App.Command` (`Int32`)](Api/Logic/App.Command.md)
+* [`App.Command` (`AppCommand`)](Api/Logic/App.Command.md)
 * [`ClearInterval` (`IntervalId`)](Api/Logic/ClearInterval.md)
 * [`ClearTimeout` (`TimeoutId`)](Api/Logic/ClearTimeout.md)
 * [`MessageBox.Show` (`String`)](Api/Logic/MessageBox.Show.md)

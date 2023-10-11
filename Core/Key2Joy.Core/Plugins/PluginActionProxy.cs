@@ -1,6 +1,9 @@
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Key2Joy.Contracts;
 using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.Contracts.Plugins;
 using Key2Joy.Mapping.Actions;
 
@@ -33,6 +36,9 @@ public class PluginActionProxy : CoreAction, IGetRealObject<PluginAction>
 
     public override string GetNameDisplay() => this.source.GetNameDisplay(this.Name);
 
+    internal IList<Type> GetMethodParameterTypes(string methodName)
+        => this.source.GetMethodParameterTypes(methodName);
+
     public object InvokeScriptMethod(string methodName, object[] parameters)
     {
         try
@@ -60,4 +66,6 @@ public class PluginActionProxy : CoreAction, IGetRealObject<PluginAction>
             throw exception;
         }
     }
+
+    public override Task Execute(AbstractInputBag inputBag = null) => throw new NotImplementedException();
 }

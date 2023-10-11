@@ -1,4 +1,4 @@
-# `App.Command` (`Int32`)
+# `App.Command` (`AppCommand`)
 
 
 Execute a command in this app
@@ -8,7 +8,7 @@ TODO: Make commands Enumerations and show those in the docs.
 
 ## Parameters
 
-* **command (`Int32`)** 
+* **command (`AppCommand`)** 
 	Command to execute
 
 

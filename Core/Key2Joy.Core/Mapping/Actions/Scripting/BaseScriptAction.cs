@@ -65,5 +65,6 @@ public abstract class BaseScriptAction : CoreAction
         return this.Name.Replace("{0}", truncatedScript);
     }
 
-    public override void OnStartListening(AbstractTriggerListener listener, ref IList<AbstractAction> otherActions) => base.OnStartListening(listener, ref otherActions);
+    public override void OnStartListening(AbstractTriggerListener listener, ref IList<AbstractAction> otherActions)
+        => base.OnStartListening(listener, ref otherActions);
 }

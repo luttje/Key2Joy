@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Key2Joy.Contracts.Mapping;
 
 namespace Key2Joy.Contracts.Plugins;
@@ -15,4 +16,5 @@ public class PluginActionInsulator : MarshalByRefObject
 
     public object InvokeScriptMethod(string methodName, object[] parameters) => this.PluginAction.InvokeScriptMethod(methodName, parameters);
     public object GetPublicPropertyValue(string propertyName) => this.PluginAction.GetPublicPropertyValue(propertyName);
+    public IList<Type> GetMethodParameterTypes(string methodName) => this.PluginAction.GetMethodParameterTypes(methodName);
 }

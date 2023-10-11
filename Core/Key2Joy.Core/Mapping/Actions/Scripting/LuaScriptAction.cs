@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading.Tasks;
 using Key2Joy.Contracts;
@@ -38,12 +39,12 @@ public class LuaScriptAction : BaseScriptActionWithEnvironment<Lua>
 
             lock (LockObject)
             {
-                if (this.environment.State == null)
+                if (this.Environment.State == null)
                 {
                     Debugger.Break(); // This really shouldn't happen.
                 }
 
-                this.environment.DoString(this.GetExecutableScript(), this.Script);
+                this.Environment.DoString(this.GetExecutableScript(), this.Script);
             }
         }
         catch (NLua.Exceptions.LuaScriptException ex)
@@ -55,12 +56,14 @@ public class LuaScriptAction : BaseScriptActionWithEnvironment<Lua>
                 throw ex.InnerException;
             }
         }
+
+        await base.Execute(inputBag);
     }
 
     public override void RegisterScriptingEnum(ExposedEnumeration enumeration)
     {
         // TODO: Use https://github.com/NLua/NLua/blob/3aaff863c78e89a009c21ff3aef94502018f2566/src/LuaRegistrationHelper.cs#LL76C28-L76C39
-        this.environment.NewTable(enumeration.Name);
+        this.Environment.NewTable(enumeration.Name);
 
         foreach (var kvp in enumeration.KeyValues)
         {
@@ -68,12 +71,14 @@ public class LuaScriptAction : BaseScriptActionWithEnvironment<Lua>
             var enumValue = kvp.Value;
 
             var path = enumeration.Name + "." + enumKey;
-            this.environment.SetObjectToPath(path, enumValue);
+            this.Environment.SetObjectToPath(path, enumValue);
         }
     }
 
     public override void RegisterScriptingMethod(ExposedMethod exposedMethod, AbstractAction instance)
     {
+        exposedMethod.Prepare(instance);
+
         var functionName = exposedMethod.FunctionName;
         var parents = functionName.Split('.');
 
@@ -93,71 +98,64 @@ public class LuaScriptAction : BaseScriptActionWithEnvironment<Lua>
 
             var path = currentPath.ToString();
 
-            if (this.environment.GetTable(path) == null)
+            if (this.Environment.GetTable(path) == null)
             {
-                this.environment.NewTable(path);
+                this.Environment.NewTable(path);
             }
         }
 
-        if (exposedMethod is PluginExposedMethod methodNeedProxy)
+        exposedMethod.RegisterParameterTransformer<LuaTable>((luaTable, expectedType) =>
         {
-            methodNeedProxy.RegisterParameterTransformer<LuaTable>(luaTable =>
+            var dictionary = new Dictionary<object, object>();
+            var areKeysSequential = true;
+            var sequentialKey = 1L;
+
+            foreach (var key in luaTable.Keys)
             {
-                var dictionary = new Dictionary<object, object>();
-                var areKeysSequential = true;
-                var sequentialKey = 1L;
+                var keyAsLong = key as long?;
+                var value = luaTable[key];
 
-                foreach (var key in luaTable.Keys)
+                if (areKeysSequential
+                && keyAsLong != null
+                && keyAsLong == sequentialKey)
                 {
-                    var keyAsLong = key as long?;
-                    var value = luaTable[key];
-
-                    if (areKeysSequential
-                    && keyAsLong != null
-                    && keyAsLong == sequentialKey)
-                    {
-                        dictionary.Add(sequentialKey, value);
-                        sequentialKey++;
-                    }
-                    else
-                    {
-                        areKeysSequential = false;
-                        dictionary.Add(key, value);
-                    }
+                    dictionary.Add(sequentialKey, value);
+                    sequentialKey++;
                 }
-
-                if (areKeysSequential)
+                else
                 {
-                    return dictionary.Values.ToArray();
+                    areKeysSequential = false;
+                    dictionary.Add(key, value);
                 }
+            }
 
-                return dictionary;
-            });
-            methodNeedProxy.RegisterParameterTransformer<LuaFunction>(luaFunction => new WrappedPluginType(luaFunction.Call));
-            this.environment.RegisterFunction(functionName, methodNeedProxy, methodNeedProxy.GetExecutorMethodInfo((PluginActionProxy)instance));
-            return;
-        }
+            if (areKeysSequential)
+            {
+                return dictionary.Values.ToArray();
+            }
 
-        this.environment.RegisterFunction(
-            functionName,
-            instance,
-            instance.GetType().GetMethod(exposedMethod.MethodName));
+            return dictionary;
+        });
+        exposedMethod.RegisterParameterTransformer<LuaFunction>((luaFunction, expectedType) => new WrappedPluginType(luaFunction.Call));
+        this.Environment.RegisterFunction(functionName, exposedMethod, exposedMethod.GetExecutorMethodInfo());
     }
 
     public override Lua MakeEnvironment() => new Lua();
 
     public override void RegisterEnvironmentObjects()
     {
-        this.environment.RegisterFunction("print", this, typeof(LuaScriptAction).GetMethod(nameof(Print), new[] { typeof(object[]) }));
-        this.environment.RegisterFunction("Print", this, typeof(LuaScriptAction).GetMethod(nameof(Print), new[] { typeof(object[]) }));
-        this.environment.RegisterFunction("collection", this, typeof(LuaScriptAction).GetMethod(nameof(CollectionIterator), new[] { typeof(ICollection) }));
+        this.Environment.RegisterFunction("print", this, typeof(LuaScriptAction).GetMethod(nameof(Print), new[] { typeof(object[]) }));
+        this.Environment.RegisterFunction("Print", this, typeof(LuaScriptAction).GetMethod(nameof(Print), new[] { typeof(object[]) }));
+        this.Environment.RegisterFunction("collection", this, typeof(LuaScriptAction).GetMethod(nameof(CollectionIterator), new[] { typeof(ICollection) }));
 
         base.RegisterEnvironmentObjects();
     }
 
-    public override void OnStartListening(AbstractTriggerListener listener, ref IList<AbstractAction> otherActions) => base.OnStartListening(listener, ref otherActions);
+    public override void OnStartListening(AbstractTriggerListener listener, ref IList<AbstractAction> otherActions)
+        => base.OnStartListening(listener, ref otherActions);
 
-    public override void OnStopListening(AbstractTriggerListener listener) => base.OnStopListening(listener);// environment.Dispose(); // Uncomment this to cause NullReferenceException problem on NLua state described here: https://github.com/luttje/Key2Joy/pull/39#issuecomment-1581537603
+    public override void OnStopListening(AbstractTriggerListener listener)
+        => base.OnStopListening(listener);// environment.Dispose(); // Uncomment this to cause NullReferenceException problem on NLua state described here: https://github.com/luttje/Key2Joy/pull/39#issuecomment-1581537603
 
     /// <summary>
     /// Returns a function that, when called, will return the next value in the collection.
@@ -168,7 +166,7 @@ public class LuaScriptAction : BaseScriptActionWithEnvironment<Lua>
     {
         LuaIterator iterator = new(data);
 
-        return this.environment.RegisterFunction("__iterator", iterator, iterator.GetType().GetMethod(nameof(LuaIterator.Next)));
+        return this.Environment.RegisterFunction("__iterator", iterator, iterator.GetType().GetMethod(nameof(LuaIterator.Next)));
     }
 
     public override bool Equals(object obj)

@@ -34,15 +34,12 @@ public class AppCommandAction : CoreAction
     /// <param name="command">Command to execute</param>
     /// <name>App.Command</name>
     [ExposesScriptingMethod("App.Command")]
-    public async void ExecuteForScript(int command)
+    public async void ExecuteForScript(AppCommand command)
     {
-        this.Command = (AppCommand)command;
+        this.Command = command;
 
         if (this.Command == AppCommand.ResetScriptEnvironment)
         {
-            // Keep track of new environments to pass to all related script actions
-            Dictionary<Type, object> newEnvironments = new();
-
             foreach (var otherAction in this.OtherActions)
             {
                 var otherActionType = otherAction.GetType();
@@ -50,15 +47,8 @@ public class AppCommandAction : CoreAction
                 // TODO: This is a bit hacky and could do with less reflection
                 if (typeof(BaseScriptActionWithEnvironment<>).IsSubclassOfRawGeneric(otherActionType))
                 {
-                    if (!newEnvironments.TryGetValue(otherActionType, out var environment))
-                    {
-                        var newEnvironmentMethod = otherActionType.GetMethod(nameof(BaseScriptActionWithEnvironment<object>.SetupEnvironment));
-                        environment = newEnvironmentMethod.Invoke(otherAction, null);
-                        newEnvironments.Add(otherActionType, environment);
-                    }
-
-                    var replaceEnvironmentMethod = otherActionType.GetMethod(nameof(BaseScriptActionWithEnvironment<object>.ReplaceEnvironment));
-                    replaceEnvironmentMethod.Invoke(otherAction, new object[] { environment });
+                    var newEnvironmentMethod = otherActionType.GetMethod(nameof(BaseScriptActionWithEnvironment<object>.RetireEnvironment));
+                    newEnvironmentMethod.Invoke(otherAction, null);
                 }
             }
 

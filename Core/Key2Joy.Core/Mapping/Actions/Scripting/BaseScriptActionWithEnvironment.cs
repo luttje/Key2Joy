@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Contracts.Mapping.Triggers;
 
@@ -7,7 +8,9 @@ namespace Key2Joy.Mapping.Actions.Scripting;
 
 public abstract class BaseScriptActionWithEnvironment<TEnvironment> : BaseScriptAction
 {
-    protected TEnvironment environment;
+    protected TEnvironment Environment;
+    protected Guid EnvironmentId { get; private set; }
+    protected bool IsRetired { get; private set; }
 
     public BaseScriptActionWithEnvironment(string name)
         : base(name)
@@ -15,18 +18,42 @@ public abstract class BaseScriptActionWithEnvironment<TEnvironment> : BaseScript
 
     public TEnvironment SetupEnvironment()
     {
-        if (this.environment is not null and IDisposable disposableEnvironment)
+        if (this.Environment is not null and IDisposable disposableEnvironment)
         {
             disposableEnvironment.Dispose();
         }
 
-        this.environment = this.MakeEnvironment();
+        this.EnvironmentId = Guid.NewGuid();
+        this.Environment = this.MakeEnvironment();
         this.RegisterEnvironmentObjects();
 
-        return this.environment;
+        // If we're started, find other actions with the same scripting environment and set their environment to this one
+        if (this.IsStarted)
+        {
+            foreach (var otherAction in this.OtherActions)
+            {
+                if (otherAction is BaseScriptActionWithEnvironment<TEnvironment> scriptAction)
+                {
+                    scriptAction.IsRetired = false;
+                    scriptAction.Environment = this.Environment;
+                    scriptAction.EnvironmentId = this.EnvironmentId;
+                }
+            }
+        }
+
+        return this.Environment;
     }
 
-    public void ReplaceEnvironment(TEnvironment environment) => this.environment = environment;
+    public void RetireEnvironment() => this.IsRetired = true;
+
+    public override async Task Execute(AbstractInputBag inputBag)
+    {
+        if (this.IsRetired)
+        {
+            this.IsRetired = false;
+            this.SetupEnvironment();
+        }
+    }
 
     public abstract TEnvironment MakeEnvironment();
 
@@ -60,19 +87,24 @@ public abstract class BaseScriptActionWithEnvironment<TEnvironment> : BaseScript
 
     public override void OnStartListening(AbstractTriggerListener listener, ref IList<AbstractAction> otherActions)
     {
-        foreach (var action in otherActions)
+        base.OnStartListening(listener, ref otherActions);
+
+        foreach (var otherAction in otherActions)
         {
-            if (action.GetType() == this.GetType()
-                && action.IsStarted)
+            if (otherAction is BaseScriptActionWithEnvironment<TEnvironment> scriptAction
+                && scriptAction.IsStarted)
             {
                 // Use an existing environment if it exists
-                var otherAction = (BaseScriptActionWithEnvironment<TEnvironment>)action;
-                this.environment = otherAction.environment;
-                return;
+                // This is so multiple actions all share the same scripting environment (and thus global variables).
+                this.Environment = scriptAction.Environment;
+                this.EnvironmentId = scriptAction.EnvironmentId;
+
+                if (this.Environment != null)
+                {
+                    return;
+                }
             }
         }
-
-        base.OnStartListening(listener, ref otherActions);
 
         this.SetupEnvironment();
     }
