@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Jint;
@@ -10,7 +9,6 @@ using Jint.Runtime.Descriptors;
 using Jint.Runtime.Interop;
 using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Contracts.Mapping.Triggers;
-using Key2Joy.Contracts.Plugins;
 using Key2Joy.Plugins;
 using Key2Joy.Util;
 

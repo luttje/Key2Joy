@@ -6,9 +6,9 @@ namespace Key2Joy.Contracts.Plugins.Remoting;
 [Serializable]
 public class RemoteEventArgs : ISafeSerializationData
 {
-    public SubscriptionInfo Subscription { get; set; }
+    public SubscriptionTicket Subscription { get; set; }
 
-    public RemoteEventArgs(SubscriptionInfo subscription) => this.Subscription = subscription;
+    public RemoteEventArgs(SubscriptionTicket subscription) => this.Subscription = subscription;
 
     public void CompleteDeserialization(object deserialized)
     { }
@@ -19,9 +19,9 @@ public delegate void RemoteEventHandlerCallback(object sender, RemoteEventArgs e
 public class RemoteEventHandler : MarshalByRefObject
 {
     private readonly RemoteEventHandlerCallback callback;
-    private SubscriptionInfo subscription;
+    private SubscriptionTicket subscription;
 
-    public RemoteEventHandler(SubscriptionInfo subscription, RemoteEventHandlerCallback callback)
+    public RemoteEventHandler(SubscriptionTicket subscription, RemoteEventHandlerCallback callback)
     {
         this.subscription = subscription;
         this.callback = callback;

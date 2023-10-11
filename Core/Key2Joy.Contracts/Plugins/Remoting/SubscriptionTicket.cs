@@ -4,12 +4,12 @@ using System.Runtime.Serialization;
 namespace Key2Joy.Contracts.Plugins.Remoting;
 
 [Serializable]
-public struct SubscriptionInfo : ISafeSerializationData
+public struct SubscriptionTicket : ISafeSerializationData
 {
     public string EventName { get; set; }
     public string Id { get; set; }
 
-    public SubscriptionInfo(string eventName, string subscriptionId)
+    public SubscriptionTicket(string eventName, string subscriptionId)
     {
         this.EventName = eventName ?? throw new ArgumentNullException(nameof(eventName));
         this.Id = subscriptionId;

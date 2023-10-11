@@ -344,9 +344,9 @@ public class PluginHostProxy : IDisposable
         try
         {
             var subscribeOptionsChanged = RemoteEventSubscriber.SubscribeEvent("OptionsChanged", PluginHost_OptionsChanged);
-            var subscribedEvents = new SubscriptionInfo[]
+            var subscribedEvents = new SubscriptionTicket[]
             {
-                subscribeOptionsChanged.Subscription,
+                subscribeOptionsChanged.Ticket,
             };
             var contract = (NativeHandleContractInsulator)this.pluginHost.CreateFrameworkElementContract(controlTypeName, subscribedEvents);
             var remoteControl = FrameworkElementAdapters.ContractToViewAdapter(contract);
@@ -359,7 +359,7 @@ public class PluginHostProxy : IDisposable
             control.Disposed += (s, e) =>
             {
                 this.pluginHost.AnyEvent -= PluginHost_AnyEvent;
-                RemoteEventSubscriber.UnsubscribeEvent(subscribeOptionsChanged.Subscription.Id);
+                RemoteEventSubscriber.UnsubscribeEvent(subscribeOptionsChanged.Ticket.Id);
             };
             return control;
         }
@@ -370,7 +370,7 @@ public class PluginHostProxy : IDisposable
         }
     }
 
-    private static void PluginHost_AnyEvent(object sender, RemoteEventArgs e) => RemoteEventSubscriber.ClientInstance.AskServerToInvokeSubscription(e);
+    private static void PluginHost_AnyEvent(object sender, RemoteEventArgs e) => RemoteEventSubscriber.ClientInstance.AskHostToInvokeSubscription(e);
 
     private static void PluginHost_OptionsChanged(object sender, RemoteEventArgs e)
     {

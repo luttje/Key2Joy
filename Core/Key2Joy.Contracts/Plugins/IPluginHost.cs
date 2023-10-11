@@ -23,7 +23,7 @@ public interface IPluginHost
     /// <exception cref="PluginLoadException">Throws when the plugin failed to load</exception>
     void LoadPlugin(string assemblyPath, string assemblyName, out string loadedChecksum, string expectedChecksum = null);
 
-    INativeHandleContract CreateFrameworkElementContract(string controlTypeName, SubscriptionInfo[] eventSubscriptions = null);
+    INativeHandleContract CreateFrameworkElementContract(string controlTypeName, SubscriptionTicket[] eventSubscriptions = null);
     PluginActionInsulator CreateAction(string fullTypeName, object[] constructorArguments);
     PluginTriggerInsulator CreateTrigger(string fullTypeName, object[] constructorArguments);
 

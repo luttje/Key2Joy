@@ -245,7 +245,7 @@ public class PluginHost : MarshalByRefObject, IPluginHost
 
     public void Test_AnyEvent(object sender, RemoteEventArgs e) => AnyEvent?.Invoke(sender, e);
 
-    public INativeHandleContract CreateFrameworkElementContract(string controlTypeName, SubscriptionInfo[] eventSubscriptions = null)
+    public INativeHandleContract CreateFrameworkElementContract(string controlTypeName, SubscriptionTicket[] eventSubscriptions = null)
     {
         Dictionary<string, RemoteEventHandler> eventHandlers = new();
 

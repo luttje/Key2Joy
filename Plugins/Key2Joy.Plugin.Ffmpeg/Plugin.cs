@@ -1,5 +1,4 @@
 using System.IO;
-using System;
 using FFMpegCore;
 using Key2Joy.Contracts.Plugins;
 
