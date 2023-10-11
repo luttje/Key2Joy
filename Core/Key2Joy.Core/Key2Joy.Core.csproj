@@ -25,10 +25,6 @@
     <DocumentationFile>..\..\bin\DocumentationFiles\Key2Joy.Core.xml</DocumentationFile>
   </PropertyGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="call $(SolutionDir)\Support\BuildDocumentation.bat $(OutDir) $(ConfigurationName)" />
-  </Target>
-
   <ItemGroup>
     <Compile Remove="obj\**" />
     <EmbeddedResource Remove="obj\**" />

@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Key2Joy.Gui", "Key2Joy.Gui\Key2Joy.Gui.csproj", "{808BA609-806D-4D55-857B-6FB4E16E13F1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{75E34405-03B8-4123-BE76-BFF0BF1F890C} = {75E34405-03B8-4123-BE76-BFF0BF1F890C}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuildMarkdownDocs", "Support\BuildMarkdownDocs\BuildMarkdownDocs.csproj", "{75E34405-03B8-4123-BE76-BFF0BF1F890C}"
 EndProject
