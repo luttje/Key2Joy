@@ -8,6 +8,7 @@ using System.Linq;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Ipc;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Actions;
@@ -26,10 +27,11 @@ public class PluginHostProxy : IDisposable
     public bool IsDisposing { get; private set; }
 
     private string name;
-    private EventWaitHandle readyEvent;
     private Process process;
     private IPluginHost pluginHost;
+
     private NamedPipeServerStream pipeServerStream;
+    private bool isPipeServerStreamReady = false;
 
     private readonly string pluginAssemblyPath;
     private readonly string pluginAssemblyName;
@@ -69,6 +71,118 @@ public class PluginHostProxy : IDisposable
     }
 
     /// <summary>
+    /// Starts the plugin host process, setting up for communication:
+    /// - A named pipe for signalling from the plugin (child) to the host (parent)
+    /// - An IPC channel for communication towards the plugin (with authority)
+    /// </summary>
+    private void Start()
+    {
+        this.name = "Key2Joy.PluginHost." + Guid.NewGuid().ToString();
+
+        var processName = "Key2Joy.PluginHost.exe";
+        var path = Path.GetFullPath(processName);
+
+        if (!File.Exists(path))
+        {
+            MessageBox.Show("Key2Joy.PluginHost.exe not found at " + path);
+        }
+
+        this.SetupEventPipe();
+
+        ProcessStartInfo info = new()
+        {
+            Arguments = this.name,
+#if !DEBUG
+            CreateNoWindow = true,
+#endif
+            UseShellExecute = false,
+            FileName = processName
+        };
+
+        this.process = Process.Start(info);
+
+        this.WaitForEventPipeReady();
+
+        IpcChannelRegistration.RegisterChannel();
+
+        var url = "ipc://" + this.name + "/" + nameof(PluginHost);
+        this.pluginHost = (IPluginHost)Activator.GetObject(typeof(IPluginHost), url);
+    }
+
+    /// <summary>
+    /// Exposes a named pipe endpoint corresponding to the unique name for this plugin host
+    /// </summary>
+    private void SetupEventPipe()
+    {
+        this.pipeServerStream = new NamedPipeServerStream(
+            RemotePipe.GetAbsolutePipeName(this.name),
+            PipeDirection.InOut,
+            1,
+            PipeTransmissionMode.Message);
+
+        // Start a new thread to listen for incoming connections on the named pipe
+        Thread eventPipeThread = null;
+        eventPipeThread = new(() =>
+        {
+            this.pipeServerStream.WaitForConnection();
+            Debug.WriteLine($"Pipe connection with plugin established");
+
+            StreamReader reader = new(this.pipeServerStream);
+
+            while (true)
+            {
+                try
+                {
+                    var messageOrSubscriptionId = RemotePipe.ReadMessage(this.pipeServerStream);
+
+                    if (string.IsNullOrEmpty(messageOrSubscriptionId))
+                    {
+                        continue;
+                    }
+
+                    Debug.WriteLine($"ReadMessage: {messageOrSubscriptionId}");
+
+                    if (messageOrSubscriptionId == RemoteEventSubscriber.SignalReady)
+                    {
+                        this.isPipeServerStreamReady = true;
+                        continue;
+                    }
+                    else if (messageOrSubscriptionId == RemoteEventSubscriber.SignalExit)
+                    {
+                        this?.Dispose();
+
+                        // End and dispose this thread.
+                        eventPipeThread.Abort();
+                        eventPipeThread = null;
+                        continue;
+                    }
+
+                    RemoteEventSubscriber.HandleInvoke(messageOrSubscriptionId);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"-------------> Exception: {ex.Message}");
+                }
+            }
+        })
+        {
+            IsBackground = true
+        };
+        eventPipeThread.Start();
+    }
+
+    /// <summary>
+    /// Stops execution until the event pipe has received the ready signal
+    /// </summary>
+    private void WaitForEventPipeReady()
+    {
+        while (!this.isPipeServerStreamReady)
+        {
+            Task.Delay(10);
+        }
+    }
+
+    /// <summary>
     ///
     /// </summary>
     /// <param name="loadedChecksum"></param>
@@ -77,7 +191,6 @@ public class PluginHostProxy : IDisposable
     public void LoadPlugin(out string loadedChecksum, string expectedChecksum = null)
     {
         this.Start();
-        this.OpenPluginHost();
 
         try
         {
@@ -257,7 +370,7 @@ public class PluginHostProxy : IDisposable
         }
     }
 
-    private static void PluginHost_AnyEvent(object sender, RemoteEventArgs e) => RemoteEventSubscriber.ClientInstance.AskServerToInvoke(e);
+    private static void PluginHost_AnyEvent(object sender, RemoteEventArgs e) => RemoteEventSubscriber.ClientInstance.AskServerToInvokeSubscription(e);
 
     private static void PluginHost_OptionsChanged(object sender, RemoteEventArgs e)
     {
@@ -325,131 +438,12 @@ public class PluginHostProxy : IDisposable
         return typeName.Substring(dot + 1);
     }
 
-    private void Start()
-    {
-        if (this.process != null)
-        {
-            return;
-        }
-
-        this.name = "Key2Joy.PluginHost." + Guid.NewGuid().ToString();
-
-        var eventName = $"{this.name}.Ready";
-        this.readyEvent = new EventWaitHandle(false, EventResetMode.ManualReset, eventName);
-
-        var processName = "Key2Joy.PluginHost.exe";
-
-        var path = Path.GetFullPath(processName);
-
-        if (!File.Exists(path))
-        {
-            MessageBox.Show("Key2Joy.PluginHost.exe not found at " + path);
-        }
-
-        this.SetupEventPipe();
-
-        ProcessStartInfo info = new()
-        {
-            Arguments = this.name,
-#if !DEBUG
-            CreateNoWindow = true,
-#endif
-            UseShellExecute = false,
-            FileName = processName
-        };
-
-        this.process = Process.Start(info);
-    }
-
-    private void SetupEventPipe()
-    {
-        // Expose a named pipe endpoint corresponding to the portName parameter for events
-        // TODO: Clean up pipeServerStream when this proxy disposes
-        this.pipeServerStream = new NamedPipeServerStream(
-            RemotePipe.GetAbsolutePipeName(this.name),
-            PipeDirection.InOut,
-            1,
-            PipeTransmissionMode.Message);
-
-        // Start a new thread to listen for incoming connections on the named pipe
-        Thread t = new(() =>
-        {
-            this.pipeServerStream.WaitForConnection();
-            Debug.WriteLine($"Pipe connection with plugin established");
-
-            StreamReader reader = new(this.pipeServerStream);
-
-            while (true)
-            {
-                try
-                {
-                    var subscriptionId = RemotePipe.ReadMessage(this.pipeServerStream);
-
-                    if (string.IsNullOrEmpty(subscriptionId))
-                    {
-                        continue;
-                    }
-                    Debug.WriteLine($"ReadMessage: {subscriptionId}");
-                    RemoteEventSubscriber.HandleInvoke(subscriptionId);
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine($"-------------> Exception: {ex.Message}");
-                }
-            }
-        })
-        {
-            IsBackground = true
-        };
-        t.Start();
-    }
-
-    private void OpenPluginHost()
-    {
-        if (this.pluginHost != null)
-        {
-            return;
-        }
-
-        if (!this.readyEvent.WaitOne(5000))
-        {
-            throw new InvalidOperationException("PluginHost process not ready");
-        }
-
-        IpcChannelRegistration.RegisterChannel();
-
-        var url = "ipc://" + this.name + "/" + nameof(PluginHost);
-        this.pluginHost = (IPluginHost)Activator.GetObject(typeof(IPluginHost), url);
-
-        var eventName = $"{this.name}.Exit";
-        EventWaitHandle exitEvent = new(false, EventResetMode.ManualReset, eventName);
-
-        // Wait for the exit event in another thread in the background.
-        Thread closeEventListeningThread = null;
-        closeEventListeningThread = new Thread(() =>
-        {
-            while (true)
-            {
-                exitEvent.WaitOne();
-
-                this?.Dispose();
-
-                // End and dispose this signal thread.
-                closeEventListeningThread.Abort();
-                closeEventListeningThread = null;
-            }
-        })
-        {
-            IsBackground = true
-        };
-        closeEventListeningThread.Start();
-    }
-
     public void Dispose()
     {
         this.IsDisposing = true;
         Disposing?.Invoke(this, EventArgs.Empty);
 
+        this.pipeServerStream.Dispose();
         this.pluginHost.Terminate();
         this.pluginHost = null;
         this.process = null;

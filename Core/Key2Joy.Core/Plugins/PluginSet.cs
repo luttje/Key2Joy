@@ -52,8 +52,6 @@ public class PluginSet : IDisposable
 
     internal void LoadAll()
     {
-        var enabledPlugins = ConfigManager.Config.EnabledPlugins;
-
         foreach (var pluginDirectoryPath in this.pluginDirectoriesPaths)
         {
             var pluginAssemblyName = Path.GetFileName(pluginDirectoryPath);
@@ -86,10 +84,7 @@ public class PluginSet : IDisposable
 
     public PluginHostProxy LoadPlugin(string pluginAssemblyPath, string expectedChecksum = null)
     {
-        var pluginDirectoryPath = Path.GetDirectoryName(pluginAssemblyPath);
         var pluginAssemblyName = Path.GetFileName(pluginAssemblyPath).Replace(".dll", "");
-        PluginLoadState pluginLoadState = new(pluginAssemblyPath);
-
         PluginHostProxy pluginHost = new(pluginAssemblyPath, pluginAssemblyName);
         string loadedChecksum;
 

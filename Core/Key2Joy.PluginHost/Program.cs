@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Diagnostics;
 using System.IO.Pipes;
@@ -6,7 +6,6 @@ using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Ipc;
 using System.Runtime.Serialization.Formatters;
-using System.Threading;
 using System.Windows.Threading;
 using Key2Joy.Contracts.Plugins.Remoting;
 using static Key2Joy.PluginHost.Native;
@@ -49,17 +48,14 @@ internal class Program
             RemotingConfiguration.RegisterWellKnownServiceType(
                 typeof(PluginHost), nameof(PluginHost), WellKnownObjectMode.Singleton);
 
-            NamedPipeClientStream pipeClientStream = new(
+            var pipeClientStream = new NamedPipeClientStream(
                 ".",
                 RemotePipe.GetClientPipeName(portName),
                 PipeDirection.InOut);
-
-            Console.WriteLine($"Connecting to pipe @ {RemotePipe.GetClientPipeName(portName)}");
             pipeClientStream.Connect();
-            Console.WriteLine($"Connected");
-            RemoteEventSubscriber.InitClient(pipeClientStream);
 
-            Signal(portName, "Ready");
+            RemoteEventSubscriber.InitClient(pipeClientStream);
+            Console.WriteLine($"Connected to pipe @ {RemotePipe.GetClientPipeName(portName)}");
 
             Dispatcher.Run();
         }
@@ -73,27 +69,14 @@ internal class Program
                 mostInnerException = mostInnerException.InnerException;
             }
 
-            Signal(portName, "Exit");
+            RemoteEventSubscriber.ExitClient();
             Console.WriteLine(mostInnerException.Message);
-        }
-    }
-
-    private static void Signal(string name, string eventName)
-    {
-        try
-        {
-            var signalEvent = EventWaitHandle.OpenExisting($"{name}.{eventName}");
-            signalEvent.Set();
-        }
-        catch (WaitHandleCannotBeOpenedException ex)
-        {
-            Console.WriteLine($"{ex.Message}");
         }
     }
 
     private static bool ProcessExitHandler(CtrlType sig)
     {
-        Signal(portName, "Exit");
+        RemoteEventSubscriber.ExitClient();
         Console.WriteLine("Sending close signal...");
         return false;
     }

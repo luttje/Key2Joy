@@ -21,12 +21,23 @@ public class FullSubscriptionInfo
 
 public class RemoteEventSubscriber : MarshalByRefObject
 {
+    public const string SignalReady = "READY";
+    public const string SignalExit = "EXIT";
+
     private static readonly Dictionary<string, FullSubscriptionInfo> Subscriptions = new();
 
     public static RemoteEventSubscriber ClientInstance { get; private set; }
     private readonly NamedPipeClientStream pipeClientStream;
 
     private RemoteEventSubscriber(NamedPipeClientStream pipeClientStream) => this.pipeClientStream = pipeClientStream;
+
+    private void SendToServer(string message)
+    {
+        var buffer = Encoding.UTF8.GetBytes(message);
+
+        this.pipeClientStream.Write(buffer, 0, buffer.Length);
+        this.pipeClientStream.WaitForPipeDrain();
+    }
 
     public static void InitClient(NamedPipeClientStream pipeClientStream)
     {
@@ -36,6 +47,17 @@ public class RemoteEventSubscriber : MarshalByRefObject
         }
 
         ClientInstance = new RemoteEventSubscriber(pipeClientStream);
+        ClientInstance.SendToServer(SignalReady);
+    }
+
+    public static void ExitClient()
+    {
+        if (!ClientInstance.pipeClientStream.IsConnected)
+        {
+            return;
+        }
+
+        ClientInstance.SendToServer(SignalExit);
     }
 
     public static FullSubscriptionInfo SubscribeEvent(string eventName, RemoteEventHandlerCallback handler)
@@ -52,13 +74,9 @@ public class RemoteEventSubscriber : MarshalByRefObject
 
     public static bool TryGetSubscription(string subscriptionId, out FullSubscriptionInfo subscription) => Subscriptions.TryGetValue(subscriptionId, out subscription);
 
-    public void AskServerToInvoke(RemoteEventArgs e)
+    public void AskServerToInvokeSubscription(RemoteEventArgs e)
     {
-        var subscriptionId = e.Subscription.Id.ToString();
-        var buffer = Encoding.UTF8.GetBytes(subscriptionId);
-
-        this.pipeClientStream.Write(buffer, 0, buffer.Length);
-        this.pipeClientStream.WaitForPipeDrain(); // Ensure all data is written
+        SendToServer(e.Subscription.Id.ToString());
     }
 
     public static void HandleInvoke(string subscriptionId)
