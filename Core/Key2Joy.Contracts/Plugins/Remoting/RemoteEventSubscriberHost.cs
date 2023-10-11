@@ -4,6 +4,7 @@ using System.IO;
 using System.IO.Pipes;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Text;
 
 namespace Key2Joy.Contracts.Plugins.Remoting;
 
@@ -14,28 +15,37 @@ public class RemoteEventSubscriberHost : IDisposable
     private readonly NamedPipeServerStream pipeStream;
     private bool isPipeServerStreamReady = false;
 
-    internal RemoteEventSubscriberHost(NamedPipeServerStream pipeStream)
-    {
-        this.pipeStream = pipeStream;
+    private readonly CancellationTokenSource pipeCancellation;
+    private static readonly TimeSpan HeartbeatWithMargin = RemoteEventSubscriber.MaxHeartbeatInterval - TimeSpan.FromSeconds(2);
+    private static readonly TimeSpan MaxWaitForReady = TimeSpan.FromSeconds(5);
 
-        this.InitEventThread();
+    internal RemoteEventSubscriberHost(string portName)
+    {
+        this.pipeStream = new NamedPipeServerStream(
+            RemotePipe.GetAbsolutePipeName(portName),
+            PipeDirection.InOut,
+            1,
+            PipeTransmissionMode.Message,
+            PipeOptions.Asynchronous);
+
+        this.pipeCancellation = new CancellationTokenSource();
+
+        this.InitBackgroundEventThread();
+        this.InitBackgroundHeartbeatThread();
     }
 
     /// <summary>
-    /// Exposes a named pipe endpoint corresponding to the unique name for this plugin host
+    /// Listens in the background for any incoming messages from the client.
     /// </summary>
-    private void InitEventThread()
+    private async void InitBackgroundEventThread()
     {
-        // Start a new thread to listen for incoming connections on the named pipe
-        Thread eventPipeThread = null;
-        eventPipeThread = new(() =>
+        var backgroundThread = Task.Run(() =>
         {
             this.pipeStream.WaitForConnection();
-            Debug.WriteLine($"Pipe connection with plugin established");
 
             StreamReader reader = new(this.pipeStream);
 
-            while (true)
+            while (!this.pipeCancellation.IsCancellationRequested)
             {
                 try
                 {
@@ -46,8 +56,6 @@ public class RemoteEventSubscriberHost : IDisposable
                         continue;
                     }
 
-                    Debug.WriteLine($"ReadMessage: {messageOrSubscriptionId}");
-
                     if (messageOrSubscriptionId == RemoteEventSubscriber.SignalReady)
                     {
                         this.isPipeServerStreamReady = true;
@@ -56,11 +64,7 @@ public class RemoteEventSubscriberHost : IDisposable
                     else if (messageOrSubscriptionId == RemoteEventSubscriber.SignalExit)
                     {
                         this.Dispose();
-
-                        // End and dispose this thread.
-                        eventPipeThread.Abort();
-                        eventPipeThread = null;
-                        continue;
+                        return;
                     }
 
                     RemoteEventSubscriber.HandleInvoke(messageOrSubscriptionId);
@@ -68,13 +72,42 @@ public class RemoteEventSubscriberHost : IDisposable
                 catch (Exception ex)
                 {
                     Debug.WriteLine($"-------------> Exception: {ex.Message}");
+                    return;
                 }
             }
-        })
+        });
+
+        await backgroundThread;
+    }
+
+    /// <summary>
+    /// Sends heartbeats in the background at the commonly agreed interval.
+    /// </summary>
+    private async void InitBackgroundHeartbeatThread()
+    {
+        var backgroundThread = Task.Run(async () =>
         {
-            IsBackground = true
-        };
-        eventPipeThread.Start();
+            while (!this.pipeCancellation.IsCancellationRequested)
+            {
+                await Task.Delay(HeartbeatWithMargin);
+                if (!this.isPipeServerStreamReady)
+                {
+                    continue;
+                }
+
+                try
+                {
+                    RemotePipe.WriteMessage(this.pipeStream, RemoteEventSubscriber.SignalHeartbeat);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"-------------> Exception: {ex.Message}");
+                    return;
+                }
+            }
+        });
+
+        await backgroundThread;
     }
 
     /// <summary>
@@ -82,15 +115,25 @@ public class RemoteEventSubscriberHost : IDisposable
     /// </summary>
     public void WaitForEventPipeReady()
     {
+        var waitStart = DateTime.Now;
+
         while (!this.isPipeServerStreamReady)
         {
             Task.Delay(10);
+
+            if ((DateTime.Now - waitStart) > MaxWaitForReady)
+            {
+                throw new TimeoutException($"WaitForEventPipeReady timed out after {MaxWaitForReady.TotalMilliseconds}ms");
+            }
         }
     }
 
     public void Dispose()
     {
         this.Disposing?.Invoke(this, EventArgs.Empty);
+
         this.pipeStream?.Dispose();
+
+        this.pipeCancellation?.Cancel();
     }
 }

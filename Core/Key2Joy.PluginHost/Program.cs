@@ -49,6 +49,7 @@ internal class Program
                 typeof(PluginHost), nameof(PluginHost), WellKnownObjectMode.Singleton);
 
             RemoteEventSubscriber.InitClient(portName);
+            RemoteEventSubscriber.ClientInstance.Disposing += (s, e) => AppDispatcher.InvokeShutdown();
             Console.WriteLine($"Connected to pipe @ {RemotePipe.GetClientPipeName(portName)}");
 
             Dispatcher.Run();

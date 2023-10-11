@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Key2Joy.Contracts.Plugins.Remoting;
 
@@ -12,7 +14,71 @@ public class RemoteEventSubscriberClient
 
     private readonly NamedPipeClientStream pipeStream;
 
-    internal RemoteEventSubscriberClient(NamedPipeClientStream pipeStream) => this.pipeStream = pipeStream;
+    private DateTime lastHeartbeatAt = DateTime.Now;
+    private CancellationTokenSource pipeCancellation;
+
+    internal RemoteEventSubscriberClient(string portName)
+    {
+        this.pipeStream = new NamedPipeClientStream(
+            ".",
+            RemotePipe.GetClientPipeName(portName),
+            PipeDirection.InOut,
+            PipeOptions.Asynchronous);
+        this.pipeStream.Connect();
+        this.pipeStream.ReadMode = PipeTransmissionMode.Message;
+
+        this.pipeCancellation = new CancellationTokenSource();
+
+        this.InitBackgroundHeartbeatThread();
+    }
+
+    /// <summary>
+    /// Called from the client to send a message to the host.
+    /// </summary>
+    /// <param name="message"></param>
+    /// <exception cref="IOException"></exception>
+    internal void SendToHost(string message) => RemotePipe.WriteMessage(this.pipeStream, message);
+
+    public void AskHostToInvokeSubscription(RemoteEventArgs e) => this.SendToHost(e.Subscription.Id.ToString());
+
+    /// <summary>
+    /// Checks in the background if the host has shown any sign of life recently.
+    /// </summary>
+    private void InitBackgroundHeartbeatThread()
+    {
+        // Registers heartbeats from the host.
+        var pipeListenerBackgroundThread = Task.Run(() =>
+        {
+            while (!this.pipeCancellation.IsCancellationRequested)
+            {
+                var message = RemotePipe.ReadMessage(this.pipeStream);
+
+                if (string.IsNullOrEmpty(message))
+                {
+                    continue;
+                }
+
+                Console.WriteLine($"Remote Message: {message}");
+                this.lastHeartbeatAt = DateTime.Now;
+            }
+        });
+
+        // Checks if the last heartbeat was too long ago.
+        var pipeCancellerBackgroundThread = Task.Run(() =>
+        {
+            while (!this.pipeCancellation.IsCancellationRequested)
+            {
+                if (DateTime.Now - this.lastHeartbeatAt > RemoteEventSubscriber.MaxHeartbeatInterval)
+                {
+                    Console.WriteLine("Host is not responding. Shutting down.");
+                    this.Dispose();
+                    return;
+                }
+
+                Thread.Sleep(1000);
+            }
+        });
+    }
 
     public void Exit()
     {
@@ -33,31 +99,12 @@ public class RemoteEventSubscriberClient
         this.Dispose();
     }
 
-    /// <summary>
-    /// Called from the client to send a message to the host.
-    /// </summary>
-    /// <param name="message"></param>
-    /// <exception cref="IOException"></exception>
-    internal void SendToHost(string message)
-    {
-        var buffer = Encoding.UTF8.GetBytes(message);
-
-        try
-        {
-            this.pipeStream.Write(buffer, 0, buffer.Length);
-            this.pipeStream.WaitForPipeDrain();
-        }
-        catch (IOException ex)
-        {
-            throw ex;
-        }
-    }
-
-    public void AskHostToInvokeSubscription(RemoteEventArgs e) => this.SendToHost(e.Subscription.Id.ToString());
-
     public void Dispose()
     {
         this.Disposing?.Invoke(this, EventArgs.Empty);
+
         this.pipeStream?.Dispose();
+
+        this.pipeCancellation?.Cancel();
     }
 }

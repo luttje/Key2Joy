@@ -1,14 +1,19 @@
+using System;
+using System.CodeDom.Compiler;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Key2Joy.Contracts.Plugins.Remoting;
 
 public class RemotePipe
 {
     private const string Prefix = "EventPipe.";
-    public const string PipeNameFormatHost = $@"\\.\{Prefix}{{0}}";
-    public const string PipeNameFormatClient = $@"{Prefix}{{0}}";
+    internal const string PipeNameFormatHost = $@"\\.\{Prefix}{{0}}";
+    internal const string PipeNameFormatClient = $@"{Prefix}{{0}}";
 
     /// <summary>
     /// For some reason the host needs this to setup. The client works without since it manually provides the host.
@@ -37,5 +42,12 @@ public class RemotePipe
         while (!pipe.IsMessageComplete);
 
         return Encoding.UTF8.GetString(ms.ToArray());
+    }
+
+    internal static void WriteMessage(PipeStream pipeStream, string message)
+    {
+        var buffer = Encoding.UTF8.GetBytes(message);
+        pipeStream.Write(buffer, 0, buffer.Length);
+        pipeStream.WaitForPipeDrain();
     }
 }

@@ -2,13 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.IO.Pipes;
 
 namespace Key2Joy.Contracts.Plugins.Remoting;
 
-public class RemoteEventSubscriber : MarshalByRefObject
+public class RemoteEventSubscriber
 {
+    internal static readonly TimeSpan MaxHeartbeatInterval = TimeSpan.FromSeconds(10);
+
     public const string SignalReady = "READY";
+    public const string SignalHeartbeat = "HEARTBEAT";
     public const string SignalExit = "EXIT";
 
     private static readonly Dictionary<string, SubscriptionRegistration> Subscriptions = new();
@@ -18,26 +20,11 @@ public class RemoteEventSubscriber : MarshalByRefObject
     /// <summary>
     /// Exposes a named pipe endpoint corresponding to the unique name for this plugin host
     /// </summary>
-    public static RemoteEventSubscriberHost InitHostForPlugin(string portName)
-    {
-        var pipeServerStream = new NamedPipeServerStream(
-            RemotePipe.GetAbsolutePipeName(portName),
-            PipeDirection.InOut,
-            1,
-            PipeTransmissionMode.Message);
-
-        return new RemoteEventSubscriberHost(pipeServerStream);
-    }
+    public static RemoteEventSubscriberHost InitHostForPlugin(string portName) => new RemoteEventSubscriberHost(portName);
 
     public static void InitClient(string portName)
     {
-        var pipeClientStream = new NamedPipeClientStream(
-            ".",
-            RemotePipe.GetClientPipeName(portName),
-            PipeDirection.InOut);
-        pipeClientStream.Connect();
-
-        ClientInstance = new RemoteEventSubscriberClient(pipeClientStream);
+        ClientInstance = new RemoteEventSubscriberClient(portName);
 
         try
         {
@@ -45,7 +32,7 @@ public class RemoteEventSubscriber : MarshalByRefObject
         }
         catch (IOException ex)
         {
-            Debug.WriteLine(ex);
+            Console.WriteLine(ex);
         }
     }
 
