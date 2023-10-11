@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
-using System.Text;
 
 namespace Key2Joy.Contracts.Plugins.Remoting;
 
@@ -14,60 +13,35 @@ public class RemoteEventSubscriber : MarshalByRefObject
 
     private static readonly Dictionary<string, SubscriptionRegistration> Subscriptions = new();
 
-    public static RemoteEventSubscriber ClientInstance { get; private set; }
-    private readonly NamedPipeClientStream pipeClientStream;
-
-    private RemoteEventSubscriber(NamedPipeClientStream pipeClientStream) => this.pipeClientStream = pipeClientStream;
+    public static RemoteEventSubscriberClient ClientInstance { get; private set; }
 
     /// <summary>
-    /// Called from the client to send a message to the host.
+    /// Exposes a named pipe endpoint corresponding to the unique name for this plugin host
     /// </summary>
-    /// <param name="message"></param>
-    /// <exception cref="IOException"></exception>
-    private void SendToHost(string message)
+    public static RemoteEventSubscriberHost InitHostForPlugin(string portName)
     {
-        var buffer = Encoding.UTF8.GetBytes(message);
+        var pipeServerStream = new NamedPipeServerStream(
+            RemotePipe.GetAbsolutePipeName(portName),
+            PipeDirection.InOut,
+            1,
+            PipeTransmissionMode.Message);
 
-        try
-        {
-            this.pipeClientStream.Write(buffer, 0, buffer.Length);
-            this.pipeClientStream.WaitForPipeDrain();
-        }
-        catch (IOException ex)
-        {
-            throw ex;
-        }
+        return new RemoteEventSubscriberHost(pipeServerStream);
     }
 
-    public static void InitClient(NamedPipeClientStream pipeClientStream)
+    public static void InitClient(string portName)
     {
-        if (!pipeClientStream.IsConnected)
-        {
-            throw new ArgumentException($"The pipeClientStream must be connected before calling {nameof(InitClient)}.");
-        }
+        var pipeClientStream = new NamedPipeClientStream(
+            ".",
+            RemotePipe.GetClientPipeName(portName),
+            PipeDirection.InOut);
+        pipeClientStream.Connect();
 
-        ClientInstance = new RemoteEventSubscriber(pipeClientStream);
+        ClientInstance = new RemoteEventSubscriberClient(pipeClientStream);
 
         try
         {
             ClientInstance.SendToHost(SignalReady);
-        }
-        catch (IOException ex)
-        {
-            Debug.WriteLine(ex);
-        }
-    }
-
-    public static void ExitClient()
-    {
-        if (!ClientInstance.pipeClientStream.IsConnected)
-        {
-            return;
-        }
-
-        try
-        {
-            ClientInstance.SendToHost(SignalExit);
         }
         catch (IOException ex)
         {
@@ -85,12 +59,6 @@ public class RemoteEventSubscriber : MarshalByRefObject
         return subscription;
     }
 
-    public static void UnsubscribeEvent(string subscriptionId) => Subscriptions.Remove(subscriptionId);
-
-    public static bool TryGetSubscription(string subscriptionId, out SubscriptionRegistration subscription) => Subscriptions.TryGetValue(subscriptionId, out subscription);
-
-    public void AskHostToInvokeSubscription(RemoteEventArgs e) => this.SendToHost(e.Subscription.Id.ToString());
-
     public static void HandleInvoke(string subscriptionId)
     {
         // Find subscription and call related event
@@ -101,4 +69,8 @@ public class RemoteEventSubscriber : MarshalByRefObject
 
         fullSubscriptionInfo.EventHandler?.Invoke(fullSubscriptionInfo.CustomSender, new RemoteEventArgs(fullSubscriptionInfo.Ticket));
     }
+
+    public static void UnsubscribeEvent(string subscriptionId) => Subscriptions.Remove(subscriptionId);
+
+    public static bool TryGetSubscription(string subscriptionId, out SubscriptionRegistration subscription) => Subscriptions.TryGetValue(subscriptionId, out subscription);
 }

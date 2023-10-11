@@ -29,9 +29,7 @@ public class PluginHostProxy : IDisposable
     private string name;
     private Process process;
     private IPluginHost pluginHost;
-
-    private NamedPipeServerStream pipeServerStream;
-    private bool isPipeServerStreamReady = false;
+    private RemoteEventSubscriberHost remoteEventSubscriber;
 
     private readonly string pluginAssemblyPath;
     private readonly string pluginAssemblyName;
@@ -87,7 +85,7 @@ public class PluginHostProxy : IDisposable
             MessageBox.Show("Key2Joy.PluginHost.exe not found at " + path);
         }
 
-        this.SetupEventPipe();
+        this.remoteEventSubscriber = RemoteEventSubscriber.InitHostForPlugin(this.name);
 
         ProcessStartInfo info = new()
         {
@@ -101,85 +99,12 @@ public class PluginHostProxy : IDisposable
 
         this.process = Process.Start(info);
 
-        this.WaitForEventPipeReady();
+        this.remoteEventSubscriber.WaitForEventPipeReady();
 
         IpcChannelRegistration.RegisterChannel();
 
         var url = "ipc://" + this.name + "/" + nameof(PluginHost);
         this.pluginHost = (IPluginHost)Activator.GetObject(typeof(IPluginHost), url);
-    }
-
-    /// <summary>
-    /// Exposes a named pipe endpoint corresponding to the unique name for this plugin host
-    /// </summary>
-    private void SetupEventPipe()
-    {
-        this.pipeServerStream = new NamedPipeServerStream(
-            RemotePipe.GetAbsolutePipeName(this.name),
-            PipeDirection.InOut,
-            1,
-            PipeTransmissionMode.Message);
-
-        // Start a new thread to listen for incoming connections on the named pipe
-        Thread eventPipeThread = null;
-        eventPipeThread = new(() =>
-        {
-            this.pipeServerStream.WaitForConnection();
-            Debug.WriteLine($"Pipe connection with plugin established");
-
-            StreamReader reader = new(this.pipeServerStream);
-
-            while (true)
-            {
-                try
-                {
-                    var messageOrSubscriptionId = RemotePipe.ReadMessage(this.pipeServerStream);
-
-                    if (string.IsNullOrEmpty(messageOrSubscriptionId))
-                    {
-                        continue;
-                    }
-
-                    Debug.WriteLine($"ReadMessage: {messageOrSubscriptionId}");
-
-                    if (messageOrSubscriptionId == RemoteEventSubscriber.SignalReady)
-                    {
-                        this.isPipeServerStreamReady = true;
-                        continue;
-                    }
-                    else if (messageOrSubscriptionId == RemoteEventSubscriber.SignalExit)
-                    {
-                        this?.Dispose();
-
-                        // End and dispose this thread.
-                        eventPipeThread.Abort();
-                        eventPipeThread = null;
-                        continue;
-                    }
-
-                    RemoteEventSubscriber.HandleInvoke(messageOrSubscriptionId);
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine($"-------------> Exception: {ex.Message}");
-                }
-            }
-        })
-        {
-            IsBackground = true
-        };
-        eventPipeThread.Start();
-    }
-
-    /// <summary>
-    /// Stops execution until the event pipe has received the ready signal
-    /// </summary>
-    private void WaitForEventPipeReady()
-    {
-        while (!this.isPipeServerStreamReady)
-        {
-            Task.Delay(10);
-        }
     }
 
     /// <summary>
@@ -443,7 +368,7 @@ public class PluginHostProxy : IDisposable
         this.IsDisposing = true;
         Disposing?.Invoke(this, EventArgs.Empty);
 
-        this.pipeServerStream.Dispose();
+        this.remoteEventSubscriber.Dispose();
         this.pluginHost.Terminate();
         this.pluginHost = null;
         this.process = null;

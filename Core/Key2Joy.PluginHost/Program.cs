@@ -48,13 +48,7 @@ internal class Program
             RemotingConfiguration.RegisterWellKnownServiceType(
                 typeof(PluginHost), nameof(PluginHost), WellKnownObjectMode.Singleton);
 
-            var pipeClientStream = new NamedPipeClientStream(
-                ".",
-                RemotePipe.GetClientPipeName(portName),
-                PipeDirection.InOut);
-            pipeClientStream.Connect();
-
-            RemoteEventSubscriber.InitClient(pipeClientStream);
+            RemoteEventSubscriber.InitClient(portName);
             Console.WriteLine($"Connected to pipe @ {RemotePipe.GetClientPipeName(portName)}");
 
             Dispatcher.Run();
@@ -69,14 +63,14 @@ internal class Program
                 mostInnerException = mostInnerException.InnerException;
             }
 
-            RemoteEventSubscriber.ExitClient();
+            RemoteEventSubscriber.ClientInstance.Exit();
             Console.WriteLine(mostInnerException.Message);
         }
     }
 
     private static bool ProcessExitHandler(CtrlType sig)
     {
-        RemoteEventSubscriber.ExitClient();
+        RemoteEventSubscriber.ClientInstance.Exit();
         Console.WriteLine("Sending close signal...");
         return false;
     }
