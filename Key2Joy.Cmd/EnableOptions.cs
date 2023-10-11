@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using CommandLine;
 using Key2Joy.Interop;
 using Key2Joy.Mapping;
@@ -18,25 +18,25 @@ internal class EnableOptions : Options
 
     public override void Handle()
     {
-        MappingProfile profile;
+        var profilePath = this.ProfilePath;
 
         if (this.ProfilePath != null)
         {
-            profile = MappingProfile.Load(this.ProfilePath);
+            profilePath = MappingProfile.ResolveProfilePath(profilePath);
         }
         else
         {
-            profile = MappingProfile.RestoreLastLoaded();
+            profilePath = MappingProfile.ResolveLastLoadedProfilePath();
         }
 
         try
         {
             InteropClient.Instance.SendCommand(new EnableCommand
             {
-                ProfilePath = profile.FilePath
+                ProfilePath = profilePath
             });
 
-            Console.WriteLine($"Commanded Key2Joy to enable the profile: {profile.FilePath}");
+            Console.WriteLine($"Commanded Key2Joy to enable the profile: {profilePath}");
         }
         catch (TimeoutException)
         {

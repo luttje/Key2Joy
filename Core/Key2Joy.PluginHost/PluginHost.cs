@@ -78,7 +78,7 @@ public class PluginHost : MarshalByRefObject, IPluginHost
         evidence.AddHostEvidence(new Zone(SecurityZone.Internet));
 
         var permissions = SecurityManager.GetStandardSandbox(evidence);
-        bool isUnrestricted = false;
+        var isUnrestricted = false;
 
         if (permissionsXml != null)
         {

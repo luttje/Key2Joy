@@ -86,7 +86,7 @@ public class MappingProfile
         return true;
     }
 
-    private static string GetDefaultPath() => Path.Combine(GetSaveDirectory(), $"{DEFAULT_PROFILE_PATH}{EXTENSION}");
+    public static string GetDefaultPath() => Path.Combine(GetSaveDirectory(), $"{DEFAULT_PROFILE_PATH}{EXTENSION}");
 
     public static void ExtractDefaultIfNotExists()
     {
@@ -109,12 +109,8 @@ public class MappingProfile
         }
     }
 
-    public static MappingProfile Load(string filePath)
+    public static string ResolveProfilePath(string filePath)
     {
-        var options = GetSerializerOptions();
-
-        MappingProfile profile;
-
         if (!File.Exists(filePath))
         {
             var directory = GetSaveDirectory();
@@ -131,6 +127,28 @@ public class MappingProfile
             }
         }
 
+        return filePath;
+    }
+
+    public static string ResolveLastLoadedProfilePath()
+    {
+        var lastLoadedPath = ConfigManager.Config.LastLoadedProfile ?? GetDefaultPath();
+        if (!File.Exists(lastLoadedPath))
+        {
+            ExtractDefaultIfNotExists();
+            lastLoadedPath = GetDefaultPath();
+        }
+
+        return lastLoadedPath;
+    }
+
+    public static MappingProfile Load(string filePath)
+    {
+        var options = GetSerializerOptions();
+        MappingProfile profile;
+
+        filePath = ResolveProfilePath(filePath);
+
         profile = JsonSerializer.Deserialize<MappingProfile>(File.ReadAllText(filePath), options);
 
         if (profile.PostLoad(filePath))
@@ -143,12 +161,7 @@ public class MappingProfile
 
     public static MappingProfile RestoreLastLoaded()
     {
-        var lastLoadedPath = ConfigManager.Config.LastLoadedProfile ?? GetDefaultPath();
-        if (!File.Exists(lastLoadedPath))
-        {
-            ExtractDefaultIfNotExists();
-            lastLoadedPath = GetDefaultPath();
-        }
+        var lastLoadedPath = ResolveLastLoadedProfilePath();
 
         return Load(lastLoadedPath);
     }
