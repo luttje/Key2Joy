@@ -4,9 +4,8 @@ using System.Windows.Controls;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Contracts.Plugins;
-using Key2Joy.Plugin.HelloWorld.Mapping.Actions;
 
-namespace Key2Joy.Plugin.HelloWorld.Mapping;
+namespace Key2Joy.Plugin.HelloWorld.Mapping.Actions;
 
 [MappingControl(
     ForType = typeof(GetHelloWorldAction),

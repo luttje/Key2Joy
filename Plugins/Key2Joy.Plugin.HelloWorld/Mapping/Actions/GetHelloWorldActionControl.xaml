@@ -1,27 +1,27 @@
-<UserControl x:Class="Key2Joy.Plugin.HelloWorld.Mapping.GetHelloWorldActionControl"
+<UserControl x:Class="Key2Joy.Plugin.HelloWorld.Mapping.Actions.GetHelloWorldActionControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Key2Joy.Plugin.HelloWorld.Mapping"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Key2Joy.Plugin.HelloWorld.Mapping.Actions"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
-    <DockPanel 
-        VerticalAlignment="Stretch" 
+    <DockPanel
+        VerticalAlignment="Stretch"
         Height="Auto">
-        
-        <TextBox DockPanel.Dock="Top" 
-                 x:Name="txtName" 
-                 TextChanged="TxtName_TextChanged" 
+
+        <TextBox DockPanel.Dock="Top"
+                 x:Name="txtName"
+                 TextChanged="TxtName_TextChanged"
                  Padding="5" />
-        
-        <Button DockPanel.Dock="Top" 
-                x:Name="btnHelloWorld" 
-                Click="BtnHelloWorld_Click" 
+
+        <Button DockPanel.Dock="Top"
+                x:Name="btnHelloWorld"
+                Click="BtnHelloWorld_Click"
                 Margin="0,5,0,0"
-                Padding="5" 
+                Padding="5"
                 VerticalAlignment="Stretch">
             Hello...
         </Button>
-    </DockPanel >
+    </DockPanel>
 </UserControl>

@@ -18,7 +18,7 @@
     <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <OutputType>Library</OutputType>
-    <BaseOutputPath>..\..\bin\$(MSBuildProjectName)</BaseOutputPath>
+    <BaseOutputPath>..\..\bin\$(AssemblyName)</BaseOutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
     <DocumentationFile>..\..\bin\DocumentationFiles\Key2Joy.Plugin.HelloWorld.xml</DocumentationFile>
@@ -62,7 +62,6 @@
   <ItemGroup>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="System.Windows.Presentation" />
     <Reference Include="System.Xaml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
