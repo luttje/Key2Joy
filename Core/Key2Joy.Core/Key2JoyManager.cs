@@ -13,7 +13,6 @@ using Key2Joy.Interop;
 using Key2Joy.LowLevelInput;
 using Key2Joy.Mapping;
 using Key2Joy.Mapping.Actions.Logic;
-using Key2Joy.Mapping.Actions.Scripting;
 using Key2Joy.Mapping.Triggers.Keyboard;
 using Key2Joy.Mapping.Triggers.Mouse;
 using Key2Joy.Plugins;
@@ -65,18 +64,6 @@ public class Key2JoyManager : IMessageFilter
 
         var pluginDirectoriesPaths = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         pluginDirectoriesPaths = Path.Combine(pluginDirectoriesPaths, PluginsDirectory);
-
-        // TODO: Move this to a seperate method/property that the plugin can override
-        BaseScriptAction.ExposedEnumerations.AddRange(new List<Type>
-                {
-                    typeof(Mouse.MoveType),
-                    typeof(Mouse.Buttons),
-                    typeof(GamePadControl),
-                    typeof(PressState),
-                    typeof(Simulator.GamePadStick),
-                    typeof(AppCommand),
-                    typeof(KeyboardKey)
-                }.Select(ExposedEnumeration.FromType).ToList());
 
         PluginSet plugins = new(pluginDirectoriesPaths);
         plugins.LoadAll();

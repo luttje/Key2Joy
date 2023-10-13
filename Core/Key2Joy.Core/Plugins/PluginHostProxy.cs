@@ -38,6 +38,7 @@ public class PluginHostProxy : IDisposable
     private readonly List<MappingTypeFactory<AbstractAction>> actionFactories = new();
     private readonly List<MappingTypeFactory<AbstractTrigger>> triggerFactories = new();
     private readonly List<MappingControlFactory> mappingControlFactories = new();
+    private readonly List<ExposedEnumeration> exposedEnumerations = new();
 
     public PluginHostProxy(string pluginAssemblyPath, string pluginAssemblyName)
     {
@@ -153,8 +154,38 @@ public class PluginHostProxy : IDisposable
                 {
                     this.DiscoverPluginType_Trigger(type, customAttribute);
                 }
+                else if (customAttribute.AttributeType.Name == nameof(ExposesEnumerationAttribute))
+                {
+                    this.DiscoverPluginType_ExposedEnumeration(type, customAttribute);
+                }
             }
         }
+    }
+
+    /// <summary>
+    /// Gets the plugin types' enumeration names and values, and adds them to the list of exposed enumerations.
+    /// </summary>
+    /// <param name="type"></param>
+    /// <param name="customAttribute"></param>
+    private void DiscoverPluginType_ExposedEnumeration(TypeDefinition type, CustomAttribute customAttribute)
+    {
+        var enumeration = (TypeDefinition)customAttribute.ConstructorArguments[0].Value;
+        var enumerationValues = new Dictionary<string, object>();
+
+        foreach (var field in enumeration.Fields)
+        {
+            if (!field.IsStatic)
+            {
+                continue;
+            }
+
+            var value = field.Constant;
+            var name = field.Name;
+
+            enumerationValues.Add(name, value);
+        }
+
+        this.exposedEnumerations.Add(ExposedEnumeration.FromDictionary(enumeration.Name, enumerationValues));
     }
 
     private void DiscoverPluginType_MappingControl(TypeDefinition controlType, CustomAttribute customAttribute)
@@ -385,4 +416,6 @@ public class PluginHostProxy : IDisposable
     public IReadOnlyList<MappingTypeFactory<AbstractTrigger>> GetTriggerFactories() => this.triggerFactories;
 
     public IReadOnlyList<MappingControlFactory> GetMappingControlFactories() => this.mappingControlFactories;
+
+    public IReadOnlyList<ExposedEnumeration> GetExposedEnumerations() => this.exposedEnumerations;
 }

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Key2Joy.Contracts;
+using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.Plugins;
@@ -10,11 +11,6 @@ namespace Key2Joy.Mapping.Actions.Scripting;
 public abstract class BaseScriptAction : CoreAction
 {
     public static readonly object LockObject = new();
-
-    /// <summary>
-    /// TODO: Clean this up. This is just a quick hack to get enumerations into scripts. Should move to something the plugins can affect nicely.
-    /// </summary>
-    public static List<ExposedEnumeration> ExposedEnumerations = new();
 
     public string Script { get; set; }
     public bool IsScriptPath { get; set; }

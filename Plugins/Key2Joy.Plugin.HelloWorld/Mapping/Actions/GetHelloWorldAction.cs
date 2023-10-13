@@ -10,6 +10,13 @@ using Key2Joy.Contracts.Plugins;
 
 namespace Key2Joy.Plugin.HelloWorld.Mapping.Actions;
 
+public enum Test
+{
+    IsNoTest = 0,
+    IsTest = 1,
+}
+
+[ExposesEnumeration(typeof(Test))]
 [Action(
     Description = "Get Hello World",
     NameFormat = "Demonstrates plugin creation by greeting '{0}'",

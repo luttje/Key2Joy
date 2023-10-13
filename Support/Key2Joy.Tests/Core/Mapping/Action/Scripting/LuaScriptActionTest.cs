@@ -1,4 +1,5 @@
-﻿using Key2Joy.Mapping.Actions;
+using Key2Joy.Mapping;
+using Key2Joy.Mapping.Actions;
 using Key2Joy.Mapping.Actions.Scripting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -11,6 +12,7 @@ public class LuaScriptActionTest
     public void Script_ExecutesLuaFunction_ChecksResult()
     {
         ActionsRepository.Buffer();
+        ExposedEnumerationRepository.Buffer();
 
         LuaScriptAction action = new(string.Empty);
         var lua = action.SetupEnvironment();

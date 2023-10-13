@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
-namespace Key2Joy.Contracts.Mapping.Actions;
+namespace Key2Joy.Contracts.Mapping;
 
-public struct ExposedEnumeration
+public class ExposedEnumeration
 {
     public string Name { get; set; }
     public IDictionary<string, object> KeyValues { get; set; }
@@ -27,4 +27,11 @@ public struct ExposedEnumeration
 
         return result;
     }
+
+    public static ExposedEnumeration FromDictionary(string enumType, Dictionary<string, object> enumerationValues)
+        => new()
+        {
+            Name = enumType,
+            KeyValues = enumerationValues
+        };
 }

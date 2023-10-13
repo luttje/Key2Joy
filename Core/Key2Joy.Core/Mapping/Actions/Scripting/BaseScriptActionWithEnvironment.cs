@@ -67,7 +67,7 @@ public abstract class BaseScriptActionWithEnvironment<TEnvironment> : BaseScript
         {
             var actionFactory = pair.Value;
 
-            foreach (var exposedEnumeration in ExposedEnumerations)
+            foreach (var exposedEnumeration in ExposedEnumerationRepository.GetAllExposedEnumerations())
             {
                 this.RegisterScriptingEnum(exposedEnumeration);
             }

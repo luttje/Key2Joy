@@ -4,6 +4,7 @@ using System.IO;
 using System.Windows.Forms;
 using Key2Joy.Config;
 using Key2Joy.Contracts;
+using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.Contracts.Plugins;
@@ -13,6 +14,13 @@ using Key2Joy.Mapping.Triggers;
 
 namespace Key2Joy.Plugins;
 
+[ExposesEnumeration(typeof(LowLevelInput.Mouse.MoveType))]
+[ExposesEnumeration(typeof(LowLevelInput.Mouse.Buttons))]
+[ExposesEnumeration(typeof(SimWinInput.GamePadControl))]
+[ExposesEnumeration(typeof(LowLevelInput.PressState))]
+[ExposesEnumeration(typeof(LowLevelInput.Simulator.GamePadStick))]
+[ExposesEnumeration(typeof(Mapping.Actions.Logic.AppCommand))]
+[ExposesEnumeration(typeof(LowLevelInput.KeyboardKey))]
 public class PluginSet : IDisposable
 {
     private readonly List<PluginBase> loadedPlugins = new();
@@ -31,6 +39,7 @@ public class PluginSet : IDisposable
     private readonly List<MappingTypeFactory<AbstractAction>> actionFactories = new();
     private readonly List<MappingTypeFactory<AbstractTrigger>> triggerFactories = new();
     private readonly List<MappingControlFactory> mappingControlFactories = new();
+    private readonly List<ExposedEnumeration> exposedEnumerations = new();
 
     public string PluginsFolder { get; private set; }
 
@@ -81,6 +90,7 @@ public class PluginSet : IDisposable
         ActionsRepository.Buffer(this.actionFactories);
         TriggersRepository.Buffer(this.triggerFactories);
         MappingControlRepository.Buffer(this.mappingControlFactories);
+        ExposedEnumerationRepository.Buffer(this.exposedEnumerations);
     }
 
     public PluginHostProxy LoadPlugin(string pluginAssemblyPath, string expectedChecksum = null)
@@ -96,6 +106,7 @@ public class PluginSet : IDisposable
             this.actionFactories.AddRange(pluginHost.GetActionFactories());
             this.triggerFactories.AddRange(pluginHost.GetTriggerFactories());
             this.mappingControlFactories.AddRange(pluginHost.GetMappingControlFactories());
+            this.exposedEnumerations.AddRange(pluginHost.GetExposedEnumerations());
         }
         catch (PluginLoadException ex)
         {
