@@ -39,7 +39,7 @@ public class RemotePipe
         return Encoding.UTF8.GetString(ms.ToArray());
     }
 
-    internal static void WriteMessage(PipeStream pipeStream, string message)
+    public static void WriteMessage(PipeStream pipeStream, string message)
     {
         var buffer = Encoding.UTF8.GetBytes(message);
         pipeStream.Write(buffer, 0, buffer.Length);

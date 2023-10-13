@@ -1,4 +1,4 @@
-﻿using System.IO.Pipes;
+using System.IO.Pipes;
 
 namespace Key2Joy.Interop;
 
@@ -15,10 +15,10 @@ public class InteropClient
                     PipeDirection.InOut, PipeOptions.None);
         pipeClient.Connect(1000);
 
-        var commandInfo = CommandRepository.Instance.GetCommandInfo(command);
+        var commandInfo = CommandRepository.Instance.GetCommandInfo<CommandType>();
         pipeClient.WriteByte(commandInfo.Id);
 
-        var bytes = commandInfo.CommandToBytes(command);
+        var bytes = CommandInfo.CommandToBytes(command);
         pipeClient.Write(bytes, 0, bytes.Length);
 
         pipeClient.WaitForPipeDrain();

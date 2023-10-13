@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 
 namespace Key2Joy.Interop;
@@ -25,9 +25,9 @@ public class CommandInfo
         }
     }
 
-    public byte[] CommandToBytes<CommandType>(CommandType command)
+    public static byte[] CommandToBytes<CommandType>(CommandType command)
     {
-        var size = Marshal.SizeOf(command);
+        var size = Marshal.SizeOf<CommandType>();
         var bytes = new byte[size];
         var pointer = IntPtr.Zero;
 

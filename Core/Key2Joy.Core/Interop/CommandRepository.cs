@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -24,19 +24,41 @@ public class CommandRepository
         foreach (var type in types)
         {
             var attribute = type.GetCustomAttribute<CommandAttribute>();
-            CommandInfo commandInfo = new()
-            {
-                Id = attribute.Id,
-                StructType = type,
-            };
 
-            this.commandTypes.Add(attribute.Id, commandInfo);
+            this.Register(attribute.Id, type);
         }
     }
 
-    public CommandInfo GetCommandInfo<CommandType>(CommandType command)
+    public void Register(byte id, Type structType)
     {
-        var commandInfo = this.commandTypes.Values.FirstOrDefault(c => c.StructType == command.GetType()) ?? throw new ArgumentException("Command type not found in repository");
+        if (this.commandTypes.ContainsKey(id))
+        {
+            throw new DuplicateNameException($"Command with id {id} already registered.");
+        }
+
+        CommandInfo commandInfo = new()
+        {
+            Id = id,
+            StructType = structType,
+        };
+
+        this.commandTypes.Add(id, commandInfo);
+    }
+
+    public void Unregister(byte id)
+    {
+        if (!this.commandTypes.ContainsKey(id))
+        {
+            throw new KeyNotFoundException($"Command with id {id} not registered.");
+        }
+
+        this.commandTypes.Remove(id);
+    }
+
+    public CommandInfo GetCommandInfo<CommandType>()
+    {
+        var commandInfo = this.commandTypes.Values.FirstOrDefault(c => c.StructType == typeof(CommandType))
+            ?? throw new ArgumentException("Command type not found in repository");
         return commandInfo;
     }
 
