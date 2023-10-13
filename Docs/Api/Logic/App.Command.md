@@ -1,9 +1,9 @@
 # `App.Command` (`AppCommand`)
 
 
-Execute a command in this app
+Execute a command in this app.
 
-TODO: Make commands Enumerations and show those in the docs.
+See the [AppCommand Enumeration](../Enumerations/AppCommand.md) for a list of available commands.
 
 
 ## Parameters

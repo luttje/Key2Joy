@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,8 +28,8 @@ public class WindowGetClassAction : CoreAction
     /// </markdown-doc>
     /// <summary>
     /// Get the class name for a specified Window.
-    /// 
-    /// You can use <see href="Window.GetAllAction.md"/>, <see href="Window.FindAction.md"/> or  <see href="Window.GetForegroundAction.md"/> to get handles.
+    ///
+    /// You can use <see href="Window.GetAllAction.md">Window.GetAllAction</see>, <see href="Window.FindAction.md">Window.FindAction</see> or  <see href="Window.GetForegroundAction.md">Window.GetForegroundAction</see> to get handles.
     /// </summary>
     /// <param name="handle">The window handle to get the class for</param>
     /// <returns>Class name for the window</returns>

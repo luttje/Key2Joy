@@ -36,6 +36,7 @@
     <ProjectReference Include="..\..\Core\Key2Joy.PluginHost\Key2Joy.PluginHost.csproj" />
     <ProjectReference Include="..\..\Key2Joy.Cmd\Key2Joy.Cmd.csproj" />
     <ProjectReference Include="..\..\Key2Joy.Gui\Key2Joy.Gui.csproj" />
+    <ProjectReference Include="..\BuildMarkdownDocs\BuildMarkdownDocs.csproj" />
     <ProjectReference Include="..\Key2Joy.Tests.Stubs\TestPlugin\Key2Joy.Tests.Stubs.TestPlugin.csproj" />
   </ItemGroup>
 

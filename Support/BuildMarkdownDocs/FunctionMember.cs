@@ -64,11 +64,12 @@ internal class FunctionMember : Member
 
                     if (href != null)
                     {
-                        summary.Append($" [{href}]({href})");
+                        var content = string.IsNullOrEmpty(nodeElement.Value) ? href : nodeElement.Value;
+                        summary.Append($"[{content}]({href})");
                     }
                     else
                     {
-                        summary.Append($" `{cref}`");
+                        summary.Append($"`{cref}`");
                     }
                 }
                 else

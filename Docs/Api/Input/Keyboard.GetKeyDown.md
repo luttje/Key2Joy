@@ -5,7 +5,7 @@ Tests if the provided keyboard key is currently pressed.
 
 Note: This function currently has trouble distinguishing between left and right keys. This means that `Keyboard.GetKeyDown(KeyboardKey.RightControl)` will return true even if the left control is pressed.
 
-You can find the keycodes in [../Enumerations/KeyboardKey.md](../Enumerations/KeyboardKey.md).
+You can find the keycodes in [the KeyboardKey Enumeration](../Enumerations/KeyboardKey.md).
 
 
 ## Parameters

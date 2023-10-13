@@ -26,9 +26,9 @@ public class AppCommandAction : CoreAction
     /// <path>Api/Logic</path>
     /// </markdown-doc>
     /// <summary>
-    /// Execute a command in this app
+    /// Execute a command in this app.
     ///
-    /// TODO: Make commands Enumerations and show those in the docs.
+    /// See the <see href="../Enumerations/AppCommand.md">AppCommand Enumeration</see> for a list of available commands.
     /// </summary>
     /// <param name="command">Command to execute</param>
     /// <name>App.Command</name>

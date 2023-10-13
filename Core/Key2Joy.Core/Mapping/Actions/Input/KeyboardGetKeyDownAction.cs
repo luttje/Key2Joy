@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Actions;
@@ -25,10 +25,10 @@ public class KeyboardGetKeyDownAction : CoreAction
     /// </markdown-doc>
     /// <summary>
     /// Tests if the provided keyboard key is currently pressed.
-    /// 
+    ///
     /// Note: This function currently has trouble distinguishing between left and right keys. This means that `Keyboard.GetKeyDown(KeyboardKey.RightControl)` will return true even if the left control is pressed.
-    /// 
-    /// You can find the keycodes in <see href="../Enumerations/KeyboardKey.md"/>.
+    ///
+    /// You can find the keycodes in <see href="../Enumerations/KeyboardKey.md">the KeyboardKey Enumeration</see>.
     /// </summary>
     /// <markdown-example>
     /// Shows how to show all keys currently pressed.

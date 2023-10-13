@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,8 +31,8 @@ public class WindowGetTitleAction : CoreAction
     /// </markdown-doc>
     /// <summary>
     /// Get the title of a software's window.
-    /// 
-    /// You can use <see href="Window.GetAll.md"/>, <see href="Window.Find.md"/> or <see href="Window.GetForeground.md"/> to get handles.
+    ///
+    /// You can use <see href="Window.GetAll.md">Window.GetAll</see>, <see href="Window.Find.md">Window.Find</see> or <see href="Window.GetForeground.md">Window.GetForeground</see> to get handles.
     /// </summary>
     /// <param name="handle">The window handle to get the class for</param>
     /// <returns>Title of the window</returns>

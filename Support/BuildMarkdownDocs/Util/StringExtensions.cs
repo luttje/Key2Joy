@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace BuildMarkdownDocs.Util;
 
@@ -12,5 +13,11 @@ public static class StringExtensions
         _ => input[0].ToString().ToUpper() + input.Substring(1),
     };
 
-    public static string TrimEachLine(this string input) => string.Join("\n", input.Split('\n').Select(line => line.Trim()));
+    /// <summary>
+    /// Trims multiple whitespaces before each line, but allows a single space to exist
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>
+    public static string TrimEachLine(this string input)
+        => string.Join("\n", input.Split('\n').Select(line => Regex.Replace(line, @"^\s{2,}", "")));
 }

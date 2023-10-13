@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Key2Joy.Contracts.Mapping;
@@ -30,7 +30,7 @@ public class SetDelayedFunctionsAction : CoreAction
     /// </markdown-doc>
     /// <summary>
     /// Execute functions whilst waiting the specified time between them.
-    /// 
+    ///
     /// The first function is executed immediately.
     /// </summary>
     /// <markdown-example>
