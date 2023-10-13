@@ -1,10 +1,12 @@
-﻿using Key2Joy.Contracts.Mapping.Actions;
+using System.Text.Json.Serialization;
+using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Plugins;
 
 namespace Key2Joy.Mapping.Actions;
 
 public abstract class CoreAction : AbstractAction
 {
+    [JsonIgnore]
     public string ImageResource { get; set; }
 
     public CoreAction(string name)

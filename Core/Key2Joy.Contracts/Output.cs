@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using Key2Joy.Contracts.Util;
 
 namespace Key2Joy.Contracts;
 
@@ -80,15 +81,12 @@ public static class Output
         }
 
         Debug.WriteLine(outputLine);
-        try
-        {
-            File.AppendAllText(GetLogPath(), outputLine + Environment.NewLine);
-        }
-        catch (IOException)
-        {
-            Debug.WriteLine("LOG WAS IN USE! COULDN'T WRITE");
-            // TODO: Handle differently? Like coming back after a bit?
-        }
+        RetryHelper.RetryOnException(
+            () => File.AppendAllText(GetLogPath(), outputLine + Environment.NewLine),
+            TimeSpan.FromSeconds(1),
+            5,
+            typeof(IOException)
+        );
 
         OnNewLogLine?.Invoke(outputLine);
     }

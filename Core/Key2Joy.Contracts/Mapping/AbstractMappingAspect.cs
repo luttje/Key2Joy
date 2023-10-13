@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -14,7 +14,6 @@ public abstract class AbstractMappingAspect : MarshalByRefObject, ICloneable, IC
 
     private PropertyInfo[] GetProperties()
     {
-
         var type = this.GetType();
         var properties = type.GetProperties();
 
@@ -48,6 +47,7 @@ public abstract class AbstractMappingAspect : MarshalByRefObject, ICloneable, IC
             case DateTime dateTime:
                 value = dateTime.Ticks;
                 break;
+
             default:
                 break;
         }
@@ -77,35 +77,42 @@ public abstract class AbstractMappingAspect : MarshalByRefObject, ICloneable, IC
     /// <param name="value"></param>
     protected virtual void LoadOptionSetProperty(MappingAspectOptions options, PropertyInfo property)
     {
+        var propertyType = property.PropertyType;
         var value = options[property.Name];
-        var asd = property.PropertyType.IsGenericType ? property.PropertyType.GetGenericTypeDefinition() : null;
 
-        if (property.PropertyType.IsEnum)
+        if (propertyType.IsEnum)
         {
-            value = Enum.Parse(property.PropertyType, (string)value);
+            value = Enum.Parse(propertyType, (string)value);
         }
-        else if (property.PropertyType == typeof(DateTime))
+        else if (propertyType == typeof(DateTime))
         {
             value = new DateTime(Convert.ToInt64(value));
         }
-        else if (property.PropertyType.IsGenericType && asd == typeof(List<>))
+        else if (propertyType.IsGenericType && propertyType.GetGenericTypeDefinition() == typeof(List<>))
         {
-            // TODO: Store the List type somewhere and do this without reflection (it was just easier this way for now)
-            var listType = typeof(List<>);
-            var constructedListType = listType.MakeGenericType(property.PropertyType.GetGenericArguments());
+            var genericTypeDefinition = propertyType.GetGenericTypeDefinition();
+            var constructedListType = genericTypeDefinition.MakeGenericType(propertyType.GetGenericArguments());
             var instance = Activator.CreateInstance(constructedListType);
 
-            var addMethod = constructedListType.GetMethod("Add");
-            foreach (var item in (List<object>)value)
+            if (value is List<object> list)
             {
-                addMethod.Invoke(instance, new object[] { item });
-            }
+                var addMethod = constructedListType.GetMethod("Add");
 
-            value = instance;
+                foreach (var item in list)
+                {
+                    addMethod.Invoke(instance, new object[] { item });
+                }
+
+                value = instance;
+            }
+            else
+            {
+                throw new ArgumentException($"Expected value to be of type List<> to parse. But was: {value.GetType()}");
+            }
         }
         else
         {
-            value = Convert.ChangeType(value, property.PropertyType);
+            value = Convert.ChangeType(value, propertyType);
         }
 
         property.SetValue(this, value);
@@ -127,6 +134,7 @@ public abstract class AbstractMappingAspect : MarshalByRefObject, ICloneable, IC
 
         return a.Equals(b);
     }
+
     public static bool operator !=(AbstractMappingAspect a, AbstractMappingAspect b) => !(a == b);
 
     public virtual object Clone() => this.MemberwiseClone();

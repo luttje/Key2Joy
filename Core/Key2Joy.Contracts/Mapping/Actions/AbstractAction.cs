@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Key2Joy.Contracts.Mapping.Triggers;
 
@@ -6,6 +7,7 @@ namespace Key2Joy.Contracts.Mapping.Actions;
 
 public abstract class AbstractAction : AbstractMappingAspect
 {
+    [JsonIgnore]
     public bool IsStarted { get; set; }
 
     protected AbstractTriggerListener Listener { get; set; }

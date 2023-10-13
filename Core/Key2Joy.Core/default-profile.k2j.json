@@ -7,7 +7,6 @@
           "Control": "DPadUp",
           "PressState": "Press",
           "GamePadIndex": 0,
-          "ImageResource": null,
           "Name": "{1} {0} on GamePad #{2}"
         }
       },
@@ -16,7 +15,6 @@
         "options": {
           "Keys": "Up",
           "PressState": "Press",
-          "ImageResource": null,
           "Name": null
         }
       }
@@ -28,7 +26,6 @@
           "Control": "DPadDown",
           "PressState": "Press",
           "GamePadIndex": 0,
-          "ImageResource": null,
           "Name": "{1} {0} on GamePad #{2}"
         }
       },
@@ -37,7 +34,6 @@
         "options": {
           "Keys": "Down",
           "PressState": "Press",
-          "ImageResource": null,
           "Name": null
         }
       }
@@ -49,7 +45,6 @@
           "Control": "DPadLeft",
           "PressState": "Press",
           "GamePadIndex": 0,
-          "ImageResource": null,
           "Name": "{1} {0} on GamePad #{2}"
         }
       },
@@ -58,7 +53,6 @@
         "options": {
           "Keys": "Left",
           "PressState": "Press",
-          "ImageResource": null,
           "Name": null
         }
       }
@@ -70,7 +64,6 @@
           "Control": "DPadRight",
           "PressState": "Press",
           "GamePadIndex": 0,
-          "ImageResource": null,
           "Name": "{1} {0} on GamePad #{2}"
         }
       },
@@ -79,7 +72,6 @@
         "options": {
           "Keys": "Right",
           "PressState": "Press",
-          "ImageResource": null,
           "Name": null
         }
       }
@@ -91,7 +83,6 @@
           "Control": "Start",
           "PressState": "Press",
           "GamePadIndex": 0,
-          "ImageResource": null,
           "Name": "{1} {0} on GamePad #{2}"
         }
       },
@@ -100,7 +91,6 @@
         "options": {
           "Keys": "F1",
           "PressState": "Press",
-          "ImageResource": null,
           "Name": null
         }
       }
@@ -112,7 +102,6 @@
           "Control": "Back",
           "PressState": "Press",
           "GamePadIndex": 0,
-          "ImageResource": null,
           "Name": "{1} {0} on GamePad #{2}"
         }
       },
@@ -121,7 +110,6 @@
         "options": {
           "Keys": "F2",
           "PressState": "Press",
-          "ImageResource": null,
           "Name": null
         }
       }
@@ -133,7 +121,6 @@
           "Control": "LeftStickClick",
           "PressState": "Press",
           "GamePadIndex": 0,
-          "ImageResource": null,
           "Name": "{1} {0} on GamePad #{2}"
         }
       },
@@ -142,7 +129,6 @@
         "options": {
           "Keys": "LControlKey",
           "PressState": "Press",
-          "ImageResource": null,
           "Name": null
         }
       }
@@ -154,7 +140,6 @@
           "Control": "RightStickClick",
           "PressState": "Press",
           "GamePadIndex": 0,
-          "ImageResource": null,
           "Name": "{1} {0} on GamePad #{2}"
         }
       },
@@ -163,7 +148,6 @@
         "options": {
           "Keys": "RControlKey",
           "PressState": "Press",
-          "ImageResource": null,
           "Name": null
         }
       }
@@ -175,7 +159,6 @@
           "Control": "LeftShoulder",
           "PressState": "Press",
           "GamePadIndex": 0,
-          "ImageResource": null,
           "Name": "{1} {0} on GamePad #{2}"
         }
       },
@@ -184,7 +167,6 @@
         "options": {
           "Keys": "Q",
           "PressState": "Press",
-          "ImageResource": null,
           "Name": null
         }
       }
@@ -196,7 +178,6 @@
           "Control": "RightShoulder",
           "PressState": "Press",
           "GamePadIndex": 0,
-          "ImageResource": null,
           "Name": "{1} {0} on GamePad #{2}"
         }
       },
@@ -205,7 +186,6 @@
         "options": {
           "Keys": "E",
           "PressState": "Press",
-          "ImageResource": null,
           "Name": null
         }
       }
@@ -217,7 +197,6 @@
           "Control": "A",
           "PressState": "Press",
           "GamePadIndex": 0,
-          "ImageResource": null,
           "Name": "{1} {0} on GamePad #{2}"
         }
       },
@@ -226,7 +205,6 @@
         "options": {
           "Keys": "F",
           "PressState": "Press",
-          "ImageResource": null,
           "Name": null
         }
       }
@@ -238,7 +216,6 @@
           "Control": "B",
           "PressState": "Press",
           "GamePadIndex": 0,
-          "ImageResource": null,
           "Name": "{1} {0} on GamePad #{2}"
         }
       },
@@ -247,7 +224,6 @@
         "options": {
           "Keys": "Z",
           "PressState": "Press",
-          "ImageResource": null,
           "Name": null
         }
       }
@@ -259,7 +235,6 @@
           "Control": "X",
           "PressState": "Press",
           "GamePadIndex": 0,
-          "ImageResource": null,
           "Name": "{1} {0} on GamePad #{2}"
         }
       },
@@ -268,7 +243,6 @@
         "options": {
           "Keys": "R",
           "PressState": "Press",
-          "ImageResource": null,
           "Name": null
         }
       }
@@ -280,7 +254,6 @@
           "Control": "Y",
           "PressState": "Press",
           "GamePadIndex": 0,
-          "ImageResource": null,
           "Name": "{1} {0} on GamePad #{2}"
         }
       },
@@ -289,7 +262,6 @@
         "options": {
           "Keys": "Y",
           "PressState": "Press",
-          "ImageResource": null,
           "Name": null
         }
       }
@@ -301,7 +273,6 @@
           "Control": "LeftTrigger",
           "PressState": "Press",
           "GamePadIndex": 0,
-          "ImageResource": null,
           "Name": "{1} {0} on GamePad #{2}"
         }
       },
@@ -310,7 +281,6 @@
         "options": {
           "Keys": "D1",
           "PressState": "Press",
-          "ImageResource": null,
           "Name": null
         }
       }
@@ -322,7 +292,6 @@
           "Control": "RightTrigger",
           "PressState": "Press",
           "GamePadIndex": 0,
-          "ImageResource": null,
           "Name": "{1} {0} on GamePad #{2}"
         }
       },
@@ -331,7 +300,6 @@
         "options": {
           "Keys": "D2",
           "PressState": "Press",
-          "ImageResource": null,
           "Name": null
         }
       }
@@ -343,7 +311,6 @@
           "Control": "LeftStickLeft",
           "PressState": "Press",
           "GamePadIndex": 0,
-          "ImageResource": null,
           "Name": "{1} {0} on GamePad #{2}"
         }
       },
@@ -352,7 +319,6 @@
         "options": {
           "Keys": "A",
           "PressState": "Press",
-          "ImageResource": null,
           "Name": null
         }
       }
@@ -364,7 +330,6 @@
           "Control": "LeftStickRight",
           "PressState": "Press",
           "GamePadIndex": 0,
-          "ImageResource": null,
           "Name": "{1} {0} on GamePad #{2}"
         }
       },
@@ -373,7 +338,6 @@
         "options": {
           "Keys": "D",
           "PressState": "Press",
-          "ImageResource": null,
           "Name": null
         }
       }
@@ -385,7 +349,6 @@
           "Control": "LeftStickUp",
           "PressState": "Press",
           "GamePadIndex": 0,
-          "ImageResource": null,
           "Name": "{1} {0} on GamePad #{2}"
         }
       },
@@ -394,7 +357,6 @@
         "options": {
           "Keys": "W",
           "PressState": "Press",
-          "ImageResource": null,
           "Name": null
         }
       }
@@ -406,7 +368,6 @@
           "Control": "LeftStickDown",
           "PressState": "Press",
           "GamePadIndex": 0,
-          "ImageResource": null,
           "Name": "{1} {0} on GamePad #{2}"
         }
       },
@@ -415,7 +376,6 @@
         "options": {
           "Keys": "S",
           "PressState": "Press",
-          "ImageResource": null,
           "Name": null
         }
       }
@@ -425,7 +385,6 @@
         "$type": "Key2Joy.Mapping.Actions.Logic.AppCommandAction",
         "options": {
           "Command": "Abort",
-          "ImageResource": null,
           "Name": "Run App Command \u0027{0}\u0027"
         }
       },
@@ -434,7 +393,6 @@
         "options": {
           "Keys": "Escape",
           "PressState": "Press",
-          "ImageResource": null,
           "Name": null
         }
       }
@@ -445,7 +403,6 @@
         "options": {
           "Script": "print(\u0022Shift \u002B A was pressed\u0022)",
           "IsScriptPath": false,
-          "ImageResource": "Lua",
           "Name": "Lua Script: {0}"
         }
       },
@@ -458,7 +415,6 @@
               "options": {
                 "Keys": "A",
                 "PressState": "Press",
-                "ImageResource": null,
                 "Name": null
               }
             },
@@ -467,12 +423,10 @@
               "options": {
                 "Keys": "LShiftKey",
                 "PressState": "Press",
-                "ImageResource": null,
                 "Name": null
               }
             }
           ],
-          "ImageResource": null,
           "Name": null
         }
       }
@@ -481,7 +435,6 @@
       "action": {
         "$type": "Key2Joy.Mapping.Actions.Logic.SequenceAction",
         "options": {
-          "ImageResource": null,
           "Name": "Run Sequence: {0}"
         }
       },
@@ -489,7 +442,6 @@
         "$type": "Key2Joy.Mapping.Triggers.Mouse.MouseMoveTrigger",
         "options": {
           "AxisBinding": "Forward",
-          "ImageResource": null,
           "Name": null
         }
       }
@@ -499,7 +451,6 @@
         "$type": "Key2Joy.Mapping.Actions.Logic.AppCommandAction",
         "options": {
           "Command": "Abort",
-          "ImageResource": null,
           "Name": "Run App Command \u0027{0}\u0027"
         }
       },
@@ -512,12 +463,10 @@
               "options": {
                 "Keys": "D6",
                 "PressState": "Press",
-                "ImageResource": null,
                 "Name": null
               }
             }
           ],
-          "ImageResource": null,
           "Name": null
         }
       }
@@ -529,7 +478,6 @@
           "Control": "LeftStickUp",
           "PressState": "Release",
           "GamePadIndex": 0,
-          "ImageResource": null,
           "Name": "{1} {0} on GamePad #{2}"
         }
       },
@@ -538,7 +486,6 @@
         "options": {
           "Keys": "W",
           "PressState": "Release",
-          "ImageResource": null,
           "Name": null
         }
       }
@@ -550,7 +497,6 @@
           "Control": "LeftStickRight",
           "PressState": "Release",
           "GamePadIndex": 0,
-          "ImageResource": null,
           "Name": "{1} {0} on GamePad #{2}"
         }
       },
@@ -559,7 +505,6 @@
         "options": {
           "Keys": "D",
           "PressState": "Release",
-          "ImageResource": null,
           "Name": null
         }
       }
@@ -571,7 +516,6 @@
           "Control": "LeftStickLeft",
           "PressState": "Release",
           "GamePadIndex": 0,
-          "ImageResource": null,
           "Name": "{1} {0} on GamePad #{2}"
         }
       },
@@ -580,7 +524,6 @@
         "options": {
           "Keys": "A",
           "PressState": "Release",
-          "ImageResource": null,
           "Name": null
         }
       }
@@ -592,7 +535,6 @@
           "Control": "LeftStickDown",
           "PressState": "Release",
           "GamePadIndex": 0,
-          "ImageResource": null,
           "Name": "{1} {0} on GamePad #{2}"
         }
       },
@@ -601,7 +543,6 @@
         "options": {
           "Keys": "S",
           "PressState": "Release",
-          "ImageResource": null,
           "Name": null
         }
       }
@@ -613,7 +554,6 @@
           "Control": "RightStickUp",
           "PressState": "Press",
           "GamePadIndex": 0,
-          "ImageResource": null,
           "Name": "{1} {0} on GamePad #{2}"
         }
       },
@@ -621,7 +561,6 @@
         "$type": "Key2Joy.Mapping.Triggers.Mouse.MouseMoveTrigger",
         "options": {
           "AxisBinding": "Forward",
-          "ImageResource": null,
           "Name": null
         }
       }
@@ -633,7 +572,6 @@
           "Control": "RightStickDown",
           "PressState": "Press",
           "GamePadIndex": 0,
-          "ImageResource": null,
           "Name": "{1} {0} on GamePad #{2}"
         }
       },
@@ -641,7 +579,6 @@
         "$type": "Key2Joy.Mapping.Triggers.Mouse.MouseMoveTrigger",
         "options": {
           "AxisBinding": "Backward",
-          "ImageResource": null,
           "Name": null
         }
       }
@@ -653,7 +590,6 @@
           "Control": "RightStickLeft",
           "PressState": "Press",
           "GamePadIndex": 0,
-          "ImageResource": null,
           "Name": "{1} {0} on GamePad #{2}"
         }
       },
@@ -661,7 +597,6 @@
         "$type": "Key2Joy.Mapping.Triggers.Mouse.MouseMoveTrigger",
         "options": {
           "AxisBinding": "Left",
-          "ImageResource": null,
           "Name": null
         }
       }
@@ -673,7 +608,6 @@
           "Control": "RightStickRight",
           "PressState": "Press",
           "GamePadIndex": 0,
-          "ImageResource": null,
           "Name": "{1} {0} on GamePad #{2}"
         }
       },
@@ -681,7 +615,6 @@
         "$type": "Key2Joy.Mapping.Triggers.Mouse.MouseMoveTrigger",
         "options": {
           "AxisBinding": "Right",
-          "ImageResource": null,
           "Name": null
         }
       }
@@ -693,7 +626,6 @@
           "Control": "DPadUp",
           "PressState": "Release",
           "GamePadIndex": 0,
-          "ImageResource": null,
           "Name": "{1} {0} on GamePad #{2}"
         }
       },
@@ -702,7 +634,6 @@
         "options": {
           "Keys": "Up",
           "PressState": "Release",
-          "ImageResource": null,
           "Name": null
         }
       }
@@ -714,7 +645,6 @@
           "Control": "DPadRight",
           "PressState": "Release",
           "GamePadIndex": 0,
-          "ImageResource": null,
           "Name": "{1} {0} on GamePad #{2}"
         }
       },
@@ -723,7 +653,6 @@
         "options": {
           "Keys": "Right",
           "PressState": "Release",
-          "ImageResource": null,
           "Name": null
         }
       }
@@ -735,7 +664,6 @@
           "Control": "DPadDown",
           "PressState": "Release",
           "GamePadIndex": 0,
-          "ImageResource": null,
           "Name": "{1} {0} on GamePad #{2}"
         }
       },
@@ -744,7 +672,6 @@
         "options": {
           "Keys": "Down",
           "PressState": "Release",
-          "ImageResource": null,
           "Name": null
         }
       }
@@ -756,7 +683,6 @@
           "Control": "DPadLeft",
           "PressState": "Release",
           "GamePadIndex": 0,
-          "ImageResource": null,
           "Name": "{1} {0} on GamePad #{2}"
         }
       },
@@ -765,7 +691,6 @@
         "options": {
           "Keys": "Left",
           "PressState": "Release",
-          "ImageResource": null,
           "Name": null
         }
       }
@@ -777,7 +702,6 @@
           "Control": "LeftTrigger",
           "PressState": "Release",
           "GamePadIndex": 0,
-          "ImageResource": null,
           "Name": "{1} {0} on GamePad #{2}"
         }
       },
@@ -786,7 +710,6 @@
         "options": {
           "Keys": "D1",
           "PressState": "Release",
-          "ImageResource": null,
           "Name": null
         }
       }
@@ -798,7 +721,6 @@
           "Control": "DPadRight",
           "PressState": "Release",
           "GamePadIndex": 0,
-          "ImageResource": null,
           "Name": "{1} {0} on GamePad #{2}"
         }
       },
@@ -807,7 +729,6 @@
         "options": {
           "Keys": "Right",
           "PressState": "Release",
-          "ImageResource": null,
           "Name": null
         }
       }
@@ -819,7 +740,6 @@
           "Control": "Start",
           "PressState": "Release",
           "GamePadIndex": 0,
-          "ImageResource": null,
           "Name": "{1} {0} on GamePad #{2}"
         }
       },
@@ -828,7 +748,6 @@
         "options": {
           "Keys": "F1",
           "PressState": "Release",
-          "ImageResource": null,
           "Name": null
         }
       }
@@ -840,7 +759,6 @@
           "Control": "Back",
           "PressState": "Release",
           "GamePadIndex": 0,
-          "ImageResource": null,
           "Name": "{1} {0} on GamePad #{2}"
         }
       },
@@ -849,7 +767,6 @@
         "options": {
           "Keys": "F2",
           "PressState": "Release",
-          "ImageResource": null,
           "Name": null
         }
       }
@@ -861,7 +778,6 @@
           "Control": "LeftStickClick",
           "PressState": "Release",
           "GamePadIndex": 0,
-          "ImageResource": null,
           "Name": "{1} {0} on GamePad #{2}"
         }
       },
@@ -870,7 +786,6 @@
         "options": {
           "Keys": "LControlKey",
           "PressState": "Release",
-          "ImageResource": null,
           "Name": null
         }
       }
@@ -882,7 +797,6 @@
           "Control": "RightStickClick",
           "PressState": "Release",
           "GamePadIndex": 0,
-          "ImageResource": null,
           "Name": "{1} {0} on GamePad #{2}"
         }
       },
@@ -891,7 +805,6 @@
         "options": {
           "Keys": "RControlKey",
           "PressState": "Release",
-          "ImageResource": null,
           "Name": null
         }
       }
@@ -903,7 +816,6 @@
           "Control": "LeftShoulder",
           "PressState": "Release",
           "GamePadIndex": 0,
-          "ImageResource": null,
           "Name": "{1} {0} on GamePad #{2}"
         }
       },
@@ -912,7 +824,6 @@
         "options": {
           "Keys": "Q",
           "PressState": "Release",
-          "ImageResource": null,
           "Name": null
         }
       }
@@ -924,7 +835,6 @@
           "Control": "RightShoulder",
           "PressState": "Release",
           "GamePadIndex": 0,
-          "ImageResource": null,
           "Name": "{1} {0} on GamePad #{2}"
         }
       },
@@ -933,7 +843,6 @@
         "options": {
           "Keys": "E",
           "PressState": "Release",
-          "ImageResource": null,
           "Name": null
         }
       }
@@ -945,7 +854,6 @@
           "Control": "A",
           "PressState": "Release",
           "GamePadIndex": 0,
-          "ImageResource": null,
           "Name": "{1} {0} on GamePad #{2}"
         }
       },
@@ -954,7 +862,6 @@
         "options": {
           "Keys": "F",
           "PressState": "Release",
-          "ImageResource": null,
           "Name": null
         }
       }
@@ -966,7 +873,6 @@
           "Control": "B",
           "PressState": "Release",
           "GamePadIndex": 0,
-          "ImageResource": null,
           "Name": "{1} {0} on GamePad #{2}"
         }
       },
@@ -975,7 +881,6 @@
         "options": {
           "Keys": "Z",
           "PressState": "Release",
-          "ImageResource": null,
           "Name": null
         }
       }
@@ -987,7 +892,6 @@
           "Control": "X",
           "PressState": "Release",
           "GamePadIndex": 0,
-          "ImageResource": null,
           "Name": "{1} {0} on GamePad #{2}"
         }
       },
@@ -996,7 +900,6 @@
         "options": {
           "Keys": "R",
           "PressState": "Release",
-          "ImageResource": null,
           "Name": null
         }
       }
@@ -1008,7 +911,6 @@
           "Control": "Y",
           "PressState": "Release",
           "GamePadIndex": 0,
-          "ImageResource": null,
           "Name": "{1} {0} on GamePad #{2}"
         }
       },
@@ -1017,7 +919,6 @@
         "options": {
           "Keys": "Y",
           "PressState": "Release",
-          "ImageResource": null,
           "Name": null
         }
       }
@@ -1029,7 +930,6 @@
           "Control": "RightStickDown",
           "PressState": "Release",
           "GamePadIndex": 0,
-          "ImageResource": null,
           "Name": "{1} {0} on GamePad #{2}"
         }
       },
@@ -1037,12 +937,11 @@
         "$type": "Key2Joy.Mapping.Triggers.Mouse.MouseMoveTrigger",
         "options": {
           "AxisBinding": "Backward",
-          "ImageResource": null,
           "Name": null
         }
       }
     }
   ],
   "name": "Default Profile",
-  "version": 5
+  "version": 6
 }

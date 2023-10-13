@@ -15,7 +15,7 @@ namespace Key2Joy.Mapping;
 public class MappingProfile
 {
     private const int NO_VERSION = 0;
-    private const int CURRENT_VERSION = 5;
+    private const int CURRENT_VERSION = 6;
 
     public const string DEFAULT_PROFILE_PATH = "default-profile";
     public const string EXTENSION = ".k2j.json";
