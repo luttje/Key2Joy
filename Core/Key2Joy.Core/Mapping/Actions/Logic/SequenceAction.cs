@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Key2Joy.Contracts.Mapping;
@@ -16,8 +16,7 @@ namespace Key2Joy.Mapping.Actions.Logic;
 )]
 public class SequenceAction : CoreAction
 {
-    // TODO: [JsonProperty(ItemTypeNameHandling = TypeNameHandling.All)]
-    public IList<AbstractAction> ChildActions;
+    public IList<AbstractAction> ChildActions { get; set; }
 
     public SequenceAction(string name)
         : base(name) => this.ChildActions = new List<AbstractAction>();

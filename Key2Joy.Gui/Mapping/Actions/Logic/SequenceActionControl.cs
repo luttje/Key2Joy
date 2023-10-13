@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using Key2Joy.Contracts.Mapping;
@@ -42,8 +42,7 @@ public partial class SequenceActionControl : UserControl, IActionOptionsControl
 
         foreach (var childAction in this.childActions)
         {
-            throw new NotImplementedException("TODO:::::");
-            // thisAction.ChildActions.Add(PluginAction.GetFullyFormedAction(childAction));
+            thisAction.ChildActions.Add(childAction);
         }
     }
 

@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Mapping.Triggers;
 
 namespace Key2Joy.Contracts.Plugins;
 
@@ -55,6 +57,14 @@ public class PluginAction : MarshalByRefObject
         var method = this.GetType().GetMethod(methodName);
         return method.Invoke(this, parameters);
     }
+
+    /// <summary>
+    /// Executes the plugin action.
+    /// </summary>
+    /// <param name="inputBag"></param>
+    /// <returns></returns>
+    public virtual async Task Execute(AbstractInputBag inputBag = null)
+    { }
 
     /// <summary>
     /// Returns the value of the specified public property.

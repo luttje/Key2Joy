@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading.Tasks;
 using Key2Joy.Contracts;
@@ -11,7 +10,6 @@ using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.Contracts.Plugins;
 using Key2Joy.Plugins;
-using Key2Joy.Util;
 using NLua;
 
 namespace Key2Joy.Mapping.Actions.Scripting;

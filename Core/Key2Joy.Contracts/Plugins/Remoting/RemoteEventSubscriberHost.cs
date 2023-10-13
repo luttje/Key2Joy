@@ -4,7 +4,6 @@ using System.IO;
 using System.IO.Pipes;
 using System.Threading.Tasks;
 using System.Threading;
-using System.Text;
 
 namespace Key2Joy.Contracts.Plugins.Remoting;
 

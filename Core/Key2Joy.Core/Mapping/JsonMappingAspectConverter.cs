@@ -1,10 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Remoting;
+using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Mapping.Actions;
+using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.Mapping.Actions;
 using Key2Joy.Mapping.Triggers;
 using Key2Joy.Plugins;
@@ -15,9 +17,11 @@ internal struct JsonMappingAspectWithType
 {
     [JsonPropertyName("$type")]
     public string FullTypeName { get; set; }
+
     public MappingAspectOptions Options { get; set; }
 
-    public JsonMappingAspectWithType() { }
+    public JsonMappingAspectWithType()
+    { }
 }
 
 internal class JsonMappingAspectConverter<T> : JsonConverter<T> where T : AbstractMappingAspect
@@ -57,25 +61,41 @@ internal class JsonMappingAspectConverter<T> : JsonConverter<T> where T : Abstra
         return newOptions;
     }
 
-    private AbstractMappingAspect ParseJson(JsonDocument json, JsonSerializerOptions options)
+    private AbstractMappingAspect ParseJson(Type typeToConvert, JsonDocument json, JsonSerializerOptions options)
     {
+        MappingAspectOptions mappingAspectOptions = new();
         var typeProperty = json.RootElement.GetProperty("$type");
         var type = MappingTypeHelper.EnsureSimpleTypeName(typeProperty.GetString());
 
         if (!this.allowedTypes.TryGetValue(type, out var factory))
         {
-            throw new RemotingException($"The type {type} is not allowed.");
+            if (typeToConvert == typeof(AbstractAction))
+            {
+                factory = new MappingTypeFactory(
+                    typeof(DisabledAction).FullName,
+                    typeof(DisabledAction).GetCustomAttribute<ActionAttribute>());
+                mappingAspectOptions.Add(nameof(DisabledAction.ActionName), type);
+            }
+            else if (typeToConvert == typeof(AbstractTrigger))
+            {
+                factory = new MappingTypeFactory(
+                    typeof(DisabledTrigger).FullName,
+                    typeof(DisabledTrigger).GetCustomAttribute<TriggerAttribute>());
+                mappingAspectOptions.Add(nameof(DisabledTrigger.TriggerName), type);
+            }
+            else
+            {
+                throw new NotSupportedException($"Type {type} is not supported");
+            }
         }
 
-        var actionRootProperty = json.RootElement.GetProperty(
+        var aspectRootProperty = json.RootElement.GetProperty(
             options.PropertyNamingPolicy.ConvertName(
                 nameof(JsonMappingAspectWithType.Options)
             )
         );
 
-        MappingAspectOptions mappingAspectOptions = new();
-
-        foreach (var property in actionRootProperty.EnumerateObject())
+        foreach (var property in aspectRootProperty.EnumerateObject())
         {
             if (property.Value.ValueKind == JsonValueKind.Object)
             {
@@ -105,7 +125,7 @@ internal class JsonMappingAspectConverter<T> : JsonConverter<T> where T : Abstra
                 {
                     var rawJson = item.GetRawText();
                     var document = JsonDocument.Parse(rawJson);
-                    list.Add(this.ParseJson(document, options));
+                    list.Add(this.ParseJson(typeToConvert, document, options));
                 }
 
                 mappingAspectOptions.Add(property.Name, list);
@@ -132,7 +152,7 @@ internal class JsonMappingAspectConverter<T> : JsonConverter<T> where T : Abstra
     {
         var json = JsonDocument.ParseValue(ref reader);
 
-        return (T)this.ParseJson(json, options);
+        return (T)this.ParseJson(typeToConvert, json, options);
     }
 
     public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
@@ -14,7 +14,9 @@ namespace Key2Joy.Gui.Mapping;
 public partial class TriggerControl : UserControl
 {
     public AbstractTrigger Trigger { get; private set; }
+
     public event EventHandler<TriggerChangedEventArgs> TriggerChanged;
+
     public bool IsTopLevel { get; set; }
 
     private bool isLoaded = false;
@@ -51,6 +53,11 @@ public partial class TriggerControl : UserControl
 
     public void SelectTrigger(AbstractTrigger trigger)
     {
+        if (trigger is DisabledTrigger)
+        {
+            trigger = null;
+        }
+
         this.selectedTrigger = trigger;
 
         if (!this.isLoaded)
@@ -126,7 +133,7 @@ public partial class TriggerControl : UserControl
         var selected = (ImageComboBoxItem<KeyValuePair<TriggerAttribute, MappingTypeFactory<AbstractTrigger>>>)this.cmbTrigger.SelectedItem;
         _ = selected.ItemValue.Key;
 
-        if (this.options == null) // TODO: what did I use this for before refactoring to seperate logic and GUI? --> || attribute.OptionsUserControl != options.GetType() 
+        if (this.options == null) // TODO: what did I use this for before refactoring to seperate logic and GUI? --> || attribute.OptionsUserControl != options.GetType()
         {
             return;
         }

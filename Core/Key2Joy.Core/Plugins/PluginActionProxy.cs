@@ -53,6 +53,20 @@ public class PluginActionProxy : CoreAction, IGetRealObject<PluginAction>
         }
     }
 
+    public override Task Execute(AbstractInputBag inputBag = null)
+    {
+        try
+        {
+            return this.source.Execute(inputBag);
+        }
+        catch (Exception ex)
+        {
+            var exception = ex.InnerException ?? ex;
+            Output.WriteLine(exception.ToString());
+            throw exception;
+        }
+    }
+
     public object GetPublicPropertyValue(string propertyName)
     {
         try
@@ -66,6 +80,4 @@ public class PluginActionProxy : CoreAction, IGetRealObject<PluginAction>
             throw exception;
         }
     }
-
-    public override Task Execute(AbstractInputBag inputBag = null) => throw new NotImplementedException();
 }

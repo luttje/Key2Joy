@@ -79,6 +79,7 @@ public abstract class AbstractMappingAspect : MarshalByRefObject, ICloneable, IC
     {
         var propertyType = property.PropertyType;
         var value = options[property.Name];
+        var genericTypeDefinition = propertyType.IsGenericType ? propertyType.GetGenericTypeDefinition() : null;
 
         if (propertyType.IsEnum)
         {
@@ -88,10 +89,10 @@ public abstract class AbstractMappingAspect : MarshalByRefObject, ICloneable, IC
         {
             value = new DateTime(Convert.ToInt64(value));
         }
-        else if (propertyType.IsGenericType && propertyType.GetGenericTypeDefinition() == typeof(List<>))
+        else if (propertyType.IsGenericType
+            && (genericTypeDefinition == typeof(List<>) || genericTypeDefinition == typeof(IList<>)))
         {
-            var genericTypeDefinition = propertyType.GetGenericTypeDefinition();
-            var constructedListType = genericTypeDefinition.MakeGenericType(propertyType.GetGenericArguments());
+            var constructedListType = typeof(List<>).MakeGenericType(propertyType.GetGenericArguments());
             var instance = Activator.CreateInstance(constructedListType);
 
             if (value is List<object> list)

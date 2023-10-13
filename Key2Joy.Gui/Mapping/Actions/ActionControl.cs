@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
@@ -15,7 +15,9 @@ namespace Key2Joy.Gui.Mapping;
 public partial class ActionControl : UserControl
 {
     public AbstractAction Action { get; private set; }
+
     public event Action<AbstractAction> ActionChanged;
+
     public bool IsTopLevel { get; set; }
 
     private bool isLoaded = false;
@@ -57,6 +59,11 @@ public partial class ActionControl : UserControl
 
     public void SelectAction(AbstractAction action)
     {
+        if (action is DisabledAction)
+        {
+            action = null;
+        }
+
         this.selectedAction = action;
 
         if (!this.isLoaded)
