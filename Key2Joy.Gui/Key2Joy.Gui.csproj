@@ -20,17 +20,12 @@
     <TargetFramework>NET48</TargetFramework>
 	  <LangVersion>latest</LangVersion>
     <ApplicationIcon>Graphics\Icons\app-icons.ico</ApplicationIcon>
-    <RunPostBuildEvent>Always</RunPostBuildEvent>
     <PlatformTarget>x86</PlatformTarget>
     <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
     <ProjectGuid>{808BA609-806D-4D55-857B-6FB4E16E13F1}</ProjectGuid>
   </PropertyGroup>
-
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="call $(SolutionDir)\Support\BuildDocumentation.bat $(ConfigurationName) $(OutputPath)" />
-  </Target>
 
   <ItemGroup>
     <Compile Remove="bin\**" />

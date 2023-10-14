@@ -5,7 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
-using Key2Joy.Setup.Releases;
+using Key2Joy.Setup.AppReleases;
 using Microsoft.Win32;
 
 namespace Key2Joy.Setup.Installation;

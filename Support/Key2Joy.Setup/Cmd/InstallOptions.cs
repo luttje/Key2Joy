@@ -1,8 +1,8 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Windows.Forms;
 using CommandLine;
 using Key2Joy.Setup.Installation;
-using Key2Joy.Setup.Releases;
+using Key2Joy.Setup.AppReleases;
 
 namespace Key2Joy.Setup.Cmd;
 
@@ -16,7 +16,6 @@ internal class InstallOptions : Options
         HelpText = "Path where to install Key2Joy."
     )]
     public string InstallPath { get; set; }
-
 
     [Option(
         shortName: 'v',

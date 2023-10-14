@@ -1,32 +1,28 @@
 name: pre-release
 on:
-  workflow_run:
-    workflows: [tests]
-    types: [completed]
-    branches:
-      - '**'
+  workflow_call:
+    inputs:
+      versionid:
+        description: 'The version ID of the pre-release'
+        required: true
+        type: string
 jobs:
-  on-tests-failed:
+  publish-pre-release:
     runs-on: windows-latest
-    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
-    steps:
-      - run: echo 'The triggering workflow failed'
-  on-tests-passed-build:
-    runs-on: windows-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     permissions:
       contents: write
     steps:
       - run: echo 'The triggering workflow passed, building a pre-release'
       - uses: actions/checkout@v3
-      - name: Setup .NET CLI
-        uses: actions/setup-dotnet@v3
+      - name: Restore build from cache
+        uses: actions/cache@v3
         with:
-          dotnet-version: 7.0.x
-      - name: Build to output
-        id: build-step
-        shell: pwsh
-        run: echo ([string]::Join("","VERSION_ID=",((&".\Support\Build.ps1" Release ${{ github.event.workflow_run.head_commit.id }}) | Select-Object -Last 1))) >> "$GITHUB_OUTPUT"
+          path: |
+            ${{ github.workspace }}\bin
+            ${{ github.workspace }}\Support\Key2Joy.Tests\bin\Key2Joy.Tests
+          key: ${{ runner.os }}-build-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-build-
       - name: Archive Pre-release
         uses: thedoctor0/zip-release@0.7.1
         with:
@@ -35,17 +31,15 @@ jobs:
           filename: 'pre-release.zip'
       - name: Create GitHub Pre-release
         uses: ncipollo/release-action@v1
-        env:
-          BUILD_VERSION_ID: ${{ steps.build-step.outputs.VERSION_ID }}
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          name: ${{ env.BUILD_VERSION_ID }}
-          tag: ${{ env.BUILD_VERSION_ID }}
+          name: ${{ inputs.versionid }}
+          tag: ${{ inputs.versionid }}
           prerelease: true
           generateReleaseNotes: true
           artifacts: 'pre-release.zip'
           body: |
-            # 🔧 ${{ env.BUILD_VERSION_ID }}
+            # 🔧 ${{ inputs.versionid }}
             This release was automatically generated based on the last successful test run.
 
             This version of Key2Joy is not ready for use, but can be used for testing purposes.

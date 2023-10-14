@@ -12,6 +12,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
+    <UseWPF>true</UseWPF>
     <TargetFramework>NET48</TargetFramework>
 	  <LangVersion>latest</LangVersion>
     <RunPostBuildEvent>Always</RunPostBuildEvent>
@@ -46,13 +47,6 @@
     <Content Include="permissions.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Page Include="Mapping\Actions\GetHelloWorldActionControl.xaml">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <Generator>XamlIntelliSenseFileGenerator</Generator>
-    </Page>
   </ItemGroup>
 
   <ItemGroup>

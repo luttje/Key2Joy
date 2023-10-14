@@ -1,0 +1,16 @@
+name: build-test-and-pre-release
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    uses: ./.github/workflows/build.yml
+  test:
+    uses: ./.github/workflows/test.yml
+    needs: [build]
+  publish-pre-release:
+    uses: ./.github/workflows/pre-release.yml
+    needs: [build,test]
+    with:
+      versionid: ${{ needs.build.outputs.versionid }}

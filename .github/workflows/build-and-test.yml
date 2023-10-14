@@ -1,0 +1,12 @@
+name: build-and-test
+on:
+  pull_request:
+    branches:
+      - '**'
+  workflow_call:
+jobs:
+  build:
+    uses: ./.github/workflows/build.yml
+  test:
+    uses: ./.github/workflows/test.yml
+    needs: [build]

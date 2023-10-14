@@ -13,4 +13,4 @@ Write-Output "Creating new '$config' build @ $unixTime with version identifier: 
 
 dotnet msbuild /p:VersionSuffix=alpha.$unixTime /p:Configuration=$config
 
-return $versionId
+Write-Output $versionId

@@ -1,0 +1,42 @@
+name: build
+on:
+  workflow_call:
+    outputs:
+      versionid:
+        description: The version ID of the build
+        value: ${{ jobs.build.outputs.versionid }}
+jobs:
+  build:
+    runs-on: windows-latest
+    outputs:
+      versionid: ${{ steps.build-step.outputs.versionid }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup .NET CLI
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 7.0.x
+      - name: Restore dependencies
+        run: dotnet restore
+      - name: Build
+        id: build-step
+        shell: pwsh
+        run: |
+          # Start the build and store all output (letting it also be printed to the console)
+          $output = ""
+          . .\Support\Build.ps1 Release ${{ github.sha }} | Tee-Object -Variable output
+
+          # Get the version ID from the last line of the output
+          $versionId = $output | Select-Object -Last 1
+
+          # Set the output variable for this step
+          echo "versionid=$versionId" >> $env:GITHUB_OUTPUT
+      - name: Cache the build output
+        uses: actions/cache@v3
+        with:
+          path: |
+            ${{ github.workspace }}\bin
+            ${{ github.workspace }}\Support\Key2Joy.Tests\bin\Key2Joy.Tests
+          key: ${{ runner.os }}-build-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-build-

@@ -3,8 +3,10 @@
 if "%CI%"=="true" goto :EOF
 
 set LOCAL=%~dp0
-set TARGET=%1
+set TARGET=Release
 set BUILD_DIR=%2
+
+if "%BUILD_DIR%"=="" set BUILD_DIR=%LOCAL%..\bin\Key2Joy.Gui\%TARGET%
 
 if "%TARGET%" == "Debug" goto skip
 
