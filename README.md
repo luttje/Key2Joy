@@ -2,12 +2,12 @@
 
 # ![](Key2Joy.Gui/Graphics/Icons/icon256.png?raw=true)<br> Key2Joy
 
-[![tests](https://github.com/luttje/Key2Joy/actions/workflows/tests.yml/badge.svg)](https://github.com/luttje/Key2Joy/actions/workflows/tests.yml)
+**Simulate a Joystick/Controller/Gamepad using your keyboard, mouse or other triggers.**
+
+[![build-test-and-pre-release](https://github.com/luttje/Key2Joy/actions/workflows/build-test-and-pre-release.yml/badge.svg)](https://github.com/luttje/Key2Joy/actions/workflows/build-test-and-pre-release.yml)
 [![Test Code Coverage Status](https://coveralls.io/repos/github/luttje/Key2Joy/badge.svg?branch=main)](https://coveralls.io/github/luttje/Key2Joy?branch=main)
 
 </div>
-
-**Simulate a Joystick/Controller/Gamepad using your keyboard, mouse or other triggers.**
 
 In addition to simply simulating a button being pressed on the Joystick, you can also write Javascript and Lua scripts to execute a more complex sequence of actions.
 
