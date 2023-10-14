@@ -81,7 +81,9 @@ public class PluginHostProxy : IDisposable
 
         if (!File.Exists(path))
         {
-            MessageBox.Show("Key2Joy.PluginHost.exe not found at " + path);
+            System.Windows.Forms.MessageBox.Show(
+                "Key2Joy.PluginHost.exe not found at " + path
+            );
         }
 
         this.remoteEventSubscriber = RemoteEventSubscriber.InitHostForPlugin(this.name);
@@ -321,7 +323,12 @@ public class PluginHostProxy : IDisposable
         catch (Exception ex)
         {
             Output.WriteLine(ex);
-            MessageBox.Show("Error creating plugin control!", $"Error creating plugin control: {ex.Message}", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(
+                "Error creating plugin control!",
+                $"Error creating plugin control: {ex.Message}",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error
+            );
             return null;
         }
     }

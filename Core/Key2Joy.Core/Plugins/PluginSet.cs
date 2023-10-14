@@ -134,19 +134,21 @@ public class PluginSet : IDisposable
     public void DisablePlugin(string pluginAssemblyPath)
     {
         ConfigManager.Instance.SetPluginEnabled(pluginAssemblyPath, null);
-        MessageBox.Show("When disabling loaded plugins you have to restart the application for these changes to take effect.");
+        System.Windows.Forms.MessageBox.Show(
+            "When disabling loaded plugins you have to restart the application for these changes to take effect."
+        );
     }
 
     internal void AddPluginState(PluginLoadStates state, string pluginAssemblyPath, string errorMessage, PluginHostProxy loadedPlugin = null)
     {
         if (state == PluginLoadStates.FailedToLoad)
         {
-            MessageBox.Show(
+            System.Windows.MessageBox.Show(
                 $"One of your plugins located at {pluginAssemblyPath} failed to load. This was the error: " +
                 errorMessage,
                 "Failed to load plugin!",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Warning
+                System.Windows.MessageBoxButton.OK,
+                System.Windows.MessageBoxImage.Warning
             );
         }
 

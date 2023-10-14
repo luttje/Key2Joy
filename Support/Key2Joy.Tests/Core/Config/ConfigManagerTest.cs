@@ -21,7 +21,7 @@ public class ConfigManagerTest
     [TestMethod]
     public void LoadOrCreate_WhenConfigFileExists_LoadsConfigFile()
     {
-        var configContents = MockConfigManager.CopyConfigStub("current-config.json");
+        var configContents = MockConfigManager.CopyStub("current-config.json", MockConfigManager.GetMockConfigPath());
         var configManager = MockConfigManager.LoadOrCreateMock();
 
         Assert.IsTrue(configManager.IsInitialized);
@@ -32,7 +32,7 @@ public class ConfigManagerTest
     [TestMethod]
     public void LoadOrCreate_WhenOldConfigFileExists_GracefullyHandles()
     {
-        var configContents = MockConfigManager.CopyConfigStub("old-config.json");
+        var configContents = MockConfigManager.CopyStub("old-config.json", MockConfigManager.GetMockConfigPath());
         var configManager = MockConfigManager.LoadOrCreateMock();
 
         Assert.IsTrue(configManager.IsInitialized);
