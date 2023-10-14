@@ -1,0 +1,50 @@
+name: pre-release
+on:
+  workflow_run:
+    workflows: ["tests"]
+    types:
+      - completed
+jobs:
+  on-tests-failed:
+    runs-on: windows-latest
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    steps:
+      - run: echo 'The triggering workflow failed'
+  on-tests-passed-build:
+    runs-on: windows-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    permissions:
+      contents: write
+    steps:
+      - run: echo 'The triggering workflow passed, building a pre-release'
+      - uses: actions/checkout@v3
+      - name: Setup .NET CLI
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 7.0.x
+      - name: Build to output
+        id: build-step
+        shell: pwsh
+        run: echo ([string]::Join("","VERSION_ID=",((&".\Support\Build.ps1" Release ${{ github.event.workflow_run.head_commit.id }}) | Select-Object -Last 1))) >> "$GITHUB_OUTPUT"
+      - name: Archive Pre-release
+        uses: thedoctor0/zip-release@0.7.1
+        with:
+          type: 'zip'
+          path: 'bin\Key2Joy.Gui\Release'
+          filename: 'pre-release.zip'
+      - name: Create GitHub Pre-release
+        uses: ncipollo/release-action@v1
+        env:
+          BUILD_VERSION_ID: ${{ steps.build-step.outputs.VERSION_ID }}
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          name: ${{ env.BUILD_VERSION_ID }}
+          tag: ${{ env.BUILD_VERSION_ID }}
+          prerelease: true
+          generateReleaseNotes: true
+          artifacts: 'pre-release.zip'
+          body: |
+            # 🔧 ${{ env.BUILD_VERSION_ID }}
+            This release was automatically generated based on the last successful test run.
+
+            This version of Key2Joy is not ready for use, but can be used for testing purposes.
