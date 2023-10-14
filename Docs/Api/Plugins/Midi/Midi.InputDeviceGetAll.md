@@ -5,13 +5,11 @@
 
 Gets all Midi input devices
 
-
-
 ## Returns
+```ICollection`1```
+A collection with input devices.
 
-A collection with input devices
 ## Examples
-
 > Loops all input devices and displays their name in the logs.
 > 
 > #### _lua_:

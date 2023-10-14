@@ -3,13 +3,17 @@
 > This is a plugin, meaning it's functionality is disabled by default.
 > You can enable plugins by going to `View` > `Plugins` > `Manage Plugins`.{{#endif(IsPlugin)}}
 {{Summary}}
-
-{{#if(Parameters)}}## Parameters
+{{#if(Parameters)}}
+## Parameters
 
 {{Parameters}}{{#endif(Parameters)}}
-{{#if(ReturnType)}}## Returns
+{{#if(ReturnType)}}
+## Returns
 
-{{ReturnType}}{{#endif(ReturnType)}}
-{{#if(Examples)}}## Examples
+{{ReturnType}}
+{{ReturnTypeDescription}}
+{{#endif(ReturnType)}}
+{{#if(Examples)}}
+## Examples
 
 {{Examples}}{{#endif(Examples)}}

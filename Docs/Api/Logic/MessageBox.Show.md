@@ -1,13 +1,9 @@
-# `MessageBox.Show` (`String`)
-
+# `MessageBox.Show` (```String```)
 
 Displays a MessageBox with the given text
 
-
 ## Parameters
-
-* **content (`String`)** 
+* **content (```String```)** 
 	The text to display
-
 
 

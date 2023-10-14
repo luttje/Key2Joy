@@ -56,4 +56,52 @@ public class TypeExtensionsTest
 
         Assert.IsFalse(result);
     }
+
+    [TestMethod]
+    public void CopyArrayToNewType_ShouldCopyStringArrayToIntegerArray()
+    {
+        string[] originalArray = { "1", "2", "3" };
+        var targetType = typeof(int);
+
+        var newArray = originalArray.CopyArrayToNewType(targetType);
+
+        Assert.IsInstanceOfType(newArray, targetType.MakeArrayType());
+        CollectionAssert.AreEqual(new int[] { 1, 2, 3 }, newArray);
+    }
+
+    [TestMethod]
+    public void CopyArrayToNewType_ShouldCopyIntArrayToStringArray()
+    {
+        object[] originalArray = { 1, 2, 3 };
+        var targetType = typeof(string);
+
+        var newArray = originalArray.CopyArrayToNewType(targetType);
+
+        Assert.IsInstanceOfType(newArray, targetType.MakeArrayType());
+        CollectionAssert.AreEqual(new string[] { "1", "2", "3" }, newArray);
+    }
+
+    [TestMethod]
+    public void CopyArrayToNewType_ShouldCopyObjectArrayToDoubleArray()
+    {
+        object[] originalArray = { 1.1, 2.2, 3.3 };
+        var targetType = typeof(double);
+
+        var newArray = originalArray.CopyArrayToNewType(targetType);
+
+        Assert.IsInstanceOfType(newArray, targetType.MakeArrayType());
+        CollectionAssert.AreEqual(new double[] { 1.1, 2.2, 3.3 }, newArray);
+    }
+
+    [TestMethod]
+    public void CopyArrayToNewType_ShouldCopyEmptyArray()
+    {
+        string[] originalArray = { };
+        var targetType = typeof(int);
+
+        var newArray = originalArray.CopyArrayToNewType(targetType);
+
+        Assert.IsInstanceOfType(newArray, targetType.MakeArrayType());
+        Assert.AreEqual(0, newArray.Length);
+    }
 }

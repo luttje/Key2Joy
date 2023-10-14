@@ -1,18 +1,15 @@
-# `Window.Find` (`String`, `String`)
-
+# `Window.Find` (```String```, ```String```)
 
 Find a window of a piece of software currently running.
 
-
 ## Parameters
-
-* **className (`String`)** 
+* **className (```String```)** 
 	Window class name
 
-* **windowTitle (`String`)** 
+* **windowTitle (```String```)** 
 	Optional window title
 
 ## Returns
-
-Handle for the window
+```IntPtr```
+Handle for the window.
 

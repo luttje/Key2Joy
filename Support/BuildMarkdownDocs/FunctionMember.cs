@@ -22,7 +22,7 @@ internal class FunctionMember : Member
         }
 
         return string.Join(", ", this.Parameters?
-                .Select(p => $"`{p.GetTypeName()}`"));
+                .Select(p => $"```{p.GetTypeName()}```"));
     }
 
     internal static Member FromXml(XElement element, bool isPlugin = false)
@@ -86,7 +86,8 @@ internal class FunctionMember : Member
         member.Summary = summary.ToString();
 
         var returnTypeEl = element.Element("returns");
-        member.ReturnType = returnTypeEl != null ? ReturnType.FromXml(returnTypeEl) : null;
+        var methodInfo = TypeUtil.GetMethodInfo(memberName);
+        member.ReturnType = returnTypeEl != null ? ReturnType.FromXml(returnTypeEl, methodInfo) : null;
 
         var i = 0;
         if (parameterTypes.Length > 0)
@@ -120,15 +121,25 @@ internal class FunctionMember : Member
         {
             parameters = string.Join("\n", this.Parameters?
                 .Select(p =>
-                    $"* **{p.Name} (" + (p.IsOptional ? "Optional " : "") + $"`{p.GetTypeName(false)}`)** \n" +
-                    $"\t{p.Description}\n"));
+                    $"* **{p.Name} (" + (p.IsOptional ? "Optional " : "") + $"```{p.GetTypeName(false)}```)** \n" +
+                    $"\t{p.Description}\n\n"));
         }
 
         var examples = string.Join<Example>("\n\n", this.MarkdownExamples);
 
         replacements.Add("ParametersSignature", parametersSignature);
         replacements.Add("Parameters", parameters);
-        replacements.Add("ReturnType", $"{this.ReturnType?.Description ?? ""}");
+
+        if (this.ReturnType != null)
+        {
+            replacements.Add("ReturnType", $"```{this.ReturnType.GetTypeName()}```");
+            replacements.Add("ReturnTypeDescription", $"{this.ReturnType.Description ?? ""}.");
+        }
+        else
+        {
+            replacements.Add("ReturnType", "");
+        }
+
         replacements.Add("Examples", examples);
         replacements.Add("IsPlugin", IsPlugin ? "true" : "");
     }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
@@ -11,6 +11,7 @@ internal abstract class Member : IComparable<Member>
     public string Summary { get; set; }
 
     internal abstract string GetLinkMarkdown();
+
     internal virtual void FillTemplateReplacements(ref Dictionary<string, string> replacements)
     {
         replacements.Add("Name", this.Name);
@@ -46,7 +47,7 @@ internal abstract class Member : IComparable<Member>
             }
         }
 
-        return template;
+        return Regex.Replace(template, "$\n\n", "\n", RegexOptions.Multiline);
     }
 
     public virtual int CompareTo(Member other) => this.Name.CompareTo(other.Name);

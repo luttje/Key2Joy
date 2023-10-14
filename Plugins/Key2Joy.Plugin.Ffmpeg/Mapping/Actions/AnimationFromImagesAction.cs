@@ -62,25 +62,8 @@ public class AnimationFromImagesAction : PluginAction
     /// <param name="framePaths">Array/Table of paths to where the frames are located</param>
     /// <name>Ffmpeg.AnimationFromImages</name>
     [ExposesScriptingMethod("Ffmpeg.AnimationFromImages")]
-    public void ExecuteForScript(string savePath, double frameRate, object framePaths)
-    {
-        string[] allFramePaths;
-
-        // WORKAROUND: for NLua not converting a table to array
-        // Ideally we would just have the third parameter framePathsObj be: string[] framePaths
-        // But Lua does not recognize a table as suitable for a string[] and if we use IEnumerable it mangles the type
-        // TODO: Here's to hoping it just works (the following was commented after migrating this action to plugin)
-        //if (framePaths is LuaTable table)
-        //{
-        //    allFramePaths = new string[table.Values.Count];
-        //    table.Values.CopyTo(allFramePaths, 0);
-        //}
-        //else
-        allFramePaths = Array.ConvertAll((object[])framePaths, fp => (string)fp);
-        // End of WORKAROUND
-
-        this.JoinImageSequence(savePath, frameRate, allFramePaths);
-    }
+    public void ExecuteForScript(string savePath, double frameRate, string[] framePaths)
+        => this.JoinImageSequence(savePath, frameRate, framePaths);
 
     /// <remarks>
     /// This code is copied from https://github.com/rosenbjerg/FFMpegCore/blob/9f34591a03ef5db49b4b993122e03cbd8a7fa8c4/FFMpegCore/FFMpeg/FFMpeg.cs#L309

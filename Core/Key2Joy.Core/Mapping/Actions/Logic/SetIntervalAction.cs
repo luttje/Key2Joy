@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
@@ -39,16 +39,16 @@ public class SetIntervalAction : CoreAction
     /// <![CDATA[
     /// setTimeout(function () {
     ///   Print("Aborting in 3 second...")
-    ///    
+    ///
     ///   setTimeout(function () {
     ///     Print("Three")
-    /// 
+    ///
     ///     setTimeout(function () {
     ///       Print("Two")
-    /// 
+    ///
     ///       setTimeout(function () {
     ///         Print("One")
-    /// 
+    ///
     ///         setTimeout(function () {
     ///           App.Command("abort")
     ///         }, 1000)
@@ -62,6 +62,7 @@ public class SetIntervalAction : CoreAction
     /// <param name="callback">Function to execute after each wait</param>
     /// <param name="waitTime">Time to wait (in milliseconds)</param>
     /// <param name="arguments">Zero or more extra parameters to pass to the function</param>
+    /// <returns>An interval id that can be removed with clearInterval</returns>
     /// <name>SetInterval</name>
     [ExposesScriptingMethod("SetInterval")]
     [ExposesScriptingMethod("setInterval")] // Alias to conform to JS standard

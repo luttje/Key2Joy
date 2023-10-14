@@ -1,17 +1,13 @@
-# `ClearInterval` (`IntervalId`)
-
+# `ClearInterval` (```IntervalId```)
 
 Cancels an interval previously established by calling SetInterval()
 
-
 ## Parameters
-
-* **intervalId (`IntervalId`)** 
+* **intervalId (```IntervalId```)** 
 	Id returned by SetInterval to cancel
 
 
 ## Examples
-
 > Shows how to count up to 3 every second and then stop by using ClearInterval();
 > 
 > #### _js_:

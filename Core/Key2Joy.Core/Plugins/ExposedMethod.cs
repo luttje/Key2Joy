@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
+using Key2Joy.Util;
 
 namespace Key2Joy.Plugins;
 
@@ -63,32 +64,40 @@ public abstract class ExposedMethod
     /// <exception cref="NotImplementedException"></exception>
     public object TransformAndRedirect(params object[] parameters)
     {
-        var transformedParameters = parameters.Select((p, i) =>
+        var transformedParameters = parameters.Select((parameter, parameterIndex) =>
         {
-            var parameterType = this.ParameterTypes[i];
+            var parameterType = this.ParameterTypes[parameterIndex];
 
-            if (this.parameterTransformers.TryGetValue(p.GetType(), out var transformer))
+            if (this.parameterTransformers.TryGetValue(parameter.GetType(), out var transformer))
             {
-                return transformer(p, parameterType);
+                return transformer(parameter, parameterType);
             }
 
             // If the parameter type is an enumeration, we try to convert the parameter to the enum value.
             if (parameterType.IsEnum)
             {
-                return Enum.Parse(parameterType, p.ToString());
+                return Enum.Parse(parameterType, parameter.ToString());
             }
 
-            if (p is MarshalByRefObject or ISerializable)
+            if (parameter is object[] objectArrayParameter && parameterType.IsArray)
             {
-                return p;
+                // TODO: This breaks the reference to the original array
+                // TODO: Inform plugin creators that if they want to keep the original reference, they should
+                //       use the 'object' type and cast the array to the correct type themselves.
+                parameter = objectArrayParameter.CopyArrayToNewType(parameterType.GetElementType());
             }
 
-            if (p.GetType().IsSerializable)
+            if (parameter is MarshalByRefObject or ISerializable)
             {
-                return p;
+                return parameter;
             }
 
-            throw new NotImplementedException("Parameter type not supported to cross AppDomain boundary: " + p.GetType().FullName);
+            if (parameter.GetType().IsSerializable)
+            {
+                return parameter;
+            }
+
+            throw new NotImplementedException("Parameter type not supported as an exposed method parameter: " + parameter.GetType().FullName);
         }).ToArray();
 
         return this.InvokeMethod(transformedParameters);

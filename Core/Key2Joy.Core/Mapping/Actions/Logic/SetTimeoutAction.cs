@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
@@ -40,16 +40,16 @@ public class SetTimeoutAction : CoreAction
     /// <![CDATA[
     /// setTimeout(function () {
     ///   Print("Aborting in 3 second...")
-    ///    
+    ///
     ///   setTimeout(function () {
     ///     Print("Three")
-    /// 
+    ///
     ///     setTimeout(function () {
     ///       Print("Two")
-    /// 
+    ///
     ///       setTimeout(function () {
     ///         Print("One")
-    /// 
+    ///
     ///         setTimeout(function () {
     ///           App.Command("abort")
     ///         }, 1000)
@@ -89,6 +89,7 @@ public class SetTimeoutAction : CoreAction
     /// <param name="callback">Function to execute after the wait</param>
     /// <param name="waitTime">Time to wait (in milliseconds)</param>
     /// <param name="arguments">Zero or more extra parameters to pass to the function</param>
+    /// <returns>A timeout id that can be removed with clearTimeout</returns>
     /// <name>SetTimeout</name>
     [ExposesScriptingMethod("SetTimeout")]
     [ExposesScriptingMethod("setTimeout")] // Alias to conform to JS standard

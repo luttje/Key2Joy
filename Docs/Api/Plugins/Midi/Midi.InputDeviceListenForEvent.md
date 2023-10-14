@@ -5,13 +5,11 @@
 
 Listens for events on the specified Midi input device
 
-
-
 ## Returns
+```Void```
+A collection with input devices.
 
-A collection with input devices
 ## Examples
-
 > Adds an event listener to all input devices and prints to the logs when they fire.
 > 
 > #### _lua_:

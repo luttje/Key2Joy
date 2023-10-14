@@ -1,17 +1,16 @@
 # `Buttons`
 
+Simulate pressing or releasing (or both) mouse buttons.
 
 ## Example Use
-
 `Buttons.None`
 
 ## Possible Values
-
-* `None`
-* `Left`
-* `Right`
-* `Middle`
-* `XButton1`
-* `XButton2`
-* `WheelUp`
-* `WheelDown`
+* `None`: No button is pressed.
+* `Left`: The left mouse button.
+* `Right`: The right mouse button.
+* `Middle`: The middle mouse button.
+* `XButton1`: The first extra mouse button.
+* `XButton2`: The second extra mouse button.
+* `WheelUp`: The mouse wheel is moved upward.
+* `WheelDown`: The mouse wheel is moved downward.

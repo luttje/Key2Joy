@@ -1,16 +1,12 @@
-# `Mouse.Simulate` (`Buttons`, `PressState`)
-
+# `Mouse.Simulate` (```Buttons```, ```PressState```)
 
 Simulate pressing or releasing (or both) mouse buttons.
 
-
 ## Parameters
-
-* **button (`Buttons`)** 
+* **button (```Buttons```)** 
 	Button to simulate
 
-* **pressState (`PressState`)** 
+* **pressState (```PressState```)** 
 	Action to simulate
-
 
 

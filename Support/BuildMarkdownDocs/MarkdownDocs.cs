@@ -87,7 +87,7 @@ internal class MarkdownDocs
                     {
                         EnumMember enumMember;
                         Dictionary<string, string> valueSummaries = new();
-                        var fullXmlName = $"F:{parameter.Type.FullName}";
+                        var fullXmlName = $"F:{parameter.Type.FullName.Replace('+', '.')}";
 
                         foreach (var m in xmlMembers)
                         {
@@ -105,7 +105,7 @@ internal class MarkdownDocs
                             Parent = enumParent,
                             Type = parameter.Type,
                             Name = enumName,
-                            Summary = "",
+                            Summary = xmlMember.Element("summary").Value.TrimEachLine() ?? "",
                             ValueSummaries = valueSummaries,
                         });
 

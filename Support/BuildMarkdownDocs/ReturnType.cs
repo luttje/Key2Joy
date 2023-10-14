@@ -1,20 +1,25 @@
-﻿using System.Xml.Linq;
+using System;
+using System.Reflection;
+using System.Xml.Linq;
 
 namespace BuildMarkdownDocs;
 
 internal class ReturnType
 {
     public string Description { get; set; }
-    // TODO:
-    // public Type Type { get; set; }
+    public Type Type { get; set; }
 
-    public static ReturnType FromXml(XElement element)
+    public static ReturnType FromXml(XElement element, MethodInfo methodInfo)
     {
         ReturnType returnType = new()
         {
-            Description = element.Value
+            Description = element.Value,
+            Type = methodInfo.ReturnType
         };
 
         return returnType;
     }
+
+    internal object GetTypeName()
+        => this.Type.Name;
 }

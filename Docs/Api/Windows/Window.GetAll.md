@@ -1,11 +1,8 @@
 # `Window.GetAll` ()
 
-
 Fetches all windows of software currently running.
 
-
-
 ## Returns
-
-List with handles of all the windows
+```Object[]```
+List with handles of all the windows.
 

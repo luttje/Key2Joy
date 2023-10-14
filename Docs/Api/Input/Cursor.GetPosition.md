@@ -1,15 +1,12 @@
 # `Cursor.GetPosition` ()
 
-
 Gets the current cursor position
 
-
-
 ## Returns
+```Point```
+A Point object with X and Y properties that represent the cursor X and Y.
 
-A Point object with X and Y properties that represent the cursor X and Y
 ## Examples
-
 > The code below prints 0, 0 when the cursor is held in the top left of the first monitor.
 > 
 > #### _js_:

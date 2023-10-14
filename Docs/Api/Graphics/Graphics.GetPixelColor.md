@@ -1,22 +1,19 @@
-# `Graphics.GetPixelColor` (`Int32`, `Int32`)
-
+# `Graphics.GetPixelColor` (```Int32```, ```Int32```)
 
 Gets the color of a pixel at the given x and y position
 
-
 ## Parameters
-
-* **x (`Int32`)** 
+* **x (```Int32```)** 
 	X position on screen
 
-* **y (`Int32`)** 
+* **y (```Int32```)** 
 	Y position on screen
 
 ## Returns
+```Color```
+A color object containing Red, Green and Blue color information.
 
-A color object containing Red, Green and Blue color information
 ## Examples
-
 > Shows the color of the pixel at the mouse position
 > 
 > #### _lua_:

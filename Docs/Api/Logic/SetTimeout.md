@@ -1,39 +1,38 @@
-# `SetTimeout` (`CallbackAction`, `Int64`, `Object[]`)
-
+# `SetTimeout` (```CallbackAction```, ```Int64```, ```Object[]```)
 
 Timeout for the specified duration in milliseconds, then execute the callback
 
-
 ## Parameters
-
-* **callback (`CallbackAction`)** 
+* **callback (```CallbackAction```)** 
 	Function to execute after the wait
 
-* **waitTime (`Int64`)** 
+* **waitTime (```Int64```)** 
 	Time to wait (in milliseconds)
 
-* **arguments (`Object[]`)** 
+* **arguments (```Object[]```)** 
 	Zero or more extra parameters to pass to the function
 
+## Returns
+```TimeoutId```
+A timeout id that can be removed with clearTimeout.
 
 ## Examples
-
 > Shows how to count down from 3 and execute a command using Javascript.
 > 
 > #### _js_:
 > ```js
 > setTimeout(function () {
 >   Print("Aborting in 3 second...")
->    
+>             
 >   setTimeout(function () {
 >     Print("Three")
-> 
+>             
 >     setTimeout(function () {
 >       Print("Two")
-> 
+>             
 >       setTimeout(function () {
 >         Print("One")
-> 
+>             
 >         setTimeout(function () {
 >           App.Command("abort")
 >         }, 1000)
@@ -43,7 +42,6 @@ Timeout for the specified duration in milliseconds, then execute the callback
 > }, 1000)
 > ```
 ---
-
 > Shows how to count down from 3 each second and execute a command using Lua.
 > 
 > #### _lua_:
