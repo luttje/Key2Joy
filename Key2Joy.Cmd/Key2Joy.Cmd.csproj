@@ -8,6 +8,7 @@
     <Description>Control Key2Joy from the command line</Description>
     <Copyright>Copyright © 2023 luttje</Copyright>
     <PackageProjectUrl>https://github.com/luttje/Key2Joy</PackageProjectUrl>
+    <VersionPrefix>0.7.0</VersionPrefix>
   </PropertyGroup>
 
   <PropertyGroup>

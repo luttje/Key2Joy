@@ -9,6 +9,7 @@
     <Copyright>Copyright © 2023 luttje</Copyright>
     <PackageProjectUrl>https://github.com/luttje/Key2Joy</PackageProjectUrl>
     <NeutralLanguage>en</NeutralLanguage>
+    <VersionPrefix>0.7.0</VersionPrefix>
   </PropertyGroup>
 
   <PropertyGroup>
