@@ -36,12 +36,14 @@
             // txtKeyBind
             // 
             this.txtKeyBind.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtKeyBind.Enabled = false;
             this.txtKeyBind.Location = new System.Drawing.Point(87, 5);
             this.txtKeyBind.Name = "txtKeyBind";
+            this.txtKeyBind.ReadOnly = true;
             this.txtKeyBind.Size = new System.Drawing.Size(213, 20);
             this.txtKeyBind.TabIndex = 6;
             this.txtKeyBind.Text = "(click this field with any mouse button to select it as the trigger)";
+            this.txtKeyBind.MouseEnter += new System.EventHandler(this.TxtKeyBind_MouseEnter);
+            this.txtKeyBind.MouseLeave += new System.EventHandler(this.TxtKeyBind_MouseLeave);
             // 
             // lblInfo
             // 
@@ -64,9 +66,9 @@
             this.cmbPressState.Name = "cmbPressState";
             this.cmbPressState.Size = new System.Drawing.Size(89, 21);
             this.cmbPressState.TabIndex = 12;
-            this.cmbPressState.SelectedIndexChanged += new System.EventHandler(this.cmbPressedState_SelectedIndexChanged);
+            this.cmbPressState.SelectedIndexChanged += new System.EventHandler(this.CmbPressedState_SelectedIndexChanged);
             // 
-            // MouseButtonTriggerOptionsControl
+            // MouseButtonTriggerControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -75,7 +77,7 @@
             this.Controls.Add(this.cmbPressState);
             this.Controls.Add(this.lblInfo);
             this.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Name = "MouseButtonTriggerOptionsControl";
+            this.Name = "MouseButtonTriggerControl";
             this.Padding = new System.Windows.Forms.Padding(5);
             this.Size = new System.Drawing.Size(394, 26);
             this.ResumeLayout(false);

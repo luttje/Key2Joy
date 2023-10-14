@@ -1,45 +1,31 @@
-﻿using Key2Joy.Mapping;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using System.Windows.Forms;
+using Key2Joy.Contracts.Mapping.Triggers;
 
-namespace Key2Joy.Gui.Mapping
+namespace Key2Joy.Gui.Mapping;
+
+public partial class CombinedTriggerControlItem : UserControl
 {
-    public partial class CombinedTriggerControlItem : UserControl
+    public event EventHandler RequestedRemove;
+    public event EventHandler TriggerChanged;
+    public AbstractTrigger Trigger { get; private set; }
+
+    public CombinedTriggerControlItem() => this.InitializeComponent();
+
+    public CombinedTriggerControlItem(AbstractTrigger trigger)
+        : this()
     {
-        public event EventHandler RequestedRemove;
-        public event EventHandler TriggerChanged;
-        public BaseTrigger Trigger { get; private set; }
+        this.Trigger = trigger;
 
-        public CombinedTriggerControlItem()
-        {
-            InitializeComponent();
-        }
+        this.triggerControl.SelectTrigger(trigger);
+    }
 
-        public CombinedTriggerControlItem(BaseTrigger trigger)
-            :this()
-        {
-            Trigger = trigger;
+    private void BtnRemove_Click(object sender, EventArgs e) => RequestedRemove?.Invoke(this, EventArgs.Empty);
 
-            triggerControl.SelectTrigger(trigger);
-        }
+    private void TriggerControl_TriggerChanged(object sender, TriggerChangedEventArgs e)
+    {
+        this.Trigger = e.Trigger;
 
-        private void btnRemove_Click(object sender, EventArgs e)
-        {
-            RequestedRemove?.Invoke(this, EventArgs.Empty);
-        }
-
-        private void triggerControl_TriggerChanged(object sender, TriggerChangedEventArgs e)
-        {
-            Trigger = e.Trigger;
-
-            TriggerChanged?.Invoke(this, EventArgs.Empty);
-        }
+        TriggerChanged?.Invoke(this, EventArgs.Empty);
     }
 }

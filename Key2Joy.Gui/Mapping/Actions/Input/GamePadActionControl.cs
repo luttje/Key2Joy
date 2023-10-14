@@ -1,71 +1,54 @@
-﻿using Key2Joy.LowLevelInput;
-using Key2Joy.Mapping;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using System.Windows.Forms;
+using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Mapping.Actions;
+using Key2Joy.LowLevelInput;
+using Key2Joy.Mapping.Actions.Input;
 
-namespace Key2Joy.Gui.Mapping
+namespace Key2Joy.Gui.Mapping;
+
+[MappingControl(
+    ForType = typeof(GamePadAction),
+    ImageResourceName = "joystick"
+)]
+public partial class GamePadActionControl : UserControl, IActionOptionsControl
 {
-    [MappingControl(
-        ImageResourceName = "joystick"
-    )]
-    public partial class GamePadActionControl : UserControl, IActionOptionsControl
+    public event EventHandler OptionsChanged;
+
+    public GamePadActionControl()
     {
-        public event EventHandler OptionsChanged;
-        
-        public GamePadActionControl()
-        {
-            InitializeComponent();
+        this.InitializeComponent();
 
-            cmbGamePad.DataSource = GamePadAction.GetAllButtons();
-            cmbPressState.DataSource = LegacyPressStateConverter.GetPressStatesWithoutLegacy();
-            cmbPressState.SelectedIndex = 0;
-            cmbGamePadIndex.DataSource = GamePadManager.Instance.GetAllGamePadIndices();
-            cmbGamePadIndex.SelectedIndex = 0;
-        }
-
-        public void Select(BaseAction action)
-        {
-            var thisAction = (GamePadAction)action;
-
-            cmbGamePad.SelectedItem = thisAction.Control;
-            cmbPressState.SelectedItem = thisAction.PressState;
-            cmbGamePadIndex.SelectedItem = thisAction.GamePadIndex;
-        }
-
-        public void Setup(BaseAction action)
-        {
-            var thisAction = (GamePadAction)action;
-
-            thisAction.Control = (SimWinInput.GamePadControl)cmbGamePad.SelectedItem;
-            thisAction.PressState = (PressState) cmbPressState.SelectedItem;
-            thisAction.GamePadIndex = (int)cmbGamePadIndex.SelectedItem;
-        }
-
-        public bool CanMappingSave(BaseAction action)
-        {
-            return true;
-        }
-
-        private void cmbGamePad_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            OptionsChanged?.Invoke(this, EventArgs.Empty);
-        }
-
-        private void cmbPressState_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            OptionsChanged?.Invoke(this, EventArgs.Empty);
-        }
-
-        private void cmbGamePadIndex_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            OptionsChanged?.Invoke(this, EventArgs.Empty);
-        }
+        this.cmbGamePad.DataSource = GamePadAction.GetAllButtons();
+        this.cmbPressState.DataSource = PressStates.ALL;
+        this.cmbPressState.SelectedIndex = 0;
+        this.cmbGamePadIndex.DataSource = GamePadManager.Instance.GetAllGamePadIndices();
+        this.cmbGamePadIndex.SelectedIndex = 0;
     }
+
+    public void Select(object action)
+    {
+        var thisAction = (GamePadAction)action;
+
+        this.cmbGamePad.SelectedItem = thisAction.Control;
+        this.cmbPressState.SelectedItem = thisAction.PressState;
+        this.cmbGamePadIndex.SelectedItem = thisAction.GamePadIndex;
+    }
+
+    public void Setup(object action)
+    {
+        var thisAction = (GamePadAction)action;
+
+        thisAction.Control = (SimWinInput.GamePadControl)this.cmbGamePad.SelectedItem;
+        thisAction.PressState = (PressState)this.cmbPressState.SelectedItem;
+        thisAction.GamePadIndex = (int)this.cmbGamePadIndex.SelectedItem;
+    }
+
+    public bool CanMappingSave(object action) => true;
+
+    private void CmbGamePad_SelectedIndexChanged(object sender, EventArgs e) => OptionsChanged?.Invoke(this, EventArgs.Empty);
+
+    private void CmbPressState_SelectedIndexChanged(object sender, EventArgs e) => OptionsChanged?.Invoke(this, EventArgs.Empty);
+
+    private void CmbGamePadIndex_SelectedIndexChanged(object sender, EventArgs e) => OptionsChanged?.Invoke(this, EventArgs.Empty);
 }

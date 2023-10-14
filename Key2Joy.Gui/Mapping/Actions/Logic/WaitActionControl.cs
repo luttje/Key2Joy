@@ -1,52 +1,41 @@
-﻿using Key2Joy.Mapping;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using System.Windows.Forms;
+using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Mapping.Actions;
+using Key2Joy.Mapping.Actions.Logic;
 
-namespace Key2Joy.Gui.Mapping
+namespace Key2Joy.Gui.Mapping;
+
+[MappingControl(
+    ForType = typeof(WaitAction),
+    ImageResourceName = "clock"
+)]
+public partial class WaitActionControl : UserControl, IActionOptionsControl
 {
-    [MappingControl(
-        ImageResourceName = "clock"
-    )]
-    public partial class WaitActionControl : UserControl, IActionOptionsControl
+    public event EventHandler OptionsChanged;
+
+    public WaitActionControl()
     {
-        public event EventHandler OptionsChanged;
-        
-        public WaitActionControl()
-        {
-            InitializeComponent();
+        this.InitializeComponent();
 
-            nudWaitTimeInMs.Maximum = decimal.MaxValue;
-        }
-
-        public void Select(BaseAction action)
-        {
-            var thisAction = (WaitAction)action;
-
-            nudWaitTimeInMs.Value = (decimal)thisAction.WaitTime.TotalMilliseconds;
-        }
-
-        public void Setup(BaseAction action)
-        { 
-            var thisAction = (WaitAction)action;
-
-            thisAction.WaitTime = TimeSpan.FromMilliseconds((double)nudWaitTimeInMs.Value);
-        }
-        
-        public bool CanMappingSave(BaseAction action)
-        {
-            return true;
-        }
-
-        private void nudWaitTimeInMs_ValueChanged(object sender, EventArgs e)
-        {
-            OptionsChanged?.Invoke(this, EventArgs.Empty);
-        }
+        this.nudWaitTimeInMs.Maximum = decimal.MaxValue;
     }
+
+    public void Select(object action)
+    {
+        var thisAction = (WaitAction)action;
+
+        this.nudWaitTimeInMs.Value = (decimal)thisAction.WaitTime.TotalMilliseconds;
+    }
+
+    public void Setup(object action)
+    {
+        var thisAction = (WaitAction)action;
+
+        thisAction.WaitTime = TimeSpan.FromMilliseconds((double)this.nudWaitTimeInMs.Value);
+    }
+
+    public bool CanMappingSave(object action) => true;
+
+    private void NudWaitTimeInMs_ValueChanged(object sender, EventArgs e) => OptionsChanged?.Invoke(this, EventArgs.Empty);
 }

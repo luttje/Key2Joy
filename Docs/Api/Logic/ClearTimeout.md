@@ -1,18 +1,13 @@
-# `ClearTimeout` (`TimeoutId`)
-
+# `ClearTimeout` (```TimeoutId```)
 
 Cancels a timeout previously established by calling SetTimeout()
 
-
 ## Parameters
-
-* **timeoutId (`TimeoutId`)** 
-
+* **timeoutId (```TimeoutId```)** 
 	Id returned by SetTimeout to cancel
 
 
 ## Examples
-
 > Shows how to set and immediately cancel a timeout.
 > 
 > #### _js_:

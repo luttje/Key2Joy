@@ -1,21 +1,22 @@
-﻿using System;
+using System;
 
-namespace Key2Joy.Cmd
+namespace Key2Joy.Cmd;
+
+internal abstract class Options
 {
-    internal abstract class Options
+    private const int MAX_RETRIES = 1;
+
+    public abstract void Handle();
+
+    protected int Retries { get; set; } = 0;
+
+    protected void SafelyRetry(Action value)
     {
-        const int MAX_RETRIES = 1;
-        
-        abstract public void Handle();
-
-        protected int retries = 0;
-
-        protected void SafelyRetry(Action value)
+        if (++this.Retries > MAX_RETRIES)
         {
-            if (++retries > MAX_RETRIES)
-                return;
-
-            value();
+            return;
         }
+
+        value();
     }
 }

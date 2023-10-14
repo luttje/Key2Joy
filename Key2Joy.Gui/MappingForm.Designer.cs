@@ -76,7 +76,7 @@
             this.btnSaveMapping.TabIndex = 91;
             this.btnSaveMapping.Text = "Save Mapping";
             this.btnSaveMapping.UseVisualStyleBackColor = true;
-            this.btnSaveMapping.Click += new System.EventHandler(this.btnSaveMapping_Click);
+            this.btnSaveMapping.Click += new System.EventHandler(this.BtnSaveMapping_Click);
             // 
             // grpTrigger
             // 

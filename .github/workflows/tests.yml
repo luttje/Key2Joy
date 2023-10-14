@@ -15,6 +15,13 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: 7.0.x
+      - name: Downloads .NET Framework Tools
+        run: |
+          Invoke-WebRequest -Uri https://go.microsoft.com/fwlink/?linkid=2088517 -OutFile ndp48-devpack-enu.exe
+          .\ndp48-devpack-enu.exe /quiet
+      - name: Creates a SNK file for signing the assembly
+        run: |
+          & "C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.8 Tools\sn.exe" -k keypair.snk
       - name: Run Key2Joy Tests
         run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat="lcov" /p:CoverletOutput="${{ github.workspace }}/coverage/lcov.info"
       - name: Coveralls for Key2Joy

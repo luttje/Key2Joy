@@ -1,4 +1,6 @@
-﻿namespace Key2Joy.Gui.Mapping
+﻿using Key2Joy.Contracts.Mapping.Triggers;
+
+namespace Key2Joy.Gui.Mapping
 {
     partial class CombinedTriggerControlItem
     {
@@ -45,7 +47,7 @@
             this.triggerControl.Padding = new System.Windows.Forms.Padding(5);
             this.triggerControl.Size = new System.Drawing.Size(331, 31);
             this.triggerControl.TabIndex = 2;
-            this.triggerControl.TriggerChanged += new System.EventHandler<Key2Joy.Mapping.TriggerChangedEventArgs>(this.triggerControl_TriggerChanged);
+            this.triggerControl.TriggerChanged += new System.EventHandler<TriggerChangedEventArgs>(this.TriggerControl_TriggerChanged);
             // 
             // pnlActions
             // 
@@ -66,7 +68,7 @@
             this.btnRemove.TabIndex = 2;
             this.btnRemove.Text = "Remove";
             this.btnRemove.UseVisualStyleBackColor = true;
-            this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
+            this.btnRemove.Click += new System.EventHandler(this.BtnRemove_Click);
             // 
             // CombinedTriggerControl
             // 

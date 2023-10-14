@@ -1,0 +1,63 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Authors>luttje</Authors>
+    <Title>Key2Joy</Title>
+    <Product>Key2Joy</Product>
+    <Description>Simulate a game controller with your mouse and keyboard</Description>
+    <Copyright>Copyright © 2023 luttje</Copyright>
+    <PackageProjectUrl>https://github.com/luttje/Key2Joy</PackageProjectUrl>
+    <VersionPrefix>0.7.0</VersionPrefix>
+  </PropertyGroup>
+
+	<PropertyGroup>
+    <AssemblyTitle>Key2Joy.PluginHost</AssemblyTitle>
+		<TargetFramework>NET48</TargetFramework>
+		<LangVersion>latest</LangVersion>
+		<RunPostBuildEvent>Always</RunPostBuildEvent>
+		<PlatformTarget>x86</PlatformTarget>
+		<GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
+    <ProjectGuid>{28FD937C-CCA7-4E85-A29B-D723E8390E51}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <BaseOutputPath>bin\$(MSBuildProjectName)</BaseOutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugType>full</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="bin\**" />
+    <EmbeddedResource Remove="bin\**" />
+    <None Remove="bin\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Key2Joy.Contracts\Key2Joy.Contracts.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+	  <Reference Include="System" />
+	  <Reference Include="System.AddIn.Contract" />
+	  <Reference Include="System.Core" />
+	  <Reference Include="System.Runtime.Remoting" />
+	  <Reference Include="System.Xml.Linq" />
+	  <Reference Include="System.Data" />
+	  <Reference Include="System.Xml" />
+	  <Reference Include="WindowsBase" />
+  </ItemGroup>
+
+</Project>

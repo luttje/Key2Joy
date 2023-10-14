@@ -1,17 +1,13 @@
-# `Window.GetClass` (`IntPtr`)
-
+# `Window.GetClass` (```IntPtr```)
 
 Get the class name for a specified Window.
-
-You can use [Window.GetAllAction.md](Window.GetAllAction.md) , [Window.FindAction.md](Window.FindAction.md) or [Window.GetForegroundAction.md](Window.GetForegroundAction.md) to get handles.
-
+You can use [Window.GetAllAction](Window.GetAllAction.md), [Window.FindAction](Window.FindAction.md) or  [Window.GetForegroundAction](Window.GetForegroundAction.md) to get handles.
 
 ## Parameters
-
-* **handle (`IntPtr`)** 
-
+* **handle (```IntPtr```)** 
 	The window handle to get the class for
 
 ## Returns
+```String```
+Class name for the window.
 
-Class name for the window

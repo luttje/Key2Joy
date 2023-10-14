@@ -42,7 +42,7 @@
             this.txtKeyBind.Size = new System.Drawing.Size(194, 20);
             this.txtKeyBind.TabIndex = 7;
             this.txtKeyBind.Text = "(click here, then press any key to select it as the trigger)";
-            this.txtKeyBind.MouseUp += new System.Windows.Forms.MouseEventHandler(this.txtKeyBind_MouseUp);
+            this.txtKeyBind.MouseUp += new System.Windows.Forms.MouseEventHandler(this.TxtKeyBind_MouseUp);
             // 
             // lblInfo
             // 
@@ -64,7 +64,7 @@
             this.cmbPressState.Name = "cmbPressState";
             this.cmbPressState.Size = new System.Drawing.Size(89, 21);
             this.cmbPressState.TabIndex = 11;
-            this.cmbPressState.SelectedIndexChanged += new System.EventHandler(this.cmbPressedState_SelectedIndexChanged);
+            this.cmbPressState.SelectedIndexChanged += new System.EventHandler(this.CmbPressedState_SelectedIndexChanged);
             // 
             // KeyboardTriggerControl
             // 

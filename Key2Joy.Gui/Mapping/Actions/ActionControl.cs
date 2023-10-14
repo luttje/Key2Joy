@@ -1,124 +1,146 @@
-﻿using Key2Joy.Mapping;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Mapping.Actions;
+using Key2Joy.Mapping;
+using Key2Joy.Mapping.Actions;
+using Key2Joy.Plugins;
 
-namespace Key2Joy.Gui.Mapping
+namespace Key2Joy.Gui.Mapping;
+
+public partial class ActionControl : UserControl
 {
-    public partial class ActionControl : UserControl
+    public AbstractAction Action { get; private set; }
+
+    public event Action<AbstractAction> ActionChanged;
+
+    public bool IsTopLevel { get; set; }
+
+    private bool isLoaded = false;
+    private IActionOptionsControl options;
+    private AbstractAction selectedAction = null;
+
+    public ActionControl() => this.InitializeComponent();
+
+    private void BuildAction()
     {
-        public BaseAction Action { get; private set; }
-        public event Action<BaseAction> ActionChanged;
-        public bool IsTopLevel { get; set; }
-
-        private bool isLoaded = false;
-        private IActionOptionsControl options;
-        private BaseAction selectedAction = null;
-
-        public ActionControl()
+        if (this.cmbAction.SelectedItem == null)
         {
-            InitializeComponent();
+            ActionChanged?.Invoke(null);
+            return;
         }
-        
-        private void BuildAction()
+
+        var selected = (ImageComboBoxItem<KeyValuePair<ActionAttribute, MappingTypeFactory<AbstractAction>>>)this.cmbAction.SelectedItem;
+        var selectedTypeFactory = selected.ItemValue.Value;
+
+        if (this.Action == null || this.Action.GetType().FullName != selectedTypeFactory.FullTypeName)
         {
-            if (cmbAction.SelectedItem == null) 
+            this.Action = CoreAction.MakeAction(selectedTypeFactory);
+        }
+
+        this.options?.Setup(this.Action);
+
+        ActionChanged?.Invoke(this.Action);
+    }
+
+    public bool CanMappingSave(AbstractMappedOption mappedOption)
+    {
+        if (this.options != null)
+        {
+            return this.options.CanMappingSave(mappedOption.Action);
+        }
+
+        return false;
+    }
+
+    public void SelectAction(AbstractAction action)
+    {
+        if (action is DisabledAction)
+        {
+            action = null;
+        }
+
+        this.selectedAction = action;
+
+        if (!this.isLoaded)
+        {
+            return;
+        }
+
+        var selected = this.cmbAction.Items.Cast<ImageComboBoxItem<KeyValuePair<ActionAttribute, MappingTypeFactory<AbstractAction>>>>();
+        var actionFullTypeName = MappingTypeHelper.GetTypeFullName(
+            ActionsRepository.GetAllActions(),
+            action
+        );
+        actionFullTypeName = MappingTypeHelper.EnsureSimpleTypeName(actionFullTypeName);
+
+        var selectedType = selected.FirstOrDefault(x => x.ItemValue.Value.FullTypeName == actionFullTypeName);
+        this.cmbAction.SelectedItem = selectedType;
+    }
+
+    private void LoadActions()
+    {
+        var actionTypeFactories = ActionsRepository.GetAllActions(this.IsTopLevel);
+
+        foreach (var keyValuePair in actionTypeFactories)
+        {
+            var mappingControlFactory = MappingControlRepository.GetMappingControlFactory(keyValuePair.Value.FullTypeName);
+
+            if (mappingControlFactory == null)
             {
-                ActionChanged?.Invoke(null);
-                return;
+                continue;
             }
 
-            var selected = (ImageComboBoxItem<KeyValuePair<ActionAttribute, Type>>)cmbAction.SelectedItem;
-            var selectedType = selected.ItemValue.Value;
-            var attribute = selected.ItemValue.Key;
+            var customImage = mappingControlFactory.ImageResourceName;
+            var image = Program.ResourceBitmapFromName(customImage ?? "error");
+            ImageComboBoxItem<KeyValuePair<ActionAttribute, MappingTypeFactory<AbstractAction>>> item = new(keyValuePair, new Bitmap(image), "Key");
 
-            if (Action == null || Action.GetType() != selectedType)
-                Action = BaseAction.MakeAction(selectedType, attribute);
-
-            if (options != null)
-                options.Setup(Action);
-
-            ActionChanged?.Invoke(Action);
+            this.cmbAction.Items.Add(item);
         }
 
-        public bool CanMappingSave(MappedOption mappedOption)
+        this.cmbAction.SelectedIndex = -1;
+
+        this.isLoaded = true;
+
+        if (this.selectedAction != null)
         {
-            if (options != null)
-                return options.CanMappingSave(mappedOption.Action);
-
-            return false;
-        }
-
-        public void SelectAction(BaseAction action)
-        {
-            selectedAction = action;
-            
-            if (!isLoaded)
-                return;
-
-            var selected = cmbAction.Items.Cast<ImageComboBoxItem<KeyValuePair<ActionAttribute, Type>>>();
-            var selectedType = selected.FirstOrDefault(x => x.ItemValue.Value == action.GetType());
-            cmbAction.SelectedItem = selectedType;
-        }
-
-        private void LoadActions()
-        {
-            var actionTypes = ActionAttribute.GetAllActions(IsTopLevel);
-
-            foreach (var keyValuePair in actionTypes)
-            {
-                var control = MappingControlAttribute.GetCorrespondingControlType(keyValuePair.Value, out _);
-                var customImage = control?.GetCustomAttribute<MappingControlAttribute>()?.ImageResourceName;
-                var image = Program.ResourceBitmapFromName(customImage ?? "error");
-                var item = new ImageComboBoxItem<KeyValuePair<ActionAttribute, Type>>(keyValuePair, new Bitmap(image), "Key");
-
-                cmbAction.Items.Add(item);
-            }
-
-            cmbAction.SelectedIndex = -1;
-
-            isLoaded = true;
-
-            if(selectedAction != null)
-                SelectAction(selectedAction);
-        }
-        
-        private void cmbAction_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!isLoaded)
-                return;
-            
-            var options = MappingForm.BuildOptionsForComboBox<ActionAttribute>(cmbAction, pnlActionOptions);
-
-            if (options != null)
-            {
-                this.options = options as IActionOptionsControl;
-
-                if (this.options != null)
-                {
-                    if(selectedAction != null)
-                        this.options.Select(selectedAction);
-
-                    this.options.OptionsChanged += (s, _) => BuildAction();
-                }
-            }
-            
-            BuildAction();
-            
-            selectedAction = null;
-            PerformLayout();
-        }
-
-        private void ActionControl_Load(object sender, EventArgs e)
-        {
-            LoadActions();
+            this.SelectAction(this.selectedAction);
         }
     }
+
+    private void CmbAction_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (!this.isLoaded)
+        {
+            return;
+        }
+
+        var options = MappingForm.BuildOptionsForComboBox<ActionAttribute, AbstractAction>(this.cmbAction, this.pnlActionOptions);
+
+        if (options != null)
+        {
+            this.options = options as IActionOptionsControl;
+
+            if (this.options != null)
+            {
+                if (this.selectedAction != null)
+                {
+                    this.options.Select(this.selectedAction);
+                }
+
+                this.options.OptionsChanged += (s, _) => this.BuildAction();
+            }
+        }
+
+        this.BuildAction();
+
+        this.selectedAction = null;
+        this.PerformLayout();
+    }
+
+    private void ActionControl_Load(object sender, EventArgs e) => this.LoadActions();
 }

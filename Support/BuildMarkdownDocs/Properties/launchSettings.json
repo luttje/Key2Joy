@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "BuildMarkdownDocs": {
+      "commandName": "Project",
+      "commandLineArgs": "..\\..\\..\\..\\..\\bin\\Key2Joy.Gui\\Release ..\\..\\..\\..\\..\\bin\\DocumentationFiles ..\\..\\..\\..\\..\\Docs --filter markdown-doc"
+    }
+  }
+}

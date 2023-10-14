@@ -1,116 +1,122 @@
-﻿using Key2Joy.Gui.Mapping;
-using Key2Joy.Mapping;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using Key2Joy.Contracts.Mapping;
+using Key2Joy.Gui.Mapping;
+using Key2Joy.Mapping;
+using Key2Joy.Plugins;
 
-namespace Key2Joy.Gui
+namespace Key2Joy.Gui;
+
+public partial class MappingForm : Form
 {
-    public partial class MappingForm : Form
+    public MappedOption MappedOption { get; private set; } = null;
+
+    public MappingForm()
     {
-        public MappedOption MappedOption { get; private set; } = null;
+        this.InitializeComponent();
+        this.DialogResult = DialogResult.Cancel;
 
-        public MappingForm()
+        this.actionControl.IsTopLevel = true;
+        this.triggerControl.IsTopLevel = true;
+
+        FormClosed += (s, e) => this.Dispose();
+    }
+
+    public MappingForm(MappedOption mappedOption)
+        : this()
+    {
+        if (mappedOption == null)
         {
-            InitializeComponent();
-            DialogResult = DialogResult.Cancel;
-
-            actionControl.IsTopLevel = true;
-            triggerControl.IsTopLevel = true;
-
-            FormClosed += (s, e) => Dispose();
+            return;
         }
 
-        public MappingForm(MappedOption mappedOption)
-            :this()
-        {
-            if (mappedOption == null)
-                return;
-            
-            MappedOption = mappedOption;
+        this.MappedOption = mappedOption;
 
-            triggerControl.SelectTrigger(mappedOption.Trigger);
-            actionControl.SelectAction(mappedOption.Action);
+        this.triggerControl.SelectTrigger(mappedOption.Trigger);
+        this.actionControl.SelectAction(mappedOption.Action);
+    }
+
+    public static Control BuildOptionsForComboBox<TAttribute, TAspect>(ComboBox comboBox, Panel optionsPanel)
+        where TAttribute : MappingAttribute
+        where TAspect : AbstractMappingAspect
+    {
+        var optionsUserControl = optionsPanel.Controls.OfType<Control>().FirstOrDefault();
+
+        if (optionsUserControl != null)
+        {
+            optionsPanel.Controls.Remove(optionsUserControl);
+            optionsUserControl.Dispose();
         }
 
-        public static UserControl BuildOptionsForComboBox<TAttribute>(ComboBox comboBox, Panel optionsPanel)
-            where TAttribute : MappingAttribute
+        if (comboBox.SelectedItem == null)
         {
-            var optionsUserControl = optionsPanel.Controls.OfType<UserControl>().FirstOrDefault();
-
-            if (optionsUserControl != null) 
-            {
-                optionsPanel.Controls.Remove(optionsUserControl);
-                optionsUserControl.Dispose();
-            }
-
-            if (comboBox.SelectedItem == null)
-                return null;
-
-            var selected = ((ImageComboBoxItem<KeyValuePair<TAttribute, Type>>)comboBox.SelectedItem).ItemValue;
-            var selectedType = selected.Value;
-            var attribute = selected.Key;
-
-            optionsUserControl = CreateOptionsControl(selectedType, attribute);
-
-            if (optionsUserControl == null)
-            {
-                MessageBox.Show("Could not create options control for " + selectedType.Name + ". \n\nPlease report this issue to the developer.\n\nThe app will now crash.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                throw new NotImplementedException("Could not create options control for " + selectedType.Name);
-            }
-            
-            optionsPanel.Controls.Add(optionsUserControl);
-            optionsUserControl.Dock = DockStyle.Top;
-
-            return optionsUserControl;
+            return null;
         }
 
-        private static UserControl CreateOptionsControl<TAttribute>(Type selectedType, TAttribute attribute) where TAttribute : MappingAttribute
-        {
-            UserControl optionsUserControl;
-            var correspondingControl = MappingControlAttribute.GetCorrespondingControlType(selectedType, out var parameters);
+        var selected = ((ImageComboBoxItem<KeyValuePair<TAttribute, MappingTypeFactory<TAspect>>>)comboBox.SelectedItem).ItemValue;
+        var selectedTypeFactory = selected.Value;
 
-            if (correspondingControl == null)
-                return null;
-            
-            optionsUserControl = (UserControl)Activator.CreateInstance(correspondingControl, parameters);
-            return optionsUserControl;
+        optionsUserControl = CreateOptionsControl(selectedTypeFactory.FullTypeName);
+
+        if (optionsUserControl == null)
+        {
+            MessageBox.Show("Could not create options control for " + selectedTypeFactory.FullTypeName + ". \n\nPlease report this issue to the developer.\n\nThe app will now crash.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            throw new NotImplementedException("Could not create options control for " + selectedTypeFactory.FullTypeName);
         }
 
-        private void btnSaveMapping_Click(object sender, EventArgs e)
+        if (optionsUserControl is ElementHostProxy pluginUserControl)
         {
-            var trigger = triggerControl.Trigger;
-            var action = actionControl.Action;
-
-            if (trigger == null)
-            {
-                MessageBox.Show("You must select a trigger!", "No trigger selected!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            if (action == null) 
-            { 
-                MessageBox.Show("You must select an action!", "No action selected!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            MappedOption = MappedOption ?? new MappedOption();
-            MappedOption.Trigger = trigger;
-            MappedOption.Action = action;
-
-            if (!actionControl.CanMappingSave(MappedOption))
-                return;
-
-            DialogResult = DialogResult.OK;
-
-            Close();
+            optionsUserControl = new ActionPluginHostControl(pluginUserControl);
         }
+
+        optionsPanel.Controls.Add(optionsUserControl);
+        optionsUserControl.Dock = DockStyle.Top;
+
+        return optionsUserControl;
+    }
+
+    private static Control CreateOptionsControl(string selectedTypeName)
+    {
+        var mappingControlFactory = MappingControlRepository.GetMappingControlFactory(selectedTypeName);
+
+        if (mappingControlFactory == null)
+        {
+            return null;
+        }
+
+        return mappingControlFactory.CreateInstance<Control>();
+    }
+
+    private void BtnSaveMapping_Click(object sender, EventArgs e)
+    {
+        var trigger = this.triggerControl.Trigger;
+        var action = this.actionControl.Action;
+
+        if (trigger == null)
+        {
+            MessageBox.Show("You must select a trigger!", "No trigger selected!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            return;
+        }
+
+        if (action == null)
+        {
+            MessageBox.Show("You must select an action!", "No action selected!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            return;
+        }
+
+        this.MappedOption ??= new MappedOption();
+        this.MappedOption.Trigger = trigger;
+        this.MappedOption.Action = action;
+
+        if (!this.actionControl.CanMappingSave(this.MappedOption))
+        {
+            return;
+        }
+
+        this.DialogResult = DialogResult.OK;
+
+        this.Close();
     }
 }

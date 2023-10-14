@@ -1,108 +1,101 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows.Forms;
-using Key2Joy.Mapping;
+using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.LowLevelInput;
+using Key2Joy.Mapping.Triggers;
+using Key2Joy.Mapping.Triggers.Keyboard;
 
-namespace Key2Joy.Gui.Mapping
+namespace Key2Joy.Gui.Mapping;
+
+[MappingControl(
+    ForType = typeof(KeyboardTrigger),
+    ImageResourceName = "keyboard"
+)]
+public partial class KeyboardTriggerControl : UserControl, ITriggerOptionsControl
 {
-    [MappingControl(
-        ImageResourceName = "keyboard"
-    )]
-    public partial class KeyboardTriggerControl : UserControl, ITriggerOptionsControl
+    private const string TEXT_CHANGE = "(press any key to select it as the trigger)";
+    private const string TEXT_CHANGE_INSTRUCTION = "(click here, then press any key to set it as the trigger)";
+
+    public event EventHandler OptionsChanged;
+
+    private Keys keys;
+    private bool isTrapping;
+
+    public KeyboardTriggerControl()
     {
-        const string TEXT_CHANGE = "(press any key to select it as the trigger)";
-        const string TEXT_CHANGE_INSTRUCTION = "(click here, then press any key to set it as the trigger)";
-        const int WM_INPUT = 0x00FF;
+        this.InitializeComponent();
 
-        public event EventHandler OptionsChanged;
-        
-        private Keys keys;
-        private bool isTrapping;
+        // This captures global keyboard input and blocks default behaviour by setting e.Handled
+        GlobalInputHook globalKeyboardHook = new();
+        globalKeyboardHook.KeyboardInputEvent += this.OnKeyInputEvent;
 
-        public KeyboardTriggerControl()
+        // Relieve input capturing by this mapping form
+        Disposed += (s, e) =>
         {
-            InitializeComponent();
-
-            // This captures global keyboard input and blocks default behaviour by setting e.Handled
-            var globalKeyboardHook = new GlobalInputHook();
-            globalKeyboardHook.KeyboardInputEvent += OnKeyInputEvent;
-
-            // Relieve input capturing by this mapping form
-            Disposed += (s, e) =>
+            if (globalKeyboardHook == null)
             {
-                globalKeyboardHook.KeyboardInputEvent -= OnKeyInputEvent;
-                globalKeyboardHook.Dispose();
-                globalKeyboardHook = null;
-            };
-            ControlRemoved += (s, e) => Dispose();
-
-            cmbPressState.DataSource = LegacyPressStateConverter.GetPressStatesWithoutLegacy();
-            cmbPressState.SelectedIndex = 0;
-
-            // Removed because this is annoying when you want to just edit code
-            //StartTrapping();
-        }
-
-        private void OnKeyInputEvent(object sender, GlobalKeyboardHookEventArgs e)
-        {
-            if (!isTrapping)
                 return;
+            }
 
-            keys = VirtualKeyConverter.KeysFromVirtual(e.KeyboardData.VirtualCode);
-            UpdateKeys();
-            StopTrapping();
-        }
+            globalKeyboardHook.KeyboardInputEvent -= this.OnKeyInputEvent;
+            globalKeyboardHook.Dispose();
+            globalKeyboardHook = null;
+        };
+        ControlRemoved += (s, e) => this.Dispose();
 
-        public void Select(BaseTrigger trigger)
-        {
-            var thisTrigger = (KeyboardTrigger)trigger;
+        this.cmbPressState.DataSource = PressStates.ALL;
+        this.cmbPressState.SelectedIndex = 0;
 
-            this.keys = thisTrigger.Keys;
-            cmbPressState.SelectedItem = thisTrigger.PressState;
-            UpdateKeys();
-        }
-
-        public void Setup(BaseTrigger trigger)
-        {
-            var thisTrigger = (KeyboardTrigger)trigger;
-
-            thisTrigger.Keys = this.keys;
-            thisTrigger.PressState = (PressState) cmbPressState.SelectedItem;
-        }
-
-        private void StartTrapping()
-        {
-            txtKeyBind.Text = TEXT_CHANGE;
-            txtKeyBind.Focus();
-            isTrapping = true;
-        }
-        
-        private void StopTrapping()
-        {
-            isTrapping = false;
-        }
-
-        private void ResetTrapping()
-        {
-            txtKeyBind.Text = TEXT_CHANGE_INSTRUCTION;
-            StopTrapping();
-        }
-
-        private void UpdateKeys()
-        {
-            txtKeyBind.Text = $"{keys} {TEXT_CHANGE_INSTRUCTION}";
-            OptionsChanged?.Invoke(this, EventArgs.Empty);
-        }
-
-        private void cmbPressedState_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            OptionsChanged?.Invoke(this, EventArgs.Empty);
-        }
-
-        private void txtKeyBind_MouseUp(object sender, MouseEventArgs e)
-        {
-            StartTrapping();
-        }
+        // Removed because this is annoying when you want to just edit code
+        //StartTrapping();
     }
+
+    private void OnKeyInputEvent(object sender, GlobalKeyboardHookEventArgs e)
+    {
+        if (!this.isTrapping)
+        {
+            return;
+        }
+
+        this.keys = VirtualKeyConverter.KeysFromVirtual(e.KeyboardData.VirtualCode);
+        this.UpdateKeys();
+        this.StopTrapping();
+    }
+
+    public void Select(AbstractTrigger trigger)
+    {
+        var thisTrigger = (KeyboardTrigger)trigger;
+
+        this.keys = thisTrigger.Keys;
+        this.cmbPressState.SelectedItem = thisTrigger.PressState;
+        this.UpdateKeys();
+    }
+
+    public void Setup(AbstractTrigger trigger)
+    {
+        var thisTrigger = (KeyboardTrigger)trigger;
+
+        thisTrigger.Keys = this.keys;
+        thisTrigger.PressState = (PressState)this.cmbPressState.SelectedItem;
+    }
+
+    private void StartTrapping()
+    {
+        this.txtKeyBind.Text = TEXT_CHANGE;
+        this.txtKeyBind.Focus();
+        this.isTrapping = true;
+    }
+
+    private void StopTrapping() => this.isTrapping = false;
+
+    private void UpdateKeys()
+    {
+        this.txtKeyBind.Text = $"{this.keys} {TEXT_CHANGE_INSTRUCTION}";
+        OptionsChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void CmbPressedState_SelectedIndexChanged(object sender, EventArgs e) => OptionsChanged?.Invoke(this, EventArgs.Empty);
+
+    private void TxtKeyBind_MouseUp(object sender, MouseEventArgs e) => this.StartTrapping();
 }

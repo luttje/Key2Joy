@@ -50,7 +50,7 @@
             this.txtScript.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.txtScript.Size = new System.Drawing.Size(254, 132);
             this.txtScript.TabIndex = 13;
-            this.txtScript.TextChanged += new System.EventHandler(this.txtScript_TextChanged);
+            this.txtScript.TextChanged += new System.EventHandler(this.TxtScript_TextChanged);
             // 
             // pnlTop
             // 
@@ -74,7 +74,7 @@
             this.chkDirectInput.TabIndex = 15;
             this.chkDirectInput.Text = "Direct Input";
             this.chkDirectInput.UseVisualStyleBackColor = true;
-            this.chkDirectInput.CheckedChanged += new System.EventHandler(this.chkDirectInput_CheckedChanged);
+            this.chkDirectInput.CheckedChanged += new System.EventHandler(this.ChkDirectInput_CheckedChanged);
             // 
             // lblInfo
             // 
@@ -83,7 +83,7 @@
             this.lblInfo.Name = "lblInfo";
             this.lblInfo.Size = new System.Drawing.Size(254, 20);
             this.lblInfo.TabIndex = 13;
-            this.lblInfo.Text = "X Script:";
+            this.lblInfo.Text = "Script:";
             this.lblInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // pnlFileInput
@@ -103,7 +103,7 @@
             this.txtFilePath.Name = "txtFilePath";
             this.txtFilePath.Size = new System.Drawing.Size(190, 20);
             this.txtFilePath.TabIndex = 0;
-            this.txtFilePath.TextChanged += new System.EventHandler(this.txtFilePath_TextChanged);
+            this.txtFilePath.TextChanged += new System.EventHandler(this.TxtFilePath_TextChanged);
             // 
             // btnBrowseFile
             // 
@@ -114,7 +114,7 @@
             this.btnBrowseFile.TabIndex = 1;
             this.btnBrowseFile.Text = "Browse...";
             this.btnBrowseFile.UseVisualStyleBackColor = true;
-            this.btnBrowseFile.Click += new System.EventHandler(this.btnBrowseFile_Click);
+            this.btnBrowseFile.Click += new System.EventHandler(this.BtnBrowseFile_Click);
             // 
             // ScriptActionControl
             // 

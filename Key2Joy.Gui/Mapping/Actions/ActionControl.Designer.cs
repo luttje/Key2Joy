@@ -50,7 +50,7 @@
             this.cmbAction.Name = "cmbAction";
             this.cmbAction.Size = new System.Drawing.Size(167, 21);
             this.cmbAction.TabIndex = 2;
-            this.cmbAction.SelectedIndexChanged += new System.EventHandler(this.cmbAction_SelectedIndexChanged);
+            this.cmbAction.SelectedIndexChanged += new System.EventHandler(this.CmbAction_SelectedIndexChanged);
             // 
             // ActionControl
             // 

@@ -1,21 +1,37 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
+    <Authors>luttje</Authors>
+    <Title>Key2Joy</Title>
+    <Product>Key2Joy</Product>
+    <Description>Simulate a game controller with your mouse and keyboard</Description>
+    <Copyright>Copyright © 2023 luttje</Copyright>
+    <PackageProjectUrl>https://github.com/luttje/Key2Joy</PackageProjectUrl>
+    <NeutralLanguage>en</NeutralLanguage>
+    <VersionPrefix>0.7.0</VersionPrefix>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>Key2Joy.Gui.Program</StartupObject>
+    <AssemblyName>Key2Joy</AssemblyName>
+	  <UseWindowsForms>true</UseWindowsForms>
     <TargetFramework>NET48</TargetFramework>
-  </PropertyGroup>
-  <PropertyGroup>
+	  <LangVersion>latest</LangVersion>
     <ApplicationIcon>Graphics\Icons\app-icons.ico</ApplicationIcon>
-  </PropertyGroup>
-  <PropertyGroup>
     <RunPostBuildEvent>Always</RunPostBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup>
     <PlatformTarget>x86</PlatformTarget>
     <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <ProjectGuid>{808BA609-806D-4D55-857B-6FB4E16E13F1}</ProjectGuid>
   </PropertyGroup>
-  <PropertyGroup>
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
-  </PropertyGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="call $(SolutionDir)\Support\BuildDocumentation.bat $(ConfigurationName) $(OutputPath)" />
+  </Target>
+
   <ItemGroup>
     <Compile Remove="bin\**" />
     <Compile Remove="obj\**" />
@@ -24,17 +40,14 @@
     <None Remove="bin\**" />
     <None Remove="obj\**" />
   </ItemGroup>
+
   <ItemGroup>
-    <ProjectReference Include="..\Key2Joy.Cmd\Key2Joy.Cmd.csproj">
-      <Project>{ff955f62-e00d-46f4-a945-6677df10fca2}</Project>
-      <Name>Key2Joy.Cmd</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Key2Joy\Key2Joy.Core.csproj">
-      <Project>{1a961914-67b8-4b11-80d4-280323bc7b25}</Project>
-      <Name>Key2Joy.Core</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\Core\Key2Joy.Core\Key2Joy.Core.csproj" />
+    <ProjectReference Include="..\Key2Joy.Cmd\Key2Joy.Cmd.csproj" TreatAsUsed="true" />
   </ItemGroup>
+
   <ItemGroup>
+    <Reference Include="PresentationCore" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -43,49 +56,22 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
+
   <ItemGroup>
-    <PackageReference Include="FFmpeg.Win32.Static">
-      <Version>4.1.1.1</Version>
-    </PackageReference>
-    <PackageReference Include="FFMpegCore">
-      <Version>5.1.0</Version>
-    </PackageReference>
-    <PackageReference Include="Jint">
-      <Version>3.0.0-preview-390</Version>
-    </PackageReference>
-    <PackageReference Include="KeraLua">
-      <Version>1.3.3</Version>
-    </PackageReference>
     <PackageReference Include="Microsoft.CSharp">
       <Version>4.7.0</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.Platforms">
       <Version>7.0.1</Version>
     </PackageReference>
-    <PackageReference Include="Microsoft.Win32.Primitives">
-      <Version>4.3.0</Version>
-    </PackageReference>
     <PackageReference Include="NETStandard.Library">
       <Version>2.0.3</Version>
     </PackageReference>
-    <PackageReference Include="Newtonsoft.Json">
-      <Version>13.0.3</Version>
-    </PackageReference>
-    <PackageReference Include="NLua">
-      <Version>1.6.2</Version>
-    </PackageReference>
     <PackageReference Include="ObjectListView.Official">
       <Version>2.9.1</Version>
-    </PackageReference>
-    <PackageReference Include="RawInput.Sharp">
-      <Version>0.1.1</Version>
-    </PackageReference>
-    <PackageReference Include="SimWinGamePad">
-      <Version>1.1.1</Version>
-    </PackageReference>
-    <PackageReference Include="System.AppContext">
-      <Version>4.3.0</Version>
     </PackageReference>
     <PackageReference Include="System.Collections">
       <Version>4.3.0</Version>
@@ -93,58 +79,19 @@
     <PackageReference Include="System.Collections.Concurrent">
       <Version>4.3.0</Version>
     </PackageReference>
-    <PackageReference Include="System.Console">
-      <Version>4.3.1</Version>
-    </PackageReference>
     <PackageReference Include="System.Diagnostics.Debug">
       <Version>4.3.0</Version>
-    </PackageReference>
-    <PackageReference Include="System.Diagnostics.DiagnosticSource">
-      <Version>7.0.2</Version>
     </PackageReference>
     <PackageReference Include="System.Diagnostics.Tools">
       <Version>4.3.0</Version>
     </PackageReference>
-    <PackageReference Include="System.Diagnostics.Tracing">
-      <Version>4.3.0</Version>
-    </PackageReference>
-    <PackageReference Include="System.Drawing.Common">
-      <Version>7.0.0</Version>
-    </PackageReference>
     <PackageReference Include="System.Globalization">
       <Version>4.3.0</Version>
-    </PackageReference>
-    <PackageReference Include="System.Globalization.Calendars">
-      <Version>4.3.0</Version>
-    </PackageReference>
-    <PackageReference Include="System.IO.Compression">
-      <Version>4.3.0</Version>
-    </PackageReference>
-    <PackageReference Include="System.IO.Compression.ZipFile">
-      <Version>4.3.0</Version>
-    </PackageReference>
-    <PackageReference Include="System.IO.FileSystem">
-      <Version>4.3.0</Version>
-    </PackageReference>
-    <PackageReference Include="System.Linq">
-      <Version>4.3.0</Version>
-    </PackageReference>
-    <PackageReference Include="System.Linq.Expressions">
-      <Version>4.3.0</Version>
-    </PackageReference>
-    <PackageReference Include="System.Net.Http">
-      <Version>4.3.4</Version>
     </PackageReference>
     <PackageReference Include="System.Net.Primitives">
       <Version>4.3.1</Version>
     </PackageReference>
-    <PackageReference Include="System.Net.Sockets">
-      <Version>4.3.0</Version>
-    </PackageReference>
     <PackageReference Include="System.ObjectModel">
-      <Version>4.3.0</Version>
-    </PackageReference>
-    <PackageReference Include="System.Reflection">
       <Version>4.3.0</Version>
     </PackageReference>
     <PackageReference Include="System.Reflection.Extensions">
@@ -156,38 +103,17 @@
     <PackageReference Include="System.Resources.ResourceManager">
       <Version>4.3.0</Version>
     </PackageReference>
-    <PackageReference Include="System.Runtime">
-      <Version>4.3.1</Version>
-    </PackageReference>
-    <PackageReference Include="System.Runtime.Extensions">
-      <Version>4.3.1</Version>
-    </PackageReference>
     <PackageReference Include="System.Runtime.Handles">
-      <Version>4.3.0</Version>
-    </PackageReference>
-    <PackageReference Include="System.Runtime.InteropServices">
-      <Version>4.3.0</Version>
-    </PackageReference>
-    <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation">
       <Version>4.3.0</Version>
     </PackageReference>
     <PackageReference Include="System.Runtime.Numerics">
       <Version>4.3.0</Version>
-    </PackageReference>
-    <PackageReference Include="System.Security.Cryptography.Algorithms">
-      <Version>4.3.1</Version>
-    </PackageReference>
-    <PackageReference Include="System.Security.Cryptography.X509Certificates">
-      <Version>4.3.2</Version>
     </PackageReference>
     <PackageReference Include="System.Text.Encoding">
       <Version>4.3.0</Version>
     </PackageReference>
     <PackageReference Include="System.Text.Encoding.Extensions">
       <Version>4.3.0</Version>
-    </PackageReference>
-    <PackageReference Include="System.Text.RegularExpressions">
-      <Version>4.3.1</Version>
     </PackageReference>
     <PackageReference Include="System.Threading">
       <Version>4.3.0</Version>
@@ -198,23 +124,24 @@
     <PackageReference Include="System.Threading.Timer">
       <Version>4.3.0</Version>
     </PackageReference>
-    <PackageReference Include="System.Xml.ReaderWriter">
-      <Version>4.3.1</Version>
-    </PackageReference>
     <PackageReference Include="System.Xml.XDocument">
       <Version>4.3.0</Version>
     </PackageReference>
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Update="Mapping\Actions\Logic\WaitActionControl.cs">
-      <SubType>UserControl</SubType>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
   </ItemGroup>
-  <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
-    <OutputType>WinExe</OutputType>
-    <StartupObject>Key2Joy.Gui.Program</StartupObject>
-    <AssemblyName>Key2Joy</AssemblyName>
-  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
 </Project>

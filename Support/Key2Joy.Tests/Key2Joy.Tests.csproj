@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Authors>luttje</Authors>
+    <Title>Key2Joy</Title>
+    <Product>Key2Joy</Product>
+    <Description>Simulate a game controller with your mouse and keyboard</Description>
+    <Copyright>Copyright © 2023 luttje</Copyright>
+    <PackageProjectUrl>https://github.com/luttje/Key2Joy</PackageProjectUrl>
+    <VersionPrefix>0.7.0</VersionPrefix>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>NET48</TargetFramework>
+	  <LangVersion>latest</LangVersion>
+    <PlatformTarget>x86</PlatformTarget>
+    <BaseOutputPath>bin\$(MSBuildProjectName)</BaseOutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+    <ProjectGuid>{AA7ABB23-F6E6-4BC5-B29A-3D66BC21C398}</ProjectGuid>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="bin\**" />
+    <Compile Remove="obj\**" />
+    <EmbeddedResource Remove="bin\**" />
+    <EmbeddedResource Remove="obj\**" />
+    <None Remove="bin\**" />
+    <None Remove="obj\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Key2Joy.Contracts\Key2Joy.Contracts.csproj" />
+    <ProjectReference Include="..\..\Core\Key2Joy.Core\Key2Joy.Core.csproj" />
+    <ProjectReference Include="..\..\Core\Key2Joy.PluginHost\Key2Joy.PluginHost.csproj" />
+    <ProjectReference Include="..\..\Key2Joy.Cmd\Key2Joy.Cmd.csproj" />
+    <ProjectReference Include="..\..\Key2Joy.Gui\Key2Joy.Gui.csproj" />
+    <ProjectReference Include="..\BuildMarkdownDocs\BuildMarkdownDocs.csproj" />
+    <ProjectReference Include="..\Key2Joy.Tests.Stubs\TestPlugin\Key2Joy.Tests.Stubs.TestPlugin.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.msbuild" Version="6.0.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0"></PackageReference>
+    <PackageReference Include="MSTest.TestAdapter">
+      <Version>3.0.2</Version>
+    </PackageReference>
+    <PackageReference Include="MSTest.TestFramework">
+      <Version>3.0.2</Version>
+    </PackageReference>
+  </ItemGroup>
+</Project>

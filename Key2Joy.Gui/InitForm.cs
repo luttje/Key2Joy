@@ -1,36 +1,33 @@
-﻿using Key2Joy.Config;
+﻿using System;
+using System.Windows.Forms;
 using Key2Joy.Mapping;
 using SimWinInput;
-using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
 
-namespace Key2Joy.Gui
+namespace Key2Joy.Gui;
+
+public partial class InitForm : Form
 {
-    public partial class InitForm : Form
+    private readonly bool shouldStartMinimized;
+
+    public InitForm(bool shouldStartMinimized = false)
     {
-        private bool shouldStartMinimized;
-        
-        public InitForm(bool shouldStartMinimized = false)
+        this.shouldStartMinimized = shouldStartMinimized;
+
+        this.InitializeComponent();
+
+        if (shouldStartMinimized)
         {
-            this.shouldStartMinimized = shouldStartMinimized;
-            
-            InitializeComponent();
-
-            if (shouldStartMinimized) 
-            { 
-                this.WindowState = FormWindowState.Minimized;
-                this.ShowInTaskbar = false;
-            }
+            this.WindowState = FormWindowState.Minimized;
+            this.ShowInTaskbar = false;
         }
+    }
 
-        private void InitForm_Load(object sender, EventArgs e)
-        {
-            MappingProfile.ExtractDefaultIfNotExists();
-            SimGamePad.Instance.Initialize();
+    private void InitForm_Load(object sender, EventArgs e)
+    {
+        MappingProfile.ExtractDefaultIfNotExists();
+        SimGamePad.Instance.Initialize();
 
-            var mainForm = new MainForm(shouldStartMinimized);
-            Program.GoToNextForm(mainForm);
-        }
+        MainForm mainForm = new(this.shouldStartMinimized);
+        Program.GoToNextForm(mainForm);
     }
 }

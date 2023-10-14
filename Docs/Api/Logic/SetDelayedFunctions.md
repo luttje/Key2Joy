@@ -1,24 +1,17 @@
-# `SetDelayedFunctions` (`Int64`, `Action[]`)
-
+# `SetDelayedFunctions` (```Int64```, ```Action[]```)
 
 Execute functions whilst waiting the specified time between them.
-
 The first function is executed immediately.
 
-
 ## Parameters
-
-* **waitTime (`Int64`)** 
-
+* **waitTime (```Int64```)** 
 	Time to wait (in milliseconds) between function calls
 
-* **callbacks (`Action[]`)** 
-
+* **callbacks (```Action[]```)** 
 	One or more functions to execute
 
 
 ## Examples
-
 > Shows how to count down from 3 and execute a command using Lua.
 > 
 > #### _lua_:

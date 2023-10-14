@@ -1,48 +1,51 @@
-﻿using CommandLine;
 using System;
+using CommandLine;
 using Key2Joy.Interop;
 using Key2Joy.Mapping;
 
-namespace Key2Joy.Cmd
+namespace Key2Joy.Cmd;
+
+[Verb("enable", HelpText = "Enable the provided mapping profile.")]
+internal class EnableOptions : Options
 {
-    [Verb("enable", HelpText = "Enable the provided mapping profile.")]
-    internal class EnableOptions : Options
+    [Option(
+        shortName: 'p',
+        longName: "profile",
+        Required = false,
+        HelpText = "Path of the profile to load or modify. Path can be relative to profile directory. By default the last used profile is selected (if available)."
+    )]
+    public string ProfilePath { get; set; }
+
+    public override void Handle()
     {
-        [Option(
-            shortName: 'p', 
-            longName: "profile",
-            Required = false,
-            HelpText = "Path of the profile to load or modify. Path can be relative to profile directory. By default the last used profile is selected (if available)."
-        )]
-        public string ProfilePath { get; set; }
+        var profilePath = this.ProfilePath;
 
-        public override void Handle()
+        if (this.ProfilePath != null)
         {
-            MappingProfile profile;
+            profilePath = MappingProfile.ResolveProfilePath(profilePath);
+        }
+        else
+        {
+            profilePath = MappingProfile.ResolveLastLoadedProfilePath();
+        }
 
-            if (ProfilePath != null)
-                profile = MappingProfile.Load(ProfilePath);
-            else
-                profile = MappingProfile.RestoreLastLoaded();
-            
-            try 
+        try
+        {
+            InteropClient.Instance.SendCommand(new EnableCommand
             {
-                InteropClient.Instance.SendCommand(new EnableCommand
-                {
-                    ProfilePath = profile.FilePath
-                });
+                ProfilePath = profilePath
+            });
 
-                Console.WriteLine($"Commanded Key2Joy to enable the profile: {profile.FilePath}");
-            }
-            catch(TimeoutException)
+            Console.WriteLine($"Commanded Key2Joy to enable the profile: {profilePath}");
+        }
+        catch (TimeoutException)
+        {
+            this.SafelyRetry(() =>
             {
-                SafelyRetry(() =>
-                {
-                    Console.WriteLine("Key2Joy is not running, starting it now...");
-                    Key2JoyManager.StartKey2Joy();
-                    Handle();
-                });
-            }
+                Console.WriteLine("Key2Joy is not running, starting it now...");
+                Key2JoyManager.StartKey2Joy();
+                this.Handle();
+            });
         }
     }
 }
