@@ -1,7 +1,7 @@
 name: pre-release
 on:
   workflow_run:
-    workflows: ["tests"]
+    workflows: [tests]
     types:
       - completed
 jobs:
