@@ -57,7 +57,8 @@ public class PluginActionProxy : CoreAction, IGetRealObject<PluginAction>
     {
         try
         {
-            return this.source.Execute(inputBag);
+            this.source.Execute(inputBag);
+            return Task.CompletedTask;
         }
         catch (Exception ex)
         {

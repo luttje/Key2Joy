@@ -63,7 +63,7 @@ public class PluginAction : MarshalByRefObject
     /// </summary>
     /// <param name="inputBag"></param>
     /// <returns></returns>
-    public virtual async Task Execute(AbstractInputBag inputBag = null)
+    public virtual void Execute(AbstractInputBag inputBag = null)
     { }
 
     /// <summary>

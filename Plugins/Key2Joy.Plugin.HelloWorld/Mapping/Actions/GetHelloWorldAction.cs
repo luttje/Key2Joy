@@ -27,7 +27,7 @@ public class GetHelloWorldAction : PluginAction
 {
     public string Target { get; set; } = "World";
 
-    public override async Task Execute(AbstractInputBag inputBag = null)
+    public override void Execute(AbstractInputBag inputBag = null)
     {
         MessageBox.Show($"Hello {this.Target}!");
         Debug.WriteLine($"Hello {this.Target}!");
