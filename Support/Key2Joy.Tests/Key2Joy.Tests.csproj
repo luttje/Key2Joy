@@ -24,11 +24,18 @@
 
   <ItemGroup>
     <Compile Remove="bin\**" />
+    <Compile Remove="coverage\**" />
     <Compile Remove="obj\**" />
     <EmbeddedResource Remove="bin\**" />
+    <EmbeddedResource Remove="coverage\**" />
     <EmbeddedResource Remove="obj\**" />
     <None Remove="bin\**" />
+    <None Remove="coverage\**" />
     <None Remove="obj\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Core\Config\current-config.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -53,5 +60,14 @@
     <PackageReference Include="MSTest.TestFramework">
       <Version>3.0.2</Version>
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Core\Config\Stubs\current-config.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Core\Config\Stubs\old-config.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>

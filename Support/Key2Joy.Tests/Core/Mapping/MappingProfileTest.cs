@@ -1,6 +1,7 @@
 using System.IO;
 using Key2Joy.Config;
 using Key2Joy.Mapping;
+using Key2Joy.Tests.Core.Config;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Key2Joy.Tests.Core.Mapping;
@@ -9,6 +10,13 @@ namespace Key2Joy.Tests.Core.Mapping;
 public class MappingProfileTest
 {
     private const string TestExtension = ".k2j-test.json";
+
+    [TestInitialize]
+    public void Initialize() =>
+        MockConfigManager.LoadOrCreateMock();
+
+    [TestCleanup]
+    public void Cleanup() => MockConfigManager.RemoveConfigStub();
 
     [TestMethod]
     public void ResolveLastLoadedProfilePath_WhenLastLoadedProfileIsNull_ShouldReturnDefaultPath()

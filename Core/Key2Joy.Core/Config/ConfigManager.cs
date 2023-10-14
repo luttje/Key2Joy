@@ -1,16 +1,20 @@
+using System;
 using System.IO;
 using System.Text.Json;
 using Key2Joy.Contracts;
 
 namespace Key2Joy.Config;
 
+/// <summary>
+/// Manages user configurations being loaded from and saved to disk.
+/// </summary>
 public class ConfigManager
 {
-    private const string CONFIG_PATH = "config.json";
+    protected const string CONFIG_PATH = "config.json";
 
     private static ConfigManager instance;
 
-    internal static ConfigManager Instance
+    public static ConfigManager Instance
     {
         get
         {
@@ -22,31 +26,36 @@ public class ConfigManager
 
     public static ConfigState Config => Instance.configState;
 
-    internal bool IsInitialized { get; private set; }
+    public bool IsInitialized { get; private set; }
     private ConfigState configState;
 
-    private ConfigManager()
+    protected ConfigManager()
     { }
+
+    /// <returns>The path to where the config file is located.</returns>
+    protected virtual string GetAppDataDirectory() => Output.GetAppDataDirectory();
 
     internal void Save()
     {
         var options = GetSerializerOptions();
         var configPath = Path.Combine(
-            Output.GetAppDataDirectory(),
+            this.GetAppDataDirectory(),
             CONFIG_PATH);
 
         File.WriteAllText(configPath, JsonSerializer.Serialize(this.configState, options));
     }
 
-    private static ConfigManager LoadOrCreate()
+    protected static ConfigManager LoadOrCreate(ConfigManager customInstance = null)
     {
+        customInstance ??= new ConfigManager();
+        instance = customInstance;
+
         var configPath = Path.Combine(
-            Output.GetAppDataDirectory(),
+            instance.GetAppDataDirectory(),
             CONFIG_PATH);
 
         if (!File.Exists(configPath))
         {
-            instance = new ConfigManager();
 #pragma warning disable IDE0017 // Simplify object initialization (would break since ConfigState checks IsInitialized)
             instance.configState = new ConfigState();
             instance.IsInitialized = true;
@@ -56,7 +65,6 @@ public class ConfigManager
         }
 
         var options = GetSerializerOptions();
-        instance = new ConfigManager();
 #pragma warning disable IDE0017 // Simplify object initialization (would break since ConfigState checks IsInitialized)
         instance.configState = JsonSerializer.Deserialize<ConfigState>(File.ReadAllText(configPath), options);
 #pragma warning restore IDE0017 // Simplify object initialization
@@ -66,7 +74,7 @@ public class ConfigManager
         // If the assembly is null then we are running in a unit test
         if (assembly == null)
         {
-            instance.IsInitialized = true;
+            instance.CompleteInitialization();
             return instance;
         }
 
@@ -75,19 +83,25 @@ public class ConfigManager
             && instance.configState.LastInstallPath != executablePath)
         {
             instance.configState.LastInstallPath = executablePath;
-            instance.Save();
         }
 
-        instance.IsInitialized = true;
-
+        instance.CompleteInitialization();
         return instance;
     }
 
-    private static JsonSerializerOptions GetSerializerOptions()
+    private void CompleteInitialization()
+    {
+        instance.IsInitialized = true;
+
+        // We save so old properties are removed and new ones are added to the config file immediately
+        instance.Save();
+    }
+
+    protected static JsonSerializerOptions GetSerializerOptions()
     {
         JsonSerializerOptions options = new()
         {
-            WriteIndented = true
+            WriteIndented = true,
         };
 
         return options;
@@ -98,7 +112,7 @@ public class ConfigManager
     /// </summary>
     /// <param name="pluginAssemblyPath"></param>
     /// <returns></returns>
-    private string NormalizePluginPath(string pluginAssemblyPath)
+    protected string NormalizePluginPath(string pluginAssemblyPath)
     {
         var appDirectory = Path.GetDirectoryName(this.configState.LastInstallPath);
         var pluginPath = Path.GetFullPath(pluginAssemblyPath);
