@@ -2,8 +2,9 @@ name: pre-release
 on:
   workflow_run:
     workflows: [tests]
-    types:
-      - completed
+    types: [completed]
+    branches:
+      - '**'
 jobs:
   on-tests-failed:
     runs-on: windows-latest
