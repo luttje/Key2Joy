@@ -5,8 +5,8 @@
     <Authors>luttje</Authors>
     <Title>Key2Joy</Title>
     <Product>Key2Joy MIDI Plugin</Product>
-    <Description></Description>
-    <Copyright>Copyright © 2022 luttje</Copyright>
+    <Description>Add Midi support to Key2Joy</Description>
+    <Copyright>Copyright © 2023 luttje</Copyright>
     <PackageProjectUrl>https://github.com/luttje/Key2Joy</PackageProjectUrl>
   </PropertyGroup>
 
@@ -16,12 +16,12 @@
     <RunPostBuildEvent>Always</RunPostBuildEvent>
     <PlatformTarget>x86</PlatformTarget>
     <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <OutputType>Library</OutputType>
     <BaseOutputPath>..\..\bin\$(MSBuildProjectName)</BaseOutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
     <DocumentationFile>..\..\bin\DocumentationFiles\Key2Joy.Plugin.Midi.xml</DocumentationFile>
+    <ProjectGuid>{19E45BAE-0A6C-4E1F-A281-445F2B62DC75}</ProjectGuid>
   </PropertyGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

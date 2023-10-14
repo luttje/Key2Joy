@@ -6,7 +6,7 @@
     <Title>Key2Joy</Title>
     <Product>Key2Joy Hello World Plugin</Product>
     <Description></Description>
-    <Copyright>Copyright © 2022 luttje</Copyright>
+    <Copyright>Copyright © 2023 luttje</Copyright>
     <PackageProjectUrl>https://github.com/luttje/Key2Joy</PackageProjectUrl>
   </PropertyGroup>
 
@@ -16,7 +16,6 @@
     <RunPostBuildEvent>Always</RunPostBuildEvent>
     <PlatformTarget>x86</PlatformTarget>
     <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <OutputType>Library</OutputType>
     <BaseOutputPath>..\..\bin\$(AssemblyName)</BaseOutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>

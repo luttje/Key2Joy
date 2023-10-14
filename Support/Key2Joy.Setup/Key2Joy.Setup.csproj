@@ -6,7 +6,7 @@
     <Title>Key2Joy</Title>
     <Product>Key2Joy</Product>
     <Description>Simulate a game controller with your mouse and keyboard</Description>
-    <Copyright>Copyright © 2022 luttje</Copyright>
+    <Copyright>Copyright © 2023 luttje</Copyright>
     <PackageProjectUrl>https://github.com/luttje/Key2Joy</PackageProjectUrl>
   </PropertyGroup>
 
@@ -15,10 +15,10 @@
 	  <LangVersion>latest</LangVersion>
     <ApplicationIcon>Graphics\Icons\app-icons.ico</ApplicationIcon>
     <PlatformTarget>x86</PlatformTarget>
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <BaseOutputPath>bin\$(MSBuildProjectName)</BaseOutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <ProjectGuid>{0CFC1DBD-87E4-4DE4-94CB-A43A73B2A21B}</ProjectGuid>
   </PropertyGroup>
 
   <ItemGroup>

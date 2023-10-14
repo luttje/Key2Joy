@@ -11,7 +11,7 @@ internal partial class AboutForm : Form
         this.InitializeComponent();
         this.Text = string.Format("About {0}", this.AssemblyTitle);
         this.labelProductName.Text = this.AssemblyProduct;
-        this.labelVersion.Text = string.Format("Version {0}", this.AssemblyVersion);
+        this.labelVersion.Text = string.Format("Version {0}", this.Version);
         this.labelCopyright.Text = this.AssemblyCopyright;
 
         this.CalculateLogoSize();
@@ -36,7 +36,7 @@ internal partial class AboutForm : Form
         }
     }
 
-    public string AssemblyVersion => Assembly.GetExecutingAssembly().GetName().Version.ToString();
+    public string Version => Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
     public string AssemblyDescription
     {

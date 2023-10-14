@@ -5,8 +5,8 @@
     <Authors>luttje</Authors>
     <Title>Key2Joy</Title>
     <Product>Key2Joy</Product>
-    <Description>Simulate a game controller with your mouse and keyboard</Description>
-    <Copyright>Copyright © 2022 luttje</Copyright>
+    <Description>Control Key2Joy from the command line</Description>
+    <Copyright>Copyright © 2023 luttje</Copyright>
     <PackageProjectUrl>https://github.com/luttje/Key2Joy</PackageProjectUrl>
   </PropertyGroup>
 
@@ -16,12 +16,12 @@
     <ApplicationIcon>Graphics\Icons\app-icons.ico</ApplicationIcon>
     <PlatformTarget>x86</PlatformTarget>
     <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <OutputType>Exe</OutputType>
     <StartupObject>Key2Joy.Cmd.Program</StartupObject>
     <BaseOutputPath>bin\$(MSBuildProjectName)</BaseOutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <ProjectGuid>{FF955F62-E00D-46F4-A945-6677DF10FCA2}</ProjectGuid>
   </PropertyGroup>
 
   <ItemGroup>
