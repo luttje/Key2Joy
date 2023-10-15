@@ -48,19 +48,7 @@ public abstract class AbstractTriggerListener : MarshalByRefObject
             if (shouldExecute)
             {
                 executedAny = true;
-                //try
-                //{
                 _ = mappedOption.Action.Execute(inputBag);
-                //}
-                //catch (System.Runtime.Serialization.SerializationException ex)
-                //{
-                //    // For some reason an exception occurs when the action is completed. (I tested it with a MessageBox.Show and Debug.WriteLine seperately, happened in both cases)
-                //    // Supposedly Task.Run should prevent this (source: https://stackoverflow.com/a/63824188), but it doesn't.
-                //    if (!ex.Message.StartsWith("Type 'System.Threading.Tasks.Task`1"))
-                //    {
-                //        throw ex;
-                //    }
-                //}
             }
         }
 
