@@ -12,17 +12,11 @@ jobs:
     permissions:
       contents: write
     steps:
-      - run: echo 'The triggering workflow passed, building a pre-release'
-      - uses: actions/checkout@v3
       - name: Restore build from cache
         uses: actions/cache@v3
         with:
-          path: |
-            ${{ github.workspace }}\bin
-            ${{ github.workspace }}\Support\Key2Joy.Tests\bin\Key2Joy.Tests
+          path: ${{ github.workspace }}
           key: ${{ runner.os }}-build-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-build-
       - name: Archive Pre-release
         uses: thedoctor0/zip-release@0.7.1
         with:
