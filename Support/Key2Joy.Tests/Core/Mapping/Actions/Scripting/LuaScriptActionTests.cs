@@ -3,7 +3,7 @@ using Key2Joy.Mapping.Actions;
 using Key2Joy.Mapping.Actions.Scripting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Key2Joy.Tests.Core.Mapping.Action.Scripting;
+namespace Key2Joy.Tests.Core.Mapping.Actions.Scripting;
 
 [TestClass]
 public class LuaScriptActionTests

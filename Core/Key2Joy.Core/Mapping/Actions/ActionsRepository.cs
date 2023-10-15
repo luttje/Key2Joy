@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -16,28 +16,33 @@ public static class ActionsRepository
     /// Loads all actions in the assembly, optionally merging it with additional action types.
     /// </summary>
     /// <param name="additionalActionTypeFactories"></param>
-    public static void Buffer(IReadOnlyList<MappingTypeFactory<AbstractAction>> additionalActionTypeFactories = null)
+    public static void Buffer(IReadOnlyList<MappingTypeFactory<AbstractAction>> additionalActionTypeFactories = null, bool discoverActions = true)
     {
-        static TypeExposedMethod MethodInfoToTypeExposed(MethodInfo m, ExposesScriptingMethodAttribute a)
+        if (discoverActions)
         {
-            return new TypeExposedMethod(a.FunctionName, m.Name, m.DeclaringType);
-        }
+            static TypeExposedMethod MethodInfoToTypeExposed(MethodInfo m, ExposesScriptingMethodAttribute a)
+                => new(a.FunctionName, m.Name, m.DeclaringType);
 
-        actions = Assembly.GetExecutingAssembly()
-            .GetTypes()
-            .Where(t => t.GetCustomAttribute(typeof(ActionAttribute), false) != null)
-            .ToDictionary(
-                t => t.FullName,
-                t => new MappingTypeFactory<AbstractAction>(
-                    t.FullName,
-                    t.GetCustomAttribute<ActionAttribute>(),
-                    t.GetMethods()
-                        .Where(m => m.GetCustomAttributes(typeof(ExposesScriptingMethodAttribute), false).Length > 0)
-                        .SelectMany(m => m.GetCustomAttributes<ExposesScriptingMethodAttribute>()
-                            .Select(a => MethodInfoToTypeExposed(m, a))
-                        )
-                )
-            );
+            actions = Assembly.GetExecutingAssembly()
+                .GetTypes()
+                .Where(t => t.GetCustomAttribute(typeof(ActionAttribute), false) != null)
+                .ToDictionary(
+                    t => t.FullName,
+                    t => new MappingTypeFactory<AbstractAction>(
+                        t.FullName,
+                        t.GetCustomAttribute<ActionAttribute>(),
+                        t.GetMethods()
+                            .Where(m => m.GetCustomAttributes(typeof(ExposesScriptingMethodAttribute), false).Length > 0)
+                            .SelectMany(m => m.GetCustomAttributes<ExposesScriptingMethodAttribute>()
+                                .Select(a => MethodInfoToTypeExposed(m, a))
+                            )
+                    )
+                );
+        }
+        else
+        {
+            actions = new Dictionary<string, MappingTypeFactory<AbstractAction>>();
+        }
 
         if (additionalActionTypeFactories == null)
         {
@@ -84,16 +89,16 @@ public static class ActionsRepository
     /// </summary>
     /// <param name="type"></param>
     /// <returns></returns>
-    internal static MappingTypeFactory<AbstractAction> GetAction(Type type) => actions[type.FullName];
+    public static MappingTypeFactory<AbstractAction> GetAction(Type type) => actions[type.FullName];
 
     /// <summary>
     /// Gets all action types and their attribute annotations depending on the specified visibility
     /// </summary>
     /// <param name="forTopLevel"></param>
     /// <returns></returns>
-    public static SortedDictionary<ActionAttribute, MappingTypeFactory<AbstractAction>> GetAllActions(bool forTopLevel) => new SortedDictionary<ActionAttribute, MappingTypeFactory<AbstractAction>>(
-            actions
-                .Where(kvp =>
+    public static SortedDictionary<ActionAttribute, MappingTypeFactory<AbstractAction>> GetAllActions(bool forTopLevel)
+        => new(
+            actions.Where(kvp =>
                 {
                     if (kvp.Value.Attribute is not ActionAttribute actionAttribute
                     || actionAttribute.Visibility == MappingMenuVisibility.Never)

@@ -2,7 +2,7 @@ using System.Diagnostics;
 using Key2Joy.Mapping.Actions.Windows;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Key2Joy.Tests.Core.Mapping.Action.Windows;
+namespace Key2Joy.Tests.Core.Mapping.Actions.Windows;
 
 [TestClass]
 public class WindowGetTitleActionTests
