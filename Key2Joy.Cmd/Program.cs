@@ -1,7 +1,9 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Reflection;
 using CommandLine;
+using Key2Joy.Interop;
+using Key2Joy.Interop.Commands;
 
 namespace Key2Joy.Cmd;
 
@@ -22,7 +24,11 @@ internal class Program
     {
         if (obj is Options options)
         {
-            options.Handle();
+            options.Handle(
+                new InteropClient(
+                    new CommandRepository()
+                )
+            );
         }
         else
         {

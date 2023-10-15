@@ -56,18 +56,14 @@ public class ConfigManager
 
         if (!File.Exists(configPath))
         {
-#pragma warning disable IDE0017 // Simplify object initialization (would break since ConfigState checks IsInitialized)
             instance.configState = new ConfigState();
             instance.IsInitialized = true;
-#pragma warning restore IDE0017 // Simplify object initialization
             instance.Save();
             return instance;
         }
 
         var options = GetSerializerOptions();
-#pragma warning disable IDE0017 // Simplify object initialization (would break since ConfigState checks IsInitialized)
         instance.configState = JsonSerializer.Deserialize<ConfigState>(File.ReadAllText(configPath), options);
-#pragma warning restore IDE0017 // Simplify object initialization
 
         var assembly = System.Reflection.Assembly.GetEntryAssembly();
 

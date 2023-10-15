@@ -10,6 +10,7 @@ using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.Interop;
+using Key2Joy.Interop.Commands;
 using Key2Joy.LowLevelInput;
 using Key2Joy.Mapping;
 using Key2Joy.Mapping.Actions.Logic;
@@ -22,7 +23,7 @@ namespace Key2Joy;
 
 public delegate bool AppCommandRunner(AppCommand command);
 
-public class Key2JoyManager : IMessageFilter
+public class Key2JoyManager : IKey2JoyManager, IMessageFilter
 {
     /// <summary>
     /// Directory where plugins are located
@@ -86,20 +87,22 @@ public class Key2JoyManager : IMessageFilter
 
         Key2JoyManager.commandRunner = commandRunner;
 
+        var interopServer = new InteropServer(instance, new CommandRepository());
+
         try
         {
-            InteropServer.Instance.RestartListening();
+            interopServer.RestartListening();
             mainLoop(plugins);
         }
         finally
         {
-            InteropServer.Instance.StopListening();
+            interopServer.StopListening();
             SimGamePad.Instance.ShutDown();
         }
     }
 
     // Run the event on the same thread as the main control/form
-    internal void CallOnUiThread(Action action) => this.handleAndInvoker.Invoke(action);
+    public void CallOnUiThread(Action action) => this.handleAndInvoker.Invoke(action);
 
     internal static bool RunAppCommand(AppCommand command) => commandRunner != null && commandRunner(command);
 
