@@ -141,6 +141,6 @@ internal class FunctionMember : Member
         }
 
         replacements.Add("Examples", examples);
-        replacements.Add("IsPlugin", IsPlugin ? "true" : "");
+        replacements.Add("IsPlugin", this.IsPlugin ? "true" : "");
     }
 }

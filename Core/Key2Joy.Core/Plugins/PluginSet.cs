@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Windows.Forms;
 using Key2Joy.Config;
 using Key2Joy.Contracts;
 using Key2Joy.Contracts.Mapping;

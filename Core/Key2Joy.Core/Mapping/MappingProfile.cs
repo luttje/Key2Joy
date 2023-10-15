@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Windows;
 using System.Windows.Forms;
 using Key2Joy.Config;
 using Key2Joy.Contracts;

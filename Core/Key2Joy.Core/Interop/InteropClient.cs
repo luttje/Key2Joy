@@ -1,4 +1,3 @@
-using System;
 using System.IO.Pipes;
 using Key2Joy.Interop.Commands;
 
