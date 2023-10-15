@@ -29,11 +29,7 @@ public class Key2JoyManager : IMessageFilter
     /// </summary>
     public const string PluginsDirectory = "Plugins";
 
-    private const string READY_MESSAGE = "Key2Joy is ready";
-    private static AppCommandRunner commandRunner;
-    private MappingProfile armedProfile;
-    private Form mainForm;
-    private readonly List<IWndProcHandler> wndProcListeners = new();
+    public event EventHandler<StatusChangedEventArgs> StatusChanged;
 
     public static Key2JoyManager instance;
 
@@ -50,7 +46,17 @@ public class Key2JoyManager : IMessageFilter
         }
     }
 
-    public event EventHandler<StatusChangedEventArgs> StatusChanged;
+    /// <summary>
+    /// Trigger listeners that should explicitly loaded. This ensures that they're available for scripts
+    /// even if no mapping option is mapped to be triggered by it.
+    /// </summary>
+    public IList<AbstractTriggerListener> ExplicitTriggerListeners { get; set; }
+
+    private const string READY_MESSAGE = "Key2Joy is ready";
+    private static AppCommandRunner commandRunner;
+    private MappingProfile armedProfile;
+    private IHaveHandleAndInvoke handleAndInvoker;
+    private readonly List<IWndProcHandler> wndProcListeners = new();
 
     private Key2JoyManager()
     { }
@@ -60,7 +66,16 @@ public class Key2JoyManager : IMessageFilter
     /// </summary>
     public static void InitSafely(AppCommandRunner commandRunner, Action<PluginSet> mainLoop)
     {
-        instance = new Key2JoyManager();
+        instance = new Key2JoyManager
+        {
+            ExplicitTriggerListeners = new List<AbstractTriggerListener>()
+            {
+                // Always add these listeners so scripts can ask them if stuff has happened.
+                KeyboardTriggerListener.Instance,
+                MouseButtonTriggerListener.Instance,
+                MouseMoveTriggerListener.Instance
+            }
+        };
 
         var pluginDirectoriesPaths = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         pluginDirectoriesPaths = Path.Combine(pluginDirectoriesPaths, PluginsDirectory);
@@ -83,23 +98,10 @@ public class Key2JoyManager : IMessageFilter
         }
     }
 
-    // Run the event on the same thread as the main form
-    internal void CallOnUiThread(Action action) => this.mainForm.Invoke(action);
+    // Run the event on the same thread as the main control/form
+    internal void CallOnUiThread(Action action) => this.handleAndInvoker.Invoke(action);
 
-    private static IList<AbstractTriggerListener> GetScriptingListeners()
-    {
-        List<AbstractTriggerListener> listeners = new()
-        {
-            // Always add these listeners so scripts can ask them if stuff has happened.
-            KeyboardTriggerListener.Instance,
-            MouseButtonTriggerListener.Instance,
-            MouseMoveTriggerListener.Instance
-        };
-
-        return listeners;
-    }
-
-    internal static bool RunAppCommand(AppCommand command) => commandRunner(command);
+    internal static bool RunAppCommand(AppCommand command) => commandRunner != null && commandRunner(command);
 
     public bool PreFilterMessage(ref System.Windows.Forms.Message m)
     {
@@ -120,9 +122,9 @@ public class Key2JoyManager : IMessageFilter
         return false;
     }
 
-    public void SetMainForm(Form form)
+    public void SetHandlerWithInvoke(IHaveHandleAndInvoke handleAndInvoker)
     {
-        this.mainForm = form;
+        this.handleAndInvoker = handleAndInvoker;
         Application.AddMessageFilter(this);
 
         Console.WriteLine(READY_MESSAGE);
@@ -142,7 +144,9 @@ public class Key2JoyManager : IMessageFilter
     {
         this.armedProfile = profile;
 
-        var allListeners = GetScriptingListeners();
+        var allListeners = new List<AbstractTriggerListener>();
+        allListeners.AddRange(this.ExplicitTriggerListeners);
+
         var allActions = (IList<AbstractAction>)profile.MappedOptions.Select(m => m.Action).ToList();
 
         foreach (var mappedOption in profile.MappedOptions)
@@ -168,14 +172,16 @@ public class Key2JoyManager : IMessageFilter
             listener.AddMappedOption(mappedOption);
         }
 
+        var allListenersForSharing = (IList<AbstractTriggerListener>)allListeners;
+
         foreach (var listener in allListeners)
         {
             if (listener is IWndProcHandler listenerWndProcHAndler)
             {
-                listenerWndProcHAndler.Handle = this.mainForm.Handle;
+                listenerWndProcHAndler.Handle = this.handleAndInvoker.Handle;
             }
 
-            listener.StartListening(ref allListeners);
+            listener.StartListening(ref allListenersForSharing);
         }
 
         StatusChanged?.Invoke(this, new StatusChangedEventArgs
@@ -187,7 +193,7 @@ public class Key2JoyManager : IMessageFilter
 
     public void DisarmMappings()
     {
-        var listeners = GetScriptingListeners();
+        var listeners = this.ExplicitTriggerListeners;
         this.wndProcListeners.Clear();
 
         // Clear all intervals

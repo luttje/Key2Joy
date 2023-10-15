@@ -54,6 +54,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0"></PackageReference>
+    <PackageReference Include="Moq" Version="4.20.69" />
     <PackageReference Include="MSTest.TestAdapter">
       <Version>3.0.2</Version>
     </PackageReference>

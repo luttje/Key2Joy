@@ -1,5 +1,4 @@
 using System.IO;
-using Key2Joy.Config;
 using Key2Joy.Mapping;
 using Key2Joy.Mapping.Actions;
 using Key2Joy.Mapping.Triggers;

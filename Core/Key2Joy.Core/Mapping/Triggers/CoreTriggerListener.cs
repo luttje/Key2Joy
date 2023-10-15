@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Key2Joy.Config;
 using Key2Joy.Contracts.Mapping;
@@ -42,7 +42,7 @@ public abstract class CoreTriggerListener : AbstractTriggerListener
 
     /// <summary>
     /// Subclasses MUST call this to have their actions executed.
-    /// 
+    ///
     /// Even when they know no actions are listening, they should call this. This
     /// lets events provide other mapped options to be injected.
     /// </summary>

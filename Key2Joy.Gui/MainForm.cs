@@ -20,7 +20,7 @@ using Key2Joy.Mapping.Triggers;
 
 namespace Key2Joy.Gui;
 
-public partial class MainForm : Form, IAcceptAppCommands
+public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
 {
     private readonly IDictionary<string, CachedMappingGroup> cachedMappingGroups;
     private MappingProfile selectedProfile;
@@ -206,7 +206,7 @@ public partial class MainForm : Form, IAcceptAppCommands
         }
 
         // Ensure the manager knows which window handle catches all inputs
-        Key2JoyManager.Instance.SetMainForm(this);
+        Key2JoyManager.Instance.SetHandlerWithInvoke(this);
         Key2JoyManager.Instance.StatusChanged += (s, ev) =>
         {
             this.SetStatusView(ev.IsEnabled);
