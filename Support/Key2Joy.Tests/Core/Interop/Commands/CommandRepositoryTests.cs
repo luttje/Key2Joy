@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Key2Joy.Tests.Core.Interop.Commands;
 
 [TestClass]
-public class CommandRepositoryTest
+public class CommandRepositoryTests
 {
     [TestMethod]
     public void TestCommandRegistration()

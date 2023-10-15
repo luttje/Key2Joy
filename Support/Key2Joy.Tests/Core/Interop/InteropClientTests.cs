@@ -16,14 +16,14 @@ public class MockInteropClient : InteropClient
     {
     }
 
-    protected override string GetPipeName() => InteropClientTest.TestPipeName;
+    protected override string GetPipeName() => InteropClientTests.TestPipeName;
 
     internal static MockInteropClient CreateTestInstance(ICommandRepository commandRepository)
         => new(commandRepository);
 }
 
 [TestClass]
-public class InteropClientTest
+public class InteropClientTests
 {
     internal const string TestPipeName = "Key2Joy.Tets.InteropClientTest.TestPipe";
 

@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Key2Joy.Tests.Core.Mapping;
 
 [TestClass]
-public class MappingProfileTest
+public class MappingProfileTests
 {
     private const string TestExtension = ".k2j-test.json";
 

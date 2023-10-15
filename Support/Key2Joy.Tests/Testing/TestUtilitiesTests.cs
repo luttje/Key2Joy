@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Key2Joy.Tests.Testing;
 
 [TestClass]
-public class TestUtilitiesTest
+public class TestUtilitiesTests
 {
     [TestMethod]
     public async Task TestAsyncMethodWithTimeout_CompletesWithinTimeout_ReturnsResult()

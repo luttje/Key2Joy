@@ -1,6 +1,4 @@
-using System.CodeDom.Compiler;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Actions;
@@ -8,7 +6,6 @@ using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.Mapping;
 using Key2Joy.Mapping.Actions;
 using Key2Joy.Mapping.Triggers;
-using Microsoft.SqlServer.Server;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -57,7 +54,7 @@ public class MockInputBag : AbstractInputBag
 }
 
 [TestClass]
-public class Key2JoyManagerTest
+public class Key2JoyManagerTests
 {
     [TestCleanup]
     public void Cleanup() => Key2JoyManager.Instance.DisarmMappings();

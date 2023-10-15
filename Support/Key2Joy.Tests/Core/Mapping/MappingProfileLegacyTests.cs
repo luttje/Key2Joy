@@ -8,7 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Key2Joy.Tests.Core.Mapping;
 
 [TestClass]
-public class MappingProfileLegacyTest
+public class MappingProfileLegacyTests
 {
     [TestInitialize]
     public void Initialize()

@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Key2Joy.Tests.Core.Config;
 
 [TestClass]
-public class ConfigManagerTest
+public class ConfigManagerTests
 {
     [TestCleanup]
     public void Cleanup() => MockConfigManager.RemoveConfigStub();

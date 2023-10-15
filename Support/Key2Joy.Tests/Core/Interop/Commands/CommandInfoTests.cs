@@ -20,7 +20,7 @@ public struct UnregisteredCommand
 }
 
 [TestClass]
-public class CommandInfoTest
+public class CommandInfoTests
 {
     private CommandRepository commandRepository;
 
