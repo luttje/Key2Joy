@@ -1,38 +1,67 @@
-﻿using System.Runtime.InteropServices;
+using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace Key2Joy.LowLevelInput;
 
-// Source: https://stackoverflow.com/a/2934866
+public interface IVirtualKeyService
+{
+    short VkKeyScan(char ch);
+
+    uint MapVirtualKey(uint uCode, MapVirtualKeyMapTypes uMapType);
+}
+
+[ExcludeFromCodeCoverage]
+public class NativeVirtualKeyService : IVirtualKeyService
+{
+    [DllImport("user32.dll", EntryPoint = "VkKeyScan")]
+    public static extern short InternalVkKeyScan(char ch);
+
+    [DllImport("user32.dll", EntryPoint = "MapVirtualKey")]
+    public static extern uint InternalMapVirtualKey(uint uCode, MapVirtualKeyMapTypes uMapType);
+
+    public short VkKeyScan(char ch) => InternalVkKeyScan(ch);
+
+    public uint MapVirtualKey(uint uCode, MapVirtualKeyMapTypes uMapType) => InternalMapVirtualKey(uCode, uMapType);
+}
+
+// Based on: https://stackoverflow.com/a/2934866
 public class VirtualKeyConverter
 {
-    [DllImport("user32.dll")]
-    private static extern short VkKeyScan(char ch);
+    private const short IsEitherShiftPressed = 0b00000001;
+    private const short IsEitherControlPressed = 0b00000010;
+    private const short IsEitherAltPressed = 0b00000100;
+    private const short IsHankakuKeyPressed = 0b00001000;
 
-    [DllImport("user32.dll")]
-    private static extern uint MapVirtualKey(uint uCode, MapVirtualKeyMapTypes uMapType);
+    private readonly IVirtualKeyService service;
 
-    public static Keys KeysFromVirtual(int virtualKeyCode) => (Keys)virtualKeyCode;
+    public VirtualKeyConverter(IVirtualKeyService service = null)
+        => this.service = service ?? new NativeVirtualKeyService();
 
-    public static Keys KeysFromScanCode(KeyboardKey scanCode) => KeysFromVirtual((int)MapVirtualKey((uint)scanCode, MapVirtualKeyMapTypes.MAPVK_VSC_TO_VK_EX));
+    public Keys KeysFromVirtual(int virtualKeyCode) => (Keys)virtualKeyCode;
 
-    public static Keys KeysFromChar(char keyChar)
+    public Keys KeysFromScanCode(KeyboardKey scanCode)
+        => this.KeysFromVirtual((int)this.service.MapVirtualKey((uint)scanCode, MapVirtualKeyMapTypes.MAPVK_VSC_TO_VK_EX));
+
+    public Keys KeysFromChar(char keyChar)
     {
-        Helper helper = new() { Value = VkKeyScan(keyChar) };
+        Helper helper = new() { Value = this.service.VkKeyScan(keyChar) };
 
         var virtualKeyCode = helper.Low;
         var shiftState = helper.High;
 
         var keys = (Keys)virtualKeyCode;
 
-        keys |= (shiftState & 1) != 0 ? Keys.Shift : Keys.None;
-        keys |= (shiftState & 2) != 0 ? Keys.Control : Keys.None;
-        keys |= (shiftState & 4) != 0 ? Keys.Alt : Keys.None;
+        keys |= (shiftState & IsEitherShiftPressed) != 0 ? Keys.Shift : Keys.None;
+        keys |= (shiftState & IsEitherControlPressed) != 0 ? Keys.Control : Keys.None;
+        keys |= (shiftState & IsEitherAltPressed) != 0 ? Keys.Alt : Keys.None;
+        keys |= (shiftState & IsHankakuKeyPressed) != 0 ? Keys.HanjaMode : Keys.None; // TODO: Is this correct?
 
         return keys;
     }
 
-    public static string KeysToString(Keys keys) => new KeysConverter().ConvertToString(keys);
+    public string KeysToString(Keys keys) => new KeysConverter().ConvertToString(keys);
 
     [StructLayout(LayoutKind.Explicit)]
     private struct Helper

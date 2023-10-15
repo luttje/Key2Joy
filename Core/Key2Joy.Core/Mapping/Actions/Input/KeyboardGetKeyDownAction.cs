@@ -15,6 +15,8 @@ namespace Key2Joy.Mapping.Actions.Input;
 )]
 public class KeyboardGetKeyDownAction : CoreAction
 {
+    private readonly VirtualKeyConverter virtualKeyConverter = new();
+
     public KeyboardGetKeyDownAction(string name)
         : base(name)
     { }
@@ -56,7 +58,8 @@ public class KeyboardGetKeyDownAction : CoreAction
     /// <returns>True if the key is currently pressed down, false otherwise</returns>
     /// <name>Keyboard.GetKeyDown</name>
     [ExposesScriptingMethod("Keyboard.GetKeyDown")]
-    public bool ExecuteForScript(KeyboardKey key) => KeyboardTriggerListener.Instance.GetKeyDown(VirtualKeyConverter.KeysFromScanCode(key));
+    public bool ExecuteForScript(KeyboardKey key)
+        => KeyboardTriggerListener.Instance.GetKeyDown(this.virtualKeyConverter.KeysFromScanCode(key));
 
     public override async Task Execute(AbstractInputBag inputBag = null)
     {

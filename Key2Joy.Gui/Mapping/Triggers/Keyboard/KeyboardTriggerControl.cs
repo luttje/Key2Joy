@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows.Forms;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Triggers;
@@ -16,6 +16,7 @@ public partial class KeyboardTriggerControl : UserControl, ITriggerOptionsContro
 {
     private const string TEXT_CHANGE = "(press any key to select it as the trigger)";
     private const string TEXT_CHANGE_INSTRUCTION = "(click here, then press any key to set it as the trigger)";
+    private readonly VirtualKeyConverter virtualKeyConverter = new();
 
     public event EventHandler OptionsChanged;
 
@@ -58,7 +59,7 @@ public partial class KeyboardTriggerControl : UserControl, ITriggerOptionsContro
             return;
         }
 
-        this.keys = VirtualKeyConverter.KeysFromVirtual(e.KeyboardData.VirtualCode);
+        this.keys = this.virtualKeyConverter.KeysFromVirtual(e.KeyboardData.VirtualCode);
         this.UpdateKeys();
         this.StopTrapping();
     }

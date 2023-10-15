@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using static Key2Joy.LowLevelInput.GlobalInputHook;
 
@@ -7,6 +8,7 @@ namespace Key2Joy.LowLevelInput;
 /// <summary>
 /// Represents a class for managing native hooks.
 /// </summary>
+[ExcludeFromCodeCoverage]
 public class NativeHookManager : IHookManager
 {
     /// <summary>
