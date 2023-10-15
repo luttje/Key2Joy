@@ -110,7 +110,7 @@ public class InteropServer : IInteropServer, IDisposable
     /// Handle a command by calling the appropriate handler
     /// </summary>
     /// <param name="command"></param>
-    private void HandleCommand(object command)
+    public void HandleCommand(object command)
     {
         switch (command)
         {

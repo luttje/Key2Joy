@@ -12,7 +12,7 @@ public partial class ConfigForm : Form
     {
         this.InitializeComponent();
 
-        var configs = ConfigControlAttribute.GetAllProperties();
+        var configs = ConfigControlAttribute.GetAllProperties(typeof(ConfigState), new AttributeProvider());
 
         foreach (var kvp in configs)
         {
