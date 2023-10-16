@@ -1,9 +1,7 @@
 using System;
 using System.Drawing;
-using System.Threading.Tasks;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Actions;
-using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.Mapping.Actions.Scripting;
 
 namespace Key2Joy.Mapping.Actions.Graphics;
@@ -57,11 +55,6 @@ public class GetPixelColorAction : CoreAction
         }
 
         return this.pixelCache.GetPixel(0, 0);
-    }
-
-    public override async Task Execute(AbstractInputBag inputBag = null)
-    {
-        // TODO: Currently this is only a script action...
     }
 
     public override bool Equals(object obj)

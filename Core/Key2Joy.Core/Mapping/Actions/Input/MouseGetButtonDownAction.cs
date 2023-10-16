@@ -1,8 +1,6 @@
-﻿using System;
-using System.Threading.Tasks;
+using System;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Actions;
-using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.LowLevelInput;
 using Key2Joy.Mapping.Triggers.Mouse;
 
@@ -25,7 +23,7 @@ public class MouseGetButtonDownAction : CoreAction
     /// </markdown-doc>
     /// <summary>
     /// Tests if the provided mouse button is currently pressed.
-    /// 
+    ///
     /// You can find the button codes in <see href="../Enumerations/Buttons.md"/>.
     /// </summary>
     /// <markdown-example>
@@ -45,11 +43,6 @@ public class MouseGetButtonDownAction : CoreAction
     /// <name>Mouse.GetButtonDown</name>
     [ExposesScriptingMethod("Mouse.GetButtonDown")]
     public bool ExecuteForScript(Mouse.Buttons button) => MouseButtonTriggerListener.Instance.GetButtonsDown(button);
-
-    public override async Task Execute(AbstractInputBag inputBag = null)
-    {
-        // TODO: Currently this is only a script action...
-    }
 
     public override string GetNameDisplay() => this.Name;
 

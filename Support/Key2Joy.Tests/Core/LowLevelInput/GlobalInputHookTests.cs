@@ -1,6 +1,4 @@
 using System;
-using System.ComponentModel;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using Key2Joy.LowLevelInput;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

@@ -1,8 +1,6 @@
-﻿using System;
-using System.Threading.Tasks;
+using System;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Actions;
-using Key2Joy.Contracts.Mapping.Triggers;
 
 namespace Key2Joy.Mapping.Actions.Util;
 
@@ -36,11 +34,6 @@ public class GetTimeAction : CoreAction
     /// <name>Util.GetUnixTimeSeconds</name>
     [ExposesScriptingMethod("Util.GetUnixTimeSeconds")]
     public long ExecuteForScript() => DateTimeOffset.Now.ToUnixTimeSeconds();
-
-    public override async Task Execute(AbstractInputBag inputBag = null)
-    {
-        // TODO: Currently this is only a script action...
-    }
 
     public override bool Equals(object obj)
     {

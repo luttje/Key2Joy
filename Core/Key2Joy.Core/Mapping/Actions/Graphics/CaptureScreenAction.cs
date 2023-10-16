@@ -1,12 +1,9 @@
 using System;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Actions;
-using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.Mapping.Actions.Scripting;
 using Key2Joy.Util;
 
@@ -114,11 +111,6 @@ public class CaptureScreenAction : CoreAction
         }
 
         pixelCache.Save(savePath, format);
-    }
-
-    public override async Task Execute(AbstractInputBag inputBag = null)
-    {
-        // TODO: Currently this is only a script action...
     }
 
     public override bool Equals(object obj)
