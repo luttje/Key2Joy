@@ -1,4 +1,6 @@
-﻿using System.IO;
+using System;
+using System.Drawing.Imaging;
+using System.IO;
 
 namespace Key2Joy.Util;
 
@@ -24,4 +26,25 @@ public static class FileSystem
 
         return filePath;
     }
+
+    /// <summary>
+    /// Returns the image format for the given extension.
+    /// </summary>
+    /// <param name="extension"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException"></exception>
+    public static ImageFormat GetImageFormatFromExtension(string extension)
+        => extension switch
+        {
+            ".jpg" => ImageFormat.Jpeg,
+            ".png" => ImageFormat.Png,
+            ".bmp" => ImageFormat.Bmp,
+            ".gif" => ImageFormat.Gif,
+            ".ico" => ImageFormat.Icon,
+            ".emf" => ImageFormat.Emf,
+            ".exif" => ImageFormat.Exif,
+            ".tiff" => ImageFormat.Tiff,
+            ".wmf" => ImageFormat.Wmf,
+            _ => throw new ArgumentException($"Unknown extension, cannot deduce image format")
+        };
 }

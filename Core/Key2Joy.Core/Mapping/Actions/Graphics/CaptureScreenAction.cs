@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -8,6 +8,7 @@ using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.Mapping.Actions.Scripting;
+using Key2Joy.Util;
 
 namespace Key2Joy.Mapping.Actions.Graphics;
 
@@ -65,7 +66,7 @@ public class CaptureScreenAction : CoreAction
     /// interval = SetInterval(function()
     ///    Graphics.CaptureScreen(Util.PathExpand("%HOMEDRIVE%/%HOMEPATH%/Desktop/frames/"..frame..".png"))
     ///    frame = frame + 1
-    /// 
+    ///
     ///    if(frame > frameCount)then
     ///       ClearInterval(interval)
     ///    end
@@ -85,40 +86,9 @@ public class CaptureScreenAction : CoreAction
         int? x = null, int? y = null,
         int? w = null, int? h = null)
     {
-        var format = ImageFormat.Jpeg;
-
-        if (savePath.EndsWith(".png"))
-        {
-            format = ImageFormat.Png;
-        }
-        else if (savePath.EndsWith(".bmp"))
-        {
-            format = ImageFormat.Bmp;
-        }
-        else if (savePath.EndsWith(".gif"))
-        {
-            format = ImageFormat.Gif;
-        }
-        else if (savePath.EndsWith(".ico"))
-        {
-            format = ImageFormat.Icon;
-        }
-        else if (savePath.EndsWith(".emf"))
-        {
-            format = ImageFormat.Emf;
-        }
-        else if (savePath.EndsWith(".exif"))
-        {
-            format = ImageFormat.Exif;
-        }
-        else if (savePath.EndsWith(".tiff"))
-        {
-            format = ImageFormat.Tiff;
-        }
-        else if (savePath.EndsWith(".wmf"))
-        {
-            format = ImageFormat.Wmf;
-        }
+        var format = FileSystem.GetImageFormatFromExtension(
+            Path.GetExtension(savePath)
+        );
 
         x ??= SystemInformation.VirtualScreen.X;
 
@@ -138,7 +108,7 @@ public class CaptureScreenAction : CoreAction
         }
 
         var directory = Path.GetDirectoryName(savePath);
-        if (!Directory.Exists(directory))
+        if (!string.IsNullOrWhiteSpace(directory) && !Directory.Exists(directory))
         {
             Directory.CreateDirectory(directory);
         }

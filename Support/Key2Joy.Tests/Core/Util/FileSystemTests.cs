@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Drawing.Imaging;
 using System.IO;
 using Key2Joy.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -73,5 +76,37 @@ public class FileSystemTests
         Assert.AreEqual($"{TestDirectory}\\File_6.txt", result);
 
         File.Delete(existingFilePath);
+    }
+
+    public static IEnumerable<object[]> ImageFormatsTestData
+        => new List<object[]>
+        {
+            new object[]{ ".jpg", ImageFormat.Jpeg },
+            new object[]{ ".png", ImageFormat.Png },
+            new object[]{ ".bmp", ImageFormat.Bmp },
+            new object[]{ ".gif", ImageFormat.Gif },
+            new object[]{ ".ico", ImageFormat.Icon },
+            new object[]{ ".emf", ImageFormat.Emf },
+            new object[]{ ".exif", ImageFormat.Exif },
+            new object[]{ ".tiff", ImageFormat.Tiff },
+            new object[]{ ".wmf", ImageFormat.Wmf },
+        };
+
+    [DataTestMethod]
+    [DynamicData(nameof(ImageFormatsTestData))]
+    public void GetImageFormat_WhenExtensionIsValid_ReturnsImageFormat(string extension, ImageFormat expected)
+    {
+        var result = FileSystem.GetImageFormatFromExtension(extension);
+
+        Assert.AreEqual(expected, result);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
+    public void GetImageFormat_WhenExtensionIsInvalid_ThrowsArgumentException()
+    {
+        FileSystem.GetImageFormatFromExtension(".invalid");
+
+        Assert.Fail(); // Should not reach this line
     }
 }
