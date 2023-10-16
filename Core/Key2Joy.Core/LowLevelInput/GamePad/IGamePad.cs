@@ -4,7 +4,7 @@ namespace Key2Joy.LowLevelInput.GamePad;
 
 public interface IGamePad
 {
-    int Index { get; set; }
+    int Index { get; }
 
     void PlugIn();
 

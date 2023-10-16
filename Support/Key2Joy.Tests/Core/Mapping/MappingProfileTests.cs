@@ -1,7 +1,9 @@
 using System.IO;
+using CommonServiceLocator;
 using Key2Joy.Config;
 using Key2Joy.Mapping;
 using Key2Joy.Tests.Core.Config;
+using Key2Joy.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Key2Joy.Tests.Core.Mapping;
@@ -10,10 +12,18 @@ namespace Key2Joy.Tests.Core.Mapping;
 public class MappingProfileTests
 {
     private const string TestExtension = ".k2j-test.json";
+    private MockConfigManager configManager;
 
     [TestInitialize]
-    public void Initialize() =>
-        MockConfigManager.LoadOrCreateMock();
+    public void Initialize()
+    {
+        // Setup dependency injection and config manager service locator
+        var serviceLocator = new DependencyServiceLocator();
+        ServiceLocator.SetLocatorProvider(() => serviceLocator);
+
+        this.configManager = MockConfigManager.LoadOrCreateMock();
+        serviceLocator.Register<IConfigManager>(this.configManager);
+    }
 
     [TestCleanup]
     public void Cleanup() => MockConfigManager.RemoveConfigStub();
@@ -21,7 +31,7 @@ public class MappingProfileTests
     [TestMethod]
     public void ResolveLastLoadedProfilePath_WhenLastLoadedProfileIsNull_ShouldReturnDefaultPath()
     {
-        ConfigManager.Config.LastLoadedProfile = null;
+        this.configManager.GetConfigState().LastLoadedProfile = null;
 
         var result = MappingProfile.ResolveLastLoadedProfilePath();
 
@@ -31,7 +41,7 @@ public class MappingProfileTests
     [TestMethod]
     public void ResolveLastLoadedProfilePath_WhenLastLoadedProfileDoesNotExist_ShouldExtractDefaultAndReturnDefaultPath()
     {
-        ConfigManager.Config.LastLoadedProfile = "NonExistentPath";
+        this.configManager.GetConfigState().LastLoadedProfile = "NonExistentPath";
 
         var result = MappingProfile.ResolveLastLoadedProfilePath();
 
@@ -43,7 +53,7 @@ public class MappingProfileTests
     public void ResolveLastLoadedProfilePath_WhenLastLoadedProfileExists_ShouldReturnLastLoadedPath()
     {
         var fakePath = "FakePath";
-        ConfigManager.Config.LastLoadedProfile = fakePath;
+        this.configManager.GetConfigState().LastLoadedProfile = fakePath;
         File.Create(fakePath).Dispose(); // Create a fake file
 
         var result = MappingProfile.ResolveLastLoadedProfilePath();

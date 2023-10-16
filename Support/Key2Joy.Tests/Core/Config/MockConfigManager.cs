@@ -9,7 +9,10 @@ public class MockConfigManager : ConfigManager
     private const string APP_DIR = "TestConfigs";
 
     public static MockConfigManager LoadOrCreateMock()
-        => (MockConfigManager)LoadOrCreate(new MockConfigManager());
+        => new();
+
+    public MockConfigManager() : base()
+    { }
 
     private static string GetMockAppDataDirectory()
     {

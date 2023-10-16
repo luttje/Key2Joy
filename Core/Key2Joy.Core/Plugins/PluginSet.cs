@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using CommonServiceLocator;
 using Key2Joy.Config;
 using Key2Joy.Contracts;
 using Key2Joy.Contracts.Mapping;
@@ -22,6 +23,8 @@ namespace Key2Joy.Plugins;
 [ExposesEnumeration(typeof(LowLevelInput.KeyboardKey))]
 public class PluginSet : IDisposable
 {
+    public string PluginsFolder { get; private set; }
+
     private readonly List<PluginBase> loadedPlugins = new();
     public IReadOnlyList<PluginBase> LoadedPlugins => this.loadedPlugins;
 
@@ -40,7 +43,7 @@ public class PluginSet : IDisposable
     private readonly List<MappingControlFactory> mappingControlFactories = new();
     private readonly List<ExposedEnumeration> exposedEnumerations = new();
 
-    public string PluginsFolder { get; private set; }
+    private readonly IConfigManager configManager;
 
     /// <summary>
     /// Loads plugins from the specified directory
@@ -49,6 +52,8 @@ public class PluginSet : IDisposable
     /// <returns></returns>
     internal PluginSet(string pluginDirectoriesPaths)
     {
+        this.configManager = ServiceLocator.Current.GetInstance<IConfigManager>();
+
         this.PluginsFolder = pluginDirectoriesPaths;
 
         if (!Directory.Exists(pluginDirectoriesPaths))
@@ -66,9 +71,9 @@ public class PluginSet : IDisposable
             var pluginAssemblyName = Path.GetFileName(pluginDirectoryPath);
             var pluginAssemblyFileName = $"{pluginAssemblyName}.dll";
             var pluginAssemblyPath = Path.Combine(pluginDirectoryPath, pluginAssemblyFileName);
-            var expectedChecksum = ConfigManager.Instance.GetExpectedChecksum(pluginAssemblyPath);
+            var expectedChecksum = this.configManager.GetExpectedPluginChecksum(pluginAssemblyPath);
 
-            if (ConfigManager.Instance.IsPluginEnabled(pluginAssemblyPath))
+            if (this.configManager.IsPluginEnabled(pluginAssemblyPath))
             {
                 var plugin = this.LoadPlugin(pluginAssemblyPath, expectedChecksum);
                 this.AddPluginState(PluginLoadStates.Loaded, pluginAssemblyPath, null, plugin);
@@ -123,7 +128,7 @@ public class PluginSet : IDisposable
 
         this.AddPluginState(PluginLoadStates.Loaded, pluginAssemblyPath, null, pluginHost);
 
-        ConfigManager.Instance.SetPluginEnabled(pluginAssemblyPath, loadedChecksum);
+        this.configManager.SetPluginEnabled(pluginAssemblyPath, loadedChecksum);
 
         this.proxiesToDispose.Add(pluginHost);
 
@@ -132,7 +137,7 @@ public class PluginSet : IDisposable
 
     public void DisablePlugin(string pluginAssemblyPath)
     {
-        ConfigManager.Instance.SetPluginEnabled(pluginAssemblyPath, null);
+        this.configManager.SetPluginEnabled(pluginAssemblyPath, null);
         System.Windows.Forms.MessageBox.Show(
             "When disabling loaded plugins you have to restart the application for these changes to take effect."
         );
