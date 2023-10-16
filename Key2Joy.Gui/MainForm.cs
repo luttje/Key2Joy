@@ -5,6 +5,7 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using BrightIdeasSoftware;
+using CommonServiceLocator;
 using Key2Joy.Config;
 using Key2Joy.Contracts;
 using Key2Joy.Contracts.Mapping;
@@ -23,10 +24,16 @@ namespace Key2Joy.Gui;
 public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
 {
     private readonly IDictionary<string, CachedMappingGroup> cachedMappingGroups;
+    private readonly ConfigState configState;
+
     private MappingProfile selectedProfile;
 
     public MainForm(bool shouldStartMinimized = false)
     {
+        this.configState = ServiceLocator.Current
+            .GetInstance<IConfigManager>()
+            .GetConfigState();
+
         this.cachedMappingGroups = new Dictionary<string, CachedMappingGroup>();
 
         this.InitializeComponent();
@@ -83,7 +90,7 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
     private void SetSelectedProfile(MappingProfile profile)
     {
         this.selectedProfile = profile;
-        ConfigManager.Config.LastLoadedProfile = profile.FilePath;
+        this.configState.LastLoadedProfile = profile.FilePath;
 
         this.olvMappings.SetObjects(profile.MappedOptions);
         this.olvMappings.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
@@ -381,14 +388,14 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
             e.Cancel = true;
             this.Hide();
 
-            if (ConfigManager.Config.MuteCloseExitMessage)
+            if (this.configState.MuteCloseExitMessage)
             {
                 return;
             }
 
             var result = MessageBox.Show("Closing this window minimizes it to the notification tray in your taskbar. You can shut down Key2Joy through File > Exit Program.\n\nContinue showing this message?", "Minimizing to notification tray.", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
 
-            ConfigManager.Config.MuteCloseExitMessage = result != DialogResult.Yes;
+            this.configState.MuteCloseExitMessage = result != DialogResult.Yes;
         }
     }
 

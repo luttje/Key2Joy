@@ -20,10 +20,9 @@ public class GamePadResetAction : CoreAction
 {
     public int GamePadIndex { get; set; }
 
-    private readonly IGamePadService gamePadService;
-
-    public GamePadResetAction(string name) : base(name)
-        => this.gamePadService = ServiceLocator.Current.GetInstance<IGamePadService>();
+    public GamePadResetAction(string name)
+        : base(name)
+    { }
 
     public override void OnStartListening(AbstractTriggerListener listener, ref IList<AbstractAction> otherActions)
     {
@@ -58,7 +57,8 @@ public class GamePadResetAction : CoreAction
     {
         this.GamePadIndex = gamepadIndex;
 
-        var gamePad = this.gamePadService.GetGamePad(this.GamePadIndex);
+        var gamePadService = ServiceLocator.Current.GetInstance<IGamePadService>();
+        var gamePad = gamePadService.GetGamePad(this.GamePadIndex);
 
         if (!gamePad.GetIsPluggedIn())
         {
@@ -72,7 +72,8 @@ public class GamePadResetAction : CoreAction
 
     public override async Task Execute(AbstractInputBag inputBag = null)
     {
-        var gamePad = this.gamePadService.GetGamePad(this.GamePadIndex);
+        var gamePadService = ServiceLocator.Current.GetInstance<IGamePadService>();
+        var gamePad = gamePadService.GetGamePad(this.GamePadIndex);
         var state = gamePad.GetState();
         state.Reset();
         gamePad.Update();

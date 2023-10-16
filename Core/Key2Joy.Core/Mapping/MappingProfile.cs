@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Windows.Forms;
+using CommonServiceLocator;
 using Key2Joy.Config;
 using Key2Joy.Contracts;
 using Key2Joy.Contracts.Mapping.Actions;
@@ -25,7 +26,6 @@ public class MappingProfile
     public const string SAVE_DIR = "Profiles";
 
     public BindingList<MappedOption> MappedOptions { get; set; } = new BindingList<MappedOption>();
-
     public string Name { get; set; }
 
     public int Version { get; set; } = NO_VERSION; // Version is set on save
@@ -124,9 +124,12 @@ public class MappingProfile
             writer.Write(Properties.Resources.default_profile_k2j);
         }
 
-        if (ConfigManager.Config.LastLoadedProfile == null)
+        var configState = ServiceLocator.Current
+            .GetInstance<IConfigManager>()
+            .GetConfigState();
+        if (configState.LastLoadedProfile == null)
         {
-            ConfigManager.Config.LastLoadedProfile = defaultPath;
+            configState.LastLoadedProfile = defaultPath;
         }
     }
 
@@ -153,7 +156,10 @@ public class MappingProfile
 
     public static string ResolveLastLoadedProfilePath()
     {
-        var lastLoadedPath = ConfigManager.Config.LastLoadedProfile ?? GetDefaultPath();
+        var configState = ServiceLocator.Current
+            .GetInstance<IConfigManager>()
+            .GetConfigState();
+        var lastLoadedPath = configState.LastLoadedProfile ?? GetDefaultPath();
         if (!File.Exists(lastLoadedPath))
         {
             ExtractDefaultIfNotExists();

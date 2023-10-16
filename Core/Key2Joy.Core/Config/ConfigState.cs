@@ -1,9 +1,19 @@
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Key2Joy.Config;
 
 public class ConfigState
 {
+    private IConfigManager configManager;
+
+    [JsonConstructor]
+    public ConfigState()
+    { }
+
+    public ConfigState(IConfigManager configManager)
+        => this.configManager = configManager;
+
     public string LastInstallPath
     {
         get => this.lastInstallPath;
@@ -49,9 +59,11 @@ public class ConfigState
 
     private void SaveIfInitialized(object changedValue = null)
     {
-        if (ConfigManager.Instance.IsInitialized)
+        if (this.configManager == null || !this.configManager.IsInitialized)
         {
-            ConfigManager.Instance.Save();
+            return;
         }
+
+        this.configManager.Save();
     }
 }

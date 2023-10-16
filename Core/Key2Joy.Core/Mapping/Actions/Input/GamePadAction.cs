@@ -23,10 +23,9 @@ public class GamePadAction : CoreAction, IPressState
     public PressState PressState { get; set; }
     public int GamePadIndex { get; set; }
 
-    private readonly IGamePadService gamePadService;
-
-    public GamePadAction(string name) : base(name)
-        => this.gamePadService = ServiceLocator.Current.GetInstance<IGamePadService>();
+    public GamePadAction(string name)
+        : base(name)
+    { }
 
     public static List<MappedOption> GetAllButtonActions(PressState pressState)
     {
@@ -62,7 +61,8 @@ public class GamePadAction : CoreAction, IPressState
     {
         base.OnStartListening(listener, ref otherActions);
 
-        this.gamePadService.EnsurePluggedIn(this.GamePadIndex);
+        var gamePadService = ServiceLocator.Current.GetInstance<IGamePadService>();
+        gamePadService.EnsurePluggedIn(this.GamePadIndex);
     }
 
     private void HandleMouseMove(IGamePad gamePad, MouseMoveInputBag mouseMoveInputBag)
@@ -127,7 +127,8 @@ public class GamePadAction : CoreAction, IPressState
         this.PressState = pressState;
         this.GamePadIndex = gamepadIndex;
 
-        var gamePad = this.gamePadService.GetGamePad(this.GamePadIndex);
+        var gamePadService = ServiceLocator.Current.GetInstance<IGamePadService>();
+        var gamePad = gamePadService.GetGamePad(this.GamePadIndex);
 
         if (!gamePad.GetIsPluggedIn())
         {
@@ -147,7 +148,8 @@ public class GamePadAction : CoreAction, IPressState
 
     public override async Task Execute(AbstractInputBag inputBag = null)
     {
-        var gamePad = this.gamePadService.GetGamePad(this.GamePadIndex);
+        var gamePadService = ServiceLocator.Current.GetInstance<IGamePadService>();
+        var gamePad = gamePadService.GetGamePad(this.GamePadIndex);
 
         if (inputBag is MouseMoveInputBag mouseMoveInputBag)
         {

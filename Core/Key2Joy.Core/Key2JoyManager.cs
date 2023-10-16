@@ -84,6 +84,9 @@ public class Key2JoyManager : IKey2JoyManager, IMessageFilter
         };
         serviceLocator.Register<IKey2JoyManager>(instance);
 
+        var configManager = new ConfigManager();
+        serviceLocator.Register<IConfigManager>(configManager);
+
         var gamePadService = new SimulatedGamePadService();
         serviceLocator.Register<IGamePadService>(gamePadService);
 
@@ -252,7 +255,8 @@ public class Key2JoyManager : IKey2JoyManager, IMessageFilter
     /// </summary>
     public static void StartKey2Joy(bool startMinimized = true, bool pauseUntilReady = true)
     {
-        var executablePath = ConfigManager.Config.LastInstallPath;
+        var configManager = ServiceLocator.Current.GetInstance<IConfigManager>();
+        var executablePath = configManager.GetConfigState().LastInstallPath;
 
         if (executablePath == null)
         {

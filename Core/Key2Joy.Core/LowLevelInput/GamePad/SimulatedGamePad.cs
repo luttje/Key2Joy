@@ -7,7 +7,7 @@ namespace Key2Joy.LowLevelInput.GamePad;
 /// </summary>
 public class SimulatedGamePad : IGamePad
 {
-    public int Index { get; set; }
+    public int Index { get; private set; }
     private bool isPluggedIn = false;
 
     public SimulatedGamePad(int index)
