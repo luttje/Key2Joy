@@ -5,19 +5,20 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
+using CommonServiceLocator;
 using Key2Joy.Config;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.Interop;
 using Key2Joy.Interop.Commands;
-using Key2Joy.LowLevelInput;
+using Key2Joy.LowLevelInput.GamePad;
 using Key2Joy.Mapping;
 using Key2Joy.Mapping.Actions.Logic;
 using Key2Joy.Mapping.Triggers.Keyboard;
 using Key2Joy.Mapping.Triggers.Mouse;
 using Key2Joy.Plugins;
-using SimWinInput;
+using Key2Joy.Util;
 
 namespace Key2Joy;
 
@@ -67,6 +68,10 @@ public class Key2JoyManager : IKey2JoyManager, IMessageFilter
     /// </summary>
     public static void InitSafely(AppCommandRunner commandRunner, Action<PluginSet> mainLoop)
     {
+        // Setup dependency injection and services
+        var serviceLocator = new DependencyServiceLocator();
+        ServiceLocator.SetLocatorProvider(() => serviceLocator);
+
         instance = new Key2JoyManager
         {
             ExplicitTriggerListeners = new List<AbstractTriggerListener>()
@@ -77,7 +82,15 @@ public class Key2JoyManager : IKey2JoyManager, IMessageFilter
                 MouseMoveTriggerListener.Instance
             }
         };
+        serviceLocator.Register<IKey2JoyManager>(instance);
 
+        var gamePadService = new SimulatedGamePadService();
+        serviceLocator.Register<IGamePadService>(gamePadService);
+
+        var commandRepository = new CommandRepository();
+        serviceLocator.Register<ICommandRepository>(commandRepository);
+
+        // Load plugins
         var pluginDirectoriesPaths = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         pluginDirectoriesPaths = Path.Combine(pluginDirectoriesPaths, PluginsDirectory);
 
@@ -87,7 +100,7 @@ public class Key2JoyManager : IKey2JoyManager, IMessageFilter
 
         Key2JoyManager.commandRunner = commandRunner;
 
-        var interopServer = new InteropServer(instance, new CommandRepository());
+        var interopServer = new InteropServer(instance, commandRepository);
 
         try
         {
@@ -97,7 +110,7 @@ public class Key2JoyManager : IKey2JoyManager, IMessageFilter
         finally
         {
             interopServer.StopListening();
-            SimGamePad.Instance.ShutDown();
+            gamePadService.ShutDown();
         }
     }
 
@@ -223,7 +236,9 @@ public class Key2JoyManager : IKey2JoyManager, IMessageFilter
             listener.StopListening();
         }
 
-        GamePadManager.Instance.EnsureAllUnplugged();
+        var gamePadService = ServiceLocator.Current.GetInstance<IGamePadService>();
+        gamePadService.EnsureAllUnplugged();
+
         this.armedProfile = null;
 
         StatusChanged?.Invoke(this, new StatusChangedEventArgs

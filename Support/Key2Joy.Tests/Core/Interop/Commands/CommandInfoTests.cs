@@ -2,6 +2,7 @@ using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using Key2Joy.Interop.Commands;
+using CommonServiceLocator;
 
 namespace Key2Joy.Tests.Core.Interop.Commands;
 
@@ -22,12 +23,12 @@ public struct UnregisteredCommand
 [TestClass]
 public class CommandInfoTests
 {
-    private CommandRepository commandRepository;
+    private ICommandRepository commandRepository;
 
     [TestInitialize]
     public void Initialize()
     {
-        this.commandRepository = new CommandRepository();
+        this.commandRepository = ServiceLocator.Current.GetInstance<ICommandRepository>();
         this.commandRepository.Register(TestCommand.Id, typeof(TestCommand));
     }
 

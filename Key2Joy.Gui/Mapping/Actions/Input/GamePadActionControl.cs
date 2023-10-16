@@ -1,8 +1,11 @@
-﻿using System;
+using System;
+using System.Linq;
 using System.Windows.Forms;
+using CommonServiceLocator;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.LowLevelInput;
+using Key2Joy.LowLevelInput.GamePad;
 using Key2Joy.Mapping.Actions.Input;
 
 namespace Key2Joy.Gui.Mapping;
@@ -19,10 +22,15 @@ public partial class GamePadActionControl : UserControl, IActionOptionsControl
     {
         this.InitializeComponent();
 
+        var gamePadService = ServiceLocator.Current.GetInstance<IGamePadService>();
+        var allGamePads = gamePadService.GetAllGamePads();
+        var allGamePadIndices = allGamePads.Select(gp => gp.Index).ToArray();
+
         this.cmbGamePad.DataSource = GamePadAction.GetAllButtons();
         this.cmbPressState.DataSource = PressStates.ALL;
         this.cmbPressState.SelectedIndex = 0;
-        this.cmbGamePadIndex.DataSource = GamePadManager.Instance.GetAllGamePadIndices();
+
+        this.cmbGamePadIndex.DataSource = allGamePadIndices;
         this.cmbGamePadIndex.SelectedIndex = 0;
     }
 
