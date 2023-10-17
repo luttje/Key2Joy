@@ -10,7 +10,7 @@ public abstract class BaseScriptActionWithEnvironment<TEnvironment> : BaseScript
 {
     protected TEnvironment Environment;
     protected Guid EnvironmentId { get; private set; }
-    protected bool IsRetired { get; private set; }
+    public bool IsRetired { get; private set; }
 
     public BaseScriptActionWithEnvironment(string name)
         : base(name)

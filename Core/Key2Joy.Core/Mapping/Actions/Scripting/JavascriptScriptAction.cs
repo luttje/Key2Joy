@@ -11,7 +11,6 @@ using Key2Joy.Contracts;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Contracts.Mapping.Triggers;
-using Key2Joy.Plugins;
 using Key2Joy.Util;
 
 namespace Key2Joy.Mapping.Actions.Scripting;
@@ -69,9 +68,9 @@ public class JavascriptAction : BaseScriptActionWithEnvironment<Engine>
         //this.environment.Execute($"Print(JSON.stringify({enumInjection}))");
     }
 
-    public override void RegisterScriptingMethod(ExposedMethod exposedMethod, AbstractAction instance)
+    public override void RegisterScriptingMethod(ExposedMethod exposedMethod, AbstractAction scriptActionInstance)
     {
-        exposedMethod.Prepare(instance);
+        exposedMethod.Prepare(scriptActionInstance);
 
         var functionName = exposedMethod.FunctionName;
         var parents = functionName.Split('.');

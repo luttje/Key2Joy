@@ -36,7 +36,7 @@ public class PluginActionProxy : CoreAction, IGetRealObject<PluginAction>
 
     public override string GetNameDisplay() => this.source.GetNameDisplay(this.Name);
 
-    internal IList<Type> GetMethodParameterTypes(string methodName)
+    public IList<Type> GetMethodParameterTypes(string methodName)
         => this.source.GetMethodParameterTypes(methodName);
 
     public object InvokeScriptMethod(string methodName, object[] parameters)

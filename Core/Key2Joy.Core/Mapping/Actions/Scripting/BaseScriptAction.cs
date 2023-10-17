@@ -4,7 +4,6 @@ using Key2Joy.Contracts;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Contracts.Mapping.Triggers;
-using Key2Joy.Plugins;
 
 namespace Key2Joy.Mapping.Actions.Scripting;
 
@@ -35,7 +34,12 @@ public abstract class BaseScriptAction : CoreAction
 
     public abstract void RegisterScriptingEnum(ExposedEnumeration enumeration);
 
-    public abstract void RegisterScriptingMethod(ExposedMethod exposedMethod, AbstractAction instance);
+    /// <summary>
+    /// Called to register scripting methods on the environment.
+    /// </summary>
+    /// <param name="exposedMethod">The method to be exposed to scripting</param>
+    /// <param name="scriptActionInstance">The action on which the exposed method resides</param>
+    public abstract void RegisterScriptingMethod(ExposedMethod exposedMethod, AbstractAction scriptActionInstance);
 
     public virtual void Print(params object[] args)
     {

@@ -13,6 +13,7 @@ using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.Contracts.Plugins;
 using Key2Joy.Contracts.Plugins.Remoting;
+using Key2Joy.Mapping.Actions.Scripting;
 using Key2Joy.PluginHost;
 using Mono.Cecil;
 
@@ -251,10 +252,17 @@ public class PluginHostProxy : IDisposable
             foreach (var methodAttribute in methodAttributes)
             {
                 PluginExposedMethod exposedMethod = new(
-                    this,
                     type.FullName,
                     methodAttribute.ConstructorArguments[0].Value as string,
                     method.Name);
+
+                // Script actions cannot bind to methods that are overloaded (since it wouldn't know which to call)
+                if (type.Methods.Count(m => m.Name == method.Name) > 1)
+                {
+                    throw new PluginLoadException(
+                        $"Scripting method {method.Name} in {type.FullName} is overloaded. Overloaded methods cannot be exposed to scripting."
+                    );
+                }
 
                 exposedMethods.Add(exposedMethod);
             }
