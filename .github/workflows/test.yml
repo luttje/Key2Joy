@@ -17,6 +17,6 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
       - name: Run Key2Joy Tests
-        run: dotnet test --no-build --configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat="lcov" /p:CoverletOutput="${{ github.workspace }}/coverage/lcov.info" /p:IncludeTestAssembly=true
+        run: dotnet test --no-build --configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat="lcov" /p:CoverletOutput="${{ github.workspace }}/coverage/lcov.info" /p:IncludeTestAssembly=true /p:ExcludeByFile="**/*.Designer.cs"
       - name: Coveralls for Key2Joy
         uses: coverallsapp/github-action@v2
