@@ -1,6 +1,6 @@
 {
   "LastInstallPath": "%TEST_ASSEMBLY_PATH%\\Key2Joy.exe",
-  "MuteCloseExitMessage": true,
+  "ShouldCloseButtonMinimize": true,
   "OverrideDefaultTriggerBehaviour": true,
   "LastLoadedProfile": "%TEST_APP_DATA_PATH%\\Profiles\\default-profile.k2j.json",
   "EnabledPlugins": {

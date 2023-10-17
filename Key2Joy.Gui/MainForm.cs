@@ -409,17 +409,12 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
     {
         if (e.CloseReason == CloseReason.UserClosing)
         {
-            e.Cancel = true;
-            this.Hide();
-
-            if (this.configState.MuteCloseExitMessage)
+            if (this.configState.ShouldCloseButtonMinimize)
             {
+                e.Cancel = true;
+                this.Hide();
                 return;
             }
-
-            var result = MessageBox.Show("Closing this window minimizes it to the notification tray in your taskbar. You can shut down Key2Joy through File > Exit Program.\n\nContinue showing this message?", "Minimizing to notification tray.", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
-
-            this.configState.MuteCloseExitMessage = result != DialogResult.Yes;
         }
     }
 

@@ -23,15 +23,15 @@ public class ConfigState
     private string lastInstallPath;
 
     [BooleanConfigControl(
-        Text = "Mute informative message about this app minimizing by default"
+        Text = "Minimize app when pressing the close button"
     )]
-    public bool MuteCloseExitMessage
+    public bool ShouldCloseButtonMinimize
     {
-        get => this.muteCloseExitMessage;
-        set => this.SaveIfInitialized(this.muteCloseExitMessage = value);
+        get => this.shouldCloseButtonMinimize;
+        set => this.SaveIfInitialized(this.shouldCloseButtonMinimize = value);
     }
 
-    private bool muteCloseExitMessage;
+    private bool shouldCloseButtonMinimize;
 
     [BooleanConfigControl(
         Text = "Override default behaviour when trigger action is executed"
