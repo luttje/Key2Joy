@@ -11,6 +11,7 @@ using Key2Joy.Contracts.Plugins;
 using Key2Joy.Mapping;
 using Key2Joy.Mapping.Actions;
 using Key2Joy.Mapping.Triggers;
+using static System.Windows.Forms.AxHost;
 
 namespace Key2Joy.Plugins;
 
@@ -24,9 +25,6 @@ namespace Key2Joy.Plugins;
 public class PluginSet : IDisposable
 {
     public string PluginsFolder { get; private set; }
-
-    private readonly List<PluginBase> loadedPlugins = new();
-    public IReadOnlyList<PluginBase> LoadedPlugins => this.loadedPlugins;
 
     private readonly Dictionary<string, PluginLoadState> pluginLoadStates = new();
     public IReadOnlyDictionary<string, PluginLoadState> AllPluginLoadStates => this.pluginLoadStates;
@@ -48,10 +46,15 @@ public class PluginSet : IDisposable
     /// <summary>
     /// Loads plugins from the specified directory
     /// </summary>
-    /// <param name="pluginDirectoriesPaths">The path to the directory containing the plugins</param>
+    /// <param name="pluginDirectoriesPaths">The absolute path to the directory containing the plugins</param>
     /// <returns></returns>
-    internal PluginSet(string pluginDirectoriesPaths)
+    public PluginSet(string pluginDirectoriesPaths)
     {
+        if (!Path.IsPathRooted(pluginDirectoriesPaths))
+        {
+            throw new ArgumentException("Plugin directory path must be absolute", nameof(pluginDirectoriesPaths));
+        }
+
         this.configManager = ServiceLocator.Current.GetInstance<IConfigManager>();
 
         this.PluginsFolder = pluginDirectoriesPaths;
@@ -64,7 +67,7 @@ public class PluginSet : IDisposable
         this.pluginDirectoriesPaths = Directory.GetDirectories(pluginDirectoriesPaths);
     }
 
-    internal void LoadAll()
+    public void LoadAll()
     {
         foreach (var pluginDirectoryPath in this.pluginDirectoriesPaths)
         {
@@ -76,7 +79,11 @@ public class PluginSet : IDisposable
             if (this.configManager.IsPluginEnabled(pluginAssemblyPath))
             {
                 var plugin = this.LoadPlugin(pluginAssemblyPath, expectedChecksum);
-                this.AddPluginState(PluginLoadStates.Loaded, pluginAssemblyPath, null, plugin);
+
+                if (plugin != null)
+                {
+                    this.AddPluginState(PluginLoadStates.Loaded, pluginAssemblyPath, null, plugin);
+                }
             }
             else
             {
@@ -135,27 +142,17 @@ public class PluginSet : IDisposable
         return pluginHost;
     }
 
+    /// <summary>
+    /// Disables the plugin for next load. Note that this doesnt unload resources already
+    /// started by the plugin
+    /// TODO: Fully unload plugin
+    /// </summary>
+    /// <param name="pluginAssemblyPath"></param>
     public void DisablePlugin(string pluginAssemblyPath)
-    {
-        this.configManager.SetPluginEnabled(pluginAssemblyPath, null);
-        System.Windows.Forms.MessageBox.Show(
-            "When disabling loaded plugins you have to restart the application for these changes to take effect."
-        );
-    }
+        => this.configManager.SetPluginEnabled(pluginAssemblyPath, null);
 
     internal void AddPluginState(PluginLoadStates state, string pluginAssemblyPath, string errorMessage, PluginHostProxy loadedPlugin = null)
     {
-        if (state == PluginLoadStates.FailedToLoad)
-        {
-            System.Windows.MessageBox.Show(
-                $"One of your plugins located at {pluginAssemblyPath} failed to load. This was the error: " +
-                errorMessage,
-                "Failed to load plugin!",
-                System.Windows.MessageBoxButton.OK,
-                System.Windows.MessageBoxImage.Warning
-            );
-        }
-
         if (this.pluginLoadStates.TryGetValue(pluginAssemblyPath, out var loadState))
         {
             loadState.LoadState = state;

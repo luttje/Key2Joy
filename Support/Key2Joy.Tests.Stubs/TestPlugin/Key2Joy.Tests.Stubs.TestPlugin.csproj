@@ -54,4 +54,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="call $(SolutionDir)\Support\CopyPlugin.bat $(ProjectName) $(OutDir) ..\..\Key2Joy.Tests\bin\Key2Joy.Tests\$(Configuration)\" />
+  </Target>
+
 </Project>

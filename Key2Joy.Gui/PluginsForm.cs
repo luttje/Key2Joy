@@ -140,6 +140,9 @@ public partial class PluginsForm : Form
             if (pluginInfo.LoadState.LoadState == PluginLoadStates.Loaded)
             {
                 Program.Plugins.DisablePlugin(pluginInfo.AssemblyPath);
+                System.Windows.Forms.MessageBox.Show(
+                    "When disabling loaded plugins you have to restart the application for these changes to take effect."
+                );
             }
             else
             {

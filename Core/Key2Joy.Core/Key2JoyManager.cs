@@ -101,6 +101,20 @@ public class Key2JoyManager : IKey2JoyManager, IMessageFilter
         plugins.LoadAll();
         plugins.RefreshPluginTypes();
 
+        foreach (var loadState in plugins.AllPluginLoadStates.Values)
+        {
+            if (loadState.LoadState == PluginLoadStates.FailedToLoad)
+            {
+                System.Windows.MessageBox.Show(
+                    $"One of your plugins located at {loadState.AssemblyPath} failed to load. This was the error: " +
+                    loadState.LoadErrorMessage,
+                    "Failed to load plugin!",
+                    System.Windows.MessageBoxButton.OK,
+                    System.Windows.MessageBoxImage.Warning
+                );
+            }
+        }
+
         Key2JoyManager.commandRunner = commandRunner;
 
         var interopServer = new InteropServer(instance, commandRepository);
