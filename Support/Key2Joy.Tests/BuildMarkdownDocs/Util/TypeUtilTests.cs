@@ -2,6 +2,7 @@ using BuildMarkdownDocs.Util;
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Reflection;
+using System.Linq;
 
 namespace Key2Joy.Tests.BuildMarkdownDocs.Util;
 
@@ -20,6 +21,9 @@ public class TypeUtilTests
     public static void TestStaticMethodWithParameters(bool p1, string p2)
     { }
 
+    public class NestedType
+    { }
+
     public static MethodInfo GetMethodInfoWithSignature(string targetMethodInThisClass, out string signature)
     {
         var thisType = typeof(TypeUtilTests);
@@ -29,6 +33,75 @@ public class TypeUtilTests
 
         var methodInfo = thisType.GetMethod(targetMethodInThisClass);
         return methodInfo;
+    }
+
+    [TestMethod]
+    public void CleanTypeName_WithNullable()
+    {
+        var typeName = "System.Nullable{System.Int32}";
+        var result = TypeUtil.CleanTypeName(typeName);
+        Assert.AreEqual("System.Nullable`1[System.Int32]", result);
+    }
+
+    [TestMethod]
+    public void CleanTypeName_WithoutNullable()
+    {
+        var typeName = "System.String";
+        var result = TypeUtil.CleanTypeName(typeName);
+        Assert.AreEqual("System.String", result);
+    }
+
+    [TestMethod]
+    public void GetType_WithExistingType()
+    {
+        var typeName = "System.String";
+        var type = TypeUtil.GetType(typeName);
+        Assert.IsNotNull(type);
+        Assert.AreEqual(typeof(string), type);
+    }
+
+    [TestMethod]
+    public void GetType_WithNonExistingType()
+    {
+        var typeName = "Non.Existing.Type";
+        var type = TypeUtil.GetType(typeName);
+        Assert.IsNull(type);
+    }
+
+    [TestMethod]
+    public void GetType_WithNestedType()
+    {
+        var thisClassName = typeof(TypeUtilTests).FullName;
+        var typeName = $"{thisClassName}+NestedType";
+        var type = TypeUtil.GetType(typeName);
+        Assert.IsNotNull(type);
+        Assert.AreEqual(typeof(NestedType), type);
+    }
+
+    [TestMethod]
+    public void ParseParameterTypes_WithMultipleTypes()
+    {
+        var parameters = "System.Int32, System.String";
+        var types = TypeUtil.ParseParameterTypes(parameters);
+        Assert.AreEqual(2, types.Length);
+        Assert.IsTrue(types.Contains(typeof(int)));
+        Assert.IsTrue(types.Contains(typeof(string)));
+    }
+
+    [TestMethod]
+    public void ParseParameterTypes_WithEmptyString()
+    {
+        var parameters = "";
+        var types = TypeUtil.ParseParameterTypes(parameters);
+        Assert.AreEqual(0, types.Length);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
+    public void GetMethodInfo_WithInvalidType()
+    {
+        var signature = "M:Invalid.Type.Method";
+        TypeUtil.GetMethodInfo(signature);
     }
 
     [TestMethod]

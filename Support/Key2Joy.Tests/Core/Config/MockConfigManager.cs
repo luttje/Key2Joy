@@ -18,7 +18,8 @@ public class MockConfigManager : ConfigManager
     {
         var directory = APP_DIR;
 
-        if (!Directory.Exists(directory))
+        if (!string.IsNullOrWhiteSpace(directory)
+            && !Directory.Exists(directory))
         {
             Directory.CreateDirectory(directory);
         }
@@ -49,7 +50,8 @@ public class MockConfigManager : ConfigManager
 
         var directory = Path.GetDirectoryName(targetPath);
 
-        if (!Directory.Exists(directory))
+        if (!string.IsNullOrWhiteSpace(directory)
+            && !Directory.Exists(directory))
         {
             Directory.CreateDirectory(directory);
         }

@@ -34,7 +34,8 @@ public static class Output
             Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
             APP_DIR);
 
-        if (!Directory.Exists(directory))
+        if (!string.IsNullOrWhiteSpace(directory)
+            && !Directory.Exists(directory))
         {
             Directory.CreateDirectory(directory);
         }
@@ -51,7 +52,8 @@ public static class Output
 
         var directory = Path.Combine(GetAppDataDirectory(), LogOutputPath);
 
-        if (!Directory.Exists(directory))
+        if (!string.IsNullOrWhiteSpace(directory)
+            && !Directory.Exists(directory))
         {
             Directory.CreateDirectory(directory);
         }

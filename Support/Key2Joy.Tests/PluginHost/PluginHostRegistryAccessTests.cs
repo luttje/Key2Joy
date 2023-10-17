@@ -22,7 +22,5 @@ public class PluginHostRegistryAccessTests : PluginHostTestBase
         var subKeyNames = nameof(Stubs.TestPlugin.RegistryAccessAction.ReadRegistrySubKeyNames);
 
         actionProxy.InvokeScriptMethod(subKeyNames, new object[] { KeyPath });
-
-        Assert.Fail();
     }
 }

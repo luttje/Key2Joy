@@ -211,7 +211,8 @@ public class MappingProfile
             Output.GetAppDataDirectory(),
             SAVE_DIR);
 
-        if (!Directory.Exists(directory))
+        if (!string.IsNullOrWhiteSpace(directory)
+            && !Directory.Exists(directory))
         {
             Directory.CreateDirectory(directory);
         }

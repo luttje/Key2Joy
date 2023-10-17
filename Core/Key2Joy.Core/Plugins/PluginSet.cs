@@ -59,7 +59,8 @@ public class PluginSet : IDisposable
 
         this.PluginsFolder = pluginDirectoriesPaths;
 
-        if (!Directory.Exists(pluginDirectoriesPaths))
+        if (!string.IsNullOrWhiteSpace(pluginDirectoriesPaths)
+            && !Directory.Exists(pluginDirectoriesPaths))
         {
             Directory.CreateDirectory(pluginDirectoriesPaths);
         }

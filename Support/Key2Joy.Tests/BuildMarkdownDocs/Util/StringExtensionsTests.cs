@@ -12,7 +12,7 @@ public class StringExtensionsTests
     {
         string input = null;
 
-        Assert.ThrowsException<ArgumentNullException>(() => input.FirstCharToUpper());
+        Assert.ThrowsException<ArgumentNullException>(input.FirstCharToUpper);
     }
 
     [TestMethod]
@@ -20,7 +20,7 @@ public class StringExtensionsTests
     {
         var input = "";
 
-        Assert.ThrowsException<ArgumentException>(() => input.FirstCharToUpper());
+        Assert.ThrowsException<ArgumentException>(input.FirstCharToUpper);
     }
 
     [TestMethod]
@@ -84,6 +84,33 @@ public class StringExtensionsTests
     }
 
     [TestMethod]
+    public void FirstCharToUpper_ValidInput_CapitalizesFirstCharacter()
+    {
+        var input = "hello";
+        var expected = "Hello";
+
+        var result = input.FirstCharToUpper();
+
+        Assert.AreEqual(expected, result);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void FirstCharToUpper_NullInput_ThrowsArgumentNullException()
+    {
+        string input = null;
+        input.FirstCharToUpper();
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
+    public void FirstCharToUpper_EmptyString_ThrowsArgumentException()
+    {
+        var input = "";
+        input.FirstCharToUpper();
+    }
+
+    [TestMethod]
     public void TrimEachLine_InputIsEmpty_ReturnsEmptyString()
     {
         var input = "";
@@ -141,5 +168,104 @@ public class StringExtensionsTests
         var result = input.TrimEachLine();
 
         Assert.AreEqual("Line 1\nLine 2\nLine 3", result);
+    }
+
+    [TestMethod]
+    public void TrimEachLine_ValidInput_TrimsStartOfEachLine()
+    {
+        var input = "  hello\n  world";
+        var expected = "hello\nworld";
+
+        var result = input.TrimEachLine();
+
+        Assert.AreEqual(expected, result);
+    }
+
+    [TestMethod]
+    public void TrimEachLine_NoExtraWhitespaceAtStart_ReturnsSameString()
+    {
+        var input = "hello\nworld";
+        var expected = input;
+
+        var result = input.TrimEachLine();
+
+        Assert.AreEqual(expected, result);
+    }
+
+    [TestMethod]
+    public void TrimEachLine_OnlyOneWhitespaceAtStart_ReturnsSameString()
+    {
+        var input = " hello\n world";
+        var expected = input;
+
+        var result = input.TrimEachLine();
+
+        Assert.AreEqual(expected, result);
+    }
+
+    [TestMethod]
+    public void TrimEndEachLine_ValidInput_TrimsEndOfEachLine()
+    {
+        var input = "hello  \nworld  ";
+        var expected = "hello\nworld";
+
+        var result = input.TrimEndEachLine();
+
+        Assert.AreEqual(expected, result);
+    }
+
+    [TestMethod]
+    public void TrimEndEachLine_NoExtraWhitespaceAtEnd_ReturnsSameString()
+    {
+        var input = "hello\nworld";
+        var expected = input;
+
+        var result = input.TrimEndEachLine();
+
+        Assert.AreEqual(expected, result);
+    }
+
+    [TestMethod]
+    public void TrimEndEachLine_OnlyNewLineAtEnd_ReturnsSameString()
+    {
+        var input = "hello\nworld\n";
+        var expected = input;
+
+        var result = input.TrimEndEachLine();
+
+        Assert.AreEqual(expected, result);
+    }
+
+    [TestMethod]
+    public void NormalizeNewlinesToLF_ValidInput_ReplacesWithLF()
+    {
+        var input = "hello\r\nworld\nhi\rthere";
+        var expected = "hello\nworld\nhi\nthere";
+
+        var result = input.NormalizeNewlinesToLF();
+
+        Assert.AreEqual(expected, result);
+    }
+
+    [TestMethod]
+    public void NormalizeNewlinesToLF_NoCarriageReturn_ReturnsSameString()
+    {
+        var input = "hello\nworld";
+        var expected = input;
+
+        var result = input.NormalizeNewlinesToLF();
+
+        Assert.AreEqual(expected, result);
+    }
+
+    [TestMethod]
+    public void NormalizeNewlinesToLF_OnlyCarriageReturn_ReplacesWithLF()
+    {
+        var input = "hello\rworld";
+        var expected = "hello\nworld";
+
+        var result = input.NormalizeNewlinesToLF();
+
+        Assert.AreEqual(expected, result);
     }
 }

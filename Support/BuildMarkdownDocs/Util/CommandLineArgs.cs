@@ -1,6 +1,6 @@
-﻿namespace BuildMarkdownDocs.Util;
+namespace BuildMarkdownDocs.Util;
 
-internal class CommandLineArgs
+public class CommandLineArgs
 {
     public string AssemblyDirectory { get; set; }
     public string XmlFilesDirectory { get; set; }

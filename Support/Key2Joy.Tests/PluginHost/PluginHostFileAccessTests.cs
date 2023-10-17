@@ -38,8 +38,6 @@ public class PluginHostFileAccessTests : PluginHostTestBase
         var methodName = nameof(Stubs.TestPlugin.FileAccessAction.WriteToDataDirectoryWithUnsafePath);
 
         actionProxy.InvokeScriptMethod(methodName, new object[] { "../" });
-
-        Assert.Fail();
     }
 
     [TestMethod]
@@ -50,8 +48,6 @@ public class PluginHostFileAccessTests : PluginHostTestBase
         var methodName = nameof(Stubs.TestPlugin.FileAccessAction.WriteToAbsolutePath);
 
         actionProxy.InvokeScriptMethod(methodName, new object[] { @"C:\Users\Public\also-unsafe.txt" });
-
-        Assert.Fail();
     }
 
     [TestMethod]
@@ -63,7 +59,5 @@ public class PluginHostFileAccessTests : PluginHostTestBase
 
         var test = this.GetPathToRead();
         var contents = actionProxy.InvokeScriptMethod(methodName, new object[] { test });
-
-        Assert.Fail();
     }
 }

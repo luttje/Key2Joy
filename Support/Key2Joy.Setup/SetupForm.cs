@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -45,12 +45,15 @@ public partial class SetupForm : Form
             case UpdatePreference.DownloadAndUpdate:
                 this.rdoUpdateAndInstall.Checked = true;
                 break;
+
             case UpdatePreference.DownloadAndUpdatePreRelease:
                 this.rdoUpdateAndInstallPreRelease.Checked = true;
                 break;
+
             case UpdatePreference.DownloadOnly:
                 this.rdoDownloadOnly.Checked = true;
                 break;
+
             case UpdatePreference.ManualInstallation:
             default:
                 this.rdoManualInstallation.Checked = true;

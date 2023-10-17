@@ -2,7 +2,7 @@ using System;
 
 namespace BuildMarkdownDocs.Util;
 
-internal static class CommandLineArgsParser
+public static class CommandLineArgsParser
 {
     public static CommandLineArgs Parse(string[] args)
     {

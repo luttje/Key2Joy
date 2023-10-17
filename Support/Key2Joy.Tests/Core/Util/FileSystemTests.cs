@@ -106,7 +106,5 @@ public class FileSystemTests
     public void GetImageFormat_WhenExtensionIsInvalid_ThrowsArgumentException()
     {
         FileSystem.GetImageFormatFromExtension(".invalid");
-
-        Assert.Fail(); // Should not reach this line
     }
 }
