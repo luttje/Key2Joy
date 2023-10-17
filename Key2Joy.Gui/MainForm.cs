@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using BrightIdeasSoftware;
 using CommonServiceLocator;
@@ -10,8 +11,8 @@ using Key2Joy.Config;
 using Key2Joy.Contracts;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Actions;
-using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.Gui.Properties;
+using Key2Joy.Gui.Util;
 using Key2Joy.LowLevelInput;
 using Key2Joy.Mapping;
 using Key2Joy.Mapping.Actions;
@@ -23,7 +24,7 @@ namespace Key2Joy.Gui;
 
 public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
 {
-    private readonly IDictionary<string, CachedMappingGroup> cachedMappingGroups;
+    private readonly IDictionary<string, CachedMappingGroup> cachedMappingGroups = new Dictionary<string, CachedMappingGroup>();
     private readonly ConfigState configState;
 
     private MappingProfile selectedProfile;
@@ -34,18 +35,27 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
             .GetInstance<IConfigManager>()
             .GetConfigState();
 
-        this.cachedMappingGroups = new Dictionary<string, CachedMappingGroup>();
-
         this.InitializeComponent();
 
-        if (shouldStartMinimized)
-        {
-            this.WindowState = FormWindowState.Minimized;
-            this.ShowInTaskbar = false;
-        }
+        this.ApplyMinimizedStateIfNeeded(shouldStartMinimized);
+        this.ConfigureStatusLabels();
+        this.SetupNotificationIndicator();
+        this.PopulateGroupImages();
+        this.RegisterListViewEvents();
+        this.ConfigureTriggerColumn();
+    }
 
-        this.lblStatusActive.Visible = this.chkEnabled.Checked;
+    private void ApplyMinimizedStateIfNeeded(bool shouldMinimize)
+    {
+        this.WindowState = shouldMinimize ? FormWindowState.Minimized : FormWindowState.Normal;
+        this.ShowInTaskbar = !shouldMinimize;
+    }
 
+    private void ConfigureStatusLabels()
+        => this.lblStatusActive.Visible = this.chkEnabled.Checked;
+
+    private void SetupNotificationIndicator()
+    {
         var items = new MenuItem[]{
             new MenuItem("Show", (s, e) => {
                 this.Show();
@@ -56,7 +66,10 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
         };
 
         this.ntfIndicator.ContextMenu = new ContextMenu(items);
+    }
 
+    private void PopulateGroupImages()
+    {
         var allAttributes = ActionsRepository.GetAllActionAttributes();
         ImageList imageList = new();
 
@@ -69,12 +82,17 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
         }
 
         this.olvMappings.GroupImageList = imageList;
+    }
 
+    private void RegisterListViewEvents()
+    {
         this.olvColumnAction.GroupKeyGetter += this.OlvMappings_GroupKeyGetter;
         this.olvColumnAction.GroupKeyToTitleConverter += this.OlvMappings_GroupKeyToTitleConverter;
         this.olvMappings.BeforeCreatingGroups += this.OlvMappings_BeforeCreatingGroups;
+    }
 
-        this.olvColumnTrigger.AspectToStringConverter = delegate (object obj)
+    private void ConfigureTriggerColumn()
+        => this.olvColumnTrigger.AspectToStringConverter = delegate (object obj)
         {
             var trigger = obj as CoreTrigger;
 
@@ -85,7 +103,6 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
 
             return trigger.ToString();
         };
-    }
 
     private void SetSelectedProfile(MappingProfile profile)
     {
@@ -556,39 +573,25 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
             return;
         }
 
-        if (selectedCount > 1)
+        if (selectedCount > 1
+            && DialogUtilities.Confirm(
+                $"Are you sure you want to create opposite press state mappings for all {selectedCount} selected mappings? New 'Release' mappings will be created for each 'Press' and vice versa.",
+                $"Generate {selectedCount} opposite press state mappings"
+            ) == DialogResult.No)
         {
-            if (MessageBox.Show($"Are you sure you want to create opposite press state mappings for all {selectedCount} selected mappings? New 'Release' mappings will be created for each 'Press' and vice versa.", $"Generate {selectedCount} opposite press state mappings", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
-            {
-                return;
-            }
+            return;
         }
 
-        List<MappedOption> newOptions = new();
+        var selectedMappings = this.olvMappings.SelectedItems
+            .Cast<OLVListItem>()
+            .Select(item => (MappedOption)item.RowObject)
+            .ToList();
 
-        foreach (OLVListItem listItem in this.olvMappings.SelectedItems)
+        var newOptions = MappedOption.GenerateOppositePressStateMappings(selectedMappings);
+
+        foreach (var option in newOptions)
         {
-            var pressVariant = (MappedOption)listItem.RowObject;
-            var actionCopy = (AbstractAction)pressVariant.Action.Clone();
-            var triggerCopy = (AbstractTrigger)pressVariant.Trigger.Clone();
-
-            if (actionCopy is IPressState actionWithPressState)
-            {
-                actionWithPressState.PressState = actionWithPressState.PressState == PressState.Press ? PressState.Release : PressState.Press;
-            }
-
-            if (triggerCopy is IPressState triggerWithPressState)
-            {
-                triggerWithPressState.PressState = triggerWithPressState.PressState == PressState.Press ? PressState.Release : PressState.Press;
-            }
-
-            MappedOption variantOption = new()
-            {
-                Action = actionCopy,
-                Trigger = triggerCopy,
-            };
-            newOptions.Add(variantOption);
-            this.selectedProfile.MappedOptions.Add(variantOption);
+            this.selectedProfile.MappedOptions.Add(option);
         }
 
         this.selectedProfile.Save();

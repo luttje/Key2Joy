@@ -82,7 +82,7 @@ public class PluginHostProxy : IDisposable
 
         if (!File.Exists(path))
         {
-            System.Windows.Forms.MessageBox.Show(
+            MessageBox.Show(
                 "Key2Joy.PluginHost.exe not found at " + path
             );
         }

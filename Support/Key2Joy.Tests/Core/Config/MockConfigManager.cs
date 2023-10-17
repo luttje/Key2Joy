@@ -43,7 +43,7 @@ public class MockConfigManager : ConfigManager
     {
         stubPath = Path.Combine(
             nameof(Core),
-            nameof(Core.Config),
+            nameof(Config),
             "Stubs",
             stubPath
         );

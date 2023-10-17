@@ -96,7 +96,7 @@ public class MappingProfile
 
             if (!suppressMessageBox)
             {
-                System.Windows.Forms.MessageBox.Show(
+                MessageBox.Show(
                     $"The profile \"{this.Name}\" was an old version and has been updated. The old version has been backed up to \"{availablePath}\".",
                     "Profile Updated",
                     MessageBoxButtons.OK,
