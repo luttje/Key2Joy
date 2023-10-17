@@ -20,5 +20,3 @@ jobs:
         run: dotnet test --no-build --configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat="lcov" /p:CoverletOutput="${{ github.workspace }}/coverage/lcov.info" /p:IncludeTestAssembly=true
       - name: Coveralls for Key2Joy
         uses: coverallsapp/github-action@v2
-        with:
-          debug: true
