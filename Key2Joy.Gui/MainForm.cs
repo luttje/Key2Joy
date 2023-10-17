@@ -43,6 +43,7 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
         this.PopulateGroupImages();
         this.RegisterListViewEvents();
         this.ConfigureTriggerColumn();
+        this.RefreshColumnWidths();
     }
 
     private void ApplyMinimizedStateIfNeeded(bool shouldMinimize)
@@ -103,6 +104,12 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
 
             return trigger.ToString();
         };
+
+    private void RefreshColumnWidths()
+    {
+        this.olvColumnAction.MaximumWidth = this.olvMappings.Width - this.olvColumnTrigger.Width - 25;
+        this.olvColumnAction.Width = Math.Max(this.olvColumnAction.Width, this.olvColumnAction.MaximumWidth);
+    }
 
     private void SetSelectedProfile(MappingProfile profile)
     {
@@ -597,4 +604,24 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
         this.selectedProfile.Save();
         this.olvMappings.AddObjects(newOptions);
     }
+
+    private void TxtFilter_TextChanged(object sender, EventArgs e)
+        => this.olvMappings.ModelFilter = new ModelFilter(
+            x =>
+            {
+                var mappedOption = (MappedOption)x;
+                var filterText = this.txtFilter.Text;
+
+                bool containsFilterText(string text)
+                    => text.IndexOf(filterText, StringComparison.OrdinalIgnoreCase) > -1;
+
+                var isMatch = containsFilterText(mappedOption.Action.ToString())
+                           || containsFilterText(mappedOption.Trigger.ToString());
+
+                return isMatch;
+            }
+        );
+
+    private void MainForm_SizeChanged(object sender, EventArgs e)
+        => this.RefreshColumnWidths();
 }

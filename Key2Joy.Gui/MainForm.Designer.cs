@@ -34,6 +34,9 @@ namespace Key2Joy.Gui
             this.olvColumnAction = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnTrigger = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.pnlActionManagement = new System.Windows.Forms.Panel();
+            this.pnlFiltering = new System.Windows.Forms.Panel();
+            this.txtFilter = new System.Windows.Forms.TextBox();
+            this.txtFilterLabel = new System.Windows.Forms.Label();
             this.btnCreateMapping = new System.Windows.Forms.Button();
             this.pnlProfileManagement = new System.Windows.Forms.Panel();
             this.txtProfileName = new System.Windows.Forms.TextBox();
@@ -88,6 +91,7 @@ namespace Key2Joy.Gui
             this.lblStatusActive = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.olvMappings)).BeginInit();
             this.pnlActionManagement.SuspendLayout();
+            this.pnlFiltering.SuspendLayout();
             this.pnlProfileManagement.SuspendLayout();
             this.menMainMenu.SuspendLayout();
             this.pnlMainMenu.SuspendLayout();
@@ -95,16 +99,19 @@ namespace Key2Joy.Gui
             // 
             // olvMappings
             // 
-            this.olvMappings.AllColumns.Add(this.olvColumnAction);
             this.olvMappings.AllColumns.Add(this.olvColumnTrigger);
+            this.olvMappings.AllColumns.Add(this.olvColumnAction);
             this.olvMappings.CellEditUseWholeCell = false;
             this.olvMappings.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.olvColumnAction,
-            this.olvColumnTrigger});
+            this.olvColumnTrigger,
+            this.olvColumnAction});
             this.olvMappings.Cursor = System.Windows.Forms.Cursors.Default;
             this.olvMappings.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.olvMappings.EmptyListMsg = "There are no mappings, or a search filter is applied that matched no mappings.";
+            this.olvMappings.EmptyListMsgFont = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.olvMappings.FullRowSelect = true;
             this.olvMappings.HideSelection = false;
+            this.olvMappings.LabelWrap = false;
             this.olvMappings.Location = new System.Drawing.Point(0, 53);
             this.olvMappings.Name = "olvMappings";
             this.olvMappings.RowHeight = 25;
@@ -112,6 +119,7 @@ namespace Key2Joy.Gui
             this.olvMappings.TabIndex = 84;
             this.olvMappings.UseCellFormatEvents = true;
             this.olvMappings.UseCompatibleStateImageBehavior = false;
+            this.olvMappings.UseFiltering = true;
             this.olvMappings.UseHotItem = true;
             this.olvMappings.UseTranslucentHotItem = true;
             this.olvMappings.UseTranslucentSelection = true;
@@ -125,19 +133,18 @@ namespace Key2Joy.Gui
             // olvColumnAction
             // 
             this.olvColumnAction.AspectName = "Action";
-            this.olvColumnAction.DisplayIndex = 1;
             this.olvColumnAction.Text = "Action";
             this.olvColumnAction.UseInitialLetterForGroup = true;
             // 
             // olvColumnTrigger
             // 
             this.olvColumnTrigger.AspectName = "Trigger";
-            this.olvColumnTrigger.DisplayIndex = 0;
             this.olvColumnTrigger.Groupable = false;
             this.olvColumnTrigger.Text = "Trigger";
             // 
             // pnlActionManagement
             // 
+            this.pnlActionManagement.Controls.Add(this.pnlFiltering);
             this.pnlActionManagement.Controls.Add(this.btnCreateMapping);
             this.pnlActionManagement.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnlActionManagement.Location = new System.Drawing.Point(0, 520);
@@ -145,6 +152,37 @@ namespace Key2Joy.Gui
             this.pnlActionManagement.Padding = new System.Windows.Forms.Padding(5);
             this.pnlActionManagement.Size = new System.Drawing.Size(684, 41);
             this.pnlActionManagement.TabIndex = 0;
+            // 
+            // pnlFiltering
+            // 
+            this.pnlFiltering.Controls.Add(this.txtFilter);
+            this.pnlFiltering.Controls.Add(this.txtFilterLabel);
+            this.pnlFiltering.Dock = System.Windows.Forms.DockStyle.Left;
+            this.pnlFiltering.Location = new System.Drawing.Point(5, 5);
+            this.pnlFiltering.Name = "pnlFiltering";
+            this.pnlFiltering.Padding = new System.Windows.Forms.Padding(5);
+            this.pnlFiltering.Size = new System.Drawing.Size(321, 31);
+            this.pnlFiltering.TabIndex = 2;
+            // 
+            // txtFilter
+            // 
+            this.txtFilter.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtFilter.Location = new System.Drawing.Point(82, 5);
+            this.txtFilter.Name = "txtFilter";
+            this.txtFilter.Size = new System.Drawing.Size(234, 20);
+            this.txtFilter.TabIndex = 1;
+            this.txtFilter.TextChanged += new System.EventHandler(this.TxtFilter_TextChanged);
+            // 
+            // txtFilterLabel
+            // 
+            this.txtFilterLabel.Dock = System.Windows.Forms.DockStyle.Left;
+            this.txtFilterLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtFilterLabel.Location = new System.Drawing.Point(5, 5);
+            this.txtFilterLabel.Name = "txtFilterLabel";
+            this.txtFilterLabel.Size = new System.Drawing.Size(77, 21);
+            this.txtFilterLabel.TabIndex = 89;
+            this.txtFilterLabel.Text = "Search Filter:";
+            this.txtFilterLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // btnCreateMapping
             // 
@@ -602,8 +640,11 @@ namespace Key2Joy.Gui
             this.Text = "Key2Joy - Alpha Version";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
+            this.SizeChanged += new System.EventHandler(this.MainForm_SizeChanged);
             ((System.ComponentModel.ISupportInitialize)(this.olvMappings)).EndInit();
             this.pnlActionManagement.ResumeLayout(false);
+            this.pnlFiltering.ResumeLayout(false);
+            this.pnlFiltering.PerformLayout();
             this.pnlProfileManagement.ResumeLayout(false);
             this.pnlProfileManagement.PerformLayout();
             this.menMainMenu.ResumeLayout(false);
@@ -671,6 +712,9 @@ namespace Key2Joy.Gui
         private System.Windows.Forms.ToolStripMenuItem withSelectedToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem generateOppositePressStateMappingsToolStripMenuItem;
         private BrightIdeasSoftware.ObjectListView olvMappings;
+        private System.Windows.Forms.TextBox txtFilter;
+        private System.Windows.Forms.Panel pnlFiltering;
+        private System.Windows.Forms.Label txtFilterLabel;
     }
 }
 
