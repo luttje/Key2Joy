@@ -1,7 +1,5 @@
 # `KeyboardKey`
 
-Simulate pressing or releasing (or both) keyboard keys.
-
 ## Example Use
 `KeyboardKey.Accept`
 

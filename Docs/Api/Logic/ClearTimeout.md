@@ -15,9 +15,9 @@ Cancels a timeout previously established by calling SetTimeout()
 > var timeoutID = setTimeout(() => {
 >    Print("You shouldn't see this because the timeout will have been cancelled!");
 > }, 1000);
->             
+> 
 > Print(timeoutID);
->             
+> 
 > clearTimeout(timeoutID);
 > ```
 ---

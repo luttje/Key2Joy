@@ -5,7 +5,7 @@ using System.Text;
 using System.Xml.Linq;
 using BuildMarkdownDocs.Util;
 
-namespace BuildMarkdownDocs;
+namespace BuildMarkdownDocs.Members;
 
 internal class FunctionMember : Member
 {

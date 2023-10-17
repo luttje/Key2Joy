@@ -1,6 +1,6 @@
 # `MoveType`
 
-Simulate moving the mouse
+Represents the type of mouse movement.
 
 ## Example Use
 `MoveType.Relative`

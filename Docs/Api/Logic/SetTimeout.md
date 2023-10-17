@@ -23,16 +23,16 @@ A timeout id that can be removed with clearTimeout.
 > ```js
 > setTimeout(function () {
 >   Print("Aborting in 3 second...")
->             
+> 
 >   setTimeout(function () {
 >     Print("Three")
->             
+> 
 >     setTimeout(function () {
 >       Print("Two")
->             
+> 
 >       setTimeout(function () {
 >         Print("One")
->             
+> 
 >         setTimeout(function () {
 >           App.Command("abort")
 >         }, 1000)
@@ -48,16 +48,16 @@ A timeout id that can be removed with clearTimeout.
 > ```lua
 > SetTimeout(function ()
 >    Print("Aborting in 3 second...")
->             
+> 
 >    SetTimeout(function ()
 >       Print("Three")
->             
+> 
 >       SetTimeout(function ()
 >          Print("Two")
->             
+> 
 >          SetTimeout(function ()
 >             Print("One")
->             
+> 
 >             SetTimeout(function ()
 >                App.Command("abort")
 >             end, 1000)

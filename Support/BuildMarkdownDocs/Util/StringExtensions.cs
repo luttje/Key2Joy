@@ -20,4 +20,19 @@ public static class StringExtensions
     /// <returns></returns>
     public static string TrimEachLine(this string input)
         => string.Join("\n", input.Split('\n').Select(line => Regex.Replace(line, @"^\s{2,}", "")));
+
+    /// <summary>
+    /// Trims multiple whitespaces after each line
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>
+    public static string TrimEndEachLine(this string input)
+        => string.Join("\n", input.Split('\n').Select(line => Regex.Replace(line, @"\s+$", "")));
+
+    /// <summary>
+    /// Replace different newline characters with LF
+    /// </summary>
+    /// <param name="text"></param>
+    public static string NormalizeNewlinesToLF(this string text)
+        => Regex.Replace(text, @"\r\n?|\n", "\n");
 }

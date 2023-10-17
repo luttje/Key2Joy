@@ -1,6 +1,6 @@
 # `Buttons`
 
-Simulate pressing or releasing (or both) mouse buttons.
+Represents the buttons on a mouse.
 
 ## Example Use
 `Buttons.None`

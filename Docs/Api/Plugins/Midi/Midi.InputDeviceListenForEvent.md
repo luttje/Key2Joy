@@ -15,7 +15,7 @@ A collection with input devices.
 > #### _lua_:
 > ```lua
 > local devices = Midi.InputDeviceGetAll()
->             
+> 
 > for _, device in collection(devices) do
 >     Midi.InputDeviceListenForEvent(device, function(eventType, deltaTime, note, velocity)
 >         print(eventType, deltaTime, note, velocity)

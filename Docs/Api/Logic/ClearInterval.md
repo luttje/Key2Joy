@@ -14,14 +14,14 @@ Cancels an interval previously established by calling SetInterval()
 > ```js
 > var count = 0;
 > var intervalId;
->             
+> 
 > intervalId = setInterval(() => {
 >    Print(count++);
->             
+> 
 >    if(count == 3)
 >       clearInterval(intervalId);
 > }, 1000);
->             
+> 
 > Print(intervalId);
 > ```
 ---
