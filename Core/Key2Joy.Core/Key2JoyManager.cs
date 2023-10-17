@@ -66,7 +66,10 @@ public class Key2JoyManager : IKey2JoyManager, IMessageFilter
     /// <summary>
     /// Ensures Key2Joy is running and ready to accept commands as long as the main loop does not end.
     /// </summary>
-    public static void InitSafely(AppCommandRunner commandRunner, Action<PluginSet> mainLoop)
+    /// <param name="commandRunner"></param>
+    /// <param name="mainLoop"></param>
+    /// <param name="configManager">Optionally a custom config manager (probably only useful for unit testing)</param>
+    public static void InitSafely(AppCommandRunner commandRunner, Action<PluginSet> mainLoop, IConfigManager configManager = null)
     {
         // Setup dependency injection and services
         var serviceLocator = new DependencyServiceLocator();
@@ -84,8 +87,9 @@ public class Key2JoyManager : IKey2JoyManager, IMessageFilter
         };
         serviceLocator.Register<IKey2JoyManager>(instance);
 
-        var configManager = new ConfigManager();
-        serviceLocator.Register<IConfigManager>(configManager);
+#pragma warning disable IDE0001 // Simplify Names
+        serviceLocator.Register<IConfigManager>(configManager ??= new ConfigManager());
+#pragma warning restore IDE0001 // Simplify Names
 
         var gamePadService = new SimulatedGamePadService();
         serviceLocator.Register<IGamePadService>(gamePadService);

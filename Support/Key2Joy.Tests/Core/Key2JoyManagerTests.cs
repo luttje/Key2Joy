@@ -6,6 +6,7 @@ using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.Mapping;
 using Key2Joy.Mapping.Actions;
 using Key2Joy.Mapping.Triggers;
+using Key2Joy.Tests.Core.Config;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -66,7 +67,11 @@ public class Key2JoyManagerTests
     );
 
     private void SetupTestMocks(SetupTestMocks_SingleTriggerListenerAndAction callback)
-        => Key2JoyManager.InitSafely(null, (pluginSet) =>
+    {
+        var configContents = MockConfigManager.CopyStub("current-config.json", MockConfigManager.GetMockConfigPath());
+        var configManager = MockConfigManager.LoadOrCreateMock();
+
+        Key2JoyManager.InitSafely(null, (pluginSet) =>
         {
             var allListenersActivated = new List<AbstractTriggerListener>();
             var allActionsActivated = new List<AbstractAction>();
@@ -89,7 +94,8 @@ public class Key2JoyManagerTests
             Key2JoyManager.Instance.ExplicitTriggerListeners = new List<AbstractTriggerListener>();
 
             callback(listener, trigger, action);
-        });
+        }, configManager);
+    }
 
     [TestMethod]
     public void ArmMappings_Should_AddListenerActivatesMappedOption()
