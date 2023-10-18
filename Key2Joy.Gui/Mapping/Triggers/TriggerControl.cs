@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows.Forms;
 using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.Mapping;
+using Key2Joy.Mapping.Actions;
 using Key2Joy.Mapping.Triggers;
 using Key2Joy.Plugins;
 
@@ -73,6 +74,11 @@ public partial class TriggerControl : UserControl
 
     private void LoadTriggers()
     {
+        if (System.Diagnostics.Process.GetCurrentProcess().ProcessName == "devenv")
+        {
+            return; // The designer can't handle the code below.
+        }
+
         var triggerTypes = TriggersRepository.GetAllTriggers(this.IsTopLevel);
 
         foreach (var keyValuePair in triggerTypes)

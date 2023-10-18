@@ -84,6 +84,11 @@ public partial class ActionControl : UserControl
 
     private void LoadActions()
     {
+        if (System.Diagnostics.Process.GetCurrentProcess().ProcessName == "devenv")
+        {
+            return; // The designer can't handle the code below.
+        }
+
         var actionTypeFactories = ActionsRepository.GetAllActions(this.IsTopLevel);
 
         foreach (var keyValuePair in actionTypeFactories)

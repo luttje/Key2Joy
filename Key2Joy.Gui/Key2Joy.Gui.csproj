@@ -20,7 +20,7 @@
     <TargetFramework>NET48</TargetFramework>
 	  <LangVersion>latest</LangVersion>
     <ApplicationIcon>Graphics\Icons\app-icons.ico</ApplicationIcon>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
