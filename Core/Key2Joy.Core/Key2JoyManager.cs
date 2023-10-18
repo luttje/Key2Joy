@@ -12,7 +12,8 @@ using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.Interop;
 using Key2Joy.Interop.Commands;
-using Key2Joy.LowLevelInput.GamePad;
+using Key2Joy.LowLevelInput.SimulatedGamePad;
+using Key2Joy.LowLevelInput.XInput;
 using Key2Joy.Mapping;
 using Key2Joy.Mapping.Actions.Logic;
 using Key2Joy.Mapping.Triggers.Keyboard;
@@ -92,7 +93,10 @@ public class Key2JoyManager : IKey2JoyManager, IMessageFilter
 #pragma warning restore IDE0001 // Simplify Names
 
         var gamePadService = new SimulatedGamePadService();
-        serviceLocator.Register<IGamePadService>(gamePadService);
+        serviceLocator.Register<ISimulatedGamePadService>(gamePadService);
+
+        var xInputService = new XInputService();
+        serviceLocator.Register<IXInputService>(xInputService);
 
         var commandRepository = new CommandRepository();
         serviceLocator.Register<ICommandRepository>(commandRepository);
@@ -257,7 +261,7 @@ public class Key2JoyManager : IKey2JoyManager, IMessageFilter
             listener.StopListening();
         }
 
-        var gamePadService = ServiceLocator.Current.GetInstance<IGamePadService>();
+        var gamePadService = ServiceLocator.Current.GetInstance<ISimulatedGamePadService>();
         gamePadService.EnsureAllUnplugged();
 
         this.armedProfile = null;

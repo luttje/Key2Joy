@@ -2,14 +2,15 @@ using System;
 using System.Linq;
 using SimWinInput;
 
-namespace Key2Joy.LowLevelInput.GamePad;
+namespace Key2Joy.LowLevelInput.SimulatedGamePad;
 
-public class SimulatedGamePadService : IGamePadService
+/// <inheritdoc />
+public class SimulatedGamePadService : ISimulatedGamePadService
 {
     private const int MAX_GAMEPADS = 4;
-    private readonly IGamePad[] gamePads;
+    private readonly ISimulatedGamePad[] gamePads;
 
-    public SimulatedGamePadService(IGamePad[] gamePads = null)
+    public SimulatedGamePadService(ISimulatedGamePad[] gamePads = null)
     {
         if (gamePads != null)
         {
@@ -17,7 +18,7 @@ public class SimulatedGamePadService : IGamePadService
             return;
         }
 
-        this.gamePads = new IGamePad[MAX_GAMEPADS];
+        this.gamePads = new ISimulatedGamePad[MAX_GAMEPADS];
 
         for (var index = 0; index < MAX_GAMEPADS; index++)
         {
@@ -25,16 +26,21 @@ public class SimulatedGamePadService : IGamePadService
         }
     }
 
+    /// <inheritdoc />
     public void Initialize() => SimGamePad.Instance.Initialize();
 
+    /// <inheritdoc />
     public void ShutDown() => SimGamePad.Instance.ShutDown();
 
-    public IGamePad GetGamePad(int gamePadIndex)
+    /// <inheritdoc />
+    public ISimulatedGamePad GetGamePad(int gamePadIndex)
         => this.gamePads[gamePadIndex];
 
-    public IGamePad[] GetAllGamePads()
+    /// <inheritdoc />
+    public ISimulatedGamePad[] GetAllGamePads()
         => this.gamePads;
 
+    /// <inheritdoc />
     public void EnsurePluggedIn(int gamePadIndex)
     {
         if (gamePadIndex is < 0 or >= MAX_GAMEPADS)
@@ -52,6 +58,7 @@ public class SimulatedGamePadService : IGamePadService
         gamePad.PlugIn();
     }
 
+    /// <inheritdoc />
     public void EnsureUnplugged(int gamePadIndex)
     {
         if (gamePadIndex is < 0 or >= MAX_GAMEPADS)
@@ -69,6 +76,7 @@ public class SimulatedGamePadService : IGamePadService
         gamePad.Unplug();
     }
 
+    /// <inheritdoc />
     public void EnsureAllUnplugged()
     {
         foreach (var gamePad in this.gamePads.Where(gamePad => gamePad.GetIsPluggedIn()))

@@ -1,6 +1,6 @@
 using System;
 using CommonServiceLocator;
-using Key2Joy.LowLevelInput.GamePad;
+using Key2Joy.LowLevelInput.SimulatedGamePad;
 using Key2Joy.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -12,7 +12,7 @@ public interface IAnotherService
 public class TestService : IAnotherService
 { }
 
-public class TestAnotherGamePadService : IGamePadService
+public class TestAnotherGamePadService : ISimulatedGamePadService
 {
     public void Initialize()
     { }
@@ -20,9 +20,9 @@ public class TestAnotherGamePadService : IGamePadService
     public void ShutDown()
     { }
 
-    public IGamePad GetGamePad(int gamePadIndex) => null;
+    public ISimulatedGamePad GetGamePad(int gamePadIndex) => null;
 
-    public IGamePad[] GetAllGamePads() => Array.Empty<IGamePad>();
+    public ISimulatedGamePad[] GetAllGamePads() => Array.Empty<ISimulatedGamePad>();
 
     public void EnsureAllUnplugged()
     { }
@@ -41,9 +41,9 @@ public class DependencyServiceLocatorTests
     public void Register_And_Retrieve_Service()
     {
         var serviceLocator = new DependencyServiceLocator();
-        serviceLocator.Register<IGamePadService>(new SimulatedGamePadService());
+        serviceLocator.Register<ISimulatedGamePadService>(new SimulatedGamePadService());
 
-        var service = serviceLocator.GetInstance<IGamePadService>();
+        var service = serviceLocator.GetInstance<ISimulatedGamePadService>();
         Assert.IsNotNull(service);
         Assert.IsInstanceOfType(service, typeof(SimulatedGamePadService));
     }
@@ -53,17 +53,17 @@ public class DependencyServiceLocatorTests
     public void Retrieve_Unregistered_Service_Throws_Exception()
     {
         var serviceLocator = new DependencyServiceLocator();
-        serviceLocator.GetInstance<IGamePadService>();
+        serviceLocator.GetInstance<ISimulatedGamePadService>();
     }
 
     [TestMethod]
     public void Can_Register_Multiple_Services()
     {
         var serviceLocator = new DependencyServiceLocator();
-        serviceLocator.Register<IGamePadService>(new SimulatedGamePadService());
+        serviceLocator.Register<ISimulatedGamePadService>(new SimulatedGamePadService());
         serviceLocator.Register<IAnotherService>(new TestService());
 
-        Assert.IsNotNull(serviceLocator.GetInstance<IGamePadService>());
+        Assert.IsNotNull(serviceLocator.GetInstance<ISimulatedGamePadService>());
         Assert.IsNotNull(serviceLocator.GetInstance<IAnotherService>());
     }
 
@@ -71,10 +71,10 @@ public class DependencyServiceLocatorTests
     public void Registered_Service_Is_Singleton_By_Default()
     {
         var serviceLocator = new DependencyServiceLocator();
-        serviceLocator.Register<IGamePadService>(new SimulatedGamePadService());
+        serviceLocator.Register<ISimulatedGamePadService>(new SimulatedGamePadService());
 
-        var service1 = serviceLocator.GetInstance<IGamePadService>();
-        var service2 = serviceLocator.GetInstance<IGamePadService>();
+        var service1 = serviceLocator.GetInstance<ISimulatedGamePadService>();
+        var service2 = serviceLocator.GetInstance<ISimulatedGamePadService>();
 
         Assert.AreSame(service1, service2);
     }
@@ -83,10 +83,10 @@ public class DependencyServiceLocatorTests
     public void Can_Override_Registered_Service()
     {
         var serviceLocator = new DependencyServiceLocator();
-        serviceLocator.Register<IGamePadService>(new SimulatedGamePadService());
-        serviceLocator.Register<IGamePadService>(new TestAnotherGamePadService());
+        serviceLocator.Register<ISimulatedGamePadService>(new SimulatedGamePadService());
+        serviceLocator.Register<ISimulatedGamePadService>(new TestAnotherGamePadService());
 
-        var service = serviceLocator.GetInstance<IGamePadService>();
+        var service = serviceLocator.GetInstance<ISimulatedGamePadService>();
 
         Assert.IsInstanceOfType(service, typeof(TestAnotherGamePadService));
     }
@@ -95,9 +95,9 @@ public class DependencyServiceLocatorTests
     public void Can_Use_Generic_GetInstance()
     {
         var serviceLocator = new DependencyServiceLocator();
-        serviceLocator.Register<IGamePadService>(new SimulatedGamePadService());
+        serviceLocator.Register<ISimulatedGamePadService>(new SimulatedGamePadService());
 
-        var service = serviceLocator.GetInstance<IGamePadService>();
+        var service = serviceLocator.GetInstance<ISimulatedGamePadService>();
 
         Assert.IsInstanceOfType(service, typeof(SimulatedGamePadService));
     }
@@ -106,9 +106,9 @@ public class DependencyServiceLocatorTests
     public void Can_Use_NonGeneric_GetInstance()
     {
         var serviceLocator = new DependencyServiceLocator();
-        serviceLocator.Register<IGamePadService>(new SimulatedGamePadService());
+        serviceLocator.Register<ISimulatedGamePadService>(new SimulatedGamePadService());
 
-        var service = serviceLocator.GetInstance(typeof(IGamePadService));
+        var service = serviceLocator.GetInstance(typeof(ISimulatedGamePadService));
 
         Assert.IsInstanceOfType(service, typeof(SimulatedGamePadService));
     }
@@ -118,7 +118,7 @@ public class DependencyServiceLocatorTests
     public void NonGeneric_GetInstance_Unregistered_Service_Throws_Exception()
     {
         var serviceLocator = new DependencyServiceLocator();
-        serviceLocator.GetInstance(typeof(IGamePadService));
+        serviceLocator.GetInstance(typeof(ISimulatedGamePadService));
     }
 
     [TestMethod]
@@ -127,9 +127,9 @@ public class DependencyServiceLocatorTests
         var serviceLocator = new DependencyServiceLocator();
         ServiceLocator.SetLocatorProvider(() => serviceLocator);
 
-        serviceLocator.Register<IGamePadService>(new SimulatedGamePadService());
+        serviceLocator.Register<ISimulatedGamePadService>(new SimulatedGamePadService());
 
-        var service = ServiceLocator.Current.GetInstance<IGamePadService>();
+        var service = ServiceLocator.Current.GetInstance<ISimulatedGamePadService>();
 
         Assert.IsNotNull(service);
     }

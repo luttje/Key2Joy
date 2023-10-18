@@ -5,7 +5,7 @@ using CommonServiceLocator;
 using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.LowLevelInput;
-using Key2Joy.LowLevelInput.GamePad;
+using Key2Joy.LowLevelInput.SimulatedGamePad;
 using Key2Joy.Mapping.Triggers.Mouse;
 using SimWinInput;
 
@@ -61,11 +61,11 @@ public class GamePadAction : CoreAction, IPressState
     {
         base.OnStartListening(listener, ref otherActions);
 
-        var gamePadService = ServiceLocator.Current.GetInstance<IGamePadService>();
+        var gamePadService = ServiceLocator.Current.GetInstance<ISimulatedGamePadService>();
         gamePadService.EnsurePluggedIn(this.GamePadIndex);
     }
 
-    private void HandleMouseMove(IGamePad gamePad, MouseMoveInputBag mouseMoveInputBag)
+    private void HandleMouseMove(ISimulatedGamePad gamePad, MouseMoveInputBag mouseMoveInputBag)
     {
         var state = gamePad.GetState();
 
@@ -127,7 +127,7 @@ public class GamePadAction : CoreAction, IPressState
         this.PressState = pressState;
         this.GamePadIndex = gamepadIndex;
 
-        var gamePadService = ServiceLocator.Current.GetInstance<IGamePadService>();
+        var gamePadService = ServiceLocator.Current.GetInstance<ISimulatedGamePadService>();
         var gamePad = gamePadService.GetGamePad(this.GamePadIndex);
 
         if (!gamePad.GetIsPluggedIn())
@@ -148,7 +148,7 @@ public class GamePadAction : CoreAction, IPressState
 
     public override async Task Execute(AbstractInputBag inputBag = null)
     {
-        var gamePadService = ServiceLocator.Current.GetInstance<IGamePadService>();
+        var gamePadService = ServiceLocator.Current.GetInstance<ISimulatedGamePadService>();
         var gamePad = gamePadService.GetGamePad(this.GamePadIndex);
 
         if (inputBag is MouseMoveInputBag mouseMoveInputBag)

@@ -6,7 +6,7 @@ using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.LowLevelInput;
-using Key2Joy.LowLevelInput.GamePad;
+using Key2Joy.LowLevelInput.SimulatedGamePad;
 
 namespace Key2Joy.Mapping.Actions.Input;
 
@@ -31,7 +31,7 @@ public class GamePadStickAction : CoreAction
     {
         base.OnStartListening(listener, ref otherActions);
 
-        var gamePadService = ServiceLocator.Current.GetInstance<IGamePadService>();
+        var gamePadService = ServiceLocator.Current.GetInstance<ISimulatedGamePadService>();
         gamePadService.EnsurePluggedIn(this.GamePadIndex);
     }
 
@@ -70,7 +70,7 @@ public class GamePadStickAction : CoreAction
         this.Stick = stick;
         this.GamePadIndex = gamepadIndex;
 
-        var gamePadService = ServiceLocator.Current.GetInstance<IGamePadService>();
+        var gamePadService = ServiceLocator.Current.GetInstance<ISimulatedGamePadService>();
         gamePadService.EnsurePluggedIn(this.GamePadIndex);
 
         await this.Execute();
@@ -78,7 +78,7 @@ public class GamePadStickAction : CoreAction
 
     public override async Task Execute(AbstractInputBag inputBag = null)
     {
-        var gamePadService = ServiceLocator.Current.GetInstance<IGamePadService>();
+        var gamePadService = ServiceLocator.Current.GetInstance<ISimulatedGamePadService>();
         var gamePad = gamePadService.GetGamePad(this.GamePadIndex);
 
         if (!gamePad.GetIsPluggedIn())
