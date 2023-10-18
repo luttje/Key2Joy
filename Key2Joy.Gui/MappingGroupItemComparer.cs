@@ -20,8 +20,8 @@ public class MappingGroupItemComparer : IComparer<OLVListItem>
 
     public int Compare(OLVListItem x, OLVListItem y)
     {
-        var mappedOptionX = x.RowObject as AbstractMappedOption;
-        var mappedOptionY = y.RowObject as AbstractMappedOption;
+        var mappedOptionX = x.RowObject as MappedOption;
+        var mappedOptionY = y.RowObject as MappedOption;
 
         var sortDirection = this.primarySortOrder == SortOrder.Ascending ? 1 : -1;
 

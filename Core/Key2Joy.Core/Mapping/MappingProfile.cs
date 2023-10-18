@@ -25,7 +25,7 @@ public class MappingProfile
     public const string BACKUP_EXTENSION = ".bak";
     public const string SAVE_DIR = "Profiles";
 
-    public BindingList<MappedOption> MappedOptions { get; set; } = new BindingList<MappedOption>();
+    public BindingList<MappedOption> MappedOptions { get; set; } = new();
     public string Name { get; set; }
 
     public int Version { get; set; } = NO_VERSION; // Version is set on save
@@ -52,7 +52,7 @@ public class MappingProfile
                 this.MappedOptions.Add((MappedOption)mappedOption.Clone());
             }
 
-            foreach (var mappedOption in mappedOptions)
+            foreach (var mappedOption in this.MappedOptions)
             {
                 mappedOption.Initialize(this.MappedOptions);
             }
@@ -69,7 +69,8 @@ public class MappingProfile
         }
     }
 
-    public void RemoveMapping(MappedOption mappedOption) => this.MappedOptions.Remove(mappedOption);
+    public void RemoveMapping(MappedOption mappedOption)
+        => this.MappedOptions.Remove(mappedOption);
 
     public bool TryGetMappedOption(AbstractTrigger trigger, out MappedOption mappedOption)
     {

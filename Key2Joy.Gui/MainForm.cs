@@ -183,10 +183,45 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
         }
     }
 
-    private void RemoveMapping(MappedOption mappedOption)
+    private void RemoveMappings(IList<MappedOption> mappedOptions)
     {
-        this.selectedProfile.RemoveMapping(mappedOption);
-        this.olvMappings.RemoveObject(mappedOption);
+        var children = mappedOptions.SelectMany(x => x.Children).ToList();
+
+        if (children.Any())
+        {
+            var introText = mappedOptions.Count == 1 ? "This mapped option has" : "These mapped options have a total of";
+            var shouldRemove = MessageBox.Show(
+                $"{introText} {children.Count} child mapping{(children.Count != 1 ? "s" : "")}. Do you want to remove them as well?",
+                "Remove child mappings?",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question) == DialogResult.Yes;
+
+            if (shouldRemove)
+            {
+                foreach (var child in children)
+                {
+                    this.selectedProfile.RemoveMapping(child);
+                }
+            }
+            else
+            {
+                // Otherwise remove their parent
+                foreach (var child in children)
+                {
+                    child.SetParent(null);
+                }
+            }
+        }
+
+        foreach (var mappedOption in mappedOptions)
+        {
+            this.selectedProfile.RemoveMapping(mappedOption);
+        }
+
+        this.selectedProfile.Save();
+
+        // Refresh the sorting and formatting
+        this.olvMappings.SetObjects(this.selectedProfile.MappedOptions);
     }
 
     private void RemoveSelectedMappings()
@@ -206,11 +241,14 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
             }
         }
 
-        foreach (OLVListItem listItem in this.olvMappings.SelectedItems)
+        var mappedOptions = new List<MappedOption>();
+
+        foreach (var item in this.olvMappings.SelectedObjects)
         {
-            this.RemoveMapping((MappedOption)listItem.RowObject);
+            mappedOptions.Add(item as MappedOption);
         }
 
+        this.RemoveMappings(mappedOptions);
         this.selectedProfile.Save();
     }
 
@@ -398,7 +436,7 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
         else if (e.Model is MappedOption mappedOption)
         {
             var removeItem = menu.Items.Add("Remove Mapping");
-            removeItem.Click += (s, _) => this.RemoveMapping(mappedOption);
+            removeItem.Click += (s, _) => this.RemoveMappings(new List<MappedOption>() { mappedOption });
 
             menu.Items.Add(new ToolStripSeparator());
 
@@ -406,20 +444,13 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
             {
                 var removeParentItem = menu.Items.Add("Disconnect Mapping from Parent");
                 removeParentItem.Click += (s, _) => this.MakeMappingParentless(mappedOption);
-
-                var debugParentItem = menu.Items.Add("Highlight parent (debug)");
-                debugParentItem.Click += (s, _) => this.olvMappings.SelectObject(
-                    this.selectedProfile.MappedOptions.FirstOrDefault(x => x.Guid == mappedOption.ParentGuid)
-                );
             }
 
             if (this.currentChildChoosingParent == null)
             {
-                var children = mappedOption.Children;
-
                 var chooseNewParentItem = menu.Items.Add("Choose New Parent for this Mapping...");
                 chooseNewParentItem.Click += (s, _) => this.ChooseNewParentBegin(mappedOption);
-                chooseNewParentItem.Enabled = !children.Any();
+                chooseNewParentItem.Enabled = !mappedOption.Children.Any();
             }
             else
             {
