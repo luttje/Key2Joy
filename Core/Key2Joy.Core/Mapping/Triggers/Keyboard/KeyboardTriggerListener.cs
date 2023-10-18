@@ -9,6 +9,7 @@ namespace Key2Joy.Mapping.Triggers.Keyboard;
 public class KeyboardTriggerListener : PressReleaseTriggerListener<KeyboardTrigger>
 {
     private static KeyboardTriggerListener instance;
+
     public static KeyboardTriggerListener Instance
     {
         get
@@ -20,6 +21,7 @@ public class KeyboardTriggerListener : PressReleaseTriggerListener<KeyboardTrigg
     }
 
     private GlobalInputHook globalKeyboardHook;
+    private readonly VirtualKeyConverter virtualKeyConverter = new();
     private readonly Dictionary<Keys, bool> currentKeysDown = new();
 
     public bool GetKeyDown(Keys key) => this.currentKeysDown.ContainsKey(key);
@@ -63,7 +65,7 @@ public class KeyboardTriggerListener : PressReleaseTriggerListener<KeyboardTrigg
         }
 
         // Test if this is a bound key, if so halt default input behaviour
-        var keys = VirtualKeyConverter.KeysFromVirtual(e.KeyboardData.VirtualCode);
+        var keys = this.virtualKeyConverter.KeysFromVirtual(e.KeyboardData.VirtualCode);
         Dictionary<int, List<AbstractMappedOption>> dictionary;
 
         if (e.KeyboardState == KeyboardState.KeyDown)

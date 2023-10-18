@@ -22,7 +22,7 @@ public class DisabledAction : CoreAction
     public override async Task Execute(AbstractInputBag inputBag = null)
     { }
 
-    public override string GetNameDisplay() => DisabledNameFormat.Replace("{0}", ActionName);
+    public override string GetNameDisplay() => DisabledNameFormat.Replace("{0}", this.ActionName);
 
     public override bool Equals(object obj)
     {

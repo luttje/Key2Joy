@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using CommonServiceLocator;
 using Key2Joy.Config;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Triggers;
@@ -42,7 +43,7 @@ public abstract class CoreTriggerListener : AbstractTriggerListener
 
     /// <summary>
     /// Subclasses MUST call this to have their actions executed.
-    /// 
+    ///
     /// Even when they know no actions are listening, they should call this. This
     /// lets events provide other mapped options to be injected.
     /// </summary>
@@ -56,6 +57,10 @@ public abstract class CoreTriggerListener : AbstractTriggerListener
     {
         var executedAny = base.DoExecuteTrigger(mappedOptions, inputBag, optionCandidateFilter);
 
-        return ConfigManager.Config.OverrideDefaultTriggerBehaviour && executedAny;
+        var configState = ServiceLocator.Current
+            .GetInstance<IConfigManager>()
+            .GetConfigState();
+
+        return configState.OverrideDefaultTriggerBehaviour && executedAny;
     }
 }

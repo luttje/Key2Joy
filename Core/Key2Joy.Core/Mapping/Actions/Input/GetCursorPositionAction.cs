@@ -1,9 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Actions;
-using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.LowLevelInput;
 
 namespace Key2Joy.Mapping.Actions.Input;
@@ -52,11 +50,6 @@ public class GetCursorPositionAction : CoreAction
         Point cursorPosition = new();
         GetCursorPos(ref cursorPosition);
         return cursorPosition;
-    }
-
-    public override async Task Execute(AbstractInputBag inputBag = null)
-    {
-        // TODO: Currently this is only a script action...
     }
 
     public override bool Equals(object obj)

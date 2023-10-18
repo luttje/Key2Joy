@@ -17,81 +17,67 @@ internal partial class AboutForm : Form
         this.CalculateLogoSize();
     }
 
-    #region Assembly Attribute Accessors
+    private static T GetAttributeValue<T>(Func<Assembly, object[]> getAttributesFunc) where T : Attribute
+    {
+        var attributes = getAttributesFunc(Assembly.GetExecutingAssembly());
+        if (attributes.Length > 0)
+        {
+            return attributes[0] as T;
+        }
+        return null;
+    }
 
     public string AssemblyTitle
+        => GetAttributeValue<AssemblyTitleAttribute>(
+                asm => asm.GetCustomAttributes(typeof(AssemblyTitleAttribute), false)
+           )?.Title
+        ?? System.IO.Path.GetFileNameWithoutExtension(
+            Assembly.GetExecutingAssembly().CodeBase
+        );
+
+    public string Version
     {
         get
         {
-            var attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyTitleAttribute), false);
-            if (attributes.Length > 0)
+            var versionFile = System.IO.Path.Combine(
+                System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                "VERSION"
+            );
+
+            if (System.IO.File.Exists(versionFile))
             {
-                var titleAttribute = (AssemblyTitleAttribute)attributes[0];
-                if (titleAttribute.Title != "")
-                {
-                    return titleAttribute.Title;
-                }
+                return System.IO.File.ReadAllText(versionFile);
             }
-            return System.IO.Path.GetFileNameWithoutExtension(Assembly.GetExecutingAssembly().CodeBase);
+            else
+            {
+                return Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            }
         }
     }
-
-    public string Version => Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
     public string AssemblyDescription
-    {
-        get
-        {
-            var attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyDescriptionAttribute), false);
-            if (attributes.Length == 0)
-            {
-                return "";
-            }
-            return ((AssemblyDescriptionAttribute)attributes[0]).Description;
-        }
-    }
+        => GetAttributeValue<AssemblyDescriptionAttribute>(
+                asm => asm.GetCustomAttributes(typeof(AssemblyDescriptionAttribute), false)
+            )?.Description ?? "";
 
     public string AssemblyProduct
-    {
-        get
-        {
-            var attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyProductAttribute), false);
-            if (attributes.Length == 0)
-            {
-                return "";
-            }
-            return ((AssemblyProductAttribute)attributes[0]).Product;
-        }
-    }
+        => GetAttributeValue<AssemblyProductAttribute>(
+                asm => asm.GetCustomAttributes(typeof(AssemblyProductAttribute), false)
+            )?.Product ?? "";
 
     public string AssemblyCopyright
-    {
-        get
-        {
-            var attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyCopyrightAttribute), false);
-            if (attributes.Length == 0)
-            {
-                return "";
-            }
-            return ((AssemblyCopyrightAttribute)attributes[0]).Copyright;
-        }
-    }
+        => GetAttributeValue<AssemblyCopyrightAttribute>(
+                asm => asm.GetCustomAttributes(typeof(AssemblyCopyrightAttribute), false)
+            )?.Copyright ?? "";
 
     public string AssemblyCompany
-    {
-        get
-        {
-            var attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyCompanyAttribute), false);
-            if (attributes.Length == 0)
-            {
-                return "";
-            }
-            return ((AssemblyCompanyAttribute)attributes[0]).Company;
-        }
-    }
-    #endregion
+        => GetAttributeValue<AssemblyCompanyAttribute>(
+                asm => asm.GetCustomAttributes(typeof(AssemblyCompanyAttribute), false)
+            )?.Company ?? "";
 
-    private void AboutForm_Resize(object sender, EventArgs e) => this.CalculateLogoSize();
+    private void AboutForm_Resize(object sender, EventArgs e)
+        => this.CalculateLogoSize();
 
-    private void CalculateLogoSize() => this.pctLogo.Height = this.pctLogo.Width;
+    private void CalculateLogoSize()
+        => this.pctLogo.Height = this.pctLogo.Width;
 }

@@ -1,4 +1,4 @@
-﻿namespace Key2Joy.Gui
+namespace Key2Joy.Gui
 {
     partial class PluginsForm
     {
@@ -45,7 +45,6 @@
             this.dgvPlugins.ReadOnly = true;
             this.dgvPlugins.Size = new System.Drawing.Size(614, 338);
             this.dgvPlugins.TabIndex = 0;
-            this.dgvPlugins.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvPlugins_CellContentClick);
             // 
             // lblPluginWarning
             // 

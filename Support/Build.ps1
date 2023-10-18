@@ -21,4 +21,6 @@ $versionPrefix = [xml](Get-Content Core/Key2Joy.Core/Key2Joy.Core.csproj) | Sele
 
 $versionId = "$versionPrefix-$versionId"
 
+Set-Content -Path "bin/Key2Joy.Gui/$config/VERSION" -Value $versionId
+
 Write-Output $versionId

@@ -1,93 +1,99 @@
 using System.IO;
 using System.Text.Json;
 using Key2Joy.Contracts;
+using Key2Joy.Util;
 
 namespace Key2Joy.Config;
 
-public class ConfigManager
+/// <summary>
+/// Manages user configurations being loaded from and saved to disk.
+/// </summary>
+public class ConfigManager : IConfigManager
 {
-    private const string CONFIG_PATH = "config.json";
+    protected const string CONFIG_PATH = "config.json";
 
-    private static ConfigManager instance;
+    public bool IsInitialized { get; private set; }
 
-    internal static ConfigManager Instance
-    {
-        get
-        {
-            instance ??= LoadOrCreate();
-
-            return instance;
-        }
-    }
-
-    public static ConfigState Config => Instance.configState;
-
-    internal bool IsInitialized { get; private set; }
     private ConfigState configState;
 
-    private ConfigManager()
-    { }
+    public ConfigManager()
+        => this.LoadOrCreate();
 
-    internal void Save()
+    /// <returns>The path to where the config file is located.</returns>
+    protected virtual string GetAppDataDirectory() => Output.GetAppDataDirectory();
+
+    public ConfigState GetConfigState()
+        => this.configState;
+
+    public void Save()
     {
         var options = GetSerializerOptions();
         var configPath = Path.Combine(
-            Output.GetAppDataDirectory(),
+            this.GetAppDataDirectory(),
             CONFIG_PATH);
 
         File.WriteAllText(configPath, JsonSerializer.Serialize(this.configState, options));
     }
 
-    private static ConfigManager LoadOrCreate()
+    /// <summary>
+    /// Loads the configuration or creates a default one on disk.
+    /// </summary>
+    public void LoadOrCreate()
     {
         var configPath = Path.Combine(
-            Output.GetAppDataDirectory(),
+            this.GetAppDataDirectory(),
             CONFIG_PATH);
+
+        this.configState = new ConfigState(this);
 
         if (!File.Exists(configPath))
         {
-            instance = new ConfigManager();
-#pragma warning disable IDE0017 // Simplify object initialization (would break since ConfigState checks IsInitialized)
-            instance.configState = new ConfigState();
-            instance.IsInitialized = true;
-#pragma warning restore IDE0017 // Simplify object initialization
-            instance.Save();
-            return instance;
+            this.IsInitialized = true;
+            this.Save();
+            return;
         }
 
         var options = GetSerializerOptions();
-        instance = new ConfigManager();
-#pragma warning disable IDE0017 // Simplify object initialization (would break since ConfigState checks IsInitialized)
-        instance.configState = JsonSerializer.Deserialize<ConfigState>(File.ReadAllText(configPath), options);
-#pragma warning restore IDE0017 // Simplify object initialization
+        // Merge the loaded config state with the default config state
+        JsonUtilities.PopulateObject(
+            File.ReadAllText(configPath),
+            this.configState,
+            options
+        );
 
         var assembly = System.Reflection.Assembly.GetEntryAssembly();
 
         // If the assembly is null then we are running in a unit test
         if (assembly == null)
         {
-            instance.IsInitialized = true;
-            return instance;
+            this.CompleteInitialization();
+            return;
         }
 
         var executablePath = assembly.Location;
         if (executablePath.EndsWith("Key2Joy.exe")
-            && instance.configState.LastInstallPath != executablePath)
+            && this.configState.LastInstallPath != executablePath)
         {
-            instance.configState.LastInstallPath = executablePath;
-            instance.Save();
+            this.configState.LastInstallPath = executablePath;
         }
 
-        instance.IsInitialized = true;
-
-        return instance;
+        this.CompleteInitialization();
+        return;
     }
 
-    private static JsonSerializerOptions GetSerializerOptions()
+    private void CompleteInitialization()
+    {
+        this.IsInitialized = true;
+
+        // We save so old properties are removed and new ones are added to the config file immediately
+        this.Save();
+    }
+
+    protected static JsonSerializerOptions GetSerializerOptions()
     {
         JsonSerializerOptions options = new()
         {
-            WriteIndented = true
+            WriteIndented = true,
         };
 
         return options;
@@ -98,7 +104,7 @@ public class ConfigManager
     /// </summary>
     /// <param name="pluginAssemblyPath"></param>
     /// <returns></returns>
-    private string NormalizePluginPath(string pluginAssemblyPath)
+    protected string NormalizePluginPath(string pluginAssemblyPath)
     {
         var appDirectory = Path.GetDirectoryName(this.configState.LastInstallPath);
         var pluginPath = Path.GetFullPath(pluginAssemblyPath);
@@ -115,7 +121,7 @@ public class ConfigManager
     /// </summary>
     /// <param name="pluginAssemblyPath"></param>
     /// <param name="permissionsChecksumOrNull"></param>
-    internal void SetPluginEnabled(string pluginAssemblyPath, string permissionsChecksumOrNull)
+    public void SetPluginEnabled(string pluginAssemblyPath, string permissionsChecksumOrNull)
     {
         pluginAssemblyPath = this.NormalizePluginPath(pluginAssemblyPath);
 
@@ -141,10 +147,10 @@ public class ConfigManager
         this.Save();
     }
 
-    internal bool IsPluginEnabled(string pluginAssemblyPath)
+    public bool IsPluginEnabled(string pluginAssemblyPath)
         => this.configState.EnabledPlugins.ContainsKey(this.NormalizePluginPath(pluginAssemblyPath));
 
-    internal string GetExpectedChecksum(string pluginAssemblyPath)
+    public string GetExpectedPluginChecksum(string pluginAssemblyPath)
         => this.configState.EnabledPlugins.ContainsKey(this.NormalizePluginPath(pluginAssemblyPath))
             ? this.configState.EnabledPlugins[this.NormalizePluginPath(pluginAssemblyPath)]
             : null;

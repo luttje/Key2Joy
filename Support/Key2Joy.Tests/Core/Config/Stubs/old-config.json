@@ -1,0 +1,11 @@
+{
+  "LastInstallPath": "%TEST_ASSEMBLY_PATH%\\Key2Joy.exe",
+  "MuteCloseExitMessage": true,
+  "OverrideDefaultTriggerBehaviour": true,
+  "LastLoadedProfile": "%TEST_APP_DATA_PATH%\\Profiles\\default-profile.k2j.json",
+  "LogOutputPath": "%TEST_APP_DATA_PATH%\\Key2Joy\\Logs",
+  "EnabledPlugins": {
+    "D:\\Projects\\_Personal\\Windows\\Key2Joy\\bin\\Key2Joy.Gui\\Debug\\net48\\Plugins\\Key2Joy.Plugin.HelloWorld\\Key2Joy.Plugin.HelloWorld.dll": "B8F959DA573E178E9DAECAD600A65613",
+    "D:\\Projects\\_Personal\\Windows\\Key2Joy\\bin\\Key2Joy.Gui\\Debug\\net48\\Plugins\\Key2Joy.Plugin.Midi\\Key2Joy.Plugin.Midi.dll": "D41D8CD98F00B204E9800998ECF8427E"
+  }
+}

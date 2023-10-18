@@ -2,17 +2,24 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Windows.Forms;
+using CommonServiceLocator;
 using Key2Joy.Config;
 
 namespace Key2Joy.Gui;
 
 public partial class ConfigForm : Form
 {
+    private readonly ConfigState configState;
+
     public ConfigForm()
     {
+        this.configState = ServiceLocator.Current
+            .GetInstance<IConfigManager>()
+            .GetConfigState();
+
         this.InitializeComponent();
 
-        var configs = ConfigControlAttribute.GetAllProperties();
+        var configs = ConfigControlAttribute.GetAllProperties(typeof(ConfigState), new AttributeProvider());
 
         foreach (var kvp in configs)
         {
@@ -20,7 +27,7 @@ public partial class ConfigForm : Form
             var attribute = kvp.Value;
 
             Panel controlParent = new();
-            var value = property.GetValue(ConfigManager.Config);
+            var value = property.GetValue(this.configState);
             var control = this.MakeControl(attribute, value, controlParent);
             control.Tag = kvp;
             control.Dock = DockStyle.Top;
@@ -52,7 +59,7 @@ public partial class ConfigForm : Form
 
                 value = Convert.ChangeType(value, property.PropertyType);
 
-                property.SetValue(ConfigManager.Config, value);
+                property.SetValue(this.configState, value);
             }
         }
 

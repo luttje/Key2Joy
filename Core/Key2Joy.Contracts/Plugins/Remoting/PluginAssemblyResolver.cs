@@ -13,7 +13,7 @@ public class PluginAssemblyResolver : MarshalByRefObject
     public Assembly ResolveAssembly(object sender, ResolveEventArgs args)
     {
         var assemblyName = new AssemblyName(args.Name);
-        var assemblyPath = Path.Combine(pluginDirectory, assemblyName.Name + ".dll");
+        var assemblyPath = Path.Combine(this.pluginDirectory, assemblyName.Name + ".dll");
 
         if (File.Exists(assemblyPath))
         {

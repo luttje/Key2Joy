@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -118,9 +118,12 @@ internal class Installer
                 }
                 else
                 {
-                    if (!Directory.Exists(Path.GetDirectoryName(destinationPath)))
+                    var directory = Path.GetDirectoryName(destinationPath);
+
+                    if (!string.IsNullOrWhiteSpace(directory)
+                        && !Directory.Exists(directory))
                     {
-                        Directory.CreateDirectory(Path.GetDirectoryName(destinationPath));
+                        Directory.CreateDirectory(directory);
                     }
 
                     entry.ExtractToFile(destinationPath, true);
@@ -135,7 +138,8 @@ internal class Installer
     {
         var key = Registry.LocalMachine.CreateSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\" + REGISTRY_KEY);
 
-        if (!Directory.Exists(this.installPath))
+        if (!string.IsNullOrWhiteSpace(this.installPath)
+            && !Directory.Exists(this.installPath))
         {
             Directory.CreateDirectory(this.installPath);
         }

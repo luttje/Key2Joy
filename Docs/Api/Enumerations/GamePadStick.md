@@ -1,7 +1,5 @@
 # `GamePadStick`
 
-Simulate moving a gamepad joystick
-
 ## Example Use
 `GamePadStick.Left`
 

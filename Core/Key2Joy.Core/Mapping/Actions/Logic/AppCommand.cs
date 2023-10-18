@@ -1,5 +1,8 @@
 namespace Key2Joy.Mapping.Actions.Logic;
 
+/// <summary>
+/// The possible commands to run in the app.
+/// </summary>
 public enum AppCommand : int
 {
     /// <summary>

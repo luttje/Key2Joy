@@ -10,7 +10,6 @@ using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.Contracts.Plugins;
-using Key2Joy.Plugins;
 using NLua;
 
 namespace Key2Joy.Mapping.Actions.Scripting;
@@ -74,9 +73,9 @@ public class LuaScriptAction : BaseScriptActionWithEnvironment<Lua>
         }
     }
 
-    public override void RegisterScriptingMethod(ExposedMethod exposedMethod, AbstractAction instance)
+    public override void RegisterScriptingMethod(ExposedMethod exposedMethod, AbstractAction scriptActionInstance)
     {
-        exposedMethod.Prepare(instance);
+        exposedMethod.Prepare(scriptActionInstance);
 
         var functionName = exposedMethod.FunctionName;
         var parents = functionName.Split('.');

@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Windows.Forms;
+using CommonServiceLocator;
 using Key2Joy.Config;
 using Key2Joy.Contracts;
 using Key2Joy.Contracts.Mapping.Actions;
@@ -20,11 +22,10 @@ public class MappingProfile
     public const string DEFAULT_PROFILE_PATH = "default-profile";
     public const string EXTENSION = ".k2j.json";
 
-    public const string LEGACY_SAVE_DIR = "Presets";
+    public const string BACKUP_EXTENSION = ".bak";
     public const string SAVE_DIR = "Profiles";
 
     public BindingList<MappedOption> MappedOptions { get; set; } = new BindingList<MappedOption>();
-
     public string Name { get; set; }
 
     public int Version { get; set; } = NO_VERSION; // Version is set on save
@@ -79,9 +80,29 @@ public class MappingProfile
         File.WriteAllText(this.FilePath, JsonSerializer.Serialize(this, options));
     }
 
-    private bool PostLoad(string filePath)
+    private bool PostLoad(string filePath, bool suppressMessageBox = false)
     {
         this.FilePath = filePath;
+
+        if (this.Version != CURRENT_VERSION)
+        {
+            // This is an old profile, so we'll make a back-up and save the current one
+            var pathFormat = $"{this.FilePath}{BACKUP_EXTENSION}%VERSION%";
+            var availablePath = FileSystem.FindNonExistingFile(pathFormat);
+            File.Copy(this.FilePath, availablePath, true);
+
+            this.Version = CURRENT_VERSION;
+            this.Save();
+
+            if (!suppressMessageBox)
+            {
+                MessageBox.Show(
+                    $"The profile \"{this.Name}\" was an old version and has been updated. The old version has been backed up to \"{availablePath}\".",
+                    "Profile Updated",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+            }
+        }
 
         return true;
     }
@@ -103,9 +124,12 @@ public class MappingProfile
             writer.Write(Properties.Resources.default_profile_k2j);
         }
 
-        if (ConfigManager.Config.LastLoadedProfile == null)
+        var configState = ServiceLocator.Current
+            .GetInstance<IConfigManager>()
+            .GetConfigState();
+        if (configState.LastLoadedProfile == null)
         {
-            ConfigManager.Config.LastLoadedProfile = defaultPath;
+            configState.LastLoadedProfile = defaultPath;
         }
     }
 
@@ -132,7 +156,10 @@ public class MappingProfile
 
     public static string ResolveLastLoadedProfilePath()
     {
-        var lastLoadedPath = ConfigManager.Config.LastLoadedProfile ?? GetDefaultPath();
+        var configState = ServiceLocator.Current
+            .GetInstance<IConfigManager>()
+            .GetConfigState();
+        var lastLoadedPath = configState.LastLoadedProfile ?? GetDefaultPath();
         if (!File.Exists(lastLoadedPath))
         {
             ExtractDefaultIfNotExists();
@@ -142,7 +169,7 @@ public class MappingProfile
         return lastLoadedPath;
     }
 
-    public static MappingProfile Load(string filePath)
+    public static MappingProfile Load(string filePath, bool suppressMessageBox = false)
     {
         var options = GetSerializerOptions();
         MappingProfile profile;
@@ -151,7 +178,7 @@ public class MappingProfile
 
         profile = JsonSerializer.Deserialize<MappingProfile>(File.ReadAllText(filePath), options);
 
-        if (profile.PostLoad(filePath))
+        if (profile.PostLoad(filePath, suppressMessageBox))
         {
             return profile;
         }
@@ -168,8 +195,6 @@ public class MappingProfile
 
     private static JsonSerializerOptions GetSerializerOptions()
     {
-        // TODO: serializer.SerializationBinder = new MappingProfileSerializationBinder();
-
         JsonSerializerOptions options = new();
         options.Converters.Add(new JsonStringEnumConverter());
         options.Converters.Add(new JsonMappingAspectConverter<AbstractAction>());
@@ -182,25 +207,12 @@ public class MappingProfile
 
     public static string GetSaveDirectory()
     {
-        var legacyDirectory = Path.Combine(
-            Output.GetAppDataDirectory(),
-            LEGACY_SAVE_DIR);
         var directory = Path.Combine(
             Output.GetAppDataDirectory(),
             SAVE_DIR);
 
-        if (Directory.Exists(legacyDirectory))
-        {
-            if (Directory.Exists(directory))
-            {
-                Directory.Move(legacyDirectory, FileSystem.FindNonExistingFile(legacyDirectory + "-%VERSION%"));
-            }
-            else
-            {
-                Directory.Move(legacyDirectory, directory);
-            }
-        }
-        else if (!Directory.Exists(directory))
+        if (!string.IsNullOrWhiteSpace(directory)
+            && !Directory.Exists(directory))
         {
             Directory.CreateDirectory(directory);
         }

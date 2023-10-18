@@ -1,11 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using CommonServiceLocator;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.LowLevelInput;
-using SimWinInput;
+using Key2Joy.LowLevelInput.GamePad;
 
 namespace Key2Joy.Mapping.Actions.Input;
 
@@ -18,22 +19,20 @@ namespace Key2Joy.Mapping.Actions.Input;
 )]
 public class GamePadStickAction : CoreAction
 {
-
     public Simulator.GamePadStick Stick { get; set; }
     public double DeltaX { get; set; }
     public double DeltaY { get; set; }
     public int GamePadIndex { get; set; }
 
-    public GamePadStickAction(string name)
-        : base(name)
-    {
-    }
+    public GamePadStickAction(string name) : base(name)
+    { }
 
     public override void OnStartListening(AbstractTriggerListener listener, ref IList<AbstractAction> otherActions)
     {
         base.OnStartListening(listener, ref otherActions);
 
-        GamePadManager.Instance.EnsurePluggedIn(this.GamePadIndex);
+        var gamePadService = ServiceLocator.Current.GetInstance<IGamePadService>();
+        gamePadService.EnsurePluggedIn(this.GamePadIndex);
     }
 
     /// <markdown-doc>
@@ -71,15 +70,23 @@ public class GamePadStickAction : CoreAction
         this.Stick = stick;
         this.GamePadIndex = gamepadIndex;
 
-        GamePadManager.Instance.EnsurePluggedIn(this.GamePadIndex);
+        var gamePadService = ServiceLocator.Current.GetInstance<IGamePadService>();
+        gamePadService.EnsurePluggedIn(this.GamePadIndex);
 
         await this.Execute();
     }
 
     public override async Task Execute(AbstractInputBag inputBag = null)
     {
-        var simPad = SimGamePad.Instance;
-        var state = simPad.State[this.GamePadIndex];
+        var gamePadService = ServiceLocator.Current.GetInstance<IGamePadService>();
+        var gamePad = gamePadService.GetGamePad(this.GamePadIndex);
+
+        if (!gamePad.GetIsPluggedIn())
+        {
+            gamePad.PlugIn();
+        }
+
+        var state = gamePad.GetState();
 
         var x = (short)(short.MinValue * this.DeltaX);
         var y = (short)(short.MinValue * this.DeltaY);
@@ -95,7 +102,7 @@ public class GamePadStickAction : CoreAction
             state.LeftStickY = y;
         }
 
-        simPad.Update(this.GamePadIndex);
+        gamePad.Update();
     }
 
     public override string GetNameDisplay() => this.Name.Replace("{0}", this.Stick == Simulator.GamePadStick.Left ? "Left" : "Right")

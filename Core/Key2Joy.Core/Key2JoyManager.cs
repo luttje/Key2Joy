@@ -5,35 +5,33 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
+using CommonServiceLocator;
 using Key2Joy.Config;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.Interop;
-using Key2Joy.LowLevelInput;
+using Key2Joy.Interop.Commands;
+using Key2Joy.LowLevelInput.GamePad;
 using Key2Joy.Mapping;
 using Key2Joy.Mapping.Actions.Logic;
 using Key2Joy.Mapping.Triggers.Keyboard;
 using Key2Joy.Mapping.Triggers.Mouse;
 using Key2Joy.Plugins;
-using SimWinInput;
+using Key2Joy.Util;
 
 namespace Key2Joy;
 
 public delegate bool AppCommandRunner(AppCommand command);
 
-public class Key2JoyManager : IMessageFilter
+public class Key2JoyManager : IKey2JoyManager, IMessageFilter
 {
     /// <summary>
     /// Directory where plugins are located
     /// </summary>
     public const string PluginsDirectory = "Plugins";
 
-    private const string READY_MESSAGE = "Key2Joy is ready";
-    private static AppCommandRunner commandRunner;
-    private MappingProfile armedProfile;
-    private Form mainForm;
-    private readonly List<IWndProcHandler> wndProcListeners = new();
+    public event EventHandler<StatusChangedEventArgs> StatusChanged;
 
     public static Key2JoyManager instance;
 
@@ -50,7 +48,17 @@ public class Key2JoyManager : IMessageFilter
         }
     }
 
-    public event EventHandler<StatusChangedEventArgs> StatusChanged;
+    /// <summary>
+    /// Trigger listeners that should explicitly loaded. This ensures that they're available for scripts
+    /// even if no mapping option is mapped to be triggered by it.
+    /// </summary>
+    public IList<AbstractTriggerListener> ExplicitTriggerListeners { get; set; }
+
+    private const string READY_MESSAGE = "Key2Joy is ready";
+    private static AppCommandRunner commandRunner;
+    private MappingProfile armedProfile;
+    private IHaveHandleAndInvoke handleAndInvoker;
+    private readonly List<IWndProcHandler> wndProcListeners = new();
 
     private Key2JoyManager()
     { }
@@ -58,10 +66,38 @@ public class Key2JoyManager : IMessageFilter
     /// <summary>
     /// Ensures Key2Joy is running and ready to accept commands as long as the main loop does not end.
     /// </summary>
-    public static void InitSafely(AppCommandRunner commandRunner, Action<PluginSet> mainLoop)
+    /// <param name="commandRunner"></param>
+    /// <param name="mainLoop"></param>
+    /// <param name="configManager">Optionally a custom config manager (probably only useful for unit testing)</param>
+    public static void InitSafely(AppCommandRunner commandRunner, Action<PluginSet> mainLoop, IConfigManager configManager = null)
     {
-        instance = new Key2JoyManager();
+        // Setup dependency injection and services
+        var serviceLocator = new DependencyServiceLocator();
+        ServiceLocator.SetLocatorProvider(() => serviceLocator);
 
+        instance = new Key2JoyManager
+        {
+            ExplicitTriggerListeners = new List<AbstractTriggerListener>()
+            {
+                // Always add these listeners so scripts can ask them if stuff has happened.
+                KeyboardTriggerListener.Instance,
+                MouseButtonTriggerListener.Instance,
+                MouseMoveTriggerListener.Instance
+            }
+        };
+        serviceLocator.Register<IKey2JoyManager>(instance);
+
+#pragma warning disable IDE0001 // Simplify Names
+        serviceLocator.Register<IConfigManager>(configManager ??= new ConfigManager());
+#pragma warning restore IDE0001 // Simplify Names
+
+        var gamePadService = new SimulatedGamePadService();
+        serviceLocator.Register<IGamePadService>(gamePadService);
+
+        var commandRepository = new CommandRepository();
+        serviceLocator.Register<ICommandRepository>(commandRepository);
+
+        // Load plugins
         var pluginDirectoriesPaths = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         pluginDirectoriesPaths = Path.Combine(pluginDirectoriesPaths, PluginsDirectory);
 
@@ -69,37 +105,40 @@ public class Key2JoyManager : IMessageFilter
         plugins.LoadAll();
         plugins.RefreshPluginTypes();
 
+        foreach (var loadState in plugins.AllPluginLoadStates.Values)
+        {
+            if (loadState.LoadState == PluginLoadStates.FailedToLoad)
+            {
+                System.Windows.MessageBox.Show(
+                    $"One of your plugins located at {loadState.AssemblyPath} failed to load. This was the error: " +
+                    loadState.LoadErrorMessage,
+                    "Failed to load plugin!",
+                    System.Windows.MessageBoxButton.OK,
+                    System.Windows.MessageBoxImage.Warning
+                );
+            }
+        }
+
         Key2JoyManager.commandRunner = commandRunner;
+
+        var interopServer = new InteropServer(instance, commandRepository);
 
         try
         {
-            InteropServer.Instance.RestartListening();
+            interopServer.RestartListening();
             mainLoop(plugins);
         }
         finally
         {
-            InteropServer.Instance.StopListening();
-            SimGamePad.Instance.ShutDown();
+            interopServer.StopListening();
+            gamePadService.ShutDown();
         }
     }
 
-    // Run the event on the same thread as the main form
-    internal void CallOnUiThread(Action action) => this.mainForm.Invoke(action);
+    // Run the event on the same thread as the main control/form
+    public void CallOnUiThread(Action action) => this.handleAndInvoker.Invoke(action);
 
-    private static IList<AbstractTriggerListener> GetScriptingListeners()
-    {
-        List<AbstractTriggerListener> listeners = new()
-        {
-            // Always add these listeners so scripts can ask them if stuff has happened.
-            KeyboardTriggerListener.Instance,
-            MouseButtonTriggerListener.Instance,
-            MouseMoveTriggerListener.Instance
-        };
-
-        return listeners;
-    }
-
-    internal static bool RunAppCommand(AppCommand command) => commandRunner(command);
+    internal static bool RunAppCommand(AppCommand command) => commandRunner != null && commandRunner(command);
 
     public bool PreFilterMessage(ref System.Windows.Forms.Message m)
     {
@@ -120,9 +159,9 @@ public class Key2JoyManager : IMessageFilter
         return false;
     }
 
-    public void SetMainForm(Form form)
+    public void SetHandlerWithInvoke(IHaveHandleAndInvoke handleAndInvoker)
     {
-        this.mainForm = form;
+        this.handleAndInvoker = handleAndInvoker;
         Application.AddMessageFilter(this);
 
         Console.WriteLine(READY_MESSAGE);
@@ -142,7 +181,9 @@ public class Key2JoyManager : IMessageFilter
     {
         this.armedProfile = profile;
 
-        var allListeners = GetScriptingListeners();
+        var allListeners = new List<AbstractTriggerListener>();
+        allListeners.AddRange(this.ExplicitTriggerListeners);
+
         var allActions = (IList<AbstractAction>)profile.MappedOptions.Select(m => m.Action).ToList();
 
         foreach (var mappedOption in profile.MappedOptions)
@@ -168,14 +209,16 @@ public class Key2JoyManager : IMessageFilter
             listener.AddMappedOption(mappedOption);
         }
 
+        var allListenersForSharing = (IList<AbstractTriggerListener>)allListeners;
+
         foreach (var listener in allListeners)
         {
             if (listener is IWndProcHandler listenerWndProcHAndler)
             {
-                listenerWndProcHAndler.Handle = this.mainForm.Handle;
+                listenerWndProcHAndler.Handle = this.handleAndInvoker.Handle;
             }
 
-            listener.StartListening(ref allListeners);
+            listener.StartListening(ref allListenersForSharing);
         }
 
         StatusChanged?.Invoke(this, new StatusChangedEventArgs
@@ -187,7 +230,7 @@ public class Key2JoyManager : IMessageFilter
 
     public void DisarmMappings()
     {
-        var listeners = GetScriptingListeners();
+        var listeners = this.ExplicitTriggerListeners;
         this.wndProcListeners.Clear();
 
         // Clear all intervals
@@ -214,7 +257,9 @@ public class Key2JoyManager : IMessageFilter
             listener.StopListening();
         }
 
-        GamePadManager.Instance.EnsureAllUnplugged();
+        var gamePadService = ServiceLocator.Current.GetInstance<IGamePadService>();
+        gamePadService.EnsureAllUnplugged();
+
         this.armedProfile = null;
 
         StatusChanged?.Invoke(this, new StatusChangedEventArgs
@@ -228,7 +273,8 @@ public class Key2JoyManager : IMessageFilter
     /// </summary>
     public static void StartKey2Joy(bool startMinimized = true, bool pauseUntilReady = true)
     {
-        var executablePath = ConfigManager.Config.LastInstallPath;
+        var configManager = ServiceLocator.Current.GetInstance<IConfigManager>();
+        var executablePath = configManager.GetConfigState().LastInstallPath;
 
         if (executablePath == null)
         {

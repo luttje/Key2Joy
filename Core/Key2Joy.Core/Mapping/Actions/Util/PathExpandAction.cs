@@ -1,8 +1,6 @@
 using System;
-using System.Threading.Tasks;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Actions;
-using Key2Joy.Contracts.Mapping.Triggers;
 
 namespace Key2Joy.Mapping.Actions.Util;
 
@@ -37,11 +35,6 @@ public class PathExpandAction : CoreAction
     /// <name>Util.PathExpand</name>
     [ExposesScriptingMethod("Util.PathExpand")]
     public string ExecuteForScript(string path) => Environment.ExpandEnvironmentVariables(path);
-
-    public override async Task Execute(AbstractInputBag inputBag = null)
-    {
-        // TODO: Currently this is only a script action...
-    }
 
     public override bool Equals(object obj)
     {

@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.Windows.Forms;
+using CommonServiceLocator;
+using Key2Joy.LowLevelInput.GamePad;
 using Key2Joy.Mapping;
-using SimWinInput;
 
 namespace Key2Joy.Gui;
 
@@ -25,7 +26,8 @@ public partial class InitForm : Form
     private void InitForm_Load(object sender, EventArgs e)
     {
         MappingProfile.ExtractDefaultIfNotExists();
-        SimGamePad.Instance.Initialize();
+        var gamePadService = ServiceLocator.Current.GetInstance<IGamePadService>();
+        gamePadService.Initialize();
 
         MainForm mainForm = new(this.shouldStartMinimized);
         Program.GoToNextForm(mainForm);

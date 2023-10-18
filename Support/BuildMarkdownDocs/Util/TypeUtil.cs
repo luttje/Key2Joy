@@ -6,7 +6,7 @@ namespace BuildMarkdownDocs.Util;
 
 public static class TypeUtil
 {
-    private static string CleanTypeName(string typeName)
+    public static string CleanTypeName(string typeName)
         => Regex.Replace(typeName, @"System\.Nullable{(.+)}", "System.Nullable`1[$1]");
 
     public static Type GetType(string typeName)

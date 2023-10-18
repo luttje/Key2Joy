@@ -1,7 +1,5 @@
 # `PressState`
 
-Simulate pressing or releasing (or both) gamepad buttons.
-
 ## Example Use
 `PressState.Press`
 

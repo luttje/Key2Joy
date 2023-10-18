@@ -29,11 +29,11 @@ Depending on the amount of frames this will take a bit of time. It may cause a s
 > -- local targetDirectory = Util.PathExpand("%HOMEDRIVE%%HOMEPATH%/Desktop/")
 > local targetDirectory = "./"
 > local images = {}
->             
+> 
 > for i=1,30 do
 >   images[i] = targetDirectory.."frames/"..i..".png"
 > end
->             
+> 
 > Ffmpeg.AnimationFromImages(targetDirectory.."animated.gif", 30, images)
 > ```
 > 
@@ -43,11 +43,11 @@ Depending on the amount of frames this will take a bit of time. It may cause a s
 > // let targetDirectory = Util.PathExpand("%HOMEDRIVE%%HOMEPATH%/Desktop/")
 > let targetDirectory = "./"
 > let images = []
->             
+> 
 > for(let i=1; i<=30; i++){
 >   images[i-1] = targetDirectory+"frames/"+i+".png"
 > }
->             
+> 
 > Ffmpeg.AnimationFromImages(targetDirectory+"animated.gif", 30, images)
 > ```
 ---

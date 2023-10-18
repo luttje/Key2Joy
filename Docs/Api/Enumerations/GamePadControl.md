@@ -1,7 +1,5 @@
 # `GamePadControl`
 
-Simulate pressing or releasing (or both) gamepad buttons.
-
 ## Example Use
 `GamePadControl.None`
 

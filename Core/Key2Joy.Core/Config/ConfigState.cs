@@ -1,9 +1,19 @@
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Key2Joy.Config;
 
 public class ConfigState
 {
+    private IConfigManager configManager;
+
+    [JsonConstructor]
+    public ConfigState()
+    { }
+
+    public ConfigState(IConfigManager configManager)
+        => this.configManager = configManager;
+
     public string LastInstallPath
     {
         get => this.lastInstallPath;
@@ -13,15 +23,15 @@ public class ConfigState
     private string lastInstallPath;
 
     [BooleanConfigControl(
-        Text = "Mute informative message about this app minimizing by default"
+        Text = "Minimize app when pressing the close button"
     )]
-    public bool MuteCloseExitMessage
+    public bool ShouldCloseButtonMinimize
     {
-        get => this.muteCloseExitMessage;
-        set => this.SaveIfInitialized(this.muteCloseExitMessage = value);
+        get => this.shouldCloseButtonMinimize;
+        set => this.SaveIfInitialized(this.shouldCloseButtonMinimize = value);
     }
 
-    private bool muteCloseExitMessage;
+    private bool shouldCloseButtonMinimize;
 
     [BooleanConfigControl(
         Text = "Override default behaviour when trigger action is executed"
@@ -49,9 +59,11 @@ public class ConfigState
 
     private void SaveIfInitialized(object changedValue = null)
     {
-        if (ConfigManager.Instance.IsInitialized)
+        if (this.configManager == null || !this.configManager.IsInitialized)
         {
-            ConfigManager.Instance.Save();
+            return;
         }
+
+        this.configManager.Save();
     }
 }

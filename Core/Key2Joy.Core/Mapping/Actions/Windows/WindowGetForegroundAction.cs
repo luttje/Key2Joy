@@ -1,9 +1,7 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Actions;
-using Key2Joy.Contracts.Mapping.Triggers;
 
 namespace Key2Joy.Mapping.Actions.Windows;
 
@@ -35,11 +33,6 @@ public class WindowGetForegroundAction : CoreAction
     {
         var windowHandle = GetForegroundWindow();
         return windowHandle;
-    }
-
-    public override async Task Execute(AbstractInputBag inputBag = null)
-    {
-        // TODO: Currently this is only a script action...
     }
 
     public override string GetNameDisplay() => this.Name;

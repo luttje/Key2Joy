@@ -1,7 +1,6 @@
 # `AppCommand`
 
-Execute a command in this app.
-See the AppCommand Enumeration for a list of available commands.
+The possible commands to run in the app.
 
 ## Example Use
 `AppCommand.Abort`

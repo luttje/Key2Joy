@@ -95,7 +95,11 @@ public class PluginHost : MarshalByRefObject, IPluginHost
                 }
                 else
                 {
-                    var intersection = additionalPermissions.Intersect(GetAllowedPermissionsWithDescriptions().AllowedPermissions);
+                    var intersection = additionalPermissions.Intersect(
+                        AllowedPermissionsWithDescriptions
+                        .GetAllowedPermissionsWithDescriptions()
+                        .AllowedPermissions
+                    );
 
                     if (intersection == null || !intersection.Equals(additionalPermissions))
                     {
@@ -144,47 +148,6 @@ public class PluginHost : MarshalByRefObject, IPluginHost
     public string GetPluginAuthor() => this.loadedPlugin.Author;
 
     public string GetPluginWebsite() => this.loadedPlugin.Website;
-
-    public static AllowedPermissionsWithDescriptions GetAllowedPermissionsWithDescriptions()
-    {
-        List<string> descriptions = new();
-        PermissionSet allowedPermissions = new(PermissionState.None);
-
-        allowedPermissions.AddPermission(new FileIOPermission(PermissionState.Unrestricted));
-        descriptions.Add("unrestricted file access anywhere on your device");
-
-        allowedPermissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.Read, ""));
-        descriptions.Add("file reading access anywhere on your device");
-
-        allowedPermissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.Write, ""));
-        descriptions.Add("file writing access anywhere on your device");
-
-        allowedPermissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.Append, ""));
-        descriptions.Add("file appending access anywhere on your device");
-
-        allowedPermissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.PathDiscovery, ""));
-        descriptions.Add("file and folder path discovery access anywhere on your device");
-
-        allowedPermissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.AllAccess, ""));
-        descriptions.Add("file full access anywhere on your device");
-
-        allowedPermissions.AddPermission(new EnvironmentPermission(PermissionState.Unrestricted));  // Wildcards are not valid for this permission
-        descriptions.Add("unrestricted access to load external assemblies (potentially dangerous)"); // Needed for the test runner and Assembly.LoadFrom (for plugins that want to use external libraries like FFmpeg)
-
-        // Custom override permission to grant unrestricted access
-        allowedPermissions.AddPermission(new SecurityOverride(PermissionState.Unrestricted));
-        descriptions.Add("unrestricted (potentially dangerous)");
-
-        // Note: https://github.com/microsoft/referencesource/tree/master/mscorlib/system/security/permissions
-        //allowedPermissions.AddPermission(new RegistryPermission(RegistryPermissionAccess.Read, "*")); // Wildcards are not valid for this permission
-        //descriptions.Add(...)
-
-        return new AllowedPermissionsWithDescriptions
-        {
-            AllowedPermissions = allowedPermissions,
-            Descriptions = descriptions,
-        };
-    }
 
     public static string GetAdditionalPermissionsXml(string pluginAssemblyPath)
     {

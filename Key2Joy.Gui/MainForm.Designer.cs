@@ -34,6 +34,9 @@ namespace Key2Joy.Gui
             this.olvColumnAction = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnTrigger = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.pnlActionManagement = new System.Windows.Forms.Panel();
+            this.pnlFiltering = new System.Windows.Forms.Panel();
+            this.txtFilter = new System.Windows.Forms.TextBox();
+            this.txtFilterLabel = new System.Windows.Forms.Label();
             this.btnCreateMapping = new System.Windows.Forms.Button();
             this.pnlProfileManagement = new System.Windows.Forms.Panel();
             this.txtProfileName = new System.Windows.Forms.TextBox();
@@ -88,6 +91,7 @@ namespace Key2Joy.Gui
             this.lblStatusActive = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.olvMappings)).BeginInit();
             this.pnlActionManagement.SuspendLayout();
+            this.pnlFiltering.SuspendLayout();
             this.pnlProfileManagement.SuspendLayout();
             this.menMainMenu.SuspendLayout();
             this.pnlMainMenu.SuspendLayout();
@@ -95,22 +99,27 @@ namespace Key2Joy.Gui
             // 
             // olvMappings
             // 
-            this.olvMappings.AllColumns.Add(this.olvColumnAction);
             this.olvMappings.AllColumns.Add(this.olvColumnTrigger);
+            this.olvMappings.AllColumns.Add(this.olvColumnAction);
             this.olvMappings.CellEditUseWholeCell = false;
             this.olvMappings.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.olvColumnAction,
-            this.olvColumnTrigger});
+            this.olvColumnTrigger,
+            this.olvColumnAction});
             this.olvMappings.Cursor = System.Windows.Forms.Cursors.Default;
             this.olvMappings.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.olvMappings.EmptyListMsg = "There are no mappings, or a search filter is applied that matched no mappings.";
+            this.olvMappings.EmptyListMsgFont = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.olvMappings.FullRowSelect = true;
             this.olvMappings.HideSelection = false;
+            this.olvMappings.LabelWrap = false;
             this.olvMappings.Location = new System.Drawing.Point(0, 53);
             this.olvMappings.Name = "olvMappings";
-            this.olvMappings.Size = new System.Drawing.Size(580, 370);
+            this.olvMappings.RowHeight = 25;
+            this.olvMappings.Size = new System.Drawing.Size(684, 467);
             this.olvMappings.TabIndex = 84;
             this.olvMappings.UseCellFormatEvents = true;
             this.olvMappings.UseCompatibleStateImageBehavior = false;
+            this.olvMappings.UseFiltering = true;
             this.olvMappings.UseHotItem = true;
             this.olvMappings.UseTranslucentHotItem = true;
             this.olvMappings.UseTranslucentSelection = true;
@@ -124,32 +133,63 @@ namespace Key2Joy.Gui
             // olvColumnAction
             // 
             this.olvColumnAction.AspectName = "Action";
-            this.olvColumnAction.DisplayIndex = 1;
             this.olvColumnAction.Text = "Action";
             this.olvColumnAction.UseInitialLetterForGroup = true;
             // 
             // olvColumnTrigger
             // 
             this.olvColumnTrigger.AspectName = "Trigger";
-            this.olvColumnTrigger.DisplayIndex = 0;
             this.olvColumnTrigger.Groupable = false;
             this.olvColumnTrigger.Text = "Trigger";
             // 
             // pnlActionManagement
             // 
+            this.pnlActionManagement.Controls.Add(this.pnlFiltering);
             this.pnlActionManagement.Controls.Add(this.btnCreateMapping);
             this.pnlActionManagement.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlActionManagement.Location = new System.Drawing.Point(0, 423);
+            this.pnlActionManagement.Location = new System.Drawing.Point(0, 520);
             this.pnlActionManagement.Name = "pnlActionManagement";
-            this.pnlActionManagement.Size = new System.Drawing.Size(580, 34);
+            this.pnlActionManagement.Padding = new System.Windows.Forms.Padding(5);
+            this.pnlActionManagement.Size = new System.Drawing.Size(684, 41);
             this.pnlActionManagement.TabIndex = 0;
+            // 
+            // pnlFiltering
+            // 
+            this.pnlFiltering.Controls.Add(this.txtFilter);
+            this.pnlFiltering.Controls.Add(this.txtFilterLabel);
+            this.pnlFiltering.Dock = System.Windows.Forms.DockStyle.Left;
+            this.pnlFiltering.Location = new System.Drawing.Point(5, 5);
+            this.pnlFiltering.Name = "pnlFiltering";
+            this.pnlFiltering.Padding = new System.Windows.Forms.Padding(5);
+            this.pnlFiltering.Size = new System.Drawing.Size(321, 31);
+            this.pnlFiltering.TabIndex = 2;
+            // 
+            // txtFilter
+            // 
+            this.txtFilter.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtFilter.Location = new System.Drawing.Point(82, 5);
+            this.txtFilter.Name = "txtFilter";
+            this.txtFilter.Size = new System.Drawing.Size(234, 20);
+            this.txtFilter.TabIndex = 1;
+            this.txtFilter.TextChanged += new System.EventHandler(this.TxtFilter_TextChanged);
+            // 
+            // txtFilterLabel
+            // 
+            this.txtFilterLabel.Dock = System.Windows.Forms.DockStyle.Left;
+            this.txtFilterLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtFilterLabel.Location = new System.Drawing.Point(5, 5);
+            this.txtFilterLabel.Name = "txtFilterLabel";
+            this.txtFilterLabel.Size = new System.Drawing.Size(77, 21);
+            this.txtFilterLabel.TabIndex = 89;
+            this.txtFilterLabel.Text = "Search Filter:";
+            this.txtFilterLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // btnCreateMapping
             // 
             this.btnCreateMapping.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnCreateMapping.Location = new System.Drawing.Point(431, 0);
+            this.btnCreateMapping.Location = new System.Drawing.Point(530, 5);
             this.btnCreateMapping.Name = "btnCreateMapping";
-            this.btnCreateMapping.Size = new System.Drawing.Size(149, 34);
+            this.btnCreateMapping.Size = new System.Drawing.Size(149, 31);
             this.btnCreateMapping.TabIndex = 0;
             this.btnCreateMapping.Text = "Create New Mapping";
             this.btnCreateMapping.UseVisualStyleBackColor = true;
@@ -157,13 +197,14 @@ namespace Key2Joy.Gui
             // 
             // pnlProfileManagement
             // 
+            this.pnlProfileManagement.BackColor = System.Drawing.SystemColors.ControlLight;
             this.pnlProfileManagement.Controls.Add(this.txtProfileName);
             this.pnlProfileManagement.Controls.Add(this.lblProfileName);
             this.pnlProfileManagement.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlProfileManagement.Location = new System.Drawing.Point(0, 23);
             this.pnlProfileManagement.Name = "pnlProfileManagement";
             this.pnlProfileManagement.Padding = new System.Windows.Forms.Padding(5);
-            this.pnlProfileManagement.Size = new System.Drawing.Size(580, 30);
+            this.pnlProfileManagement.Size = new System.Drawing.Size(684, 30);
             this.pnlProfileManagement.TabIndex = 82;
             // 
             // txtProfileName
@@ -171,7 +212,7 @@ namespace Key2Joy.Gui
             this.txtProfileName.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtProfileName.Location = new System.Drawing.Point(82, 5);
             this.txtProfileName.Name = "txtProfileName";
-            this.txtProfileName.Size = new System.Drawing.Size(493, 20);
+            this.txtProfileName.Size = new System.Drawing.Size(597, 20);
             this.txtProfileName.TabIndex = 85;
             this.txtProfileName.TextChanged += new System.EventHandler(this.TxtProfileName_TextChanged);
             // 
@@ -190,7 +231,7 @@ namespace Key2Joy.Gui
             // 
             this.chkEnabled.AutoSize = true;
             this.chkEnabled.Dock = System.Windows.Forms.DockStyle.Right;
-            this.chkEnabled.Location = new System.Drawing.Point(320, 0);
+            this.chkEnabled.Location = new System.Drawing.Point(424, 0);
             this.chkEnabled.Name = "chkEnabled";
             this.chkEnabled.Size = new System.Drawing.Size(59, 23);
             this.chkEnabled.TabIndex = 81;
@@ -207,7 +248,7 @@ namespace Key2Joy.Gui
             this.helpToolStripMenuItem});
             this.menMainMenu.Location = new System.Drawing.Point(0, 0);
             this.menMainMenu.Name = "menMainMenu";
-            this.menMainMenu.Size = new System.Drawing.Size(320, 24);
+            this.menMainMenu.Size = new System.Drawing.Size(424, 24);
             this.menMainMenu.TabIndex = 81;
             this.menMainMenu.Text = "menuStrip1";
             // 
@@ -361,7 +402,7 @@ namespace Key2Joy.Gui
             this.allGamePadJoystickActionsToolStripMenuItem,
             this.allKeyboardActionsToolStripMenuItem});
             this.fillProfileWithToolStripMenuItem.Name = "fillProfileWithToolStripMenuItem";
-            this.fillProfileWithToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.fillProfileWithToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.fillProfileWithToolStripMenuItem.Text = "Fill Profile With...";
             // 
             // allGamePadJoystickActionsToolStripMenuItem
@@ -433,7 +474,7 @@ namespace Key2Joy.Gui
             this.testKeyboardToolStripMenuItem,
             this.testMouseToolStripMenuItem});
             this.testMappingsToolStripMenuItem.Name = "testMappingsToolStripMenuItem";
-            this.testMappingsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.testMappingsToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.testMappingsToolStripMenuItem.Text = "Test Mappings";
             // 
             // testGamePadJoystickToolStripMenuItem
@@ -478,7 +519,7 @@ namespace Key2Joy.Gui
             this.withSelectedToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.generateOppositePressStateMappingsToolStripMenuItem});
             this.withSelectedToolStripMenuItem.Name = "withSelectedToolStripMenuItem";
-            this.withSelectedToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.withSelectedToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.withSelectedToolStripMenuItem.Text = "With Selected...";
             // 
             // generateOppositePressStateMappingsToolStripMenuItem
@@ -491,13 +532,13 @@ namespace Key2Joy.Gui
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(176, 6);
             // 
             // userConfigurationsToolStripMenuItem
             // 
             this.userConfigurationsToolStripMenuItem.Image = global::Key2Joy.Gui.Properties.Resources.cog;
             this.userConfigurationsToolStripMenuItem.Name = "userConfigurationsToolStripMenuItem";
-            this.userConfigurationsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.userConfigurationsToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.userConfigurationsToolStripMenuItem.Text = "User Configurations";
             this.userConfigurationsToolStripMenuItem.Click += new System.EventHandler(this.UserConfigurationsToolStripMenuItem_Click);
             // 
@@ -515,27 +556,27 @@ namespace Key2Joy.Gui
             // reportAProblemToolStripMenuItem
             // 
             this.reportAProblemToolStripMenuItem.Name = "reportAProblemToolStripMenuItem";
-            this.reportAProblemToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.reportAProblemToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.reportAProblemToolStripMenuItem.Text = "Report a Problem";
             this.reportAProblemToolStripMenuItem.Click += new System.EventHandler(this.ReportAProblemToolStripMenuItem_Click);
             // 
             // viewSourceCodeToolStripMenuItem
             // 
             this.viewSourceCodeToolStripMenuItem.Name = "viewSourceCodeToolStripMenuItem";
-            this.viewSourceCodeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.viewSourceCodeToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.viewSourceCodeToolStripMenuItem.Text = "View Source Code";
             this.viewSourceCodeToolStripMenuItem.Click += new System.EventHandler(this.ViewSourceCodeToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(166, 6);
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Image = global::Key2Joy.Gui.Properties.Resources.information;
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.AboutToolStripMenuItem_Click);
             // 
@@ -555,7 +596,7 @@ namespace Key2Joy.Gui
             this.pnlMainMenu.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlMainMenu.Location = new System.Drawing.Point(0, 0);
             this.pnlMainMenu.Name = "pnlMainMenu";
-            this.pnlMainMenu.Size = new System.Drawing.Size(580, 23);
+            this.pnlMainMenu.Size = new System.Drawing.Size(684, 23);
             this.pnlMainMenu.TabIndex = 85;
             // 
             // lblStatusInactive
@@ -563,7 +604,7 @@ namespace Key2Joy.Gui
             this.lblStatusInactive.BackColor = System.Drawing.Color.IndianRed;
             this.lblStatusInactive.Dock = System.Windows.Forms.DockStyle.Right;
             this.lblStatusInactive.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.lblStatusInactive.Location = new System.Drawing.Point(379, 0);
+            this.lblStatusInactive.Location = new System.Drawing.Point(483, 0);
             this.lblStatusInactive.Name = "lblStatusInactive";
             this.lblStatusInactive.Size = new System.Drawing.Size(109, 23);
             this.lblStatusInactive.TabIndex = 82;
@@ -574,7 +615,7 @@ namespace Key2Joy.Gui
             // 
             this.lblStatusActive.BackColor = System.Drawing.Color.LawnGreen;
             this.lblStatusActive.Dock = System.Windows.Forms.DockStyle.Right;
-            this.lblStatusActive.Location = new System.Drawing.Point(488, 0);
+            this.lblStatusActive.Location = new System.Drawing.Point(592, 0);
             this.lblStatusActive.Name = "lblStatusActive";
             this.lblStatusActive.Size = new System.Drawing.Size(92, 23);
             this.lblStatusActive.TabIndex = 83;
@@ -586,22 +627,24 @@ namespace Key2Joy.Gui
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(580, 457);
+            this.ClientSize = new System.Drawing.Size(684, 561);
             this.Controls.Add(this.olvMappings);
             this.Controls.Add(this.pnlActionManagement);
             this.Controls.Add(this.pnlProfileManagement);
             this.Controls.Add(this.pnlMainMenu);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.MaximizeBox = false;
             this.MinimumSize = new System.Drawing.Size(600, 500);
             this.Name = "MainForm";
-            this.Text = "Key2Joy - Prototype";
+            this.Text = "Key2Joy - Alpha Version";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
+            this.SizeChanged += new System.EventHandler(this.MainForm_SizeChanged);
             ((System.ComponentModel.ISupportInitialize)(this.olvMappings)).EndInit();
             this.pnlActionManagement.ResumeLayout(false);
+            this.pnlFiltering.ResumeLayout(false);
+            this.pnlFiltering.PerformLayout();
             this.pnlProfileManagement.ResumeLayout(false);
             this.pnlProfileManagement.PerformLayout();
             this.menMainMenu.ResumeLayout(false);
@@ -669,6 +712,9 @@ namespace Key2Joy.Gui
         private System.Windows.Forms.ToolStripMenuItem withSelectedToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem generateOppositePressStateMappingsToolStripMenuItem;
         private BrightIdeasSoftware.ObjectListView olvMappings;
+        private System.Windows.Forms.TextBox txtFilter;
+        private System.Windows.Forms.Panel pnlFiltering;
+        private System.Windows.Forms.Label txtFilterLabel;
     }
 }
 

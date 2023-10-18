@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Key2Joy.Contracts.Mapping;
+using Key2Joy.Mapping.Actions.Scripting;
 
 namespace Key2Joy.Plugins;
 

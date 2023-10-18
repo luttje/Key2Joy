@@ -1,9 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using CommonServiceLocator;
 using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.LowLevelInput;
+using Key2Joy.LowLevelInput.GamePad;
 using Key2Joy.Mapping.Triggers.Mouse;
 using SimWinInput;
 
@@ -23,8 +25,7 @@ public class GamePadAction : CoreAction, IPressState
 
     public GamePadAction(string name)
         : base(name)
-    {
-    }
+    { }
 
     public static List<MappedOption> GetAllButtonActions(PressState pressState)
     {
@@ -60,8 +61,42 @@ public class GamePadAction : CoreAction, IPressState
     {
         base.OnStartListening(listener, ref otherActions);
 
-        GamePadManager.Instance.EnsurePluggedIn(this.GamePadIndex);
+        var gamePadService = ServiceLocator.Current.GetInstance<IGamePadService>();
+        gamePadService.EnsurePluggedIn(this.GamePadIndex);
     }
+
+    private void HandleMouseMove(IGamePad gamePad, MouseMoveInputBag mouseMoveInputBag)
+    {
+        var state = gamePad.GetState();
+
+        switch (this.Control)
+        {
+            case GamePadControl.LeftStickLeft:
+            case GamePadControl.LeftStickRight:
+                state.LeftStickX = this.CalculateNewState(mouseMoveInputBag.DeltaX, state.LeftStickX);
+                break;
+
+            case GamePadControl.LeftStickUp:
+            case GamePadControl.LeftStickDown:
+                state.LeftStickY = this.CalculateNewState(mouseMoveInputBag.DeltaY, state.LeftStickY);
+                break;
+
+            case GamePadControl.RightStickLeft:
+            case GamePadControl.RightStickRight:
+                state.RightStickX = this.CalculateNewState(mouseMoveInputBag.DeltaX, state.RightStickX);
+                break;
+
+            case GamePadControl.RightStickUp:
+            case GamePadControl.RightStickDown:
+                state.RightStickY = this.CalculateNewState(mouseMoveInputBag.DeltaY, state.RightStickY);
+                break;
+        }
+
+        gamePad.Update();
+    }
+
+    private short CalculateNewState(int delta, short currentState)
+        => (short)((delta + currentState) / 2);
 
     /// <markdown-doc>
     /// <parent-name>Input</parent-name>
@@ -86,109 +121,49 @@ public class GamePadAction : CoreAction, IPressState
     /// <param name="gamepadIndex">Which of 4 possible gamepads to simulate: 0 (default), 1, 2 or 3</param>
     /// <name>GamePad.Simulate</name>
     [ExposesScriptingMethod("GamePad.Simulate")]
-    public async void ExecuteForScript(GamePadControl control, PressState pressState, int gamepadIndex = 0)
+    public void ExecuteForScript(GamePadControl control, PressState pressState, int gamepadIndex = 0)
     {
         this.Control = control;
         this.PressState = pressState;
         this.GamePadIndex = gamepadIndex;
 
-        GamePadManager.Instance.EnsurePluggedIn(this.GamePadIndex);
+        var gamePadService = ServiceLocator.Current.GetInstance<IGamePadService>();
+        var gamePad = gamePadService.GetGamePad(this.GamePadIndex);
+
+        if (!gamePad.GetIsPluggedIn())
+        {
+            gamePad.PlugIn();
+        }
 
         if (this.PressState == PressState.Press)
         {
-            SimGamePad.Instance.SetControl(this.Control, this.GamePadIndex);
+            gamePad.SetControl(this.Control);
         }
 
         if (this.PressState == PressState.Release)
         {
-            SimGamePad.Instance.ReleaseControl(this.Control, this.GamePadIndex);
+            gamePad.ReleaseControl(this.Control);
         }
     }
 
     public override async Task Execute(AbstractInputBag inputBag = null)
     {
+        var gamePadService = ServiceLocator.Current.GetInstance<IGamePadService>();
+        var gamePad = gamePadService.GetGamePad(this.GamePadIndex);
+
         if (inputBag is MouseMoveInputBag mouseMoveInputBag)
         {
-            // TODO: Sensitivity should be tweakable by user
-            // TODO: Support non axis buttons when delta is over a threshold?
-            var state = SimGamePad.Instance.State[this.GamePadIndex];
-
-            switch (this.Control)
-            {
-                case GamePadControl.LeftStickLeft:
-                case GamePadControl.LeftStickRight:
-                    state.LeftStickX = (short)((mouseMoveInputBag.DeltaX + state.LeftStickX) / 2);
-                    break;
-                case GamePadControl.LeftStickUp:
-                case GamePadControl.LeftStickDown:
-                    state.LeftStickY = (short)((mouseMoveInputBag.DeltaY + state.LeftStickY) / 2);
-                    break;
-                case GamePadControl.RightStickLeft:
-                case GamePadControl.RightStickRight:
-                    state.RightStickX = (short)((mouseMoveInputBag.DeltaX + state.RightStickX) / 2);
-                    break;
-                case GamePadControl.RightStickUp:
-                case GamePadControl.RightStickDown:
-                    state.RightStickY = (short)((mouseMoveInputBag.DeltaY + state.RightStickY) / 2);
-                    break;
-                case GamePadControl.None:
-                    break;
-                case GamePadControl.DPadUp:
-                    break;
-                case GamePadControl.DPadDown:
-                    break;
-                case GamePadControl.DPadLeft:
-                    break;
-                case GamePadControl.DPadRight:
-                    break;
-                case GamePadControl.Start:
-                    break;
-                case GamePadControl.Back:
-                    break;
-                case GamePadControl.LeftStickClick:
-                    break;
-                case GamePadControl.RightStickClick:
-                    break;
-                case GamePadControl.LeftShoulder:
-                    break;
-                case GamePadControl.RightShoulder:
-                    break;
-                case GamePadControl.Guide:
-                    break;
-                case GamePadControl.A:
-                    break;
-                case GamePadControl.B:
-                    break;
-                case GamePadControl.X:
-                    break;
-                case GamePadControl.Y:
-                    break;
-                case GamePadControl.LeftTrigger:
-                    break;
-                case GamePadControl.RightTrigger:
-                    break;
-                case GamePadControl.LeftStickAsAnalog:
-                    break;
-                case GamePadControl.RightStickAsAnalog:
-                    break;
-                case GamePadControl.DPadAsAnalog:
-                    break;
-                default:
-                    throw new NotImplementedException("This control does not (yet) support mouse axis input");
-            }
-
-            SimGamePad.Instance.Update(this.GamePadIndex);
-
+            this.HandleMouseMove(gamePad, mouseMoveInputBag);
             return;
         }
 
         if (this.PressState == PressState.Press)
         {
-            SimGamePad.Instance.SetControl(this.Control, this.GamePadIndex);
+            gamePad.SetControl(this.Control);
         }
         else if (this.PressState == PressState.Release)
         {
-            SimGamePad.Instance.ReleaseControl(this.Control, this.GamePadIndex);
+            gamePad.ReleaseControl(this.Control);
         }
     }
 

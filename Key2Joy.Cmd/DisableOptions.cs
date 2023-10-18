@@ -1,17 +1,18 @@
-﻿using System;
+using System;
 using CommandLine;
 using Key2Joy.Interop;
+using Key2Joy.Interop.Commands;
 
 namespace Key2Joy.Cmd;
 
 [Verb("disable", HelpText = "Disable whichever mapping profile is active.")]
 internal class DisableOptions : Options
 {
-    public override void Handle()
+    public override void Handle(IInteropClient client)
     {
         try
         {
-            InteropClient.Instance.SendCommand(new DisableCommand());
+            client.SendCommand(new DisableCommand());
 
             Console.WriteLine("Commanded Key2Joy to disable the active profile.");
         }
@@ -21,7 +22,7 @@ internal class DisableOptions : Options
             {
                 Console.WriteLine("Key2Joy is not running, starting it now...");
                 Key2JoyManager.StartKey2Joy();
-                this.Handle();
+                this.Handle(client);
             });
         }
     }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Contracts.Mapping.Triggers;
@@ -10,7 +11,9 @@ public abstract class BaseScriptActionWithEnvironment<TEnvironment> : BaseScript
 {
     protected TEnvironment Environment;
     protected Guid EnvironmentId { get; private set; }
-    protected bool IsRetired { get; private set; }
+
+    [JsonIgnore]
+    public bool IsRetired { get; private set; }
 
     public BaseScriptActionWithEnvironment(string name)
         : base(name)

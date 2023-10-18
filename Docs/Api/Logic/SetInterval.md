@@ -23,16 +23,16 @@ An interval id that can be removed with clearInterval.
 > ```js
 > setTimeout(function () {
 >   Print("Aborting in 3 second...")
->             
+> 
 >   setTimeout(function () {
 >     Print("Three")
->             
+> 
 >     setTimeout(function () {
 >       Print("Two")
->             
+> 
 >       setTimeout(function () {
 >         Print("One")
->             
+> 
 >         setTimeout(function () {
 >           App.Command("abort")
 >         }, 1000)

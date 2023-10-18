@@ -5,16 +5,50 @@ namespace Key2Joy.Contracts.Mapping.Triggers;
 
 public abstract class AbstractTriggerListener : MarshalByRefObject
 {
+    /// <summary>
+    /// Called when a trigger is about to activate. Listeners can modify which
+    /// mapped option candidates will be executed.
+    /// </summary>
     public event EventHandler<TriggerActivatingEventArgs> TriggerActivating;
 
+    /// <summary>
+    /// Called after the trigger has activated. Listeners can use this to see
+    /// which mapped option candidates have been considered.
+    /// Note: If the trigger itself chose not to execute by returning false in
+    /// <see cref="AbstractTrigger.GetShouldExecute"/> you will not be able to
+    /// tell. TODO: Consider registering which triggers actually executed (and
+    /// with what results?)
+    /// </summary>
     public event EventHandler<TriggerActivatedEventArgs> TriggerActivated;
 
+    /// <summary>
+    /// Called when the mappings are armed. The listener should use this to store
+    /// the action (preferably in an efficient lookup).
+    /// Later when the trigger activates, it can get mapped actions related to this
+    /// trigger from this storage/lookup.
+    /// </summary>
+    /// <param name="mappedOption"></param>
     public abstract void AddMappedOption(AbstractMappedOption mappedOption);
 
+    /// <summary>
+    /// Called by other listeners (e.g: a CombinedTriggerListener) to check if
+    /// this trigger is triggered at the time of calling.
+    /// </summary>
+    /// <param name="trigger"></param>
+    /// <returns></returns>
     public abstract bool GetIsTriggered(AbstractTrigger trigger);
 
+    /// <summary>
+    /// Called when the mappings are armed. The listener should use this to start
+    /// it's listening logic.
+    /// </summary>
+    /// <param name="allListeners"></param>
     public abstract void StartListening(ref IList<AbstractTriggerListener> allListeners);
 
+    /// <summary>
+    /// Called when the mappings are disarmed. The listener should use this to stop
+    /// it's listening logic.
+    /// </summary>
     public abstract void StopListening();
 
     /// <summary>
@@ -48,19 +82,7 @@ public abstract class AbstractTriggerListener : MarshalByRefObject
             if (shouldExecute)
             {
                 executedAny = true;
-                //try
-                //{
                 _ = mappedOption.Action.Execute(inputBag);
-                //}
-                //catch (System.Runtime.Serialization.SerializationException ex)
-                //{
-                //    // For some reason an exception occurs when the action is completed. (I tested it with a MessageBox.Show and Debug.WriteLine seperately, happened in both cases)
-                //    // Supposedly Task.Run should prevent this (source: https://stackoverflow.com/a/63824188), but it doesn't.
-                //    if (!ex.Message.StartsWith("Type 'System.Threading.Tasks.Task`1"))
-                //    {
-                //        throw ex;
-                //    }
-                //}
             }
         }
 

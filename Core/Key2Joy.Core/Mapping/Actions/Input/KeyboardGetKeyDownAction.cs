@@ -1,8 +1,6 @@
 using System;
-using System.Threading.Tasks;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Actions;
-using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.LowLevelInput;
 using Key2Joy.Mapping.Triggers.Keyboard;
 
@@ -15,6 +13,8 @@ namespace Key2Joy.Mapping.Actions.Input;
 )]
 public class KeyboardGetKeyDownAction : CoreAction
 {
+    private readonly VirtualKeyConverter virtualKeyConverter = new();
+
     public KeyboardGetKeyDownAction(string name)
         : base(name)
     { }
@@ -56,12 +56,8 @@ public class KeyboardGetKeyDownAction : CoreAction
     /// <returns>True if the key is currently pressed down, false otherwise</returns>
     /// <name>Keyboard.GetKeyDown</name>
     [ExposesScriptingMethod("Keyboard.GetKeyDown")]
-    public bool ExecuteForScript(KeyboardKey key) => KeyboardTriggerListener.Instance.GetKeyDown(VirtualKeyConverter.KeysFromScanCode(key));
-
-    public override async Task Execute(AbstractInputBag inputBag = null)
-    {
-        // TODO: Currently this is only a script action...
-    }
+    public bool ExecuteForScript(KeyboardKey key)
+        => KeyboardTriggerListener.Instance.GetKeyDown(this.virtualKeyConverter.KeysFromScanCode(key));
 
     public override string GetNameDisplay() => this.Name;
 

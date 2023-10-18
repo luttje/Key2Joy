@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Key2Joy.Contracts.Mapping.Triggers;
+using Key2Joy.Contracts.Util;
 
 namespace Key2Joy.Contracts.Mapping.Actions;
 
@@ -14,7 +15,15 @@ public abstract class AbstractAction : AbstractMappingAspect
 
     protected IList<AbstractAction> OtherActions;
 
-    public abstract Task Execute(AbstractInputBag inputBag = null);
+    /// <summary>
+    /// This method is called to execute the action. It can optionally be override, by
+    /// default it throws a NotImplementedException, which is useful for actions that
+    /// only have a script implementation (on other methods).
+    /// </summary>
+    /// <param name="inputBag"></param>
+    /// <returns></returns>
+    /// <exception cref="System.NotImplementedException"></exception>
+    public virtual Task Execute(AbstractInputBag inputBag = null) => throw new System.NotImplementedException();
 
     public virtual string GetNameDisplay() => this.Name;
 

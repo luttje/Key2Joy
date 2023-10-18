@@ -1,6 +1,7 @@
 using System;
 using CommandLine;
 using Key2Joy.Interop;
+using Key2Joy.Interop.Commands;
 using Key2Joy.Mapping;
 
 namespace Key2Joy.Cmd;
@@ -16,7 +17,7 @@ internal class EnableOptions : Options
     )]
     public string ProfilePath { get; set; }
 
-    public override void Handle()
+    public override void Handle(IInteropClient client)
     {
         var profilePath = this.ProfilePath;
 
@@ -31,7 +32,7 @@ internal class EnableOptions : Options
 
         try
         {
-            InteropClient.Instance.SendCommand(new EnableCommand
+            client.SendCommand(new EnableCommand
             {
                 ProfilePath = profilePath
             });
@@ -44,7 +45,7 @@ internal class EnableOptions : Options
             {
                 Console.WriteLine("Key2Joy is not running, starting it now...");
                 Key2JoyManager.StartKey2Joy();
-                this.Handle();
+                this.Handle(client);
             });
         }
     }

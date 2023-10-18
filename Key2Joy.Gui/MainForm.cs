@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using BrightIdeasSoftware;
+using CommonServiceLocator;
 using Key2Joy.Config;
 using Key2Joy.Contracts;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Actions;
-using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.Gui.Properties;
+using Key2Joy.Gui.Util;
 using Key2Joy.LowLevelInput;
 using Key2Joy.Mapping;
 using Key2Joy.Mapping.Actions;
@@ -20,25 +22,41 @@ using Key2Joy.Mapping.Triggers;
 
 namespace Key2Joy.Gui;
 
-public partial class MainForm : Form, IAcceptAppCommands
+public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
 {
-    private readonly IDictionary<string, CachedMappingGroup> cachedMappingGroups;
+    private readonly IDictionary<string, CachedMappingGroup> cachedMappingGroups = new Dictionary<string, CachedMappingGroup>();
+    private readonly ConfigState configState;
+
     private MappingProfile selectedProfile;
 
     public MainForm(bool shouldStartMinimized = false)
     {
-        this.cachedMappingGroups = new Dictionary<string, CachedMappingGroup>();
+        this.configState = ServiceLocator.Current
+            .GetInstance<IConfigManager>()
+            .GetConfigState();
 
         this.InitializeComponent();
 
-        if (shouldStartMinimized)
-        {
-            this.WindowState = FormWindowState.Minimized;
-            this.ShowInTaskbar = false;
-        }
+        this.ApplyMinimizedStateIfNeeded(shouldStartMinimized);
+        this.ConfigureStatusLabels();
+        this.SetupNotificationIndicator();
+        this.PopulateGroupImages();
+        this.RegisterListViewEvents();
+        this.ConfigureTriggerColumn();
+        this.RefreshColumnWidths();
+    }
 
-        this.lblStatusActive.Visible = this.chkEnabled.Checked;
+    private void ApplyMinimizedStateIfNeeded(bool shouldMinimize)
+    {
+        this.WindowState = shouldMinimize ? FormWindowState.Minimized : FormWindowState.Normal;
+        this.ShowInTaskbar = !shouldMinimize;
+    }
 
+    private void ConfigureStatusLabels()
+        => this.lblStatusActive.Visible = this.chkEnabled.Checked;
+
+    private void SetupNotificationIndicator()
+    {
         var items = new MenuItem[]{
             new MenuItem("Show", (s, e) => {
                 this.Show();
@@ -49,7 +67,10 @@ public partial class MainForm : Form, IAcceptAppCommands
         };
 
         this.ntfIndicator.ContextMenu = new ContextMenu(items);
+    }
 
+    private void PopulateGroupImages()
+    {
         var allAttributes = ActionsRepository.GetAllActionAttributes();
         ImageList imageList = new();
 
@@ -62,12 +83,17 @@ public partial class MainForm : Form, IAcceptAppCommands
         }
 
         this.olvMappings.GroupImageList = imageList;
+    }
 
+    private void RegisterListViewEvents()
+    {
         this.olvColumnAction.GroupKeyGetter += this.OlvMappings_GroupKeyGetter;
         this.olvColumnAction.GroupKeyToTitleConverter += this.OlvMappings_GroupKeyToTitleConverter;
         this.olvMappings.BeforeCreatingGroups += this.OlvMappings_BeforeCreatingGroups;
+    }
 
-        this.olvColumnTrigger.AspectToStringConverter = delegate (object obj)
+    private void ConfigureTriggerColumn()
+        => this.olvColumnTrigger.AspectToStringConverter = delegate (object obj)
         {
             var trigger = obj as CoreTrigger;
 
@@ -78,12 +104,17 @@ public partial class MainForm : Form, IAcceptAppCommands
 
             return trigger.ToString();
         };
+
+    private void RefreshColumnWidths()
+    {
+        this.olvColumnAction.MaximumWidth = this.olvMappings.Width - this.olvColumnTrigger.Width - 25;
+        this.olvColumnAction.Width = Math.Max(this.olvColumnAction.Width, this.olvColumnAction.MaximumWidth);
     }
 
     private void SetSelectedProfile(MappingProfile profile)
     {
         this.selectedProfile = profile;
-        ConfigManager.Config.LastLoadedProfile = profile.FilePath;
+        this.configState.LastLoadedProfile = profile.FilePath;
 
         this.olvMappings.SetObjects(profile.MappedOptions);
         this.olvMappings.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
@@ -206,7 +237,7 @@ public partial class MainForm : Form, IAcceptAppCommands
         }
 
         // Ensure the manager knows which window handle catches all inputs
-        Key2JoyManager.Instance.SetMainForm(this);
+        Key2JoyManager.Instance.SetHandlerWithInvoke(this);
         Key2JoyManager.Instance.StatusChanged += (s, ev) =>
         {
             this.SetStatusView(ev.IsEnabled);
@@ -378,17 +409,12 @@ public partial class MainForm : Form, IAcceptAppCommands
     {
         if (e.CloseReason == CloseReason.UserClosing)
         {
-            e.Cancel = true;
-            this.Hide();
-
-            if (ConfigManager.Config.MuteCloseExitMessage)
+            if (this.configState.ShouldCloseButtonMinimize)
             {
+                e.Cancel = true;
+                this.Hide();
                 return;
             }
-
-            var result = MessageBox.Show("Closing this window minimizes it to the notification tray in your taskbar. You can shut down Key2Joy through File > Exit Program.\n\nContinue showing this message?", "Minimizing to notification tray.", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
-
-            ConfigManager.Config.MuteCloseExitMessage = result != DialogResult.Yes;
         }
     }
 
@@ -549,42 +575,48 @@ public partial class MainForm : Form, IAcceptAppCommands
             return;
         }
 
-        if (selectedCount > 1)
+        if (selectedCount > 1
+            && DialogUtilities.Confirm(
+                $"Are you sure you want to create opposite press state mappings for all {selectedCount} selected mappings? New 'Release' mappings will be created for each 'Press' and vice versa.",
+                $"Generate {selectedCount} opposite press state mappings"
+            ) == DialogResult.No)
         {
-            if (MessageBox.Show($"Are you sure you want to create opposite press state mappings for all {selectedCount} selected mappings? New 'Release' mappings will be created for each 'Press' and vice versa.", $"Generate {selectedCount} opposite press state mappings", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
-            {
-                return;
-            }
+            return;
         }
 
-        List<MappedOption> newOptions = new();
+        var selectedMappings = this.olvMappings.SelectedItems
+            .Cast<OLVListItem>()
+            .Select(item => (MappedOption)item.RowObject)
+            .ToList();
 
-        foreach (OLVListItem listItem in this.olvMappings.SelectedItems)
+        var newOptions = MappedOption.GenerateOppositePressStateMappings(selectedMappings);
+
+        foreach (var option in newOptions)
         {
-            var pressVariant = (MappedOption)listItem.RowObject;
-            var actionCopy = (AbstractAction)pressVariant.Action.Clone();
-            var triggerCopy = (AbstractTrigger)pressVariant.Trigger.Clone();
-
-            if (actionCopy is IPressState actionWithPressState)
-            {
-                actionWithPressState.PressState = actionWithPressState.PressState == PressState.Press ? PressState.Release : PressState.Press;
-            }
-
-            if (triggerCopy is IPressState triggerWithPressState)
-            {
-                triggerWithPressState.PressState = triggerWithPressState.PressState == PressState.Press ? PressState.Release : PressState.Press;
-            }
-
-            MappedOption variantOption = new()
-            {
-                Action = actionCopy,
-                Trigger = triggerCopy,
-            };
-            newOptions.Add(variantOption);
-            this.selectedProfile.MappedOptions.Add(variantOption);
+            this.selectedProfile.MappedOptions.Add(option);
         }
 
         this.selectedProfile.Save();
         this.olvMappings.AddObjects(newOptions);
     }
+
+    private void TxtFilter_TextChanged(object sender, EventArgs e)
+        => this.olvMappings.ModelFilter = new ModelFilter(
+            x =>
+            {
+                var mappedOption = (MappedOption)x;
+                var filterText = this.txtFilter.Text;
+
+                bool containsFilterText(string text)
+                    => text.IndexOf(filterText, StringComparison.OrdinalIgnoreCase) > -1;
+
+                var isMatch = containsFilterText(mappedOption.Action.ToString())
+                           || containsFilterText(mappedOption.Trigger.ToString());
+
+                return isMatch;
+            }
+        );
+
+    private void MainForm_SizeChanged(object sender, EventArgs e)
+        => this.RefreshColumnWidths();
 }
