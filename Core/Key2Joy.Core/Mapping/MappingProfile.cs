@@ -51,6 +51,11 @@ public class MappingProfile
             {
                 this.MappedOptions.Add((MappedOption)mappedOption.Clone());
             }
+
+            foreach (var mappedOption in mappedOptions)
+            {
+                mappedOption.Initialize(this.MappedOptions);
+            }
         }
     }
 

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Media;
 using System.Windows.Forms;
 using BrightIdeasSoftware;
 using CommonServiceLocator;
@@ -28,6 +29,7 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
     private readonly ConfigState configState;
 
     private MappingProfile selectedProfile;
+    private MappedOption currentChildChoosingParent = null;
 
     public MainForm(bool shouldStartMinimized = false)
     {
@@ -43,7 +45,6 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
         this.PopulateGroupImages();
         this.RegisterListViewEvents();
         this.ConfigureTriggerColumn();
-        this.RefreshColumnWidths();
     }
 
     private void ApplyMinimizedStateIfNeeded(bool shouldMinimize)
@@ -89,7 +90,15 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
     {
         this.olvColumnAction.GroupKeyGetter += this.OlvMappings_GroupKeyGetter;
         this.olvColumnAction.GroupKeyToTitleConverter += this.OlvMappings_GroupKeyToTitleConverter;
+
         this.olvMappings.BeforeCreatingGroups += this.OlvMappings_BeforeCreatingGroups;
+        this.olvMappings.AboutToCreateGroups += this.OlvMappings_AboutToCreateGroups;
+
+        this.olvMappings.CellClick += this.OlvMappings_CellClick;
+        this.olvMappings.CellRightClick += this.OlvMappings_CellRightClick;
+        this.olvMappings.FormatRow += this.OlvMappings_FormatRow;
+        this.olvMappings.FormatCell += this.OlvMappings_FormatCell;
+        this.olvMappings.KeyUp += this.OlvMappings_KeyUp;
     }
 
     private void ConfigureTriggerColumn()
@@ -205,6 +214,34 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
         this.selectedProfile.Save();
     }
 
+    private void MakeMappingParentless(MappedOption childOption)
+    {
+        childOption.SetParent(null);
+        this.selectedProfile.Save();
+        this.olvMappings.SetObjects(this.selectedProfile.MappedOptions);
+    }
+
+    private void ChooseNewParentBegin(MappedOption childOption)
+        => this.currentChildChoosingParent = childOption;
+
+    private void ChooseNewParentEnd(MappedOption targetParent)
+    {
+        if (this.currentChildChoosingParent == null)
+        {
+            return;
+        }
+
+        var child = this.currentChildChoosingParent;
+
+        child.SetParent(targetParent);
+        this.currentChildChoosingParent = null;
+        this.selectedProfile.Save();
+        this.olvMappings.SetObjects(this.selectedProfile.MappedOptions);
+        SystemSounds.Beep.Play();
+
+        return;
+    }
+
     public bool RunAppCommand(AppCommand command)
     {
         switch (command)
@@ -247,6 +284,8 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
                 this.SetSelectedProfile(ev.Profile);
             }
         };
+
+        this.RefreshColumnWidths();
     }
 
     private void BtnCreateMapping_Click(object sender, EventArgs e)
@@ -318,7 +357,10 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
     private void OlvMappings_BeforeCreatingGroups(object sender, CreateGroupsEventArgs e)
     {
         e.Parameters.GroupComparer = new MappingGroupComparer();
-        e.Parameters.ItemComparer = new MappingGroupItemComparer(e.Parameters.PrimarySort, e.Parameters.PrimarySortOrder);
+        e.Parameters.ItemComparer = new MappingGroupItemComparer(
+            e.Parameters.PrimarySort,
+            e.Parameters.PrimarySortOrder
+        );
     }
 
     private void OlvMappings_AboutToCreateGroups(object sender, CreateGroupsEventArgs e)
@@ -357,6 +399,39 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
         {
             var removeItem = menu.Items.Add("Remove Mapping");
             removeItem.Click += (s, _) => this.RemoveMapping(mappedOption);
+
+            menu.Items.Add(new ToolStripSeparator());
+
+            if (mappedOption.IsChild)
+            {
+                var removeParentItem = menu.Items.Add("Disconnect Mapping from Parent");
+                removeParentItem.Click += (s, _) => this.MakeMappingParentless(mappedOption);
+
+                var debugParentItem = menu.Items.Add("Highlight parent (debug)");
+                debugParentItem.Click += (s, _) => this.olvMappings.SelectObject(
+                    this.selectedProfile.MappedOptions.FirstOrDefault(x => x.Guid == mappedOption.ParentGuid)
+                );
+            }
+
+            if (this.currentChildChoosingParent == null)
+            {
+                var children = mappedOption.Children;
+
+                var chooseNewParentItem = menu.Items.Add("Choose New Parent for this Mapping...");
+                chooseNewParentItem.Click += (s, _) => this.ChooseNewParentBegin(mappedOption);
+                chooseNewParentItem.Enabled = !children.Any();
+            }
+            else
+            {
+                var chooseParentItem = menu.Items.Add("Choose as Parent");
+                chooseParentItem.Image = Resources.tick;
+                chooseParentItem.Click += (s, _) => this.ChooseNewParentEnd(mappedOption);
+                chooseParentItem.Enabled = !mappedOption.IsChild;
+
+                var cancelItem = menu.Items.Add("Cancel Choosing Parent");
+                cancelItem.Image = Resources.cross;
+                cancelItem.Click += (s, _) => this.currentChildChoosingParent = null;
+            }
         }
 
         e.MenuStrip = menu;
@@ -370,6 +445,25 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
         }
 
         this.RemoveSelectedMappings();
+    }
+
+    private void OlvMappings_FormatRow(object sender, FormatRowEventArgs e)
+    {
+        if (e.Model is not MappedOption mappedOption)
+        {
+            return;
+        }
+
+        if (mappedOption.IsChild)
+        {
+            e.Item.CellPadding = new Rectangle(
+                (e.ListView.CellPadding?.Left ?? 0) + 10,
+                e.ListView.CellPadding?.Top ?? 0,
+                e.ListView.CellPadding?.Right ?? 0,
+                e.ListView.CellPadding?.Bottom ?? 0
+            );
+            e.Item.ForeColor = Color.Gray;
+        }
     }
 
     private void OlvMappings_FormatCell(object sender, FormatCellEventArgs e)
@@ -450,7 +544,8 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
         this.SetSelectedProfile(profile);
     }
 
-    private void SaveProfileToolStripMenuItem_Click(object sender, EventArgs e) => MessageBox.Show("When you make changes to a profile, changes are automatically saved. This button is only here to explain that feature to you.", "Profile already saved!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+    private void SaveProfileToolStripMenuItem_Click(object sender, EventArgs e)
+        => MessageBox.Show("When you make changes to a profile, changes are automatically saved. This button is only here to explain that feature to you.", "Profile already saved!", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
     private void OpenProfileFolderToolStripMenuItem_Click(object sender, EventArgs e)
     {

@@ -99,12 +99,12 @@ namespace Key2Joy.Gui
             // 
             // olvMappings
             // 
-            this.olvMappings.AllColumns.Add(this.olvColumnTrigger);
             this.olvMappings.AllColumns.Add(this.olvColumnAction);
+            this.olvMappings.AllColumns.Add(this.olvColumnTrigger);
             this.olvMappings.CellEditUseWholeCell = false;
             this.olvMappings.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.olvColumnTrigger,
-            this.olvColumnAction});
+            this.olvColumnAction,
+            this.olvColumnTrigger});
             this.olvMappings.Cursor = System.Windows.Forms.Cursors.Default;
             this.olvMappings.Dock = System.Windows.Forms.DockStyle.Fill;
             this.olvMappings.EmptyListMsg = "There are no mappings, or a search filter is applied that matched no mappings.";
@@ -124,21 +124,18 @@ namespace Key2Joy.Gui
             this.olvMappings.UseTranslucentHotItem = true;
             this.olvMappings.UseTranslucentSelection = true;
             this.olvMappings.View = System.Windows.Forms.View.Details;
-            this.olvMappings.AboutToCreateGroups += new System.EventHandler<BrightIdeasSoftware.CreateGroupsEventArgs>(this.OlvMappings_AboutToCreateGroups);
-            this.olvMappings.CellClick += new System.EventHandler<BrightIdeasSoftware.CellClickEventArgs>(this.OlvMappings_CellClick);
-            this.olvMappings.CellRightClick += new System.EventHandler<BrightIdeasSoftware.CellRightClickEventArgs>(this.OlvMappings_CellRightClick);
-            this.olvMappings.FormatCell += new System.EventHandler<BrightIdeasSoftware.FormatCellEventArgs>(this.OlvMappings_FormatCell);
-            this.olvMappings.KeyUp += new System.Windows.Forms.KeyEventHandler(this.OlvMappings_KeyUp);
             // 
             // olvColumnAction
             // 
             this.olvColumnAction.AspectName = "Action";
+            this.olvColumnAction.DisplayIndex = 1;
             this.olvColumnAction.Text = "Action";
             this.olvColumnAction.UseInitialLetterForGroup = true;
             // 
             // olvColumnTrigger
             // 
             this.olvColumnTrigger.AspectName = "Trigger";
+            this.olvColumnTrigger.DisplayIndex = 0;
             this.olvColumnTrigger.Groupable = false;
             this.olvColumnTrigger.Text = "Trigger";
             // 

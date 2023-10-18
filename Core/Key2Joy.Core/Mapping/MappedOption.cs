@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Actions;
@@ -8,10 +9,19 @@ namespace Key2Joy.Mapping;
 
 public class MappedOption : AbstractMappedOption
 {
-    public override object Clone() => new MappedOption()
+    public MappedOption()
+        : base()
+        => this.Guid = Guid.NewGuid();
+
+    public MappedOption(Guid guid)
+        : base()
+        => this.Guid = guid;
+
+    public override object Clone() => new MappedOption(this.Guid)
     {
         Trigger = this.Trigger != null ? (AbstractTrigger)this.Trigger.Clone() : null,
         Action = (AbstractAction)this.Action.Clone(),
+        ParentGuid = this.ParentGuid,
     };
 
     public static List<MappedOption> GenerateOppositePressStateMappings(List<MappedOption> mappings)
@@ -38,6 +48,7 @@ public class MappedOption : AbstractMappedOption
                 Action = actionCopy,
                 Trigger = triggerCopy,
             };
+            variantOption.SetParent(pressVariant);
 
             newOptions.Add(variantOption);
         }
