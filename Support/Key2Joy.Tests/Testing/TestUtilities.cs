@@ -7,6 +7,7 @@ internal class TestUtilities
 {
     /// <summary>
     /// Waits for a task to complete, or throws an exception if the task does not complete within the specified timeout.
+    /// Be sure to get the timeout using <see cref="Key2Joy.Contracts.Util.TimingHelper"/> to account for longer timeouts on GitHub Actions.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="asyncMethod"></param>
@@ -32,7 +33,8 @@ internal class TestUtilities
     }
 
     /// <summary>
-    ///  for a task to complete, or throws an exception if the task does not complete within the specified timeout.
+    /// Waits for a task to complete, or throws an exception if the task does not complete within the specified timeout.
+    /// Be sure to get the timeout using <see cref="Key2Joy.Contracts.Util.TimingHelper"/> to account for longer timeouts on GitHub Actions.
     /// </summary>
     /// <param name="testTask"></param>
     /// <param name="timeout"></param>

@@ -6,6 +6,7 @@ using Moq;
 using System.Threading.Tasks;
 using Key2Joy.Tests.Testing;
 using Key2Joy.Interop.Commands;
+using Key2Joy.Contracts.Util;
 
 namespace Key2Joy.Tests.Core.Interop;
 
@@ -72,7 +73,7 @@ public class InteropClientTests
 
         await TestUtilities.TestAsyncMethodWithTimeout(
             tcs.Task,
-            TimeSpan.FromMilliseconds(50) // The result should return almost instantly, but let's give laggy tests some space to breathe
+            TimingHelper.FromMilliseconds(50) // The result should return almost instantly, but let's give laggy tests some space to breathe
         );
 
         Assert.IsNotNull(receivedCommand);
