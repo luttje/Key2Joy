@@ -36,9 +36,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="default-profile.k2j.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <EmbeddedResource Include="default-profile.k2j.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>

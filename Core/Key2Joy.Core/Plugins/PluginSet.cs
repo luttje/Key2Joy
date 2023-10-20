@@ -11,7 +11,6 @@ using Key2Joy.Contracts.Plugins;
 using Key2Joy.Mapping;
 using Key2Joy.Mapping.Actions;
 using Key2Joy.Mapping.Triggers;
-using static System.Windows.Forms.AxHost;
 
 namespace Key2Joy.Plugins;
 

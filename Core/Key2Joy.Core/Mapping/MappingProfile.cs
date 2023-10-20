@@ -127,7 +127,7 @@ public class MappingProfile
         using (FileStream file = new(defaultPath, FileMode.Create, FileAccess.Write))
         using (BinaryWriter writer = new(file))
         {
-            writer.Write(Properties.Resources.default_profile_k2j);
+            writer.Write(GetDefaultProfileContents());
         }
 
         var configState = ServiceLocator.Current
@@ -138,6 +138,9 @@ public class MappingProfile
             configState.LastLoadedProfile = defaultPath;
         }
     }
+
+    public static byte[] GetDefaultProfileContents()
+        => Properties.Resources.default_profile_k2j;
 
     public static string ResolveProfilePath(string filePath)
     {

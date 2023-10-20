@@ -6,7 +6,6 @@ using System.Linq;
 using System.Windows.Forms;
 using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.Mapping;
-using Key2Joy.Mapping.Actions;
 using Key2Joy.Mapping.Triggers;
 using Key2Joy.Plugins;
 

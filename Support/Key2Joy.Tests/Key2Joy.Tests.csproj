@@ -74,9 +74,6 @@
     <None Update="Core\Config\Stubs\current-config.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Core\Config\Stubs\current-default-profile.k2j.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Update="Core\Config\Stubs\old-config.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
