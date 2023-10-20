@@ -26,7 +26,9 @@ In addition to simply simulating a button being pressed on the Joystick, you can
 
 ## Usage
 
-**⚠ Use at own risk!** Incorrect driver (un)installation may cause a blue screen.
+> **Warning**
+> **Use at your own risk!** Incorrect driver (un)installation may cause a blue screen. 
+> *Read the [`Uninstalling` section](#uninstalling) below to find out how to uninstall the driver.*
 
 ### Using Key2Joy with a Graphical User Interface
 
@@ -82,10 +84,13 @@ Full scripting reference is available in [Docs/Scripting.md](Docs/Scripting.md)
 
 ---
 
-## Known Issues
+## Known Issues and Limitations
 
 - Windows wont let you click if you release a mouse key that hasn't been pressed before.
+
 - Keyboard triggers do not activate when the app is in the foreground.
+
+- If you run another app as administrator, Key2Joy can only simulate input in that app if Key2Joy is also running as administrator.
 
 ---
 
@@ -93,7 +98,8 @@ Full scripting reference is available in [Docs/Scripting.md](Docs/Scripting.md)
 
 Use `ScpDriverInstaller.exe` to uninstall the driver. You can find the latest version here: [mogzol/ScpDriverInterface releases](https://github.com/mogzol/ScpDriverInterface/releases)
 
-**⚠ Do not uninstall the driver through Device manager or you'll end up with an incomplete and corrupt driver installation.**
+> **Warning**
+> **Do not uninstall the driver through Device manager** or you'll end up with a corrupt driver installation which may cause a blue screen. You may be able to recover from this by starting Windows in Safe-mode, running `ScpDriverInstaller.exe` and choosing "Uninstall".
 
 ---
 
@@ -105,19 +111,21 @@ Please do not hesitate to [create an issue](/../../issues/new/) when you find a 
 
 ---
 
-## Credits 😍
+## Special Thanks 😍
 
-This exists only because of this awesome NuGet package ([DavidRieman/SimWinInput](https://github.com/DavidRieman/SimWinInput)) which allows simulation of gamepads from .NET.
+Originally inspired by [JoyToKey](https://joytokey.net/en/), this project has since evolved to offer so much more. Our gratitude goes out to the following resources:
 
-Simulation is made possible through installation and usage of the [nefarius/ScpVBus](https://github.com/nefarius/ScpVBus) driver. 
+**NuGet Packages**:
+- [📦 DavidRieman/SimWinInput](https://github.com/DavidRieman/SimWinInput) - Simulate gamepads from .NET.
+- [📦 nefarius/ScpVBus](https://github.com/nefarius/ScpVBus) - The foundational driver enabling GamePad simulation.
+- [📦 mfakane/rawinput-sharp](https://github.com/mfakane/rawinput-sharp) - Facilitates reading of raw input.
+- [📦 NLua](https://github.com/NLua/NLua) - Enables Lua scripting for actions.
+- [📦 Jint](https://github.com/sebastienros/jint) - Supports JavaScript scripting for actions.
+- [📦 ObjectListView](https://objectlistview.sourceforge.net) - Used for mapping listings in the GUI.
+- [📦 Mono.Cecil](https://github.com/jbevain/cecil) - Reads attributes from plugin assemblies, underpinning the plugin system.
 
-Inspired by [JoyToKey](https://joytokey.net/en/) which does the inverse (simulate keyboard with gamepad).
-
-Scripting in Lua and Javascript works thanks to [NLua](https://github.com/NLua/NLua) and [Jint](https://github.com/sebastienros/jint) respectively.
-
-The action list in the GUI uses [ObjectListView](https://objectlistview.sourceforge.net).
-
-Some [Silk Icons](https://github.com/legacy-icons/famfamfam-silk/blob/master/LICENSE.md) are used in the GUI.
+**Iconography**:
+- [Silk Icons pack by Mark James](https://github.com/legacy-icons/famfamfam-silk/blob/master/LICENSE.md) - Provides the GUI icons.
 
 ---
 
