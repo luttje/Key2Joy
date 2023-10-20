@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Key2Joy.Mapping;
@@ -222,4 +221,7 @@ public struct XInputGamePad : IEquatable<XInputGamePad>
         hashCode = (hashCode * -1521134295) + this.RightThumbY.GetHashCode();
         return hashCode;
     }
+
+    public override string ToString()
+        => $"{nameof(XInputGamePad)} Buttons: {this.ButtonsBitmask}, LeftTrigger: {this.LeftTrigger}, RightTrigger: {this.RightTrigger}, LeftThumb: ({this.LeftThumbX}, {this.LeftThumbY}), RightThumb: ({this.RightThumbX}, {this.RightThumbY})";
 }

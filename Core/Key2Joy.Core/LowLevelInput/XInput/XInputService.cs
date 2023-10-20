@@ -188,4 +188,23 @@ public class XInputService : IXInputService
             this.vibrationTimers.Remove(deviceIndex);
         }
     }
+
+    /// <inheritdoc/>
+    public IList<int> GetActiveDevices()
+    {
+        var activeDevices = new List<int>();
+
+        for (var i = 0; i < MaxDevices; i++)
+        {
+            var newState = new XInputState();
+            var resultCode = this.xInputInstance.XInputGetState(i, ref newState);
+
+            if (resultCode == XInputResultCode.ERROR_SUCCESS)
+            {
+                activeDevices.Add(i);
+            }
+        }
+
+        return activeDevices;
+    }
 }

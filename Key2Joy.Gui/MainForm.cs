@@ -5,8 +5,6 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Media;
-using System.Reflection;
-using System.Text.Json.Serialization;
 using System.Windows.Forms;
 using BrightIdeasSoftware;
 using CommandLine;
@@ -18,6 +16,7 @@ using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Gui.Properties;
 using Key2Joy.Gui.Util;
 using Key2Joy.LowLevelInput;
+using Key2Joy.LowLevelInput.XInput;
 using Key2Joy.Mapping;
 using Key2Joy.Mapping.Actions;
 using Key2Joy.Mapping.Actions.Input;
@@ -47,6 +46,36 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
         this.PopulateGroupImages();
         this.RegisterListViewEvents();
         this.ConfigureTriggerColumn();
+
+        this.RefreshGamePadIndexNotification();
+    }
+
+    /// <summary>
+    /// Shows a notification banner at the top of the app.
+    /// </summary>
+    /// <param name="banner"></param>
+    private void ShowNotification(NotificationBannerControl banner)
+    {
+        banner.Dock = DockStyle.Top;
+        this.pnlNotificationsParent.Controls.Add(banner);
+        this.pnlNotificationsParent.PerformLayout();
+    }
+
+    /// <summary>
+    /// Helper to check if a physical GamePad is detected, and if so which index it has
+    /// </summary>
+    private void RefreshGamePadIndexNotification()
+    {
+        var xInputService = ServiceLocator.Current.GetInstance<IXInputService>();
+        var deviceIndexes = xInputService.GetActiveDevices();
+
+        foreach (var device in deviceIndexes)
+        {
+            this.ShowNotification(new NotificationBannerControl(
+                $"Detected a physical GamePad with #: {device}. You can use this information to simulate gamepads on the other available numbers (0 - 3)",
+                NotificationBannerStyle.Warning
+            ));
+        }
     }
 
     /// <summary>
@@ -478,6 +507,7 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
 
         if (isEnabled)
         {
+            this.RefreshGamePadIndexNotification();
             Key2JoyManager.Instance.ArmMappings(this.selectedProfile);
         }
         else

@@ -89,6 +89,10 @@ public abstract class AbstractMappingAspect : MarshalByRefObject, ICloneable, IC
         {
             value = new DateTime(Convert.ToInt64(value));
         }
+        else if (propertyType == typeof(TimeSpan))
+        {
+            value = TimeSpan.Parse((string)value);
+        }
         else if (propertyType.IsGenericType
             && (genericTypeDefinition == typeof(List<>) || genericTypeDefinition == typeof(IList<>)))
         {

@@ -18,8 +18,12 @@ public class SimulatedGamePad : ISimulatedGamePad
     /// <inheritdoc />
     public void PlugIn()
     {
-        this.isPluggedIn = true;
         SimGamePad.Instance.PlugIn(this.Index);
+        this.isPluggedIn = true;
+
+        // Ensure the state starts reset fixes problem where other (real) gamepad may get button stuck
+        this.ResetState();
+        this.Update();
     }
 
     /// <inheritdoc />

@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Key2Joy.LowLevelInput.XInput;
 
@@ -71,4 +73,10 @@ public interface IXInputService
     /// </summary>
     /// <param name="deviceIndex">The index of the device</param>
     void StopVibration(int deviceIndex);
+
+    /// <summary>
+    /// Gets the active gamepad device indexes.
+    /// </summary>
+    /// <returns></returns>
+    IList<int> GetActiveDevices();
 }
