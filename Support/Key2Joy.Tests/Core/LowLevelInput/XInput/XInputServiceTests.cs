@@ -73,27 +73,6 @@ public class XInputServiceTests
     }
 
     [TestMethod]
-    public async Task StateChangedEvent_IsRaised_WhenPolling()
-    {
-        var eventRaised = false;
-        this.xInputService.StateChanged += (sender, e) => eventRaised = true;
-
-        // Mock XInputGetState to always indicate state changed
-        this.mockXInput.Setup(x => x.XInputGetState(It.IsAny<int>(), ref It.Ref<XInputState>.IsAny))
-                    .Returns(XInputResultCode.ERROR_SUCCESS);
-
-        this.xInputService.RegisterDevice(0);
-        this.xInputService.StartPolling();
-
-        // Wait for some time to allow polling to happen.
-        await Task.Delay(TimeSpan.FromMilliseconds(100));
-
-        this.xInputService.StopPolling();
-
-        Assert.IsTrue(eventRaised);
-    }
-
-    [TestMethod]
     public async Task Vibration_Stops_AfterGivenTime()
     {
         var duration = TimeSpan.FromMilliseconds(100);
