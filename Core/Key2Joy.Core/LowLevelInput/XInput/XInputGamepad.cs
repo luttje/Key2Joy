@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Key2Joy.Mapping;
 using Key2Joy.Mapping.Triggers.GamePad;
@@ -89,7 +91,7 @@ public struct XInputGamePad : IEquatable<XInputGamePad>
     /// </summary>
     /// <param name="buttonFlags">The bitmask representing the button(s).</param>
     /// <returns>True if the button(s) are pressed, otherwise false.</returns>
-    public readonly bool IsButtonPressed(ButtonFlags buttonFlags)
+    public readonly bool IsButtonPressed(GamePadButton buttonFlags)
         => (this.ButtonsBitmask & (int)buttonFlags) == (int)buttonFlags;
 
     /// <summary>
@@ -97,8 +99,27 @@ public struct XInputGamePad : IEquatable<XInputGamePad>
     /// </summary>
     /// <param name="buttonFlags">The bitmask representing the button(s).</param>
     /// <returns>True if the button(s) are present, otherwise false.</returns>
-    public readonly bool IsButtonPresent(ButtonFlags buttonFlags)
+    public readonly bool IsButtonPresent(GamePadButton buttonFlags)
         => (this.ButtonsBitmask & (int)buttonFlags) == (int)buttonFlags;
+
+    /// <summary>
+    /// Returns all pressed buttons in a List.
+    /// </summary>
+    /// <returns></returns>
+    public readonly IList<GamePadButton> GetPressedButtonsList()
+    {
+        var pressedButtons = new List<GamePadButton>();
+
+        foreach (GamePadButton button in Enum.GetValues(typeof(GamePadButton)))
+        {
+            if (this.IsButtonPressed(button))
+            {
+                pressedButtons.Add(button);
+            }
+        }
+
+        return pressedButtons;
+    }
 
     /// <summary>
     /// Checks if the left thumb stick has moved past a certain threshold (or else the default deadzone)

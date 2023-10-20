@@ -37,10 +37,6 @@ public class GamePadStickTrigger : CoreTrigger, IReturnInputHash, IEquatable<Gam
     public override AbstractTriggerListener GetTriggerListener() => GamePadStickTriggerListener.Instance;
 
     /// <inheritdoc/>
-    public override string GetUniqueKey()
-        => $"{PREFIX_UNIQUE}_{this.GamePadIndex}_{this.StickSide}_{(this.DeltaMargin != null ? this.DeltaMargin : "Any")}";
-
-    /// <inheritdoc/>
     public int GetInputHash()
         => this.GetHashCode();
 

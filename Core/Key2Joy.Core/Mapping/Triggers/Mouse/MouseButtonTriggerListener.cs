@@ -65,11 +65,11 @@ public class MouseButtonTriggerListener : PressReleaseTriggerListener<MouseButto
         }
 
         var buttons = LowLevelInput.Mouse.ButtonsFromEvent(e, out var isDown);
-        var dictionary = this.lookupRelease;
+        var dictionary = this.LookupRelease;
 
         if (isDown)
         {
-            dictionary = this.lookupDown;
+            dictionary = this.LookupPress;
 
             if (this.currentButtonsDown.ContainsKey(buttons))
             {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
@@ -23,8 +23,6 @@ public class CombinedTrigger : CoreTrigger, IEquatable<CombinedTrigger>
     { }
 
     public override AbstractTriggerListener GetTriggerListener() => CombinedTriggerListener.Instance;
-
-    public override string GetUniqueKey() => this.ToString();
 
     public override bool Equals(object obj)
     {

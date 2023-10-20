@@ -18,8 +18,6 @@ public class DisabledTrigger : CoreTrigger
 
     public override AbstractTriggerListener GetTriggerListener() => DisabledTriggerListener.Instance;
 
-    public override string GetUniqueKey() => $"DISABLED_{this.TriggerName}";
-
     public override bool Equals(object obj)
     {
         if (obj is not DisabledTrigger trigger)

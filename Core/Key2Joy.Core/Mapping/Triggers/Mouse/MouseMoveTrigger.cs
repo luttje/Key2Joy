@@ -20,8 +20,6 @@ public class MouseMoveTrigger : CoreTrigger, IReturnInputHash
 
     public override AbstractTriggerListener GetTriggerListener() => MouseMoveTriggerListener.Instance;
 
-    public override string GetUniqueKey() => $"{PREFIX_UNIQUE}_{this.AxisBinding}";
-
     public static int GetInputHashFor(AxisDirection axisBinding) => (int)axisBinding;
 
     public int GetInputHash() => GetInputHashFor(this.AxisBinding);

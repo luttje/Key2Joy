@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text.Json.Serialization;
 using System.Windows.Forms;
 using Key2Joy.Contracts.Mapping;
@@ -28,8 +28,6 @@ public class KeyboardTrigger : CoreTrigger, IPressState, IReturnInputHash, IEqua
     public static int GetInputHashFor(Keys keys) => (int)keys;
 
     public int GetInputHash() => GetInputHashFor(this.Keys);
-
-    public override string GetUniqueKey() => $"{PREFIX_UNIQUE}_{this.Keys}";
 
     // Keep Press and Release together while sorting
     public override int CompareTo(AbstractMappingAspect other)

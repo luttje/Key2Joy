@@ -61,10 +61,13 @@ public class XInputService : IXInputService
 
         this.pollingThread = new Thread(() =>
         {
-            while (this.isPolling)
+            do
             {
                 lock (this.registeredDevices)
                 {
+                    // Add a delay to avoid hammering the IXInput instance too rapidly
+                    Thread.Sleep(UpdateIntervalInMs);
+
                     foreach (var deviceIndex in this.registeredDevices)
                     {
                         var newState = new XInputState();
@@ -84,16 +87,17 @@ public class XInputService : IXInputService
                                 else
                                 {
                                     this.lastStates[deviceIndex] = newState;
-                                    this.StateChanged?.Invoke(this, new DeviceStateChangedEventArgs(deviceIndex, newState));
+                                    //this.StateChanged?.Invoke(this, new DeviceStateChangedEventArgs(deviceIndex, newState));
+                                    // We don't want to wait for the invoke to finish, because a user may call
+                                    // StopPolling from within the event handler, which would cause a deadlock
+                                    // because thread.Join will wait for this Invoke to complete (never in such a case)
+                                    this.StateChanged?.BeginInvoke(this, new DeviceStateChangedEventArgs(deviceIndex, newState), null, null);
                                 }
                             }
                         }
-
-                        // Add a delay to avoid hammering the IXInput instance too rapidly
-                        Thread.Sleep(UpdateIntervalInMs);
                     }
                 }
-            }
+            } while (this.isPolling);
         });
 
         this.pollingThread.Start();

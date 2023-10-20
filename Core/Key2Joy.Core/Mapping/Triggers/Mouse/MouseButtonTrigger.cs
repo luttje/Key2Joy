@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text.Json.Serialization;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Triggers;
@@ -22,8 +22,6 @@ public class MouseButtonTrigger : CoreTrigger, IPressState, IReturnInputHash, IE
     { }
 
     public override AbstractTriggerListener GetTriggerListener() => MouseButtonTriggerListener.Instance;
-
-    public override string GetUniqueKey() => $"{PREFIX_UNIQUE}_{this.MouseButtons}";
 
     public static int GetInputHashFor(LowLevelInput.Mouse.Buttons mouseButtons) => (int)mouseButtons;
 
