@@ -47,6 +47,13 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
         this.ConfigureTriggerColumn();
     }
 
+    /// <summary>
+    /// Refresh the listed mappings, their sorting and formatting.
+    /// Call this after making a change to the mapped options.
+    /// </summary>
+    private void RefreshMappings()
+        => this.olvMappings.SetObjects(this.selectedProfile.MappedOptions);
+
     private void ApplyMinimizedStateIfNeeded(bool shouldMinimize)
     {
         this.WindowState = shouldMinimize ? FormWindowState.Minimized : FormWindowState.Normal;
@@ -125,7 +132,7 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
         this.selectedProfile = profile;
         this.configState.LastLoadedProfile = profile.FilePath;
 
-        this.olvMappings.SetObjects(profile.MappedOptions);
+        this.RefreshMappings();
         this.olvMappings.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
         this.olvMappings.Sort(this.olvColumnTrigger, SortOrder.Ascending);
 
@@ -172,15 +179,7 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
         }
 
         this.selectedProfile.Save();
-
-        if (existingMappedOption == null)
-        {
-            this.olvMappings.AddObject(mappedOption);
-        }
-        else
-        {
-            this.olvMappings.UpdateObject(mappedOption);
-        }
+        this.RefreshMappings();
     }
 
     private void RemoveMappings(IList<MappedOption> mappedOptions)
@@ -219,9 +218,7 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
         }
 
         this.selectedProfile.Save();
-
-        // Refresh the sorting and formatting
-        this.olvMappings.SetObjects(this.selectedProfile.MappedOptions);
+        this.RefreshMappings();
     }
 
     private void RemoveSelectedMappings()
@@ -256,7 +253,7 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
     {
         childOption.SetParent(null);
         this.selectedProfile.Save();
-        this.olvMappings.SetObjects(this.selectedProfile.MappedOptions);
+        this.RefreshMappings();
     }
 
     private void ChooseNewParentBegin(MappedOption childOption)
@@ -274,7 +271,7 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
         child.SetParent(targetParent);
         this.currentChildChoosingParent = null;
         this.selectedProfile.Save();
-        this.olvMappings.SetObjects(this.selectedProfile.MappedOptions);
+        this.RefreshMappings();
         SystemSounds.Beep.Play();
 
         return;
@@ -602,7 +599,7 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
 
         this.selectedProfile.AddMappingRange(range);
         this.selectedProfile.Save();
-        this.olvMappings.AddObjects(range);
+        this.RefreshMappings();
     }
 
     private void GamePadPressToolStripMenuItem_Click(object sender, EventArgs e)
@@ -610,7 +607,7 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
         var range = GamePadAction.GetAllButtonActions(PressState.Press);
         this.selectedProfile.AddMappingRange(range);
         this.selectedProfile.Save();
-        this.olvMappings.AddObjects(range);
+        this.RefreshMappings();
     }
 
     private void GamePadReleaseToolStripMenuItem_Click(object sender, EventArgs e)
@@ -618,7 +615,7 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
         var range = GamePadAction.GetAllButtonActions(PressState.Release);
         this.selectedProfile.AddMappingRange(range);
         this.selectedProfile.Save();
-        this.olvMappings.AddObjects(range);
+        this.RefreshMappings();
     }
 
     private void KeyboardPressAndReleaseToolStripMenuItem_Click(object sender, EventArgs e)
@@ -629,7 +626,7 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
 
         this.selectedProfile.AddMappingRange(range);
         this.selectedProfile.Save();
-        this.olvMappings.AddObjects(range);
+        this.RefreshMappings();
     }
 
     private void KeyboardPressToolStripMenuItem_Click(object sender, EventArgs e)
@@ -637,7 +634,7 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
         var range = KeyboardAction.GetAllButtonActions(PressState.Press);
         this.selectedProfile.AddMappingRange(range);
         this.selectedProfile.Save();
-        this.olvMappings.AddObjects(range);
+        this.RefreshMappings();
     }
 
     private void KeyboardReleaseToolStripMenuItem_Click(object sender, EventArgs e)
@@ -645,7 +642,7 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
         var range = KeyboardAction.GetAllButtonActions(PressState.Release);
         this.selectedProfile.AddMappingRange(range);
         this.selectedProfile.Save();
-        this.olvMappings.AddObjects(range);
+        this.RefreshMappings();
     }
 
     private void TestKeyboardToolStripMenuItem_Click(object sender, EventArgs e) => Process.Start("https://devicetests.com/keyboard-tester");
@@ -723,7 +720,7 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
         }
 
         this.selectedProfile.Save();
-        this.olvMappings.AddObjects(newOptions);
+        this.RefreshMappings();
     }
 
     private void TxtFilter_TextChanged(object sender, EventArgs e)

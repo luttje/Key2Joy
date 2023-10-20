@@ -111,7 +111,7 @@ public abstract class AbstractMappingAspect : MarshalByRefObject, ICloneable, IC
                 throw new ArgumentException($"Expected value to be of type List<> to parse. But was: {value.GetType()}");
             }
         }
-        else
+        else if (value != null)
         {
             value = Convert.ChangeType(value, propertyType);
         }

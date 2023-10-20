@@ -23,7 +23,7 @@ public struct XInputState : IEquatable<XInputState>
     /// XINPUT_GAMEPAD structure containing the current state of an Xbox 360 Controller.
     /// </summary>
     [FieldOffset(4)]
-    public XInputGamepad Gamepad;
+    public XInputGamePad Gamepad;
 
     /// <summary>
     /// Copies the state from another XInputState object.

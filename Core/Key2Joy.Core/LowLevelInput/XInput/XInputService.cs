@@ -7,6 +7,7 @@ namespace Key2Joy.LowLevelInput.XInput;
 
 public class XInputService : IXInputService
 {
+    public const int MaxDevices = 4;
     private const int UpdateIntervalInMs = 20;
 
     /// <summary>
@@ -39,6 +40,11 @@ public class XInputService : IXInputService
     {
         lock (this.registeredDevices)
         {
+            if (this.registeredDevices.Contains(deviceIndex))
+            {
+                return;
+            }
+
             this.registeredDevices.Add(deviceIndex);
         }
     }
@@ -78,9 +84,8 @@ public class XInputService : IXInputService
                                 else
                                 {
                                     this.lastStates[deviceIndex] = newState;
+                                    this.StateChanged?.Invoke(this, new DeviceStateChangedEventArgs(deviceIndex, newState));
                                 }
-
-                                this.StateChanged?.Invoke(this, new DeviceStateChangedEventArgs(deviceIndex, newState));
                             }
                         }
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Key2Joy.LowLevelInput.XInput;
 

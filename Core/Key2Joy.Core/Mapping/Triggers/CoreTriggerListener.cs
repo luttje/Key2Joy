@@ -41,15 +41,7 @@ public abstract class CoreTriggerListener : AbstractTriggerListener
 
     protected virtual void Stop() => this.IsActive = false;
 
-    /// <summary>
-    /// Subclasses MUST call this to have their actions executed.
-    ///
-    /// Even when they know no actions are listening, they should call this. This
-    /// lets events provide other mapped options to be injected.
-    /// </summary>
-    /// <param name="mappedOptions"></param>
-    /// <param name="inputBag"></param>
-    /// <param name="optionCandidateFilter"></param>
+    /// <inheritdoc/>
     protected override bool DoExecuteTrigger(
         IList<AbstractMappedOption> mappedOptions,
         AbstractInputBag inputBag,

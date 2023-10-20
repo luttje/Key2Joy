@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text.Json.Serialization;
 using Key2Joy.Contracts.Mapping.Triggers;
 
@@ -9,7 +9,7 @@ namespace Key2Joy.Mapping.Triggers.Mouse;
 )]
 public class MouseMoveTrigger : CoreTrigger, IReturnInputHash
 {
-    public const string PREFIX_UNIQUE = nameof(MouseButtonTrigger);
+    public const string PREFIX_UNIQUE = nameof(MouseMoveTrigger);
 
     public AxisDirection AxisBinding { get; set; }
 

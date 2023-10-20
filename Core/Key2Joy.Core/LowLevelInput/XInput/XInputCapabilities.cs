@@ -37,7 +37,7 @@ public struct XInputCapabilities
     /// and control resolutions.
     /// </summary>
     [FieldOffset(4)]
-    public XInputGamepad Gamepad;
+    public XInputGamePad Gamepad;
 
     /// <summary>
     /// XINPUT_VIBRATION structure that describes available vibration functionality
