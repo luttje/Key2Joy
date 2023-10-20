@@ -5,8 +5,11 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Media;
+using System.Reflection;
+using System.Text.Json.Serialization;
 using System.Windows.Forms;
 using BrightIdeasSoftware;
+using CommandLine;
 using CommonServiceLocator;
 using Key2Joy.Config;
 using Key2Joy.Contracts;
@@ -29,7 +32,6 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
     private readonly ConfigState configState;
 
     private MappingProfile selectedProfile;
-    private MappedOption currentChildChoosingParent = null;
 
     public MainForm(bool shouldStartMinimized = false)
     {
@@ -256,20 +258,9 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
         this.RefreshMappings();
     }
 
-    private void ChooseNewParentBegin(MappedOption childOption)
-        => this.currentChildChoosingParent = childOption;
-
-    private void ChooseNewParentEnd(MappedOption targetParent)
+    private void ChooseNewParent(MappedOption child, MappedOption targetParent)
     {
-        if (this.currentChildChoosingParent == null)
-        {
-            return;
-        }
-
-        var child = this.currentChildChoosingParent;
-
         child.SetParent(targetParent);
-        this.currentChildChoosingParent = null;
         this.selectedProfile.Save();
         this.RefreshMappings();
         SystemSounds.Beep.Play();
@@ -414,55 +405,29 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
 
     private void OlvMappings_CellRightClick(object sender, CellRightClickEventArgs e)
     {
-        ContextMenuStrip menu = new();
-
-        var addItem = menu.Items.Add("Add New Mapping");
-        addItem.Click += (s, _) => this.EditMappedOption();
-
-        var selectedCount = this.olvMappings.SelectedItems.Count;
-
-        if (selectedCount > 1)
+        var builder = new MappingContextMenuBuilder(this.olvMappings.SelectedItems);
+        builder.SelectEditMapping += (s, e) => this.EditMappedOption(e.MappedOption);
+        builder.SelectMakeMappingParentless += (s, e) => this.MakeMappingParentless(e.MappedOption);
+        builder.SelectChooseNewParent += (s, e) => this.ChooseNewParent(e.MappedOption, e.NewParent);
+        builder.SelectMultiEditMapping += this.Builder_SelectMultiEditMapping;
+        builder.SelectRemoveMappings += (s, e) =>
         {
-            var removeItems = menu.Items.Add($"Remove {selectedCount} Mappings");
-            removeItems.Click += (s, _) =>
-            {
-                this.RemoveSelectedMappings();
-                this.selectedProfile.Save();
-            };
-        }
-        else if (e.Model is MappedOption mappedOption)
+            this.RemoveSelectedMappings();
+            this.selectedProfile.Save();
+        };
+        e.MenuStrip = builder.Build();
+    }
+
+    private void Builder_SelectMultiEditMapping(object sender, SelectMultiEditMappingEventArgs e)
+    {
+        // Apply, save and refresh
+        foreach (var mappingAspect in e.MappingAspects)
         {
-            var removeItem = menu.Items.Add("Remove Mapping");
-            removeItem.Click += (s, _) => this.RemoveMappings(new List<MappedOption>() { mappedOption });
-
-            menu.Items.Add(new ToolStripSeparator());
-
-            if (mappedOption.IsChild)
-            {
-                var removeParentItem = menu.Items.Add("Disconnect Mapping from Parent");
-                removeParentItem.Click += (s, _) => this.MakeMappingParentless(mappedOption);
-            }
-
-            if (this.currentChildChoosingParent == null)
-            {
-                var chooseNewParentItem = menu.Items.Add("Choose New Parent for this Mapping...");
-                chooseNewParentItem.Click += (s, _) => this.ChooseNewParentBegin(mappedOption);
-                chooseNewParentItem.Enabled = !mappedOption.Children.Any();
-            }
-            else
-            {
-                var chooseParentItem = menu.Items.Add("Choose as Parent");
-                chooseParentItem.Image = Resources.tick;
-                chooseParentItem.Click += (s, _) => this.ChooseNewParentEnd(mappedOption);
-                chooseParentItem.Enabled = !mappedOption.IsChild;
-
-                var cancelItem = menu.Items.Add("Cancel Choosing Parent");
-                cancelItem.Image = Resources.cross;
-                cancelItem.Click += (s, _) => this.currentChildChoosingParent = null;
-            }
+            e.Property.SetValue(mappingAspect, e.Value);
         }
 
-        e.MenuStrip = menu;
+        this.selectedProfile.Save();
+        this.RefreshMappings();
     }
 
     private void OlvMappings_KeyUp(object sender, KeyEventArgs e)
