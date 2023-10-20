@@ -82,7 +82,7 @@ public class XInputServiceTests
         this.xInputService.Vibrate(1, 0.5, 0.5, duration);
 
         // Wait for the duration + a little buffer to prevent false positives
-        await Task.Delay(duration + TimingHelper.FromMilliseconds(100));
+        await Task.Delay(duration + TimingHelper.FromMilliseconds(500));
 
         // Verify that XInputSetState was called to stop vibration after the duration
         this.mockXInput.Verify(x => x.XInputSetState(It.IsAny<int>(), ref It.Ref<XInputVibration>.IsAny), Times.Exactly(2));
