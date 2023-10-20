@@ -181,6 +181,7 @@ public class Key2JoyManager : IKey2JoyManager, IMessageFilter
         return this.armedProfile == profile;
     }
 
+    /// <inheritdoc/>
     public void ArmMappings(MappingProfile profile)
     {
         this.armedProfile = profile;
@@ -190,46 +191,55 @@ public class Key2JoyManager : IKey2JoyManager, IMessageFilter
 
         var allActions = (IList<AbstractAction>)profile.MappedOptions.Select(m => m.Action).ToList();
 
-        foreach (var mappedOption in profile.MappedOptions)
+        try
         {
-            if (mappedOption.Trigger == null)
+            foreach (var mappedOption in profile.MappedOptions)
             {
-                continue;
+                if (mappedOption.Trigger == null)
+                {
+                    continue;
+                }
+
+                var listener = mappedOption.Trigger.GetTriggerListener();
+
+                if (!allListeners.Contains(listener))
+                {
+                    allListeners.Add(listener);
+                }
+
+                if (listener is IWndProcHandler listenerWndProcHAndler)
+                {
+                    this.wndProcListeners.Add(listenerWndProcHAndler);
+                }
+
+                mappedOption.Action.OnStartListening(listener, ref allActions);
+                listener.AddMappedOption(mappedOption);
             }
 
-            var listener = mappedOption.Trigger.GetTriggerListener();
+            var allListenersForSharing = (IList<AbstractTriggerListener>)allListeners;
 
-            if (!allListeners.Contains(listener))
+            foreach (var listener in allListeners)
             {
-                allListeners.Add(listener);
+                if (listener is IWndProcHandler listenerWndProcHAndler)
+                {
+                    listenerWndProcHAndler.Handle = this.handleAndInvoker.Handle;
+                }
+
+                listener.StartListening(ref allListenersForSharing);
             }
 
-            if (listener is IWndProcHandler listenerWndProcHAndler)
+            StatusChanged?.Invoke(this, new StatusChangedEventArgs
             {
-                this.wndProcListeners.Add(listenerWndProcHAndler);
-            }
-
-            mappedOption.Action.OnStartListening(listener, ref allActions);
-            listener.AddMappedOption(mappedOption);
+                IsEnabled = true,
+                Profile = this.armedProfile
+            });
         }
-
-        var allListenersForSharing = (IList<AbstractTriggerListener>)allListeners;
-
-        foreach (var listener in allListeners)
+        catch (MappingArmingFailedException ex)
         {
-            if (listener is IWndProcHandler listenerWndProcHAndler)
-            {
-                listenerWndProcHAndler.Handle = this.handleAndInvoker.Handle;
-            }
-
-            listener.StartListening(ref allListenersForSharing);
+            //cleanup
+            this.DisarmMappings();
+            throw ex;
         }
-
-        StatusChanged?.Invoke(this, new StatusChangedEventArgs
-        {
-            IsEnabled = true,
-            Profile = this.armedProfile
-        });
     }
 
     public void DisarmMappings()

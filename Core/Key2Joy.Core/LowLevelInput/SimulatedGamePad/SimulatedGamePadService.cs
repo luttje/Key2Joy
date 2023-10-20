@@ -1,5 +1,7 @@
 using System;
 using System.Linq;
+using CommonServiceLocator;
+using Key2Joy.LowLevelInput.XInput;
 using SimWinInput;
 
 namespace Key2Joy.LowLevelInput.SimulatedGamePad;
@@ -48,6 +50,16 @@ public class SimulatedGamePadService : ISimulatedGamePadService
             throw new ArgumentOutOfRangeException(nameof(gamePadIndex));
         }
 
+        var xInputService = ServiceLocator.Current.GetInstance<IXInputService>();
+        var physicalDeviceIndexes = xInputService.GetActiveDeviceIndices();
+
+        // If the physical device is active at the index, then we can't use that index
+        if (physicalDeviceIndexes.Contains(gamePadIndex))
+        {
+            throw new MappingArmingFailedException(
+                $"There is a physical gamepad in use at index {gamePadIndex}. Cannot simulate at that index.");
+        }
+
         var gamePad = this.gamePads[gamePadIndex];
 
         if (gamePad.GetIsPluggedIn())
@@ -64,6 +76,16 @@ public class SimulatedGamePadService : ISimulatedGamePadService
         if (gamePadIndex is < 0 or >= MAX_GAMEPADS)
         {
             throw new ArgumentOutOfRangeException(nameof(gamePadIndex));
+        }
+
+        var xInputService = ServiceLocator.Current.GetInstance<IXInputService>();
+        var physicalDeviceIndexes = xInputService.GetActiveDeviceIndices();
+
+        // If the physical device is active at the index, then we can't use that index
+        if (physicalDeviceIndexes.Contains(gamePadIndex))
+        {
+            throw new InvalidOperationException(
+                $"There is a physical gamepad in use at index {gamePadIndex}. Cannot simulate at that index.");
         }
 
         var gamePad = this.gamePads[gamePadIndex];

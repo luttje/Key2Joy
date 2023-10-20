@@ -67,12 +67,12 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
     private void RefreshGamePadIndexNotification()
     {
         var xInputService = ServiceLocator.Current.GetInstance<IXInputService>();
-        var deviceIndexes = xInputService.GetActiveDevices();
+        var deviceIndexes = xInputService.GetActiveDeviceIndices();
 
         foreach (var device in deviceIndexes)
         {
             this.ShowNotification(new NotificationBannerControl(
-                $"Detected a physical GamePad with #: {device}. You can use this information to simulate gamepads on the other available numbers (0 - 3)",
+                $"Detected a physical GamePad with #: {device}. This means that you can not simulate GamePads at this number.",
                 NotificationBannerStyle.Warning
             ));
         }
@@ -508,7 +508,21 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
         if (isEnabled)
         {
             this.RefreshGamePadIndexNotification();
-            Key2JoyManager.Instance.ArmMappings(this.selectedProfile);
+            try
+            {
+                Key2JoyManager.Instance.ArmMappings(this.selectedProfile);
+            }
+            catch (MappingArmingFailedException ex)
+            {
+                this.chkEnabled.Checked = false;
+                MessageBox.Show(
+                    this,
+                    ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+            }
         }
         else
         {

@@ -1,6 +1,9 @@
 using System;
 using System.Linq;
+using CommonServiceLocator;
 using Key2Joy.LowLevelInput.SimulatedGamePad;
+using Key2Joy.LowLevelInput.XInput;
+using Key2Joy.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -16,6 +19,10 @@ public class SimulatedGamePadTests
     [TestInitialize]
     public void Initialize()
     {
+        var serviceLocator = new DependencyServiceLocator();
+        ServiceLocator.SetLocatorProvider(() => serviceLocator);
+        serviceLocator.Register<IXInputService>(new XInputService());
+
         this.mockedGamePads = new Mock<ISimulatedGamePad>[NUM_GAMEPADS];
         for (var i = 0; i < NUM_GAMEPADS; i++)
         {

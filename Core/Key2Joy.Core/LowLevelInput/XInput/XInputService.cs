@@ -190,18 +190,22 @@ public class XInputService : IXInputService
     }
 
     /// <inheritdoc/>
-    public IList<int> GetActiveDevices()
+    public IList<int> GetActiveDeviceIndices()
     {
         var activeDevices = new List<int>();
 
         for (var i = 0; i < MaxDevices; i++)
         {
-            var newState = new XInputState();
-            var resultCode = this.xInputInstance.XInputGetState(i, ref newState);
+            var state = new XInputState();
+            var resultCode = this.xInputInstance.XInputGetState(i, ref state);
 
             if (resultCode == XInputResultCode.ERROR_SUCCESS)
             {
-                activeDevices.Add(i);
+                // Simulated devices return PacketNumber 0
+                if (state.PacketNumber != 0)
+                {
+                    activeDevices.Add(i);
+                }
             }
         }
 
