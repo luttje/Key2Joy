@@ -5,104 +5,6 @@ using Timer = System.Timers.Timer;
 
 namespace Key2Joy.LowLevelInput.XInput;
 
-/// <summary>
-/// Represents the interface for interacting with XInput devices.
-/// </summary>
-public interface IXInputService
-{
-    /// <summary>
-    /// Occurs when the state of a registered device changes.
-    /// </summary>
-    event EventHandler<DeviceStateChangedEventArgs> StateChanged;
-
-    /// <summary>
-    /// Registers a device by its index for monitoring its state.
-    /// </summary>
-    /// <param name="deviceIndex">The index of the device to register.</param>
-    void RegisterDevice(int deviceIndex);
-
-    /// <summary>
-    /// Starts polling all registered devices for state changes.
-    /// </summary>
-    void StartPolling();
-
-    /// <summary>
-    /// Stops polling all registered devices.
-    /// </summary>
-    void StopPolling();
-
-    /// <summary>
-    /// Retrieves the current state of the specified device.
-    /// </summary>
-    /// <param name="deviceIndex">The index of the device.</param>
-    /// <returns>The current state of the device.</returns>
-    XInputState GetState(int deviceIndex);
-
-    /// <summary>
-    /// Retrieves the capabilities of the specified device.
-    /// </summary>
-    /// <param name="deviceIndex">The index of the device.</param>
-    /// <returns>The capabilities of the device.</returns>
-    XInputCapabilities GetCapabilities(int deviceIndex);
-
-    /// <summary>
-    /// Retrieves battery information for the specified device.
-    /// </summary>
-    /// <param name="deviceIndex">The index of the device.</param>
-    /// <param name="deviceType">Specifies which type of device (e.g. gamepad, headset) on this user index to retrieve information for.</param>
-    /// <returns>Battery information of the specified device.</returns>
-    XInputBatteryInformation GetBatteryInformation(int deviceIndex, BatteryDeviceType deviceType);
-
-    /// <summary>
-    /// Retrieves a keystroke event from the specified device.
-    /// </summary>
-    /// <param name="deviceIndex">The index of the device.</param>
-    /// <returns>Keystroke data from the device.</returns>
-    XInputKeystroke GetKeystroke(int deviceIndex);
-
-    /// <summary>
-    /// Vibrates the given device's left and or right motor by the specified intensity.
-    /// </summary>
-    /// <param name="deviceIndex">The index of the device</param>
-    /// <param name="leftMotorSpeedFraction">Fraction (0-1) indicating left motor intensity</param>
-    /// <param name="rightMotorSpeedFraction">Fraction (0-1) indicating right motor intensity</param>
-    /// <param name="duration">How long to vibrate for</param>
-    void Vibrate(int deviceIndex, double leftMotorSpeedFraction, double rightMotorSpeedFraction, TimeSpan duration);
-
-    /// <summary>
-    /// Stops vibration of the given device.
-    /// </summary>
-    /// <param name="deviceIndex">The index of the device</param>
-    void StopVibration(int deviceIndex);
-}
-
-/// <summary>
-/// Provides data for the DeviceStateChanged event.
-/// </summary>
-public class DeviceStateChangedEventArgs : EventArgs
-{
-    /// <summary>
-    /// Gets the index of the device that has changed state.
-    /// </summary>
-    public int DeviceIndex { get; }
-
-    /// <summary>
-    /// Gets the new state of the device.
-    /// </summary>
-    public XInputState NewState { get; }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="DeviceStateChangedEventArgs"/> class.
-    /// </summary>
-    /// <param name="deviceIndex">The index of the device that has changed state.</param>
-    /// <param name="newState">The new state of the device.</param>
-    public DeviceStateChangedEventArgs(int deviceIndex, XInputState newState)
-    {
-        this.DeviceIndex = deviceIndex;
-        this.NewState = newState;
-    }
-}
-
 public class XInputService : IXInputService
 {
     private const int UpdateIntervalInMs = 20;
@@ -112,9 +14,15 @@ public class XInputService : IXInputService
     /// </summary>
     public event EventHandler<DeviceStateChangedEventArgs> StateChanged;
 
+    /// <summary>
+    /// Called whenever the device sends a new packet
+    /// </summary>
+    public event EventHandler<DevicePacketReceivedEventArgs> PacketReceived;
+
     private readonly IXInput xInputInstance;
     private readonly HashSet<int> registeredDevices;
     private readonly Dictionary<int, Timer> vibrationTimers;
+    private readonly Dictionary<int, XInputState> lastStates;
     private Thread pollingThread;
     private bool isPolling;
 
@@ -123,6 +31,7 @@ public class XInputService : IXInputService
         this.xInputInstance = xinputInstance ?? new NativeXInput();
         this.registeredDevices = new();
         this.vibrationTimers = new();
+        this.lastStates = new();
     }
 
     /// <inheritdoc/>
@@ -157,7 +66,22 @@ public class XInputService : IXInputService
 
                         if (resultCode == XInputResultCode.ERROR_SUCCESS)
                         {
-                            StateChanged?.Invoke(this, new DeviceStateChangedEventArgs(deviceIndex, newState));
+                            this.PacketReceived?.Invoke(this, new DevicePacketReceivedEventArgs(deviceIndex, newState));
+                            var hasLastState = this.lastStates.TryGetValue(deviceIndex, out var lastState);
+
+                            if (!hasLastState || !lastState.Equals(newState))
+                            {
+                                if (!hasLastState)
+                                {
+                                    this.lastStates.Add(deviceIndex, newState);
+                                }
+                                else
+                                {
+                                    this.lastStates[deviceIndex] = newState;
+                                }
+
+                                this.StateChanged?.Invoke(this, new DeviceStateChangedEventArgs(deviceIndex, newState));
+                            }
                         }
 
                         // Add a delay to avoid hammering the IXInput instance too rapidly
