@@ -87,7 +87,7 @@ internal class MappingContextMenuBuilder
 
     private readonly ContextMenuStrip menu;
     private readonly IList selectedItems;
-    private MappedOption currentChildChoosingParent = null;
+    private static MappedOption currentChildChoosingParent = null;
 
     internal MappingContextMenuBuilder(IList selectedItems)
     {
@@ -243,10 +243,10 @@ internal class MappingContextMenuBuilder
                 removeParentItem.Click += (s, _) => this.SelectMakeMappingParentless?.Invoke(this, new(mappedOption));
             }
 
-            if (this.currentChildChoosingParent == null)
+            if (currentChildChoosingParent == null)
             {
                 var chooseNewParentItem = this.menu.Items.Add("Choose New Parent for this Mapping...");
-                chooseNewParentItem.Click += (s, _) => this.currentChildChoosingParent = mappedOption;
+                chooseNewParentItem.Click += (s, _) => currentChildChoosingParent = mappedOption;
                 chooseNewParentItem.Enabled = !mappedOption.Children.Any();
             }
             else
@@ -255,14 +255,14 @@ internal class MappingContextMenuBuilder
                 chooseParentItem.Image = Resources.tick;
                 chooseParentItem.Click += (s, _) =>
                 {
-                    this.SelectChooseNewParent?.Invoke(this, new(this.currentChildChoosingParent, mappedOption));
-                    this.currentChildChoosingParent = null;
+                    this.SelectChooseNewParent?.Invoke(this, new(currentChildChoosingParent, mappedOption));
+                    currentChildChoosingParent = null;
                 };
                 chooseParentItem.Enabled = !mappedOption.IsChild;
 
                 var cancelItem = this.menu.Items.Add("Cancel Choosing Parent");
                 cancelItem.Image = Resources.cross;
-                cancelItem.Click += (s, _) => this.currentChildChoosingParent = null;
+                cancelItem.Click += (s, _) => currentChildChoosingParent = null;
             }
         }
 
