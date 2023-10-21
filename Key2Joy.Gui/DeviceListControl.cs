@@ -1,3 +1,4 @@
+using System.Drawing;
 using System.Windows.Forms;
 using CommonServiceLocator;
 using Key2Joy.LowLevelInput.SimulatedGamePad;
@@ -25,6 +26,19 @@ public partial class DeviceListControl : UserControl
 
         this.RefreshSimulatedDevices();
         this.RefreshPhysicalDevices();
+
+        if (this.pnlDevices.Controls.Count == 0)
+        {
+            this.pnlDevices.Controls.Add(new Label()
+            {
+                Text = "No physical or simulated devices found. Try arming the mappings.",
+                Font = new Font("Arial", 8, FontStyle.Italic),
+                Padding = new Padding(5),
+                Dock = DockStyle.Top,
+                Height = 100,
+                TextAlign = ContentAlignment.MiddleCenter,
+            });
+        }
     }
 
     private void AddDeviceControl(DeviceControl control)

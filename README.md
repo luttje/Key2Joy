@@ -43,9 +43,9 @@ In addition to simply simulating a button being pressed on the Joystick, you can
 
    **An action** is what will happen when that trigger occurs. *E.g: simulating a joystick button being pressed, a keyboard button being released, or executing a Lua/Javascript script.*
 
-4. Tick the *Enable* checkbox for Key2Joy to start listening for triggers that will execute the configured actions.
+4. Tick the *Arm Mappings* checkbox for Key2Joy to start listening for triggers that will execute the configured actions.
 
-5. When you're done using Key2Joy, uncheck the *Enable* checkbox to stop listening for triggers.
+5. When you're done using Key2Joy, uncheck the *Arm Mappings* checkbox to stop listening for triggers.
 
    *In the default profile there is also a mapping that stops Key2Joy from listening using the `Escape`-key. Don't forget to include such a mapping for your custom profiles.*
 

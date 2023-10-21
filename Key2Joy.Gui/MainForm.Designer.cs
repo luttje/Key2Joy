@@ -41,7 +41,7 @@ namespace Key2Joy.Gui
             this.pnlProfileManagement = new System.Windows.Forms.Panel();
             this.txtProfileName = new System.Windows.Forms.TextBox();
             this.lblProfileName = new System.Windows.Forms.Label();
-            this.chkEnabled = new System.Windows.Forms.CheckBox();
+            this.chkArmed = new System.Windows.Forms.CheckBox();
             this.menMainMenu = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newProfileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -231,17 +231,17 @@ namespace Key2Joy.Gui
             this.lblProfileName.Text = "Profile Name:";
             this.lblProfileName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // chkEnabled
+            // chkArmed
             // 
-            this.chkEnabled.AutoSize = true;
-            this.chkEnabled.Dock = System.Windows.Forms.DockStyle.Right;
-            this.chkEnabled.Location = new System.Drawing.Point(423, 0);
-            this.chkEnabled.Name = "chkEnabled";
-            this.chkEnabled.Size = new System.Drawing.Size(59, 23);
-            this.chkEnabled.TabIndex = 81;
-            this.chkEnabled.Text = "Enable";
-            this.chkEnabled.UseVisualStyleBackColor = true;
-            this.chkEnabled.CheckedChanged += new System.EventHandler(this.ChkEnabled_CheckedChanged);
+            this.chkArmed.AutoSize = true;
+            this.chkArmed.Dock = System.Windows.Forms.DockStyle.Right;
+            this.chkArmed.Location = new System.Drawing.Point(389, 0);
+            this.chkArmed.Name = "chkArmed";
+            this.chkArmed.Size = new System.Drawing.Size(93, 23);
+            this.chkArmed.TabIndex = 81;
+            this.chkArmed.Text = "Arm Mappings";
+            this.chkArmed.UseVisualStyleBackColor = true;
+            this.chkArmed.CheckedChanged += new System.EventHandler(this.ChkEnabled_CheckedChanged);
             // 
             // menMainMenu
             // 
@@ -252,7 +252,7 @@ namespace Key2Joy.Gui
             this.helpToolStripMenuItem});
             this.menMainMenu.Location = new System.Drawing.Point(0, 0);
             this.menMainMenu.Name = "menMainMenu";
-            this.menMainMenu.Size = new System.Drawing.Size(423, 24);
+            this.menMainMenu.Size = new System.Drawing.Size(389, 24);
             this.menMainMenu.TabIndex = 81;
             this.menMainMenu.Text = "menuStrip1";
             // 
@@ -594,7 +594,7 @@ namespace Key2Joy.Gui
             // pnlMainMenu
             // 
             this.pnlMainMenu.Controls.Add(this.menMainMenu);
-            this.pnlMainMenu.Controls.Add(this.chkEnabled);
+            this.pnlMainMenu.Controls.Add(this.chkArmed);
             this.pnlMainMenu.Controls.Add(this.lblStatusInactive);
             this.pnlMainMenu.Controls.Add(this.lblStatusActive);
             this.pnlMainMenu.Dock = System.Windows.Forms.DockStyle.Top;
@@ -612,7 +612,7 @@ namespace Key2Joy.Gui
             this.lblStatusInactive.Name = "lblStatusInactive";
             this.lblStatusInactive.Size = new System.Drawing.Size(109, 23);
             this.lblStatusInactive.TabIndex = 82;
-            this.lblStatusInactive.Text = "(Mappings not active)";
+            this.lblStatusInactive.Text = "(Mappings not armed)";
             this.lblStatusInactive.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblStatusActive
@@ -623,7 +623,7 @@ namespace Key2Joy.Gui
             this.lblStatusActive.Name = "lblStatusActive";
             this.lblStatusActive.Size = new System.Drawing.Size(92, 23);
             this.lblStatusActive.TabIndex = 83;
-            this.lblStatusActive.Text = "(Mappings active)";
+            this.lblStatusActive.Text = "(Mappings armed)";
             this.lblStatusActive.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // pnlNotificationsParent
@@ -705,7 +705,7 @@ namespace Key2Joy.Gui
         }
 
         #endregion
-        private System.Windows.Forms.CheckBox chkEnabled;
+        private System.Windows.Forms.CheckBox chkArmed;
         private System.Windows.Forms.Panel pnlActionManagement;
         private System.Windows.Forms.Panel pnlProfileManagement;
         private System.Windows.Forms.TextBox txtProfileName;

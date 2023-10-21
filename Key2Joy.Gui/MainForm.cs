@@ -72,7 +72,7 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
     }
 
     private void ConfigureStatusLabels()
-        => this.lblStatusActive.Visible = this.chkEnabled.Checked;
+        => this.lblStatusActive.Visible = this.chkArmed.Checked;
 
     private void SetupNotificationIndicator()
     {
@@ -154,9 +154,9 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
 
     private void SetStatusView(bool isEnabled)
     {
-        this.chkEnabled.CheckedChanged -= this.ChkEnabled_CheckedChanged;
-        this.chkEnabled.Checked = isEnabled;
-        this.chkEnabled.CheckedChanged += this.ChkEnabled_CheckedChanged;
+        this.chkArmed.CheckedChanged -= this.ChkEnabled_CheckedChanged;
+        this.chkArmed.Checked = isEnabled;
+        this.chkArmed.CheckedChanged += this.ChkEnabled_CheckedChanged;
 
         this.lblStatusActive.Visible = isEnabled;
         this.lblStatusInactive.Visible = !isEnabled;
@@ -173,7 +173,7 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
 
     private void EditMappedOption(MappedOption existingMappedOption = null)
     {
-        this.chkEnabled.Checked = false;
+        this.chkArmed.Checked = false;
         MappingForm mappingForm = new(existingMappedOption);
         var result = mappingForm.ShowDialog();
 
@@ -287,7 +287,7 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
             case AppCommand.Abort:
                 this.BeginInvoke(new MethodInvoker(delegate
                 {
-                    this.chkEnabled.Checked = false;
+                    this.chkArmed.Checked = false;
                 }));
 
                 return true;
@@ -484,11 +484,11 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
 
     private void ChkEnabled_CheckedChanged(object sender, EventArgs e)
     {
-        var isEnabled = this.chkEnabled.Checked;
+        var isArmed = this.chkArmed.Checked;
 
-        this.SetStatusView(isEnabled);
+        this.SetStatusView(isArmed);
 
-        if (isEnabled)
+        if (isArmed)
         {
             try
             {
@@ -496,7 +496,7 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
             }
             catch (MappingArmingFailedException ex)
             {
-                this.chkEnabled.Checked = false;
+                this.chkArmed.Checked = false;
                 MessageBox.Show(
                     this,
                     ex.Message,
