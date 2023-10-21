@@ -57,6 +57,13 @@ public class XInputService : IXInputService
             return;
         }
 
+        // TODO: Is this the right place? It seems convenient to just call events
+        //       for all available devices. That's why I added it here.
+        for (var i = 0; i < MaxDevices; i++)
+        {
+            this.RegisterDevice(i);
+        }
+
         this.isPolling = true;
 
         this.pollingThread = new Thread(() =>

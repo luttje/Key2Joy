@@ -6,34 +6,31 @@ using Key2Joy.LowLevelInput.XInput;
 
 namespace Key2Joy.Mapping.Triggers.GamePad;
 
-public class GamePadStickLookup : Dictionary<int, List<AbstractMappedOption>>
-{ }
-
-public class GamePadStickTriggerListener : CoreTriggerListener
+public class GamePadTriggerTriggerListener : CoreTriggerListener
 {
-    public static GamePadStickTriggerListener instance;
+    public static GamePadTriggerTriggerListener instance;
 
-    public static GamePadStickTriggerListener Instance
+    public static GamePadTriggerTriggerListener Instance
     {
         get
         {
-            instance ??= new GamePadStickTriggerListener();
+            instance ??= new GamePadTriggerTriggerListener();
 
             return instance;
         }
     }
 
-    private readonly Dictionary<GamePadSide, GamePadStickLookup> stickAxisLookups;
+    private readonly Dictionary<GamePadSide, List<AbstractMappedOption>> triggerLookup;
     private readonly IXInputService xInputService;
 
-    private GamePadStickTriggerListener()
+    private GamePadTriggerTriggerListener()
     {
         this.xInputService = ServiceLocator.Current.GetInstance<IXInputService>();
 
-        this.stickAxisLookups = new()
+        this.triggerLookup = new()
         {
-            [GamePadSide.Left] = new GamePadStickLookup(),
-            [GamePadSide.Right] = new GamePadStickLookup()
+            [GamePadSide.Left] = new List<AbstractMappedOption>(),
+            [GamePadSide.Right] = new List<AbstractMappedOption>()
         };
     }
 
@@ -59,28 +56,23 @@ public class GamePadStickTriggerListener : CoreTriggerListener
     /// <inheritdoc/>
     public override void AddMappedOption(AbstractMappedOption mappedOption)
     {
-        var trigger = mappedOption.Trigger as GamePadStickTrigger;
-        var lookup = this.stickAxisLookups[trigger.StickSide];
+        var trigger = mappedOption.Trigger as GamePadTriggerTrigger;
+        var lookup = this.triggerLookup[trigger.TriggerSide];
 
-        if (!lookup.TryGetValue(trigger.GetInputHash(), out var mappedOptions))
-        {
-            lookup.Add(trigger.GetInputHash(), mappedOptions = new List<AbstractMappedOption>());
-        }
-
-        mappedOptions.Add(mappedOption);
+        lookup.Add(mappedOption);
     }
 
     /// <inheritdoc/>
     public override bool GetIsTriggered(AbstractTrigger trigger)
     {
-        if (trigger is not GamePadStickTrigger gamePadStickTrigger)
+        if (trigger is not GamePadTriggerTrigger gamePadTriggerTrigger)
         {
             return false;
         }
 
-        var state = this.xInputService.GetState(gamePadStickTrigger.GamePadIndex);
+        var state = this.xInputService.GetState(gamePadTriggerTrigger.GamePadIndex);
 
-        return state.Gamepad.IsThumbstickMoved(gamePadStickTrigger.StickSide, gamePadStickTrigger.DeltaMargin);
+        return state.Gamepad.IsTriggerPulled(gamePadTriggerTrigger.TriggerSide, gamePadTriggerTrigger.DeltaMargin);
     }
 
     /// <summary>
@@ -96,30 +88,24 @@ public class GamePadStickTriggerListener : CoreTriggerListener
 
         List<AbstractMappedOption> mappedOptions = new();
 
-        foreach (var stickAxisLookupKvp in this.stickAxisLookups)
+        foreach (var stickAxisLookupKvp in this.triggerLookup)
         {
             var sideToLookup = stickAxisLookupKvp.Key;
             var lookup = stickAxisLookupKvp.Value;
 
-            foreach (var lookupKvp in lookup)
+            foreach (var mappedOption in lookup)
             {
-                var triggerHash = lookupKvp.Key;
-                var lookupMappedOptions = lookupKvp.Value;
-
-                foreach (var mappedOption in lookupMappedOptions)
+                if (this.GetIsTriggered(mappedOption.Trigger))
                 {
-                    if (this.GetIsTriggered(mappedOption.Trigger))
-                    {
-                        mappedOptions.AddRange(lookupMappedOptions);
-                    }
+                    mappedOptions.Add(mappedOption);
                 }
             }
         }
 
-        GamePadStickInputBag inputBag = new()
+        GamePadTriggerInputBag inputBag = new()
         {
-            LeftStickDelta = state.Gamepad.GetStickDelta(GamePadSide.Left),
-            RightStickDelta = state.Gamepad.GetStickDelta(GamePadSide.Right),
+            LeftTriggerDelta = state.Gamepad.GetTriggerDelta(GamePadSide.Left),
+            RightTriggerDelta = state.Gamepad.GetTriggerDelta(GamePadSide.Right),
         };
 
         this.DoExecuteTrigger(

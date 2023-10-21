@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Key2Joy.Contracts.Mapping;
 
@@ -25,5 +25,9 @@ public interface IWndProcHandler
 {
     public IntPtr Handle { get; set; }
 
+    /// <summary>
+    /// Called when a message is sent to the window.
+    /// </summary>
+    /// <param name="message"></param>
     public void WndProc(Message message);
 }

@@ -35,6 +35,7 @@ public class MouseMoveTriggerListener : CoreTriggerListener, IWndProcHandler
 
     private MouseMoveTriggerListener() => this.lookupAxis = new Dictionary<int, List<AbstractMappedOption>>();
 
+    /// <inheritdoc/>
     protected override void Start()
     {
         RawInputDevice.RegisterDevice(HidUsageAndPage.Mouse, RawInputDeviceFlags.InputSink, this.Handle);
@@ -42,6 +43,7 @@ public class MouseMoveTriggerListener : CoreTriggerListener, IWndProcHandler
         base.Start();
     }
 
+    /// <inheritdoc/>
     protected override void Stop()
     {
         instance = null;
@@ -49,6 +51,7 @@ public class MouseMoveTriggerListener : CoreTriggerListener, IWndProcHandler
         base.Stop();
     }
 
+    /// <inheritdoc/>
     public override void AddMappedOption(AbstractMappedOption mappedOption)
     {
         var trigger = mappedOption.Trigger as MouseMoveTrigger;
@@ -61,6 +64,7 @@ public class MouseMoveTriggerListener : CoreTriggerListener, IWndProcHandler
         mappedOptions.Add(mappedOption);
     }
 
+    /// <inheritdoc/>
     public override bool GetIsTriggered(AbstractTrigger trigger)
     {
         if (trigger is not MouseMoveTrigger mouseMoveTrigger)
@@ -72,6 +76,7 @@ public class MouseMoveTriggerListener : CoreTriggerListener, IWndProcHandler
             && this.lastDirectionHashes.Contains(mouseMoveTrigger.GetInputHash());
     }
 
+    /// <inheritdoc/>
     public void WndProc(Message m)
     {
         if (!this.IsActive)

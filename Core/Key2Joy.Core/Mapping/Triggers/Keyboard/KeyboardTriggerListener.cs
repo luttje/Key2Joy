@@ -26,6 +26,7 @@ public class KeyboardTriggerListener : PressReleaseTriggerListener<KeyboardTrigg
 
     public bool GetKeyDown(Keys key) => this.currentKeysPressed.ContainsKey(key);
 
+    /// <inheritdoc/>
     protected override void Start()
     {
         // This captures global keyboard input and blocks default behaviour by setting e.Handled
@@ -36,6 +37,7 @@ public class KeyboardTriggerListener : PressReleaseTriggerListener<KeyboardTrigg
         base.Start();
     }
 
+    /// <inheritdoc/>
     protected override void Stop()
     {
         instance = null;
@@ -47,6 +49,7 @@ public class KeyboardTriggerListener : PressReleaseTriggerListener<KeyboardTrigg
         base.Stop();
     }
 
+    /// <inheritdoc/>
     public override bool GetIsTriggered(AbstractTrigger trigger)
     {
         if (trigger is not KeyboardTrigger keyboardTrigger)

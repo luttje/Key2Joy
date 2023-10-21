@@ -32,13 +32,9 @@ public class GamePadButtonTriggerListener : PressReleaseTriggerListener<GamePadB
     public bool GetKeyDown(GamePadButton key)
         => this.currentKeysDown.ContainsKey(key);
 
+    /// <inheritdoc/>
     protected override void Start()
     {
-        for (var i = 0; i < XInputService.MaxDevices; i++)
-        {
-            this.xInputService.RegisterDevice(i);
-        }
-
         this.xInputService.StateChanged += this.XInputService_StateChanged;
         this.xInputService.StartPolling();
         this.currentKeysDown.Clear();
@@ -46,6 +42,7 @@ public class GamePadButtonTriggerListener : PressReleaseTriggerListener<GamePadB
         base.Start();
     }
 
+    /// <inheritdoc/>
     protected override void Stop()
     {
         this.xInputService.StopPolling();
@@ -56,6 +53,7 @@ public class GamePadButtonTriggerListener : PressReleaseTriggerListener<GamePadB
         base.Stop();
     }
 
+    /// <inheritdoc/>
     public override bool GetIsTriggered(AbstractTrigger trigger)
     {
         if (trigger is not GamePadButtonTrigger gamePadButtonTrigger)

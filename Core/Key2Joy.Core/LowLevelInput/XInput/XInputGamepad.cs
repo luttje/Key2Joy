@@ -12,7 +12,8 @@ namespace Key2Joy.LowLevelInput.XInput;
 [StructLayout(LayoutKind.Explicit)]
 public struct XInputGamePad : IEquatable<XInputGamePad>
 {
-    public const int MaxThumbValue = 32767;
+    public const int MaxThumbstickValue = 32767;
+    public const int MaxTriggerValue = 255;
 
     /// <summary>
     /// Can be used as a positive and negative value to filter left thumbstick input.
@@ -121,17 +122,21 @@ public struct XInputGamePad : IEquatable<XInputGamePad>
     }
 
     /// <summary>
-    /// Checks if the left thumb stick has moved past a certain threshold (or else the default deadzone)
+    /// Checks if the thumb stick on the given side has moved past a certain threshold (or else the default deadzone)
     /// </summary>
+    /// <param name="side"></param>
     /// <param name="deltaMargin"></param>
     /// <returns></returns>
-    public readonly bool IsLeftThumbMoved(ExactAxisDirection? deltaMargin = null)
+    public readonly bool IsThumbstickMoved(GamePadSide side, ExactAxisDirection? deltaMargin = null)
     {
-        var deadzoneX = deltaMargin?.X * MaxThumbValue ?? XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE;
-        var deadzoneY = deltaMargin?.Y * MaxThumbValue ?? XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE;
+        var defaultDeadzone = side == GamePadSide.Left ? XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE : XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE;
+        var thumbstickX = side == GamePadSide.Left ? this.LeftThumbX : this.RightThumbX;
+        var thumbstickY = side == GamePadSide.Left ? this.LeftThumbY : this.RightThumbY;
+        var deadzoneX = deltaMargin?.X * MaxThumbstickValue ?? defaultDeadzone;
+        var deadzoneY = deltaMargin?.Y * MaxThumbstickValue ?? defaultDeadzone;
 
         // We must convert to an int, otherwise the absolute of short -32768 (32768) would fail since it's too big
-        if (Math.Abs((int)this.LeftThumbX) > deadzoneX || Math.Abs((int)this.LeftThumbY) > deadzoneY)
+        if (Math.Abs((int)thumbstickX) > deadzoneX || Math.Abs((int)thumbstickY) > deadzoneY)
         {
             return true;
         }
@@ -140,17 +145,17 @@ public struct XInputGamePad : IEquatable<XInputGamePad>
     }
 
     /// <summary>
-    /// Checks if the right thumb stick has moved past a certain threshold (or else the default deadzone)
+    /// Checks if the trigger on a certain side has pulled back past a certain threshold (or else the default deadzone)
     /// </summary>
+    /// <param name="side"></param>
     /// <param name="deltaMargin"></param>
     /// <returns></returns>
-    public readonly bool IsRightThumbMoved(ExactAxisDirection? deltaMargin = null)
+    public readonly bool IsTriggerPulled(GamePadSide side, float? deltaMargin)
     {
-        var deadzoneX = deltaMargin?.X * MaxThumbValue ?? XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE;
-        var deadzoneY = deltaMargin?.Y * MaxThumbValue ?? XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE;
+        var deadzone = deltaMargin ?? XINPUT_GAMEPAD_TRIGGER_THRESHOLD;
+        var trigger = side == GamePadSide.Left ? this.LeftTrigger : this.RightTrigger;
 
-        // We must convert to an int, otherwise the absolute of short -32768 (32768) would fail since it's too big
-        if (Math.Abs((int)this.RightThumbX) > deadzoneX || Math.Abs((int)this.RightThumbY) > deadzoneY)
+        if (trigger > deadzone)
         {
             return true;
         }
@@ -163,20 +168,33 @@ public struct XInputGamePad : IEquatable<XInputGamePad>
     /// </summary>
     /// <param name="side"></param>
     /// <returns></returns>
-    public readonly ExactAxisDirection GetStickDelta(GamePadStickSide side)
+    public readonly ExactAxisDirection GetStickDelta(GamePadSide side)
     {
-        if (side == GamePadStickSide.Left)
+        if (side == GamePadSide.Left)
         {
             return new ExactAxisDirection(
-                (float)this.LeftThumbX / MaxThumbValue,
-                (float)this.LeftThumbY / MaxThumbValue);
+                (float)this.LeftThumbX / MaxThumbstickValue,
+                (float)this.LeftThumbY / MaxThumbstickValue);
         }
-        else
+
+        return new ExactAxisDirection(
+            (float)this.RightThumbX / MaxThumbstickValue,
+            (float)this.RightThumbY / MaxThumbstickValue);
+    }
+
+    /// <summary>
+    /// Returns the trigger delta for a given side as an exact axis fraction.
+    /// </summary>
+    /// <param name="side"></param>
+    /// <returns></returns>
+    public readonly float GetTriggerDelta(GamePadSide side)
+    {
+        if (side == GamePadSide.Left)
         {
-            return new ExactAxisDirection(
-                (float)this.RightThumbX / MaxThumbValue,
-                (float)this.RightThumbY / MaxThumbValue);
+            return (float)this.LeftTrigger / MaxTriggerValue;
         }
+
+        return (float)this.RightTrigger / MaxTriggerValue;
     }
 
     /// <summary>

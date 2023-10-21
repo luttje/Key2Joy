@@ -1,6 +1,6 @@
 namespace Key2Joy.Gui.Mapping
 {
-    partial class GamePadStickTriggerControl
+    partial class GamePadTriggerTriggerControl
     {
         /// <summary>
         /// Required designer variable.
@@ -36,10 +36,8 @@ namespace Key2Joy.Gui.Mapping
             this.lblInfoIndex = new System.Windows.Forms.Label();
             this.pnlDeadzone = new System.Windows.Forms.Panel();
             this.pnlDeadzoneConfig = new System.Windows.Forms.Panel();
-            this.nudDeadzoneY = new System.Windows.Forms.NumericUpDown();
-            this.lblInfoDeadzoneY = new System.Windows.Forms.Label();
-            this.nudDeadzoneX = new System.Windows.Forms.NumericUpDown();
-            this.lblInfoDeadzoneX = new System.Windows.Forms.Label();
+            this.nudDeadzone = new System.Windows.Forms.NumericUpDown();
+            this.lblInfoDeadzone = new System.Windows.Forms.Label();
             this.chkOverrideDeadzone = new System.Windows.Forms.CheckBox();
             this.lblGamePadIndexWarning = new System.Windows.Forms.Label();
             this.pnlStickSide.SuspendLayout();
@@ -47,8 +45,7 @@ namespace Key2Joy.Gui.Mapping
             ((System.ComponentModel.ISupportInitialize)(this.nudGamePadIndex)).BeginInit();
             this.pnlDeadzone.SuspendLayout();
             this.pnlDeadzoneConfig.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudDeadzoneY)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudDeadzoneX)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudDeadzone)).BeginInit();
             this.SuspendLayout();
             // 
             // lblInfoSide
@@ -124,57 +121,34 @@ namespace Key2Joy.Gui.Mapping
             // 
             // pnlDeadzoneConfig
             // 
-            this.pnlDeadzoneConfig.Controls.Add(this.nudDeadzoneY);
-            this.pnlDeadzoneConfig.Controls.Add(this.lblInfoDeadzoneY);
-            this.pnlDeadzoneConfig.Controls.Add(this.nudDeadzoneX);
-            this.pnlDeadzoneConfig.Controls.Add(this.lblInfoDeadzoneX);
+            this.pnlDeadzoneConfig.Controls.Add(this.nudDeadzone);
+            this.pnlDeadzoneConfig.Controls.Add(this.lblInfoDeadzone);
             this.pnlDeadzoneConfig.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlDeadzoneConfig.Location = new System.Drawing.Point(0, 17);
             this.pnlDeadzoneConfig.Name = "pnlDeadzoneConfig";
             this.pnlDeadzoneConfig.Size = new System.Drawing.Size(297, 20);
             this.pnlDeadzoneConfig.TabIndex = 12;
             // 
-            // nudDeadzoneY
+            // nudDeadzone
             // 
-            this.nudDeadzoneY.DecimalPlaces = 4;
-            this.nudDeadzoneY.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.nudDeadzoneY.Location = new System.Drawing.Point(177, 0);
-            this.nudDeadzoneY.Name = "nudDeadzoneY";
-            this.nudDeadzoneY.Size = new System.Drawing.Size(120, 20);
-            this.nudDeadzoneY.TabIndex = 11;
-            this.nudDeadzoneY.ValueChanged += new System.EventHandler(this.NudDeadzoneY_ValueChanged);
+            this.nudDeadzone.DecimalPlaces = 4;
+            this.nudDeadzone.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.nudDeadzone.Location = new System.Drawing.Point(69, 0);
+            this.nudDeadzone.Name = "nudDeadzone";
+            this.nudDeadzone.Size = new System.Drawing.Size(228, 20);
+            this.nudDeadzone.TabIndex = 1;
+            this.nudDeadzone.ValueChanged += new System.EventHandler(this.NudDeadzoneX_ValueChanged);
             // 
-            // lblInfoDeadzoneY
+            // lblInfoDeadzone
             // 
-            this.lblInfoDeadzoneY.Dock = System.Windows.Forms.DockStyle.Left;
-            this.lblInfoDeadzoneY.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.lblInfoDeadzoneY.Location = new System.Drawing.Point(139, 0);
-            this.lblInfoDeadzoneY.Name = "lblInfoDeadzoneY";
-            this.lblInfoDeadzoneY.Size = new System.Drawing.Size(38, 20);
-            this.lblInfoDeadzoneY.TabIndex = 10;
-            this.lblInfoDeadzoneY.Text = "Y:";
-            this.lblInfoDeadzoneY.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // nudDeadzoneX
-            // 
-            this.nudDeadzoneX.DecimalPlaces = 4;
-            this.nudDeadzoneX.Dock = System.Windows.Forms.DockStyle.Left;
-            this.nudDeadzoneX.Location = new System.Drawing.Point(26, 0);
-            this.nudDeadzoneX.Name = "nudDeadzoneX";
-            this.nudDeadzoneX.Size = new System.Drawing.Size(113, 20);
-            this.nudDeadzoneX.TabIndex = 1;
-            this.nudDeadzoneX.ValueChanged += new System.EventHandler(this.NudDeadzoneX_ValueChanged);
-            // 
-            // lblInfoDeadzoneX
-            // 
-            this.lblInfoDeadzoneX.Dock = System.Windows.Forms.DockStyle.Left;
-            this.lblInfoDeadzoneX.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.lblInfoDeadzoneX.Location = new System.Drawing.Point(0, 0);
-            this.lblInfoDeadzoneX.Name = "lblInfoDeadzoneX";
-            this.lblInfoDeadzoneX.Size = new System.Drawing.Size(26, 20);
-            this.lblInfoDeadzoneX.TabIndex = 9;
-            this.lblInfoDeadzoneX.Text = "X:";
-            this.lblInfoDeadzoneX.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblInfoDeadzone.Dock = System.Windows.Forms.DockStyle.Left;
+            this.lblInfoDeadzone.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.lblInfoDeadzone.Location = new System.Drawing.Point(0, 0);
+            this.lblInfoDeadzone.Name = "lblInfoDeadzone";
+            this.lblInfoDeadzone.Size = new System.Drawing.Size(69, 20);
+            this.lblInfoDeadzone.TabIndex = 9;
+            this.lblInfoDeadzone.Text = "Sensitivity:";
+            this.lblInfoDeadzone.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // chkOverrideDeadzone
             // 
@@ -200,7 +174,7 @@ namespace Key2Joy.Gui.Mapping
             this.lblGamePadIndexWarning.Text = "Beware that GamePad Actions (that simulate gamepad input) can trigger gamepads wi" +
     "th the same #. Be careful not to create an infinite loop.";
             // 
-            // GamePadStickTriggerControl
+            // GamePadTriggerTriggerControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -210,7 +184,7 @@ namespace Key2Joy.Gui.Mapping
             this.Controls.Add(this.lblGamePadIndexWarning);
             this.Controls.Add(this.pnlGamePadIndex);
             this.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Name = "GamePadStickTriggerControl";
+            this.Name = "GamePadTriggerTriggerControl";
             this.Padding = new System.Windows.Forms.Padding(5);
             this.Size = new System.Drawing.Size(307, 139);
             this.pnlStickSide.ResumeLayout(false);
@@ -219,8 +193,7 @@ namespace Key2Joy.Gui.Mapping
             this.pnlDeadzone.ResumeLayout(false);
             this.pnlDeadzone.PerformLayout();
             this.pnlDeadzoneConfig.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.nudDeadzoneY)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudDeadzoneX)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudDeadzone)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -233,10 +206,8 @@ namespace Key2Joy.Gui.Mapping
         private System.Windows.Forms.Label lblInfoIndex;
         private System.Windows.Forms.NumericUpDown nudGamePadIndex;
         private System.Windows.Forms.Panel pnlDeadzone;
-        private System.Windows.Forms.NumericUpDown nudDeadzoneY;
-        private System.Windows.Forms.Label lblInfoDeadzoneY;
-        private System.Windows.Forms.NumericUpDown nudDeadzoneX;
-        private System.Windows.Forms.Label lblInfoDeadzoneX;
+        private System.Windows.Forms.NumericUpDown nudDeadzone;
+        private System.Windows.Forms.Label lblInfoDeadzone;
         private System.Windows.Forms.CheckBox chkOverrideDeadzone;
         private System.Windows.Forms.Panel pnlDeadzoneConfig;
         private System.Windows.Forms.Label lblGamePadIndexWarning;

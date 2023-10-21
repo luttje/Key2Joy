@@ -82,7 +82,9 @@ public partial class TriggerControl : UserControl
 
         foreach (var keyValuePair in triggerTypes)
         {
-            var mappingControlFactory = MappingControlRepository.GetMappingControlFactory(keyValuePair.Value.FullTypeName);
+            var mappingControlFactory = MappingControlRepository.GetMappingControlFactory(keyValuePair.Value.FullTypeName)
+                ?? throw new NotImplementedException("mappingControlFactory is null. Please create a Mapping Control for it.");
+
             var customImage = mappingControlFactory.ImageResourceName;
             var image = Program.ResourceBitmapFromName(customImage ?? "error");
             ImageComboBoxItem<KeyValuePair<TriggerAttribute, MappingTypeFactory<AbstractTrigger>>> item = new(keyValuePair, new Bitmap(image), "Key");

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.LowLevelInput;
 
@@ -7,6 +7,7 @@ namespace Key2Joy.Mapping.Triggers.Mouse;
 public class MouseButtonTriggerListener : PressReleaseTriggerListener<MouseButtonTrigger>
 {
     public static MouseButtonTriggerListener instance;
+
     public static MouseButtonTriggerListener Instance
     {
         get
@@ -22,6 +23,7 @@ public class MouseButtonTriggerListener : PressReleaseTriggerListener<MouseButto
 
     public bool GetButtonsDown(LowLevelInput.Mouse.Buttons buttons) => this.currentButtonsDown.ContainsKey(buttons);
 
+    /// <inheritdoc/>
     protected override void Start()
     {
         // This captures global mouse input and blocks default behaviour by setting e.Handled
@@ -31,6 +33,7 @@ public class MouseButtonTriggerListener : PressReleaseTriggerListener<MouseButto
         base.Start();
     }
 
+    /// <inheritdoc/>
     protected override void Stop()
     {
         instance = null;
@@ -41,6 +44,7 @@ public class MouseButtonTriggerListener : PressReleaseTriggerListener<MouseButto
         base.Stop();
     }
 
+    /// <inheritdoc/>
     public override bool GetIsTriggered(AbstractTrigger trigger)
     {
         if (trigger is not MouseButtonTrigger mouseButtonTrigger)
