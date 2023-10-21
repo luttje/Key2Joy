@@ -2,7 +2,7 @@
   "mappedOptions": [
     {
       "action": {
-        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadButtonAction",
         "options": {
           "Control": "DPadUp",
           "PressState": "Press",
@@ -21,7 +21,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadButtonAction",
         "options": {
           "Control": "DPadDown",
           "PressState": "Press",
@@ -40,7 +40,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadButtonAction",
         "options": {
           "Control": "DPadLeft",
           "PressState": "Press",
@@ -59,7 +59,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadButtonAction",
         "options": {
           "Control": "DPadRight",
           "PressState": "Press",
@@ -78,7 +78,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadButtonAction",
         "options": {
           "Control": "Start",
           "PressState": "Press",
@@ -97,7 +97,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadButtonAction",
         "options": {
           "Control": "Back",
           "PressState": "Press",
@@ -116,7 +116,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadButtonAction",
         "options": {
           "Control": "LeftStickClick",
           "PressState": "Press",
@@ -135,7 +135,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadButtonAction",
         "options": {
           "Control": "RightStickClick",
           "PressState": "Press",
@@ -154,7 +154,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadButtonAction",
         "options": {
           "Control": "LeftShoulder",
           "PressState": "Press",
@@ -173,7 +173,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadButtonAction",
         "options": {
           "Control": "RightShoulder",
           "PressState": "Press",
@@ -192,7 +192,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadButtonAction",
         "options": {
           "Control": "A",
           "PressState": "Press",
@@ -211,7 +211,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadButtonAction",
         "options": {
           "Control": "B",
           "PressState": "Press",
@@ -230,7 +230,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadButtonAction",
         "options": {
           "Control": "X",
           "PressState": "Press",
@@ -249,7 +249,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadButtonAction",
         "options": {
           "Control": "Y",
           "PressState": "Press",
@@ -268,7 +268,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadButtonAction",
         "options": {
           "Control": "LeftTrigger",
           "PressState": "Press",
@@ -287,7 +287,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadButtonAction",
         "options": {
           "Control": "RightTrigger",
           "PressState": "Press",
@@ -306,7 +306,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadButtonAction",
         "options": {
           "Control": "LeftStickLeft",
           "PressState": "Press",
@@ -325,7 +325,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadButtonAction",
         "options": {
           "Control": "LeftStickRight",
           "PressState": "Press",
@@ -344,7 +344,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadButtonAction",
         "options": {
           "Control": "LeftStickUp",
           "PressState": "Press",
@@ -363,7 +363,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadButtonAction",
         "options": {
           "Control": "LeftStickDown",
           "PressState": "Press",
@@ -473,7 +473,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadButtonAction",
         "options": {
           "Control": "LeftStickUp",
           "PressState": "Release",
@@ -492,7 +492,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadButtonAction",
         "options": {
           "Control": "LeftStickRight",
           "PressState": "Release",
@@ -511,7 +511,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadButtonAction",
         "options": {
           "Control": "LeftStickLeft",
           "PressState": "Release",
@@ -530,7 +530,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadButtonAction",
         "options": {
           "Control": "LeftStickDown",
           "PressState": "Release",
@@ -549,7 +549,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadButtonAction",
         "options": {
           "Control": "RightStickUp",
           "PressState": "Press",
@@ -567,7 +567,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadButtonAction",
         "options": {
           "Control": "RightStickDown",
           "PressState": "Press",
@@ -585,7 +585,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadButtonAction",
         "options": {
           "Control": "RightStickLeft",
           "PressState": "Press",
@@ -603,7 +603,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadButtonAction",
         "options": {
           "Control": "RightStickRight",
           "PressState": "Press",
@@ -621,7 +621,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadButtonAction",
         "options": {
           "Control": "DPadUp",
           "PressState": "Release",
@@ -640,7 +640,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadButtonAction",
         "options": {
           "Control": "DPadRight",
           "PressState": "Release",
@@ -659,7 +659,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadButtonAction",
         "options": {
           "Control": "DPadDown",
           "PressState": "Release",
@@ -678,7 +678,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadButtonAction",
         "options": {
           "Control": "DPadLeft",
           "PressState": "Release",
@@ -697,7 +697,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadButtonAction",
         "options": {
           "Control": "LeftTrigger",
           "PressState": "Release",
@@ -716,7 +716,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadButtonAction",
         "options": {
           "Control": "DPadRight",
           "PressState": "Release",
@@ -735,7 +735,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadButtonAction",
         "options": {
           "Control": "Start",
           "PressState": "Release",
@@ -754,7 +754,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadButtonAction",
         "options": {
           "Control": "Back",
           "PressState": "Release",
@@ -773,7 +773,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadButtonAction",
         "options": {
           "Control": "LeftStickClick",
           "PressState": "Release",
@@ -792,7 +792,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadButtonAction",
         "options": {
           "Control": "RightStickClick",
           "PressState": "Release",
@@ -811,7 +811,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadButtonAction",
         "options": {
           "Control": "LeftShoulder",
           "PressState": "Release",
@@ -830,7 +830,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadButtonAction",
         "options": {
           "Control": "RightShoulder",
           "PressState": "Release",
@@ -849,7 +849,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadButtonAction",
         "options": {
           "Control": "A",
           "PressState": "Release",
@@ -868,7 +868,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadButtonAction",
         "options": {
           "Control": "B",
           "PressState": "Release",
@@ -887,7 +887,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadButtonAction",
         "options": {
           "Control": "X",
           "PressState": "Release",
@@ -906,7 +906,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadButtonAction",
         "options": {
           "Control": "Y",
           "PressState": "Release",
@@ -925,7 +925,7 @@
     },
     {
       "action": {
-        "$type": "Key2Joy.Mapping.Actions.Input.GamePadAction",
+        "$type": "Key2Joy.Mapping.Actions.Input.GamePadButtonAction",
         "options": {
           "Control": "RightStickDown",
           "PressState": "Release",

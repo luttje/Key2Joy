@@ -11,6 +11,9 @@ public class MouseMoveTrigger : CoreTrigger, IReturnInputHash
 {
     public const string PREFIX_UNIQUE = nameof(MouseMoveTrigger);
 
+    /// <summary>
+    /// The direction that the mouse must move in order to trigger this action.
+    /// </summary>
     public AxisDirection AxisBinding { get; set; }
 
     [JsonConstructor]
@@ -18,11 +21,14 @@ public class MouseMoveTrigger : CoreTrigger, IReturnInputHash
         : base(name)
     { }
 
-    public override AbstractTriggerListener GetTriggerListener() => MouseMoveTriggerListener.Instance;
+    public override AbstractTriggerListener GetTriggerListener()
+        => MouseMoveTriggerListener.Instance;
 
-    public static int GetInputHashFor(AxisDirection axisBinding) => (int)axisBinding;
+    public static int GetInputHashFor(AxisDirection axisBinding)
+        => axisBinding.GetHashCode();
 
-    public int GetInputHash() => GetInputHashFor(this.AxisBinding);
+    public int GetInputHash()
+        => GetInputHashFor(this.AxisBinding);
 
     public override bool Equals(object obj)
     {

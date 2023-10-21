@@ -603,8 +603,8 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
     private void GamePadPressAndReleaseToolStripMenuItem_Click(object sender, EventArgs e)
     {
         List<MappedOption> range = new();
-        range.AddRange(GamePadAction.GetAllButtonActions(PressState.Press));
-        range.AddRange(GamePadAction.GetAllButtonActions(PressState.Release));
+        range.AddRange(GamePadButtonAction.GetAllButtonActions(PressState.Press));
+        range.AddRange(GamePadButtonAction.GetAllButtonActions(PressState.Release));
 
         this.selectedProfile.AddMappingRange(range);
         this.selectedProfile.Save();
@@ -613,7 +613,7 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
 
     private void GamePadPressToolStripMenuItem_Click(object sender, EventArgs e)
     {
-        var range = GamePadAction.GetAllButtonActions(PressState.Press);
+        var range = GamePadButtonAction.GetAllButtonActions(PressState.Press);
         this.selectedProfile.AddMappingRange(range);
         this.selectedProfile.Save();
         this.RefreshMappings();
@@ -621,7 +621,7 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
 
     private void GamePadReleaseToolStripMenuItem_Click(object sender, EventArgs e)
     {
-        var range = GamePadAction.GetAllButtonActions(PressState.Release);
+        var range = GamePadButtonAction.GetAllButtonActions(PressState.Release);
         this.selectedProfile.AddMappingRange(range);
         this.selectedProfile.Save();
         this.RefreshMappings();

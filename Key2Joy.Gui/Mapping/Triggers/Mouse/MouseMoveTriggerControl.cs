@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using Key2Joy.Contracts.Mapping;
@@ -21,17 +21,7 @@ public partial class MouseMoveTriggerControl : UserControl, ITriggerOptionsContr
     {
         this.InitializeComponent();
 
-        List<AxisDirection> directions = new();
-
-        foreach (AxisDirection direction in Enum.GetValues(typeof(AxisDirection)))
-        {
-            if (direction != AxisDirection.None)
-            {
-                directions.Add((AxisDirection)direction);
-            }
-        }
-
-        this.cmbMouseDirection.DataSource = directions;
+        this.cmbMouseDirection.DataSource = Enum.GetValues(typeof(AxisDirection));
     }
 
     public void Select(AbstractTrigger trigger)

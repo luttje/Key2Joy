@@ -69,8 +69,6 @@ public partial class GamePadStickTriggerControl : UserControl, ITriggerOptionsCo
 
     private void UpdateDeadzoneEnabled()
     {
-        this.pnlDeadzoneConfig.Enabled = this.chkOverrideDeadzone.Enabled;
-
         foreach (Control control in this.pnlDeadzoneConfig.Controls)
         {
             control.Enabled = this.chkOverrideDeadzone.Checked;

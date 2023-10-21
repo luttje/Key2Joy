@@ -214,51 +214,55 @@ internal class MappingContextMenuBuilder
 
         var selectedCount = this.selectedItems.Count;
 
+        if (selectedCount == 0)
+        {
+            return this.menu;
+        }
+
         if (selectedCount > 1)
         {
             this.SetupMultiSelectionContextMenu(this.menu);
+            return this.menu;
         }
-        else
+
+        var selected = (MappedOption)this.selectedItems[0].Cast<OLVListItem>().RowObject;
+
+        if (selected is MappedOption mappedOption)
         {
-            var selected = (MappedOption)this.selectedItems[0].Cast<OLVListItem>().RowObject;
+            var editItem = this.menu.Items.Add("Edit Mapping");
+            editItem.Click += (s, _) => this.SelectEditMapping?.Invoke(this, new(mappedOption));
 
-            if (selected is MappedOption mappedOption)
+            var removeItem = this.menu.Items.Add("Remove Mapping");
+            removeItem.Click += (s, _) => this.SelectRemoveMappings?.Invoke(this, new());
+
+            this.menu.Items.Add(new ToolStripSeparator());
+
+            if (mappedOption.IsChild)
             {
-                var editItem = this.menu.Items.Add("Edit Mapping");
-                editItem.Click += (s, _) => this.SelectEditMapping?.Invoke(this, new(mappedOption));
+                var removeParentItem = this.menu.Items.Add("Disconnect Mapping from Parent");
+                removeParentItem.Click += (s, _) => this.SelectMakeMappingParentless?.Invoke(this, new(mappedOption));
+            }
 
-                var removeItem = this.menu.Items.Add("Remove Mapping");
-                removeItem.Click += (s, _) => this.SelectRemoveMappings?.Invoke(this, new());
-
-                this.menu.Items.Add(new ToolStripSeparator());
-
-                if (mappedOption.IsChild)
+            if (this.currentChildChoosingParent == null)
+            {
+                var chooseNewParentItem = this.menu.Items.Add("Choose New Parent for this Mapping...");
+                chooseNewParentItem.Click += (s, _) => this.currentChildChoosingParent = mappedOption;
+                chooseNewParentItem.Enabled = !mappedOption.Children.Any();
+            }
+            else
+            {
+                var chooseParentItem = this.menu.Items.Add("Choose as Parent");
+                chooseParentItem.Image = Resources.tick;
+                chooseParentItem.Click += (s, _) =>
                 {
-                    var removeParentItem = this.menu.Items.Add("Disconnect Mapping from Parent");
-                    removeParentItem.Click += (s, _) => this.SelectMakeMappingParentless?.Invoke(this, new(mappedOption));
-                }
+                    this.SelectChooseNewParent?.Invoke(this, new(this.currentChildChoosingParent, mappedOption));
+                    this.currentChildChoosingParent = null;
+                };
+                chooseParentItem.Enabled = !mappedOption.IsChild;
 
-                if (this.currentChildChoosingParent == null)
-                {
-                    var chooseNewParentItem = this.menu.Items.Add("Choose New Parent for this Mapping...");
-                    chooseNewParentItem.Click += (s, _) => this.currentChildChoosingParent = mappedOption;
-                    chooseNewParentItem.Enabled = !mappedOption.Children.Any();
-                }
-                else
-                {
-                    var chooseParentItem = this.menu.Items.Add("Choose as Parent");
-                    chooseParentItem.Image = Resources.tick;
-                    chooseParentItem.Click += (s, _) =>
-                    {
-                        this.SelectChooseNewParent?.Invoke(this, new(this.currentChildChoosingParent, mappedOption));
-                        this.currentChildChoosingParent = null;
-                    };
-                    chooseParentItem.Enabled = !mappedOption.IsChild;
-
-                    var cancelItem = this.menu.Items.Add("Cancel Choosing Parent");
-                    cancelItem.Image = Resources.cross;
-                    cancelItem.Click += (s, _) => this.currentChildChoosingParent = null;
-                }
+                var cancelItem = this.menu.Items.Add("Cancel Choosing Parent");
+                cancelItem.Image = Resources.cross;
+                cancelItem.Click += (s, _) => this.currentChildChoosingParent = null;
             }
         }
 

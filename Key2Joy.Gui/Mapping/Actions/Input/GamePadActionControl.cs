@@ -11,7 +11,7 @@ using Key2Joy.Mapping.Actions.Input;
 namespace Key2Joy.Gui.Mapping;
 
 [MappingControl(
-    ForType = typeof(GamePadAction),
+    ForType = typeof(GamePadButtonAction),
     ImageResourceName = "joystick"
 )]
 public partial class GamePadActionControl : UserControl, IActionOptionsControl
@@ -26,7 +26,7 @@ public partial class GamePadActionControl : UserControl, IActionOptionsControl
         var allGamePads = gamePadService.GetAllGamePads();
         var allGamePadIndices = allGamePads.Select(gp => gp.Index).ToArray();
 
-        this.cmbGamePad.DataSource = GamePadAction.GetAllButtons();
+        this.cmbGamePad.DataSource = GamePadButtonAction.GetAllButtons();
         this.cmbPressState.DataSource = PressStates.ALL;
         this.cmbPressState.SelectedIndex = 0;
 
@@ -36,7 +36,7 @@ public partial class GamePadActionControl : UserControl, IActionOptionsControl
 
     public void Select(object action)
     {
-        var thisAction = (GamePadAction)action;
+        var thisAction = (GamePadButtonAction)action;
 
         this.cmbGamePad.SelectedItem = thisAction.Control;
         this.cmbPressState.SelectedItem = thisAction.PressState;
@@ -45,7 +45,7 @@ public partial class GamePadActionControl : UserControl, IActionOptionsControl
 
     public void Setup(object action)
     {
-        var thisAction = (GamePadAction)action;
+        var thisAction = (GamePadButtonAction)action;
 
         thisAction.Control = (SimWinInput.GamePadControl)this.cmbGamePad.SelectedItem;
         thisAction.PressState = (PressState)this.cmbPressState.SelectedItem;
