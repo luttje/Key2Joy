@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows.Forms;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Actions;
@@ -24,7 +24,7 @@ public partial class KeyboardActionControl : UserControl, IActionOptionsControl
         this.cmbPressState.SelectedIndex = 0;
     }
 
-    public void Select(object action)
+    public void Select(AbstractAction action)
     {
         var thisAction = (KeyboardAction)action;
 
@@ -32,7 +32,7 @@ public partial class KeyboardActionControl : UserControl, IActionOptionsControl
         this.cmbPressState.SelectedItem = thisAction.PressState;
     }
 
-    public void Setup(object action)
+    public void Setup(AbstractAction action)
     {
         var thisAction = (KeyboardAction)action;
 
@@ -40,8 +40,8 @@ public partial class KeyboardActionControl : UserControl, IActionOptionsControl
         thisAction.PressState = (PressState)this.cmbPressState.SelectedItem;
     }
 
-    public bool CanMappingSave(object action) => true;
-
+    public bool CanMappingSave(AbstractAction action) => true;
+    
     private void CmbKeyboard_SelectedIndexChanged(object sender, EventArgs e) => OptionsChanged?.Invoke(this, EventArgs.Empty);
 
     private void CmbPressState_SelectedIndexChanged(object sender, EventArgs e) => OptionsChanged?.Invoke(this, EventArgs.Empty);

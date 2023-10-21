@@ -34,7 +34,7 @@ public partial class GamePadActionControl : UserControl, IActionOptionsControl
         this.cmbGamePadIndex.SelectedIndex = 0;
     }
 
-    public void Select(object action)
+    public void Select(AbstractAction action)
     {
         var thisAction = (GamePadButtonAction)action;
 
@@ -43,7 +43,7 @@ public partial class GamePadActionControl : UserControl, IActionOptionsControl
         this.cmbGamePadIndex.SelectedItem = thisAction.GamePadIndex;
     }
 
-    public void Setup(object action)
+    public void Setup(AbstractAction action)
     {
         var thisAction = (GamePadButtonAction)action;
 
@@ -52,7 +52,12 @@ public partial class GamePadActionControl : UserControl, IActionOptionsControl
         thisAction.GamePadIndex = (int)this.cmbGamePadIndex.SelectedItem;
     }
 
-    public bool CanMappingSave(object action) => true;
+    public bool CanMappingSave(AbstractAction action)
+    {
+        var thisAction = (GamePadButtonAction)action;
+
+        return thisAction.Control != SimWinInput.GamePadControl.None;
+    }
 
     private void CmbGamePad_SelectedIndexChanged(object sender, EventArgs e) => OptionsChanged?.Invoke(this, EventArgs.Empty);
 

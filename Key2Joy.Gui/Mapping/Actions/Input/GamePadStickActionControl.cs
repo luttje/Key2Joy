@@ -47,7 +47,7 @@ public partial class GamePadStickActionControl : UserControl, IActionOptionsCont
         this.chkDeltaFromInput.Checked = true;
     }
 
-    public void Select(object action)
+    public void Select(AbstractAction action)
     {
         var thisAction = (GamePadStickAction)action;
 
@@ -61,7 +61,7 @@ public partial class GamePadStickActionControl : UserControl, IActionOptionsCont
         this.cmbGamePadIndex.SelectedItem = thisAction.GamePadIndex;
     }
 
-    public void Setup(object action)
+    public void Setup(AbstractAction action)
     {
         var thisAction = (GamePadStickAction)action;
 
@@ -96,7 +96,7 @@ public partial class GamePadStickActionControl : UserControl, IActionOptionsCont
         this.UpdateDeltaFromTrigger();
     }
 
-    public bool CanMappingSave(object action) => true;
+    public bool CanMappingSave(AbstractAction action) => true;
 
     private void CmbGamePad_SelectedIndexChanged(object sender, EventArgs e)
         => OptionsChanged?.Invoke(this, EventArgs.Empty);

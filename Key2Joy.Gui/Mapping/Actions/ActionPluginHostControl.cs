@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows.Forms;
 using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Plugins;
@@ -30,9 +30,9 @@ public partial class ActionPluginHostControl : UserControl, IActionOptionsContro
         listener.OptionsChanged += (s, e) => OptionsChanged?.Invoke(s, e);
     }
 
-    public bool CanMappingSave(object action) => this.pluginControlWithOptions.CanMappingSave(action);
+    public bool CanMappingSave(AbstractAction action) => this.pluginControlWithOptions.CanMappingSave(action);
 
-    public void Select(object action) => this.pluginControlWithOptions.Select(action);
+    public void Select(AbstractAction action) => this.pluginControlWithOptions.Select(action);
 
-    public void Setup(object action) => this.pluginControlWithOptions.Setup(action);
+    public void Setup(AbstractAction action) => this.pluginControlWithOptions.Setup(action);
 }

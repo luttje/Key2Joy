@@ -1,4 +1,4 @@
-﻿namespace Key2Joy.Gui
+namespace Key2Joy.Gui
 {
     partial class MappingForm
     {
@@ -35,10 +35,15 @@
             this.grpTrigger = new System.Windows.Forms.GroupBox();
             this.triggerControl = new Key2Joy.Gui.Mapping.TriggerControl();
             this.pnlTrigger = new System.Windows.Forms.Panel();
+            this.pnlReverse = new System.Windows.Forms.Panel();
+            this.chkCreateOrUpdateReverseMapping = new System.Windows.Forms.CheckBox();
+            this.pnlSave = new System.Windows.Forms.Panel();
             this.pnlAction.SuspendLayout();
             this.grpAction.SuspendLayout();
             this.grpTrigger.SuspendLayout();
             this.pnlTrigger.SuspendLayout();
+            this.pnlReverse.SuspendLayout();
+            this.pnlSave.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnlAction
@@ -50,7 +55,7 @@
             this.pnlAction.Location = new System.Drawing.Point(5, 79);
             this.pnlAction.Name = "pnlAction";
             this.pnlAction.Padding = new System.Windows.Forms.Padding(5, 5, 5, 10);
-            this.pnlAction.Size = new System.Drawing.Size(469, 79);
+            this.pnlAction.Size = new System.Drawing.Size(571, 79);
             this.pnlAction.TabIndex = 90;
             // 
             // grpAction
@@ -62,7 +67,7 @@
             this.grpAction.Location = new System.Drawing.Point(5, 5);
             this.grpAction.Name = "grpAction";
             this.grpAction.Padding = new System.Windows.Forms.Padding(5);
-            this.grpAction.Size = new System.Drawing.Size(459, 64);
+            this.grpAction.Size = new System.Drawing.Size(561, 64);
             this.grpAction.TabIndex = 88;
             this.grpAction.TabStop = false;
             this.grpAction.Text = "Actions that start at the trigger";
@@ -77,15 +82,15 @@
             this.actionControl.MinimumSize = new System.Drawing.Size(300, 32);
             this.actionControl.Name = "actionControl";
             this.actionControl.Padding = new System.Windows.Forms.Padding(5);
-            this.actionControl.Size = new System.Drawing.Size(449, 41);
+            this.actionControl.Size = new System.Drawing.Size(551, 41);
             this.actionControl.TabIndex = 0;
             // 
             // btnSaveMapping
             // 
-            this.btnSaveMapping.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnSaveMapping.Location = new System.Drawing.Point(5, 158);
+            this.btnSaveMapping.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnSaveMapping.Location = new System.Drawing.Point(0, 10);
             this.btnSaveMapping.Name = "btnSaveMapping";
-            this.btnSaveMapping.Size = new System.Drawing.Size(469, 44);
+            this.btnSaveMapping.Size = new System.Drawing.Size(571, 51);
             this.btnSaveMapping.TabIndex = 91;
             this.btnSaveMapping.Text = "Save Mapping";
             this.btnSaveMapping.UseVisualStyleBackColor = true;
@@ -100,7 +105,7 @@
             this.grpTrigger.Location = new System.Drawing.Point(5, 5);
             this.grpTrigger.Name = "grpTrigger";
             this.grpTrigger.Padding = new System.Windows.Forms.Padding(5);
-            this.grpTrigger.Size = new System.Drawing.Size(459, 64);
+            this.grpTrigger.Size = new System.Drawing.Size(561, 64);
             this.grpTrigger.TabIndex = 86;
             this.grpTrigger.TabStop = false;
             this.grpTrigger.Text = "Trigger that starts the action(s)";
@@ -114,7 +119,7 @@
             this.triggerControl.Location = new System.Drawing.Point(5, 18);
             this.triggerControl.Name = "triggerControl";
             this.triggerControl.Padding = new System.Windows.Forms.Padding(5);
-            this.triggerControl.Size = new System.Drawing.Size(449, 41);
+            this.triggerControl.Size = new System.Drawing.Size(551, 41);
             this.triggerControl.TabIndex = 0;
             // 
             // pnlTrigger
@@ -126,8 +131,40 @@
             this.pnlTrigger.Location = new System.Drawing.Point(5, 5);
             this.pnlTrigger.Name = "pnlTrigger";
             this.pnlTrigger.Padding = new System.Windows.Forms.Padding(5);
-            this.pnlTrigger.Size = new System.Drawing.Size(469, 74);
+            this.pnlTrigger.Size = new System.Drawing.Size(571, 74);
             this.pnlTrigger.TabIndex = 89;
+            // 
+            // pnlReverse
+            // 
+            this.pnlReverse.Controls.Add(this.chkCreateOrUpdateReverseMapping);
+            this.pnlReverse.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlReverse.Location = new System.Drawing.Point(5, 158);
+            this.pnlReverse.Name = "pnlReverse";
+            this.pnlReverse.Size = new System.Drawing.Size(571, 24);
+            this.pnlReverse.TabIndex = 89;
+            // 
+            // chkCreateOrUpdateReverseMapping
+            // 
+            this.chkCreateOrUpdateReverseMapping.AutoSize = true;
+            this.chkCreateOrUpdateReverseMapping.Dock = System.Windows.Forms.DockStyle.Top;
+            this.chkCreateOrUpdateReverseMapping.Location = new System.Drawing.Point(0, 0);
+            this.chkCreateOrUpdateReverseMapping.Name = "chkCreateOrUpdateReverseMapping";
+            this.chkCreateOrUpdateReverseMapping.Padding = new System.Windows.Forms.Padding(5);
+            this.chkCreateOrUpdateReverseMapping.Size = new System.Drawing.Size(571, 27);
+            this.chkCreateOrUpdateReverseMapping.TabIndex = 0;
+            this.chkCreateOrUpdateReverseMapping.Text = "Also update the child mapping that is a useful reverse of this";
+            this.chkCreateOrUpdateReverseMapping.UseVisualStyleBackColor = true;
+            this.chkCreateOrUpdateReverseMapping.Click += new System.EventHandler(this.ChkCreateOrUpdateReverseMapping_Click);
+            // 
+            // pnlSave
+            // 
+            this.pnlSave.Controls.Add(this.btnSaveMapping);
+            this.pnlSave.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlSave.Location = new System.Drawing.Point(5, 182);
+            this.pnlSave.Name = "pnlSave";
+            this.pnlSave.Padding = new System.Windows.Forms.Padding(0, 10, 0, 0);
+            this.pnlSave.Size = new System.Drawing.Size(571, 61);
+            this.pnlSave.TabIndex = 92;
             // 
             // MappingForm
             // 
@@ -136,8 +173,9 @@
             this.AutoScroll = true;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(496, 188);
-            this.Controls.Add(this.btnSaveMapping);
+            this.ClientSize = new System.Drawing.Size(581, 243);
+            this.Controls.Add(this.pnlSave);
+            this.Controls.Add(this.pnlReverse);
             this.Controls.Add(this.pnlAction);
             this.Controls.Add(this.pnlTrigger);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -155,6 +193,9 @@
             this.grpTrigger.PerformLayout();
             this.pnlTrigger.ResumeLayout(false);
             this.pnlTrigger.PerformLayout();
+            this.pnlReverse.ResumeLayout(false);
+            this.pnlReverse.PerformLayout();
+            this.pnlSave.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -168,5 +209,8 @@
         private System.Windows.Forms.GroupBox grpAction;
         private Mapping.ActionControl actionControl;
         private Mapping.TriggerControl triggerControl;
+        private System.Windows.Forms.Panel pnlReverse;
+        private System.Windows.Forms.CheckBox chkCreateOrUpdateReverseMapping;
+        private System.Windows.Forms.Panel pnlSave;
     }
 }

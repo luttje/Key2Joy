@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows.Forms;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Triggers;
@@ -91,6 +91,8 @@ public partial class MouseButtonTriggerControl : UserControl, ITriggerOptionsCon
         thisTrigger.MouseButtons = this.mouseButtons;
         thisTrigger.PressState = (PressState)this.cmbPressState.SelectedItem;
     }
+    
+    public bool CanMappingSave(AbstractTrigger trigger) => true;
 
     private void CmbPressedState_SelectedIndexChanged(object sender, EventArgs e) => OptionsChanged?.Invoke(this, EventArgs.Empty);
 

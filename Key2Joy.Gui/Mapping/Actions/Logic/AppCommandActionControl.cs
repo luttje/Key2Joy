@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using Key2Joy.Contracts.Mapping;
@@ -29,20 +29,20 @@ public partial class AppCommandActionControl : UserControl, IActionOptionsContro
         this.cmbAppCommand.DataSource = appCommands;
     }
 
-    public void Select(object action)
+    public void Select(AbstractAction action)
     {
         var thisAction = (AppCommandAction)action;
 
         this.cmbAppCommand.SelectedItem = thisAction.Command;
     }
 
-    public void Setup(object action)
+    public void Setup(AbstractAction action)
     {
         var thisAction = (AppCommandAction)action;
 
         thisAction.Command = (AppCommand)this.cmbAppCommand.SelectedItem;
     }
-    public bool CanMappingSave(object action) => true;
+    public bool CanMappingSave(AbstractAction action) => true;
 
     private void CmbAppCommand_SelectedIndexChanged(object sender, EventArgs e) => OptionsChanged?.Invoke(this, EventArgs.Empty);
 }

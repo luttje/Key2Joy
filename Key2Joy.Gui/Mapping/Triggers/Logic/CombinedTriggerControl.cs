@@ -69,4 +69,6 @@ public partial class CombinedTriggerControl : UserControl, ITriggerOptionsContro
             thisTrigger.Triggers.Add((triggerControl as CombinedTriggerControlItem).Trigger);
         }
     }
+
+    public bool CanMappingSave(AbstractTrigger trigger) => true;
 }

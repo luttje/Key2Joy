@@ -79,29 +79,46 @@ public class MappedOption : AbstractMappedOption
 
         foreach (var mapping in mappings)
         {
-            var actionCopy = (AbstractAction)mapping.Action.Clone();
-            var triggerCopy = (AbstractTrigger)mapping.Trigger.Clone();
-
-            if (mapping.Action is IProvideReverseAspect action)
-            {
-                action.MakeReverse(actionCopy);
-            }
-
-            if (mapping.Trigger is IProvideReverseAspect trigger)
-            {
-                trigger.MakeReverse(triggerCopy);
-            }
-
-            MappedOption variantOption = new()
-            {
-                Action = actionCopy,
-                Trigger = triggerCopy,
-            };
-            variantOption.SetParent(mapping);
-
-            newOptions.Add(variantOption);
+            newOptions.Add(GenerateReverseMapping(mapping));
         }
 
         return newOptions;
+    }
+
+    /// <summary>
+    /// Asks the provided mappings for a variant with reverse action and trigger.
+    /// If no <see cref="IProvideReverseAspect"/> is implemented, a copy of the
+    /// current mapping is returned.
+    /// </summary>
+    /// <param name="mapping"></param>
+    /// <param name="dontSetParent">Optionally dont set the parent, useful to get a reverse that wont be saved.</param>
+    /// <returns></returns>
+    public static MappedOption GenerateReverseMapping(MappedOption mapping, bool dontSetParent = false)
+    {
+        var actionCopy = (AbstractAction)mapping.Action.Clone();
+        var triggerCopy = (AbstractTrigger)mapping.Trigger.Clone();
+
+        if (mapping.Action is IProvideReverseAspect action)
+        {
+            action.MakeReverse(actionCopy);
+        }
+
+        if (mapping.Trigger is IProvideReverseAspect trigger)
+        {
+            trigger.MakeReverse(triggerCopy);
+        }
+
+        MappedOption variantOption = new()
+        {
+            Action = actionCopy,
+            Trigger = triggerCopy,
+        };
+
+        if (!dontSetParent)
+        {
+            variantOption.SetParent(mapping);
+        }
+
+        return variantOption;
     }
 }

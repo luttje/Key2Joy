@@ -182,11 +182,14 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
             return;
         }
 
-        var mappedOption = mappingForm.MappedOption;
-
         if (existingMappedOption == null)
         {
-            this.selectedProfile.AddMapping(mappedOption);
+            this.selectedProfile.AddMapping(mappingForm.MappedOption);
+        }
+
+        if (mappingForm.MappedOptionReverse != null)
+        {
+            this.selectedProfile.AddMapping(mappingForm.MappedOptionReverse);
         }
 
         this.selectedProfile.Save();

@@ -4,6 +4,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.Mapping;
 using Key2Joy.Mapping.Triggers;
@@ -49,6 +50,16 @@ public partial class TriggerControl : UserControl
         this.options?.Setup(this.Trigger);
 
         TriggerChanged?.Invoke(this, new TriggerChangedEventArgs(this.Trigger));
+    }
+
+    public bool CanMappingSave(AbstractMappedOption mappedOption)
+    {
+        if (this.options != null)
+        {
+            return this.options.CanMappingSave(mappedOption.Trigger);
+        }
+
+        return false;
     }
 
     public void SelectTrigger(AbstractTrigger trigger)

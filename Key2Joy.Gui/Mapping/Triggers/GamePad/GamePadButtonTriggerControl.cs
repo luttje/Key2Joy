@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows.Forms;
 using CommonServiceLocator;
 using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.LowLevelInput;
 using Key2Joy.LowLevelInput.XInput;
@@ -92,6 +93,8 @@ public partial class GamePadButtonTriggerControl : UserControl, ITriggerOptionsC
         thisTrigger.Button = this.button;
         thisTrigger.PressState = (PressState)this.cmbPressState.SelectedItem;
     }
+
+    public bool CanMappingSave(AbstractTrigger trigger) => true;
 
     private void StartTrapping()
     {

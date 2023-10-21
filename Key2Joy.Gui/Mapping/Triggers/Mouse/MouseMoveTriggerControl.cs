@@ -37,5 +37,7 @@ public partial class MouseMoveTriggerControl : UserControl, ITriggerOptionsContr
         thisTrigger.AxisBinding = (AxisDirection)this.cmbMouseDirection.SelectedItem;
     }
 
+    public bool CanMappingSave(AbstractTrigger trigger) => true;
+    
     private void CmbMouseDirection_SelectedIndexChanged(object sender, EventArgs e) => OptionsChanged?.Invoke(this, EventArgs.Empty);
 }
