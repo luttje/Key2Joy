@@ -102,20 +102,20 @@ public class GamePadStickAction : CoreAction, IEquatable<GamePadStickAction>
     /// ]]>
     /// </code>
     /// </markdown-example>
-    /// <param name="x">The fraction by which to move the stick forward (negative) or backward (positive)</param>
-    /// <param name="y">The fraction by which to move the stick right (positive) or left (negative)</param>
+    /// <param name="deltaX">The fraction by which to move the stick forward (negative) or backward (positive)</param>
+    /// <param name="deltaY">The fraction by which to move the stick right (positive) or left (negative)</param>
     /// <param name="side">Which gamepad stick to move, either GamePadStick.Left (default) or .Right</param>
     /// <param name="gamepadIndex">Which of 4 possible gamepads to simulate: 0 (default), 1, 2 or 3</param>
     /// <name>GamePad.SimulateMove</name>
     [ExposesScriptingMethod("GamePad.SimulateMove")]
     public async void ExecuteForScript(
-        short x,
-        short y,
+        short deltaX,
+        short deltaY,
         GamePadSide side = GamePadSide.Left,
         int gamepadIndex = 0)
     {
-        this.DeltaX = x;
-        this.DeltaY = y;
+        this.DeltaX = deltaX;
+        this.DeltaY = deltaY;
         this.Side = side;
         this.GamePadIndex = gamepadIndex;
 
