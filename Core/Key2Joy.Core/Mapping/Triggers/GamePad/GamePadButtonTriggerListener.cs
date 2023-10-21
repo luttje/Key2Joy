@@ -36,7 +36,6 @@ public class GamePadButtonTriggerListener : PressReleaseTriggerListener<GamePadB
     protected override void Start()
     {
         this.xInputService.StateChanged += this.XInputService_StateChanged;
-        this.xInputService.StartPolling();
         this.currentKeysDown.Clear();
 
         base.Start();
@@ -45,7 +44,6 @@ public class GamePadButtonTriggerListener : PressReleaseTriggerListener<GamePadB
     /// <inheritdoc/>
     protected override void Stop()
     {
-        this.xInputService.StopPolling();
         this.xInputService.StateChanged -= this.XInputService_StateChanged;
         instance = null;
         this.currentKeysDown.Clear();

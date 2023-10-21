@@ -14,10 +14,11 @@ public interface IXInputService
     event EventHandler<DeviceStateChangedEventArgs> StateChanged;
 
     /// <summary>
-    /// Registers a device by its index for monitoring its state.
+    /// Must be called before simulated gamepads are plugged in.
+    /// This should recognize which of the gamepads are physical and it
+    /// should register them.
     /// </summary>
-    /// <param name="deviceIndex">The index of the device to register.</param>
-    void RegisterDevice(int deviceIndex);
+    void RecognizePhysicalDevices();
 
     /// <summary>
     /// Starts polling all registered devices for state changes.
@@ -33,8 +34,8 @@ public interface IXInputService
     /// Retrieves the current state of the specified device.
     /// </summary>
     /// <param name="deviceIndex">The index of the device.</param>
-    /// <returns>The current state of the device.</returns>
-    XInputState GetState(int deviceIndex);
+    /// <returns>The current state of the device or null if the device is invalid.</returns>
+    XInputState? GetState(int deviceIndex);
 
     /// <summary>
     /// Retrieves the capabilities of the specified device.

@@ -191,6 +191,12 @@ public class Key2JoyManager : IKey2JoyManager, IMessageFilter
 
         var allActions = (IList<AbstractAction>)profile.MappedOptions.Select(m => m.Action).ToList();
 
+        var xInputService = ServiceLocator.Current.GetInstance<IXInputService>();
+        // We must recognize physical devices before any simulated ones are added.
+        // Otherwise we wont be able to tell the difference.
+        xInputService.RecognizePhysicalDevices();
+        xInputService.StartPolling();
+
         try
         {
             foreach (var mappedOption in profile.MappedOptions)
@@ -270,6 +276,9 @@ public class Key2JoyManager : IKey2JoyManager, IMessageFilter
         {
             listener.StopListening();
         }
+
+        var xInputService = ServiceLocator.Current.GetInstance<IXInputService>();
+        xInputService.StopPolling();
 
         var gamePadService = ServiceLocator.Current.GetInstance<ISimulatedGamePadService>();
         gamePadService.EnsureAllUnplugged();

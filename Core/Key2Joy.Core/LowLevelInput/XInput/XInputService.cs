@@ -35,18 +35,40 @@ public class XInputService : IXInputService
         this.lastStates = new();
     }
 
+    private bool GetIsDeviceConnected(int deviceIndex)
+    {
+        var state = new XInputState();
+        var resultCode = this.xInputInstance.XInputGetState(deviceIndex, ref state);
+
+        return resultCode == XInputResultCode.ERROR_SUCCESS;
+    }
+
     /// <inheritdoc/>
-    public void RegisterDevice(int deviceIndex)
+    public void RecognizePhysicalDevices()
     {
         lock (this.registeredDevices)
         {
-            if (this.registeredDevices.Contains(deviceIndex))
-            {
-                return;
-            }
+            this.registeredDevices.Clear();
 
-            this.registeredDevices.Add(deviceIndex);
+            for (var i = 0; i < MaxDevices; i++)
+            {
+                this.RegisterDevice(i);
+            }
         }
+    }
+
+    /// <summary>
+    /// Registers a device by its index for monitoring its state.
+    /// </summary>
+    /// <param name="deviceIndex">The index of the device to register.</param>
+    private void RegisterDevice(int deviceIndex)
+    {
+        if (!this.GetIsDeviceConnected(deviceIndex))
+        {
+            return;
+        }
+
+        this.registeredDevices.Add(deviceIndex);
     }
 
     /// <inheritdoc/>
@@ -57,20 +79,13 @@ public class XInputService : IXInputService
             return;
         }
 
-        // TODO: Is this the right place? It seems convenient to just call events
-        //       for all available devices. That's why I added it here.
-        for (var i = 0; i < MaxDevices; i++)
-        {
-            this.RegisterDevice(i);
-        }
-
         this.isPolling = true;
 
         this.pollingThread = new Thread(() =>
         {
-            do
+            lock (this.registeredDevices)
             {
-                lock (this.registeredDevices)
+                do
                 {
                     // Add a delay to avoid hammering the IXInput instance too rapidly
                     Thread.Sleep(UpdateIntervalInMs);
@@ -80,31 +95,29 @@ public class XInputService : IXInputService
                         var newState = new XInputState();
                         var resultCode = this.xInputInstance.XInputGetState(deviceIndex, ref newState);
 
-                        if (resultCode == XInputResultCode.ERROR_SUCCESS)
+                        if (resultCode != XInputResultCode.ERROR_SUCCESS)
                         {
-                            this.PacketReceived?.Invoke(this, new DevicePacketReceivedEventArgs(deviceIndex, newState));
-                            var hasLastState = this.lastStates.TryGetValue(deviceIndex, out var lastState);
+                            continue;
+                        }
 
-                            if (!hasLastState || !lastState.Equals(newState))
+                        this.PacketReceived?.Invoke(this, new DevicePacketReceivedEventArgs(deviceIndex, newState));
+                        var hasLastState = this.lastStates.TryGetValue(deviceIndex, out var lastState);
+
+                        if (!hasLastState || !lastState.Equals(newState))
+                        {
+                            if (!hasLastState)
                             {
-                                if (!hasLastState)
-                                {
-                                    this.lastStates.Add(deviceIndex, newState);
-                                }
-                                else
-                                {
-                                    this.lastStates[deviceIndex] = newState;
-                                    //this.StateChanged?.Invoke(this, new DeviceStateChangedEventArgs(deviceIndex, newState));
-                                    // We don't want to wait for the invoke to finish, because a user may call
-                                    // StopPolling from within the event handler, which would cause a deadlock
-                                    // because thread.Join will wait for this Invoke to complete (never in such a case)
-                                    this.StateChanged?.BeginInvoke(this, new DeviceStateChangedEventArgs(deviceIndex, newState), null, null);
-                                }
+                                this.lastStates.Add(deviceIndex, newState);
+                            }
+                            else
+                            {
+                                this.lastStates[deviceIndex] = newState;
+                                this.StateChanged?.Invoke(this, new DeviceStateChangedEventArgs(deviceIndex, newState));
                             }
                         }
                     }
-                }
-            } while (this.isPolling);
+                } while (this.isPolling);
+            }
         });
 
         this.pollingThread.Start();
@@ -112,17 +125,20 @@ public class XInputService : IXInputService
 
     /// <inheritdoc/>
     public void StopPolling()
-    {
-        this.isPolling = false;
-        this.pollingThread?.Join();
-        this.pollingThread = null;
-    }
+        => this.isPolling = false;
 
     /// <inheritdoc/>
-    public XInputState GetState(int deviceIndex)
+    public XInputState? GetState(int deviceIndex)
     {
-        var inputState = new XInputState();
+        if (!this.registeredDevices.Contains(deviceIndex))
+        {
+            // Only return the state for devices registered before simulated
+            // devices were added. XInputGetState also returns those, so we
+            // need to check it manually.
+            return null;
+        }
 
+        var inputState = new XInputState();
         this.xInputInstance.XInputGetState(deviceIndex, ref inputState);
 
         return inputState;
@@ -203,16 +219,9 @@ public class XInputService : IXInputService
 
         for (var i = 0; i < MaxDevices; i++)
         {
-            var state = new XInputState();
-            var resultCode = this.xInputInstance.XInputGetState(i, ref state);
-
-            if (resultCode == XInputResultCode.ERROR_SUCCESS)
+            if (this.GetIsDeviceConnected(i))
             {
-                // Simulated devices return PacketNumber 0
-                if (state.PacketNumber != 0)
-                {
-                    activeDevices.Add(i);
-                }
+                activeDevices.Add(i);
             }
         }
 

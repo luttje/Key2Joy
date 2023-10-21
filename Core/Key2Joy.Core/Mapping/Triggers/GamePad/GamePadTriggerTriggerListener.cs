@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using CommonServiceLocator;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Triggers;
@@ -38,7 +40,6 @@ public class GamePadTriggerTriggerListener : CoreTriggerListener
     protected override void Start()
     {
         this.xInputService.StateChanged += this.XInputService_StateChanged;
-        this.xInputService.StartPolling();
 
         base.Start();
     }
@@ -46,7 +47,6 @@ public class GamePadTriggerTriggerListener : CoreTriggerListener
     /// <inheritdoc/>
     protected override void Stop()
     {
-        this.xInputService.StopPolling();
         this.xInputService.StateChanged -= this.XInputService_StateChanged;
         instance = null;
 
@@ -72,7 +72,25 @@ public class GamePadTriggerTriggerListener : CoreTriggerListener
 
         var state = this.xInputService.GetState(gamePadTriggerTrigger.GamePadIndex);
 
-        return state.Gamepad.IsTriggerPulled(gamePadTriggerTrigger.TriggerSide, gamePadTriggerTrigger.DeltaMargin);
+        if (state is null)
+        {
+            // Ignore simulated gamepads
+            return false;
+        }
+
+        var isPulled = state.Value.Gamepad.IsTriggerPulled(gamePadTriggerTrigger.TriggerSide, gamePadTriggerTrigger.DeltaMargin);
+
+        if (isPulled)
+        {
+            return true;
+        }
+
+        if (gamePadTriggerTrigger.WasPulled)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     /// <summary>

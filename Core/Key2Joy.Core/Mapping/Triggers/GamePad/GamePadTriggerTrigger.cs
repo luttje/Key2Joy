@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text.Json.Serialization;
 using Key2Joy.Contracts.Mapping.Triggers;
 
@@ -28,6 +29,13 @@ public class GamePadTriggerTrigger : CoreTrigger, IReturnInputHash, IEquatable<G
     /// </summary>
     public float? DeltaMargin { get; set; } = null;
 
+    /// <summary>
+    /// Used by the listener to check if it should fire even if 0. It fires once when the trigger was
+    /// pulled before, but has no become zero.
+    /// </summary>
+    [JsonIgnore]
+    public bool WasPulled { get; private set; }
+
     [JsonConstructor]
     public GamePadTriggerTrigger(string name)
         : base(name)
@@ -36,6 +44,23 @@ public class GamePadTriggerTrigger : CoreTrigger, IReturnInputHash, IEquatable<G
     /// <inheritdoc/>
     public override AbstractTriggerListener GetTriggerListener()
         => GamePadTriggerTriggerListener.Instance;
+
+    /// <inheritdoc/>
+    public override void DoActivate(AbstractInputBag inputBag, bool executed = false)
+    {
+        base.DoActivate(inputBag, executed);
+
+        var triggerInputBag = inputBag as GamePadTriggerInputBag;
+
+        if (this.TriggerSide == GamePadSide.Left)
+        {
+            this.WasPulled = triggerInputBag.LeftTriggerDelta > 0;
+        }
+        else
+        {
+            this.WasPulled = triggerInputBag.RightTriggerDelta > 0;
+        }
+    }
 
     /// <inheritdoc/>
     public int GetInputHash()

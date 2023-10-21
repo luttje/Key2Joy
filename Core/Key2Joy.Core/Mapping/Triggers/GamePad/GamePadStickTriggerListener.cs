@@ -41,7 +41,6 @@ public class GamePadStickTriggerListener : CoreTriggerListener
     protected override void Start()
     {
         this.xInputService.StateChanged += this.XInputService_StateChanged;
-        this.xInputService.StartPolling();
 
         base.Start();
     }
@@ -49,7 +48,6 @@ public class GamePadStickTriggerListener : CoreTriggerListener
     /// <inheritdoc/>
     protected override void Stop()
     {
-        this.xInputService.StopPolling();
         this.xInputService.StateChanged -= this.XInputService_StateChanged;
         instance = null;
 
@@ -80,7 +78,12 @@ public class GamePadStickTriggerListener : CoreTriggerListener
 
         var state = this.xInputService.GetState(gamePadStickTrigger.GamePadIndex);
 
-        return state.Gamepad.IsThumbstickMoved(gamePadStickTrigger.StickSide, gamePadStickTrigger.DeltaMargin);
+        if (state is null)
+        {
+            return false;
+        }
+
+        return state.Value.Gamepad.IsThumbstickMoved(gamePadStickTrigger.StickSide, gamePadStickTrigger.DeltaMargin);
     }
 
     /// <summary>

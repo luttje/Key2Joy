@@ -5,6 +5,7 @@ using CommonServiceLocator;
 using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.LowLevelInput.SimulatedGamePad;
+using Key2Joy.LowLevelInput.XInput;
 using Key2Joy.Mapping.Triggers.GamePad;
 using Key2Joy.Mapping.Triggers.Mouse;
 
@@ -24,8 +25,8 @@ public class GamePadStickAction : CoreAction, IEquatable<GamePadStickAction>
     /// </summary>
     private const int BIG_DELTA_MOVEMENT = 250;
 
-    private const short MIN_STICK_VALUE = short.MinValue;
-    private const short MAX_STICK_VALUE = short.MaxValue;
+    private const short MIN_STICK_VALUE = XInputGamePad.ThumbstickValueMin;
+    private const short MAX_STICK_VALUE = XInputGamePad.ThumbstickValueMax;
 
     private const float EXACT_SCALE = (MAX_STICK_VALUE - MIN_STICK_VALUE) / 2f;
 
@@ -104,7 +105,7 @@ public class GamePadStickAction : CoreAction, IEquatable<GamePadStickAction>
     /// </markdown-example>
     /// <param name="deltaX">The fraction by which to move the stick forward (negative) or backward (positive)</param>
     /// <param name="deltaY">The fraction by which to move the stick right (positive) or left (negative)</param>
-    /// <param name="side">Which gamepad stick to move, either GamePadStick.Left (default) or .Right</param>
+    /// <param name="side">Which gamepad stick to move, either GamePadSide.Left (default) or .Right</param>
     /// <param name="gamepadIndex">Which of 4 possible gamepads to simulate: 0 (default), 1, 2 or 3</param>
     /// <name>GamePad.SimulateMove</name>
     [ExposesScriptingMethod("GamePad.SimulateMove")]
@@ -163,6 +164,11 @@ public class GamePadStickAction : CoreAction, IEquatable<GamePadStickAction>
         {
             deltaX = Scale(axisInputBag.DeltaX, this.InputScaleX);
         }
+        else if (inputBag is GamePadTriggerInputBag triggerInputBag)
+        {
+            // TODO: This is now hard-coded, but I'd love for 'modifiers' to exist in between triggers and actions. Those could (with more fine tuning) be configured by the user.
+            deltaX = Scale((int)(triggerInputBag.LeftTriggerDelta * XInputGamePad.TriggerValueMax), this.InputScaleX);
+        }
 
         if (this.DeltaY is not null)
         {
@@ -171,6 +177,10 @@ public class GamePadStickAction : CoreAction, IEquatable<GamePadStickAction>
         else if (inputBag is AxisDeltaInputBag axisInputBag)
         {
             deltaY = Scale(axisInputBag.DeltaY, this.InputScaleY);
+        }
+        else if (inputBag is GamePadTriggerInputBag triggerInputBag)
+        {
+            deltaY = Scale((int)(triggerInputBag.RightTriggerDelta * XInputGamePad.TriggerValueMax), this.InputScaleY);
         }
 
         if (this.Side == GamePadSide.Left)
@@ -183,9 +193,6 @@ public class GamePadStickAction : CoreAction, IEquatable<GamePadStickAction>
             state.RightStickX = this.GetStickValue(state.RightStickX, deltaX);
             state.RightStickY = this.GetStickValue(state.RightStickY, deltaY);
         }
-
-        System.Diagnostics.Debug
-            .WriteLine($"GamePadStickAction: {this.Side} > #{this.GamePadIndex} > {state.LeftStickX} {state.LeftStickY} | {state.RightStickX} {state.RightStickY}");
 
         if (state.LeftStickX != 0
             || state.LeftStickY != 0

@@ -33,8 +33,15 @@ public partial class GamePadButtonTriggerControl : UserControl, ITriggerOptionsC
         this.xInputService = ServiceLocator.Current.GetInstance<IXInputService>();
         this.xInputService.StateChanged += this.XInputService_StateChanged;
 
+        this.cmbPressState.DataSource = PressStates.ALL;
+        this.cmbPressState.SelectedIndex = 0;
+
+        this.nudGamePadIndex.Minimum = 0;
+        this.nudGamePadIndex.Maximum = XInputService.MaxDevices - 1;
+
         // Relieve input capturing by this mapping form
-        Disposed += (s, e) =>
+        ControlRemoved += (s, e) => this.Dispose();
+        this.Disposed += (s, e) =>
         {
             if (this.xInputService == null)
             {
@@ -42,14 +49,8 @@ public partial class GamePadButtonTriggerControl : UserControl, ITriggerOptionsC
             }
 
             this.xInputService.StateChanged -= this.XInputService_StateChanged;
+            this.xInputService.StopPolling();
         };
-        ControlRemoved += (s, e) => this.Dispose();
-
-        this.cmbPressState.DataSource = PressStates.ALL;
-        this.cmbPressState.SelectedIndex = 0;
-
-        this.nudGamePadIndex.Minimum = 0;
-        this.nudGamePadIndex.Maximum = XInputService.MaxDevices - 1;
     }
 
     private void XInputService_StateChanged(object sender, DeviceStateChangedEventArgs e)
@@ -96,12 +97,7 @@ public partial class GamePadButtonTriggerControl : UserControl, ITriggerOptionsC
     {
         this.txtButtonBind.Text = TEXT_CHANGE;
         this.txtButtonBind.Focus();
-
-        // Listen for all devices
-        for (var i = 0; i < XInputService.MaxDevices; i++)
-        {
-            this.xInputService.RegisterDevice(i);
-        }
+        this.xInputService.RecognizePhysicalDevices();
         this.xInputService.StartPolling();
     }
 

@@ -21,11 +21,12 @@ public class XInputServiceTests
     }
 
     [TestMethod]
-    public void GetState_ShouldCallXInputGetState()
+    public void GetState_ShouldNotCallXInputGetStateOnUnregisteredDevice()
     {
-        this.xInputService.GetState(1);
+        var state = this.xInputService.GetState(1);
 
-        this.mockXInput.Verify(x => x.XInputGetState(It.IsAny<int>(), ref It.Ref<XInputState>.IsAny), Times.Once);
+        this.mockXInput.Verify(x => x.XInputGetState(It.IsAny<int>(), ref It.Ref<XInputState>.IsAny), Times.Never);
+        Assert.IsNull(state);
     }
 
     [TestMethod]

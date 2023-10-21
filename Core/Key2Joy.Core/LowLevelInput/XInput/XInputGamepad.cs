@@ -12,8 +12,10 @@ namespace Key2Joy.LowLevelInput.XInput;
 [StructLayout(LayoutKind.Explicit)]
 public struct XInputGamePad : IEquatable<XInputGamePad>
 {
-    public const int MaxThumbstickValue = 32767;
-    public const int MaxTriggerValue = 255;
+    public const int ThumbstickValueMin = short.MinValue;
+    public const int ThumbstickValueMax = short.MaxValue;
+    public const int TriggerValueMin = 0;
+    public const int TriggerValueMax = 255;
 
     /// <summary>
     /// Can be used as a positive and negative value to filter left thumbstick input.
@@ -132,8 +134,8 @@ public struct XInputGamePad : IEquatable<XInputGamePad>
         var defaultDeadzone = side == GamePadSide.Left ? XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE : XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE;
         var thumbstickX = side == GamePadSide.Left ? this.LeftThumbX : this.RightThumbX;
         var thumbstickY = side == GamePadSide.Left ? this.LeftThumbY : this.RightThumbY;
-        var deadzoneX = deltaMargin?.X * MaxThumbstickValue ?? defaultDeadzone;
-        var deadzoneY = deltaMargin?.Y * MaxThumbstickValue ?? defaultDeadzone;
+        var deadzoneX = deltaMargin?.X * ThumbstickValueMax ?? defaultDeadzone;
+        var deadzoneY = deltaMargin?.Y * ThumbstickValueMax ?? defaultDeadzone;
 
         // We must convert to an int, otherwise the absolute of short -32768 (32768) would fail since it's too big
         if (Math.Abs((int)thumbstickX) > deadzoneX || Math.Abs((int)thumbstickY) > deadzoneY)
@@ -173,13 +175,13 @@ public struct XInputGamePad : IEquatable<XInputGamePad>
         if (side == GamePadSide.Left)
         {
             return new ExactAxisDirection(
-                (float)this.LeftThumbX / MaxThumbstickValue,
-                (float)this.LeftThumbY / MaxThumbstickValue);
+                (float)this.LeftThumbX / ThumbstickValueMax,
+                (float)this.LeftThumbY / ThumbstickValueMax);
         }
 
         return new ExactAxisDirection(
-            (float)this.RightThumbX / MaxThumbstickValue,
-            (float)this.RightThumbY / MaxThumbstickValue);
+            (float)this.RightThumbX / ThumbstickValueMax,
+            (float)this.RightThumbY / ThumbstickValueMax);
     }
 
     /// <summary>
@@ -191,10 +193,10 @@ public struct XInputGamePad : IEquatable<XInputGamePad>
     {
         if (side == GamePadSide.Left)
         {
-            return (float)this.LeftTrigger / MaxTriggerValue;
+            return (float)this.LeftTrigger / TriggerValueMax;
         }
 
-        return (float)this.RightTrigger / MaxTriggerValue;
+        return (float)this.RightTrigger / TriggerValueMax;
     }
 
     /// <summary>

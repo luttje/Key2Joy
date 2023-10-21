@@ -41,7 +41,6 @@ namespace Key2Joy.Gui.Mapping
             this.nudDeadzoneX = new System.Windows.Forms.NumericUpDown();
             this.lblInfoDeadzoneX = new System.Windows.Forms.Label();
             this.chkOverrideDeadzone = new System.Windows.Forms.CheckBox();
-            this.lblGamePadIndexWarning = new System.Windows.Forms.Label();
             this.pnlStickSide.SuspendLayout();
             this.pnlGamePadIndex.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudGamePadIndex)).BeginInit();
@@ -55,9 +54,9 @@ namespace Key2Joy.Gui.Mapping
             // 
             this.lblInfoSide.Dock = System.Windows.Forms.DockStyle.Left;
             this.lblInfoSide.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.lblInfoSide.Location = new System.Drawing.Point(0, 0);
+            this.lblInfoSide.Location = new System.Drawing.Point(0, 5);
             this.lblInfoSide.Name = "lblInfoSide";
-            this.lblInfoSide.Size = new System.Drawing.Size(59, 24);
+            this.lblInfoSide.Size = new System.Drawing.Size(59, 16);
             this.lblInfoSide.TabIndex = 8;
             this.lblInfoSide.Text = "Stick Side:";
             this.lblInfoSide.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -67,16 +66,18 @@ namespace Key2Joy.Gui.Mapping
             this.pnlStickSide.Controls.Add(this.cmbStickSide);
             this.pnlStickSide.Controls.Add(this.lblInfoSide);
             this.pnlStickSide.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlStickSide.Location = new System.Drawing.Point(5, 72);
+            this.pnlStickSide.Location = new System.Drawing.Point(5, 25);
             this.pnlStickSide.Name = "pnlStickSide";
-            this.pnlStickSide.Size = new System.Drawing.Size(297, 24);
+            this.pnlStickSide.Padding = new System.Windows.Forms.Padding(0, 5, 0, 5);
+            this.pnlStickSide.Size = new System.Drawing.Size(297, 26);
             this.pnlStickSide.TabIndex = 9;
             // 
             // cmbStickSide
             // 
             this.cmbStickSide.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cmbStickSide.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbStickSide.FormattingEnabled = true;
-            this.cmbStickSide.Location = new System.Drawing.Point(59, 0);
+            this.cmbStickSide.Location = new System.Drawing.Point(59, 5);
             this.cmbStickSide.Name = "cmbStickSide";
             this.cmbStickSide.Size = new System.Drawing.Size(238, 21);
             this.cmbStickSide.TabIndex = 9;
@@ -117,7 +118,7 @@ namespace Key2Joy.Gui.Mapping
             this.pnlDeadzone.Controls.Add(this.pnlDeadzoneConfig);
             this.pnlDeadzone.Controls.Add(this.chkOverrideDeadzone);
             this.pnlDeadzone.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlDeadzone.Location = new System.Drawing.Point(5, 96);
+            this.pnlDeadzone.Location = new System.Drawing.Point(5, 51);
             this.pnlDeadzone.Name = "pnlDeadzone";
             this.pnlDeadzone.Size = new System.Drawing.Size(297, 40);
             this.pnlDeadzone.TabIndex = 11;
@@ -188,18 +189,6 @@ namespace Key2Joy.Gui.Mapping
             this.chkOverrideDeadzone.UseVisualStyleBackColor = true;
             this.chkOverrideDeadzone.CheckedChanged += new System.EventHandler(this.ChkOverrideDeadzone_CheckedChanged);
             // 
-            // lblGamePadIndexWarning
-            // 
-            this.lblGamePadIndexWarning.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lblGamePadIndexWarning.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblGamePadIndexWarning.ForeColor = System.Drawing.SystemColors.GrayText;
-            this.lblGamePadIndexWarning.Location = new System.Drawing.Point(5, 25);
-            this.lblGamePadIndexWarning.Name = "lblGamePadIndexWarning";
-            this.lblGamePadIndexWarning.Size = new System.Drawing.Size(297, 47);
-            this.lblGamePadIndexWarning.TabIndex = 11;
-            this.lblGamePadIndexWarning.Text = "Beware that GamePad Actions (that simulate gamepad input) can trigger gamepads wi" +
-    "th the same #. Be careful not to create an infinite loop.";
-            // 
             // GamePadStickTriggerControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -207,12 +196,11 @@ namespace Key2Joy.Gui.Mapping
             this.BackColor = System.Drawing.SystemColors.Control;
             this.Controls.Add(this.pnlDeadzone);
             this.Controls.Add(this.pnlStickSide);
-            this.Controls.Add(this.lblGamePadIndexWarning);
             this.Controls.Add(this.pnlGamePadIndex);
             this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Name = "GamePadStickTriggerControl";
             this.Padding = new System.Windows.Forms.Padding(5);
-            this.Size = new System.Drawing.Size(307, 139);
+            this.Size = new System.Drawing.Size(307, 93);
             this.pnlStickSide.ResumeLayout(false);
             this.pnlGamePadIndex.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.nudGamePadIndex)).EndInit();
@@ -239,6 +227,5 @@ namespace Key2Joy.Gui.Mapping
         private System.Windows.Forms.Label lblInfoDeadzoneX;
         private System.Windows.Forms.CheckBox chkOverrideDeadzone;
         private System.Windows.Forms.Panel pnlDeadzoneConfig;
-        private System.Windows.Forms.Label lblGamePadIndexWarning;
     }
 }
