@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CommonServiceLocator;
+using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.LowLevelInput;
@@ -17,7 +18,7 @@ namespace Key2Joy.Mapping.Actions.Input;
     GroupName = "GamePad Simulation",
     GroupImage = "joystick"
 )]
-public class GamePadButtonAction : CoreAction, IPressState
+public class GamePadButtonAction : CoreAction, IPressState, IProvideReverseAspect
 {
     public GamePadControl Control { get; set; }
     public PressState PressState { get; set; }
@@ -26,6 +27,10 @@ public class GamePadButtonAction : CoreAction, IPressState
     public GamePadButtonAction(string name)
         : base(name)
     { }
+
+    /// <inheritdoc/>
+    public void MakeReverse(AbstractMappingAspect aspect)
+        => CommonReverseAspect.MakeReversePressState(this, aspect);
 
     public static List<MappedOption> GetAllButtonActions(PressState pressState)
     {

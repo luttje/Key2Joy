@@ -529,9 +529,9 @@ namespace Key2Joy.Gui
             // generateOppositePressStateMappingsToolStripMenuItem
             // 
             this.generateOppositePressStateMappingsToolStripMenuItem.Name = "generateOppositePressStateMappingsToolStripMenuItem";
-            this.generateOppositePressStateMappingsToolStripMenuItem.Size = new System.Drawing.Size(287, 22);
-            this.generateOppositePressStateMappingsToolStripMenuItem.Text = "Generate Opposite Press State Mappings";
-            this.generateOppositePressStateMappingsToolStripMenuItem.Click += new System.EventHandler(this.GenerateOppositePressStateMappingsToolStripMenuItem_Click);
+            this.generateOppositePressStateMappingsToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
+            this.generateOppositePressStateMappingsToolStripMenuItem.Text = "Generate Reverse Mappings";
+            this.generateOppositePressStateMappingsToolStripMenuItem.Click += new System.EventHandler(this.GenerateReverseMappingsToolStripMenuItem_Click);
             // 
             // toolStripSeparator4
             // 

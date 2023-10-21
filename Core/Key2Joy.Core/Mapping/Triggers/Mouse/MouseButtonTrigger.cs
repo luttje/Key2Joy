@@ -9,7 +9,7 @@ namespace Key2Joy.Mapping.Triggers.Mouse;
 [Trigger(
     Description = "Mouse Button Event"
 )]
-public class MouseButtonTrigger : CoreTrigger, IPressState, IReturnInputHash, IEquatable<MouseButtonTrigger>
+public class MouseButtonTrigger : CoreTrigger, IPressState, IProvideReverseAspect, IReturnInputHash, IEquatable<MouseButtonTrigger>
 {
     public const string PREFIX_UNIQUE = nameof(MouseButtonTrigger);
 
@@ -21,13 +21,20 @@ public class MouseButtonTrigger : CoreTrigger, IPressState, IReturnInputHash, IE
         : base(name)
     { }
 
+    /// <inheritdoc/>
     public override AbstractTriggerListener GetTriggerListener() => MouseButtonTriggerListener.Instance;
 
+    /// <inheritdoc/>
+    public void MakeReverse(AbstractMappingAspect aspect)
+        => CommonReverseAspect.MakeReversePressState(this, aspect);
+
+    /// <inheritdoc/>
     public static int GetInputHashFor(LowLevelInput.Mouse.Buttons mouseButtons) => (int)mouseButtons;
 
+    /// <inheritdoc/>
     public int GetInputHash() => GetInputHashFor(this.MouseButtons);
 
-    // Keep Press and Release together while sorting
+    /// <inheritdoc/>
     public override int CompareTo(AbstractMappingAspect other)
     {
         if (other == null || other is not MouseButtonTrigger otherMouseTrigger)
@@ -39,6 +46,7 @@ public class MouseButtonTrigger : CoreTrigger, IPressState, IReturnInputHash, IE
             .CompareTo($"{otherMouseTrigger.MouseButtons}#{(int)otherMouseTrigger.PressState}");
     }
 
+    /// <inheritdoc/>
     public override bool Equals(object obj)
     {
         if (obj is not MouseButtonTrigger other)
@@ -49,9 +57,12 @@ public class MouseButtonTrigger : CoreTrigger, IPressState, IReturnInputHash, IE
         return this.Equals(other);
     }
 
-    public bool Equals(MouseButtonTrigger other) => this.MouseButtons == other.MouseButtons
+    /// <inheritdoc/>
+    public bool Equals(MouseButtonTrigger other)
+        => this.MouseButtons == other.MouseButtons
             && this.PressState == other.PressState;
 
+    /// <inheritdoc/>
     public override string ToString()
     {
         var format = "(mouse) {1} {0}";

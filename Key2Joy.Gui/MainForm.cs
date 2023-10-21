@@ -4,9 +4,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Management;
 using System.Media;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using BrightIdeasSoftware;
 using CommandLine;
@@ -18,8 +16,6 @@ using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Gui.Properties;
 using Key2Joy.Gui.Util;
 using Key2Joy.LowLevelInput;
-using Key2Joy.LowLevelInput.SimulatedGamePad;
-using Key2Joy.LowLevelInput.XInput;
 using Key2Joy.Mapping;
 using Key2Joy.Mapping.Actions;
 using Key2Joy.Mapping.Actions.Input;
@@ -683,7 +679,7 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
 
     private void ManagePluginsToolStripMenuItem_Click(object sender, EventArgs e) => new PluginsForm().ShowDialog();
 
-    private void GenerateOppositePressStateMappingsToolStripMenuItem_Click(object sender, EventArgs e)
+    private void GenerateReverseMappingsToolStripMenuItem_Click(object sender, EventArgs e)
     {
         var selectedCount = this.olvMappings.SelectedItems.Count;
 
@@ -694,8 +690,9 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
 
         if (selectedCount > 1
             && DialogUtilities.Confirm(
-                $"Are you sure you want to create opposite press state mappings for all {selectedCount} selected mappings? New 'Release' mappings will be created for each 'Press' and vice versa.",
-                $"Generate {selectedCount} opposite press state mappings"
+                $"Are you sure you want to create reverse mappings for all {selectedCount} selected mappings? Each type of action and trigger will configure their own useful reverse if possible.\n\n"
+                + $"An example of an reverse mapping is how new 'Release' mappings will be created for each 'Press' and vice versa.",
+                $"Generate {selectedCount} reverse mappings"
             ) == DialogResult.No)
         {
             return;
@@ -706,7 +703,7 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
             .Select(item => (MappedOption)item.RowObject)
             .ToList();
 
-        var newOptions = MappedOption.GenerateOppositePressStateMappings(selectedMappings);
+        var newOptions = MappedOption.GenerateReverseMappings(selectedMappings);
 
         foreach (var option in newOptions)
         {

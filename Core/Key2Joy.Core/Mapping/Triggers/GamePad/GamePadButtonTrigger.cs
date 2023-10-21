@@ -10,7 +10,7 @@ namespace Key2Joy.Mapping.Triggers.GamePad;
 [Trigger(
     Description = "GamePad Button Event"
 )]
-public class GamePadButtonTrigger : CoreTrigger, IPressState, IReturnInputHash, IEquatable<GamePadButtonTrigger>
+public class GamePadButtonTrigger : CoreTrigger, IPressState, IProvideReverseAspect, IReturnInputHash, IEquatable<GamePadButtonTrigger>
 {
     public const string PREFIX_UNIQUE = nameof(GamePadButtonTrigger);
 
@@ -25,6 +25,10 @@ public class GamePadButtonTrigger : CoreTrigger, IPressState, IReturnInputHash, 
 
     public override AbstractTriggerListener GetTriggerListener()
         => GamePadButtonTriggerListener.Instance;
+
+    /// <inheritdoc/>
+    public void MakeReverse(AbstractMappingAspect aspect)
+        => CommonReverseAspect.MakeReversePressState(this, aspect);
 
     public static int GetInputHashFor(GamePadButton button)
         => button.GetHashCode();

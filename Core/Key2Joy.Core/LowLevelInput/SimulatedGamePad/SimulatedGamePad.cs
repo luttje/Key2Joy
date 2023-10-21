@@ -1,4 +1,3 @@
-using System.Reflection;
 using SimWinInput;
 
 namespace Key2Joy.LowLevelInput.SimulatedGamePad;

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CommonServiceLocator;
+using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.LowLevelInput.SimulatedGamePad;
@@ -17,7 +18,7 @@ namespace Key2Joy.Mapping.Actions.Input;
     GroupName = "GamePad Stick Simulation",
     GroupImage = "joystick"
 )]
-public class GamePadStickAction : CoreAction, IEquatable<GamePadStickAction>
+public class GamePadStickAction : CoreAction, IProvideReverseAspect, IEquatable<GamePadStickAction>
 {
     /// <summary>
     /// This describes what 'a lot of input movement' is, so we can scale
@@ -74,6 +75,19 @@ public class GamePadStickAction : CoreAction, IEquatable<GamePadStickAction>
         this.noInputTimer = new System.Timers.Timer();
         this.noInputTimer.Elapsed += this.NoInputTimer_Elapsed;
         this.noInputTimer.AutoReset = false;
+    }
+
+    /// <inheritdoc/>
+    public void MakeReverse(AbstractMappingAspect aspect)
+    {
+        var reverse = aspect as GamePadStickAction;
+
+        if (this.DeltaX.HasValue
+            && this.DeltaY.HasValue)
+        {
+            reverse.DeltaX = (short?)(this.DeltaX.Value * -1);
+            reverse.DeltaY = (short?)(this.DeltaY.Value * -1);
+        }
     }
 
     /// <inheritdoc/>

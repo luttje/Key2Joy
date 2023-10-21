@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Contracts.Mapping.Triggers;
+using Key2Joy.Contracts.Mapping;
 
 namespace Key2Joy.Tests.Core.Mapping;
 
@@ -31,7 +32,7 @@ public class MockTrigger : AbstractTrigger
     public override AbstractTriggerListener GetTriggerListener() => throw new System.NotImplementedException();
 }
 
-public class MockPressStateAction : MockAction, IPressState
+public class MockPressStateAction : MockAction, IPressState, IProvideReverseAspect
 {
     public MockPressStateAction()
         : base("MockPressStateAction")
@@ -42,9 +43,13 @@ public class MockPressStateAction : MockAction, IPressState
     { }
 
     public PressState PressState { get; set; }
+
+    /// <inheritdoc/>
+    public void MakeReverse(AbstractMappingAspect aspect)
+        => CommonReverseAspect.MakeReversePressState(this, aspect);
 }
 
-public class MockPressStateTrigger : MockTrigger, IPressState
+public class MockPressStateTrigger : MockTrigger, IPressState, IProvideReverseAspect
 {
     public MockPressStateTrigger()
         : base("MockPressStateTrigger")
@@ -55,6 +60,10 @@ public class MockPressStateTrigger : MockTrigger, IPressState
     { }
 
     public PressState PressState { get; set; }
+
+    /// <inheritdoc/>
+    public void MakeReverse(AbstractMappingAspect aspect)
+        => CommonReverseAspect.MakeReversePressState(this, aspect);
 }
 
 [TestClass]
@@ -70,7 +79,7 @@ public class MappedOptionTests
             Trigger = new MockTrigger()
         };
 
-        var mappings = MappedOption.GenerateOppositePressStateMappings(new List<MappedOption> { option });
+        var mappings = MappedOption.GenerateReverseMappings(new List<MappedOption> { option });
 
         Assert.AreEqual(PressState.Release, ((IPressState)mappings[0].Action).PressState);
     }
@@ -85,7 +94,7 @@ public class MappedOptionTests
             Trigger = new MockPressStateTrigger { PressState = PressState.Press }
         };
 
-        var mappings = MappedOption.GenerateOppositePressStateMappings(new List<MappedOption> { option });
+        var mappings = MappedOption.GenerateReverseMappings(new List<MappedOption> { option });
 
         Assert.AreEqual(PressState.Release, ((IPressState)mappings[0].Trigger).PressState);
     }
@@ -100,7 +109,7 @@ public class MappedOptionTests
             Trigger = new MockTrigger()
         };
 
-        var mappings = MappedOption.GenerateOppositePressStateMappings(new List<MappedOption> { option });
+        var mappings = MappedOption.GenerateReverseMappings(new List<MappedOption> { option });
 
         Assert.AreNotSame(option, mappings[0]);
         Assert.AreNotSame(option.Action, mappings[0].Action);
@@ -111,7 +120,7 @@ public class MappedOptionTests
     [TestMethod]
     public void GenerateOppositePressStateMappings_WithEmptyList_ReturnsEmptyList()
     {
-        var mappings = MappedOption.GenerateOppositePressStateMappings(new List<MappedOption>());
+        var mappings = MappedOption.GenerateReverseMappings(new List<MappedOption>());
 
         Assert.AreEqual(0, mappings.Count);
     }

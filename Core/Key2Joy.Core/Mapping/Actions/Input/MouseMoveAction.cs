@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Actions;
@@ -14,7 +14,7 @@ namespace Key2Joy.Mapping.Actions.Input;
     GroupName = "Mouse Move Simulation",
     GroupImage = "mouse"
 )]
-public class MouseMoveAction : CoreAction
+public class MouseMoveAction : CoreAction, IProvideReverseAspect
 {
     public Mouse.MoveType MoveType { get; set; }
     public int X { get; set; }
@@ -23,6 +23,15 @@ public class MouseMoveAction : CoreAction
     public MouseMoveAction(string name)
         : base(name)
     {
+    }
+
+    /// <inheritdoc/>
+    public void MakeReverse(AbstractMappingAspect aspect)
+    {
+        var reverse = aspect as MouseMoveAction;
+
+        reverse.X = this.X * -1;
+        reverse.Y = this.Y * -1;
     }
 
     /// <markdown-doc>

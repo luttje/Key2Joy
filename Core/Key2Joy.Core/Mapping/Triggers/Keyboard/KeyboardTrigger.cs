@@ -10,7 +10,7 @@ namespace Key2Joy.Mapping.Triggers.Keyboard;
 [Trigger(
     Description = "Keyboard Event"
 )]
-public class KeyboardTrigger : CoreTrigger, IPressState, IReturnInputHash, IEquatable<KeyboardTrigger>
+public class KeyboardTrigger : CoreTrigger, IPressState, IProvideReverseAspect, IReturnInputHash, IEquatable<KeyboardTrigger>
 {
     public const string PREFIX_UNIQUE = nameof(KeyboardTrigger);
 
@@ -24,6 +24,10 @@ public class KeyboardTrigger : CoreTrigger, IPressState, IReturnInputHash, IEqua
     { }
 
     public override AbstractTriggerListener GetTriggerListener() => KeyboardTriggerListener.Instance;
+
+    /// <inheritdoc/>
+    public void MakeReverse(AbstractMappingAspect aspect)
+        => CommonReverseAspect.MakeReversePressState(this, aspect);
 
     public static int GetInputHashFor(Keys keys) => (int)keys;
 

@@ -4,7 +4,6 @@ using System.Text.Json.Serialization;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Contracts.Mapping.Triggers;
-using Key2Joy.LowLevelInput;
 
 namespace Key2Joy.Mapping;
 
@@ -67,23 +66,30 @@ public class MappedOption : AbstractMappedOption
         ParentGuid = this.ParentGuid,
     };
 
-    public static List<MappedOption> GenerateOppositePressStateMappings(List<MappedOption> mappings)
+    /// <summary>
+    /// Goes through all provided mappings and asks them to provide the reverse for their
+    /// action and trigger. If no <see cref="IProvideReverseAspect"/> is implemented, a
+    /// copy of the current mapping is returned.
+    /// </summary>
+    /// <param name="mappings"></param>
+    /// <returns></returns>
+    public static List<MappedOption> GenerateReverseMappings(List<MappedOption> mappings)
     {
         List<MappedOption> newOptions = new();
 
-        foreach (var pressVariant in mappings)
+        foreach (var mapping in mappings)
         {
-            var actionCopy = (AbstractAction)pressVariant.Action.Clone();
-            var triggerCopy = (AbstractTrigger)pressVariant.Trigger.Clone();
+            var actionCopy = (AbstractAction)mapping.Action.Clone();
+            var triggerCopy = (AbstractTrigger)mapping.Trigger.Clone();
 
-            if (actionCopy is IPressState actionWithPressState)
+            if (mapping.Action is IProvideReverseAspect action)
             {
-                actionWithPressState.PressState = actionWithPressState.PressState == PressState.Press ? PressState.Release : PressState.Press;
+                action.MakeReverse(actionCopy);
             }
 
-            if (triggerCopy is IPressState triggerWithPressState)
+            if (mapping.Trigger is IProvideReverseAspect trigger)
             {
-                triggerWithPressState.PressState = triggerWithPressState.PressState == PressState.Press ? PressState.Release : PressState.Press;
+                trigger.MakeReverse(triggerCopy);
             }
 
             MappedOption variantOption = new()
@@ -91,7 +97,7 @@ public class MappedOption : AbstractMappedOption
                 Action = actionCopy,
                 Trigger = triggerCopy,
             };
-            variantOption.SetParent(pressVariant);
+            variantOption.SetParent(mapping);
 
             newOptions.Add(variantOption);
         }

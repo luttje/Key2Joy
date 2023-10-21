@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using CommonServiceLocator;
+using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.LowLevelInput.SimulatedGamePad;
@@ -18,7 +18,7 @@ namespace Key2Joy.Mapping.Actions.Input;
     GroupName = "GamePad Trigger Simulation",
     GroupImage = "joystick"
 )]
-public class GamePadTriggerAction : CoreAction, IEquatable<GamePadTriggerAction>
+public class GamePadTriggerAction : CoreAction, IProvideReverseAspect, IEquatable<GamePadTriggerAction>
 {
     private const byte MIN_TRIGGER_VALUE = XInputGamePad.TriggerValueMin;
     private const byte MAX_TRIGGER_VALUE = XInputGamePad.TriggerValueMax;
@@ -48,6 +48,17 @@ public class GamePadTriggerAction : CoreAction, IEquatable<GamePadTriggerAction>
 
     public GamePadTriggerAction(string name) : base(name)
     { }
+
+    /// <inheritdoc/>
+    public void MakeReverse(AbstractMappingAspect aspect)
+    {
+        var reverse = aspect as GamePadTriggerAction;
+
+        if (this.Delta.HasValue)
+        {
+            reverse.Delta = this.Delta.Value * -1;
+        }
+    }
 
     /// <inheritdoc/>
     public override void OnStartListening(AbstractTriggerListener listener, ref IList<AbstractAction> otherActions)

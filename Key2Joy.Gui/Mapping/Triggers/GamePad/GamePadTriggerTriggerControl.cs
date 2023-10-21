@@ -4,7 +4,6 @@ using System.Windows.Forms;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.LowLevelInput.XInput;
-using Key2Joy.Mapping;
 using Key2Joy.Mapping.Triggers;
 using Key2Joy.Mapping.Triggers.GamePad;
 
