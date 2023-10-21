@@ -23,7 +23,7 @@ public partial class GamePadTriggerActionControl : UserControl, IActionOptionsCo
         this.InitializeComponent();
 
         var gamePadService = ServiceLocator.Current.GetInstance<ISimulatedGamePadService>();
-        var allGamePads = gamePadService.GetAllGamePads();
+        var allGamePads = gamePadService.GetAllGamePads(false);
         var allGamePadIndices = allGamePads.Select(gp => gp.Index).ToArray();
 
         this.cmbSide.DataSource = Enum.GetValues(typeof(GamePadSide));

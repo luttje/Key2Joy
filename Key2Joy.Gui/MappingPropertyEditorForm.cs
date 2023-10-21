@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 using Key2Joy.Contracts.Mapping;
+using Key2Joy.Util;
 
 namespace Key2Joy.Gui;
 
@@ -15,6 +16,34 @@ public partial class MappingPropertyEditorForm : Form
     private PropertyInfo property;
     private IList<AbstractMappingAspect> mappingAspects;
     private Control ctrlValueInput;
+
+    private readonly Type[] decimalLikeTypes = new[] {
+        typeof(decimal),
+        typeof(decimal?),
+        typeof(double),
+        typeof(double?),
+        typeof(float),
+        typeof(float?),
+    };
+
+    private readonly Type[] numberLikeTypes = new[] {
+        typeof(int),
+        typeof(int?),
+        typeof(uint),
+        typeof(uint?),
+        typeof(long),
+        typeof(long?),
+        typeof(ulong),
+        typeof(ulong?),
+        typeof(short),
+        typeof(short?),
+        typeof(ushort),
+        typeof(ushort?),
+        typeof(byte),
+        typeof(byte?),
+        typeof(sbyte),
+        typeof(sbyte?),
+    };
 
     public MappingPropertyEditorForm(PropertyInfo property, IList<AbstractMappingAspect> mappingAspects)
     {
@@ -35,16 +64,11 @@ public partial class MappingPropertyEditorForm : Form
     /// <summary>
     /// Generates a value input based on the property type
     /// </summary>
+    // We cant simplify this since the minimum and maximum need to be set first.
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0017:Simplify object initialization", Justification = "<Pending>")]
     private void CreateValueInput()
     {
         var propertyType = this.property.PropertyType;
-
-        var decimalLikeTypes = new[] {
-            typeof(decimal),
-            typeof(double),
-            typeof(float),
-        };
-
         object commonValue = null;
 
         foreach (var mappingAspect in this.mappingAspects)
@@ -69,25 +93,35 @@ public partial class MappingPropertyEditorForm : Form
                 Text = commonValue as string ?? string.Empty
             };
         }
-        else if (propertyType == typeof(int))
+        else if (this.numberLikeTypes.Contains(propertyType))
         {
-            this.ctrlValueInput = new NumericUpDown
+            var minValue = propertyType.GetNumericMinValue();
+            var maxValue = propertyType.GetNumericMaxValue();
+            var nud = new NumericUpDown
             {
-                Value = commonValue == null ? 0 : (int)commonValue,
                 DecimalPlaces = 0,
-                Minimum = int.MinValue,
-                Maximum = int.MaxValue
+                Minimum = TypeExtensions.ToDecimalSafe(minValue),
+                Maximum = TypeExtensions.ToDecimalSafe(maxValue)
             };
+
+            nud.Value = commonValue == null ? 0 : TypeExtensions.ToDecimalSafe(commonValue);
+
+            this.ctrlValueInput = nud;
         }
-        else if (decimalLikeTypes.Contains(propertyType))
+        else if (this.decimalLikeTypes.Contains(propertyType))
         {
-            this.ctrlValueInput = new NumericUpDown
+            var minValue = propertyType.GetNumericMinValue();
+            var maxValue = propertyType.GetNumericMaxValue();
+            var nud = new NumericUpDown
             {
-                Value = commonValue == null ? 0 : (decimal)commonValue,
                 DecimalPlaces = 2,  // Assuming 2 decimal places
-                Minimum = decimal.MinValue,
-                Maximum = decimal.MaxValue
+                Minimum = TypeExtensions.ToDecimalSafe(minValue),
+                Maximum = TypeExtensions.ToDecimalSafe(maxValue)
             };
+
+            nud.Value = commonValue == null ? 0 : TypeExtensions.ToDecimalSafe(commonValue);
+
+            this.ctrlValueInput = nud;
         }
         else if (propertyType.IsEnum)
         {
@@ -124,6 +158,7 @@ public partial class MappingPropertyEditorForm : Form
     private void BtnApplyChanges_Click(object sender, EventArgs e)
     {
         var propertyType = this.property.PropertyType;
+        propertyType = Nullable.GetUnderlyingType(propertyType) ?? propertyType;
 
         if (this.ctrlValueInput is TextBox textBox)
         {

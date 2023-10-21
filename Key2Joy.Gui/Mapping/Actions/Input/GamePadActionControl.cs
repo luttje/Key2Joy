@@ -23,7 +23,7 @@ public partial class GamePadActionControl : UserControl, IActionOptionsControl
         this.InitializeComponent();
 
         var gamePadService = ServiceLocator.Current.GetInstance<ISimulatedGamePadService>();
-        var allGamePads = gamePadService.GetAllGamePads();
+        var allGamePads = gamePadService.GetAllGamePads(false);
         var allGamePadIndices = allGamePads.Select(gp => gp.Index).ToArray();
 
         this.cmbGamePad.DataSource = GamePadButtonAction.GetAllButtons();

@@ -86,8 +86,8 @@ public class GamePadTriggerTrigger : CoreTrigger, IReturnInputHash, IEquatable<G
     /// <inheritdoc/>
     public override string ToString()
     {
-        var axis = this.DeltaMargin != null ? this.DeltaMargin.Value.ToString() : "Any";
-        return $"(gamepad) Move #{this.GamePadIndex} {this.TriggerSide} Trigger {axis}";
+        var margin = this.DeltaMargin != null ? this.DeltaMargin.Value.ToString() : "Any Amount";
+        return $"(gamepad) Pull #{this.GamePadIndex} {this.TriggerSide} Trigger by {margin}";
     }
 
     /// <inheritdoc/>
