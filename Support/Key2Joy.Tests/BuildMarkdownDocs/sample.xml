@@ -2534,6 +2534,12 @@
       <param name="gamepadIndex">Which of 4 possible gamepads to simulate: 0 (default), 1, 2 or 3</param>
       <name>GamePad.Reset</name>
     </member>
+    <member name="F:Key2Joy.Mapping.Actions.Input.GamePadStickAction.BIG_DELTA_MOVEMENT">
+      <summary>
+        This describes what 'a lot of input movement' is, so we can scale
+        the delta and make the scaling numbers feel intuitive.
+      </summary>
+    </member>
     <member name="P:Key2Joy.Mapping.Actions.Input.GamePadStickAction.Side">
       <summary>
         Which side to simulate
@@ -2551,12 +2557,30 @@
         that triggered this will be used if possible
       </summary>
     </member>
+    <member name="P:Key2Joy.Mapping.Actions.Input.GamePadStickAction.InputScaleX">
+      <summary>
+        If DeltaX is null, this is the scale factor to apply to the inputbag
+      </summary>
+    </member>
+    <member name="P:Key2Joy.Mapping.Actions.Input.GamePadStickAction.InputScaleY">
+      <summary>
+        If DeltaY is null, this is the scale factor to apply to the inputbag
+      </summary>
+    </member>
+    <member name="P:Key2Joy.Mapping.Actions.Input.GamePadStickAction.ResetAfterIdleTimeInMs">
+      <summary>
+        After how many milliseconds should the stick be reset to 0,0?
+      </summary>
+    </member>
     <member name="P:Key2Joy.Mapping.Actions.Input.GamePadStickAction.GamePadIndex">
       <summary>
         Which gamepad to simulate
       </summary>
     </member>
-    <member name="M:Key2Joy.Mapping.Actions.Input.GamePadStickAction.ExecuteForScript(System.Double,System.Double,Key2Joy.Mapping.Triggers.GamePad.GamePadSide,System.Int32)">
+    <member name="M:Key2Joy.Mapping.Actions.Input.GamePadStickAction.OnStartListening(Key2Joy.Contracts.Mapping.Triggers.AbstractTriggerListener,System.Collections.Generic.IList{Key2Joy.Contracts.Mapping.Actions.AbstractAction}@)">
+      <inheritdoc />
+    </member>
+    <member name="M:Key2Joy.Mapping.Actions.Input.GamePadStickAction.ExecuteForScript(System.Int16,System.Int16,Key2Joy.Mapping.Triggers.GamePad.GamePadSide,System.Int32)">
       <markdown-doc>
         <parent-name>Input</parent-name>
         <path>Api/Input</path>
@@ -2575,11 +2599,38 @@
             ]]>
         </code>
       </markdown-example>
-      <param name="deltaX">The fraction by which to move the stick forward (negative) or backward (positive)</param>
-      <param name="deltaY">The fraction by which to move the stick right (positive) or left (negative)</param>
+      <param name="x">The fraction by which to move the stick forward (negative) or backward (positive)</param>
+      <param name="y">The fraction by which to move the stick right (positive) or left (negative)</param>
       <param name="side">Which gamepad stick to move, either GamePadStick.Left (default) or .Right</param>
       <param name="gamepadIndex">Which of 4 possible gamepads to simulate: 0 (default), 1, 2 or 3</param>
       <name>GamePad.SimulateMove</name>
+    </member>
+    <member name="M:Key2Joy.Mapping.Actions.Input.GamePadStickAction.Scale(System.Int32,System.Single)">
+      <summary>
+        Scales InputBag values to a reasonable range for gamepad sticks
+      </summary>
+      <param name="value"></param>
+      <param name="sensitivity"></param>
+      <returns></returns>
+    </member>
+    <member name="M:Key2Joy.Mapping.Actions.Input.GamePadStickAction.Execute(Key2Joy.Contracts.Mapping.Triggers.AbstractInputBag)">
+      <inheritdoc />
+    </member>
+    <member name="M:Key2Joy.Mapping.Actions.Input.GamePadStickAction.NoInputTimer_Elapsed(System.Object,System.Timers.ElapsedEventArgs)">
+      <summary>
+        Resets the stick to the center position if there was no input for a while
+      </summary>
+      <param name="sender"></param>
+      <param name="e"></param>
+    </member>
+    <member name="M:Key2Joy.Mapping.Actions.Input.GamePadStickAction.GetNameDisplay">
+      <inheritdoc />
+    </member>
+    <member name="M:Key2Joy.Mapping.Actions.Input.GamePadStickAction.Equals(Key2Joy.Mapping.Actions.Input.GamePadStickAction)">
+      <inheritdoc />
+    </member>
+    <member name="M:Key2Joy.Mapping.Actions.Input.GamePadStickAction.GetHashCode">
+      <inheritdoc />
     </member>
     <member name="M:Key2Joy.Mapping.Actions.Input.GetCursorPositionAction.ExecuteForScript">
       <markdown-doc>
@@ -3399,6 +3450,11 @@
     </member>
     <member name="M:Key2Joy.Mapping.Triggers.Mouse.MouseButtonTriggerListener.GetIsTriggered(Key2Joy.Contracts.Mapping.Triggers.AbstractTrigger)">
       <inheritdoc />
+    </member>
+    <member name="P:Key2Joy.Mapping.Triggers.Mouse.MouseMoveTrigger.AxisBinding">
+      <summary>
+        The direction that the mouse must move in order to trigger this action.
+      </summary>
     </member>
     <member name="M:Key2Joy.Mapping.Triggers.Mouse.MouseMoveTriggerListener.Start">
       <inheritdoc />

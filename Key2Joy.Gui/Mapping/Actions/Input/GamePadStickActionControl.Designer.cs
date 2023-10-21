@@ -36,25 +36,30 @@ namespace Key2Joy.Gui.Mapping
             this.pnlSide = new System.Windows.Forms.Panel();
             this.pnlDelta = new System.Windows.Forms.Panel();
             this.pnlDeltaConfig = new System.Windows.Forms.Panel();
-            this.nudExactDeltaY = new System.Windows.Forms.NumericUpDown();
-            this.lblExactDeltaY = new System.Windows.Forms.Label();
-            this.nudExactDeltaX = new System.Windows.Forms.NumericUpDown();
-            this.lblExactDeltaX = new System.Windows.Forms.Label();
+            this.nudExactY = new System.Windows.Forms.NumericUpDown();
+            this.lblExactY = new System.Windows.Forms.Label();
+            this.nudExactX = new System.Windows.Forms.NumericUpDown();
+            this.lblExactX = new System.Windows.Forms.Label();
             this.pnlTriggerInputScale = new System.Windows.Forms.Panel();
             this.nudTriggerInputScaleY = new System.Windows.Forms.NumericUpDown();
             this.lblTriggerInputScaleY = new System.Windows.Forms.Label();
             this.nudTriggerInputScaleX = new System.Windows.Forms.NumericUpDown();
             this.lblTriggerInputScaleX = new System.Windows.Forms.Label();
             this.chkDeltaFromInput = new System.Windows.Forms.CheckBox();
+            this.pnlReset = new System.Windows.Forms.Panel();
+            this.nudResetAfterMs = new System.Windows.Forms.NumericUpDown();
+            this.lblReset = new System.Windows.Forms.Label();
             this.pnlGamePad.SuspendLayout();
             this.pnlSide.SuspendLayout();
             this.pnlDelta.SuspendLayout();
             this.pnlDeltaConfig.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudExactDeltaY)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudExactDeltaX)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudExactY)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudExactX)).BeginInit();
             this.pnlTriggerInputScale.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudTriggerInputScaleY)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudTriggerInputScaleX)).BeginInit();
+            this.pnlReset.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudResetAfterMs)).BeginInit();
             this.SuspendLayout();
             // 
             // cmbSide
@@ -133,10 +138,10 @@ namespace Key2Joy.Gui.Mapping
             // 
             // pnlDeltaConfig
             // 
-            this.pnlDeltaConfig.Controls.Add(this.nudExactDeltaY);
-            this.pnlDeltaConfig.Controls.Add(this.lblExactDeltaY);
-            this.pnlDeltaConfig.Controls.Add(this.nudExactDeltaX);
-            this.pnlDeltaConfig.Controls.Add(this.lblExactDeltaX);
+            this.pnlDeltaConfig.Controls.Add(this.nudExactY);
+            this.pnlDeltaConfig.Controls.Add(this.lblExactY);
+            this.pnlDeltaConfig.Controls.Add(this.nudExactX);
+            this.pnlDeltaConfig.Controls.Add(this.lblExactX);
             this.pnlDeltaConfig.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlDeltaConfig.Location = new System.Drawing.Point(0, 47);
             this.pnlDeltaConfig.Name = "pnlDeltaConfig";
@@ -144,43 +149,43 @@ namespace Key2Joy.Gui.Mapping
             this.pnlDeltaConfig.Size = new System.Drawing.Size(412, 27);
             this.pnlDeltaConfig.TabIndex = 18;
             // 
-            // nudExactDeltaY
+            // nudExactY
             // 
-            this.nudExactDeltaY.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.nudExactDeltaY.Location = new System.Drawing.Point(264, 5);
-            this.nudExactDeltaY.Name = "nudExactDeltaY";
-            this.nudExactDeltaY.Size = new System.Drawing.Size(148, 20);
-            this.nudExactDeltaY.TabIndex = 18;
-            this.nudExactDeltaY.ValueChanged += new System.EventHandler(this.NudExactDeltaY_ValueChanged);
+            this.nudExactY.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.nudExactY.Location = new System.Drawing.Point(241, 5);
+            this.nudExactY.Name = "nudExactY";
+            this.nudExactY.Size = new System.Drawing.Size(171, 20);
+            this.nudExactY.TabIndex = 18;
+            this.nudExactY.ValueChanged += new System.EventHandler(this.NudExactDeltaY_ValueChanged);
             // 
-            // lblExactDeltaY
+            // lblExactY
             // 
-            this.lblExactDeltaY.Dock = System.Windows.Forms.DockStyle.Left;
-            this.lblExactDeltaY.Location = new System.Drawing.Point(237, 5);
-            this.lblExactDeltaY.Name = "lblExactDeltaY";
-            this.lblExactDeltaY.Size = new System.Drawing.Size(27, 22);
-            this.lblExactDeltaY.TabIndex = 17;
-            this.lblExactDeltaY.Text = "Y:";
-            this.lblExactDeltaY.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblExactY.Dock = System.Windows.Forms.DockStyle.Left;
+            this.lblExactY.Location = new System.Drawing.Point(214, 5);
+            this.lblExactY.Name = "lblExactY";
+            this.lblExactY.Size = new System.Drawing.Size(27, 22);
+            this.lblExactY.TabIndex = 17;
+            this.lblExactY.Text = "Y:";
+            this.lblExactY.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // nudExactDeltaX
+            // nudExactX
             // 
-            this.nudExactDeltaX.Dock = System.Windows.Forms.DockStyle.Left;
-            this.nudExactDeltaX.Location = new System.Drawing.Point(88, 5);
-            this.nudExactDeltaX.Name = "nudExactDeltaX";
-            this.nudExactDeltaX.Size = new System.Drawing.Size(149, 20);
-            this.nudExactDeltaX.TabIndex = 16;
-            this.nudExactDeltaX.ValueChanged += new System.EventHandler(this.NudExactDeltaX_ValueChanged);
+            this.nudExactX.Dock = System.Windows.Forms.DockStyle.Left;
+            this.nudExactX.Location = new System.Drawing.Point(65, 5);
+            this.nudExactX.Name = "nudExactX";
+            this.nudExactX.Size = new System.Drawing.Size(149, 20);
+            this.nudExactX.TabIndex = 16;
+            this.nudExactX.ValueChanged += new System.EventHandler(this.NudExactDeltaX_ValueChanged);
             // 
-            // lblExactDeltaX
+            // lblExactX
             // 
-            this.lblExactDeltaX.Dock = System.Windows.Forms.DockStyle.Left;
-            this.lblExactDeltaX.Location = new System.Drawing.Point(0, 5);
-            this.lblExactDeltaX.Name = "lblExactDeltaX";
-            this.lblExactDeltaX.Size = new System.Drawing.Size(88, 22);
-            this.lblExactDeltaX.TabIndex = 15;
-            this.lblExactDeltaX.Text = "Exact Delta X:";
-            this.lblExactDeltaX.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblExactX.Dock = System.Windows.Forms.DockStyle.Left;
+            this.lblExactX.Location = new System.Drawing.Point(0, 5);
+            this.lblExactX.Name = "lblExactX";
+            this.lblExactX.Size = new System.Drawing.Size(65, 22);
+            this.lblExactX.TabIndex = 15;
+            this.lblExactX.Text = "Exact X:";
+            this.lblExactX.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // pnlTriggerInputScale
             // 
@@ -198,9 +203,19 @@ namespace Key2Joy.Gui.Mapping
             // 
             this.nudTriggerInputScaleY.Dock = System.Windows.Forms.DockStyle.Fill;
             this.nudTriggerInputScaleY.Location = new System.Drawing.Point(283, 0);
+            this.nudTriggerInputScaleY.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            -2147483648});
             this.nudTriggerInputScaleY.Name = "nudTriggerInputScaleY";
             this.nudTriggerInputScaleY.Size = new System.Drawing.Size(129, 20);
             this.nudTriggerInputScaleY.TabIndex = 19;
+            this.nudTriggerInputScaleY.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            -2147483648});
             this.nudTriggerInputScaleY.ValueChanged += new System.EventHandler(this.NudTriggerInputScaleY_ValueChanged);
             // 
             // lblTriggerInputScaleY
@@ -220,6 +235,11 @@ namespace Key2Joy.Gui.Mapping
             this.nudTriggerInputScaleX.Name = "nudTriggerInputScaleX";
             this.nudTriggerInputScaleX.Size = new System.Drawing.Size(105, 20);
             this.nudTriggerInputScaleX.TabIndex = 17;
+            this.nudTriggerInputScaleX.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.nudTriggerInputScaleX.ValueChanged += new System.EventHandler(this.NudTriggerInputScaleX_ValueChanged);
             // 
             // lblTriggerInputScaleX
@@ -245,26 +265,58 @@ namespace Key2Joy.Gui.Mapping
             this.chkDeltaFromInput.UseVisualStyleBackColor = true;
             this.chkDeltaFromInput.CheckedChanged += new System.EventHandler(this.ChkDeltaFromInput_CheckedChanged);
             // 
+            // pnlReset
+            // 
+            this.pnlReset.Controls.Add(this.nudResetAfterMs);
+            this.pnlReset.Controls.Add(this.lblReset);
+            this.pnlReset.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlReset.Location = new System.Drawing.Point(5, 130);
+            this.pnlReset.Name = "pnlReset";
+            this.pnlReset.Size = new System.Drawing.Size(412, 22);
+            this.pnlReset.TabIndex = 21;
+            // 
+            // nudResetAfterMs
+            // 
+            this.nudResetAfterMs.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.nudResetAfterMs.Location = new System.Drawing.Point(191, 0);
+            this.nudResetAfterMs.Name = "nudResetAfterMs";
+            this.nudResetAfterMs.Size = new System.Drawing.Size(221, 20);
+            this.nudResetAfterMs.TabIndex = 19;
+            this.nudResetAfterMs.ValueChanged += new System.EventHandler(this.NudResetAfterMs_ValueChanged);
+            // 
+            // lblReset
+            // 
+            this.lblReset.Dock = System.Windows.Forms.DockStyle.Left;
+            this.lblReset.Location = new System.Drawing.Point(0, 0);
+            this.lblReset.Name = "lblReset";
+            this.lblReset.Size = new System.Drawing.Size(191, 22);
+            this.lblReset.TabIndex = 18;
+            this.lblReset.Text = "Reset stick to 0, 0 after (milliseconds):";
+            this.lblReset.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // GamePadStickActionControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.pnlReset);
             this.Controls.Add(this.pnlDelta);
             this.Controls.Add(this.pnlSide);
             this.Controls.Add(this.pnlGamePad);
             this.Name = "GamePadStickActionControl";
             this.Padding = new System.Windows.Forms.Padding(5);
-            this.Size = new System.Drawing.Size(422, 129);
+            this.Size = new System.Drawing.Size(422, 154);
             this.pnlGamePad.ResumeLayout(false);
             this.pnlSide.ResumeLayout(false);
             this.pnlDelta.ResumeLayout(false);
             this.pnlDelta.PerformLayout();
             this.pnlDeltaConfig.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.nudExactDeltaY)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudExactDeltaX)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudExactY)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudExactX)).EndInit();
             this.pnlTriggerInputScale.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.nudTriggerInputScaleY)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudTriggerInputScaleX)).EndInit();
+            this.pnlReset.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.nudResetAfterMs)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -280,14 +332,17 @@ namespace Key2Joy.Gui.Mapping
         private System.Windows.Forms.Panel pnlDelta;
         private System.Windows.Forms.Panel pnlDeltaConfig;
         private System.Windows.Forms.CheckBox chkDeltaFromInput;
-        private System.Windows.Forms.NumericUpDown nudExactDeltaX;
-        private System.Windows.Forms.Label lblExactDeltaX;
-        private System.Windows.Forms.Label lblExactDeltaY;
-        private System.Windows.Forms.NumericUpDown nudExactDeltaY;
+        private System.Windows.Forms.NumericUpDown nudExactX;
+        private System.Windows.Forms.Label lblExactX;
+        private System.Windows.Forms.Label lblExactY;
+        private System.Windows.Forms.NumericUpDown nudExactY;
         private System.Windows.Forms.Panel pnlTriggerInputScale;
         private System.Windows.Forms.NumericUpDown nudTriggerInputScaleX;
         private System.Windows.Forms.Label lblTriggerInputScaleX;
         private System.Windows.Forms.Label lblTriggerInputScaleY;
         private System.Windows.Forms.NumericUpDown nudTriggerInputScaleY;
+        private System.Windows.Forms.Panel pnlReset;
+        private System.Windows.Forms.NumericUpDown nudResetAfterMs;
+        private System.Windows.Forms.Label lblReset;
     }
 }

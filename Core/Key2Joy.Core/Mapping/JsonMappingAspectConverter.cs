@@ -107,7 +107,7 @@ internal class JsonMappingAspectConverter<T> : JsonConverter<T> where T : Abstra
             }
             else if (property.Value.ValueKind == JsonValueKind.Number)
             {
-                mappingAspectOptions.Add(property.Name, property.Value.GetInt32());
+                mappingAspectOptions.Add(property.Name, property.Value.GetDouble());
             }
             else if (property.Value.ValueKind is JsonValueKind.True or JsonValueKind.False)
             {

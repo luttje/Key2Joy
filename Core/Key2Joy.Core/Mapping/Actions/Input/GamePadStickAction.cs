@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using CommonServiceLocator;
 using Key2Joy.Contracts.Mapping.Actions;
@@ -27,6 +26,8 @@ public class GamePadStickAction : CoreAction, IEquatable<GamePadStickAction>
 
     private const short MIN_STICK_VALUE = short.MinValue;
     private const short MAX_STICK_VALUE = short.MaxValue;
+
+    private const float EXACT_SCALE = (MAX_STICK_VALUE - MIN_STICK_VALUE) / 2f;
 
     /// <summary>
     /// Which side to simulate
@@ -56,12 +57,23 @@ public class GamePadStickAction : CoreAction, IEquatable<GamePadStickAction>
     public float InputScaleY { get; set; } = -1;
 
     /// <summary>
+    /// After how many milliseconds should the stick be reset to 0,0?
+    /// </summary>
+    public int ResetAfterIdleTimeInMs { get; set; } = 500;
+
+    /// <summary>
     /// Which gamepad to simulate
     /// </summary>
     public int GamePadIndex { get; set; }
 
+    private readonly System.Timers.Timer noInputTimer;
+
     public GamePadStickAction(string name) : base(name)
-    { }
+    {
+        this.noInputTimer = new System.Timers.Timer();
+        this.noInputTimer.Elapsed += this.NoInputTimer_Elapsed;
+        this.noInputTimer.AutoReset = false;
+    }
 
     /// <inheritdoc/>
     public override void OnStartListening(AbstractTriggerListener listener, ref IList<AbstractAction> otherActions)
@@ -90,20 +102,20 @@ public class GamePadStickAction : CoreAction, IEquatable<GamePadStickAction>
     /// ]]>
     /// </code>
     /// </markdown-example>
-    /// <param name="deltaX">The fraction by which to move the stick forward (negative) or backward (positive)</param>
-    /// <param name="deltaY">The fraction by which to move the stick right (positive) or left (negative)</param>
+    /// <param name="x">The fraction by which to move the stick forward (negative) or backward (positive)</param>
+    /// <param name="y">The fraction by which to move the stick right (positive) or left (negative)</param>
     /// <param name="side">Which gamepad stick to move, either GamePadStick.Left (default) or .Right</param>
     /// <param name="gamepadIndex">Which of 4 possible gamepads to simulate: 0 (default), 1, 2 or 3</param>
     /// <name>GamePad.SimulateMove</name>
     [ExposesScriptingMethod("GamePad.SimulateMove")]
     public async void ExecuteForScript(
-        short deltaX,
-        short deltaY,
+        short x,
+        short y,
         GamePadSide side = GamePadSide.Left,
         int gamepadIndex = 0)
     {
-        this.DeltaX = deltaX;
-        this.DeltaY = deltaY;
+        this.DeltaX = x;
+        this.DeltaY = y;
         this.Side = side;
         this.GamePadIndex = gamepadIndex;
 
@@ -145,7 +157,7 @@ public class GamePadStickAction : CoreAction, IEquatable<GamePadStickAction>
 
         if (this.DeltaX is not null)
         {
-            deltaX = (short)this.DeltaX;
+            deltaX = Scale((short)this.DeltaX, EXACT_SCALE);
         }
         else if (inputBag is AxisDeltaInputBag axisInputBag)
         {
@@ -154,7 +166,7 @@ public class GamePadStickAction : CoreAction, IEquatable<GamePadStickAction>
 
         if (this.DeltaY is not null)
         {
-            deltaY = (short)this.DeltaY;
+            deltaY = Scale((int)this.DeltaY, EXACT_SCALE);
         }
         else if (inputBag is AxisDeltaInputBag axisInputBag)
         {
@@ -163,17 +175,59 @@ public class GamePadStickAction : CoreAction, IEquatable<GamePadStickAction>
 
         if (this.Side == GamePadSide.Left)
         {
-            state.LeftStickX = (short)Math.Min(Math.Max(state.LeftStickX + deltaX, MIN_STICK_VALUE), MAX_STICK_VALUE);
-            state.LeftStickY = (short)Math.Min(Math.Max(state.LeftStickY + deltaY, MIN_STICK_VALUE), MAX_STICK_VALUE);
+            state.LeftStickX = this.GetStickValue(state.LeftStickX, deltaX);
+            state.LeftStickY = this.GetStickValue(state.LeftStickY, deltaY);
         }
         else
         {
-            state.RightStickX = (short)Math.Min(Math.Max(state.RightStickX + deltaX, MIN_STICK_VALUE), MAX_STICK_VALUE);
-            state.RightStickY = (short)Math.Min(Math.Max(state.RightStickY + deltaY, MIN_STICK_VALUE), MAX_STICK_VALUE);
+            state.RightStickX = this.GetStickValue(state.RightStickX, deltaX);
+            state.RightStickY = this.GetStickValue(state.RightStickY, deltaY);
+        }
+
+        System.Diagnostics.Debug
+            .WriteLine($"GamePadStickAction: {this.Side} > #{this.GamePadIndex} > {state.LeftStickX} {state.LeftStickY} | {state.RightStickX} {state.RightStickY}");
+
+        if (state.LeftStickX != 0
+            || state.LeftStickY != 0
+            || state.RightStickX != 0
+            || state.RightStickY != 0
+        )
+        {
+            // Reset the timer if there's input
+            this.noInputTimer.Interval = this.ResetAfterIdleTimeInMs;
+            this.noInputTimer.Stop();
+            this.noInputTimer.Start();
         }
 
         gamePad.Update();
     }
+
+    /// <summary>
+    /// Resets the stick to the center position if there was no input for a while
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void NoInputTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+    {
+        var gamePad = ServiceLocator.Current.GetInstance<ISimulatedGamePadService>().GetGamePad(this.GamePadIndex);
+        var state = gamePad.GetState();
+
+        if (this.Side == GamePadSide.Left)
+        {
+            state.LeftStickX = 0;
+            state.LeftStickY = 0;
+        }
+        else
+        {
+            state.RightStickX = 0;
+            state.RightStickY = 0;
+        }
+
+        gamePad.Update();
+    }
+
+    private short GetStickValue(short stickValue, short delta)
+        => (short)Math.Min(Math.Max(stickValue + delta, MIN_STICK_VALUE), MAX_STICK_VALUE);
 
     /// <inheritdoc/>
     public override string GetNameDisplay()
@@ -190,7 +244,8 @@ public class GamePadStickAction : CoreAction, IEquatable<GamePadStickAction>
         && this.DeltaY == other.DeltaY
         && this.InputScaleX == other.InputScaleX
         && this.InputScaleY == other.InputScaleY
-        && this.GamePadIndex == other.GamePadIndex;
+        && this.GamePadIndex == other.GamePadIndex
+        && this.ResetAfterIdleTimeInMs == other.ResetAfterIdleTimeInMs;
 
     /// <inheritdoc/>
     public override int GetHashCode()
@@ -202,6 +257,7 @@ public class GamePadStickAction : CoreAction, IEquatable<GamePadStickAction>
         hashCode = (hashCode * -1521134295) + this.InputScaleX.GetHashCode();
         hashCode = (hashCode * -1521134295) + this.InputScaleY.GetHashCode();
         hashCode = (hashCode * -1521134295) + this.GamePadIndex.GetHashCode();
+        hashCode = (hashCode * -1521134295) + this.ResetAfterIdleTimeInMs.GetHashCode();
         return hashCode;
     }
 }

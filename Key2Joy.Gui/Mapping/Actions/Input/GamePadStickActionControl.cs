@@ -32,13 +32,17 @@ public partial class GamePadStickActionControl : UserControl, IActionOptionsCont
         this.nudTriggerInputScaleX.Maximum = this.nudTriggerInputScaleY.Maximum = short.MaxValue;
         this.nudTriggerInputScaleX.DecimalPlaces = this.nudTriggerInputScaleY.DecimalPlaces = 4;
 
-        this.nudExactDeltaX.DecimalPlaces = this.nudExactDeltaY.DecimalPlaces = 2;
+        this.nudExactX.DecimalPlaces = this.nudExactY.DecimalPlaces = 2;
 
-        this.nudExactDeltaX.Minimum = this.nudExactDeltaY.Minimum = short.MinValue;
-        this.nudExactDeltaX.Maximum = this.nudExactDeltaY.Maximum = short.MaxValue;
+        this.nudExactX.Minimum = this.nudExactY.Minimum = short.MinValue;
+        this.nudExactX.Maximum = this.nudExactY.Maximum = short.MaxValue;
 
         this.cmbGamePadIndex.DataSource = allGamePadIndices;
         this.cmbGamePadIndex.SelectedIndex = 0;
+
+        this.nudResetAfterMs.Minimum = 0;
+        this.nudResetAfterMs.Maximum = int.MaxValue;
+        this.nudResetAfterMs.Value = this.nudResetAfterMs.Maximum;
 
         this.chkDeltaFromInput.Checked = true;
     }
@@ -51,8 +55,9 @@ public partial class GamePadStickActionControl : UserControl, IActionOptionsCont
         this.nudTriggerInputScaleX.Value = (decimal)thisAction.InputScaleX;
         this.nudTriggerInputScaleY.Value = (decimal)thisAction.InputScaleY;
         this.cmbSide.SelectedItem = thisAction.Side;
-        this.nudExactDeltaX.Value = thisAction.DeltaX ?? 0;
-        this.nudExactDeltaY.Value = thisAction.DeltaY ?? 0;
+        this.nudExactX.Value = thisAction.DeltaX ?? 0;
+        this.nudExactY.Value = thisAction.DeltaY ?? 0;
+        this.nudResetAfterMs.Value = thisAction.ResetAfterIdleTimeInMs;
         this.cmbGamePadIndex.SelectedItem = thisAction.GamePadIndex;
     }
 
@@ -65,8 +70,9 @@ public partial class GamePadStickActionControl : UserControl, IActionOptionsCont
         thisAction.InputScaleX = (float)this.nudTriggerInputScaleX.Value;
         thisAction.InputScaleY = (float)this.nudTriggerInputScaleY.Value;
         thisAction.Side = (GamePadSide)this.cmbSide.SelectedItem;
-        thisAction.DeltaX = deltaFromInput ? null : (short)this.nudExactDeltaX.Value;
-        thisAction.DeltaY = deltaFromInput ? null : (short)this.nudExactDeltaY.Value;
+        thisAction.DeltaX = deltaFromInput ? null : (short)this.nudExactX.Value;
+        thisAction.DeltaY = deltaFromInput ? null : (short)this.nudExactY.Value;
+        thisAction.ResetAfterIdleTimeInMs = (int)this.nudResetAfterMs.Value;
         thisAction.GamePadIndex = (int)this.cmbGamePadIndex.SelectedItem;
     }
 
@@ -111,5 +117,8 @@ public partial class GamePadStickActionControl : UserControl, IActionOptionsCont
         => OptionsChanged?.Invoke(this, EventArgs.Empty);
 
     private void NudTriggerInputScaleY_ValueChanged(object sender, EventArgs e)
+        => OptionsChanged?.Invoke(this, EventArgs.Empty);
+
+    private void NudResetAfterMs_ValueChanged(object sender, EventArgs e)
         => OptionsChanged?.Invoke(this, EventArgs.Empty);
 }

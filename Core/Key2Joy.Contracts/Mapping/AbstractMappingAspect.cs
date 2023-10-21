@@ -93,6 +93,14 @@ public abstract class AbstractMappingAspect : MarshalByRefObject, ICloneable, IC
         {
             value = TimeSpan.Parse((string)value);
         }
+        else if (propertyType == typeof(short))
+        {
+            value = Convert.ToInt16(value);
+        }
+        else if (propertyType == typeof(short?))
+        {
+            value = value == null ? null : Convert.ToInt16(value);
+        }
         else if (propertyType.IsGenericType
             && (genericTypeDefinition == typeof(List<>) || genericTypeDefinition == typeof(IList<>)))
         {
