@@ -15,8 +15,9 @@ public interface ISimulatedGamePadService
     /// <summary>
     /// Retrieves an array of all available simulated gamepad devices.
     /// </summary>
+    /// <param name="onlyPluggedIn"></param>
     /// <returns>An array of simulated gamepad instances.</returns>
-    ISimulatedGamePad[] GetAllGamePads();
+    ISimulatedGamePad[] GetAllGamePads(bool onlyPluggedIn = true);
 
     /// <summary>
     /// Initializes the simulated gamepad service.

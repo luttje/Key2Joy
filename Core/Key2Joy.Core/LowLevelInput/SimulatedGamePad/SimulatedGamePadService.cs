@@ -39,8 +39,15 @@ public class SimulatedGamePadService : ISimulatedGamePadService
         => this.gamePads[gamePadIndex];
 
     /// <inheritdoc />
-    public ISimulatedGamePad[] GetAllGamePads()
-        => this.gamePads;
+    public ISimulatedGamePad[] GetAllGamePads(bool onlyPluggedIn = true)
+    {
+        if (onlyPluggedIn)
+        {
+            return this.gamePads.Where(gamePad => gamePad.GetIsPluggedIn()).ToArray();
+        }
+
+        return this.gamePads;
+    }
 
     /// <inheritdoc />
     public void EnsurePluggedIn(int gamePadIndex)
@@ -101,7 +108,7 @@ public class SimulatedGamePadService : ISimulatedGamePadService
     /// <inheritdoc />
     public void EnsureAllUnplugged()
     {
-        foreach (var gamePad in this.gamePads.Where(gamePad => gamePad.GetIsPluggedIn()))
+        foreach (var gamePad in this.GetAllGamePads(true))
         {
             gamePad.Unplug();
         }

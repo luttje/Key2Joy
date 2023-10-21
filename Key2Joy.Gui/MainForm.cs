@@ -4,7 +4,9 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Management;
 using System.Media;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using BrightIdeasSoftware;
 using CommandLine;
@@ -46,8 +48,6 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
         this.PopulateGroupImages();
         this.RegisterListViewEvents();
         this.ConfigureTriggerColumn();
-
-        this.RefreshGamePadIndexNotification();
     }
 
     /// <summary>
@@ -67,6 +67,7 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
     private void RefreshGamePadIndexNotification()
     {
         var xInputService = ServiceLocator.Current.GetInstance<IXInputService>();
+        xInputService.RecognizePhysicalDevices();
         var deviceIndexes = xInputService.GetActiveDeviceIndices();
 
         foreach (var device in deviceIndexes)
@@ -507,7 +508,6 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
 
         if (isEnabled)
         {
-            this.RefreshGamePadIndexNotification();
             try
             {
                 Key2JoyManager.Instance.ArmMappings(this.selectedProfile);
@@ -528,6 +528,8 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
         {
             Key2JoyManager.Instance.DisarmMappings();
         }
+
+        this.deviceListControl.RefreshDevices();
     }
 
     private void TxtProfileName_TextChanged(object sender, EventArgs e)

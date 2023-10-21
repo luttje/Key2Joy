@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using Timer = System.Timers.Timer;
 
@@ -46,6 +47,12 @@ public class XInputService : IXInputService
     /// <inheritdoc/>
     public void RecognizePhysicalDevices()
     {
+        // If we've started polling then what is connected is what is connected.
+        if (this.isPolling)
+        {
+            return;
+        }
+
         lock (this.registeredDevices)
         {
             this.registeredDevices.Clear();
@@ -214,17 +221,5 @@ public class XInputService : IXInputService
 
     /// <inheritdoc/>
     public IList<int> GetActiveDeviceIndices()
-    {
-        var activeDevices = new List<int>();
-
-        for (var i = 0; i < MaxDevices; i++)
-        {
-            if (this.GetIsDeviceConnected(i))
-            {
-                activeDevices.Add(i);
-            }
-        }
-
-        return activeDevices;
-    }
+        => this.registeredDevices.ToList();
 }

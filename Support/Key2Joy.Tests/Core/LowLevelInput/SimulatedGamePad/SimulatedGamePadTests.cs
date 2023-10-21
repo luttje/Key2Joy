@@ -48,7 +48,7 @@ public class SimulatedGamePadTests
     [TestMethod]
     public void SimulatedGamePadService_ConstructsAllGamePads()
     {
-        var gamePads = this.gamePadService.GetAllGamePads();
+        var gamePads = this.gamePadService.GetAllGamePads(false);
 
         Assert.AreEqual(NUM_GAMEPADS, gamePads.Length);
         for (var i = 0; i < NUM_GAMEPADS; i++)

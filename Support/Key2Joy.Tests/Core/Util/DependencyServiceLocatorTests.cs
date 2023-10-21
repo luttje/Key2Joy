@@ -22,7 +22,7 @@ public class TestAnotherGamePadService : ISimulatedGamePadService
 
     public ISimulatedGamePad GetGamePad(int gamePadIndex) => null;
 
-    public ISimulatedGamePad[] GetAllGamePads() => Array.Empty<ISimulatedGamePad>();
+    public ISimulatedGamePad[] GetAllGamePads(bool onlyPluggedIn = true) => Array.Empty<ISimulatedGamePad>();
 
     public void EnsureAllUnplugged()
     { }
