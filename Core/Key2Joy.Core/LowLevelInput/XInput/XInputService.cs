@@ -8,6 +8,8 @@ namespace Key2Joy.LowLevelInput.XInput;
 
 public class XInputService : IXInputService
 {
+    private const string GAMEPAD_NAME = "Physical";
+
     public const int MaxDevices = 4;
     private const int UpdateIntervalInMs = 20;
 
@@ -22,7 +24,7 @@ public class XInputService : IXInputService
     public event EventHandler<DevicePacketReceivedEventArgs> PacketReceived;
 
     private readonly IXInput xInputInstance;
-    private readonly HashSet<int> registeredDevices;
+    private readonly Dictionary<int, IGamePadInfo> registeredDevices;
     private readonly Dictionary<int, Timer> vibrationTimers;
     private readonly Dictionary<int, XInputState> lastStates;
     private Thread pollingThread;
@@ -75,7 +77,7 @@ public class XInputService : IXInputService
             return;
         }
 
-        this.registeredDevices.Add(deviceIndex);
+        this.registeredDevices.Add(deviceIndex, new GamePadInfo(deviceIndex, GAMEPAD_NAME));
     }
 
     /// <inheritdoc/>
@@ -97,8 +99,9 @@ public class XInputService : IXInputService
                     // Add a delay to avoid hammering the IXInput instance too rapidly
                     Thread.Sleep(UpdateIntervalInMs);
 
-                    foreach (var deviceIndex in this.registeredDevices)
+                    foreach (var device in this.registeredDevices.Values)
                     {
+                        var deviceIndex = device.Index;
                         var newState = new XInputState();
                         var resultCode = this.xInputInstance.XInputGetState(deviceIndex, ref newState);
 
@@ -120,6 +123,7 @@ public class XInputService : IXInputService
                             {
                                 this.lastStates[deviceIndex] = newState;
                                 this.StateChanged?.Invoke(this, new DeviceStateChangedEventArgs(deviceIndex, newState));
+                                device.OnActivityOccurred();
                             }
                         }
                     }
@@ -137,7 +141,7 @@ public class XInputService : IXInputService
     /// <inheritdoc/>
     public XInputState? GetState(int deviceIndex)
     {
-        if (!this.registeredDevices.Contains(deviceIndex))
+        if (!this.registeredDevices.ContainsKey(deviceIndex))
         {
             // Only return the state for devices registered before simulated
             // devices were added. XInputGetState also returns those, so we
@@ -220,6 +224,6 @@ public class XInputService : IXInputService
     }
 
     /// <inheritdoc/>
-    public IList<int> GetActiveDeviceIndices()
-        => this.registeredDevices.ToList();
+    public IList<IGamePadInfo> GetActiveDevicesInfo()
+        => this.registeredDevices.Values.ToList();
 }

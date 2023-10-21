@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using CommonServiceLocator;
 using Key2Joy.LowLevelInput.XInput;
@@ -10,6 +11,7 @@ namespace Key2Joy.LowLevelInput.SimulatedGamePad;
 public class SimulatedGamePadService : ISimulatedGamePadService
 {
     private const int MAX_GAMEPADS = 4;
+
     private readonly ISimulatedGamePad[] gamePads;
 
     public SimulatedGamePadService(ISimulatedGamePad[] gamePads = null)
@@ -29,10 +31,12 @@ public class SimulatedGamePadService : ISimulatedGamePadService
     }
 
     /// <inheritdoc />
-    public void Initialize() => SimGamePad.Instance.Initialize();
+    public void Initialize()
+        => SimGamePad.Instance.Initialize();
 
     /// <inheritdoc />
-    public void ShutDown() => SimGamePad.Instance.ShutDown();
+    public void ShutDown()
+        => SimGamePad.Instance.ShutDown();
 
     /// <inheritdoc />
     public ISimulatedGamePad GetGamePad(int gamePadIndex)
@@ -50,6 +54,12 @@ public class SimulatedGamePadService : ISimulatedGamePadService
     }
 
     /// <inheritdoc />
+    public IList<IGamePadInfo> GetActiveDevicesInfo()
+        => this.gamePads
+            .Where(gamePad => gamePad.GetIsPluggedIn())
+            .Select(gamePad => gamePad.GetInfo()).ToList();
+
+    /// <inheritdoc />
     public void EnsurePluggedIn(int gamePadIndex)
     {
         if (gamePadIndex is < 0 or >= MAX_GAMEPADS)
@@ -58,10 +68,10 @@ public class SimulatedGamePadService : ISimulatedGamePadService
         }
 
         var xInputService = ServiceLocator.Current.GetInstance<IXInputService>();
-        var physicalDeviceIndexes = xInputService.GetActiveDeviceIndices();
+        var physicalDeviceIndexes = xInputService.GetActiveDevicesInfo();
 
         // If the physical device is active at the index, then we can't use that index
-        if (physicalDeviceIndexes.Contains(gamePadIndex))
+        if (physicalDeviceIndexes.FirstOrDefault(info => info.Index == gamePadIndex) is IGamePadInfo info)
         {
             throw new MappingArmingFailedException(
                 $"There is a physical gamepad in use at index {gamePadIndex}. Cannot simulate at that index.");
@@ -86,12 +96,12 @@ public class SimulatedGamePadService : ISimulatedGamePadService
         }
 
         var xInputService = ServiceLocator.Current.GetInstance<IXInputService>();
-        var physicalDeviceIndexes = xInputService.GetActiveDeviceIndices();
+        var physicalDeviceIndexes = xInputService.GetActiveDevicesInfo();
 
         // If the physical device is active at the index, then we can't use that index
-        if (physicalDeviceIndexes.Contains(gamePadIndex))
+        if (physicalDeviceIndexes.FirstOrDefault(info => info.Index == gamePadIndex) is IGamePadInfo info)
         {
-            throw new InvalidOperationException(
+            throw new MappingArmingFailedException(
                 $"There is a physical gamepad in use at index {gamePadIndex}. Cannot simulate at that index.");
         }
 

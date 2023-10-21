@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using CommonServiceLocator;
+using Key2Joy.LowLevelInput;
 using Key2Joy.LowLevelInput.SimulatedGamePad;
 using Key2Joy.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -32,6 +34,8 @@ public class TestAnotherGamePadService : ISimulatedGamePadService
 
     public void EnsureUnplugged(int gamePadIndex)
     { }
+
+    public IList<IGamePadInfo> GetActiveDevicesInfo() => Array.Empty<IGamePadInfo>();
 }
 
 [TestClass]

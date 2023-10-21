@@ -18,6 +18,7 @@ using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Gui.Properties;
 using Key2Joy.Gui.Util;
 using Key2Joy.LowLevelInput;
+using Key2Joy.LowLevelInput.SimulatedGamePad;
 using Key2Joy.LowLevelInput.XInput;
 using Key2Joy.Mapping;
 using Key2Joy.Mapping.Actions;
@@ -59,24 +60,6 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
         banner.Dock = DockStyle.Top;
         this.pnlNotificationsParent.Controls.Add(banner);
         this.pnlNotificationsParent.PerformLayout();
-    }
-
-    /// <summary>
-    /// Helper to check if a physical GamePad is detected, and if so which index it has
-    /// </summary>
-    private void RefreshGamePadIndexNotification()
-    {
-        var xInputService = ServiceLocator.Current.GetInstance<IXInputService>();
-        xInputService.RecognizePhysicalDevices();
-        var deviceIndexes = xInputService.GetActiveDeviceIndices();
-
-        foreach (var device in deviceIndexes)
-        {
-            this.ShowNotification(new NotificationBannerControl(
-                $"Detected a physical GamePad with #: {device}. This means that you can not simulate GamePads at this number.",
-                NotificationBannerStyle.Warning
-            ));
-        }
     }
 
     /// <summary>

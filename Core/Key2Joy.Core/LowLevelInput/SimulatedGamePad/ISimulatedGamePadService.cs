@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Key2Joy.LowLevelInput.SimulatedGamePad;
 
 /// <summary>
@@ -45,4 +47,10 @@ public interface ISimulatedGamePadService
     /// Ensures that all simulated gamepads are unplugged.
     /// </summary>
     void EnsureAllUnplugged();
+
+    /// <summary>
+    /// Gets the active gamepad device indexes.
+    /// </summary>
+    /// <returns></returns>
+    IList<IGamePadInfo> GetActiveDevicesInfo();
 }

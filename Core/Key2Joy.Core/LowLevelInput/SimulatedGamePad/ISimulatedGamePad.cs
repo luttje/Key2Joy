@@ -62,4 +62,10 @@ public interface ISimulatedGamePad
     /// Update any changes made to the state to be reflected in the gamepad
     /// </summary>
     void Update();
+
+    /// <summary>
+    /// Returns the gamepad info on this device
+    /// </summary>
+    /// <returns></returns>
+    IGamePadInfo GetInfo();
 }

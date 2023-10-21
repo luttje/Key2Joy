@@ -10,6 +10,12 @@ public partial class DeviceListControl : UserControl
     public DeviceListControl()
     {
         this.InitializeComponent();
+
+        if (System.Diagnostics.Process.GetCurrentProcess().ProcessName == "devenv")
+        {
+            return; // The designer can't handle the code below.
+        }
+
         this.RefreshDevices();
     }
 
@@ -31,22 +37,24 @@ public partial class DeviceListControl : UserControl
     {
         var xInputService = ServiceLocator.Current.GetInstance<IXInputService>();
         xInputService.RecognizePhysicalDevices();
-        var deviceIndexes = xInputService.GetActiveDeviceIndices();
+        var deviceIndexes = xInputService.GetActiveDevicesInfo();
 
-        foreach (var deviceIndex in deviceIndexes)
+        foreach (var device in deviceIndexes)
         {
-            this.AddDeviceControl(new DeviceControl(deviceIndex, "Physical"));
+            this.AddDeviceControl(new DeviceControl(device));
         }
     }
 
     private void RefreshSimulatedDevices()
     {
         var gamePadService = ServiceLocator.Current.GetInstance<ISimulatedGamePadService>();
-        var simulatedGamePads = gamePadService.GetAllGamePads(true);
+        var simulatedGamePads = gamePadService.GetActiveDevicesInfo();
 
         foreach (var gamePad in simulatedGamePads)
         {
-            this.AddDeviceControl(new DeviceControl(gamePad.Index, "Simulated"));
+            this.AddDeviceControl(new DeviceControl(gamePad));
         }
     }
+
+    private void BtnRefresh_Click(object sender, System.EventArgs e) => this.RefreshDevices();
 }

@@ -78,5 +78,5 @@ public interface IXInputService
     /// Gets the active gamepad device indexes.
     /// </summary>
     /// <returns></returns>
-    IList<int> GetActiveDeviceIndices();
+    IList<IGamePadInfo> GetActiveDevicesInfo();
 }

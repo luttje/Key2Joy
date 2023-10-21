@@ -1,3 +1,4 @@
+using System.Reflection;
 using SimWinInput;
 
 namespace Key2Joy.LowLevelInput.SimulatedGamePad;
@@ -7,13 +8,22 @@ namespace Key2Joy.LowLevelInput.SimulatedGamePad;
 /// </summary>
 public class SimulatedGamePad : ISimulatedGamePad
 {
+    private const string GAMEPAD_NAME = "Simulated";
+
     /// <inheritdoc />
     public int Index { get; private set; }
 
     private bool isPluggedIn = false;
+    private readonly IGamePadInfo gamePadInfo;
 
     public SimulatedGamePad(int index)
-        => this.Index = index;
+    {
+        this.Index = index;
+        this.gamePadInfo = new GamePadInfo(index, GAMEPAD_NAME);
+    }
+
+    public IGamePadInfo GetInfo()
+        => this.gamePadInfo;
 
     /// <inheritdoc />
     public void PlugIn()
@@ -39,15 +49,24 @@ public class SimulatedGamePad : ISimulatedGamePad
 
     /// <inheritdoc />
     public void Use(GamePadControl control, int holdTimeMS = 50)
-        => SimGamePad.Instance.Use(control, this.Index, holdTimeMS);
+    {
+        SimGamePad.Instance.Use(control, this.Index, holdTimeMS);
+        this.gamePadInfo.OnActivityOccurred();
+    }
 
     /// <inheritdoc />
     public void SetControl(GamePadControl control)
-        => SimGamePad.Instance.SetControl(control, this.Index);
+    {
+        SimGamePad.Instance.SetControl(control, this.Index);
+        this.gamePadInfo.OnActivityOccurred();
+    }
 
     /// <inheritdoc />
     public void ReleaseControl(GamePadControl control)
-        => SimGamePad.Instance.ReleaseControl(control, this.Index);
+    {
+        SimGamePad.Instance.ReleaseControl(control, this.Index);
+        this.gamePadInfo.OnActivityOccurred();
+    }
 
     /// <inheritdoc />
     public SimulatedGamePadState GetState()
@@ -55,9 +74,15 @@ public class SimulatedGamePad : ISimulatedGamePad
 
     /// <inheritdoc />
     public void ResetState()
-        => SimGamePad.Instance.State[this.Index].Reset();
+    {
+        SimGamePad.Instance.State[this.Index].Reset();
+        this.gamePadInfo.OnActivityOccurred();
+    }
 
     /// <inheritdoc />
     public void Update()
-        => SimGamePad.Instance.Update(this.Index);
+    {
+        SimGamePad.Instance.Update(this.Index);
+        this.gamePadInfo.OnActivityOccurred();
+    }
 }

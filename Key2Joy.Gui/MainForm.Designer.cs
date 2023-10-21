@@ -406,7 +406,7 @@ namespace Key2Joy.Gui
             this.allGamePadJoystickActionsToolStripMenuItem,
             this.allKeyboardActionsToolStripMenuItem});
             this.fillProfileWithToolStripMenuItem.Name = "fillProfileWithToolStripMenuItem";
-            this.fillProfileWithToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.fillProfileWithToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.fillProfileWithToolStripMenuItem.Text = "Fill Profile With...";
             // 
             // allGamePadJoystickActionsToolStripMenuItem
@@ -478,7 +478,7 @@ namespace Key2Joy.Gui
             this.testKeyboardToolStripMenuItem,
             this.testMouseToolStripMenuItem});
             this.testMappingsToolStripMenuItem.Name = "testMappingsToolStripMenuItem";
-            this.testMappingsToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.testMappingsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.testMappingsToolStripMenuItem.Text = "Test Mappings";
             // 
             // testGamePadJoystickToolStripMenuItem
@@ -523,7 +523,7 @@ namespace Key2Joy.Gui
             this.withSelectedToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.generateOppositePressStateMappingsToolStripMenuItem});
             this.withSelectedToolStripMenuItem.Name = "withSelectedToolStripMenuItem";
-            this.withSelectedToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.withSelectedToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.withSelectedToolStripMenuItem.Text = "With Selected...";
             // 
             // generateOppositePressStateMappingsToolStripMenuItem
@@ -536,13 +536,13 @@ namespace Key2Joy.Gui
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(176, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(177, 6);
             // 
             // userConfigurationsToolStripMenuItem
             // 
             this.userConfigurationsToolStripMenuItem.Image = global::Key2Joy.Gui.Properties.Resources.cog;
             this.userConfigurationsToolStripMenuItem.Name = "userConfigurationsToolStripMenuItem";
-            this.userConfigurationsToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.userConfigurationsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.userConfigurationsToolStripMenuItem.Text = "User Configurations";
             this.userConfigurationsToolStripMenuItem.Click += new System.EventHandler(this.UserConfigurationsToolStripMenuItem_Click);
             // 
@@ -661,6 +661,7 @@ namespace Key2Joy.Gui
             // 
             // deviceListControl
             // 
+            this.deviceListControl.AutoScroll = true;
             this.deviceListControl.BackColor = System.Drawing.Color.Gold;
             this.deviceListControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.deviceListControl.Location = new System.Drawing.Point(0, 0);
