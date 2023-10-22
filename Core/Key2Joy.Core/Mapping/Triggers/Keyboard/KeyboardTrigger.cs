@@ -60,7 +60,7 @@ public class KeyboardTrigger : CoreTrigger, IPressState, IProvideReverseAspect, 
     public bool Equals(KeyboardTrigger other) => this.Keys == other.Keys
             && this.PressState == other.PressState;
 
-    public override string ToString()
+    public override string GetNameDisplay()
     {
         var format = "(keyboard) {1} {0}";
         return format.Replace("{0}", this.Keys.ToString())

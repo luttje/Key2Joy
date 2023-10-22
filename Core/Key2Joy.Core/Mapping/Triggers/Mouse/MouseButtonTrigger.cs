@@ -65,7 +65,7 @@ public class MouseButtonTrigger : CoreTrigger, IPressState, IProvideReverseAspec
             && this.PressState == other.PressState;
 
     /// <inheritdoc/>
-    public override string ToString()
+    public override string GetNameDisplay()
     {
         var format = "(mouse) {1} {0}";
         return format.Replace("{0}", this.MouseButtons.ToString())

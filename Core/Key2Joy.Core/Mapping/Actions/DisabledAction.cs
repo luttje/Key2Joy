@@ -15,18 +15,24 @@ namespace Key2Joy.Mapping.Actions;
 )]
 public class DisabledAction : CoreAction
 {
-    private const string DisabledNameFormat = "The action '{0}' was unavailable upon loading Key2Joy. We have replaced it with this placeholder.";
+    private const string DisabledNameFormat = "The action '{0}' was unavailable upon loading Key2Joy. The error that caused this was: {1}";
     public string ActionName { get; set; }
 
     public DisabledAction(string name)
         : base(name)
     { }
 
+    /// <inheritdoc/>
     public override async Task Execute(AbstractInputBag inputBag = null)
     { }
 
-    public override string GetNameDisplay() => DisabledNameFormat.Replace("{0}", this.ActionName);
+    /// <inheritdoc/>
+    public override string GetNameDisplay()
+        => DisabledNameFormat
+            .Replace("{0}", this.ActionName)
+            .Replace("{1}", this.Name);
 
+    /// <inheritdoc/>
     public override bool Equals(object obj)
     {
         if (obj is not DisabledAction action)

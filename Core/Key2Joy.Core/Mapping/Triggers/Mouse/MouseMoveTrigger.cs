@@ -42,7 +42,7 @@ public class MouseMoveTrigger : CoreTrigger, IReturnInputHash
         return this.AxisBinding == other.AxisBinding;
     }
 
-    public override string ToString()
+    public override string GetNameDisplay()
     {
         var axis = Enum.GetName(typeof(AxisDirection), this.AxisBinding);
         return $"(mouse) Move {axis}";

@@ -85,7 +85,7 @@ public class GamePadTriggerTrigger : CoreTrigger, IReturnInputHash, IEquatable<G
     }
 
     /// <inheritdoc/>
-    public override string ToString()
+    public override string GetNameDisplay()
     {
         var margin = this.DeltaMargin != null ? this.DeltaMargin.Value.ToString() : "Any Amount";
         return $"(gamepad) Pull #{this.GamePadIndex} {this.TriggerSide} Trigger by {margin}";

@@ -12,7 +12,7 @@ namespace Key2Joy.Mapping.Triggers;
 )]
 public class DisabledTrigger : CoreTrigger
 {
-    private const string DisabledNameFormat = "The trigger '{0}' was unavailable upon loading Key2Joy. We have replaced it with this placeholder.";
+    private const string DisabledNameFormat = "The trigger '{0}' was unavailable upon loading Key2Joy. The error that caused this was: {1}";
     public string TriggerName { get; set; }
 
     public DisabledTrigger(string name)
@@ -21,6 +21,13 @@ public class DisabledTrigger : CoreTrigger
 
     public override AbstractTriggerListener GetTriggerListener() => DisabledTriggerListener.Instance;
 
+    /// <inheritdoc/>
+    public override string GetNameDisplay()
+        => DisabledNameFormat
+            .Replace("{0}", this.TriggerName)
+            .Replace("{1}", this.Name);
+
+    /// <inheritdoc/>
     public override bool Equals(object obj)
     {
         if (obj is not DisabledTrigger trigger)

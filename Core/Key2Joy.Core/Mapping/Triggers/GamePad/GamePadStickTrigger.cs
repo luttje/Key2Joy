@@ -60,7 +60,7 @@ public class GamePadStickTrigger : CoreTrigger, IReturnInputHash, IEquatable<Gam
     }
 
     /// <inheritdoc/>
-    public override string ToString()
+    public override string GetNameDisplay()
     {
         var axis = this.DeltaMargin != null ? Enum.GetName(typeof(ExactAxisDirection), this.DeltaMargin) : "Any";
         return $"(gamepad) Move #{this.GamePadIndex} {this.StickSide} Stick {axis}";

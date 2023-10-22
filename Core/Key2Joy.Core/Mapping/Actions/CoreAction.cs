@@ -35,6 +35,4 @@ public abstract class CoreAction : AbstractAction
         action.SetStartData(this.Listener, ref this.OtherActions);
         return action;
     }
-
-    public override string ToString() => this.GetNameDisplay();
 }

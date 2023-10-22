@@ -38,5 +38,6 @@ public class CombinedTrigger : CoreTrigger, IEquatable<CombinedTrigger>
 
     public bool Equals(CombinedTrigger other) => this.Triggers.SequenceEqual(other.Triggers);
 
-    public override string ToString() => "(combined) " + string.Join(" + ", this.Triggers);
+    public override string GetNameDisplay()
+        => "(combined) " + string.Join(" + ", this.Triggers);
 }

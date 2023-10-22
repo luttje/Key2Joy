@@ -12,6 +12,7 @@ using CommonServiceLocator;
 using Key2Joy.Config;
 using Key2Joy.Contracts;
 using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Util;
 using Key2Joy.Gui.Properties;
 using Key2Joy.Gui.Util;
 using Key2Joy.LowLevelInput;
@@ -43,7 +44,10 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
         this.SetupNotificationIndicator();
         this.PopulateGroupImages();
         this.RegisterListViewEvents();
+
         this.ConfigureTriggerColumn();
+        this.ConfigureActionColumn();
+        this.ConfigureTooltips();
     }
 
     private void RefreshMappingGroupMenu()
@@ -163,7 +167,47 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
                 return "(no trigger mapped)";
             }
 
-            return trigger.ToString();
+            return trigger.GetNameDisplay().Ellipsize(64);
+        };
+
+    private void ConfigureActionColumn()
+        => this.olvColumnAction.AspectToStringConverter = delegate (object obj)
+        {
+            var action = obj as CoreAction;
+
+            if (action == null)
+            {
+                return "(no action mapped)";
+            }
+
+            return action.GetNameDisplay().Ellipsize(64);
+        };
+
+    private void ConfigureTooltips()
+        => this.olvMappings.CellToolTipShowing += (s, e) =>
+        {
+            if (e.Model is not MappedOption mappedOption)
+            {
+                return;
+            }
+
+            var action = mappedOption.Action;
+            var trigger = mappedOption.Trigger;
+            var toolTipText = string.Empty;
+
+            if (action.GetNameDisplay() != action.GetNameDisplay().Ellipsize(64))
+            {
+                toolTipText += $"Action: {action.GetNameDisplay()}\n";
+            }
+            else if (trigger.GetNameDisplay() != trigger.GetNameDisplay().Ellipsize(64))
+            {
+                toolTipText += $"Trigger: {trigger.GetNameDisplay()}\n";
+            }
+
+            if (!string.IsNullOrEmpty(toolTipText))
+            {
+                e.Text = toolTipText;
+            }
         };
 
     private void RefreshColumnWidths()
@@ -373,14 +417,14 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
 
         if (changedMappings.Count > 0)
         {
-            var mappingSummaryList = changedMappings.Select(x => $"- {x}").ToList();
+            var mappingSummaryList = changedMappings.Select(x => $"- {x.ToString().Ellipsize(200)}").ToList();
             var mappingSummary = string.Join(Environment.NewLine, mappingSummaryList);
 
             this.RefreshMappings();
             var plural = changedMappings.Count > 1 ? "s" : "";
             var pluralWas = changedMappings.Count > 1 ? "were" : "was";
             var result = MessageBox.Show(
-                $"Found {changedMappings.Count} parent/child mapping{plural} that {pluralWas} in different groups:\n{mappingSummary}\n\nThis can happen if you change grouping. To prevent weird sorting behaviour the mapping{plural} {pluralWas} detached from their parent.\n\nYou can still restore to the previous setup by switching to a compatible grouping type ('None' always works).\n\nSelect 'Cancel' if you want to switch to the grouping type 'None', or 'OK' to save the profile with the detached mapping{plural}.",
+                $"Found {changedMappings.Count} parent/child mapping{plural} that {pluralWas} in different groups:\n{mappingSummary}\n\nThis can happen if you change grouping or if an invalid profile is loaded. To prevent weird sorting behaviour the mapping{plural} {pluralWas} detached from their parent.\n\nYou can still restore to the previous setup by switching to a compatible grouping type ('None' always works).\n\nSelect 'Cancel' if you want to switch to the grouping type 'None', or 'OK' to save the profile with the detached mapping{plural}.",
                 $"Parent/child mapping{plural} detached",
                 MessageBoxButtons.OKCancel,
                 MessageBoxIcon.Warning

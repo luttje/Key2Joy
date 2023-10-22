@@ -24,8 +24,6 @@ public abstract class AbstractAction : AbstractMappingAspect
     /// <exception cref="System.NotImplementedException"></exception>
     public virtual Task Execute(AbstractInputBag inputBag = null) => throw new System.NotImplementedException();
 
-    public virtual string GetNameDisplay() => this.Name;
-
     public AbstractAction(string name)
         : base(name) { }
 

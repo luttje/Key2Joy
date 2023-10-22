@@ -12,6 +12,10 @@ public abstract class AbstractMappingAspect : MarshalByRefObject, ICloneable, IC
 
     public AbstractMappingAspect(string name) => this.Name = name;
 
+    public virtual string GetNameDisplay() => this.Name;
+
+    public override string ToString() => this.GetNameDisplay();
+
     private PropertyInfo[] GetProperties()
     {
         var type = this.GetType();

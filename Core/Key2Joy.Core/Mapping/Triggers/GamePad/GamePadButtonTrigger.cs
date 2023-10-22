@@ -63,7 +63,7 @@ public class GamePadButtonTrigger : CoreTrigger, IPressState, IProvideReverseAsp
     public bool Equals(GamePadButtonTrigger other) => this.Button == other.Button
             && this.PressState == other.PressState;
 
-    public override string ToString()
+    public override string GetNameDisplay()
     {
         var format = "(gamepad) {1} {0}";
         return format.Replace("{0}", this.Button.ToString())
