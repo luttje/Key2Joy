@@ -12,7 +12,6 @@ using CommonServiceLocator;
 using Key2Joy.Config;
 using Key2Joy.Contracts;
 using Key2Joy.Contracts.Mapping;
-using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Gui.Properties;
 using Key2Joy.Gui.Util;
 using Key2Joy.LowLevelInput;
@@ -21,7 +20,6 @@ using Key2Joy.Mapping.Actions;
 using Key2Joy.Mapping.Actions.Input;
 using Key2Joy.Mapping.Actions.Logic;
 using Key2Joy.Mapping.Triggers;
-using Linearstar.Windows.RawInput.Native;
 
 namespace Key2Joy.Gui;
 
@@ -48,6 +46,34 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
         this.ConfigureTriggerColumn();
     }
 
+    private void RefreshMappingGroupMenu()
+    {
+        var menu = this.groupMappingsByToolStripMenuItem.DropDown;
+        var groupTypes = Enum.GetValues(typeof(ViewMappingGroupType));
+        var configManager = ServiceLocator.Current.GetInstance<IConfigManager>();
+        var current = configManager.GetConfigState().SelectedViewMappingGroupType;
+
+        menu.Items.Clear();
+
+        foreach (var groupType in groupTypes)
+        {
+            var item = new ToolStripMenuItem(groupType.ToString());
+            item.Click += (s, e) =>
+            {
+                var selected = (ViewMappingGroupType)groupType;
+                configManager.GetConfigState().SelectedViewMappingGroupType = selected;
+                this.RefreshMappingsAfterGroupChange();
+            };
+
+            if (current == (ViewMappingGroupType)groupType)
+            {
+                item.Checked = true;
+            }
+
+            menu.Items.Add(item);
+        }
+    }
+
     /// <summary>
     /// Shows a notification banner at the top of the app.
     /// </summary>
@@ -65,6 +91,13 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
     /// </summary>
     private void RefreshMappings()
         => this.olvMappings.SetObjects(this.selectedProfile.MappedOptions);
+
+    private void RefreshMappingsAfterGroupChange()
+    {
+        this.RefreshMappings();
+        this.RefreshMappingGroupMenu();
+        this.FindAndDetachParentChildDifferentGroups();
+    }
 
     private void ApplyMinimizedStateIfNeeded(bool shouldMinimize)
     {
@@ -147,7 +180,7 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
         this.RefreshMappings();
         this.olvMappings.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
         this.olvMappings.Sort(this.olvColumnTrigger, SortOrder.Ascending);
-        this.FindAndDetachParentChildDifferentGroups();
+        this.RefreshMappingsAfterGroupChange();
 
         this.UpdateSelectedProfileName();
     }
@@ -333,7 +366,6 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
 
                 if (childGroup != parentGroup)
                 {
-                    mappedOption.SetParent(null);
                     changedMappings.Add(mappedOption);
                 }
             }
@@ -345,9 +377,11 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
             var mappingSummary = string.Join(Environment.NewLine, mappingSummaryList);
 
             this.RefreshMappings();
+            var plural = changedMappings.Count > 1 ? "s" : "";
+            var pluralWas = changedMappings.Count > 1 ? "were" : "was";
             var result = MessageBox.Show(
-                $"Found {changedMappings.Count} parent/child mappings that were in different groups:\n{mappingSummary}\n\nThe mapping has been detached from it's parent.\nThis can happen if you change grouping.\n\nThis new setup hasn't been saved, meaning you can still restore to the previous setup by switching to a compatible grouping type ('None' always works).\n\nNote that if you make changes now (or restart), the profile will be saved as is.\n\nSelect 'Cancel' if you want to switch to the grouping type 'None', or 'OK' to continue.",
-                "Parent/child mappings detached",
+                $"Found {changedMappings.Count} parent/child mapping{plural} that {pluralWas} in different groups:\n{mappingSummary}\n\nThis can happen if you change grouping. To prevent weird sorting behaviour the mapping{plural} {pluralWas} detached from their parent.\n\nYou can still restore to the previous setup by switching to a compatible grouping type ('None' always works).\n\nSelect 'Cancel' if you want to switch to the grouping type 'None', or 'OK' to save the profile with the detached mapping{plural}.",
+                $"Parent/child mapping{plural} detached",
                 MessageBoxButtons.OKCancel,
                 MessageBoxIcon.Warning
             );
@@ -356,7 +390,13 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
             {
                 var configManager = ServiceLocator.Current.GetInstance<IConfigManager>();
                 configManager.GetConfigState().SelectedViewMappingGroupType = ViewMappingGroupType.None;
-                this.RefreshMappings();
+                this.RefreshMappingsAfterGroupChange();
+                return;
+            }
+
+            foreach (var mappedOption in changedMappings)
+            {
+                mappedOption.SetParent(null);
             }
         }
     }
@@ -747,8 +787,7 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
         new ConfigForm().ShowDialog();
 
         // Refresh the mapppings in case the user modified a group config
-        this.RefreshMappings();
-        this.FindAndDetachParentChildDifferentGroups();
+        this.RefreshMappingsAfterGroupChange();
     }
 
     private void ReportAProblemToolStripMenuItem_Click(object sender, EventArgs e) => Process.Start("https://github.com/luttje/Key2Joy/issues");
