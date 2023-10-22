@@ -15,7 +15,7 @@ namespace Key2Joy.Mapping.Actions.Input;
 [Action(
     Description = "GamePad Trigger Simulation",
     NameFormat = "Move {0} Trigger on GamePad #{3} by {1}",
-    GroupName = "GamePad Trigger Simulation",
+    GroupName = "GamePad Simulation",
     GroupImage = "joystick"
 )]
 public class GamePadTriggerAction : CoreAction, IProvideReverseAspect, IEquatable<GamePadTriggerAction>

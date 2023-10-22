@@ -15,7 +15,7 @@ namespace Key2Joy.Mapping.Actions.Input;
 [Action(
     Description = "GamePad Stick Simulation",
     NameFormat = "Move {0} Stick on GamePad #{3} by ({1}, {2})",
-    GroupName = "GamePad Stick Simulation",
+    GroupName = "GamePad Simulation",
     GroupImage = "joystick"
 )]
 public class GamePadStickAction : CoreAction, IProvideReverseAspect, IEquatable<GamePadStickAction>

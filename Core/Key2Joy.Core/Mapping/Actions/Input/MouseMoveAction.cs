@@ -11,7 +11,7 @@ namespace Key2Joy.Mapping.Actions.Input;
     Description = "Mouse Move Simulation",
     Visibility = MappingMenuVisibility.Never,
     NameFormat = "Move {0} {1},{2} on Mouse",
-    GroupName = "Mouse Move Simulation",
+    GroupName = "Mouse Simulation",
     GroupImage = "mouse"
 )]
 public class MouseMoveAction : CoreAction, IProvideReverseAspect

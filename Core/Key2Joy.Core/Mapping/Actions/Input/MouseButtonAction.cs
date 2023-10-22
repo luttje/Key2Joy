@@ -12,7 +12,7 @@ namespace Key2Joy.Mapping.Actions.Input;
     Description = "Mouse Button Simulation",
     Visibility = MappingMenuVisibility.Never,
     NameFormat = "{1} {0} on Mouse",
-    GroupName = "Mouse Button Simulation",
+    GroupName = "Mouse Simulation",
     GroupImage = "mouse"
 )]
 public class MouseButtonAction : CoreAction, IPressState, IProvideReverseAspect
