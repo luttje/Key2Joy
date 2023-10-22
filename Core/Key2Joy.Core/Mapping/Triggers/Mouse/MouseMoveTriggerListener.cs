@@ -1,17 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Key2Joy.Contracts;
+using System.Windows.Forms;
+using CommonServiceLocator;
+using Key2Joy.Config;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Triggers;
-using Linearstar.Windows.RawInput;
+using Key2Joy.LowLevelInput;
 
 namespace Key2Joy.Mapping.Triggers.Mouse;
 
-public class MouseMoveTriggerListener : CoreTriggerListener, IWndProcHandler
+public class MouseMoveTriggerListener : CoreTriggerListener, IOverrideDefaultBehavior
 {
-    public IntPtr Handle { get; set; }
-
     public static MouseMoveTriggerListener instance;
 
     public static MouseMoveTriggerListener Instance
@@ -25,19 +25,43 @@ public class MouseMoveTriggerListener : CoreTriggerListener, IWndProcHandler
     }
 
     private static readonly TimeSpan IS_MOVING_TOLERANCE = TimeSpan.FromMilliseconds(10);
-    private const int WM_INPUT = 0x00FF;
 
     private readonly Dictionary<int, List<AbstractMappedOption>> lookupAxis;
 
+    private GlobalInputHook globalMouseButtonHook;
     private List<int> lastDirectionHashes;
     private DateTime lastMoveTime;
 
-    private MouseMoveTriggerListener() => this.lookupAxis = new Dictionary<int, List<AbstractMappedOption>>();
+    private int? lastAllowedX = null;
+    private int? lastAllowedY = null;
+
+    private MouseMoveTriggerListener()
+        => this.lookupAxis = new Dictionary<int, List<AbstractMappedOption>>();
+
+    /// <inheritdoc/>
+    public bool ShouldListenerOverrideDefault(bool executedAny)
+    {
+        var configManager = ServiceLocator.Current.GetInstance<IConfigManager>();
+        var config = configManager.GetConfigState();
+        var listenerOverrideDefaultAll = config.ListenerOverrideDefaultMouseMoveAll;
+
+        if (listenerOverrideDefaultAll)
+        {
+            return true;
+        }
+
+        var listenerOverrideDefault = config.ListenerOverrideDefaultMouseMove;
+        return listenerOverrideDefault && executedAny;
+    }
 
     /// <inheritdoc/>
     protected override void Start()
     {
-        RawInputDevice.RegisterDevice(HidUsageAndPage.Mouse, RawInputDeviceFlags.InputSink, this.Handle);
+        // This captures global mouse input and blocks default behaviour by setting e.Handled
+        this.globalMouseButtonHook = new GlobalInputHook();
+        this.globalMouseButtonHook.MouseInputEvent += this.OnMouseInputEvent;
+        this.lastAllowedX = null;
+        this.lastAllowedY = null;
 
         base.Start();
     }
@@ -46,6 +70,9 @@ public class MouseMoveTriggerListener : CoreTriggerListener, IWndProcHandler
     protected override void Stop()
     {
         instance = null;
+        this.globalMouseButtonHook.MouseInputEvent -= this.OnMouseInputEvent;
+        this.globalMouseButtonHook.Dispose();
+        this.globalMouseButtonHook = null;
 
         base.Stop();
     }
@@ -75,43 +102,25 @@ public class MouseMoveTriggerListener : CoreTriggerListener, IWndProcHandler
             && this.lastDirectionHashes.Contains(mouseMoveTrigger.GetInputHash());
     }
 
-    /// <inheritdoc/>
-    public void WndProc(Message m)
+    private void OnMouseInputEvent(object sender, GlobalMouseHookEventArgs e)
     {
         if (!this.IsActive)
         {
             return;
         }
 
-        if (m.Msg != WM_INPUT)
+        /// Mouse buttons are handled through <see cref="MouseButtonTriggerListener"/>
+        if (e.MouseState != MouseState.Move)
         {
             return;
         }
 
-        try
-        {
-            var data = RawInputData.FromHandle(m.LParam);
+        var currentX = e.RawData.Position.X;
+        var currentY = e.RawData.Position.Y;
 
-            if (data is not RawInputMouseData mouse)
-            {
-                return;
-            }
+        var deltaX = currentX - (this.lastAllowedX ?? 0);
+        var deltaY = currentY - (this.lastAllowedY ?? 0);
 
-            if (this.TryOverrideMouseMoveInput(mouse.Mouse.LastX, mouse.Mouse.LastY))
-            {
-                return;
-            }
-        }
-        catch (Linearstar.Windows.RawInput.Native.Win32ErrorException ex)
-        {
-            Output.WriteLine(ex);
-            // This exception seems to occur accross AppDomain boundary, when clicking on a MessageBox OK button
-            Debug.WriteLine(ex.Message + Environment.NewLine + ex.StackTrace);
-        }
-    }
-
-    private bool TryOverrideMouseMoveInput(int deltaX, int deltaY)
-    {
         List<AbstractMappedOption> mappedOptions = new();
         List<int> directionHashes = new();
         Dictionary<int, Func<bool>> directionChecks = new()
@@ -156,7 +165,7 @@ public class MouseMoveTriggerListener : CoreTriggerListener, IWndProcHandler
             DeltaY = deltaY,
         };
 
-        this.DoExecuteTrigger(
+        var shouldOverride = this.DoExecuteTrigger(
             mappedOptions,
             inputBag,
             trigger => directionHashes.Contains((trigger as IReturnInputHash).GetInputHash())
@@ -165,6 +174,17 @@ public class MouseMoveTriggerListener : CoreTriggerListener, IWndProcHandler
         this.lastDirectionHashes = directionHashes;
         this.lastMoveTime = DateTime.Now;
 
-        return true;
+        if (!shouldOverride || (!this.lastAllowedX.HasValue && !this.lastAllowedY.HasValue))
+        {
+            this.lastAllowedX = e.RawData.Position.X;
+            this.lastAllowedY = e.RawData.Position.Y;
+        }
+
+        if (shouldOverride)
+        {
+            // We must set the cursor or it will jump to it's real position sporadically.
+            Cursor.Position = new System.Drawing.Point((int)this.lastAllowedX, (int)this.lastAllowedY);
+            e.Handled = true;
+        }
     }
 }

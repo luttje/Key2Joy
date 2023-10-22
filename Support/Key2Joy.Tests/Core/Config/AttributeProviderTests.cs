@@ -11,11 +11,6 @@ public class TestConfigState
     )]
     public bool MuteCloseExitMessage { get; set; }
 
-    [BooleanConfigControl(
-        Text = "Override default behaviour when trigger action is executed"
-    )]
-    public bool OverrideDefaultTriggerBehaviour { get; set; }
-
     [TextConfigControl(
         Text = "Last loaded mapping profile file location"
     )]
@@ -36,7 +31,6 @@ public class AttributeProviderTests
         var properties = this.attributeProvider.GetProperties(typeof(TestConfigState));
 
         Assert.IsTrue(properties.Any(p => p.Name == "MuteCloseExitMessage"));
-        Assert.IsTrue(properties.Any(p => p.Name == "OverrideDefaultTriggerBehaviour"));
         Assert.IsTrue(properties.Any(p => p.Name == "LastLoadedProfile"));
     }
 

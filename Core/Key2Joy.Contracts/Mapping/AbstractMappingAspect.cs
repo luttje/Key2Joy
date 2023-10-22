@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Security.Policy;
 using System.Text.Json.Serialization;
 
 namespace Key2Joy.Contracts.Mapping;
@@ -87,7 +88,11 @@ public abstract class AbstractMappingAspect : MarshalByRefObject, ICloneable, IC
 
         propertyType = Nullable.GetUnderlyingType(propertyType) ?? propertyType;
 
-        if (propertyType.IsEnum)
+        if (value == null)
+        {
+            value = null;
+        }
+        else if (propertyType.IsEnum)
         {
             value = Enum.Parse(propertyType, (string)value);
         }

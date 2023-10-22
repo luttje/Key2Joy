@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Reflection;
 using System.Windows.Forms;
 using CommonServiceLocator;
 using Key2Joy.Config;
+using Key2Joy.Contracts.Util;
 
 namespace Key2Joy.Gui;
 
@@ -38,6 +40,21 @@ public partial class ConfigForm : Form
 
             this.pnlConfigurations.Controls.Add(controlParent);
             controlParent.Dock = DockStyle.Bottom;
+
+            if (!string.IsNullOrWhiteSpace(attribute.Hint))
+            {
+                var wrapped = attribute.Hint.Wrap(80);
+
+                Label label = new()
+                {
+                    AutoSize = true,
+                    Dock = DockStyle.Bottom,
+                    Text = wrapped,
+                    ForeColor = Color.Gray,
+                    Font = new Font(this.Font, FontStyle.Italic),
+                };
+                controlParent.Controls.Add(label);
+            }
         }
 
         this.PerformLayout();

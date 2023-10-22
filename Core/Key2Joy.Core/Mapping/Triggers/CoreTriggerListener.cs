@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using CommonServiceLocator;
-using Key2Joy.Config;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Triggers;
 
@@ -49,10 +47,11 @@ public abstract class CoreTriggerListener : AbstractTriggerListener
     {
         var executedAny = base.DoExecuteTrigger(mappedOptions, inputBag, optionCandidateFilter);
 
-        var configState = ServiceLocator.Current
-            .GetInstance<IConfigManager>()
-            .GetConfigState();
+        if (this is IOverrideDefaultBehavior overridesDefault)
+        {
+            return overridesDefault.ShouldListenerOverrideDefault(executedAny);
+        }
 
-        return configState.OverrideDefaultTriggerBehaviour && executedAny;
+        return false;
     }
 }

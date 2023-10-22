@@ -12,6 +12,7 @@ namespace Key2Joy.Config;
 public abstract class ConfigControlAttribute : Attribute
 {
     public string Text { get; set; }
+    public string Hint { get; set; } = null;
 
     /// <summary>
     /// Gets all configs and their property
