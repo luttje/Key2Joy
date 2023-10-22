@@ -1,8 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Jint;
 using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.Plugins;
 
@@ -74,4 +76,16 @@ public class TriggersRepository
                 })
                 .ToDictionary(t => t.Value.Attribute as TriggerAttribute, t => t.Value)
             );
+
+    /// <summary>
+    /// Gets the attribute for the provided trigger
+    /// </summary>
+    /// <param name="trigger"></param>
+    /// <returns></returns>
+    public static TriggerAttribute GetAttributeForTrigger(AbstractTrigger trigger)
+    {
+        var realTypeName = MappingTypeHelper.GetTypeFullName(triggers, trigger);
+        realTypeName = MappingTypeHelper.EnsureSimpleTypeName(realTypeName);
+        return triggers[realTypeName].Attribute as TriggerAttribute;
+    }
 }

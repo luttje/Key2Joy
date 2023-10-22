@@ -22,6 +22,18 @@ public class ConfigState
 
     private string lastInstallPath;
 
+    [EnumConfigControl(
+        Text = "Style mapped options are grouped by",
+        EnumType = typeof(ViewMappingGroupType)
+    )]
+    public ViewMappingGroupType SelectedViewMappingGroupType
+    {
+        get => this.selectedViewMappingGroupType;
+        set => this.SaveIfInitialized(this.selectedViewMappingGroupType = value);
+    }
+
+    private ViewMappingGroupType selectedViewMappingGroupType = ViewMappingGroupType.ByAction;
+
     [BooleanConfigControl(
         Text = "Minimize app when pressing the close button"
     )]

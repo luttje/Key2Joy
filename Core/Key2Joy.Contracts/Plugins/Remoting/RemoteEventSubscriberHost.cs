@@ -4,6 +4,7 @@ using System.IO;
 using System.IO.Pipes;
 using System.Threading.Tasks;
 using System.Threading;
+using Key2Joy.Contracts.Util;
 
 namespace Key2Joy.Contracts.Plugins.Remoting;
 
@@ -16,7 +17,7 @@ public class RemoteEventSubscriberHost : IDisposable
 
     private readonly CancellationTokenSource pipeCancellation;
     private static readonly TimeSpan HeartbeatWithMargin = RemoteEventSubscriber.MaxHeartbeatInterval - TimeSpan.FromSeconds(2);
-    private static readonly TimeSpan MaxWaitForReady = TimeSpan.FromSeconds(5);
+    private static readonly TimeSpan MaxWaitForReady = TimingHelper.FromSeconds(5);
 
     internal RemoteEventSubscriberHost(string portName)
     {

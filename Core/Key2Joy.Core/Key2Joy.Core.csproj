@@ -14,7 +14,7 @@
   <PropertyGroup>
     <TargetFramework>NET48</TargetFramework>
 	  <LangVersion>latest</LangVersion>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <RootNamespace>Key2Joy</RootNamespace>
     <SignAssembly>False</SignAssembly>
@@ -36,9 +36,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="default-profile.k2j.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <EmbeddedResource Include="default-profile.k2j.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>

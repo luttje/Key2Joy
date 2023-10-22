@@ -82,7 +82,7 @@ public class InteropServerTests
         this.managerMock.Setup(m => m.GetIsArmed(null)).Returns(false);
 
         var mappingProfilePath = MockConfigManager.GetMockMappingProfilePath("default-profile.k2j.json");
-        MockConfigManager.CopyStub("current-default-profile.k2j.json", mappingProfilePath);
+        MockConfigManager.CopyStubCurrentDefaultProfile(mappingProfilePath);
         var command = new EnableCommand()
         {
             ProfilePath = mappingProfilePath

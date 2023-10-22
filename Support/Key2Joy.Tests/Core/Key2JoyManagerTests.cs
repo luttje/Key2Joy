@@ -27,8 +27,6 @@ public class MockTrigger : CoreTrigger
     { }
 
     public override AbstractTriggerListener GetTriggerListener() => throw new System.NotImplementedException();
-
-    public override string GetUniqueKey() => throw new System.NotImplementedException();
 }
 
 public class MockTriggerListener : CoreTriggerListener

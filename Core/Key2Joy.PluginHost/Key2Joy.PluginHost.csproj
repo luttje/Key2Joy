@@ -15,7 +15,7 @@
 		<TargetFramework>NET48</TargetFramework>
 		<LangVersion>latest</LangVersion>
 		<RunPostBuildEvent>Always</RunPostBuildEvent>
-		<PlatformTarget>x86</PlatformTarget>
+		<PlatformTarget>AnyCPU</PlatformTarget>
 		<GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
     <ProjectGuid>{28FD937C-CCA7-4E85-A29B-D723E8390E51}</ProjectGuid>
     <OutputType>Exe</OutputType>

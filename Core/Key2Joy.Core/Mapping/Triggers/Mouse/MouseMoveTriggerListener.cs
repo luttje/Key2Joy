@@ -25,7 +25,6 @@ public class MouseMoveTriggerListener : CoreTriggerListener, IWndProcHandler
     }
 
     private static readonly TimeSpan IS_MOVING_TOLERANCE = TimeSpan.FromMilliseconds(10);
-    private const double SENSITIVITY = 0.05;
     private const int WM_INPUT = 0x00FF;
 
     private readonly Dictionary<int, List<AbstractMappedOption>> lookupAxis;
@@ -35,6 +34,7 @@ public class MouseMoveTriggerListener : CoreTriggerListener, IWndProcHandler
 
     private MouseMoveTriggerListener() => this.lookupAxis = new Dictionary<int, List<AbstractMappedOption>>();
 
+    /// <inheritdoc/>
     protected override void Start()
     {
         RawInputDevice.RegisterDevice(HidUsageAndPage.Mouse, RawInputDeviceFlags.InputSink, this.Handle);
@@ -42,6 +42,7 @@ public class MouseMoveTriggerListener : CoreTriggerListener, IWndProcHandler
         base.Start();
     }
 
+    /// <inheritdoc/>
     protected override void Stop()
     {
         instance = null;
@@ -49,6 +50,7 @@ public class MouseMoveTriggerListener : CoreTriggerListener, IWndProcHandler
         base.Stop();
     }
 
+    /// <inheritdoc/>
     public override void AddMappedOption(AbstractMappedOption mappedOption)
     {
         var trigger = mappedOption.Trigger as MouseMoveTrigger;
@@ -61,6 +63,7 @@ public class MouseMoveTriggerListener : CoreTriggerListener, IWndProcHandler
         mappedOptions.Add(mappedOption);
     }
 
+    /// <inheritdoc/>
     public override bool GetIsTriggered(AbstractTrigger trigger)
     {
         if (trigger is not MouseMoveTrigger mouseMoveTrigger)
@@ -72,6 +75,7 @@ public class MouseMoveTriggerListener : CoreTriggerListener, IWndProcHandler
             && this.lastDirectionHashes.Contains(mouseMoveTrigger.GetInputHash());
     }
 
+    /// <inheritdoc/>
     public void WndProc(Message m)
     {
         if (!this.IsActive)
@@ -106,15 +110,16 @@ public class MouseMoveTriggerListener : CoreTriggerListener, IWndProcHandler
         }
     }
 
-    private bool TryOverrideMouseMoveInput(int lastX, int lastY)
+    private bool TryOverrideMouseMoveInput(int deltaX, int deltaY)
     {
-        var deltaX = (short)Math.Min(Math.Max(lastX * short.MaxValue * SENSITIVITY, short.MinValue), short.MaxValue);
-        var deltaY = (short)-Math.Min(Math.Max(lastY * short.MaxValue * SENSITIVITY, short.MinValue), short.MaxValue);
-
         List<AbstractMappedOption> mappedOptions = new();
         List<int> directionHashes = new();
         Dictionary<int, Func<bool>> directionChecks = new()
         {
+            {
+                MouseMoveTrigger.GetInputHashFor(AxisDirection.Any),
+                () => deltaX != 0 || deltaY != 0
+            },
             {
                 MouseMoveTrigger.GetInputHashFor(AxisDirection.Right),
                 () => deltaX > 0
@@ -145,7 +150,7 @@ public class MouseMoveTriggerListener : CoreTriggerListener, IWndProcHandler
             }
         }
 
-        MouseMoveInputBag inputBag = new()
+        AxisDeltaInputBag inputBag = new()
         {
             DeltaX = deltaX,
             DeltaY = deltaY,

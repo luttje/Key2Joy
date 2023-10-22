@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Key2Joy.Contracts.Mapping.Triggers;
 
 namespace Key2Joy.Mapping.Triggers;
@@ -16,6 +16,11 @@ public interface ITriggerOptionsControl
     /// </summary>
     /// <param name="trigger"></param>
     void Setup(AbstractTrigger trigger);
+
+    /// <summary>
+    /// Called when the mapping is saving and can still be stopped
+    /// </summary>
+    bool CanMappingSave(AbstractTrigger trigger);
 
     /// <summary>
     /// Called when the options on a trigger change

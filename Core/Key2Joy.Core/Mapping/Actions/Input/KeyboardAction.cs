@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.LowLevelInput;
@@ -13,7 +14,7 @@ namespace Key2Joy.Mapping.Actions.Input;
     GroupName = "Keyboard Simulation",
     GroupImage = "keyboard"
 )]
-public class KeyboardAction : CoreAction, IPressState
+public class KeyboardAction : CoreAction, IPressState, IProvideReverseAspect
 {
     public KeyboardKey Key { get; set; }
     public PressState PressState { get; set; }
@@ -22,6 +23,10 @@ public class KeyboardAction : CoreAction, IPressState
         : base(name)
     {
     }
+
+    /// <inheritdoc/>
+    public void MakeReverse(AbstractMappingAspect aspect)
+        => CommonReverseAspect.MakeReversePressState(this, aspect);
 
     public static KeyboardKey[] GetAllKeys()
     {

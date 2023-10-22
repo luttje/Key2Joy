@@ -27,7 +27,7 @@ public partial class ScriptActionControl : UserControl, IActionOptionsControl
         this.pnlFileInput.Visible = !this.chkDirectInput.Checked;
     }
 
-    public void Select(object action)
+    public void Select(AbstractAction action)
     {
         var thisAction = (BaseScriptAction)action;
 
@@ -55,7 +55,7 @@ public partial class ScriptActionControl : UserControl, IActionOptionsControl
         this.pnlFileInput.Visible = !this.chkDirectInput.Checked;
     }
 
-    public void Setup(object action)
+    public void Setup(AbstractAction action)
     {
         var thisAction = (BaseScriptAction)action;
 
@@ -70,7 +70,7 @@ public partial class ScriptActionControl : UserControl, IActionOptionsControl
         thisAction.Script = this.txtScript.Text;
     }
 
-    public bool CanMappingSave(object action)
+    public bool CanMappingSave(AbstractAction action)
     {
         var thisAction = (BaseScriptAction)action;
         var mappingType = action.GetType();

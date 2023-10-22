@@ -11,7 +11,7 @@ namespace Key2Joy.Plugin.HelloWorld.Mapping.Actions;
     ForType = typeof(GetHelloWorldAction),
     ImageResourceName = "clock"
 )]
-public partial class GetHelloWorldActionControl : UserControl, IPluginUserControl, IActionOptionsControl
+public partial class GetHelloWorldActionControl : UserControl, IPluginUserControl, IPluginActionOptionsControl
 {
     public event EventHandler OptionsChanged;
 
@@ -21,21 +21,21 @@ public partial class GetHelloWorldActionControl : UserControl, IPluginUserContro
 
     private void Button_Click(object sender, RoutedEventArgs e) => MessageBox.Show("Hello from GetHelloWorldActionControl!");
 
-    public void Select(object action)
+    public void Select(PluginAction action)
     {
         var thisAction = (GetHelloWorldAction)action;
 
         this.txtName.Text = thisAction.Target;
     }
 
-    public void Setup(object action)
+    public void Setup(PluginAction action)
     {
         var thisAction = (GetHelloWorldAction)action;
 
         thisAction.Target = this.txtName.Text;
     }
 
-    public bool CanMappingSave(object action) => true;
+    public bool CanMappingSave(PluginAction action) => true;
 
     private void BtnHelloWorld_Click(object sender, EventArgs e) => MessageBox.Show($"Hello {this.txtName.Text}!");
 

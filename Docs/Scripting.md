@@ -59,22 +59,23 @@ implementations: this project uses [NLua](https://github.com/NLua/NLua) and
        end
     )
     ```
-![image](https://user-images.githubusercontent.com/2738114/177006114-1ffafa7e-2f94-43d4-bddc-1bcca7c51344.png)
+![Screenshot of Key2Joy showing the mapping form being configured with a keyboard trigger and Lua action](screenshot-scripting.png)
 
-2. In Key2Joy click *Create New Mapping*
-3. Choose the trigger *Keyboard Event*
-4. Press the "F"-key on your keyboard
-5. Select *Release* from the dropdown. This ensures the script will only run
+2. In Key2Joy click **Create New Mapping** *(Button marked A in the screenshot)*
+3. Choose the trigger **Keyboard Event** *(Section B in the screenshot)*
+4. Click the marked area and press the "F"-key on your keyboard
+5. Select **Release** from the dropdown. This ensures the script will only run
    once when the F-key is released.
-6. Choose the action to run when releasing the F-key: *Lua Script Action*
-7. Untick *Direct Input*, so we can select the `test.lua` script.
-8. Browse to the `test.lua` file
+6. For the action we'll choose: **Lua Script Action** *(Section C in the
+   screenshot)*
+7. Uncheck **Direct Input** so we can select the `test.lua` script we created
+   earlier.
+8. Click **Browse**, navigate to the `test.lua` file and select it.
 9. Save the mapping.
 
-Now when you enable the mappings *(Enable checkbox in the top right of
+Now when you enable the mappings *(Check the `Arm Mappings` checkbox in the top right of
 Key2Joy)* you can run that Lua script by pressing and releasing the F-key
 on your keyboard.
-
 
 ## Some Script Examples
 You can find more examples in the [📃 Scripting API Reference](Index.md).

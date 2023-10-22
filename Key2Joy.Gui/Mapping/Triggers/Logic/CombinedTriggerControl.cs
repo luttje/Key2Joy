@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using Key2Joy.Contracts.Mapping;
@@ -16,7 +16,8 @@ public partial class CombinedTriggerControl : UserControl, ITriggerOptionsContro
 {
     public event EventHandler OptionsChanged;
 
-    public CombinedTriggerControl() => this.InitializeComponent();
+    public CombinedTriggerControl()
+        => this.InitializeComponent();
 
     private CombinedTriggerControlItem AddTriggerControl(AbstractTrigger trigger = null)
     {
@@ -31,17 +32,18 @@ public partial class CombinedTriggerControl : UserControl, ITriggerOptionsContro
             this.pnlTriggers.Controls.Remove(control);
             control.Dispose();
             this.PerformLayout();
+            this.OptionsChanged?.Invoke(this, EventArgs.Empty);
         };
-        triggerControl.TriggerChanged += (s, _) => this.OptionsChanged?.Invoke(this, EventArgs.Empty);
+        triggerControl.TriggerChanged += (s, _)
+            => this.OptionsChanged?.Invoke(this, EventArgs.Empty);
         this.pnlTriggers.Controls.Add(triggerControl);
         this.PerformLayout();
 
         return triggerControl;
     }
 
-    private void BtnAddTrigger_Click(object sender, EventArgs e) => this.AddTriggerControl().BringToFront();
-
-    private void NudTimeout_ValueChanged(object sender, EventArgs e) => OptionsChanged?.Invoke(this, EventArgs.Empty);
+    private void BtnAddTrigger_Click(object sender, EventArgs e)
+        => this.AddTriggerControl().BringToFront();
 
     public void Select(AbstractTrigger combinedTrigger)
     {
@@ -67,4 +69,6 @@ public partial class CombinedTriggerControl : UserControl, ITriggerOptionsContro
             thisTrigger.Triggers.Add((triggerControl as CombinedTriggerControlItem).Trigger);
         }
     }
+
+    public bool CanMappingSave(AbstractTrigger trigger) => true;
 }

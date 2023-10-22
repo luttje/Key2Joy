@@ -22,31 +22,34 @@ public class KeyboardTriggerListener : PressReleaseTriggerListener<KeyboardTrigg
 
     private GlobalInputHook globalKeyboardHook;
     private readonly VirtualKeyConverter virtualKeyConverter = new();
-    private readonly Dictionary<Keys, bool> currentKeysDown = new();
+    private readonly Dictionary<Keys, bool> currentKeysPressed = new();
 
-    public bool GetKeyDown(Keys key) => this.currentKeysDown.ContainsKey(key);
+    public bool GetKeyDown(Keys key) => this.currentKeysPressed.ContainsKey(key);
 
+    /// <inheritdoc/>
     protected override void Start()
     {
         // This captures global keyboard input and blocks default behaviour by setting e.Handled
         this.globalKeyboardHook = new GlobalInputHook();
         this.globalKeyboardHook.KeyboardInputEvent += this.OnKeyInputEvent;
-        this.currentKeysDown.Clear();
+        this.currentKeysPressed.Clear();
 
         base.Start();
     }
 
+    /// <inheritdoc/>
     protected override void Stop()
     {
         instance = null;
         this.globalKeyboardHook.KeyboardInputEvent -= this.OnKeyInputEvent;
         this.globalKeyboardHook.Dispose();
         this.globalKeyboardHook = null;
-        this.currentKeysDown.Clear();
+        this.currentKeysPressed.Clear();
 
         base.Stop();
     }
 
+    /// <inheritdoc/>
     public override bool GetIsTriggered(AbstractTrigger trigger)
     {
         if (trigger is not KeyboardTrigger keyboardTrigger)
@@ -54,7 +57,7 @@ public class KeyboardTriggerListener : PressReleaseTriggerListener<KeyboardTrigg
             return false;
         }
 
-        return this.currentKeysDown.ContainsKey(keyboardTrigger.Keys);
+        return this.currentKeysPressed.ContainsKey(keyboardTrigger.Keys);
     }
 
     private void OnKeyInputEvent(object sender, GlobalKeyboardHookEventArgs e)
@@ -70,24 +73,24 @@ public class KeyboardTriggerListener : PressReleaseTriggerListener<KeyboardTrigg
 
         if (e.KeyboardState == KeyboardState.KeyDown)
         {
-            dictionary = this.lookupDown;
+            dictionary = this.LookupPress;
 
-            if (this.currentKeysDown.ContainsKey(keys))
+            if (this.currentKeysPressed.ContainsKey(keys))
             {
                 return; // Prevent firing multiple times for a single key press
             }
             else
             {
-                this.currentKeysDown.Add(keys, true);
+                this.currentKeysPressed.Add(keys, true);
             }
         }
         else
         {
-            dictionary = this.lookupRelease;
+            dictionary = this.LookupRelease;
 
-            if (this.currentKeysDown.ContainsKey(keys))
+            if (this.currentKeysPressed.ContainsKey(keys))
             {
-                this.currentKeysDown.Remove(keys);
+                this.currentKeysPressed.Remove(keys);
             }
         }
 

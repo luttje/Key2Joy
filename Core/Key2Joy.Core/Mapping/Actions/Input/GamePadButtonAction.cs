@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using CommonServiceLocator;
+using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.LowLevelInput;
-using Key2Joy.LowLevelInput.GamePad;
-using Key2Joy.Mapping.Triggers.Mouse;
+using Key2Joy.LowLevelInput.SimulatedGamePad;
 using SimWinInput;
 
 namespace Key2Joy.Mapping.Actions.Input;
@@ -17,24 +18,28 @@ namespace Key2Joy.Mapping.Actions.Input;
     GroupName = "GamePad Simulation",
     GroupImage = "joystick"
 )]
-public class GamePadAction : CoreAction, IPressState
+public class GamePadButtonAction : CoreAction, IPressState, IProvideReverseAspect
 {
     public GamePadControl Control { get; set; }
     public PressState PressState { get; set; }
     public int GamePadIndex { get; set; }
 
-    public GamePadAction(string name)
+    public GamePadButtonAction(string name)
         : base(name)
     { }
 
+    /// <inheritdoc/>
+    public void MakeReverse(AbstractMappingAspect aspect)
+        => CommonReverseAspect.MakeReversePressState(this, aspect);
+
     public static List<MappedOption> GetAllButtonActions(PressState pressState)
     {
-        var actionFactory = ActionsRepository.GetAction(typeof(GamePadAction));
+        var actionFactory = ActionsRepository.GetAction(typeof(GamePadButtonAction));
 
         List<MappedOption> actions = new();
         foreach (var control in GetAllButtons())
         {
-            var action = (GamePadAction)MakeAction(actionFactory);
+            var action = (GamePadButtonAction)MakeAction(actionFactory);
             action.Control = control;
             action.PressState = pressState;
 
@@ -50,9 +55,29 @@ public class GamePadAction : CoreAction, IPressState
     {
         var allEnums = Enum.GetValues(typeof(GamePadControl));
 
-        // Skip the first (= None) enumeration value
-        var buttons = new GamePadControl[allEnums.Length - 1];
-        Array.Copy(allEnums, 1, buttons, 0, buttons.Length);
+        var skip = new GamePadControl[]
+        {
+            GamePadControl.None,
+
+            // Handled separately in GamePadTriggerAction
+            GamePadControl.LeftTrigger,
+            GamePadControl.RightTrigger,
+
+            // Handled separately in GamePadStickAction
+            GamePadControl.LeftStickLeft,
+            GamePadControl.LeftStickRight,
+            GamePadControl.LeftStickUp,
+            GamePadControl.LeftStickDown,
+            GamePadControl.RightStickLeft,
+            GamePadControl.RightStickRight,
+            GamePadControl.RightStickUp,
+            GamePadControl.RightStickDown,
+        };
+
+        var buttons = allEnums
+            .Cast<GamePadControl>()
+            .Where(x => !skip.Contains(x))
+            .ToArray();
 
         return buttons;
     }
@@ -61,42 +86,9 @@ public class GamePadAction : CoreAction, IPressState
     {
         base.OnStartListening(listener, ref otherActions);
 
-        var gamePadService = ServiceLocator.Current.GetInstance<IGamePadService>();
+        var gamePadService = ServiceLocator.Current.GetInstance<ISimulatedGamePadService>();
         gamePadService.EnsurePluggedIn(this.GamePadIndex);
     }
-
-    private void HandleMouseMove(IGamePad gamePad, MouseMoveInputBag mouseMoveInputBag)
-    {
-        var state = gamePad.GetState();
-
-        switch (this.Control)
-        {
-            case GamePadControl.LeftStickLeft:
-            case GamePadControl.LeftStickRight:
-                state.LeftStickX = this.CalculateNewState(mouseMoveInputBag.DeltaX, state.LeftStickX);
-                break;
-
-            case GamePadControl.LeftStickUp:
-            case GamePadControl.LeftStickDown:
-                state.LeftStickY = this.CalculateNewState(mouseMoveInputBag.DeltaY, state.LeftStickY);
-                break;
-
-            case GamePadControl.RightStickLeft:
-            case GamePadControl.RightStickRight:
-                state.RightStickX = this.CalculateNewState(mouseMoveInputBag.DeltaX, state.RightStickX);
-                break;
-
-            case GamePadControl.RightStickUp:
-            case GamePadControl.RightStickDown:
-                state.RightStickY = this.CalculateNewState(mouseMoveInputBag.DeltaY, state.RightStickY);
-                break;
-        }
-
-        gamePad.Update();
-    }
-
-    private short CalculateNewState(int delta, short currentState)
-        => (short)((delta + currentState) / 2);
 
     /// <markdown-doc>
     /// <parent-name>Input</parent-name>
@@ -127,7 +119,7 @@ public class GamePadAction : CoreAction, IPressState
         this.PressState = pressState;
         this.GamePadIndex = gamepadIndex;
 
-        var gamePadService = ServiceLocator.Current.GetInstance<IGamePadService>();
+        var gamePadService = ServiceLocator.Current.GetInstance<ISimulatedGamePadService>();
         var gamePad = gamePadService.GetGamePad(this.GamePadIndex);
 
         if (!gamePad.GetIsPluggedIn())
@@ -148,14 +140,8 @@ public class GamePadAction : CoreAction, IPressState
 
     public override async Task Execute(AbstractInputBag inputBag = null)
     {
-        var gamePadService = ServiceLocator.Current.GetInstance<IGamePadService>();
+        var gamePadService = ServiceLocator.Current.GetInstance<ISimulatedGamePadService>();
         var gamePad = gamePadService.GetGamePad(this.GamePadIndex);
-
-        if (inputBag is MouseMoveInputBag mouseMoveInputBag)
-        {
-            this.HandleMouseMove(gamePad, mouseMoveInputBag);
-            return;
-        }
 
         if (this.PressState == PressState.Press)
         {
@@ -173,7 +159,7 @@ public class GamePadAction : CoreAction, IPressState
 
     public override bool Equals(object obj)
     {
-        if (obj is not GamePadAction action)
+        if (obj is not GamePadButtonAction action)
         {
             return false;
         }

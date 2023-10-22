@@ -3,8 +3,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using Key2Joy.Interop.Commands;
 using CommonServiceLocator;
-using Key2Joy.Config;
-using Key2Joy.Tests.Core.Config;
 using Key2Joy.Util;
 
 namespace Key2Joy.Tests.Core.Interop.Commands;

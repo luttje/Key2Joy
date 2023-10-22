@@ -16,7 +16,7 @@ public partial class ActionControl : UserControl
 {
     public AbstractAction Action { get; private set; }
 
-    public event Action<AbstractAction> ActionChanged;
+    public event EventHandler<ActionChangedEventArgs> ActionChanged;
 
     public bool IsTopLevel { get; set; }
 
@@ -30,7 +30,7 @@ public partial class ActionControl : UserControl
     {
         if (this.cmbAction.SelectedItem == null)
         {
-            ActionChanged?.Invoke(null);
+            ActionChanged?.Invoke(this, new(null));
             return;
         }
 
@@ -44,7 +44,7 @@ public partial class ActionControl : UserControl
 
         this.options?.Setup(this.Action);
 
-        ActionChanged?.Invoke(this.Action);
+        ActionChanged?.Invoke(this, new(this.Action));
     }
 
     public bool CanMappingSave(AbstractMappedOption mappedOption)
@@ -84,6 +84,11 @@ public partial class ActionControl : UserControl
 
     private void LoadActions()
     {
+        if (System.Diagnostics.Process.GetCurrentProcess().ProcessName == "devenv")
+        {
+            return; // The designer can't handle the code below.
+        }
+
         var actionTypeFactories = ActionsRepository.GetAllActions(this.IsTopLevel);
 
         foreach (var keyValuePair in actionTypeFactories)

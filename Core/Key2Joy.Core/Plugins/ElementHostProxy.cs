@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows;
 using System.Windows.Forms.Integration;
 using Key2Joy.Contracts.Mapping.Actions;
@@ -21,19 +21,19 @@ public class ElementHostProxy : ElementHost, IActionOptionsControl
 
     public void InvokeOptionsChanged() => OptionsChanged?.Invoke(this, EventArgs.Empty);
 
-    public bool CanMappingSave(object action)
+    public bool CanMappingSave(AbstractAction action)
     {
         var realAction = ((PluginActionProxy)action).GetRealObject();
         return (bool)this.contract.RemoteInvokeUI(nameof(CanMappingSave), new object[] { realAction });
     }
 
-    public void Select(object action)
+    public void Select(AbstractAction action)
     {
         var realAction = ((PluginActionProxy)action).GetRealObject();
         this.contract.RemoteInvokeUI(nameof(Select), new object[] { realAction });
     }
 
-    public void Setup(object action)
+    public void Setup(AbstractAction action)
     {
         var realAction = ((PluginActionProxy)action).GetRealObject();
         this.contract.RemoteInvokeUI(nameof(Setup), new object[] { realAction });

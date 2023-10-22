@@ -12,7 +12,8 @@ using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.Interop;
 using Key2Joy.Interop.Commands;
-using Key2Joy.LowLevelInput.GamePad;
+using Key2Joy.LowLevelInput.SimulatedGamePad;
+using Key2Joy.LowLevelInput.XInput;
 using Key2Joy.Mapping;
 using Key2Joy.Mapping.Actions.Logic;
 using Key2Joy.Mapping.Triggers.Keyboard;
@@ -92,7 +93,10 @@ public class Key2JoyManager : IKey2JoyManager, IMessageFilter
 #pragma warning restore IDE0001 // Simplify Names
 
         var gamePadService = new SimulatedGamePadService();
-        serviceLocator.Register<IGamePadService>(gamePadService);
+        serviceLocator.Register<ISimulatedGamePadService>(gamePadService);
+
+        var xInputService = new XInputService();
+        serviceLocator.Register<IXInputService>(xInputService);
 
         var commandRepository = new CommandRepository();
         serviceLocator.Register<ICommandRepository>(commandRepository);
@@ -177,6 +181,7 @@ public class Key2JoyManager : IKey2JoyManager, IMessageFilter
         return this.armedProfile == profile;
     }
 
+    /// <inheritdoc/>
     public void ArmMappings(MappingProfile profile)
     {
         this.armedProfile = profile;
@@ -186,46 +191,61 @@ public class Key2JoyManager : IKey2JoyManager, IMessageFilter
 
         var allActions = (IList<AbstractAction>)profile.MappedOptions.Select(m => m.Action).ToList();
 
-        foreach (var mappedOption in profile.MappedOptions)
+        var xInputService = ServiceLocator.Current.GetInstance<IXInputService>();
+        // We must recognize physical devices before any simulated ones are added.
+        // Otherwise we wont be able to tell the difference.
+        xInputService.RecognizePhysicalDevices();
+        xInputService.StartPolling();
+
+        try
         {
-            if (mappedOption.Trigger == null)
+            foreach (var mappedOption in profile.MappedOptions)
             {
-                continue;
+                if (mappedOption.Trigger == null)
+                {
+                    continue;
+                }
+
+                var listener = mappedOption.Trigger.GetTriggerListener();
+
+                if (!allListeners.Contains(listener))
+                {
+                    allListeners.Add(listener);
+                }
+
+                if (listener is IWndProcHandler listenerWndProcHAndler)
+                {
+                    this.wndProcListeners.Add(listenerWndProcHAndler);
+                }
+
+                mappedOption.Action.OnStartListening(listener, ref allActions);
+                listener.AddMappedOption(mappedOption);
             }
 
-            var listener = mappedOption.Trigger.GetTriggerListener();
+            var allListenersForSharing = (IList<AbstractTriggerListener>)allListeners;
 
-            if (!allListeners.Contains(listener))
+            foreach (var listener in allListeners)
             {
-                allListeners.Add(listener);
+                if (listener is IWndProcHandler listenerWndProcHAndler)
+                {
+                    listenerWndProcHAndler.Handle = this.handleAndInvoker.Handle;
+                }
+
+                listener.StartListening(ref allListenersForSharing);
             }
 
-            if (listener is IWndProcHandler listenerWndProcHAndler)
+            StatusChanged?.Invoke(this, new StatusChangedEventArgs
             {
-                this.wndProcListeners.Add(listenerWndProcHAndler);
-            }
-
-            mappedOption.Action.OnStartListening(listener, ref allActions);
-            listener.AddMappedOption(mappedOption);
+                IsEnabled = true,
+                Profile = this.armedProfile
+            });
         }
-
-        var allListenersForSharing = (IList<AbstractTriggerListener>)allListeners;
-
-        foreach (var listener in allListeners)
+        catch (MappingArmingFailedException ex)
         {
-            if (listener is IWndProcHandler listenerWndProcHAndler)
-            {
-                listenerWndProcHAndler.Handle = this.handleAndInvoker.Handle;
-            }
-
-            listener.StartListening(ref allListenersForSharing);
+            //cleanup
+            this.DisarmMappings();
+            throw ex;
         }
-
-        StatusChanged?.Invoke(this, new StatusChangedEventArgs
-        {
-            IsEnabled = true,
-            Profile = this.armedProfile
-        });
     }
 
     public void DisarmMappings()
@@ -257,7 +277,10 @@ public class Key2JoyManager : IKey2JoyManager, IMessageFilter
             listener.StopListening();
         }
 
-        var gamePadService = ServiceLocator.Current.GetInstance<IGamePadService>();
+        var xInputService = ServiceLocator.Current.GetInstance<IXInputService>();
+        xInputService.StopPolling();
+
+        var gamePadService = ServiceLocator.Current.GetInstance<ISimulatedGamePadService>();
         gamePadService.EnsureAllUnplugged();
 
         this.armedProfile = null;

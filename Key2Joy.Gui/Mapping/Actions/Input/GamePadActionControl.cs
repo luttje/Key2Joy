@@ -5,13 +5,13 @@ using CommonServiceLocator;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.LowLevelInput;
-using Key2Joy.LowLevelInput.GamePad;
+using Key2Joy.LowLevelInput.SimulatedGamePad;
 using Key2Joy.Mapping.Actions.Input;
 
 namespace Key2Joy.Gui.Mapping;
 
 [MappingControl(
-    ForType = typeof(GamePadAction),
+    ForType = typeof(GamePadButtonAction),
     ImageResourceName = "joystick"
 )]
 public partial class GamePadActionControl : UserControl, IActionOptionsControl
@@ -22,11 +22,11 @@ public partial class GamePadActionControl : UserControl, IActionOptionsControl
     {
         this.InitializeComponent();
 
-        var gamePadService = ServiceLocator.Current.GetInstance<IGamePadService>();
-        var allGamePads = gamePadService.GetAllGamePads();
+        var gamePadService = ServiceLocator.Current.GetInstance<ISimulatedGamePadService>();
+        var allGamePads = gamePadService.GetAllGamePads(false);
         var allGamePadIndices = allGamePads.Select(gp => gp.Index).ToArray();
 
-        this.cmbGamePad.DataSource = GamePadAction.GetAllButtons();
+        this.cmbGamePad.DataSource = GamePadButtonAction.GetAllButtons();
         this.cmbPressState.DataSource = PressStates.ALL;
         this.cmbPressState.SelectedIndex = 0;
 
@@ -34,25 +34,30 @@ public partial class GamePadActionControl : UserControl, IActionOptionsControl
         this.cmbGamePadIndex.SelectedIndex = 0;
     }
 
-    public void Select(object action)
+    public void Select(AbstractAction action)
     {
-        var thisAction = (GamePadAction)action;
+        var thisAction = (GamePadButtonAction)action;
 
         this.cmbGamePad.SelectedItem = thisAction.Control;
         this.cmbPressState.SelectedItem = thisAction.PressState;
         this.cmbGamePadIndex.SelectedItem = thisAction.GamePadIndex;
     }
 
-    public void Setup(object action)
+    public void Setup(AbstractAction action)
     {
-        var thisAction = (GamePadAction)action;
+        var thisAction = (GamePadButtonAction)action;
 
         thisAction.Control = (SimWinInput.GamePadControl)this.cmbGamePad.SelectedItem;
         thisAction.PressState = (PressState)this.cmbPressState.SelectedItem;
         thisAction.GamePadIndex = (int)this.cmbGamePadIndex.SelectedItem;
     }
 
-    public bool CanMappingSave(object action) => true;
+    public bool CanMappingSave(AbstractAction action)
+    {
+        var thisAction = (GamePadButtonAction)action;
+
+        return thisAction.Control != SimWinInput.GamePadControl.None;
+    }
 
     private void CmbGamePad_SelectedIndexChanged(object sender, EventArgs e) => OptionsChanged?.Invoke(this, EventArgs.Empty);
 

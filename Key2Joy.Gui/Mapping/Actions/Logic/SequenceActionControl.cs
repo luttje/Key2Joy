@@ -24,7 +24,7 @@ public partial class SequenceActionControl : UserControl, IActionOptionsControl
         this.childActions = new List<AbstractAction>();
     }
 
-    public void Select(object action)
+    public void Select(AbstractAction action)
     {
         var thisAction = (SequenceAction)action;
 
@@ -35,7 +35,7 @@ public partial class SequenceActionControl : UserControl, IActionOptionsControl
         }
     }
 
-    public void Setup(object action)
+    public void Setup(AbstractAction action)
     {
         var thisAction = (SequenceAction)action;
         thisAction.ChildActions.Clear();
@@ -46,7 +46,7 @@ public partial class SequenceActionControl : UserControl, IActionOptionsControl
         }
     }
 
-    public bool CanMappingSave(object action) => true;
+    public bool CanMappingSave(AbstractAction action) => true;
 
     private void AddChildAction(AbstractAction action)
     {
@@ -85,5 +85,5 @@ public partial class SequenceActionControl : UserControl, IActionOptionsControl
 
     private void LstActions_SelectedIndexChanged(object sender, EventArgs e) => this.btnRemove.Enabled = this.lstActions.SelectedIndex > -1;
 
-    private void ActionControl_ActionChanged(AbstractAction action) => this.btnAdd.Enabled = action != null;
+    private void ActionControl_ActionChanged(object sender, ActionChangedEventArgs e) => this.btnAdd.Enabled = e.Action != null;
 }

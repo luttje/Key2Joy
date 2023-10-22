@@ -1,26 +1,33 @@
 using System;
 using System.Linq;
-using Key2Joy.LowLevelInput.GamePad;
+using CommonServiceLocator;
+using Key2Joy.LowLevelInput.SimulatedGamePad;
+using Key2Joy.LowLevelInput.XInput;
+using Key2Joy.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Key2Joy.Tests.Core.LowLevelInput.GamePad;
+namespace Key2Joy.Tests.Core.LowLevelInput.SimulatedGamePad;
 
 [TestClass]
-public class GamePadTests
+public class SimulatedGamePadTests
 {
     private const int NUM_GAMEPADS = 4;
     private SimulatedGamePadService gamePadService;
-    private Mock<IGamePad>[] mockedGamePads;
+    private Mock<ISimulatedGamePad>[] mockedGamePads;
 
     [TestInitialize]
     public void Initialize()
     {
-        this.mockedGamePads = new Mock<IGamePad>[NUM_GAMEPADS];
+        var serviceLocator = new DependencyServiceLocator();
+        ServiceLocator.SetLocatorProvider(() => serviceLocator);
+        serviceLocator.Register<IXInputService>(new XInputService());
+
+        this.mockedGamePads = new Mock<ISimulatedGamePad>[NUM_GAMEPADS];
         for (var i = 0; i < NUM_GAMEPADS; i++)
         {
             var isPluggedIn = false;
-            this.mockedGamePads[i] = new Mock<IGamePad>();
+            this.mockedGamePads[i] = new Mock<ISimulatedGamePad>();
             this.mockedGamePads[i].Setup(g => g.GetIsPluggedIn()).Returns(() => isPluggedIn);
             this.mockedGamePads[i].Setup(g => g.PlugIn()).Callback(() => isPluggedIn = true);
             this.mockedGamePads[i].Setup(g => g.Unplug()).Callback(() => isPluggedIn = false);
@@ -41,7 +48,7 @@ public class GamePadTests
     [TestMethod]
     public void SimulatedGamePadService_ConstructsAllGamePads()
     {
-        var gamePads = this.gamePadService.GetAllGamePads();
+        var gamePads = this.gamePadService.GetAllGamePads(false);
 
         Assert.AreEqual(NUM_GAMEPADS, gamePads.Length);
         for (var i = 0; i < NUM_GAMEPADS; i++)

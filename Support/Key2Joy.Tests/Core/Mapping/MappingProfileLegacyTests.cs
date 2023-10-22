@@ -33,7 +33,7 @@ public class MappingProfileLegacyTests
     public void Load_WhenCurrentMappingProfile_ShouldLoadCurrentMappingProfile()
     {
         var mappingProfilePath = MockConfigManager.GetMockMappingProfilePath("default-profile.k2j.json");
-        MockConfigManager.CopyStub("current-default-profile.k2j.json", mappingProfilePath);
+        MockConfigManager.CopyStubCurrentDefaultProfile(mappingProfilePath);
         this.serviceLocator.Register<IConfigManager>(MockConfigManager.LoadOrCreateMock());
 
         var mappingProfile = MappingProfile.Load(mappingProfilePath);

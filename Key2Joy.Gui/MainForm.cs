@@ -4,13 +4,15 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Media;
 using System.Windows.Forms;
 using BrightIdeasSoftware;
+using CommandLine;
 using CommonServiceLocator;
 using Key2Joy.Config;
 using Key2Joy.Contracts;
 using Key2Joy.Contracts.Mapping;
-using Key2Joy.Contracts.Mapping.Actions;
+using Key2Joy.Contracts.Util;
 using Key2Joy.Gui.Properties;
 using Key2Joy.Gui.Util;
 using Key2Joy.LowLevelInput;
@@ -42,8 +44,63 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
         this.SetupNotificationIndicator();
         this.PopulateGroupImages();
         this.RegisterListViewEvents();
+
         this.ConfigureTriggerColumn();
-        this.RefreshColumnWidths();
+        this.ConfigureActionColumn();
+        this.ConfigureTooltips();
+    }
+
+    private void RefreshMappingGroupMenu()
+    {
+        var menu = this.groupMappingsByToolStripMenuItem.DropDown;
+        var groupTypes = Enum.GetValues(typeof(ViewMappingGroupType));
+        var configManager = ServiceLocator.Current.GetInstance<IConfigManager>();
+        var current = configManager.GetConfigState().SelectedViewMappingGroupType;
+
+        menu.Items.Clear();
+
+        foreach (var groupType in groupTypes)
+        {
+            var item = new ToolStripMenuItem(groupType.ToString());
+            item.Click += (s, e) =>
+            {
+                var selected = (ViewMappingGroupType)groupType;
+                configManager.GetConfigState().SelectedViewMappingGroupType = selected;
+                this.RefreshMappingsAfterGroupChange();
+            };
+
+            if (current == (ViewMappingGroupType)groupType)
+            {
+                item.Checked = true;
+            }
+
+            menu.Items.Add(item);
+        }
+    }
+
+    /// <summary>
+    /// Shows a notification banner at the top of the app.
+    /// </summary>
+    /// <param name="banner"></param>
+    private void ShowNotification(NotificationBannerControl banner)
+    {
+        banner.Dock = DockStyle.Top;
+        this.pnlNotificationsParent.Controls.Add(banner);
+        this.pnlNotificationsParent.PerformLayout();
+    }
+
+    /// <summary>
+    /// Refresh the listed mappings, their sorting and formatting.
+    /// Call this after making a change to the mapped options.
+    /// </summary>
+    private void RefreshMappings()
+        => this.olvMappings.SetObjects(this.selectedProfile.MappedOptions);
+
+    private void RefreshMappingsAfterGroupChange()
+    {
+        this.RefreshMappings();
+        this.RefreshMappingGroupMenu();
+        this.FindAndDetachParentChildDifferentGroups();
     }
 
     private void ApplyMinimizedStateIfNeeded(bool shouldMinimize)
@@ -53,7 +110,7 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
     }
 
     private void ConfigureStatusLabels()
-        => this.lblStatusActive.Visible = this.chkEnabled.Checked;
+        => this.lblStatusActive.Visible = this.chkArmed.Checked;
 
     private void SetupNotificationIndicator()
     {
@@ -89,7 +146,15 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
     {
         this.olvColumnAction.GroupKeyGetter += this.OlvMappings_GroupKeyGetter;
         this.olvColumnAction.GroupKeyToTitleConverter += this.OlvMappings_GroupKeyToTitleConverter;
+
         this.olvMappings.BeforeCreatingGroups += this.OlvMappings_BeforeCreatingGroups;
+        this.olvMappings.AboutToCreateGroups += this.OlvMappings_AboutToCreateGroups;
+
+        this.olvMappings.CellClick += this.OlvMappings_CellClick;
+        this.olvMappings.CellRightClick += this.OlvMappings_CellRightClick;
+        this.olvMappings.FormatRow += this.OlvMappings_FormatRow;
+        this.olvMappings.FormatCell += this.OlvMappings_FormatCell;
+        this.olvMappings.KeyUp += this.OlvMappings_KeyUp;
     }
 
     private void ConfigureTriggerColumn()
@@ -102,7 +167,47 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
                 return "(no trigger mapped)";
             }
 
-            return trigger.ToString();
+            return trigger.GetNameDisplay().Ellipsize(64);
+        };
+
+    private void ConfigureActionColumn()
+        => this.olvColumnAction.AspectToStringConverter = delegate (object obj)
+        {
+            var action = obj as CoreAction;
+
+            if (action == null)
+            {
+                return "(no action mapped)";
+            }
+
+            return action.GetNameDisplay().Ellipsize(64);
+        };
+
+    private void ConfigureTooltips()
+        => this.olvMappings.CellToolTipShowing += (s, e) =>
+        {
+            if (e.Model is not MappedOption mappedOption)
+            {
+                return;
+            }
+
+            var action = mappedOption.Action;
+            var trigger = mappedOption.Trigger;
+            var toolTipText = string.Empty;
+
+            if (action.GetNameDisplay() != action.GetNameDisplay().Ellipsize(64))
+            {
+                toolTipText += $"Action: {action.GetNameDisplay()}\n";
+            }
+            else if (trigger.GetNameDisplay() != trigger.GetNameDisplay().Ellipsize(64))
+            {
+                toolTipText += $"Trigger: {trigger.GetNameDisplay()}\n";
+            }
+
+            if (!string.IsNullOrEmpty(toolTipText))
+            {
+                e.Text = toolTipText;
+            }
         };
 
     private void RefreshColumnWidths()
@@ -116,9 +221,10 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
         this.selectedProfile = profile;
         this.configState.LastLoadedProfile = profile.FilePath;
 
-        this.olvMappings.SetObjects(profile.MappedOptions);
+        this.RefreshMappings();
         this.olvMappings.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
         this.olvMappings.Sort(this.olvColumnTrigger, SortOrder.Ascending);
+        this.RefreshMappingsAfterGroupChange();
 
         this.UpdateSelectedProfileName();
     }
@@ -127,9 +233,9 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
 
     private void SetStatusView(bool isEnabled)
     {
-        this.chkEnabled.CheckedChanged -= this.ChkEnabled_CheckedChanged;
-        this.chkEnabled.Checked = isEnabled;
-        this.chkEnabled.CheckedChanged += this.ChkEnabled_CheckedChanged;
+        this.chkArmed.CheckedChanged -= this.ChkEnabled_CheckedChanged;
+        this.chkArmed.Checked = isEnabled;
+        this.chkArmed.CheckedChanged += this.ChkEnabled_CheckedChanged;
 
         this.lblStatusActive.Visible = isEnabled;
         this.lblStatusInactive.Visible = !isEnabled;
@@ -146,7 +252,7 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
 
     private void EditMappedOption(MappedOption existingMappedOption = null)
     {
-        this.chkEnabled.Checked = false;
+        this.chkArmed.Checked = false;
         MappingForm mappingForm = new(existingMappedOption);
         var result = mappingForm.ShowDialog();
 
@@ -155,29 +261,57 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
             return;
         }
 
-        var mappedOption = mappingForm.MappedOption;
-
         if (existingMappedOption == null)
         {
-            this.selectedProfile.AddMapping(mappedOption);
+            this.selectedProfile.AddMapping(mappingForm.MappedOption);
+        }
+
+        if (mappingForm.MappedOptionReverse != null)
+        {
+            this.selectedProfile.AddMapping(mappingForm.MappedOptionReverse);
         }
 
         this.selectedProfile.Save();
-
-        if (existingMappedOption == null)
-        {
-            this.olvMappings.AddObject(mappedOption);
-        }
-        else
-        {
-            this.olvMappings.UpdateObject(mappedOption);
-        }
+        this.RefreshMappings();
     }
 
-    private void RemoveMapping(MappedOption mappedOption)
+    private void RemoveMappings(IList<MappedOption> mappedOptions)
     {
-        this.selectedProfile.RemoveMapping(mappedOption);
-        this.olvMappings.RemoveObject(mappedOption);
+        var children = mappedOptions.SelectMany(x => x.Children).ToList();
+
+        if (children.Any())
+        {
+            var introText = mappedOptions.Count == 1 ? "This mapped option has" : "These mapped options have a total of";
+            var shouldRemove = MessageBox.Show(
+                $"{introText} {children.Count} child mapping{(children.Count != 1 ? "s" : "")}. Do you want to remove them as well?",
+                "Remove child mappings?",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question) == DialogResult.Yes;
+
+            if (shouldRemove)
+            {
+                foreach (var child in children)
+                {
+                    this.selectedProfile.RemoveMapping(child);
+                }
+            }
+            else
+            {
+                // Otherwise remove their parent
+                foreach (var child in children)
+                {
+                    child.SetParent(null);
+                }
+            }
+        }
+
+        foreach (var mappedOption in mappedOptions)
+        {
+            this.selectedProfile.RemoveMapping(mappedOption);
+        }
+
+        this.selectedProfile.Save();
+        this.RefreshMappings();
     }
 
     private void RemoveSelectedMappings()
@@ -197,12 +331,118 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
             }
         }
 
-        foreach (OLVListItem listItem in this.olvMappings.SelectedItems)
+        var mappedOptions = new List<MappedOption>();
+
+        foreach (var item in this.olvMappings.SelectedObjects)
         {
-            this.RemoveMapping((MappedOption)listItem.RowObject);
+            mappedOptions.Add(item as MappedOption);
         }
 
+        this.RemoveMappings(mappedOptions);
         this.selectedProfile.Save();
+    }
+
+    private void MakeMappingParentless(MappedOption childOption)
+    {
+        childOption.SetParent(null);
+        this.selectedProfile.Save();
+        this.RefreshMappings();
+    }
+
+    /// <summary>
+    /// Gets the group of the ObjectListView by it's row object.
+    /// </summary>
+    /// <param name="rowObject"></param>
+    /// <returns></returns>
+    private ListViewGroup GetByItem(object rowObject)
+    {
+        foreach (var item in this.olvMappings.Items)
+        {
+            var listViewItem = item as OLVListItem;
+
+            if (listViewItem.RowObject == rowObject)
+            {
+                return listViewItem.Group;
+            }
+        }
+
+        return null;
+    }
+
+    private void ChooseNewParent(MappedOption child, MappedOption targetParent)
+    {
+        var childGroup = this.GetByItem(child);
+        var parentGroup = this.GetByItem(targetParent);
+
+        if (childGroup != parentGroup)
+        {
+            MessageBox.Show(
+                $"The child is in the '{childGroup.Header}' group and the parent is in the '{parentGroup.Header}' group. Cannot parent between groups. Consider disabling grouping in the configuration",
+                "Cannot parent across groups",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error
+            );
+            return;
+        }
+
+        child.SetParent(targetParent);
+        this.selectedProfile.Save();
+        this.RefreshMappings();
+        SystemSounds.Beep.Play();
+
+        return;
+    }
+
+    /// <summary>
+    /// Call this after changing the group mode, so that parents and children do not
+    /// exist across groups. (not supported by the <see cref="MappingGroupItemComparer"/>)
+    /// </summary>
+    private void FindAndDetachParentChildDifferentGroups()
+    {
+        var changedMappings = new List<MappedOption>();
+
+        foreach (var mappedOption in this.selectedProfile.MappedOptions)
+        {
+            if (mappedOption.Parent != null)
+            {
+                var childGroup = this.GetByItem(mappedOption);
+                var parentGroup = this.GetByItem(mappedOption.Parent);
+
+                if (childGroup != parentGroup)
+                {
+                    changedMappings.Add(mappedOption);
+                }
+            }
+        }
+
+        if (changedMappings.Count > 0)
+        {
+            var mappingSummaryList = changedMappings.Select(x => $"- {x.ToString().Ellipsize(200)}").ToList();
+            var mappingSummary = string.Join(Environment.NewLine, mappingSummaryList);
+
+            this.RefreshMappings();
+            var plural = changedMappings.Count > 1 ? "s" : "";
+            var pluralWas = changedMappings.Count > 1 ? "were" : "was";
+            var result = MessageBox.Show(
+                $"Found {changedMappings.Count} parent/child mapping{plural} that {pluralWas} in different groups:\n{mappingSummary}\n\nThis can happen if you change grouping or if an invalid profile is loaded. To prevent weird sorting behaviour the mapping{plural} {pluralWas} detached from their parent.\n\nYou can still restore to the previous setup by switching to a compatible grouping type ('None' always works).\n\nSelect 'Cancel' if you want to switch to the grouping type 'None', or 'OK' to save the profile with the detached mapping{plural}.",
+                $"Parent/child mapping{plural} detached",
+                MessageBoxButtons.OKCancel,
+                MessageBoxIcon.Warning
+            );
+
+            if (result == DialogResult.Cancel)
+            {
+                var configManager = ServiceLocator.Current.GetInstance<IConfigManager>();
+                configManager.GetConfigState().SelectedViewMappingGroupType = ViewMappingGroupType.None;
+                this.RefreshMappingsAfterGroupChange();
+                return;
+            }
+
+            foreach (var mappedOption in changedMappings)
+            {
+                mappedOption.SetParent(null);
+            }
+        }
     }
 
     public bool RunAppCommand(AppCommand command)
@@ -212,7 +452,7 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
             case AppCommand.Abort:
                 this.BeginInvoke(new MethodInvoker(delegate
                 {
-                    this.chkEnabled.Checked = false;
+                    this.chkArmed.Checked = false;
                 }));
 
                 return true;
@@ -247,6 +487,8 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
                 this.SetSelectedProfile(ev.Profile);
             }
         };
+
+        this.RefreshColumnWidths();
     }
 
     private void BtnCreateMapping_Click(object sender, EventArgs e)
@@ -274,7 +516,7 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
         this.EditMappedOption(mappedOption);
     }
 
-    private CachedMappingGroup GetGroupOrCreateInCache(ActionAttribute attribute)
+    private CachedMappingGroup GetGroupOrCreateInCache(MappingAttribute attribute)
     {
         var uniqueId = attribute.GroupName + attribute.GroupImage;
 
@@ -293,11 +535,30 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
     private object OlvMappings_GroupKeyGetter(object rowObject)
     {
         var option = (AbstractMappedOption)rowObject;
-        var actionAttribute = ActionsRepository.GetAttributeForAction(option.Action);
 
-        if (actionAttribute != null)
+        MappingAttribute attribute = null;
+
+        var configManager = ServiceLocator.Current.GetInstance<IConfigManager>();
+        var mappingGroupType = configManager.GetConfigState().SelectedViewMappingGroupType;
+
+        switch (mappingGroupType)
         {
-            return this.GetGroupOrCreateInCache(actionAttribute);
+            case ViewMappingGroupType.ByAction:
+                attribute = ActionsRepository.GetAttributeForAction(option.Action);
+                break;
+
+            case ViewMappingGroupType.ByTrigger:
+                attribute = TriggersRepository.GetAttributeForTrigger(option.Trigger);
+                break;
+
+            case ViewMappingGroupType.None:
+            default:
+                break;
+        }
+
+        if (attribute != null)
+        {
+            return this.GetGroupOrCreateInCache(attribute);
         }
 
         return null;
@@ -318,7 +579,10 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
     private void OlvMappings_BeforeCreatingGroups(object sender, CreateGroupsEventArgs e)
     {
         e.Parameters.GroupComparer = new MappingGroupComparer();
-        e.Parameters.ItemComparer = new MappingGroupItemComparer(e.Parameters.PrimarySort, e.Parameters.PrimarySortOrder);
+        e.Parameters.ItemComparer = new MappingGroupItemComparer(
+            e.Parameters.PrimarySort,
+            e.Parameters.PrimarySortOrder
+        );
     }
 
     private void OlvMappings_AboutToCreateGroups(object sender, CreateGroupsEventArgs e)
@@ -337,29 +601,29 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
 
     private void OlvMappings_CellRightClick(object sender, CellRightClickEventArgs e)
     {
-        ContextMenuStrip menu = new();
-
-        var addItem = menu.Items.Add("Add New Mapping");
-        addItem.Click += (s, _) => this.EditMappedOption();
-
-        var selectedCount = this.olvMappings.SelectedItems.Count;
-
-        if (selectedCount > 1)
+        var builder = new MappingContextMenuBuilder(this.olvMappings.SelectedItems);
+        builder.SelectEditMapping += (s, e) => this.EditMappedOption(e.MappedOption);
+        builder.SelectMakeMappingParentless += (s, e) => this.MakeMappingParentless(e.MappedOption);
+        builder.SelectChooseNewParent += (s, e) => this.ChooseNewParent(e.MappedOption, e.NewParent);
+        builder.SelectMultiEditMapping += this.Builder_SelectMultiEditMapping;
+        builder.SelectRemoveMappings += (s, e) =>
         {
-            var removeItems = menu.Items.Add($"Remove {selectedCount} Mappings");
-            removeItems.Click += (s, _) =>
-            {
-                this.RemoveSelectedMappings();
-                this.selectedProfile.Save();
-            };
-        }
-        else if (e.Model is MappedOption mappedOption)
+            this.RemoveSelectedMappings();
+            this.selectedProfile.Save();
+        };
+        e.MenuStrip = builder.Build();
+    }
+
+    private void Builder_SelectMultiEditMapping(object sender, SelectMultiEditMappingEventArgs e)
+    {
+        // Apply, save and refresh
+        foreach (var mappingAspect in e.MappingAspects)
         {
-            var removeItem = menu.Items.Add("Remove Mapping");
-            removeItem.Click += (s, _) => this.RemoveMapping(mappedOption);
+            e.Property.SetValue(mappingAspect, e.Value);
         }
 
-        e.MenuStrip = menu;
+        this.selectedProfile.Save();
+        this.RefreshMappings();
     }
 
     private void OlvMappings_KeyUp(object sender, KeyEventArgs e)
@@ -370,6 +634,25 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
         }
 
         this.RemoveSelectedMappings();
+    }
+
+    private void OlvMappings_FormatRow(object sender, FormatRowEventArgs e)
+    {
+        if (e.Model is not MappedOption mappedOption)
+        {
+            return;
+        }
+
+        if (mappedOption.IsChild)
+        {
+            e.Item.CellPadding = new Rectangle(
+                (e.ListView.CellPadding?.Left ?? 0) + 10,
+                e.ListView.CellPadding?.Top ?? 0,
+                e.ListView.CellPadding?.Right ?? 0,
+                e.ListView.CellPadding?.Bottom ?? 0
+            );
+            e.Item.ForeColor = Color.Gray;
+        }
     }
 
     private void OlvMappings_FormatCell(object sender, FormatCellEventArgs e)
@@ -385,18 +668,34 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
 
     private void ChkEnabled_CheckedChanged(object sender, EventArgs e)
     {
-        var isEnabled = this.chkEnabled.Checked;
+        var isArmed = this.chkArmed.Checked;
 
-        this.SetStatusView(isEnabled);
+        this.SetStatusView(isArmed);
 
-        if (isEnabled)
+        if (isArmed)
         {
-            Key2JoyManager.Instance.ArmMappings(this.selectedProfile);
+            try
+            {
+                Key2JoyManager.Instance.ArmMappings(this.selectedProfile);
+            }
+            catch (MappingArmingFailedException ex)
+            {
+                this.chkArmed.Checked = false;
+                MessageBox.Show(
+                    this,
+                    ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+            }
         }
         else
         {
             Key2JoyManager.Instance.DisarmMappings();
         }
+
+        this.deviceListControl.RefreshDevices();
     }
 
     private void TxtProfileName_TextChanged(object sender, EventArgs e)
@@ -450,7 +749,8 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
         this.SetSelectedProfile(profile);
     }
 
-    private void SaveProfileToolStripMenuItem_Click(object sender, EventArgs e) => MessageBox.Show("When you make changes to a profile, changes are automatically saved. This button is only here to explain that feature to you.", "Profile already saved!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+    private void SaveProfileToolStripMenuItem_Click(object sender, EventArgs e)
+        => MessageBox.Show("When you make changes to a profile, changes are automatically saved. This button is only here to explain that feature to you.", "Profile already saved!", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
     private void OpenProfileFolderToolStripMenuItem_Click(object sender, EventArgs e)
     {
@@ -471,28 +771,28 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
     private void GamePadPressAndReleaseToolStripMenuItem_Click(object sender, EventArgs e)
     {
         List<MappedOption> range = new();
-        range.AddRange(GamePadAction.GetAllButtonActions(PressState.Press));
-        range.AddRange(GamePadAction.GetAllButtonActions(PressState.Release));
+        range.AddRange(GamePadButtonAction.GetAllButtonActions(PressState.Press));
+        range.AddRange(GamePadButtonAction.GetAllButtonActions(PressState.Release));
 
         this.selectedProfile.AddMappingRange(range);
         this.selectedProfile.Save();
-        this.olvMappings.AddObjects(range);
+        this.RefreshMappings();
     }
 
     private void GamePadPressToolStripMenuItem_Click(object sender, EventArgs e)
     {
-        var range = GamePadAction.GetAllButtonActions(PressState.Press);
+        var range = GamePadButtonAction.GetAllButtonActions(PressState.Press);
         this.selectedProfile.AddMappingRange(range);
         this.selectedProfile.Save();
-        this.olvMappings.AddObjects(range);
+        this.RefreshMappings();
     }
 
     private void GamePadReleaseToolStripMenuItem_Click(object sender, EventArgs e)
     {
-        var range = GamePadAction.GetAllButtonActions(PressState.Release);
+        var range = GamePadButtonAction.GetAllButtonActions(PressState.Release);
         this.selectedProfile.AddMappingRange(range);
         this.selectedProfile.Save();
-        this.olvMappings.AddObjects(range);
+        this.RefreshMappings();
     }
 
     private void KeyboardPressAndReleaseToolStripMenuItem_Click(object sender, EventArgs e)
@@ -503,7 +803,7 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
 
         this.selectedProfile.AddMappingRange(range);
         this.selectedProfile.Save();
-        this.olvMappings.AddObjects(range);
+        this.RefreshMappings();
     }
 
     private void KeyboardPressToolStripMenuItem_Click(object sender, EventArgs e)
@@ -511,7 +811,7 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
         var range = KeyboardAction.GetAllButtonActions(PressState.Press);
         this.selectedProfile.AddMappingRange(range);
         this.selectedProfile.Save();
-        this.olvMappings.AddObjects(range);
+        this.RefreshMappings();
     }
 
     private void KeyboardReleaseToolStripMenuItem_Click(object sender, EventArgs e)
@@ -519,14 +819,20 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
         var range = KeyboardAction.GetAllButtonActions(PressState.Release);
         this.selectedProfile.AddMappingRange(range);
         this.selectedProfile.Save();
-        this.olvMappings.AddObjects(range);
+        this.RefreshMappings();
     }
 
     private void TestKeyboardToolStripMenuItem_Click(object sender, EventArgs e) => Process.Start("https://devicetests.com/keyboard-tester");
 
     private void TestMouseToolStripMenuItem_Click(object sender, EventArgs e) => Process.Start("https://devicetests.com/mouse-test");
 
-    private void UserConfigurationsToolStripMenuItem_Click(object sender, EventArgs e) => new ConfigForm().ShowDialog();
+    private void UserConfigurationsToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        new ConfigForm().ShowDialog();
+
+        // Refresh the mapppings in case the user modified a group config
+        this.RefreshMappingsAfterGroupChange();
+    }
 
     private void ReportAProblemToolStripMenuItem_Click(object sender, EventArgs e) => Process.Start("https://github.com/luttje/Key2Joy/issues");
 
@@ -566,7 +872,7 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
 
     private void ManagePluginsToolStripMenuItem_Click(object sender, EventArgs e) => new PluginsForm().ShowDialog();
 
-    private void GenerateOppositePressStateMappingsToolStripMenuItem_Click(object sender, EventArgs e)
+    private void GenerateReverseMappingsToolStripMenuItem_Click(object sender, EventArgs e)
     {
         var selectedCount = this.olvMappings.SelectedItems.Count;
 
@@ -577,8 +883,9 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
 
         if (selectedCount > 1
             && DialogUtilities.Confirm(
-                $"Are you sure you want to create opposite press state mappings for all {selectedCount} selected mappings? New 'Release' mappings will be created for each 'Press' and vice versa.",
-                $"Generate {selectedCount} opposite press state mappings"
+                $"Are you sure you want to create reverse mappings for all {selectedCount} selected mappings? Each type of action and trigger will configure their own useful reverse if possible.\n\n"
+                + $"An example of an reverse mapping is how new 'Release' mappings will be created for each 'Press' and vice versa.",
+                $"Generate {selectedCount} reverse mappings"
             ) == DialogResult.No)
         {
             return;
@@ -589,7 +896,7 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
             .Select(item => (MappedOption)item.RowObject)
             .ToList();
 
-        var newOptions = MappedOption.GenerateOppositePressStateMappings(selectedMappings);
+        var newOptions = MappedOption.GenerateReverseMappings(selectedMappings);
 
         foreach (var option in newOptions)
         {
@@ -597,7 +904,7 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
         }
 
         this.selectedProfile.Save();
-        this.olvMappings.AddObjects(newOptions);
+        this.RefreshMappings();
     }
 
     private void TxtFilter_TextChanged(object sender, EventArgs e)

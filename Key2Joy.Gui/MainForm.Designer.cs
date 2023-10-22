@@ -41,7 +41,7 @@ namespace Key2Joy.Gui
             this.pnlProfileManagement = new System.Windows.Forms.Panel();
             this.txtProfileName = new System.Windows.Forms.TextBox();
             this.lblProfileName = new System.Windows.Forms.Label();
-            this.chkEnabled = new System.Windows.Forms.CheckBox();
+            this.chkArmed = new System.Windows.Forms.CheckBox();
             this.menMainMenu = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newProfileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -53,14 +53,16 @@ namespace Key2Joy.Gui
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitProgramToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.createNewMappingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewScriptOutputToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewLogFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewEventViewerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.pluginsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.managePluginsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openPluginsFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.createNewMappingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.fillProfileWithToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.allGamePadJoystickActionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pressToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -89,22 +91,30 @@ namespace Key2Joy.Gui
             this.pnlMainMenu = new System.Windows.Forms.Panel();
             this.lblStatusInactive = new System.Windows.Forms.Label();
             this.lblStatusActive = new System.Windows.Forms.Label();
+            this.pnlNotificationsParent = new System.Windows.Forms.Panel();
+            this.splitContainer = new System.Windows.Forms.SplitContainer();
+            this.deviceListControl = new Key2Joy.Gui.DeviceListControl();
+            this.groupMappingsByToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.olvMappings)).BeginInit();
             this.pnlActionManagement.SuspendLayout();
             this.pnlFiltering.SuspendLayout();
             this.pnlProfileManagement.SuspendLayout();
             this.menMainMenu.SuspendLayout();
             this.pnlMainMenu.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
+            this.splitContainer.Panel1.SuspendLayout();
+            this.splitContainer.Panel2.SuspendLayout();
+            this.splitContainer.SuspendLayout();
             this.SuspendLayout();
             // 
             // olvMappings
             // 
-            this.olvMappings.AllColumns.Add(this.olvColumnTrigger);
             this.olvMappings.AllColumns.Add(this.olvColumnAction);
+            this.olvMappings.AllColumns.Add(this.olvColumnTrigger);
             this.olvMappings.CellEditUseWholeCell = false;
             this.olvMappings.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.olvColumnTrigger,
-            this.olvColumnAction});
+            this.olvColumnAction,
+            this.olvColumnTrigger});
             this.olvMappings.Cursor = System.Windows.Forms.Cursors.Default;
             this.olvMappings.Dock = System.Windows.Forms.DockStyle.Fill;
             this.olvMappings.EmptyListMsg = "There are no mappings, or a search filter is applied that matched no mappings.";
@@ -115,7 +125,7 @@ namespace Key2Joy.Gui
             this.olvMappings.Location = new System.Drawing.Point(0, 53);
             this.olvMappings.Name = "olvMappings";
             this.olvMappings.RowHeight = 25;
-            this.olvMappings.Size = new System.Drawing.Size(684, 467);
+            this.olvMappings.Size = new System.Drawing.Size(683, 467);
             this.olvMappings.TabIndex = 84;
             this.olvMappings.UseCellFormatEvents = true;
             this.olvMappings.UseCompatibleStateImageBehavior = false;
@@ -124,21 +134,18 @@ namespace Key2Joy.Gui
             this.olvMappings.UseTranslucentHotItem = true;
             this.olvMappings.UseTranslucentSelection = true;
             this.olvMappings.View = System.Windows.Forms.View.Details;
-            this.olvMappings.AboutToCreateGroups += new System.EventHandler<BrightIdeasSoftware.CreateGroupsEventArgs>(this.OlvMappings_AboutToCreateGroups);
-            this.olvMappings.CellClick += new System.EventHandler<BrightIdeasSoftware.CellClickEventArgs>(this.OlvMappings_CellClick);
-            this.olvMappings.CellRightClick += new System.EventHandler<BrightIdeasSoftware.CellRightClickEventArgs>(this.OlvMappings_CellRightClick);
-            this.olvMappings.FormatCell += new System.EventHandler<BrightIdeasSoftware.FormatCellEventArgs>(this.OlvMappings_FormatCell);
-            this.olvMappings.KeyUp += new System.Windows.Forms.KeyEventHandler(this.OlvMappings_KeyUp);
             // 
             // olvColumnAction
             // 
             this.olvColumnAction.AspectName = "Action";
+            this.olvColumnAction.DisplayIndex = 1;
             this.olvColumnAction.Text = "Action";
             this.olvColumnAction.UseInitialLetterForGroup = true;
             // 
             // olvColumnTrigger
             // 
             this.olvColumnTrigger.AspectName = "Trigger";
+            this.olvColumnTrigger.DisplayIndex = 0;
             this.olvColumnTrigger.Groupable = false;
             this.olvColumnTrigger.Text = "Trigger";
             // 
@@ -150,7 +157,7 @@ namespace Key2Joy.Gui
             this.pnlActionManagement.Location = new System.Drawing.Point(0, 520);
             this.pnlActionManagement.Name = "pnlActionManagement";
             this.pnlActionManagement.Padding = new System.Windows.Forms.Padding(5);
-            this.pnlActionManagement.Size = new System.Drawing.Size(684, 41);
+            this.pnlActionManagement.Size = new System.Drawing.Size(683, 41);
             this.pnlActionManagement.TabIndex = 0;
             // 
             // pnlFiltering
@@ -187,7 +194,7 @@ namespace Key2Joy.Gui
             // btnCreateMapping
             // 
             this.btnCreateMapping.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnCreateMapping.Location = new System.Drawing.Point(530, 5);
+            this.btnCreateMapping.Location = new System.Drawing.Point(529, 5);
             this.btnCreateMapping.Name = "btnCreateMapping";
             this.btnCreateMapping.Size = new System.Drawing.Size(149, 31);
             this.btnCreateMapping.TabIndex = 0;
@@ -204,7 +211,7 @@ namespace Key2Joy.Gui
             this.pnlProfileManagement.Location = new System.Drawing.Point(0, 23);
             this.pnlProfileManagement.Name = "pnlProfileManagement";
             this.pnlProfileManagement.Padding = new System.Windows.Forms.Padding(5);
-            this.pnlProfileManagement.Size = new System.Drawing.Size(684, 30);
+            this.pnlProfileManagement.Size = new System.Drawing.Size(683, 30);
             this.pnlProfileManagement.TabIndex = 82;
             // 
             // txtProfileName
@@ -212,7 +219,7 @@ namespace Key2Joy.Gui
             this.txtProfileName.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtProfileName.Location = new System.Drawing.Point(82, 5);
             this.txtProfileName.Name = "txtProfileName";
-            this.txtProfileName.Size = new System.Drawing.Size(597, 20);
+            this.txtProfileName.Size = new System.Drawing.Size(596, 20);
             this.txtProfileName.TabIndex = 85;
             this.txtProfileName.TextChanged += new System.EventHandler(this.TxtProfileName_TextChanged);
             // 
@@ -227,17 +234,17 @@ namespace Key2Joy.Gui
             this.lblProfileName.Text = "Profile Name:";
             this.lblProfileName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // chkEnabled
+            // chkArmed
             // 
-            this.chkEnabled.AutoSize = true;
-            this.chkEnabled.Dock = System.Windows.Forms.DockStyle.Right;
-            this.chkEnabled.Location = new System.Drawing.Point(424, 0);
-            this.chkEnabled.Name = "chkEnabled";
-            this.chkEnabled.Size = new System.Drawing.Size(59, 23);
-            this.chkEnabled.TabIndex = 81;
-            this.chkEnabled.Text = "Enable";
-            this.chkEnabled.UseVisualStyleBackColor = true;
-            this.chkEnabled.CheckedChanged += new System.EventHandler(this.ChkEnabled_CheckedChanged);
+            this.chkArmed.AutoSize = true;
+            this.chkArmed.Dock = System.Windows.Forms.DockStyle.Right;
+            this.chkArmed.Location = new System.Drawing.Point(389, 0);
+            this.chkArmed.Name = "chkArmed";
+            this.chkArmed.Size = new System.Drawing.Size(93, 23);
+            this.chkArmed.TabIndex = 81;
+            this.chkArmed.Text = "Arm Mappings";
+            this.chkArmed.UseVisualStyleBackColor = true;
+            this.chkArmed.CheckedChanged += new System.EventHandler(this.ChkEnabled_CheckedChanged);
             // 
             // menMainMenu
             // 
@@ -248,7 +255,7 @@ namespace Key2Joy.Gui
             this.helpToolStripMenuItem});
             this.menMainMenu.Location = new System.Drawing.Point(0, 0);
             this.menMainMenu.Name = "menMainMenu";
-            this.menMainMenu.Size = new System.Drawing.Size(424, 24);
+            this.menMainMenu.Size = new System.Drawing.Size(389, 24);
             this.menMainMenu.TabIndex = 81;
             this.menMainMenu.Text = "menuStrip1";
             // 
@@ -323,19 +330,13 @@ namespace Key2Joy.Gui
             // viewToolStripMenuItem
             // 
             this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.createNewMappingToolStripMenuItem,
+            this.groupMappingsByToolStripMenuItem,
             this.viewScriptOutputToolStripMenuItem,
+            this.toolStripSeparator5,
             this.pluginsToolStripMenuItem});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
             this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.viewToolStripMenuItem.Text = "View";
-            // 
-            // createNewMappingToolStripMenuItem
-            // 
-            this.createNewMappingToolStripMenuItem.Name = "createNewMappingToolStripMenuItem";
-            this.createNewMappingToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
-            this.createNewMappingToolStripMenuItem.Text = "Create New Mapping";
-            this.createNewMappingToolStripMenuItem.Click += new System.EventHandler(this.CreateNewMappingToolStripMenuItem_Click);
             // 
             // viewScriptOutputToolStripMenuItem
             // 
@@ -343,7 +344,7 @@ namespace Key2Joy.Gui
             this.viewLogFileToolStripMenuItem,
             this.viewEventViewerToolStripMenuItem});
             this.viewScriptOutputToolStripMenuItem.Name = "viewScriptOutputToolStripMenuItem";
-            this.viewScriptOutputToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.viewScriptOutputToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
             this.viewScriptOutputToolStripMenuItem.Text = "View Script Output";
             // 
             // viewLogFileToolStripMenuItem
@@ -360,6 +361,11 @@ namespace Key2Joy.Gui
             this.viewEventViewerToolStripMenuItem.Text = "View Event Viewer";
             this.viewEventViewerToolStripMenuItem.Click += new System.EventHandler(this.ViewEventViewerToolStripMenuItem_Click);
             // 
+            // toolStripSeparator5
+            // 
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(185, 6);
+            // 
             // pluginsToolStripMenuItem
             // 
             this.pluginsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -367,7 +373,7 @@ namespace Key2Joy.Gui
             this.openPluginsFolderToolStripMenuItem});
             this.pluginsToolStripMenuItem.Image = global::Key2Joy.Gui.Properties.Resources.plugin;
             this.pluginsToolStripMenuItem.Name = "pluginsToolStripMenuItem";
-            this.pluginsToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.pluginsToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
             this.pluginsToolStripMenuItem.Text = "Plugins";
             // 
             // managePluginsToolStripMenuItem
@@ -387,6 +393,8 @@ namespace Key2Joy.Gui
             // toolsToolStripMenuItem
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.createNewMappingToolStripMenuItem,
+            this.toolStripSeparator6,
             this.fillProfileWithToolStripMenuItem,
             this.testMappingsToolStripMenuItem,
             this.withSelectedToolStripMenuItem,
@@ -396,13 +404,25 @@ namespace Key2Joy.Gui
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
             // 
+            // createNewMappingToolStripMenuItem
+            // 
+            this.createNewMappingToolStripMenuItem.Name = "createNewMappingToolStripMenuItem";
+            this.createNewMappingToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.createNewMappingToolStripMenuItem.Text = "Create New Mapping";
+            this.createNewMappingToolStripMenuItem.Click += new System.EventHandler(this.CreateNewMappingToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator6
+            // 
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            this.toolStripSeparator6.Size = new System.Drawing.Size(183, 6);
+            // 
             // fillProfileWithToolStripMenuItem
             // 
             this.fillProfileWithToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.allGamePadJoystickActionsToolStripMenuItem,
             this.allKeyboardActionsToolStripMenuItem});
             this.fillProfileWithToolStripMenuItem.Name = "fillProfileWithToolStripMenuItem";
-            this.fillProfileWithToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.fillProfileWithToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
             this.fillProfileWithToolStripMenuItem.Text = "Fill Profile With...";
             // 
             // allGamePadJoystickActionsToolStripMenuItem
@@ -474,7 +494,7 @@ namespace Key2Joy.Gui
             this.testKeyboardToolStripMenuItem,
             this.testMouseToolStripMenuItem});
             this.testMappingsToolStripMenuItem.Name = "testMappingsToolStripMenuItem";
-            this.testMappingsToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.testMappingsToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
             this.testMappingsToolStripMenuItem.Text = "Test Mappings";
             // 
             // testGamePadJoystickToolStripMenuItem
@@ -519,26 +539,26 @@ namespace Key2Joy.Gui
             this.withSelectedToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.generateOppositePressStateMappingsToolStripMenuItem});
             this.withSelectedToolStripMenuItem.Name = "withSelectedToolStripMenuItem";
-            this.withSelectedToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.withSelectedToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
             this.withSelectedToolStripMenuItem.Text = "With Selected...";
             // 
             // generateOppositePressStateMappingsToolStripMenuItem
             // 
             this.generateOppositePressStateMappingsToolStripMenuItem.Name = "generateOppositePressStateMappingsToolStripMenuItem";
-            this.generateOppositePressStateMappingsToolStripMenuItem.Size = new System.Drawing.Size(287, 22);
-            this.generateOppositePressStateMappingsToolStripMenuItem.Text = "Generate Opposite Press State Mappings";
-            this.generateOppositePressStateMappingsToolStripMenuItem.Click += new System.EventHandler(this.GenerateOppositePressStateMappingsToolStripMenuItem_Click);
+            this.generateOppositePressStateMappingsToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
+            this.generateOppositePressStateMappingsToolStripMenuItem.Text = "Generate Reverse Mappings";
+            this.generateOppositePressStateMappingsToolStripMenuItem.Click += new System.EventHandler(this.GenerateReverseMappingsToolStripMenuItem_Click);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(176, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(183, 6);
             // 
             // userConfigurationsToolStripMenuItem
             // 
             this.userConfigurationsToolStripMenuItem.Image = global::Key2Joy.Gui.Properties.Resources.cog;
             this.userConfigurationsToolStripMenuItem.Name = "userConfigurationsToolStripMenuItem";
-            this.userConfigurationsToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.userConfigurationsToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
             this.userConfigurationsToolStripMenuItem.Text = "User Configurations";
             this.userConfigurationsToolStripMenuItem.Click += new System.EventHandler(this.UserConfigurationsToolStripMenuItem_Click);
             // 
@@ -590,13 +610,13 @@ namespace Key2Joy.Gui
             // pnlMainMenu
             // 
             this.pnlMainMenu.Controls.Add(this.menMainMenu);
-            this.pnlMainMenu.Controls.Add(this.chkEnabled);
+            this.pnlMainMenu.Controls.Add(this.chkArmed);
             this.pnlMainMenu.Controls.Add(this.lblStatusInactive);
             this.pnlMainMenu.Controls.Add(this.lblStatusActive);
             this.pnlMainMenu.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlMainMenu.Location = new System.Drawing.Point(0, 0);
             this.pnlMainMenu.Name = "pnlMainMenu";
-            this.pnlMainMenu.Size = new System.Drawing.Size(684, 23);
+            this.pnlMainMenu.Size = new System.Drawing.Size(683, 23);
             this.pnlMainMenu.TabIndex = 85;
             // 
             // lblStatusInactive
@@ -604,38 +624,84 @@ namespace Key2Joy.Gui
             this.lblStatusInactive.BackColor = System.Drawing.Color.IndianRed;
             this.lblStatusInactive.Dock = System.Windows.Forms.DockStyle.Right;
             this.lblStatusInactive.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.lblStatusInactive.Location = new System.Drawing.Point(483, 0);
+            this.lblStatusInactive.Location = new System.Drawing.Point(482, 0);
             this.lblStatusInactive.Name = "lblStatusInactive";
             this.lblStatusInactive.Size = new System.Drawing.Size(109, 23);
             this.lblStatusInactive.TabIndex = 82;
-            this.lblStatusInactive.Text = "(Mappings not active)";
+            this.lblStatusInactive.Text = "(Mappings not armed)";
             this.lblStatusInactive.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblStatusActive
             // 
             this.lblStatusActive.BackColor = System.Drawing.Color.LawnGreen;
             this.lblStatusActive.Dock = System.Windows.Forms.DockStyle.Right;
-            this.lblStatusActive.Location = new System.Drawing.Point(592, 0);
+            this.lblStatusActive.Location = new System.Drawing.Point(591, 0);
             this.lblStatusActive.Name = "lblStatusActive";
             this.lblStatusActive.Size = new System.Drawing.Size(92, 23);
             this.lblStatusActive.TabIndex = 83;
-            this.lblStatusActive.Text = "(Mappings active)";
+            this.lblStatusActive.Text = "(Mappings armed)";
             this.lblStatusActive.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // pnlNotificationsParent
+            // 
+            this.pnlNotificationsParent.AutoSize = true;
+            this.pnlNotificationsParent.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlNotificationsParent.Location = new System.Drawing.Point(0, 53);
+            this.pnlNotificationsParent.Name = "pnlNotificationsParent";
+            this.pnlNotificationsParent.Size = new System.Drawing.Size(683, 0);
+            this.pnlNotificationsParent.TabIndex = 89;
+            // 
+            // splitContainer
+            // 
+            this.splitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
+            this.splitContainer.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer.Name = "splitContainer";
+            // 
+            // splitContainer.Panel1
+            // 
+            this.splitContainer.Panel1.Controls.Add(this.olvMappings);
+            this.splitContainer.Panel1.Controls.Add(this.pnlActionManagement);
+            this.splitContainer.Panel1.Controls.Add(this.pnlNotificationsParent);
+            this.splitContainer.Panel1.Controls.Add(this.pnlProfileManagement);
+            this.splitContainer.Panel1.Controls.Add(this.pnlMainMenu);
+            this.splitContainer.Panel1MinSize = 650;
+            // 
+            // splitContainer.Panel2
+            // 
+            this.splitContainer.Panel2.Controls.Add(this.deviceListControl);
+            this.splitContainer.Panel2MinSize = 80;
+            this.splitContainer.Size = new System.Drawing.Size(784, 561);
+            this.splitContainer.SplitterDistance = 683;
+            this.splitContainer.TabIndex = 90;
+            // 
+            // deviceListControl
+            // 
+            this.deviceListControl.AutoScroll = true;
+            this.deviceListControl.BackColor = System.Drawing.Color.Gold;
+            this.deviceListControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.deviceListControl.Location = new System.Drawing.Point(0, 0);
+            this.deviceListControl.Name = "deviceListControl";
+            this.deviceListControl.Size = new System.Drawing.Size(97, 561);
+            this.deviceListControl.TabIndex = 0;
+            // 
+            // groupMappingsByToolStripMenuItem
+            // 
+            this.groupMappingsByToolStripMenuItem.Name = "groupMappingsByToolStripMenuItem";
+            this.groupMappingsByToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
+            this.groupMappingsByToolStripMenuItem.Text = "Group Mappings By...";
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(684, 561);
-            this.Controls.Add(this.olvMappings);
-            this.Controls.Add(this.pnlActionManagement);
-            this.Controls.Add(this.pnlProfileManagement);
-            this.Controls.Add(this.pnlMainMenu);
+            this.ClientSize = new System.Drawing.Size(784, 561);
+            this.Controls.Add(this.splitContainer);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.MaximizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(600, 500);
+            this.MinimumSize = new System.Drawing.Size(800, 500);
             this.Name = "MainForm";
             this.Text = "Key2Joy - Alpha Version";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
@@ -651,12 +717,17 @@ namespace Key2Joy.Gui
             this.menMainMenu.PerformLayout();
             this.pnlMainMenu.ResumeLayout(false);
             this.pnlMainMenu.PerformLayout();
+            this.splitContainer.Panel1.ResumeLayout(false);
+            this.splitContainer.Panel1.PerformLayout();
+            this.splitContainer.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).EndInit();
+            this.splitContainer.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
-        private System.Windows.Forms.CheckBox chkEnabled;
+        private System.Windows.Forms.CheckBox chkArmed;
         private System.Windows.Forms.Panel pnlActionManagement;
         private System.Windows.Forms.Panel pnlProfileManagement;
         private System.Windows.Forms.TextBox txtProfileName;
@@ -700,7 +771,6 @@ namespace Key2Joy.Gui
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripMenuItem userConfigurationsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem createNewMappingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem viewScriptOutputToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem viewLogFileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem viewEventViewerToolStripMenuItem;
@@ -715,6 +785,13 @@ namespace Key2Joy.Gui
         private System.Windows.Forms.TextBox txtFilter;
         private System.Windows.Forms.Panel pnlFiltering;
         private System.Windows.Forms.Label txtFilterLabel;
+        private System.Windows.Forms.Panel pnlNotificationsParent;
+        private System.Windows.Forms.SplitContainer splitContainer;
+        private DeviceListControl deviceListControl;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+        private System.Windows.Forms.ToolStripMenuItem createNewMappingToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
+        private System.Windows.Forms.ToolStripMenuItem groupMappingsByToolStripMenuItem;
     }
 }
 

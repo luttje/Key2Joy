@@ -60,7 +60,7 @@ public abstract class BaseScriptAction : CoreAction
 
     public override string GetNameDisplay()
     {
-        var truncatedScript = this.Script.Ellipsize(50);
+        var truncatedScript = this.Script;
 
         return this.Name.Replace("{0}", truncatedScript);
     }

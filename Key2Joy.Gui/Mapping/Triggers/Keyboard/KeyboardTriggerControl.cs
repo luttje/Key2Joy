@@ -81,6 +81,25 @@ public partial class KeyboardTriggerControl : UserControl, ITriggerOptionsContro
         thisTrigger.PressState = (PressState)this.cmbPressState.SelectedItem;
     }
 
+    public bool CanMappingSave(AbstractTrigger trigger)
+    {
+        var thisTrigger = (KeyboardTrigger)trigger;
+
+        if (thisTrigger.Keys != Keys.None)
+        {
+            return true;
+        }
+
+        MessageBox.Show(
+            $"The trigger is not set to any key.",
+            "Cannot save!",
+            MessageBoxButtons.OK,
+            MessageBoxIcon.Error
+        );
+
+        return false;
+    }
+
     private void StartTrapping()
     {
         this.txtKeyBind.Text = TEXT_CHANGE;

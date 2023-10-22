@@ -5,8 +5,6 @@ using CommonServiceLocator;
 using Key2Joy.Config;
 using Key2Joy.Tests.Core.Config;
 using Key2Joy.Util;
-using System.Linq;
-using Key2Joy.Contracts.Plugins;
 
 namespace Key2Joy.Tests.Core.Plugins;
 

@@ -4,6 +4,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.Mapping;
 using Key2Joy.Mapping.Triggers;
@@ -51,6 +52,16 @@ public partial class TriggerControl : UserControl
         TriggerChanged?.Invoke(this, new TriggerChangedEventArgs(this.Trigger));
     }
 
+    public bool CanMappingSave(AbstractMappedOption mappedOption)
+    {
+        if (this.options != null)
+        {
+            return this.options.CanMappingSave(mappedOption.Trigger);
+        }
+
+        return false;
+    }
+
     public void SelectTrigger(AbstractTrigger trigger)
     {
         if (trigger is DisabledTrigger)
@@ -73,11 +84,18 @@ public partial class TriggerControl : UserControl
 
     private void LoadTriggers()
     {
+        if (System.Diagnostics.Process.GetCurrentProcess().ProcessName == "devenv")
+        {
+            return; // The designer can't handle the code below.
+        }
+
         var triggerTypes = TriggersRepository.GetAllTriggers(this.IsTopLevel);
 
         foreach (var keyValuePair in triggerTypes)
         {
-            var mappingControlFactory = MappingControlRepository.GetMappingControlFactory(keyValuePair.Value.FullTypeName);
+            var mappingControlFactory = MappingControlRepository.GetMappingControlFactory(keyValuePair.Value.FullTypeName)
+                ?? throw new NotImplementedException("mappingControlFactory is null. Please create a Mapping Control for it.");
+
             var customImage = mappingControlFactory.ImageResourceName;
             var image = Program.ResourceBitmapFromName(customImage ?? "error");
             ImageComboBoxItem<KeyValuePair<TriggerAttribute, MappingTypeFactory<AbstractTrigger>>> item = new(keyValuePair, new Bitmap(image), "Key");

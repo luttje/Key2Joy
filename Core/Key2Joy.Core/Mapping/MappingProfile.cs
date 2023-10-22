@@ -25,7 +25,7 @@ public class MappingProfile
     public const string BACKUP_EXTENSION = ".bak";
     public const string SAVE_DIR = "Profiles";
 
-    public BindingList<MappedOption> MappedOptions { get; set; } = new BindingList<MappedOption>();
+    public BindingList<MappedOption> MappedOptions { get; set; } = new();
     public string Name { get; set; }
 
     public int Version { get; set; } = NO_VERSION; // Version is set on save
@@ -51,6 +51,11 @@ public class MappingProfile
             {
                 this.MappedOptions.Add((MappedOption)mappedOption.Clone());
             }
+
+            foreach (var mappedOption in this.MappedOptions)
+            {
+                mappedOption.Initialize(this.MappedOptions);
+            }
         }
     }
 
@@ -64,7 +69,8 @@ public class MappingProfile
         }
     }
 
-    public void RemoveMapping(MappedOption mappedOption) => this.MappedOptions.Remove(mappedOption);
+    public void RemoveMapping(MappedOption mappedOption)
+        => this.MappedOptions.Remove(mappedOption);
 
     public bool TryGetMappedOption(AbstractTrigger trigger, out MappedOption mappedOption)
     {
@@ -121,7 +127,7 @@ public class MappingProfile
         using (FileStream file = new(defaultPath, FileMode.Create, FileAccess.Write))
         using (BinaryWriter writer = new(file))
         {
-            writer.Write(Properties.Resources.default_profile_k2j);
+            writer.Write(GetDefaultProfileContents());
         }
 
         var configState = ServiceLocator.Current
@@ -132,6 +138,9 @@ public class MappingProfile
             configState.LastLoadedProfile = defaultPath;
         }
     }
+
+    public static byte[] GetDefaultProfileContents()
+        => Properties.Resources.default_profile_k2j;
 
     public static string ResolveProfilePath(string filePath)
     {

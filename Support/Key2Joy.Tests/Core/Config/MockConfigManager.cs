@@ -1,4 +1,5 @@
 using System.IO;
+using System.Text;
 using Key2Joy.Config;
 using Key2Joy.Mapping;
 
@@ -35,6 +36,23 @@ public class MockConfigManager : ConfigManager
 
     protected override string GetAppDataDirectory() => GetMockAppDataDirectory();
 
+    private static string AdjustAndWriteContents(string contents, string targetPath)
+    {
+        var assemblyPath = Path.GetDirectoryName(typeof(Gui.Program).Assembly.Location);
+
+        static string EscapePath(string path) => path.Replace("\\", "\\\\");
+
+        contents = contents.Replace("%TEST_ASSEMBLY_PATH%", EscapePath(assemblyPath));
+        contents = contents.Replace("%TEST_APP_DATA_PATH%", EscapePath(Path.Combine(assemblyPath, GetMockAppDataDirectory())));
+
+        // We must trim the newline off the end, or else the Json Serializer will Save and not match the stub.
+        contents = contents.TrimEnd('\r', '\n');
+
+        File.WriteAllText(targetPath, contents);
+
+        return contents;
+    }
+
     /// <summary>
     /// Copies the specified stub to the config or mapping profile path.
     /// </summary>
@@ -57,19 +75,30 @@ public class MockConfigManager : ConfigManager
         }
 
         var contents = File.ReadAllText(stubPath);
-        var assemblyPath = Path.GetDirectoryName(typeof(Gui.Program).Assembly.Location);
 
-        static string EscapePath(string path) => path.Replace("\\", "\\\\");
+        return AdjustAndWriteContents(contents, targetPath);
+    }
 
-        contents = contents.Replace("%TEST_ASSEMBLY_PATH%", EscapePath(assemblyPath));
-        contents = contents.Replace("%TEST_APP_DATA_PATH%", EscapePath(Path.Combine(assemblyPath, GetMockAppDataDirectory())));
+    /// <summary>
+    /// Copies the current default profile to the target path.
+    /// Gets it from the assembly's resources.
+    /// </summary>
+    /// <param name="targetPath"></param>
+    /// <returns></returns>
+    public static string CopyStubCurrentDefaultProfile(string targetPath)
+    {
+        var directory = Path.GetDirectoryName(targetPath);
 
-        // We must trim the newline off the end, or else the Json Serializer will Save and not match the stub.
-        contents = contents.TrimEnd('\r', '\n');
+        if (!string.IsNullOrWhiteSpace(directory)
+            && !Directory.Exists(directory))
+        {
+            Directory.CreateDirectory(directory);
+        }
 
-        File.WriteAllText(targetPath, contents);
+        var fileContents = MappingProfile.GetDefaultProfileContents();
+        var contents = Encoding.UTF8.GetString(fileContents);
 
-        return contents;
+        return AdjustAndWriteContents(contents, targetPath);
     }
 
     /// <summary>

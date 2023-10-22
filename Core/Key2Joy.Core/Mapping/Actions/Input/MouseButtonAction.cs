@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Key2Joy.Contracts.Mapping;
@@ -12,10 +12,10 @@ namespace Key2Joy.Mapping.Actions.Input;
     Description = "Mouse Button Simulation",
     Visibility = MappingMenuVisibility.Never,
     NameFormat = "{1} {0} on Mouse",
-    GroupName = "Mouse Button Simulation",
+    GroupName = "Mouse Simulation",
     GroupImage = "mouse"
 )]
-public class MouseButtonAction : CoreAction, IPressState
+public class MouseButtonAction : CoreAction, IPressState, IProvideReverseAspect
 {
     public Mouse.Buttons Button { get; set; }
     public PressState PressState { get; set; }
@@ -24,6 +24,10 @@ public class MouseButtonAction : CoreAction, IPressState
         : base(name)
     {
     }
+
+    /// <inheritdoc/>
+    public void MakeReverse(AbstractMappingAspect aspect)
+        => CommonReverseAspect.MakeReversePressState(this, aspect);
 
     public static Mouse.Buttons[] GetAllButtons()
     {

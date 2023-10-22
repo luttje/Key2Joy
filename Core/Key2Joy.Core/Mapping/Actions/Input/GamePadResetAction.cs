@@ -5,7 +5,7 @@ using CommonServiceLocator;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Contracts.Mapping.Triggers;
-using Key2Joy.LowLevelInput.GamePad;
+using Key2Joy.LowLevelInput.SimulatedGamePad;
 
 namespace Key2Joy.Mapping.Actions.Input;
 
@@ -13,7 +13,7 @@ namespace Key2Joy.Mapping.Actions.Input;
     Description = "GamePad Reset Simulation",
     Visibility = MappingMenuVisibility.Never,
     NameFormat = "Reset GamePad #{0}",
-    GroupName = "GamePad Reset Simulation",
+    GroupName = "GamePad Simulation",
     GroupImage = "joystick"
 )]
 public class GamePadResetAction : CoreAction
@@ -28,7 +28,7 @@ public class GamePadResetAction : CoreAction
     {
         base.OnStartListening(listener, ref otherActions);
 
-        var gamePadService = ServiceLocator.Current.GetInstance<IGamePadService>();
+        var gamePadService = ServiceLocator.Current.GetInstance<ISimulatedGamePadService>();
         gamePadService.EnsurePluggedIn(this.GamePadIndex);
     }
 
@@ -57,7 +57,7 @@ public class GamePadResetAction : CoreAction
     {
         this.GamePadIndex = gamepadIndex;
 
-        var gamePadService = ServiceLocator.Current.GetInstance<IGamePadService>();
+        var gamePadService = ServiceLocator.Current.GetInstance<ISimulatedGamePadService>();
         var gamePad = gamePadService.GetGamePad(this.GamePadIndex);
 
         if (!gamePad.GetIsPluggedIn())
@@ -72,7 +72,7 @@ public class GamePadResetAction : CoreAction
 
     public override async Task Execute(AbstractInputBag inputBag = null)
     {
-        var gamePadService = ServiceLocator.Current.GetInstance<IGamePadService>();
+        var gamePadService = ServiceLocator.Current.GetInstance<ISimulatedGamePadService>();
         var gamePad = gamePadService.GetGamePad(this.GamePadIndex);
         var state = gamePad.GetState();
         state.Reset();

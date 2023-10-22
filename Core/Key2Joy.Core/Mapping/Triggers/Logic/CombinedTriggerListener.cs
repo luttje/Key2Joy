@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Triggers;
@@ -8,6 +8,7 @@ namespace Key2Joy.Mapping.Triggers.Logic;
 public class CombinedTriggerListener : CoreTriggerListener
 {
     public static CombinedTriggerListener instance;
+
     public static CombinedTriggerListener Instance
     {
         get
@@ -39,8 +40,10 @@ public class CombinedTriggerListener : CoreTriggerListener
         mappedOptions.Add(mappedOption);
     }
 
+    /// <inheritdoc/>
     public override bool GetIsTriggered(AbstractTrigger trigger) => false;
 
+    /// <inheritdoc/>
     protected override void Start()
     {
         base.Start();
@@ -73,6 +76,13 @@ public class CombinedTriggerListener : CoreTriggerListener
                 listener.TriggerActivated += this.Listener_TriggerActivated;
             }
         }
+    }
+
+    /// <inheritdoc/>
+    protected override void Stop()
+    {
+        instance = null;
+        base.Stop();
     }
 
     private void Listener_TriggerActivating(object sender, TriggerActivatingEventArgs e)
@@ -151,11 +161,5 @@ public class CombinedTriggerListener : CoreTriggerListener
                 break;
             }
         }
-    }
-
-    protected override void Stop()
-    {
-        instance = null;
-        base.Stop();
     }
 }

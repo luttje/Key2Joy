@@ -66,84 +66,120 @@ internal class JsonMappingAspectConverter<T> : JsonConverter<T> where T : Abstra
         MappingAspectOptions mappingAspectOptions = new();
         var typeProperty = json.RootElement.GetProperty("$type");
         var type = MappingTypeHelper.EnsureSimpleTypeName(typeProperty.GetString());
+        MappingTypeFactory failingFactory;
+
+        if (typeToConvert == typeof(AbstractAction))
+        {
+            failingFactory = new MappingTypeFactory(
+                typeof(DisabledAction).FullName,
+                typeof(DisabledAction).GetCustomAttribute<ActionAttribute>());
+        }
+        else if (typeToConvert == typeof(AbstractTrigger))
+        {
+            failingFactory = new MappingTypeFactory(
+                typeof(DisabledTrigger).FullName,
+                typeof(DisabledTrigger).GetCustomAttribute<TriggerAttribute>());
+        }
+        else
+        {
+            throw new NotSupportedException($"Type {type} is not supported for {json.RootElement}.");
+        }
 
         if (!this.allowedTypes.TryGetValue(type, out var factory))
         {
             if (typeToConvert == typeof(AbstractAction))
             {
-                factory = new MappingTypeFactory(
-                    typeof(DisabledAction).FullName,
-                    typeof(DisabledAction).GetCustomAttribute<ActionAttribute>());
                 mappingAspectOptions.Add(nameof(DisabledAction.ActionName), type);
             }
             else if (typeToConvert == typeof(AbstractTrigger))
             {
-                factory = new MappingTypeFactory(
-                    typeof(DisabledTrigger).FullName,
-                    typeof(DisabledTrigger).GetCustomAttribute<TriggerAttribute>());
                 mappingAspectOptions.Add(nameof(DisabledTrigger.TriggerName), type);
             }
-            else
-            {
-                throw new NotSupportedException($"Type {type} is not supported");
-            }
+
+            factory = failingFactory;
         }
 
-        var aspectRootProperty = json.RootElement.GetProperty(
-            options.PropertyNamingPolicy.ConvertName(
-                nameof(JsonMappingAspectWithType.Options)
-            )
-        );
+        AbstractMappingAspect mappingAspect;
 
-        foreach (var property in aspectRootProperty.EnumerateObject())
+        try
         {
-            if (property.Value.ValueKind == JsonValueKind.Object)
-            {
-                throw new NotImplementedException($"The value kind {property.Value.ValueKind} is not yet supported.");
-            }
-            else if (property.Value.ValueKind == JsonValueKind.String)
-            {
-                mappingAspectOptions.Add(property.Name, property.Value.GetString());
-            }
-            else if (property.Value.ValueKind == JsonValueKind.Number)
-            {
-                mappingAspectOptions.Add(property.Name, property.Value.GetInt32());
-            }
-            else if (property.Value.ValueKind is JsonValueKind.True or JsonValueKind.False)
-            {
-                mappingAspectOptions.Add(property.Name, property.Value.GetBoolean());
-            }
-            else if (property.Value.ValueKind == JsonValueKind.Null)
-            {
-                mappingAspectOptions.Add(property.Name, null);
-            }
-            else if (property.Value.ValueKind == JsonValueKind.Array)
-            {
-                List<object> list = new();
+            var aspectRootProperty = json.RootElement.GetProperty(
+                options.PropertyNamingPolicy.ConvertName(
+                    nameof(JsonMappingAspectWithType.Options)
+                )
+            );
 
-                foreach (var item in property.Value.EnumerateArray())
+            foreach (var property in aspectRootProperty.EnumerateObject())
+            {
+                if (property.Value.ValueKind == JsonValueKind.Object)
                 {
-                    var rawJson = item.GetRawText();
-                    var document = JsonDocument.Parse(rawJson);
-                    list.Add(this.ParseJson(typeToConvert, document, options));
+                    throw new NotImplementedException($"The value kind {property.Value.ValueKind} is not yet supported.");
                 }
+                else if (property.Value.ValueKind == JsonValueKind.String)
+                {
+                    mappingAspectOptions.Add(property.Name, property.Value.GetString());
+                }
+                else if (property.Value.ValueKind == JsonValueKind.Number)
+                {
+                    mappingAspectOptions.Add(property.Name, property.Value.GetDouble());
+                }
+                else if (property.Value.ValueKind is JsonValueKind.True or JsonValueKind.False)
+                {
+                    mappingAspectOptions.Add(property.Name, property.Value.GetBoolean());
+                }
+                else if (property.Value.ValueKind == JsonValueKind.Null)
+                {
+                    mappingAspectOptions.Add(property.Name, null);
+                }
+                else if (property.Value.ValueKind == JsonValueKind.Array)
+                {
+                    List<object> list = new();
 
-                mappingAspectOptions.Add(property.Name, list);
+                    foreach (var item in property.Value.EnumerateArray())
+                    {
+                        var rawJson = item.GetRawText();
+                        var document = JsonDocument.Parse(rawJson);
+                        list.Add(this.ParseJson(typeToConvert, document, options));
+                    }
+
+                    mappingAspectOptions.Add(property.Name, list);
+                }
+                else
+                {
+                    throw new NotImplementedException($"The value kind {property.Value.ValueKind} is not supported for {json.RootElement}.");
+                }
             }
-            else
+
+            var name = mappingAspectOptions[nameof(AbstractMappingAspect.Name)] as string;
+            mappingAspect = factory.CreateInstance<AbstractMappingAspect>(new object[]
             {
-                throw new NotImplementedException($"The value kind {property.Value.ValueKind} is not supported.");
-            }
+                name,
+            });
+            mappingAspect.LoadOptions(mappingAspectOptions);
         }
-
-        var name = mappingAspectOptions[nameof(AbstractMappingAspect.Name)] as string;
-        //options.Remove("name");
-
-        var mappingAspect = factory.CreateInstance<AbstractMappingAspect>(new object[]
+        catch (Exception ex)
         {
-            name,
-        });
-        mappingAspect.LoadOptions(mappingAspectOptions);
+            if (typeToConvert == typeof(AbstractAction))
+            {
+                if (!mappingAspectOptions.ContainsKey(nameof(DisabledAction.ActionName)))
+                {
+                    mappingAspectOptions.Add(nameof(DisabledAction.ActionName), type);
+                }
+            }
+            else if (typeToConvert == typeof(AbstractTrigger))
+            {
+                if (!mappingAspectOptions.ContainsKey(nameof(DisabledTrigger.TriggerName)))
+                {
+                    mappingAspectOptions.Add(nameof(DisabledTrigger.TriggerName), type);
+                }
+            }
+            mappingAspectOptions.Remove(nameof(AbstractMappingAspect.Name)); // Ensure we put the error in name
+            mappingAspect = failingFactory.CreateInstance<AbstractMappingAspect>(new object[]
+            {
+                ex.Message,
+            });
+            mappingAspect.LoadOptions(mappingAspectOptions);
+        }
 
         return (T)mappingAspect;
     }

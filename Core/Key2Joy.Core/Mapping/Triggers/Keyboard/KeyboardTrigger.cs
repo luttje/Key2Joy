@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text.Json.Serialization;
 using System.Windows.Forms;
 using Key2Joy.Contracts.Mapping;
@@ -8,9 +8,11 @@ using Key2Joy.LowLevelInput;
 namespace Key2Joy.Mapping.Triggers.Keyboard;
 
 [Trigger(
-    Description = "Keyboard Event"
+    Description = "Keyboard Event",
+    GroupName = "Keyboard Triggers",
+    GroupImage = "keyboard"
 )]
-public class KeyboardTrigger : CoreTrigger, IPressState, IReturnInputHash, IEquatable<KeyboardTrigger>
+public class KeyboardTrigger : CoreTrigger, IPressState, IProvideReverseAspect, IReturnInputHash, IEquatable<KeyboardTrigger>
 {
     public const string PREFIX_UNIQUE = nameof(KeyboardTrigger);
 
@@ -25,11 +27,13 @@ public class KeyboardTrigger : CoreTrigger, IPressState, IReturnInputHash, IEqua
 
     public override AbstractTriggerListener GetTriggerListener() => KeyboardTriggerListener.Instance;
 
+    /// <inheritdoc/>
+    public void MakeReverse(AbstractMappingAspect aspect)
+        => CommonReverseAspect.MakeReversePressState(this, aspect);
+
     public static int GetInputHashFor(Keys keys) => (int)keys;
 
     public int GetInputHash() => GetInputHashFor(this.Keys);
-
-    public override string GetUniqueKey() => $"{PREFIX_UNIQUE}_{this.Keys}";
 
     // Keep Press and Release together while sorting
     public override int CompareTo(AbstractMappingAspect other)
@@ -56,7 +60,7 @@ public class KeyboardTrigger : CoreTrigger, IPressState, IReturnInputHash, IEqua
     public bool Equals(KeyboardTrigger other) => this.Keys == other.Keys
             && this.PressState == other.PressState;
 
-    public override string ToString()
+    public override string GetNameDisplay()
     {
         var format = "(keyboard) {1} {0}";
         return format.Replace("{0}", this.Keys.ToString())

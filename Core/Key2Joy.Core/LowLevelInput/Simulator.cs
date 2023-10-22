@@ -1,4 +1,4 @@
-﻿using System.Runtime.InteropServices;
+using System.Runtime.InteropServices;
 
 namespace Key2Joy.LowLevelInput;
 
@@ -19,12 +19,6 @@ public class Simulator
     public static int CalculateAbsoluteCoordinateX(int x) => x * 65536 / GetSystemMetrics(SystemMetric.SM_CXSCREEN);
 
     public static int CalculateAbsoluteCoordinateY(int y) => y * 65536 / GetSystemMetrics(SystemMetric.SM_CYSCREEN);
-
-    public enum GamePadStick
-    {
-        Left = 0,
-        Right = 1,
-    }
 
     private enum SystemMetric
     {
@@ -47,8 +41,10 @@ public class Simulator
     {
         [FieldOffset(0)]
         public SimulatedMouse.MOUSEINPUT mi;
+
         [FieldOffset(0)]
         public SimulatedKeyboard.KEYBDINPUT ki;
+
         [FieldOffset(0)]
         public HARDWAREINPUT hi;
     }

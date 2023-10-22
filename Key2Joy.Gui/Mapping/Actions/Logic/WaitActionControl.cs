@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows.Forms;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Actions;
@@ -21,21 +21,21 @@ public partial class WaitActionControl : UserControl, IActionOptionsControl
         this.nudWaitTimeInMs.Maximum = decimal.MaxValue;
     }
 
-    public void Select(object action)
+    public void Select(AbstractAction action)
     {
         var thisAction = (WaitAction)action;
 
         this.nudWaitTimeInMs.Value = (decimal)thisAction.WaitTime.TotalMilliseconds;
     }
 
-    public void Setup(object action)
+    public void Setup(AbstractAction action)
     {
         var thisAction = (WaitAction)action;
 
         thisAction.WaitTime = TimeSpan.FromMilliseconds((double)this.nudWaitTimeInMs.Value);
     }
 
-    public bool CanMappingSave(object action) => true;
+    public bool CanMappingSave(AbstractAction action) => true;
 
     private void NudWaitTimeInMs_ValueChanged(object sender, EventArgs e) => OptionsChanged?.Invoke(this, EventArgs.Empty);
 }

@@ -11,7 +11,7 @@ using Key2Joy.Contracts.Plugins;
 using Key2Joy.Mapping;
 using Key2Joy.Mapping.Actions;
 using Key2Joy.Mapping.Triggers;
-using static System.Windows.Forms.AxHost;
+using Key2Joy.Mapping.Triggers.GamePad;
 
 namespace Key2Joy.Plugins;
 
@@ -19,7 +19,7 @@ namespace Key2Joy.Plugins;
 [ExposesEnumeration(typeof(LowLevelInput.Mouse.Buttons))]
 [ExposesEnumeration(typeof(SimWinInput.GamePadControl))]
 [ExposesEnumeration(typeof(LowLevelInput.PressState))]
-[ExposesEnumeration(typeof(LowLevelInput.Simulator.GamePadStick))]
+[ExposesEnumeration(typeof(GamePadSide))]
 [ExposesEnumeration(typeof(Mapping.Actions.Logic.AppCommand))]
 [ExposesEnumeration(typeof(LowLevelInput.KeyboardKey))]
 public class PluginSet : IDisposable

@@ -1,8 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using Key2Joy.Contracts.Mapping;
+using Key2Joy.Contracts.Mapping.Actions;
+using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.Gui.Mapping;
 using Key2Joy.Mapping;
 using Key2Joy.Plugins;
@@ -11,7 +13,12 @@ namespace Key2Joy.Gui;
 
 public partial class MappingForm : Form
 {
+    private const string TEXT_CREATE_REVERSE = "Also create a child mapping that is a useful reverse of this";
+
     public MappedOption MappedOption { get; private set; } = null;
+    public MappedOption MappedOptionReverse { get; private set; } = null;
+
+    private bool dominantReverseCheckedState;
 
     public MappingForm()
     {
@@ -27,15 +34,56 @@ public partial class MappingForm : Form
     public MappingForm(MappedOption mappedOption)
         : this()
     {
+        // Don't get in the user's way: we only automatically check if we're initializing or making a new mapping
+        this.dominantReverseCheckedState = mappedOption == null || mappedOption.Children.Any();
+        this.RefreshCreateReverseMappingOption();
+
+        this.triggerControl.TriggerChanged += this.TriggerControl_TriggerChanged;
+        this.actionControl.ActionChanged += this.ActionControl_ActionChanged;
+
         if (mappedOption == null)
         {
+            this.chkCreateOrUpdateReverseMapping.Text = TEXT_CREATE_REVERSE;
             return;
+        }
+        else if (!mappedOption.Children.Any())
+        {
+            this.chkCreateOrUpdateReverseMapping.Text = TEXT_CREATE_REVERSE;
         }
 
         this.MappedOption = mappedOption;
 
         this.triggerControl.SelectTrigger(mappedOption.Trigger);
         this.actionControl.SelectAction(mappedOption.Action);
+    }
+
+    /// <summary>
+    /// When the user clicks we override the dominant state, so we dont get in their way.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void ChkCreateOrUpdateReverseMapping_Click(object sender, EventArgs e)
+        => this.dominantReverseCheckedState = this.chkCreateOrUpdateReverseMapping.Checked;
+
+    private void ActionControl_ActionChanged(object sender, ActionChangedEventArgs e)
+        => this.RefreshCreateReverseMappingOption();
+
+    private void TriggerControl_TriggerChanged(object sender, TriggerChangedEventArgs e)
+        => this.RefreshCreateReverseMappingOption();
+
+    private void RefreshCreateReverseMappingOption()
+    {
+        if (this.triggerControl.Trigger is IProvideReverseAspect
+            && this.actionControl.Action is IProvideReverseAspect)
+        {
+            this.chkCreateOrUpdateReverseMapping.Checked = this.dominantReverseCheckedState;
+            this.chkCreateOrUpdateReverseMapping.Enabled = true;
+        }
+        else
+        {
+            this.chkCreateOrUpdateReverseMapping.Checked = false;
+            this.chkCreateOrUpdateReverseMapping.Enabled = false;
+        }
     }
 
     public static Control BuildOptionsForComboBox<TAttribute, TAspect>(ComboBox comboBox, Panel optionsPanel)
@@ -110,9 +158,43 @@ public partial class MappingForm : Form
         this.MappedOption.Trigger = trigger;
         this.MappedOption.Action = action;
 
+        if (!this.triggerControl.CanMappingSave(this.MappedOption))
+        {
+            return;
+        }
+
         if (!this.actionControl.CanMappingSave(this.MappedOption))
         {
             return;
+        }
+
+        if (this.chkCreateOrUpdateReverseMapping.Checked)
+        {
+            var reverse = MappedOption.GenerateReverseMapping(this.MappedOption, true);
+
+            if (!this.MappedOption.Children.Any())
+            {
+                this.MappedOptionReverse = reverse;
+                this.MappedOptionReverse.SetParent(this.MappedOption);
+            }
+            else
+            {
+                // Update the existing reverse mapping
+                var existingReverse = this.MappedOption.Children.First();
+                existingReverse.Trigger = reverse.Trigger;
+                existingReverse.Action = reverse.Action;
+
+                if (this.MappedOption.Children.Count > 1)
+                {
+                    // TODO: What do we do if there's multiple children?
+                    MessageBox.Show(
+                        $"There are {this.MappedOption.Children.Count} children of this mapping. Only the first one was updated with the reverse mapping.",
+                        "Multiple children",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning
+                    );
+                }
+            }
         }
 
         this.DialogResult = DialogResult.OK;

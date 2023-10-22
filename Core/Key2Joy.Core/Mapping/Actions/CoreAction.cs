@@ -1,6 +1,5 @@
 using System.Text.Json.Serialization;
 using Key2Joy.Contracts.Mapping.Actions;
-using Key2Joy.Contracts.Util;
 using Key2Joy.Plugins;
 
 namespace Key2Joy.Mapping.Actions;
@@ -36,6 +35,4 @@ public abstract class CoreAction : AbstractAction
         action.SetStartData(this.Listener, ref this.OtherActions);
         return action;
     }
-
-    public override string ToString() => this.GetNameDisplay();
 }

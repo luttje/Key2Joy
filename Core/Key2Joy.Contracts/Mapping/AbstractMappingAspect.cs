@@ -12,6 +12,10 @@ public abstract class AbstractMappingAspect : MarshalByRefObject, ICloneable, IC
 
     public AbstractMappingAspect(string name) => this.Name = name;
 
+    public virtual string GetNameDisplay() => this.Name;
+
+    public override string ToString() => this.GetNameDisplay();
+
     private PropertyInfo[] GetProperties()
     {
         var type = this.GetType();
@@ -81,6 +85,8 @@ public abstract class AbstractMappingAspect : MarshalByRefObject, ICloneable, IC
         var value = options[property.Name];
         var genericTypeDefinition = propertyType.IsGenericType ? propertyType.GetGenericTypeDefinition() : null;
 
+        propertyType = Nullable.GetUnderlyingType(propertyType) ?? propertyType;
+
         if (propertyType.IsEnum)
         {
             value = Enum.Parse(propertyType, (string)value);
@@ -88,6 +94,14 @@ public abstract class AbstractMappingAspect : MarshalByRefObject, ICloneable, IC
         else if (propertyType == typeof(DateTime))
         {
             value = new DateTime(Convert.ToInt64(value));
+        }
+        else if (propertyType == typeof(TimeSpan))
+        {
+            value = TimeSpan.Parse((string)value);
+        }
+        else if (propertyType == typeof(short))
+        {
+            value = Convert.ToInt16(value);
         }
         else if (propertyType.IsGenericType
             && (genericTypeDefinition == typeof(List<>) || genericTypeDefinition == typeof(IList<>)))
@@ -111,7 +125,7 @@ public abstract class AbstractMappingAspect : MarshalByRefObject, ICloneable, IC
                 throw new ArgumentException($"Expected value to be of type List<> to parse. But was: {value.GetType()}");
             }
         }
-        else
+        else if (value != null)
         {
             value = Convert.ChangeType(value, propertyType);
         }

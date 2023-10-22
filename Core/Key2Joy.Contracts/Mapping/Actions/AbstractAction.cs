@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Key2Joy.Contracts.Mapping.Triggers;
-using Key2Joy.Contracts.Util;
 
 namespace Key2Joy.Contracts.Mapping.Actions;
 
@@ -24,8 +23,6 @@ public abstract class AbstractAction : AbstractMappingAspect
     /// <returns></returns>
     /// <exception cref="System.NotImplementedException"></exception>
     public virtual Task Execute(AbstractInputBag inputBag = null) => throw new System.NotImplementedException();
-
-    public virtual string GetNameDisplay() => this.Name;
 
     public AbstractAction(string name)
         : base(name) { }

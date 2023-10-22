@@ -28,13 +28,6 @@ public abstract class AbstractTrigger : AbstractMappingAspect
     public abstract AbstractTriggerListener GetTriggerListener();
 
     /// <summary>
-    /// Must return an input value unique in the profile. Like a Keys combination or an AxisDirection.
-    /// Will be used to quickly lookup input triggers and their corresponding action
-    /// </summary>
-    /// <returns></returns>
-    public abstract string GetUniqueKey();
-
-    /// <summary>
     /// Through this the trigger can decide if it wants to execute. By default it calls the
     /// <see cref="Executing"/> event and executes if it's not handled.
     /// This method is only called after the trigger listener has asked which mapped options

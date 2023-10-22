@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text.Json.Serialization;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Triggers;
@@ -7,9 +7,11 @@ using Key2Joy.LowLevelInput;
 namespace Key2Joy.Mapping.Triggers.Mouse;
 
 [Trigger(
-    Description = "Mouse Button Event"
+    Description = "Mouse Button Event",
+    GroupName = "Mouse Triggers",
+    GroupImage = "mouse"
 )]
-public class MouseButtonTrigger : CoreTrigger, IPressState, IReturnInputHash, IEquatable<MouseButtonTrigger>
+public class MouseButtonTrigger : CoreTrigger, IPressState, IProvideReverseAspect, IReturnInputHash, IEquatable<MouseButtonTrigger>
 {
     public const string PREFIX_UNIQUE = nameof(MouseButtonTrigger);
 
@@ -21,15 +23,20 @@ public class MouseButtonTrigger : CoreTrigger, IPressState, IReturnInputHash, IE
         : base(name)
     { }
 
+    /// <inheritdoc/>
     public override AbstractTriggerListener GetTriggerListener() => MouseButtonTriggerListener.Instance;
 
-    public override string GetUniqueKey() => $"{PREFIX_UNIQUE}_{this.MouseButtons}";
+    /// <inheritdoc/>
+    public void MakeReverse(AbstractMappingAspect aspect)
+        => CommonReverseAspect.MakeReversePressState(this, aspect);
 
+    /// <inheritdoc/>
     public static int GetInputHashFor(LowLevelInput.Mouse.Buttons mouseButtons) => (int)mouseButtons;
 
+    /// <inheritdoc/>
     public int GetInputHash() => GetInputHashFor(this.MouseButtons);
 
-    // Keep Press and Release together while sorting
+    /// <inheritdoc/>
     public override int CompareTo(AbstractMappingAspect other)
     {
         if (other == null || other is not MouseButtonTrigger otherMouseTrigger)
@@ -41,6 +48,7 @@ public class MouseButtonTrigger : CoreTrigger, IPressState, IReturnInputHash, IE
             .CompareTo($"{otherMouseTrigger.MouseButtons}#{(int)otherMouseTrigger.PressState}");
     }
 
+    /// <inheritdoc/>
     public override bool Equals(object obj)
     {
         if (obj is not MouseButtonTrigger other)
@@ -51,10 +59,13 @@ public class MouseButtonTrigger : CoreTrigger, IPressState, IReturnInputHash, IE
         return this.Equals(other);
     }
 
-    public bool Equals(MouseButtonTrigger other) => this.MouseButtons == other.MouseButtons
+    /// <inheritdoc/>
+    public bool Equals(MouseButtonTrigger other)
+        => this.MouseButtons == other.MouseButtons
             && this.PressState == other.PressState;
 
-    public override string ToString()
+    /// <inheritdoc/>
+    public override string GetNameDisplay()
     {
         var format = "(mouse) {1} {0}";
         return format.Replace("{0}", this.MouseButtons.ToString())

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.Contracts.Plugins;
 using Key2Joy.Mapping.Triggers;
@@ -15,6 +15,4 @@ public class PluginTriggerProxy : CoreTrigger, IGetRealObject<PluginTrigger>
     public PluginTrigger GetRealObject() => this.source.PluginTrigger;
 
     public override AbstractTriggerListener GetTriggerListener() => throw new NotImplementedException();
-
-    public override string GetUniqueKey() => throw new NotImplementedException();
 }
