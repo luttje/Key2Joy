@@ -1,12 +1,14 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
+using CommonServiceLocator;
+using Key2Joy.Config;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.LowLevelInput;
 
 namespace Key2Joy.Mapping.Triggers.Keyboard;
 
-public class KeyboardTriggerListener : PressReleaseTriggerListener<KeyboardTrigger>
+public class KeyboardTriggerListener : PressReleaseTriggerListener<KeyboardTrigger>, IOverrideDefaultBehavior
 {
     private static KeyboardTriggerListener instance;
 
@@ -25,6 +27,23 @@ public class KeyboardTriggerListener : PressReleaseTriggerListener<KeyboardTrigg
     private readonly Dictionary<Keys, bool> currentKeysPressed = new();
 
     public bool GetKeyDown(Keys key) => this.currentKeysPressed.ContainsKey(key);
+
+    /// <inheritdoc/>
+    public bool ShouldListenerOverrideDefault(bool executedAny)
+    {
+        var configManager = ServiceLocator.Current.GetInstance<IConfigManager>();
+        var config = configManager.GetConfigState();
+        var listenerOverrideDefaultAll = config.ListenerOverrideDefaultKeyboardAll;
+
+        if (listenerOverrideDefaultAll)
+        {
+            return true;
+        }
+
+        var listenerOverrideDefault = config.ListenerOverrideDefaultKeyboard;
+
+        return listenerOverrideDefault && executedAny;
+    }
 
     /// <inheritdoc/>
     protected override void Start()

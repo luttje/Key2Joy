@@ -1,10 +1,12 @@
 using System.Collections.Generic;
+using CommonServiceLocator;
+using Key2Joy.Config;
 using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.LowLevelInput;
 
 namespace Key2Joy.Mapping.Triggers.Mouse;
 
-public class MouseButtonTriggerListener : PressReleaseTriggerListener<MouseButtonTrigger>
+public class MouseButtonTriggerListener : PressReleaseTriggerListener<MouseButtonTrigger>, IOverrideDefaultBehavior
 {
     public static MouseButtonTriggerListener instance;
 
@@ -21,7 +23,25 @@ public class MouseButtonTriggerListener : PressReleaseTriggerListener<MouseButto
     private GlobalInputHook globalMouseButtonHook;
     private readonly Dictionary<LowLevelInput.Mouse.Buttons, bool> currentButtonsDown = new();
 
-    public bool GetButtonsDown(LowLevelInput.Mouse.Buttons buttons) => this.currentButtonsDown.ContainsKey(buttons);
+    /// <inheritdoc/>
+    public bool ShouldListenerOverrideDefault(bool executedAny)
+    {
+        var configManager = ServiceLocator.Current.GetInstance<IConfigManager>();
+        var config = configManager.GetConfigState();
+        var listenerOverrideDefaultAll = config.ListenerOverrideDefaultMouseAll;
+
+        if (listenerOverrideDefaultAll)
+        {
+            return true;
+        }
+
+        var listenerOverrideDefault = config.ListenerOverrideDefaultMouse;
+
+        return listenerOverrideDefault && executedAny;
+    }
+
+    public bool GetButtonsDown(LowLevelInput.Mouse.Buttons buttons)
+        => this.currentButtonsDown.ContainsKey(buttons);
 
     /// <inheritdoc/>
     protected override void Start()

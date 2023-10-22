@@ -32,7 +32,8 @@ public class MouseMoveTriggerListener : CoreTriggerListener, IWndProcHandler
     private List<int> lastDirectionHashes;
     private DateTime lastMoveTime;
 
-    private MouseMoveTriggerListener() => this.lookupAxis = new Dictionary<int, List<AbstractMappedOption>>();
+    private MouseMoveTriggerListener()
+        => this.lookupAxis = new Dictionary<int, List<AbstractMappedOption>>();
 
     /// <inheritdoc/>
     protected override void Start()

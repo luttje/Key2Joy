@@ -72,6 +72,7 @@
             this.ClientSize = new System.Drawing.Size(453, 116);
             this.Controls.Add(this.pnlConfigurations);
             this.Controls.Add(this.pnlSave);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximumSize = new System.Drawing.Size(469, 600);
             this.Name = "ConfigForm";
             this.Text = "Key2Joy User Configurations";

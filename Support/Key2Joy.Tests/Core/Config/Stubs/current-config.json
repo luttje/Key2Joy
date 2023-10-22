@@ -2,8 +2,9 @@
   "LastInstallPath": "%TEST_ASSEMBLY_PATH%\\Key2Joy.exe",
   "SelectedViewMappingGroupType": 1,
   "ShouldCloseButtonMinimize": true,
-  "OverrideDefaultTriggerBehaviour": true,
   "LastLoadedProfile": "%TEST_APP_DATA_PATH%\\Profiles\\default-profile.k2j.json",
+  "ListenerOverrideDefaultKeyboard": true,
+  "ListenerOverrideDefaultKeyboardAll": false,
   "EnabledPlugins": {
     "Plugins\\Key2Joy.Plugin.Ffmpeg\\Key2Joy.Plugin.Ffmpeg.dll": "E4AADC70FE37D2D4D8603E2EC2ACB301",
     "Plugins\\Key2Joy.Plugin.HelloWorld\\Key2Joy.Plugin.HelloWorld.dll": "E4AADC70FE37D2D4D8603E2EC2ACB301",
