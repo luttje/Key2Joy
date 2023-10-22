@@ -56,6 +56,8 @@ public class ConfigState
 
     private string lastLoadedProfile;
 
+    #region Listener Overrides
+
     [BooleanConfigControl(
         Text = "While armed override the default Keyboard behaviour for mapped keys"
     )]
@@ -101,6 +103,32 @@ public class ConfigState
     }
 
     private bool listenerOverrideDefaultMouseAll = false;
+
+    [BooleanConfigControl(
+        Text = "While armed override the default Mouse Move behaviour for mapped moves",
+        Hint = "This cannot properly override moves in a specific direction. Use the 'Any' mouse move direction instead."
+    )]
+    public bool ListenerOverrideDefaultMouseMove
+    {
+        get => this.listenerOverrideDefaultMouseMove;
+        set => this.SaveIfInitialized(this.listenerOverrideDefaultMouseMove = value);
+    }
+
+    private bool listenerOverrideDefaultMouseMove = false;
+
+    [BooleanConfigControl(
+        Text = "While armed override the default Mouse Move behaviour for all moves",
+        Hint = "Make sure you map an 'Abort' action to a key, otherwise you can't move to click the disarm checkbox!"
+    )]
+    public bool ListenerOverrideDefaultMouseMoveAll
+    {
+        get => this.listenerOverrideDefaultMouseMoveAll;
+        set => this.SaveIfInitialized(this.listenerOverrideDefaultMouseMoveAll = value);
+    }
+
+    private bool listenerOverrideDefaultMouseMoveAll = false;
+
+    #endregion Listener Overrides
 
     public Dictionary<string, string> EnabledPlugins { get; set; } = new Dictionary<string, string>();
 

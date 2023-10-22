@@ -111,7 +111,11 @@ internal class JsonMappingAspectConverter<T> : JsonConverter<T> where T : Abstra
 
             foreach (var property in aspectRootProperty.EnumerateObject())
             {
-                if (property.Value.ValueKind == JsonValueKind.Object)
+                if (property.Value.ValueKind == JsonValueKind.Null)
+                {
+                    mappingAspectOptions.Add(property.Name, null);
+                }
+                else if (property.Value.ValueKind == JsonValueKind.Object)
                 {
                     throw new NotImplementedException($"The value kind {property.Value.ValueKind} is not yet supported.");
                 }
@@ -126,10 +130,6 @@ internal class JsonMappingAspectConverter<T> : JsonConverter<T> where T : Abstra
                 else if (property.Value.ValueKind is JsonValueKind.True or JsonValueKind.False)
                 {
                     mappingAspectOptions.Add(property.Name, property.Value.GetBoolean());
-                }
-                else if (property.Value.ValueKind == JsonValueKind.Null)
-                {
-                    mappingAspectOptions.Add(property.Name, null);
                 }
                 else if (property.Value.ValueKind == JsonValueKind.Array)
                 {

@@ -29,5 +29,6 @@ public interface IWndProcHandler
     /// Called when a message is sent to the window.
     /// </summary>
     /// <param name="message"></param>
-    public void WndProc(Message message);
+    /// <returns>Whether to override default behaviour</returns>
+    public bool WndProc(Message message);
 }

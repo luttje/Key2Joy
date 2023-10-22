@@ -146,6 +146,7 @@ public class Key2JoyManager : IKey2JoyManager, IMessageFilter
 
     public bool PreFilterMessage(ref System.Windows.Forms.Message m)
     {
+        var shouldOverride = false;
         for (var i = 0; i < this.wndProcListeners.Count; i++)
         {
             // Check if the proc listeners haven't changed (this can happen when a plugin opens a MessageBox, the user aborts, and we then close the messagebox)
@@ -157,10 +158,14 @@ public class Key2JoyManager : IKey2JoyManager, IMessageFilter
 
             var wndProcListener = this.wndProcListeners[i];
 
-            wndProcListener.WndProc(new Contracts.Mapping.Message(m.HWnd, m.Msg, m.WParam, m.LParam));
+            if (wndProcListener.WndProc(new Contracts.Mapping.Message(m.HWnd, m.Msg, m.WParam, m.LParam)))
+            {
+                Debug.WriteLine("Key2JoyManager.PreFilterMessage: WndProcListener handled message!");
+                shouldOverride = true;
+            }
         }
 
-        return false;
+        return shouldOverride;
     }
 
     public void SetHandlerWithInvoke(IHaveHandleAndInvoke handleAndInvoker)

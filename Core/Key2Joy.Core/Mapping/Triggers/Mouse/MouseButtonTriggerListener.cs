@@ -48,7 +48,7 @@ public class MouseButtonTriggerListener : PressReleaseTriggerListener<MouseButto
     {
         // This captures global mouse input and blocks default behaviour by setting e.Handled
         this.globalMouseButtonHook = new GlobalInputHook();
-        this.globalMouseButtonHook.MouseInputEvent += this.OnMouseButtonInputEvent;
+        this.globalMouseButtonHook.MouseInputEvent += this.OnMouseInputEvent;
 
         base.Start();
     }
@@ -57,7 +57,7 @@ public class MouseButtonTriggerListener : PressReleaseTriggerListener<MouseButto
     protected override void Stop()
     {
         instance = null;
-        this.globalMouseButtonHook.MouseInputEvent -= this.OnMouseButtonInputEvent;
+        this.globalMouseButtonHook.MouseInputEvent -= this.OnMouseInputEvent;
         this.globalMouseButtonHook.Dispose();
         this.globalMouseButtonHook = null;
 
@@ -75,14 +75,14 @@ public class MouseButtonTriggerListener : PressReleaseTriggerListener<MouseButto
         return this.currentButtonsDown.ContainsKey(mouseButtonTrigger.MouseButtons);
     }
 
-    private void OnMouseButtonInputEvent(object sender, GlobalMouseHookEventArgs e)
+    private void OnMouseInputEvent(object sender, GlobalMouseHookEventArgs e)
     {
         if (!this.IsActive)
         {
             return;
         }
 
-        // Mouse movement is handled through WndProc and TryOverrideMouseMoveInput in MouseMoveTriggerListener
+        /// Mouse movement is handled through <see cref="MouseMoveTriggerListener"/>
         if (e.MouseState == MouseState.Move)
         {
             return;
