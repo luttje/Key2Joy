@@ -6,7 +6,9 @@ using Key2Joy.Contracts.Mapping.Triggers;
 namespace Key2Joy.Mapping.Triggers.GamePad;
 
 [Trigger(
-    Description = "GamePad Trigger Pull Event"
+    Description = "GamePad Trigger Pull Event",
+    GroupName = "GamePad Triggers",
+    GroupImage = "joystick"
 )]
 public class GamePadTriggerTrigger : CoreTrigger, IReturnInputHash, IEquatable<GamePadTriggerTrigger>
 {

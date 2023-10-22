@@ -7,7 +7,9 @@ using Key2Joy.LowLevelInput;
 namespace Key2Joy.Mapping.Triggers.Mouse;
 
 [Trigger(
-    Description = "Mouse Button Event"
+    Description = "Mouse Button Event",
+    GroupName = "Mouse Triggers",
+    GroupImage = "mouse"
 )]
 public class MouseButtonTrigger : CoreTrigger, IPressState, IProvideReverseAspect, IReturnInputHash, IEquatable<MouseButtonTrigger>
 {

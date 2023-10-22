@@ -5,7 +5,9 @@ using Key2Joy.Contracts.Mapping.Triggers;
 namespace Key2Joy.Mapping.Triggers.Mouse;
 
 [Trigger(
-    Description = "Mouse Move Event"
+    Description = "Mouse Move Event",
+    GroupName = "Mouse Triggers",
+    GroupImage = "mouse"
 )]
 public class MouseMoveTrigger : CoreTrigger, IReturnInputHash
 {

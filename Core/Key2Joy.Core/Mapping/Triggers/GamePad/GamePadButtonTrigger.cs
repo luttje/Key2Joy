@@ -8,7 +8,9 @@ using Key2Joy.LowLevelInput.XInput;
 namespace Key2Joy.Mapping.Triggers.GamePad;
 
 [Trigger(
-    Description = "GamePad Button Event"
+    Description = "GamePad Button Event",
+    GroupName = "GamePad Triggers",
+    GroupImage = "joystick"
 )]
 public class GamePadButtonTrigger : CoreTrigger, IPressState, IProvideReverseAspect, IReturnInputHash, IEquatable<GamePadButtonTrigger>
 {

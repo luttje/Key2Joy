@@ -351,7 +351,7 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
         this.EditMappedOption(mappedOption);
     }
 
-    private CachedMappingGroup GetGroupOrCreateInCache(ActionAttribute attribute)
+    private CachedMappingGroup GetGroupOrCreateInCache(MappingAttribute attribute)
     {
         var uniqueId = attribute.GroupName + attribute.GroupImage;
 
@@ -370,11 +370,30 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
     private object OlvMappings_GroupKeyGetter(object rowObject)
     {
         var option = (AbstractMappedOption)rowObject;
-        var actionAttribute = ActionsRepository.GetAttributeForAction(option.Action);
 
-        if (actionAttribute != null)
+        MappingAttribute attribute = null;
+
+        var configManager = ServiceLocator.Current.GetInstance<IConfigManager>();
+        var mappingGroupType = configManager.GetConfigState().SelectedViewMappingGroupType;
+
+        switch (mappingGroupType)
         {
-            return this.GetGroupOrCreateInCache(actionAttribute);
+            case ViewMappingGroupType.ByAction:
+                attribute = ActionsRepository.GetAttributeForAction(option.Action);
+                break;
+
+            case ViewMappingGroupType.ByTrigger:
+                attribute = TriggersRepository.GetAttributeForTrigger(option.Trigger);
+                break;
+
+            case ViewMappingGroupType.None:
+            default:
+                break;
+        }
+
+        if (attribute != null)
+        {
+            return this.GetGroupOrCreateInCache(attribute);
         }
 
         return null;
@@ -642,7 +661,13 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
 
     private void TestMouseToolStripMenuItem_Click(object sender, EventArgs e) => Process.Start("https://devicetests.com/mouse-test");
 
-    private void UserConfigurationsToolStripMenuItem_Click(object sender, EventArgs e) => new ConfigForm().ShowDialog();
+    private void UserConfigurationsToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        new ConfigForm().ShowDialog();
+
+        // Refresh the mapppings in case the user modified a group config
+        this.RefreshMappings();
+    }
 
     private void ReportAProblemToolStripMenuItem_Click(object sender, EventArgs e) => Process.Start("https://github.com/luttje/Key2Joy/issues");
 

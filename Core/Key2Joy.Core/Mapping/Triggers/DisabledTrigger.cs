@@ -1,3 +1,4 @@
+using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Triggers;
 
 namespace Key2Joy.Mapping.Triggers;
@@ -5,7 +6,9 @@ namespace Key2Joy.Mapping.Triggers;
 [Trigger(
     Description = "Disabled Trigger",
     NameFormat = DisabledNameFormat,
-    Visibility = Contracts.Mapping.MappingMenuVisibility.Never
+    Visibility = MappingMenuVisibility.Never,
+    GroupName = "Requires Attention",
+    GroupImage = "cross"
 )]
 public class DisabledTrigger : CoreTrigger
 {

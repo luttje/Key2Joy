@@ -30,15 +30,17 @@ public partial class ConfigForm : Form
             var value = property.GetValue(this.configState);
             var control = this.MakeControl(attribute, value, controlParent);
             control.Tag = kvp;
-            control.Dock = DockStyle.Top;
+            control.Dock = DockStyle.Bottom;
 
             controlParent.AutoSize = true;
             controlParent.Padding = new Padding(10, 10, 10, 0);
             controlParent.Controls.Add(control);
 
             this.pnlConfigurations.Controls.Add(controlParent);
-            controlParent.Dock = DockStyle.Top;
+            controlParent.Dock = DockStyle.Bottom;
         }
+
+        this.PerformLayout();
     }
 
     private void BtnSave_Click(object sender, EventArgs e)
@@ -69,6 +71,17 @@ public partial class ConfigForm : Form
 
     private Control MakeControl(ConfigControlAttribute attribute, object value, Panel controlParent)
     {
+        void CreateLabel()
+        {
+            Label label = new()
+            {
+                AutoSize = true,
+                Dock = DockStyle.Bottom,
+                Text = $"{attribute.Text}: "
+            };
+            controlParent.Controls.Add(label);
+        }
+
         switch (attribute)
         {
             case BooleanConfigControlAttribute booleanConfigControlAttribute:
@@ -83,14 +96,7 @@ public partial class ConfigForm : Form
             }
             case NumericConfigControlAttribute numericConfigControlAttribute:
             {
-                Label label = new()
-                {
-                    AutoSize = true,
-                    Dock = DockStyle.Top,
-                    Text = $"{this.Text}: "
-                };
-                controlParent.Controls.Add(label);
-
+                CreateLabel();
                 NumericUpDown control = new()
                 {
                     Minimum = (decimal)numericConfigControlAttribute.Minimum,
@@ -102,19 +108,31 @@ public partial class ConfigForm : Form
             }
             case TextConfigControlAttribute textConfigControlAttribute:
             {
-                Label label = new()
-                {
-                    AutoSize = true,
-                    Dock = DockStyle.Top,
-                    Text = $"{this.Text}: "
-                };
-                controlParent.Controls.Add(label);
-
+                CreateLabel();
                 TextBox control = new()
                 {
                     Text = value.ToString(),
                     MaxLength = textConfigControlAttribute.MaxLength
                 };
+
+                return control;
+            }
+            case EnumConfigControlAttribute enumConfigControlAttribute:
+            {
+                CreateLabel();
+                var enumValues = Enum.GetValues(enumConfigControlAttribute.EnumType);
+                var selected = Enum.Parse(enumConfigControlAttribute.EnumType, value.ToString());
+                ComboBox control = new()
+                {
+                    DropDownStyle = ComboBoxStyle.DropDownList,
+                };
+
+                foreach (var enumValue in enumValues)
+                {
+                    control.Items.Add(enumValue);
+                }
+
+                control.SelectedIndex = Array.IndexOf(enumValues, selected);
 
                 return control;
             }
@@ -131,22 +149,24 @@ public partial class ConfigForm : Form
         switch (attribute)
         {
             case BooleanConfigControlAttribute:
-
             {
                 var checkbox = (CheckBox)control;
                 return checkbox.Checked;
             }
             case NumericConfigControlAttribute:
-
             {
                 var numeric = (NumericUpDown)control;
                 return numeric.Value;
             }
             case TextConfigControlAttribute:
-
             {
                 var textbox = (TextBox)control;
                 return textbox.Text;
+            }
+            case EnumConfigControlAttribute:
+            {
+                var combobox = (ComboBox)control;
+                return combobox.SelectedItem;
             }
 
             default:

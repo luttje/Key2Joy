@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Contracts.Mapping.Triggers;
 
@@ -8,7 +9,9 @@ namespace Key2Joy.Mapping.Actions;
 [Action(
     Description = "Disabled Action",
     NameFormat = DisabledNameFormat,
-    Visibility = Contracts.Mapping.MappingMenuVisibility.Never
+    Visibility = MappingMenuVisibility.Never,
+    GroupName = "Requires Attention",
+    GroupImage = "cross"
 )]
 public class DisabledAction : CoreAction
 {
