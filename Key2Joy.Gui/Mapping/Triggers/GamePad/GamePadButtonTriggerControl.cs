@@ -9,6 +9,7 @@ using Key2Joy.LowLevelInput;
 using Key2Joy.LowLevelInput.XInput;
 using Key2Joy.Mapping.Triggers;
 using Key2Joy.Mapping.Triggers.GamePad;
+using Key2Joy.Mapping.Triggers.Keyboard;
 
 namespace Key2Joy.Gui.Mapping;
 
@@ -94,7 +95,24 @@ public partial class GamePadButtonTriggerControl : UserControl, ITriggerOptionsC
         thisTrigger.PressState = (PressState)this.cmbPressState.SelectedItem;
     }
 
-    public bool CanMappingSave(AbstractTrigger trigger) => true;
+    public bool CanMappingSave(AbstractTrigger trigger)
+    {
+        var thisTrigger = (GamePadButtonTrigger)trigger;
+
+        if (thisTrigger.Button != 0)
+        {
+            return true;
+        }
+
+        MessageBox.Show(
+            $"The trigger is not set to any button.",
+            "Cannot save!",
+            MessageBoxButtons.OK,
+            MessageBoxIcon.Error
+        );
+
+        return false;
+    }
 
     private void StartTrapping()
     {
