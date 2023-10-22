@@ -59,6 +59,10 @@ public class MappedOption : AbstractMappedOption
         }
     }
 
+    public override string ToString()
+        => $"[{this.Guid}] Trigger: {this.Trigger} -> Action: {this.Action}";
+
+    /// <inheritdoc/>
     public override object Clone() => new MappedOption(this.Guid)
     {
         Trigger = this.Trigger != null ? (AbstractTrigger)this.Trigger.Clone() : null,

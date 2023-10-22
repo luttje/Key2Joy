@@ -21,6 +21,7 @@ using Key2Joy.Mapping.Actions;
 using Key2Joy.Mapping.Actions.Input;
 using Key2Joy.Mapping.Actions.Logic;
 using Key2Joy.Mapping.Triggers;
+using Linearstar.Windows.RawInput.Native;
 
 namespace Key2Joy.Gui;
 
@@ -146,6 +147,7 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
         this.RefreshMappings();
         this.olvMappings.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
         this.olvMappings.Sort(this.olvColumnTrigger, SortOrder.Ascending);
+        this.FindAndDetachParentChildDifferentGroups();
 
         this.UpdateSelectedProfileName();
     }
@@ -270,14 +272,93 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
         this.RefreshMappings();
     }
 
+    /// <summary>
+    /// Gets the group of the ObjectListView by it's row object.
+    /// </summary>
+    /// <param name="rowObject"></param>
+    /// <returns></returns>
+    private ListViewGroup GetByItem(object rowObject)
+    {
+        foreach (var item in this.olvMappings.Items)
+        {
+            var listViewItem = item as OLVListItem;
+
+            if (listViewItem.RowObject == rowObject)
+            {
+                return listViewItem.Group;
+            }
+        }
+
+        return null;
+    }
+
     private void ChooseNewParent(MappedOption child, MappedOption targetParent)
     {
+        var childGroup = this.GetByItem(child);
+        var parentGroup = this.GetByItem(targetParent);
+
+        if (childGroup != parentGroup)
+        {
+            MessageBox.Show(
+                $"The child is in the '{childGroup.Header}' group and the parent is in the '{parentGroup.Header}' group. Cannot parent between groups. Consider disabling grouping in the configuration",
+                "Cannot parent across groups",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error
+            );
+            return;
+        }
+
         child.SetParent(targetParent);
         this.selectedProfile.Save();
         this.RefreshMappings();
         SystemSounds.Beep.Play();
 
         return;
+    }
+
+    /// <summary>
+    /// Call this after changing the group mode, so that parents and children do not
+    /// exist across groups. (not supported by the <see cref="MappingGroupItemComparer"/>)
+    /// </summary>
+    private void FindAndDetachParentChildDifferentGroups()
+    {
+        var changedMappings = new List<MappedOption>();
+
+        foreach (var mappedOption in this.selectedProfile.MappedOptions)
+        {
+            if (mappedOption.Parent != null)
+            {
+                var childGroup = this.GetByItem(mappedOption);
+                var parentGroup = this.GetByItem(mappedOption.Parent);
+
+                if (childGroup != parentGroup)
+                {
+                    mappedOption.SetParent(null);
+                    changedMappings.Add(mappedOption);
+                }
+            }
+        }
+
+        if (changedMappings.Count > 0)
+        {
+            var mappingSummaryList = changedMappings.Select(x => $"- {x}").ToList();
+            var mappingSummary = string.Join(Environment.NewLine, mappingSummaryList);
+
+            this.RefreshMappings();
+            var result = MessageBox.Show(
+                $"Found {changedMappings.Count} parent/child mappings that were in different groups:\n{mappingSummary}\n\nThe mapping has been detached from it's parent.\nThis can happen if you change grouping.\n\nThis new setup hasn't been saved, meaning you can still restore to the previous setup by switching to a compatible grouping type ('None' always works).\n\nNote that if you make changes now (or restart), the profile will be saved as is.\n\nSelect 'Cancel' if you want to switch to the grouping type 'None', or 'OK' to continue.",
+                "Parent/child mappings detached",
+                MessageBoxButtons.OKCancel,
+                MessageBoxIcon.Warning
+            );
+
+            if (result == DialogResult.Cancel)
+            {
+                var configManager = ServiceLocator.Current.GetInstance<IConfigManager>();
+                configManager.GetConfigState().SelectedViewMappingGroupType = ViewMappingGroupType.None;
+                this.RefreshMappings();
+            }
+        }
     }
 
     public bool RunAppCommand(AppCommand command)
@@ -667,6 +748,7 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
 
         // Refresh the mapppings in case the user modified a group config
         this.RefreshMappings();
+        this.FindAndDetachParentChildDifferentGroups();
     }
 
     private void ReportAProblemToolStripMenuItem_Click(object sender, EventArgs e) => Process.Start("https://github.com/luttje/Key2Joy/issues");
