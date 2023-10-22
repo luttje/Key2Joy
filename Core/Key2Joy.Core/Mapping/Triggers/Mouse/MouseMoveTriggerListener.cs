@@ -171,8 +171,6 @@ public class MouseMoveTriggerListener : CoreTriggerListener, IOverrideDefaultBeh
             trigger => directionHashes.Contains((trigger as IReturnInputHash).GetInputHash())
         );
 
-        Debug.WriteLine($"Delta: {deltaX}, {deltaY} ({shouldOverride})");
-
         this.lastDirectionHashes = directionHashes;
         this.lastMoveTime = DateTime.Now;
 
@@ -184,6 +182,7 @@ public class MouseMoveTriggerListener : CoreTriggerListener, IOverrideDefaultBeh
 
         if (shouldOverride)
         {
+            // We must set the cursor or it will jump to it's real position sporadically.
             Cursor.Position = new System.Drawing.Point((int)this.lastAllowedX, (int)this.lastAllowedY);
             e.Handled = true;
         }

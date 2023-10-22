@@ -4,10 +4,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Windows.Forms;
 using CommonServiceLocator;
 using Key2Joy.Config;
-using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.Interop;
@@ -25,7 +23,7 @@ namespace Key2Joy;
 
 public delegate bool AppCommandRunner(AppCommand command);
 
-public class Key2JoyManager : IKey2JoyManager, IMessageFilter
+public class Key2JoyManager : IKey2JoyManager
 {
     /// <summary>
     /// Directory where plugins are located
@@ -59,7 +57,6 @@ public class Key2JoyManager : IKey2JoyManager, IMessageFilter
     private static AppCommandRunner commandRunner;
     private MappingProfile armedProfile;
     private IHaveHandleAndInvoke handleAndInvoker;
-    private readonly List<IWndProcHandler> wndProcListeners = new();
 
     private Key2JoyManager()
     { }
@@ -144,34 +141,9 @@ public class Key2JoyManager : IKey2JoyManager, IMessageFilter
 
     internal static bool RunAppCommand(AppCommand command) => commandRunner != null && commandRunner(command);
 
-    public bool PreFilterMessage(ref System.Windows.Forms.Message m)
-    {
-        var shouldOverride = false;
-        for (var i = 0; i < this.wndProcListeners.Count; i++)
-        {
-            // Check if the proc listeners haven't changed (this can happen when a plugin opens a MessageBox, the user aborts, and we then close the messagebox)
-            if (i >= this.wndProcListeners.Count)
-            {
-                Debug.WriteLine("Key2JoyManager.PreFilterMessage: wndProcListeners changed while processing message!");
-                break;
-            }
-
-            var wndProcListener = this.wndProcListeners[i];
-
-            if (wndProcListener.WndProc(new Contracts.Mapping.Message(m.HWnd, m.Msg, m.WParam, m.LParam)))
-            {
-                Debug.WriteLine("Key2JoyManager.PreFilterMessage: WndProcListener handled message!");
-                shouldOverride = true;
-            }
-        }
-
-        return shouldOverride;
-    }
-
     public void SetHandlerWithInvoke(IHaveHandleAndInvoke handleAndInvoker)
     {
         this.handleAndInvoker = handleAndInvoker;
-        Application.AddMessageFilter(this);
 
         Console.WriteLine(READY_MESSAGE);
     }
@@ -218,11 +190,6 @@ public class Key2JoyManager : IKey2JoyManager, IMessageFilter
                     allListeners.Add(listener);
                 }
 
-                if (listener is IWndProcHandler listenerWndProcHAndler)
-                {
-                    this.wndProcListeners.Add(listenerWndProcHAndler);
-                }
-
                 mappedOption.Action.OnStartListening(listener, ref allActions);
                 listener.AddMappedOption(mappedOption);
             }
@@ -231,11 +198,6 @@ public class Key2JoyManager : IKey2JoyManager, IMessageFilter
 
             foreach (var listener in allListeners)
             {
-                if (listener is IWndProcHandler listenerWndProcHAndler)
-                {
-                    listenerWndProcHAndler.Handle = this.handleAndInvoker.Handle;
-                }
-
                 listener.StartListening(ref allListenersForSharing);
             }
 
@@ -247,7 +209,6 @@ public class Key2JoyManager : IKey2JoyManager, IMessageFilter
         }
         catch (MappingArmingFailedException ex)
         {
-            //cleanup
             this.DisarmMappings();
             throw ex;
         }
@@ -256,7 +217,6 @@ public class Key2JoyManager : IKey2JoyManager, IMessageFilter
     public void DisarmMappings()
     {
         var listeners = this.ExplicitTriggerListeners;
-        this.wndProcListeners.Clear();
 
         // Clear all intervals
         IdPool.CancelAll();

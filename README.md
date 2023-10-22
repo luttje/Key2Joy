@@ -118,7 +118,6 @@ Originally inspired by [JoyToKey](https://joytokey.net/en/), this project has si
 **NuGet Packages**:
 - [📦 DavidRieman/SimWinInput](https://github.com/DavidRieman/SimWinInput) - Simulate gamepads from .NET.
 - [📦 nefarius/ScpVBus](https://github.com/nefarius/ScpVBus) - The foundational driver enabling GamePad simulation.
-- [📦 mfakane/rawinput-sharp](https://github.com/mfakane/rawinput-sharp) - Facilitates reading of raw input.
 - [📦 NLua](https://github.com/NLua/NLua) - Enables Lua scripting for actions.
 - [📦 Jint](https://github.com/sebastienros/jint) - Supports JavaScript scripting for actions.
 - [📦 ObjectListView](https://objectlistview.sourceforge.net) - Used for mapping listings in the GUI.

@@ -76,9 +76,6 @@
     <PackageReference Include="NLua">
       <Version>1.6.3</Version>
     </PackageReference>
-    <PackageReference Include="RawInput.Sharp">
-      <Version>0.1.1</Version>
-    </PackageReference>
     <PackageReference Include="SimWinGamePad">
       <Version>1.1.1</Version>
     </PackageReference>
