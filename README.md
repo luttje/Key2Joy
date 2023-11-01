@@ -52,6 +52,8 @@ In addition to simply simulating a button being pressed on the Joystick, you can
 > **Note**
 > Check out the [🐕‍🦺 Tips & Tricks](https://github.com/luttje/Key2Joy/discussions/categories/-tips-tricks) category in the discussions for tips and tricks. Certain inputs may be tricky to configure, but there's usually a way to get it working.
 
+> **Warning**
+> Please be careful using this tool in multiplayer/competitive games. It may be considered cheating and get you banned. Some games may only ban you after a while, so don't assume you're safe just because you haven't been banned yet.
 
 ### Using Key2Joy with a Command Line Interface
 
