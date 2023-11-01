@@ -49,6 +49,9 @@ In addition to simply simulating a button being pressed on the Joystick, you can
 
    *In the default profile there is also a mapping that stops Key2Joy from listening using the `Escape`-key. Don't forget to include such a mapping for your custom profiles.*
 
+> **Note**
+> Check out the [🐕‍🦺 Tips & Tricks](https://github.com/luttje/Key2Joy/discussions/categories/-tips-tricks) category in the discussions for tips and tricks. Certain inputs may be tricky to configure, but there's usually a way to get it working.
+
 
 ### Using Key2Joy with a Command Line Interface
 
