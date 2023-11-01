@@ -46,20 +46,16 @@ public class ConfigManager : IConfigManager
 
         this.configState = new ConfigState(this);
 
-        if (!File.Exists(configPath))
+        if (File.Exists(configPath))
         {
-            this.IsInitialized = true;
-            this.Save();
-            return;
+            var options = GetSerializerOptions();
+            // Merge the loaded config state with the default config state
+            JsonUtilities.PopulateObject(
+                File.ReadAllText(configPath),
+                this.configState,
+                options
+            );
         }
-
-        var options = GetSerializerOptions();
-        // Merge the loaded config state with the default config state
-        JsonUtilities.PopulateObject(
-            File.ReadAllText(configPath),
-            this.configState,
-            options
-        );
 
         var assembly = System.Reflection.Assembly.GetEntryAssembly();
 
