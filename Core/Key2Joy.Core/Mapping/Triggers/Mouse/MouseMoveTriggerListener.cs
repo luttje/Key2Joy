@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Windows.Forms;
 using CommonServiceLocator;
 using Key2Joy.Config;
 using Key2Joy.Contracts.Mapping;
@@ -75,6 +73,18 @@ public class MouseMoveTriggerListener : CoreTriggerListener, IOverrideDefaultBeh
         this.globalMouseButtonHook = null;
 
         base.Stop();
+    }
+
+    /// <summary>
+    /// Can be called to reset the cursor to the center. Useful for games that take control of the cursor
+    /// and place it somewhere else.
+    /// Used by <see cref="Actions.Logic.AppCommand.ResetMouseMoveTriggerCenter"/>
+    /// </summary>
+    public void ResetCenterCursor()
+    {
+        this.lastAllowedX = null;
+        this.lastAllowedY = null;
+        System.Diagnostics.Debug.WriteLine($"Mouse move reset center");
     }
 
     /// <inheritdoc/>
@@ -182,8 +192,6 @@ public class MouseMoveTriggerListener : CoreTriggerListener, IOverrideDefaultBeh
 
         if (shouldOverride)
         {
-            // We must set the cursor or it will jump to it's real position sporadically.
-            Cursor.Position = new System.Drawing.Point((int)this.lastAllowedX, (int)this.lastAllowedY);
             e.Handled = true;
         }
     }

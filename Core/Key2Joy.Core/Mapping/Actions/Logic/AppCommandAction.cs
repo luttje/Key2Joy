@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.Mapping.Actions.Scripting;
+using Key2Joy.Mapping.Triggers.Mouse;
 using Key2Joy.Util;
 
 namespace Key2Joy.Mapping.Actions.Logic;
@@ -51,6 +52,11 @@ public class AppCommandAction : CoreAction
                 }
             }
 
+            return;
+        }
+        else if (this.Command == AppCommand.ResetMouseMoveTriggerCenter)
+        {
+            MouseMoveTriggerListener.Instance.ResetCenterCursor();
             return;
         }
 

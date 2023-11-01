@@ -21,6 +21,7 @@ using Key2Joy.Mapping.Actions;
 using Key2Joy.Mapping.Actions.Input;
 using Key2Joy.Mapping.Actions.Logic;
 using Key2Joy.Mapping.Triggers;
+using Key2Joy.Mapping.Triggers.Mouse;
 
 namespace Key2Joy.Gui;
 
@@ -458,7 +459,15 @@ public partial class MainForm : Form, IAcceptAppCommands, IHaveHandleAndInvoke
                 return true;
 
             case AppCommand.ResetScriptEnvironment:
+                /// Handled in <see cref="AppCommandAction.ExecuteForScript"/>
+                /// TODO: Handle it here as well?
                 break;
+
+            case AppCommand.ResetMouseMoveTriggerCenter:
+                /// Also handled in <see cref="AppCommandAction.ExecuteForScript"/>
+                /// TODO: Remove duplicate code
+                MouseMoveTriggerListener.Instance.ResetCenterCursor();
+                return true;
 
             default:
                 break;
