@@ -123,3 +123,15 @@ handles.forEach(function (handle) {
 
 Print(Window.GetForeground());
 ```
+
+### See how much the trigger was pressed
+
+All input triggers have their 'InputBag' stored in a global `INPUT` variable. You can use this to get information about the trigger event.
+
+For example if we `Print(INPUT)` for a 'GamePad Trigger Pull Event', we'll see in the logs that we get an instance of this object: [`Core/Key2Joy.Core/Mapping/Triggers/GamePad/GamePadTriggerInputBag.cs`](../Core/Key2Joy.Core/Mapping/Triggers/GamePad/GamePadTriggerInputBag.cs). With that information we can find out that to get the amount of the trigger pull we can use either `INPUT.LeftTriggerDelta` or `INPUT.RightTriggerDelta`:
+
+![Screenshot of Key2Joy showing how to get scripting input values](screenshot-scripting-trigger.png)
+
+You can see the output of scripts in several places. In Key2Joy go to `View` > `View Script Output` and choose where you want to see the logs. In Window Event Viewer it looks like this:
+
+![Screenshot of Key2Joy showing the Window Event Viewer with a script output](screenshot-scripting-trigger-eventviewer.png)

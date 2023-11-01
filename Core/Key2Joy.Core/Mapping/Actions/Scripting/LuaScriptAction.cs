@@ -27,6 +27,8 @@ public class LuaScriptAction : BaseScriptActionWithEnvironment<Lua>
 
     public override async Task Execute(AbstractInputBag inputBag)
     {
+        this.Environment["INPUT"] = inputBag;
+
         try
         {
             var source = "Key2Joy.Script.Inline";

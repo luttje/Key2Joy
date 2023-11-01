@@ -28,6 +28,8 @@ public class JavascriptAction : BaseScriptActionWithEnvironment<Engine>
 
     public override async Task Execute(AbstractInputBag inputBag)
     {
+        this.Environment.SetValue("INPUT", inputBag);
+
         try
         {
             lock (LockObject)
