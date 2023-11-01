@@ -182,6 +182,12 @@ public class GamePadStickAction : CoreAction, IProvideReverseAspect, IEquatable<
         {
             // TODO: This is now hard-coded, but I'd love for 'modifiers' to exist in between triggers and actions. Those could (with more fine tuning) be configured by the user.
             deltaX = Scale((int)(triggerInputBag.LeftTriggerDelta * XInputGamePad.TriggerValueMax), this.InputScaleX);
+            if (deltaX > 0)
+            {
+                // For triggers we need to not have a delta, but simply a value that maps directly to the stick value (feels better)
+                state.LeftStickX = 0;
+                state.RightStickX = 0;
+            }
         }
 
         if (this.DeltaY is not null)
@@ -195,6 +201,12 @@ public class GamePadStickAction : CoreAction, IProvideReverseAspect, IEquatable<
         else if (inputBag is GamePadTriggerInputBag triggerInputBag)
         {
             deltaY = Scale((int)(triggerInputBag.RightTriggerDelta * XInputGamePad.TriggerValueMax), this.InputScaleY);
+            if (deltaY > 0)
+            {
+                // For triggers we need to not have a delta, but simply a value that maps directly to the stick value (feels better)
+                state.LeftStickY = 0;
+                state.RightStickY = 0;
+            }
         }
 
         if (this.Side == GamePadSide.Left)
