@@ -4,7 +4,6 @@ using Key2Joy.Contracts;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Contracts.Mapping.Triggers;
-using Key2Joy.Contracts.Util;
 
 namespace Key2Joy.Mapping.Actions.Scripting;
 

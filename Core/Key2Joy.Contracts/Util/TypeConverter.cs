@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using Key2Joy.Contracts.Plugins;
 
 namespace Key2Joy.Contracts.Util;
 
@@ -102,6 +103,14 @@ public static class TypeConverter
             // TODO: Inform plugin creators that if they want to keep the original reference, they should
             //       use the 'object' type and cast the array to the correct type themselves.
             value = objectArrayParameter.CopyArrayToNewType(desiredType.GetElementType());
+        }
+        // If a local action is using a callback, it'll use CallbackAction instead of the wrapper,
+        // we'll convert it to that. Otherwise we leave it wrapped so it can be called across the
+        // domain boundary.
+        else if (desiredType == typeof(CallbackAction)
+            && value is CallbackActionWrapper callbackActionWrapper)
+        {
+            value = callbackActionWrapper.AsCallbackAction();
         }
         // We don't touch this, since we can't convert it anyway (it's across the domain boundary)
         else if (value is MarshalByRefObject or ISerializable)

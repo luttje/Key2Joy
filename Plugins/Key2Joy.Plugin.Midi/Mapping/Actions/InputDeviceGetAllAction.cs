@@ -38,5 +38,5 @@ public class InputDeviceGetAllAction : PluginAction
     /// <returns>A collection with input devices</returns>
     /// <name>Midi.InputDeviceGetAll</name>
     [ExposesScriptingMethod("Midi.InputDeviceGetAll")]
-    public ICollection<WrappedPluginType> ExecuteForScript() => InputDevice.GetAll().Select(input => new WrappedPluginType(input)).ToList();
+    public ICollection<CallbackActionWrapper> ExecuteForScript() => InputDevice.GetAll().Select(input => new CallbackActionWrapper(input)).ToList();
 }

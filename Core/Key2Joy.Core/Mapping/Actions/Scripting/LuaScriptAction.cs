@@ -136,7 +136,7 @@ public class LuaScriptAction : BaseScriptActionWithEnvironment<Lua>
 
             return dictionary;
         });
-        exposedMethod.RegisterParameterTransformer<LuaFunction>((luaFunction, expectedType) => new WrappedPluginType(luaFunction.Call));
+        exposedMethod.RegisterParameterTransformer<LuaFunction>((luaFunction, expectedType) => new CallbackActionWrapper((object)luaFunction.Call));
         this.Environment.RegisterFunction(functionName, exposedMethod, exposedMethod.GetExecutorMethodInfo());
     }
 

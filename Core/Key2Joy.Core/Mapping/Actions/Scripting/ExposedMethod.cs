@@ -2,11 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Serialization;
-using Jint.Native;
 using Key2Joy.Contracts.Util;
 using Key2Joy.Plugins;
-using Key2Joy.Util;
 
 namespace Key2Joy.Mapping.Actions.Scripting;
 
@@ -96,7 +93,7 @@ public abstract class ExposedMethod
 
             if (this.parameterTransformers.TryGetValue(parameter.GetType(), out var transformer))
             {
-                return transformer(parameter, parameterType);
+                parameter = transformer(parameter, parameterType);
             }
 
             return TypeConverter.ConvertToType(parameter, parameterType);

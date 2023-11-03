@@ -40,7 +40,7 @@ public class InputDeviceListenForEvent : PluginAction
     /// <returns>A collection with input devices</returns>
     /// <name>Midi.InputDeviceListenForEvent</name>
     [ExposesScriptingMethod("Midi.InputDeviceListenForEvent")]
-    public void ExecuteForScript(WrappedPluginType inputDevice, WrappedPluginType callback)
+    public void ExecuteForScript(CallbackActionWrapper inputDevice, CallbackActionWrapper callback)
     {
         var device = inputDevice.GetInstance<InputDevice>();
         device.EventReceived += (sender, e) =>
