@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.Tests.PluginHost;
@@ -24,8 +25,9 @@ public class PluginExposedMethodTests : PluginHostTestBase
 
         exposedMethod.Prepare(actionProxy);
 
-        bool _;
-        var parameterTypes = exposedMethod.GetParameterTypes(out _).ToList();
+        IList<object> _;
+        bool __;
+        var parameterTypes = exposedMethod.GetParameterTypes(out _, out __).ToList();
 
         CollectionAssert.AreEqual(parameterTypes, new[] { typeof(string), typeof(int[]) });
     }

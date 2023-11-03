@@ -18,7 +18,7 @@ public class MockExposedMethod : ExposedMethod
         : base(functionName, methodName)
     { }
 
-    public override IList<Type> GetParameterTypes(out bool isLastParameterParams)
+    public override IList<Type> GetParameterTypes(out IList<object> parameterDefaultValues, out bool isLastParameterParams)
         => throw new NotImplementedException();
 
     public override object InvokeMethod(object[] transformedParameters)
@@ -40,6 +40,9 @@ public class MockType
 
     public string MethodThatConcatsParametersAndHasParams(string p1, int p2, params string[] p3)
         => p1 + p2 + string.Join("/", p3);
+
+    public string MethodWithDefaultParameters(string p1, int p2 = 2)
+        => $"{p1}|{p2}";
 }
 
 [TestClass]
@@ -49,8 +52,10 @@ public class ExposedMethodTests
     public void Test_Prepare_SetsInstanceAndParameterTypes()
     {
         var exposedMethod = new Mock<MockExposedMethod>() { CallBase = true };
-        bool _;
-        exposedMethod.Setup(m => m.GetParameterTypes(out _)).Returns(new List<Type> { typeof(string), typeof(int) });
+
+        IList<object> _;
+        bool __;
+        exposedMethod.Setup(m => m.GetParameterTypes(out _, out __)).Returns(new List<Type> { typeof(string), typeof(int) });
 
         var instance = new object();
         exposedMethod.Object.Prepare(instance);
@@ -75,8 +80,10 @@ public class ExposedMethodTests
     public void Test_RegisterParameterTransformer_ReplacesExistingTransformer()
     {
         var exposedMethod = new Mock<MockExposedMethod>() { CallBase = true };
-        bool _;
-        exposedMethod.Setup(m => m.GetParameterTypes(out _)).Returns(new List<Type> { typeof(int) });
+
+        IList<object> _;
+        bool __;
+        exposedMethod.Setup(m => m.GetParameterTypes(out _, out __)).Returns(new List<Type> { typeof(int) });
         var instance = new object();
         exposedMethod.Object.Prepare(instance);
 
@@ -92,8 +99,10 @@ public class ExposedMethodTests
     public void Test_TransformAndRedirect_FailsIfNotPrepared()
     {
         var exposedMethod = new Mock<MockExposedMethod>() { CallBase = true };
-        bool _;
-        exposedMethod.Setup(m => m.GetParameterTypes(out _)).Returns(new List<Type> { typeof(DayOfWeek) });
+
+        IList<object> _;
+        bool __;
+        exposedMethod.Setup(m => m.GetParameterTypes(out _, out __)).Returns(new List<Type> { typeof(DayOfWeek) });
         exposedMethod.Setup(m => m.InvokeMethod(It.IsAny<object[]>())).Returns<object[]>(p => p[0]);
 
         var resultingParameters = (object[])exposedMethod.Object.TransformAndRedirect(nameof(DayOfWeek.Monday));
@@ -103,8 +112,10 @@ public class ExposedMethodTests
     public void Test_TransformAndRedirect_EnumConversion()
     {
         var exposedMethod = new Mock<MockExposedMethod>() { CallBase = true };
-        bool _;
-        exposedMethod.Setup(m => m.GetParameterTypes(out _)).Returns(new List<Type> { typeof(DayOfWeek) });
+
+        IList<object> _;
+        bool __;
+        exposedMethod.Setup(m => m.GetParameterTypes(out _, out __)).Returns(new List<Type> { typeof(DayOfWeek) });
 
         var instance = new object();
         exposedMethod.Object.Prepare(instance);
@@ -120,8 +131,10 @@ public class ExposedMethodTests
     public void Test_TransformAndRedirect_ObjectArrayConversion()
     {
         var exposedMethod = new Mock<MockExposedMethod>() { CallBase = true };
-        bool _;
-        exposedMethod.Setup(m => m.GetParameterTypes(out _)).Returns(new List<Type> { typeof(string[]), typeof(int[]) });
+
+        IList<object> _;
+        bool __;
+        exposedMethod.Setup(m => m.GetParameterTypes(out _, out __)).Returns(new List<Type> { typeof(string[]), typeof(int[]) });
 
         var instance = new object();
         exposedMethod.Object.Prepare(instance);
@@ -142,8 +155,10 @@ public class ExposedMethodTests
     public void Test_TransformAndRedirect_InvalidOperationException()
     {
         var exposedMethod = new Mock<MockExposedMethod>() { CallBase = true };
-        bool _;
-        exposedMethod.Setup(m => m.GetParameterTypes(out _)).Returns(new List<Type> { typeof(MockExposedMethod) });
+
+        IList<object> _;
+        bool __;
+        exposedMethod.Setup(m => m.GetParameterTypes(out _, out __)).Returns(new List<Type> { typeof(MockExposedMethod) });
 
         exposedMethod.Object.TransformAndRedirect(new object());
     }
@@ -153,7 +168,7 @@ public class ExposedMethodTests
     {
         var exposedMethod = new TypeExposedMethod("functionName", nameof(MockType.MethodWithNoParameters), typeof(MockType));
 
-        var parameterTypes = exposedMethod.GetParameterTypes(out var _);
+        var parameterTypes = exposedMethod.GetParameterTypes(out var _, out var _);
 
         Assert.IsFalse(parameterTypes.Any());
     }
@@ -163,7 +178,7 @@ public class ExposedMethodTests
     {
         var exposedMethod = new TypeExposedMethod("functionName", nameof(MockType.MethodThatConcatsParameters), typeof(MockType));
 
-        var parameterTypes = exposedMethod.GetParameterTypes(out var _).ToList();
+        var parameterTypes = exposedMethod.GetParameterTypes(out var _, out var _).ToList();
 
         CollectionAssert.AreEqual(parameterTypes, new Type[] { typeof(string), typeof(int) });
     }
@@ -205,5 +220,18 @@ public class ExposedMethodTests
         var result = (string)exposedMethod.TransformAndRedirect(new object[] { "1", 23 }); // No params
 
         Assert.AreEqual("123", result);
+    }
+
+    [TestMethod]
+    public void Test_TypeExposedMethod_InvokeMethodWithDefaultParameters()
+    {
+        var exposedMethod = new TypeExposedMethod("functionName", nameof(MockType.MethodWithDefaultParameters), typeof(MockType));
+
+        var instance = new MockType();
+        exposedMethod.Prepare(instance);
+
+        var result = (string)exposedMethod.TransformAndRedirect(new object[] { "1" });
+
+        Assert.AreEqual("1|2", result);
     }
 }
