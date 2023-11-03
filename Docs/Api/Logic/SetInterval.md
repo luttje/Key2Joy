@@ -17,28 +17,14 @@ Repeatedly calls a function or executes a code snippet, with a fixed time delay 
 An interval id that can be removed with clearInterval.
 
 ## Examples
-> Shows how to count up to 10 every second and then stop by using ClearInterval();
+> Shows how to count every second
 > 
 > #### _js_:
 > ```js
-> setTimeout(function () {
->   Print("Aborting in 3 second...")
-> 
->   setTimeout(function () {
->     Print("Three")
-> 
->     setTimeout(function () {
->       Print("Two")
-> 
->       setTimeout(function () {
->         Print("One")
-> 
->         setTimeout(function () {
->           App.Command("abort")
->         }, 1000)
->       }, 1000)
->     }, 1000)
->   }, 1000)
+> let counter = 0;
+> setInterval(function () {
+>     counter++;
+>     Print(counter);
 > }, 1000)
 > ```
 ---

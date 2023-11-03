@@ -33,27 +33,13 @@ public class SetIntervalAction : CoreAction
     /// Repeatedly calls a function or executes a code snippet, with a fixed time delay between each call
     /// </summary>
     /// <markdown-example>
-    /// Shows how to count up to 10 every second and then stop by using ClearInterval();
+    /// Shows how to count every second
     /// <code language="js">
     /// <![CDATA[
-    /// setTimeout(function () {
-    ///   Print("Aborting in 3 second...")
-    ///
-    ///   setTimeout(function () {
-    ///     Print("Three")
-    ///
-    ///     setTimeout(function () {
-    ///       Print("Two")
-    ///
-    ///       setTimeout(function () {
-    ///         Print("One")
-    ///
-    ///         setTimeout(function () {
-    ///           App.Command("abort")
-    ///         }, 1000)
-    ///       }, 1000)
-    ///     }, 1000)
-    ///   }, 1000)
+    /// let counter = 0;
+    /// setInterval(function () {
+    ///     counter++;
+    ///     Print(counter);
     /// }, 1000)
     /// ]]>
     /// </code>

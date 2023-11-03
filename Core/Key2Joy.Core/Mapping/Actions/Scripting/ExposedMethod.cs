@@ -89,6 +89,16 @@ public abstract class ExposedMethod
             parameters = new object[] { parameters };
         }
 
+        // If there's more arguments than parameters, and the last parameter is params,
+        // we'll wrap the rest of the arguments in an object[] and pass that through.
+        if (this.IsLastParameterParams)
+        {
+            var surplusParameters = parameters.Skip(this.ParameterTypes.Count - 1).ToArray();
+            var parametersToPass = parameters.Take(this.ParameterTypes.Count - 1).ToList();
+            parametersToPass.Add(surplusParameters);
+            parameters = parametersToPass.ToArray();
+        }
+
         var transformedParameters = parameters
             .Select((parameter, parameterIndex) =>
             {
@@ -101,7 +111,7 @@ public abstract class ExposedMethod
 
                 return TypeConverter.ConvertToType(parameter, parameterType);
             })
-            .ToList(); // ToList allows for easier manipulation than an array.
+            .ToList();
 
         // Ensure the transformedParameters list has the same number of items as this.ParameterTypes
         while (transformedParameters.Count < this.ParameterTypes.Count)
