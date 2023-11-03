@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
+using Jint.Native;
+using Key2Joy.Contracts.Util;
 using Key2Joy.Plugins;
 using Key2Joy.Util;
 
@@ -22,6 +24,7 @@ public abstract class ExposedMethod
 
     private readonly Dictionary<Type, ParameterTransformerDelegate> parameterTransformers = new();
     protected IList<Type> ParameterTypes { get; private set; } = new List<Type>();
+    protected bool IsLastParameterParams { get; private set; } = false;
 
     public ExposedMethod(string functionName, string methodName)
     {
@@ -32,10 +35,11 @@ public abstract class ExposedMethod
     public void Prepare(object instance)
     {
         this.Instance = instance;
-        this.ParameterTypes = this.GetParameterTypes();
+        this.ParameterTypes = this.GetParameterTypes(out var isLastParameterParams);
+        this.IsLastParameterParams = isLastParameterParams;
     }
 
-    public abstract IList<Type> GetParameterTypes();
+    public abstract IList<Type> GetParameterTypes(out bool isLastParameterParams);
 
     public abstract object InvokeMethod(object[] transformedParameters);
 
@@ -95,32 +99,18 @@ public abstract class ExposedMethod
                 return transformer(parameter, parameterType);
             }
 
-            // If the parameter type is an enumeration, we try to convert the parameter to the enum value.
-            if (parameterType.IsEnum)
-            {
-                return Enum.Parse(parameterType, parameter.ToString());
-            }
-
-            if (parameter is object[] objectArrayParameter && parameterType.IsArray)
-            {
-                // TODO: This breaks the reference to the original array
-                // TODO: Inform plugin creators that if they want to keep the original reference, they should
-                //       use the 'object' type and cast the array to the correct type themselves.
-                parameter = objectArrayParameter.CopyArrayToNewType(parameterType.GetElementType());
-            }
-
-            if (parameter is MarshalByRefObject or ISerializable)
-            {
-                return parameter;
-            }
-
-            if (parameter.GetType().IsSerializable)
-            {
-                return parameter;
-            }
-
-            throw new NotImplementedException("Parameter type not supported as an exposed method parameter: " + parameter.GetType().FullName);
+            return TypeConverter.ConvertToType(parameter, parameterType);
         }).ToArray();
+
+        // Check if the last parameter is not provided, but is a params.
+        // If so, we'll create an empty array for it.
+        if (this.IsLastParameterParams)
+        {
+            var lastParameter = this.ParameterTypes.Last();
+            var elementType = lastParameter.GetElementType();
+            var array = Array.CreateInstance(elementType, 0);
+            transformedParameters = transformedParameters.Append(array).ToArray();
+        }
 
         return this.InvokeMethod(transformedParameters);
     }
@@ -145,8 +135,15 @@ public class TypeExposedMethod : ExposedMethod
         this.cachedMethodInfo = this.Type.GetMethod(this.MethodName);
     }
 
-    public override IList<Type> GetParameterTypes()
-        => this.cachedMethodInfo.GetParameters().Select(p => p.ParameterType).ToList();
+    public override IList<Type> GetParameterTypes(out bool isLastParameterParams)
+    {
+        var parameterInfos = this.cachedMethodInfo.GetParameters();
+
+        isLastParameterParams = parameterInfos.Length > 0
+            && parameterInfos.Last().IsDefined(typeof(ParamArrayAttribute), false);
+
+        return parameterInfos.Select(p => p.ParameterType).ToList();
+    }
 
     public override object InvokeMethod(object[] transformedParameters)
         => this.cachedMethodInfo.Invoke(this.Instance, transformedParameters);
@@ -160,10 +157,10 @@ public class PluginExposedMethod : ExposedMethod
         : base(functionName, methodName)
         => this.TypeName = typeName;
 
-    public override IList<Type> GetParameterTypes()
+    public override IList<Type> GetParameterTypes(out bool isLastParameterParams)
     {
         var instance = (PluginActionProxy)this.Instance;
-        return instance.GetMethodParameterTypes(this.MethodName);
+        return instance.GetMethodParameterTypes(this.MethodName, out isLastParameterParams);
     }
 
     public override object InvokeMethod(object[] transformedParameters)

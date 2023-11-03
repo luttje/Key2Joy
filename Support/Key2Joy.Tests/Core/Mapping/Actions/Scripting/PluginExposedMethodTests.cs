@@ -24,7 +24,8 @@ public class PluginExposedMethodTests : PluginHostTestBase
 
         exposedMethod.Prepare(actionProxy);
 
-        var parameterTypes = exposedMethod.GetParameterTypes().ToList();
+        bool _;
+        var parameterTypes = exposedMethod.GetParameterTypes(out _).ToList();
 
         CollectionAssert.AreEqual(parameterTypes, new[] { typeof(string), typeof(int[]) });
     }

@@ -23,5 +23,5 @@ public class PluginActionInsulator : MarshalByRefObject
 
     public object GetPublicPropertyValue(string propertyName) => this.PluginAction.GetPublicPropertyValue(propertyName);
 
-    public IList<Type> GetMethodParameterTypes(string methodName) => this.PluginAction.GetMethodParameterTypes(methodName);
+    public IList<Type> GetMethodParameterTypes(string methodName, out bool isLastParameterParams) => this.PluginAction.GetMethodParameterTypes(methodName, out isLastParameterParams);
 }

@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace Key2Joy.Tests.Core.Mapping.Actions.Scripting;
@@ -17,7 +18,7 @@ public class MockExposedMethod : ExposedMethod
         : base(functionName, methodName)
     { }
 
-    public override IList<Type> GetParameterTypes()
+    public override IList<Type> GetParameterTypes(out bool isLastParameterParams)
         => throw new NotImplementedException();
 
     public override object InvokeMethod(object[] transformedParameters)
@@ -33,6 +34,12 @@ public class MockType
 
     public string MethodThatConcatsParameters(string p1, int p2)
         => p1 + p2;
+
+    public string MethodThatConcatsFloatParameters(float p1, float p2)
+        => $"{p1.ToString(new CultureInfo("en_US"))}|{p2.ToString(new CultureInfo("en_US"))}";
+
+    public string MethodThatConcatsParametersAndHasParams(string p1, int p2, params string[] p3)
+        => p1 + p2 + string.Join("/", p3);
 }
 
 [TestClass]
@@ -42,7 +49,8 @@ public class ExposedMethodTests
     public void Test_Prepare_SetsInstanceAndParameterTypes()
     {
         var exposedMethod = new Mock<MockExposedMethod>() { CallBase = true };
-        exposedMethod.Setup(m => m.GetParameterTypes()).Returns(new List<Type> { typeof(string), typeof(int) });
+        bool _;
+        exposedMethod.Setup(m => m.GetParameterTypes(out _)).Returns(new List<Type> { typeof(string), typeof(int) });
 
         var instance = new object();
         exposedMethod.Object.Prepare(instance);
@@ -67,7 +75,8 @@ public class ExposedMethodTests
     public void Test_RegisterParameterTransformer_ReplacesExistingTransformer()
     {
         var exposedMethod = new Mock<MockExposedMethod>() { CallBase = true };
-        exposedMethod.Setup(m => m.GetParameterTypes()).Returns(new List<Type> { typeof(int) });
+        bool _;
+        exposedMethod.Setup(m => m.GetParameterTypes(out _)).Returns(new List<Type> { typeof(int) });
         var instance = new object();
         exposedMethod.Object.Prepare(instance);
 
@@ -83,7 +92,8 @@ public class ExposedMethodTests
     public void Test_TransformAndRedirect_FailsIfNotPrepared()
     {
         var exposedMethod = new Mock<MockExposedMethod>() { CallBase = true };
-        exposedMethod.Setup(m => m.GetParameterTypes()).Returns(new List<Type> { typeof(DayOfWeek) });
+        bool _;
+        exposedMethod.Setup(m => m.GetParameterTypes(out _)).Returns(new List<Type> { typeof(DayOfWeek) });
         exposedMethod.Setup(m => m.InvokeMethod(It.IsAny<object[]>())).Returns<object[]>(p => p[0]);
 
         var resultingParameters = (object[])exposedMethod.Object.TransformAndRedirect(nameof(DayOfWeek.Monday));
@@ -93,7 +103,8 @@ public class ExposedMethodTests
     public void Test_TransformAndRedirect_EnumConversion()
     {
         var exposedMethod = new Mock<MockExposedMethod>() { CallBase = true };
-        exposedMethod.Setup(m => m.GetParameterTypes()).Returns(new List<Type> { typeof(DayOfWeek) });
+        bool _;
+        exposedMethod.Setup(m => m.GetParameterTypes(out _)).Returns(new List<Type> { typeof(DayOfWeek) });
 
         var instance = new object();
         exposedMethod.Object.Prepare(instance);
@@ -109,7 +120,8 @@ public class ExposedMethodTests
     public void Test_TransformAndRedirect_ObjectArrayConversion()
     {
         var exposedMethod = new Mock<MockExposedMethod>() { CallBase = true };
-        exposedMethod.Setup(m => m.GetParameterTypes()).Returns(new List<Type> { typeof(string[]), typeof(int[]) });
+        bool _;
+        exposedMethod.Setup(m => m.GetParameterTypes(out _)).Returns(new List<Type> { typeof(string[]), typeof(int[]) });
 
         var instance = new object();
         exposedMethod.Object.Prepare(instance);
@@ -130,7 +142,8 @@ public class ExposedMethodTests
     public void Test_TransformAndRedirect_InvalidOperationException()
     {
         var exposedMethod = new Mock<MockExposedMethod>() { CallBase = true };
-        exposedMethod.Setup(m => m.GetParameterTypes()).Returns(new List<Type> { typeof(MockExposedMethod) });
+        bool _;
+        exposedMethod.Setup(m => m.GetParameterTypes(out _)).Returns(new List<Type> { typeof(MockExposedMethod) });
 
         exposedMethod.Object.TransformAndRedirect(new object());
     }
@@ -140,7 +153,7 @@ public class ExposedMethodTests
     {
         var exposedMethod = new TypeExposedMethod("functionName", nameof(MockType.MethodWithNoParameters), typeof(MockType));
 
-        var parameterTypes = exposedMethod.GetParameterTypes();
+        var parameterTypes = exposedMethod.GetParameterTypes(out var _);
 
         Assert.IsFalse(parameterTypes.Any());
     }
@@ -150,7 +163,7 @@ public class ExposedMethodTests
     {
         var exposedMethod = new TypeExposedMethod("functionName", nameof(MockType.MethodThatConcatsParameters), typeof(MockType));
 
-        var parameterTypes = exposedMethod.GetParameterTypes().ToList();
+        var parameterTypes = exposedMethod.GetParameterTypes(out var _).ToList();
 
         CollectionAssert.AreEqual(parameterTypes, new Type[] { typeof(string), typeof(int) });
     }
@@ -164,6 +177,32 @@ public class ExposedMethodTests
         exposedMethod.Prepare(instance);
 
         var result = exposedMethod.InvokeMethod(new object[] { "1", 23 });
+
+        Assert.AreEqual("123", result);
+    }
+
+    [TestMethod]
+    public void Test_TypeExposedMethod_InvokeMethodLenientCast()
+    {
+        var exposedMethod = new TypeExposedMethod("functionName", nameof(MockType.MethodThatConcatsFloatParameters), typeof(MockType));
+
+        var instance = new MockType();
+        exposedMethod.Prepare(instance);
+
+        var result = (string)exposedMethod.TransformAndRedirect(new object[] { 1.5d, 2.5d });
+
+        Assert.AreEqual("1.5|2.5", result);
+    }
+
+    [TestMethod]
+    public void Test_TypeExposedMethod_InvokeMethodImpliedEmptyParams()
+    {
+        var exposedMethod = new TypeExposedMethod("functionName", nameof(MockType.MethodThatConcatsParametersAndHasParams), typeof(MockType));
+
+        var instance = new MockType();
+        exposedMethod.Prepare(instance);
+
+        var result = (string)exposedMethod.TransformAndRedirect(new object[] { "1", 23 }); // No params
 
         Assert.AreEqual("123", result);
     }
