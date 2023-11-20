@@ -14,6 +14,7 @@ using Key2Joy.LowLevelInput.SimulatedGamePad;
 using Key2Joy.LowLevelInput.XInput;
 using Key2Joy.Mapping;
 using Key2Joy.Mapping.Actions.Logic;
+using Key2Joy.Mapping.Triggers.GamePad;
 using Key2Joy.Mapping.Triggers.Keyboard;
 using Key2Joy.Mapping.Triggers.Mouse;
 using Key2Joy.Plugins;
@@ -47,15 +48,10 @@ public class Key2JoyManager : IKey2JoyManager
         }
     }
 
-    /// <summary>
-    /// Trigger listeners that should explicitly loaded. This ensures that they're available for scripts
-    /// even if no mapping option is mapped to be triggered by it.
-    /// </summary>
-    public IList<AbstractTriggerListener> ExplicitTriggerListeners { get; set; }
-
     private const string READY_MESSAGE = "Key2Joy is ready";
     private static AppCommandRunner commandRunner;
     private MappingProfile armedProfile;
+    private List<AbstractTriggerListener> armedListeners;
     private IHaveHandleAndInvoke handleAndInvoker;
 
     private Key2JoyManager()
@@ -73,18 +69,6 @@ public class Key2JoyManager : IKey2JoyManager
         var serviceLocator = new DependencyServiceLocator();
         ServiceLocator.SetLocatorProvider(() => serviceLocator);
 
-        instance = new Key2JoyManager
-        {
-            ExplicitTriggerListeners = new List<AbstractTriggerListener>()
-            {
-                // Always add these listeners so scripts can ask them if stuff has happened.
-                KeyboardTriggerListener.Instance,
-                MouseButtonTriggerListener.Instance,
-                MouseMoveTriggerListener.Instance
-            }
-        };
-        serviceLocator.Register<IKey2JoyManager>(instance);
-
 #pragma warning disable IDE0001 // Simplify Names
         serviceLocator.Register<IConfigManager>(configManager ??= new ConfigManager());
 #pragma warning restore IDE0001 // Simplify Names
@@ -97,6 +81,9 @@ public class Key2JoyManager : IKey2JoyManager
 
         var commandRepository = new CommandRepository();
         serviceLocator.Register<ICommandRepository>(commandRepository);
+
+        instance = new Key2JoyManager();
+        serviceLocator.Register<IKey2JoyManager>(instance);
 
         // Load plugins
         var pluginDirectoriesPaths = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
@@ -159,12 +146,26 @@ public class Key2JoyManager : IKey2JoyManager
     }
 
     /// <inheritdoc/>
-    public void ArmMappings(MappingProfile profile)
+    public void ArmMappings(MappingProfile profile, bool withExplicitTriggerListeners = true)
     {
         this.armedProfile = profile;
 
-        var allListeners = new List<AbstractTriggerListener>();
-        allListeners.AddRange(this.ExplicitTriggerListeners);
+        var allListeners = this.armedListeners = new();
+
+        if (withExplicitTriggerListeners)
+        {
+            allListeners.AddRange(new List<AbstractTriggerListener> {
+                // Trigger listeners that should explicitly loaded. This ensures that they're available for scripts
+                // even if no mapping option is mapped to be triggered by it.
+                // Always add these listeners so scripts can ask them if stuff has happened.
+                KeyboardTriggerListener.Instance,
+                MouseButtonTriggerListener.Instance,
+                MouseMoveTriggerListener.Instance,
+                GamePadButtonTriggerListener.Instance,
+                GamePadStickTriggerListener.Instance,
+                GamePadTriggerTriggerListener.Instance,
+            });
+        }
 
         var allActions = (IList<AbstractAction>)profile.MappedOptions.Select(m => m.Action).ToList();
 
@@ -216,7 +217,7 @@ public class Key2JoyManager : IKey2JoyManager
 
     public void DisarmMappings()
     {
-        var listeners = this.ExplicitTriggerListeners;
+        var listeners = this.armedListeners;
 
         // Clear all intervals
         IdPool.CancelAll();
