@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Key2Joy.Contracts.Util;
 using Key2Joy.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

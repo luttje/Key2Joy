@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Jint;
@@ -11,6 +12,7 @@ using Key2Joy.Contracts;
 using Key2Joy.Contracts.Mapping;
 using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Contracts.Mapping.Triggers;
+using Key2Joy.Contracts.Plugins;
 using Key2Joy.Util;
 
 namespace Key2Joy.Mapping.Actions.Scripting;
@@ -78,11 +80,22 @@ public class JavascriptAction : BaseScriptActionWithEnvironment<Engine>
         var parents = functionName.Split('.');
         var methodInfo = exposedMethod.GetExecutorMethodInfo();
         var @delegate = new DelegateWrapper(this.Environment, methodInfo.CreateDelegate(exposedMethod));
+        var currentObject = this.Environment.Realm.GlobalObject;
+
+        // TODO: This may work for the setTimeout and setInterval methods, but will it work for other
+        // types of functions? I think this Func`3<JsValue, JsValue[], JsValue> may be the result of the
+        // GetExecutorMethodInfo above. Since that always points to the TransformAndRedirect method
+        // it may just work for any js function.
+        exposedMethod.RegisterParameterTransformer<Func<JsValue, JsValue[], JsValue>>(
+            (jsFunc, expectedType) => new CallbackActionWrapper(
+                (object[] args) => jsFunc.Invoke(
+                        JsValue.Undefined,
+                        args.Select(a => JsValue.FromObject(this.Environment, a)).ToArray()
+                    ))
+        );
 
         if (parents.Length > 1)
         {
-            var currentObject = this.Environment.Realm.GlobalObject;
-
             for (var i = 0; i < parents.Length; i++)
             {
                 if (i != parents.Length - 1)
@@ -109,15 +122,11 @@ public class JavascriptAction : BaseScriptActionWithEnvironment<Engine>
             return;
         }
 
-        this.Environment.SetValue(
-            functionName,
-            methodInfo);
+        currentObject.FastSetProperty(functionName, new PropertyDescriptor(@delegate, false, true, true));
     }
 
-    public override Engine MakeEnvironment() => new Engine(options =>
-    {
-        options.Interop.AllowSystemReflection = true;
-    });
+    public override Engine MakeEnvironment()
+        => new(options => options.Interop.AllowSystemReflection = true);
 
     public override void RegisterEnvironmentObjects()
     {

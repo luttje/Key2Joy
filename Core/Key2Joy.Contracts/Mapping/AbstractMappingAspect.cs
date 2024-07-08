@@ -1,9 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Security.Policy;
 using System.Text.Json.Serialization;
+using Key2Joy.Contracts.Util;
 
 namespace Key2Joy.Contracts.Mapping;
 
@@ -88,51 +87,13 @@ public abstract class AbstractMappingAspect : MarshalByRefObject, ICloneable, IC
 
         propertyType = Nullable.GetUnderlyingType(propertyType) ?? propertyType;
 
-        if (value == null)
-        {
-            value = null;
-        }
-        else if (propertyType.IsEnum)
-        {
-            value = Enum.Parse(propertyType, (string)value);
-        }
-        else if (propertyType == typeof(DateTime))
+        if (propertyType == typeof(DateTime))
         {
             value = new DateTime(Convert.ToInt64(value));
         }
-        else if (propertyType == typeof(TimeSpan))
+        else
         {
-            value = TimeSpan.Parse((string)value);
-        }
-        else if (propertyType == typeof(short))
-        {
-            value = Convert.ToInt16(value);
-        }
-        else if (propertyType.IsGenericType
-            && (genericTypeDefinition == typeof(List<>) || genericTypeDefinition == typeof(IList<>)))
-        {
-            var constructedListType = typeof(List<>).MakeGenericType(propertyType.GetGenericArguments());
-            var instance = Activator.CreateInstance(constructedListType);
-
-            if (value is List<object> list)
-            {
-                var addMethod = constructedListType.GetMethod("Add");
-
-                foreach (var item in list)
-                {
-                    addMethod.Invoke(instance, new object[] { item });
-                }
-
-                value = instance;
-            }
-            else
-            {
-                throw new ArgumentException($"Expected value to be of type List<> to parse. But was: {value.GetType()}");
-            }
-        }
-        else if (value != null)
-        {
-            value = Convert.ChangeType(value, propertyType);
+            value = TypeConverter.ConvertToType(value, propertyType);
         }
 
         property.SetValue(this, value);

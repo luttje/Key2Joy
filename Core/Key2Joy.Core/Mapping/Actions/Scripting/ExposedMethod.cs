@@ -2,9 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Serialization;
+using Key2Joy.Contracts.Util;
 using Key2Joy.Plugins;
-using Key2Joy.Util;
 
 namespace Key2Joy.Mapping.Actions.Scripting;
 
@@ -22,6 +21,8 @@ public abstract class ExposedMethod
 
     private readonly Dictionary<Type, ParameterTransformerDelegate> parameterTransformers = new();
     protected IList<Type> ParameterTypes { get; private set; } = new List<Type>();
+    protected IList<object> ParameterDefaultValues { get; private set; } = new List<object>();
+    protected bool IsLastParameterParams { get; private set; } = false;
 
     public ExposedMethod(string functionName, string methodName)
     {
@@ -32,10 +33,12 @@ public abstract class ExposedMethod
     public void Prepare(object instance)
     {
         this.Instance = instance;
-        this.ParameterTypes = this.GetParameterTypes();
+        this.ParameterTypes = this.GetParameterTypes(out var parameterDefaultValues, out var isLastParameterParams);
+        this.ParameterDefaultValues = parameterDefaultValues;
+        this.IsLastParameterParams = isLastParameterParams;
     }
 
-    public abstract IList<Type> GetParameterTypes();
+    public abstract IList<Type> GetParameterTypes(out IList<object> parameterDefaultValues, out bool isLastParameterParams);
 
     public abstract object InvokeMethod(object[] transformedParameters);
 
@@ -86,43 +89,61 @@ public abstract class ExposedMethod
             parameters = new object[] { parameters };
         }
 
-        var transformedParameters = parameters.Select((parameter, parameterIndex) =>
+        // If there's more arguments than parameters, and the last parameter is params,
+        // we'll wrap the rest of the arguments in an object[] and pass that through.
+        if (this.IsLastParameterParams)
         {
-            var parameterType = this.ParameterTypes[parameterIndex];
+            var surplusParameters = parameters.Skip(this.ParameterTypes.Count - 1).ToArray();
+            var parametersToPass = parameters.Take(this.ParameterTypes.Count - 1).ToList();
+            parametersToPass.Add(surplusParameters);
+            parameters = parametersToPass.ToArray();
+        }
 
-            if (this.parameterTransformers.TryGetValue(parameter.GetType(), out var transformer))
+        var transformedParameters = parameters
+            .Select((parameter, parameterIndex) =>
             {
-                return transformer(parameter, parameterType);
-            }
+                var parameterType = this.ParameterTypes[parameterIndex];
 
-            // If the parameter type is an enumeration, we try to convert the parameter to the enum value.
-            if (parameterType.IsEnum)
-            {
-                return Enum.Parse(parameterType, parameter.ToString());
-            }
+                if (this.parameterTransformers.TryGetValue(parameter.GetType(), out var transformer))
+                {
+                    parameter = transformer(parameter, parameterType);
+                }
 
-            if (parameter is object[] objectArrayParameter && parameterType.IsArray)
-            {
-                // TODO: This breaks the reference to the original array
-                // TODO: Inform plugin creators that if they want to keep the original reference, they should
-                //       use the 'object' type and cast the array to the correct type themselves.
-                parameter = objectArrayParameter.CopyArrayToNewType(parameterType.GetElementType());
-            }
+                return TypeConverter.ConvertToType(parameter, parameterType);
+            })
+            .ToList();
 
-            if (parameter is MarshalByRefObject or ISerializable)
-            {
-                return parameter;
-            }
+        // Ensure the transformedParameters list has the same number of items as this.ParameterTypes
+        while (transformedParameters.Count < this.ParameterTypes.Count)
+        {
+            transformedParameters.Add(this.GetDefaultParameterValue(transformedParameters.Count));
+        }
 
-            if (parameter.GetType().IsSerializable)
-            {
-                return parameter;
-            }
+        return this.InvokeMethod(transformedParameters.ToArray());
+    }
 
-            throw new NotImplementedException("Parameter type not supported as an exposed method parameter: " + parameter.GetType().FullName);
-        }).ToArray();
+    /// <summary>
+    /// Method to get default parameter value or create an empty array for params
+    /// </summary>
+    /// <param name="parameterIndex"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException"></exception>
+    private object GetDefaultParameterValue(int parameterIndex)
+    {
+        if (this.IsLastParameterParams
+            && parameterIndex == this.ParameterTypes.Count - 1)
+        {
+            var lastParameterType = this.ParameterTypes.Last();
+            var elementType = lastParameterType.GetElementType();
+            return Array.CreateInstance(elementType ?? typeof(object), 0);
+        }
+        else if (parameterIndex < this.ParameterDefaultValues.Count
+            && this.ParameterDefaultValues[parameterIndex] != DBNull.Value)
+        {
+            return this.ParameterDefaultValues[parameterIndex];
+        }
 
-        return this.InvokeMethod(transformedParameters);
+        throw new ArgumentException("No default value available for parameter at index " + parameterIndex);
     }
 
     /// <summary>
@@ -145,8 +166,17 @@ public class TypeExposedMethod : ExposedMethod
         this.cachedMethodInfo = this.Type.GetMethod(this.MethodName);
     }
 
-    public override IList<Type> GetParameterTypes()
-        => this.cachedMethodInfo.GetParameters().Select(p => p.ParameterType).ToList();
+    public override IList<Type> GetParameterTypes(out IList<object> parameterDefaultValues, out bool isLastParameterParams)
+    {
+        var parameterInfos = this.cachedMethodInfo.GetParameters();
+
+        isLastParameterParams = parameterInfos.Length > 0
+            && parameterInfos.Last().IsDefined(typeof(ParamArrayAttribute), false);
+
+        parameterDefaultValues = parameterInfos.Select(p => p.DefaultValue).ToList();
+
+        return parameterInfos.Select(p => p.ParameterType).ToList();
+    }
 
     public override object InvokeMethod(object[] transformedParameters)
         => this.cachedMethodInfo.Invoke(this.Instance, transformedParameters);
@@ -160,10 +190,10 @@ public class PluginExposedMethod : ExposedMethod
         : base(functionName, methodName)
         => this.TypeName = typeName;
 
-    public override IList<Type> GetParameterTypes()
+    public override IList<Type> GetParameterTypes(out IList<object> parameterDefaultValues, out bool isLastParameterParams)
     {
         var instance = (PluginActionProxy)this.Instance;
-        return instance.GetMethodParameterTypes(this.MethodName);
+        return instance.GetMethodParameterTypes(this.MethodName, out parameterDefaultValues, out isLastParameterParams);
     }
 
     public override object InvokeMethod(object[] transformedParameters)

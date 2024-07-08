@@ -23,11 +23,22 @@ public class PluginAction : MarshalByRefObject
     /// The types returned must be simple types that can be marshalled across
     /// </summary>
     /// <param name="methodName"></param>
+    /// <param name="parameterDefaultValues"></param>
+    /// <param name="isLastParameterParams"></param>
     /// <returns></returns>
-    internal IList<Type> GetMethodParameterTypes(string methodName)
+    internal IList<Type> GetMethodParameterTypes(
+        string methodName,
+        out IList<object> parameterDefaultValues,
+        out bool isLastParameterParams)
     {
         var method = this.GetType().GetMethod(methodName);
-        var parameters = method.GetParameters();
+        var parameterInfos = method.GetParameters();
+
+        isLastParameterParams = parameterInfos.Length > 0
+            && parameterInfos.Last().IsDefined(typeof(ParamArrayAttribute), false);
+
+        parameterDefaultValues = parameterInfos.Select(p => p.DefaultValue).ToList();
+
         //var types = new List<Type>();
         //foreach (var parameter in parameters)
         //{
@@ -42,7 +53,7 @@ public class PluginAction : MarshalByRefObject
         //    }
         //}
         //return types;
-        return parameters.Select(p => p.ParameterType).ToList();
+        return parameterInfos.Select(p => p.ParameterType).ToList();
     }
 
     /// <summary>

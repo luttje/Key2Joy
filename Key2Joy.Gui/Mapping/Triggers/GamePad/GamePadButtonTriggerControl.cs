@@ -3,13 +3,11 @@ using System.Linq;
 using System.Windows.Forms;
 using CommonServiceLocator;
 using Key2Joy.Contracts.Mapping;
-using Key2Joy.Contracts.Mapping.Actions;
 using Key2Joy.Contracts.Mapping.Triggers;
 using Key2Joy.LowLevelInput;
 using Key2Joy.LowLevelInput.XInput;
 using Key2Joy.Mapping.Triggers;
 using Key2Joy.Mapping.Triggers.GamePad;
-using Key2Joy.Mapping.Triggers.Keyboard;
 
 namespace Key2Joy.Gui.Mapping;
 

@@ -74,6 +74,11 @@
       <param name="pluginAssemblyPath"></param>
       <param name="permissionsChecksumOrNull"></param>
     </member>
+    <member name="T:Key2Joy.Config.EnumConfigControlAttribute">
+      <summary>
+        Only applied to <see cref="T:Key2Joy.Config.ConfigState" />
+      </summary>
+    </member>
     <member name="T:Key2Joy.Config.IAttributeProvider">
       <summary>
         Provides an abstraction for retrieving property information and custom attributes.
@@ -105,6 +110,26 @@
     <member name="T:Key2Joy.Config.TextConfigControlAttribute">
       <summary>
         Only applied to <see cref="T:Key2Joy.Config.ConfigState" />
+      </summary>
+    </member>
+    <member name="T:Key2Joy.Config.ViewMappingGroupType">
+      <summary>
+        The type of grouping when listing mapped options in the UI
+      </summary>
+    </member>
+    <member name="F:Key2Joy.Config.ViewMappingGroupType.None">
+      <summary>
+        No grouping
+      </summary>
+    </member>
+    <member name="F:Key2Joy.Config.ViewMappingGroupType.ByAction">
+      <summary>
+        Group by action GroupName's
+      </summary>
+    </member>
+    <member name="F:Key2Joy.Config.ViewMappingGroupType.ByTrigger">
+      <summary>
+        Group by trigger GroupName's
       </summary>
     </member>
     <member name="M:Key2Joy.IKey2JoyManager.ArmMappings(Key2Joy.Mapping.MappingProfile)">
@@ -181,6 +206,38 @@
     <member name="M:Key2Joy.Key2JoyManager.StartKey2Joy(System.Boolean,System.Boolean)">
       <summary>
         Starts Key2Joy, pausing until it's ready
+      </summary>
+    </member>
+    <member name="E:Key2Joy.LowLevelInput.GamePadInfo.ActivityOccurred">
+      <inheritdoc />
+    </member>
+    <member name="P:Key2Joy.LowLevelInput.GamePadInfo.Index">
+      <inheritdoc />
+    </member>
+    <member name="P:Key2Joy.LowLevelInput.GamePadInfo.Name">
+      <inheritdoc />
+    </member>
+    <member name="M:Key2Joy.LowLevelInput.GamePadInfo.OnActivityOccurred">
+      <inheritdoc />
+    </member>
+    <member name="E:Key2Joy.LowLevelInput.IGamePadInfo.ActivityOccurred">
+      <summary>
+        Called when gamepad activity occurs.
+      </summary>
+    </member>
+    <member name="P:Key2Joy.LowLevelInput.IGamePadInfo.Index">
+      <summary>
+        The index of the gamepad
+      </summary>
+    </member>
+    <member name="P:Key2Joy.LowLevelInput.IGamePadInfo.Name">
+      <summary>
+        The display name for this gamepad
+      </summary>
+    </member>
+    <member name="M:Key2Joy.LowLevelInput.IGamePadInfo.OnActivityOccurred">
+      <summary>
+        Raises the <see cref="E:Key2Joy.LowLevelInput.IGamePadInfo.ActivityOccurred" /> event.
       </summary>
     </member>
     <member name="F:Key2Joy.LowLevelInput.LowLevelKeyboardInputEvent.VirtualCode">
@@ -494,6 +551,12 @@
         Update any changes made to the state to be reflected in the gamepad
       </summary>
     </member>
+    <member name="M:Key2Joy.LowLevelInput.SimulatedGamePad.ISimulatedGamePad.GetInfo">
+      <summary>
+        Returns the gamepad info on this device
+      </summary>
+      <returns></returns>
+    </member>
     <member name="T:Key2Joy.LowLevelInput.SimulatedGamePad.ISimulatedGamePadService">
       <summary>
         Represents a service for managing simulated gamepad devices.
@@ -506,10 +569,11 @@
       <param name="gamePadIndex">The index of the gamepad to retrieve.</param>
       <returns>An instance of the simulated gamepad.</returns>
     </member>
-    <member name="M:Key2Joy.LowLevelInput.SimulatedGamePad.ISimulatedGamePadService.GetAllGamePads">
+    <member name="M:Key2Joy.LowLevelInput.SimulatedGamePad.ISimulatedGamePadService.GetAllGamePads(System.Boolean)">
       <summary>
         Retrieves an array of all available simulated gamepad devices.
       </summary>
+      <param name="onlyPluggedIn"></param>
       <returns>An array of simulated gamepad instances.</returns>
     </member>
     <member name="M:Key2Joy.LowLevelInput.SimulatedGamePad.ISimulatedGamePadService.Initialize">
@@ -538,6 +602,12 @@
       <summary>
         Ensures that all simulated gamepads are unplugged.
       </summary>
+    </member>
+    <member name="M:Key2Joy.LowLevelInput.SimulatedGamePad.ISimulatedGamePadService.GetActiveDevicesInfo">
+      <summary>
+        Gets the active gamepad device indexes.
+      </summary>
+      <returns></returns>
     </member>
     <member name="T:Key2Joy.LowLevelInput.SimulatedGamePad.SimulatedGamePad">
       <summary>
@@ -586,7 +656,10 @@
     <member name="M:Key2Joy.LowLevelInput.SimulatedGamePad.SimulatedGamePadService.GetGamePad(System.Int32)">
       <inheritdoc />
     </member>
-    <member name="M:Key2Joy.LowLevelInput.SimulatedGamePad.SimulatedGamePadService.GetAllGamePads">
+    <member name="M:Key2Joy.LowLevelInput.SimulatedGamePad.SimulatedGamePadService.GetAllGamePads(System.Boolean)">
+      <inheritdoc />
+    </member>
+    <member name="M:Key2Joy.LowLevelInput.SimulatedGamePad.SimulatedGamePadService.GetActiveDevicesInfo">
       <inheritdoc />
     </member>
     <member name="M:Key2Joy.LowLevelInput.SimulatedGamePad.SimulatedGamePadService.EnsurePluggedIn(System.Int32)">
@@ -1908,11 +1981,12 @@
         Occurs when the state of a registered device changes.
       </summary>
     </member>
-    <member name="M:Key2Joy.LowLevelInput.XInput.IXInputService.RegisterDevice(System.Int32)">
+    <member name="M:Key2Joy.LowLevelInput.XInput.IXInputService.RecognizePhysicalDevices">
       <summary>
-        Registers a device by its index for monitoring its state.
+        Must be called before simulated gamepads are plugged in.
+        This should recognize which of the gamepads are physical and it
+        should register them.
       </summary>
-      <param name="deviceIndex">The index of the device to register.</param>
     </member>
     <member name="M:Key2Joy.LowLevelInput.XInput.IXInputService.StartPolling">
       <summary>
@@ -1929,7 +2003,7 @@
         Retrieves the current state of the specified device.
       </summary>
       <param name="deviceIndex">The index of the device.</param>
-      <returns>The current state of the device.</returns>
+      <returns>The current state of the device or null if the device is invalid.</returns>
     </member>
     <member name="M:Key2Joy.LowLevelInput.XInput.IXInputService.GetCapabilities(System.Int32)">
       <summary>
@@ -1968,7 +2042,7 @@
       </summary>
       <param name="deviceIndex">The index of the device</param>
     </member>
-    <member name="M:Key2Joy.LowLevelInput.XInput.IXInputService.GetActiveDeviceIndices">
+    <member name="M:Key2Joy.LowLevelInput.XInput.IXInputService.GetActiveDevicesInfo">
       <summary>
         Gets the active gamepad device indexes.
       </summary>
@@ -2262,8 +2336,14 @@
         Called whenever the device sends a new packet
       </summary>
     </member>
-    <member name="M:Key2Joy.LowLevelInput.XInput.XInputService.RegisterDevice(System.Int32)">
+    <member name="M:Key2Joy.LowLevelInput.XInput.XInputService.RecognizePhysicalDevices">
       <inheritdoc />
+    </member>
+    <member name="M:Key2Joy.LowLevelInput.XInput.XInputService.RegisterDevice(System.Int32)">
+      <summary>
+        Registers a device by its index for monitoring its state.
+      </summary>
+      <param name="deviceIndex">The index of the device to register.</param>
     </member>
     <member name="M:Key2Joy.LowLevelInput.XInput.XInputService.StartPolling">
       <inheritdoc />
@@ -2289,7 +2369,7 @@
     <member name="M:Key2Joy.LowLevelInput.XInput.XInputService.StopVibration(System.Int32)">
       <inheritdoc />
     </member>
-    <member name="M:Key2Joy.LowLevelInput.XInput.XInputService.GetActiveDeviceIndices">
+    <member name="M:Key2Joy.LowLevelInput.XInput.XInputService.GetActiveDevicesInfo">
       <inheritdoc />
     </member>
     <member name="T:Key2Joy.LowLevelInput.XInput.XInputState">
@@ -2403,6 +2483,15 @@
       <param name="forTopLevel"></param>
       <returns></returns>
     </member>
+    <member name="M:Key2Joy.Mapping.Actions.DisabledAction.Execute(Key2Joy.Contracts.Mapping.Triggers.AbstractInputBag)">
+      <inheritdoc />
+    </member>
+    <member name="M:Key2Joy.Mapping.Actions.DisabledAction.GetNameDisplay">
+      <inheritdoc />
+    </member>
+    <member name="M:Key2Joy.Mapping.Actions.DisabledAction.Equals(System.Object)">
+      <inheritdoc />
+    </member>
     <member name="M:Key2Joy.Mapping.Actions.Graphics.CaptureScreenAction.ExecuteForScript(System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32})">
       <markdown-doc>
         <parent-name>Graphics</parent-name>
@@ -2487,6 +2576,9 @@
       <param name="x">X position on screen</param>
       <param name="y">Y position on screen</param>
       <name>Graphics.GetPixelColor</name>
+    </member>
+    <member name="M:Key2Joy.Mapping.Actions.Input.GamePadButtonAction.MakeReverse(Key2Joy.Contracts.Mapping.AbstractMappingAspect)">
+      <inheritdoc />
     </member>
     <member name="M:Key2Joy.Mapping.Actions.Input.GamePadButtonAction.ExecuteForScript(SimWinInput.GamePadControl,Key2Joy.LowLevelInput.PressState,System.Int32)">
       <markdown-doc>
@@ -2577,6 +2669,9 @@
         Which gamepad to simulate
       </summary>
     </member>
+    <member name="M:Key2Joy.Mapping.Actions.Input.GamePadStickAction.MakeReverse(Key2Joy.Contracts.Mapping.AbstractMappingAspect)">
+      <inheritdoc />
+    </member>
     <member name="M:Key2Joy.Mapping.Actions.Input.GamePadStickAction.OnStartListening(Key2Joy.Contracts.Mapping.Triggers.AbstractTriggerListener,System.Collections.Generic.IList{Key2Joy.Contracts.Mapping.Actions.AbstractAction}@)">
       <inheritdoc />
     </member>
@@ -2599,9 +2694,9 @@
             ]]>
         </code>
       </markdown-example>
-      <param name="x">The fraction by which to move the stick forward (negative) or backward (positive)</param>
-      <param name="y">The fraction by which to move the stick right (positive) or left (negative)</param>
-      <param name="side">Which gamepad stick to move, either GamePadStick.Left (default) or .Right</param>
+      <param name="deltaX">The fraction by which to move the stick forward (negative) or backward (positive)</param>
+      <param name="deltaY">The fraction by which to move the stick right (positive) or left (negative)</param>
+      <param name="side">Which gamepad stick to move, either GamePadSide.Left (default) or .Right</param>
       <param name="gamepadIndex">Which of 4 possible gamepads to simulate: 0 (default), 1, 2 or 3</param>
       <name>GamePad.SimulateMove</name>
     </member>
@@ -2632,6 +2727,77 @@
     <member name="M:Key2Joy.Mapping.Actions.Input.GamePadStickAction.GetHashCode">
       <inheritdoc />
     </member>
+    <member name="P:Key2Joy.Mapping.Actions.Input.GamePadTriggerAction.Side">
+      <summary>
+        Which side to simulate
+      </summary>
+    </member>
+    <member name="P:Key2Joy.Mapping.Actions.Input.GamePadTriggerAction.Delta">
+      <summary>
+        How much to simulate the trigger being pulled back as a fraction from 0 - 1.
+        If null, then the inputbag of the input that triggered this will be used if possible.
+      </summary>
+    </member>
+    <member name="P:Key2Joy.Mapping.Actions.Input.GamePadTriggerAction.InputScale">
+      <summary>
+        If Delta is null, this is the scale factor to apply to the inputbag
+      </summary>
+    </member>
+    <member name="P:Key2Joy.Mapping.Actions.Input.GamePadTriggerAction.GamePadIndex">
+      <summary>
+        Which gamepad to simulate
+      </summary>
+    </member>
+    <member name="M:Key2Joy.Mapping.Actions.Input.GamePadTriggerAction.MakeReverse(Key2Joy.Contracts.Mapping.AbstractMappingAspect)">
+      <inheritdoc />
+    </member>
+    <member name="M:Key2Joy.Mapping.Actions.Input.GamePadTriggerAction.OnStartListening(Key2Joy.Contracts.Mapping.Triggers.AbstractTriggerListener,System.Collections.Generic.IList{Key2Joy.Contracts.Mapping.Actions.AbstractAction}@)">
+      <inheritdoc />
+    </member>
+    <member name="M:Key2Joy.Mapping.Actions.Input.GamePadTriggerAction.ExecuteForScript(System.Single,Key2Joy.Mapping.Triggers.GamePad.GamePadSide,System.Int32)">
+      <markdown-doc>
+        <parent-name>Input</parent-name>
+        <path>Api/Input</path>
+      </markdown-doc>
+      <summary>
+        Simulate pulling back a gamepad trigger
+      </summary>
+      <markdown-example>
+        Pulls the left gamepad trigger halfway back, then resets after 500ms
+        <code language="lua">
+          <![CDATA[
+            GamePad.SimulateTrigger(0.5)
+            SetTimeout(function()
+               GamePad.Reset()
+            end, 500)
+            ]]>
+        </code>
+      </markdown-example>
+      <param name="delta">The fraction by which to pull the trigger back (between 0 and 1)</param>
+      <param name="side">Which gamepad trigger to pull, either GamePadSide.Left (default) or .Right</param>
+      <param name="gamepadIndex">Which of 4 possible gamepads to simulate: 0 (default), 1, 2 or 3</param>
+      <name>GamePad.SimulateTrigger</name>
+    </member>
+    <member name="M:Key2Joy.Mapping.Actions.Input.GamePadTriggerAction.Scale(System.Single,System.Single)">
+      <summary>
+        Scales InputBag values to a reasonable range for gamepad triggers
+      </summary>
+      <param name="value"></param>
+      <param name="sensitivity"></param>
+      <returns></returns>
+    </member>
+    <member name="M:Key2Joy.Mapping.Actions.Input.GamePadTriggerAction.Execute(Key2Joy.Contracts.Mapping.Triggers.AbstractInputBag)">
+      <inheritdoc />
+    </member>
+    <member name="M:Key2Joy.Mapping.Actions.Input.GamePadTriggerAction.GetNameDisplay">
+      <inheritdoc />
+    </member>
+    <member name="M:Key2Joy.Mapping.Actions.Input.GamePadTriggerAction.Equals(Key2Joy.Mapping.Actions.Input.GamePadTriggerAction)">
+      <inheritdoc />
+    </member>
+    <member name="M:Key2Joy.Mapping.Actions.Input.GamePadTriggerAction.GetHashCode">
+      <inheritdoc />
+    </member>
     <member name="M:Key2Joy.Mapping.Actions.Input.GetCursorPositionAction.ExecuteForScript">
       <markdown-doc>
         <parent-name>Input</parent-name>
@@ -2657,6 +2823,9 @@
       </markdown-example>
       <returns>A Point object with X and Y properties that represent the cursor X and Y</returns>
       <name>Cursor.GetPosition</name>
+    </member>
+    <member name="M:Key2Joy.Mapping.Actions.Input.KeyboardAction.MakeReverse(Key2Joy.Contracts.Mapping.AbstractMappingAspect)">
+      <inheritdoc />
     </member>
     <member name="M:Key2Joy.Mapping.Actions.Input.KeyboardAction.ExecuteForScript(Key2Joy.LowLevelInput.KeyboardKey,Key2Joy.LowLevelInput.PressState)">
       <markdown-doc>
@@ -2708,6 +2877,9 @@
       <returns>True if the key is currently pressed down, false otherwise</returns>
       <name>Keyboard.GetKeyDown</name>
     </member>
+    <member name="M:Key2Joy.Mapping.Actions.Input.MouseButtonAction.MakeReverse(Key2Joy.Contracts.Mapping.AbstractMappingAspect)">
+      <inheritdoc />
+    </member>
     <member name="M:Key2Joy.Mapping.Actions.Input.MouseButtonAction.ExecuteForScript(Key2Joy.LowLevelInput.Mouse.Buttons,Key2Joy.LowLevelInput.PressState)">
       <markdown-doc>
         <parent-name>Input</parent-name>
@@ -2745,6 +2917,9 @@
       <param name="button">The button to test for</param>
       <returns>True if the button is currently pressed down, false otherwise</returns>
       <name>Mouse.GetButtonDown</name>
+    </member>
+    <member name="M:Key2Joy.Mapping.Actions.Input.MouseMoveAction.MakeReverse(Key2Joy.Contracts.Mapping.AbstractMappingAspect)">
+      <inheritdoc />
     </member>
     <member name="M:Key2Joy.Mapping.Actions.Input.MouseMoveAction.ExecuteForScript(System.Int32,System.Int32,Key2Joy.LowLevelInput.Mouse.MoveType)">
       <markdown-doc>
@@ -2788,6 +2963,12 @@
     <member name="F:Key2Joy.Mapping.Actions.Logic.AppCommand.ResetScriptEnvironment">
       <summary>
         Recreate the scripting environment (loses all variables, functions and other changes scripts made)
+      </summary>
+    </member>
+    <member name="F:Key2Joy.Mapping.Actions.Logic.AppCommand.ResetMouseMoveTriggerCenter">
+      <summary>
+        Can be called to reset the cursor to the center. Useful for games that take control of the cursor
+        and place it somewhere else.
       </summary>
     </member>
     <member name="M:Key2Joy.Mapping.Actions.Logic.AppCommandAction.ExecuteForScript(Key2Joy.Mapping.Actions.Logic.AppCommand)">
@@ -2907,7 +3088,7 @@
       <param name="callbacks">One or more functions to execute</param>
       <name>SetDelayedFunctions</name>
     </member>
-    <member name="M:Key2Joy.Mapping.Actions.Logic.SetIntervalAction.ExecuteForScript(Key2Joy.Mapping.Actions.Logic.SetIntervalAction.CallbackAction,System.Int64,System.Object[])">
+    <member name="M:Key2Joy.Mapping.Actions.Logic.SetIntervalAction.ExecuteForScript(Key2Joy.Contracts.Plugins.CallbackAction,System.Int64,System.Object[])">
       <markdown-doc>
         <parent-name>Logic</parent-name>
         <path>Api/Logic</path>
@@ -2947,7 +3128,7 @@
       <returns>An interval id that can be removed with clearInterval</returns>
       <name>SetInterval</name>
     </member>
-    <member name="M:Key2Joy.Mapping.Actions.Logic.SetTimeoutAction.ExecuteForScript(Key2Joy.Mapping.Actions.Logic.SetTimeoutAction.CallbackAction,System.Int64,System.Object[])">
+    <member name="M:Key2Joy.Mapping.Actions.Logic.SetTimeoutAction.ExecuteForScript(Key2Joy.Contracts.Plugins.CallbackAction,System.Int64,System.Object[])">
       <markdown-doc>
         <parent-name>Logic</parent-name>
         <path>Api/Logic</path>
@@ -3215,11 +3396,45 @@
       </summary>
       <returns></returns>
     </member>
+    <member name="P:Key2Joy.Mapping.IPressState.PressState">
+      <summary>
+        Which press state this is
+      </summary>
+    </member>
+    <member name="M:Key2Joy.Mapping.IProvideReverseAspect.MakeReverse(Key2Joy.Contracts.Mapping.AbstractMappingAspect)">
+      <summary>
+        Makes the given aspect the reverse of the current instance
+      </summary>
+      <param name="aspect"></param>
+      <returns></returns>
+    </member>
     <member name="M:Key2Joy.Mapping.JsonMappingAspectConverter`1.GetOptionsWithoutSelf(System.Text.Json.JsonSerializerOptions)">
       <summary>
         Prevent recursion by not including this converter in child (de)serializations
       </summary>
       <param name="options"></param>
+      <returns></returns>
+    </member>
+    <member name="M:Key2Joy.Mapping.MappedOption.Clone">
+      <inheritdoc />
+    </member>
+    <member name="M:Key2Joy.Mapping.MappedOption.GenerateReverseMappings(System.Collections.Generic.List{Key2Joy.Mapping.MappedOption})">
+      <summary>
+        Goes through all provided mappings and asks them to provide the reverse for their
+        action and trigger. If no <see cref="T:Key2Joy.Mapping.IProvideReverseAspect" /> is implemented, a
+        copy of the current mapping is returned.
+      </summary>
+      <param name="mappings"></param>
+      <returns></returns>
+    </member>
+    <member name="M:Key2Joy.Mapping.MappedOption.GenerateReverseMapping(Key2Joy.Mapping.MappedOption,System.Boolean)">
+      <summary>
+        Asks the provided mappings for a variant with reverse action and trigger.
+        If no <see cref="T:Key2Joy.Mapping.IProvideReverseAspect" /> is implemented, a copy of the
+        current mapping is returned.
+      </summary>
+      <param name="mapping"></param>
+      <param name="dontSetParent">Optionally dont set the parent, useful to get a reverse that wont be saved.</param>
       <returns></returns>
     </member>
     <member name="M:Key2Joy.Mapping.MappingControlRepository.Buffer(System.Collections.Generic.IReadOnlyList{Key2Joy.Plugins.MappingControlFactory})">
@@ -3244,6 +3459,12 @@
     <member name="M:Key2Joy.Mapping.Triggers.CoreTriggerListener.DoExecuteTrigger(System.Collections.Generic.IList{Key2Joy.Contracts.Mapping.AbstractMappedOption},Key2Joy.Contracts.Mapping.Triggers.AbstractInputBag,System.Func{Key2Joy.Contracts.Mapping.Triggers.AbstractTrigger,System.Boolean})">
       <inheritdoc />
     </member>
+    <member name="M:Key2Joy.Mapping.Triggers.DisabledTrigger.GetNameDisplay">
+      <inheritdoc />
+    </member>
+    <member name="M:Key2Joy.Mapping.Triggers.DisabledTrigger.Equals(System.Object)">
+      <inheritdoc />
+    </member>
     <member name="P:Key2Joy.Mapping.Triggers.GamePad.GamePadButtonInputBag.PressedButtons">
       <summary>
         Buttons that were pressed since the last update.
@@ -3258,6 +3479,9 @@
       <summary>
         The raw state of the gamepad.
       </summary>
+    </member>
+    <member name="M:Key2Joy.Mapping.Triggers.GamePad.GamePadButtonTrigger.MakeReverse(Key2Joy.Contracts.Mapping.AbstractMappingAspect)">
+      <inheritdoc />
     </member>
     <member name="M:Key2Joy.Mapping.Triggers.GamePad.GamePadButtonTriggerListener.Start">
       <inheritdoc />
@@ -3315,7 +3539,7 @@
     <member name="M:Key2Joy.Mapping.Triggers.GamePad.GamePadStickTrigger.Equals(System.Object)">
       <inheritdoc />
     </member>
-    <member name="M:Key2Joy.Mapping.Triggers.GamePad.GamePadStickTrigger.ToString">
+    <member name="M:Key2Joy.Mapping.Triggers.GamePad.GamePadStickTrigger.GetNameDisplay">
       <inheritdoc />
     </member>
     <member name="M:Key2Joy.Mapping.Triggers.GamePad.GamePadStickTrigger.GetHashCode">
@@ -3368,7 +3592,16 @@
         If null then this trigger will be fired on any move (taking into account the default deadzone).
       </summary>
     </member>
+    <member name="P:Key2Joy.Mapping.Triggers.GamePad.GamePadTriggerTrigger.WasPulled">
+      <summary>
+        Used by the listener to check if it should fire even if 0. It fires once when the trigger was
+        pulled before, but has no become zero.
+      </summary>
+    </member>
     <member name="M:Key2Joy.Mapping.Triggers.GamePad.GamePadTriggerTrigger.GetTriggerListener">
+      <inheritdoc />
+    </member>
+    <member name="M:Key2Joy.Mapping.Triggers.GamePad.GamePadTriggerTrigger.DoActivate(Key2Joy.Contracts.Mapping.Triggers.AbstractInputBag,System.Boolean)">
       <inheritdoc />
     </member>
     <member name="M:Key2Joy.Mapping.Triggers.GamePad.GamePadTriggerTrigger.GetInputHash">
@@ -3380,7 +3613,7 @@
     <member name="M:Key2Joy.Mapping.Triggers.GamePad.GamePadTriggerTrigger.Equals(System.Object)">
       <inheritdoc />
     </member>
-    <member name="M:Key2Joy.Mapping.Triggers.GamePad.GamePadTriggerTrigger.ToString">
+    <member name="M:Key2Joy.Mapping.Triggers.GamePad.GamePadTriggerTrigger.GetNameDisplay">
       <inheritdoc />
     </member>
     <member name="M:Key2Joy.Mapping.Triggers.GamePad.GamePadTriggerTrigger.GetHashCode">
@@ -3407,6 +3640,13 @@
       <param name="sender"></param>
       <param name="e"></param>
     </member>
+    <member name="M:Key2Joy.Mapping.Triggers.IOverrideDefaultBehavior.ShouldListenerOverrideDefault(System.Boolean)">
+      <summary>
+        Used by the trigger listener to determine if it should override default behavior.
+      </summary>
+      <param name="executedAny"></param>
+      <returns></returns>
+    </member>
     <member name="M:Key2Joy.Mapping.Triggers.ITriggerOptionsControl.Select(Key2Joy.Contracts.Mapping.Triggers.AbstractTrigger)">
       <summary>
         Called to setup the options panel with a trigger
@@ -3419,10 +3659,21 @@
       </summary>
       <param name="trigger"></param>
     </member>
+    <member name="M:Key2Joy.Mapping.Triggers.ITriggerOptionsControl.CanMappingSave(Key2Joy.Contracts.Mapping.Triggers.AbstractTrigger)">
+      <summary>
+        Called when the mapping is saving and can still be stopped
+      </summary>
+    </member>
     <member name="E:Key2Joy.Mapping.Triggers.ITriggerOptionsControl.OptionsChanged">
       <summary>
         Called when the options on a trigger change
       </summary>
+    </member>
+    <member name="M:Key2Joy.Mapping.Triggers.Keyboard.KeyboardTrigger.MakeReverse(Key2Joy.Contracts.Mapping.AbstractMappingAspect)">
+      <inheritdoc />
+    </member>
+    <member name="M:Key2Joy.Mapping.Triggers.Keyboard.KeyboardTriggerListener.ShouldListenerOverrideDefault(System.Boolean)">
+      <inheritdoc />
     </member>
     <member name="M:Key2Joy.Mapping.Triggers.Keyboard.KeyboardTriggerListener.Start">
       <inheritdoc />
@@ -3442,6 +3693,33 @@
     <member name="M:Key2Joy.Mapping.Triggers.Logic.CombinedTriggerListener.Stop">
       <inheritdoc />
     </member>
+    <member name="M:Key2Joy.Mapping.Triggers.Mouse.MouseButtonTrigger.GetTriggerListener">
+      <inheritdoc />
+    </member>
+    <member name="M:Key2Joy.Mapping.Triggers.Mouse.MouseButtonTrigger.MakeReverse(Key2Joy.Contracts.Mapping.AbstractMappingAspect)">
+      <inheritdoc />
+    </member>
+    <member name="M:Key2Joy.Mapping.Triggers.Mouse.MouseButtonTrigger.GetInputHashFor(Key2Joy.LowLevelInput.Mouse.Buttons)">
+      <inheritdoc />
+    </member>
+    <member name="M:Key2Joy.Mapping.Triggers.Mouse.MouseButtonTrigger.GetInputHash">
+      <inheritdoc />
+    </member>
+    <member name="M:Key2Joy.Mapping.Triggers.Mouse.MouseButtonTrigger.CompareTo(Key2Joy.Contracts.Mapping.AbstractMappingAspect)">
+      <inheritdoc />
+    </member>
+    <member name="M:Key2Joy.Mapping.Triggers.Mouse.MouseButtonTrigger.Equals(System.Object)">
+      <inheritdoc />
+    </member>
+    <member name="M:Key2Joy.Mapping.Triggers.Mouse.MouseButtonTrigger.Equals(Key2Joy.Mapping.Triggers.Mouse.MouseButtonTrigger)">
+      <inheritdoc />
+    </member>
+    <member name="M:Key2Joy.Mapping.Triggers.Mouse.MouseButtonTrigger.GetNameDisplay">
+      <inheritdoc />
+    </member>
+    <member name="M:Key2Joy.Mapping.Triggers.Mouse.MouseButtonTriggerListener.ShouldListenerOverrideDefault(System.Boolean)">
+      <inheritdoc />
+    </member>
     <member name="M:Key2Joy.Mapping.Triggers.Mouse.MouseButtonTriggerListener.Start">
       <inheritdoc />
     </member>
@@ -3456,19 +3734,26 @@
         The direction that the mouse must move in order to trigger this action.
       </summary>
     </member>
+    <member name="M:Key2Joy.Mapping.Triggers.Mouse.MouseMoveTriggerListener.ShouldListenerOverrideDefault(System.Boolean)">
+      <inheritdoc />
+    </member>
     <member name="M:Key2Joy.Mapping.Triggers.Mouse.MouseMoveTriggerListener.Start">
       <inheritdoc />
     </member>
     <member name="M:Key2Joy.Mapping.Triggers.Mouse.MouseMoveTriggerListener.Stop">
       <inheritdoc />
     </member>
+    <member name="M:Key2Joy.Mapping.Triggers.Mouse.MouseMoveTriggerListener.ResetCenterCursor">
+      <summary>
+        Can be called to reset the cursor to the center. Useful for games that take control of the cursor
+        and place it somewhere else.
+        Used by <see cref="F:Key2Joy.Mapping.Actions.Logic.AppCommand.ResetMouseMoveTriggerCenter" />
+      </summary>
+    </member>
     <member name="M:Key2Joy.Mapping.Triggers.Mouse.MouseMoveTriggerListener.AddMappedOption(Key2Joy.Contracts.Mapping.AbstractMappedOption)">
       <inheritdoc />
     </member>
     <member name="M:Key2Joy.Mapping.Triggers.Mouse.MouseMoveTriggerListener.GetIsTriggered(Key2Joy.Contracts.Mapping.Triggers.AbstractTrigger)">
-      <inheritdoc />
-    </member>
-    <member name="M:Key2Joy.Mapping.Triggers.Mouse.MouseMoveTriggerListener.WndProc(Key2Joy.Contracts.Mapping.Message)">
       <inheritdoc />
     </member>
     <member name="T:Key2Joy.Mapping.Triggers.PressReleaseTriggerListener`1">
@@ -3508,6 +3793,13 @@
         Gets all trigger types and their attribute annotations depending on the specified visibility
       </summary>
       <param name="forTopLevel"></param>
+      <returns></returns>
+    </member>
+    <member name="M:Key2Joy.Mapping.Triggers.TriggersRepository.GetAttributeForTrigger(Key2Joy.Contracts.Mapping.Triggers.AbstractTrigger)">
+      <summary>
+        Gets the attribute for the provided trigger
+      </summary>
+      <param name="trigger"></param>
       <returns></returns>
     </member>
     <member name="T:Key2Joy.Plugins.MappingControlFactory">
@@ -3695,12 +3987,24 @@
       <param name="toCheck"></param>
       <returns></returns>
     </member>
-    <member name="M:Key2Joy.Util.TypeExtensions.CopyArrayToNewType(System.Object[],System.Type)">
+    <member name="M:Key2Joy.Util.TypeExtensions.GetNumericMinValue(System.Type)">
       <summary>
-        Copies a given array to a new array of the target type, e.g: from object[] to string[].
+        Gets the minimum value for a numeric type
       </summary>
-      <param name="originalArray"></param>
-      <param name="elementType"></param>
+      <param name="type"></param>
+      <returns></returns>
+    </member>
+    <member name="M:Key2Joy.Util.TypeExtensions.GetNumericMaxValue(System.Type)">
+      <summary>
+        Gets the maximum value for a numeric type
+      </summary>
+      <param name="type"></param>
+      <returns></returns>
+    </member>
+    <member name="M:Key2Joy.Util.TypeExtensions.ToDecimalSafe(System.Object)">
+      <summary>
+      </summary>
+      <param name="input"></param>
       <returns></returns>
     </member>
   </members>

@@ -26,7 +26,7 @@ In addition to simply simulating a button being pressed on the Joystick, you can
 
 ## Usage
 
-> **Warning**
+> [!WARNING]
 > **Use at your own risk!** Incorrect driver (un)installation may cause a blue screen. 
 > *Read the [`Uninstalling` section](#uninstalling) below to find out how to uninstall the driver.*
 
@@ -39,7 +39,9 @@ In addition to simply simulating a button being pressed on the Joystick, you can
    ![Screenshot showing the overview window. Off to the side the mapping dialog is showing all available actions.](Docs/screenshot.png)
 
    **A trigger** is something that Key2Joy will listen for. *E.g: a mouse move, key press, key release, etc...*
-   > **⚠ Note:** The default behaviour of a trigger is disabled. This means setting the left mouse button as a trigger will make it so you can't left-click anymore until you abort this app.
+
+> [!NOTE]
+> **Default behaviour of a trigger is disabled by default**. This means setting the left mouse button as a trigger will make it so you can't left-click anymore until you abort this app.
 
    **An action** is what will happen when that trigger occurs. *E.g: simulating a joystick button being pressed, a keyboard button being released, or executing a Lua/Javascript script.*
 
@@ -49,10 +51,10 @@ In addition to simply simulating a button being pressed on the Joystick, you can
 
    *In the default profile there is also a mapping that stops Key2Joy from listening using the `Escape`-key. Don't forget to include such a mapping for your custom profiles.*
 
-> **Note**
+> [!NOTE]
 > Check out the [🐕‍🦺 Tips & Tricks](https://github.com/luttje/Key2Joy/discussions/categories/-tips-tricks) category in the discussions for tips and tricks. Certain inputs may be tricky to configure, but there's usually a way to get it working.
 
-> **Warning**
+> [!WARNING]
 > Please be careful using this tool in multiplayer/competitive games. It may be considered cheating and get you banned. Some games may only ban you after a while, so don't assume you're safe just because you haven't been banned yet.
 
 ### Using Key2Joy with a Command Line Interface
@@ -103,7 +105,7 @@ Full scripting reference is available in [Docs/Scripting.md](Docs/Scripting.md)
 
 Use `ScpDriverInstaller.exe` to uninstall the driver. You can find the latest version here: [mogzol/ScpDriverInterface releases](https://github.com/mogzol/ScpDriverInterface/releases)
 
-> **Warning**
+> [!WARNING]
 > **Do not uninstall the driver through Device manager** or you'll end up with a corrupt driver installation which may cause a blue screen. You may be able to recover from this by starting Windows in Safe-mode, running `ScpDriverInstaller.exe` and choosing "Uninstall".
 
 ---
