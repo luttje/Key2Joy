@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Windows.Forms;
 using CommonServiceLocator;
 using Key2Joy.Config;
 using Key2Joy.Contracts.Mapping.Actions;
@@ -14,6 +15,7 @@ using Key2Joy.LowLevelInput.SimulatedGamePad;
 using Key2Joy.LowLevelInput.XInput;
 using Key2Joy.Mapping;
 using Key2Joy.Mapping.Actions.Logic;
+using Key2Joy.Mapping.Triggers;
 using Key2Joy.Mapping.Triggers.GamePad;
 using Key2Joy.Mapping.Triggers.Keyboard;
 using Key2Joy.Mapping.Triggers.Mouse;
@@ -53,6 +55,8 @@ public class Key2JoyManager : IKey2JoyManager
     private MappingProfile armedProfile;
     private List<AbstractTriggerListener> armedListeners;
     private IHaveHandleAndInvoke handleAndInvoker;
+
+    private List<AbstractTriggerListener> wndProcListeners = new List<AbstractTriggerListener>();
 
     private Key2JoyManager()
     { }
@@ -191,6 +195,11 @@ public class Key2JoyManager : IKey2JoyManager
                     allListeners.Add(listener);
                 }
 
+                if (listener.HasWndProcHandle)
+                {
+                    wndProcListeners.Add(listener);
+                }
+
                 mappedOption.Action.OnStartListening(listener, ref allActions);
                 listener.AddMappedOption(mappedOption);
             }
@@ -212,6 +221,14 @@ public class Key2JoyManager : IKey2JoyManager
         {
             this.DisarmMappings();
             throw ex;
+        }
+    }
+
+    public void CallWndProc(ref Message m)
+    {
+        foreach (var wndProcListener in wndProcListeners)
+        {
+            wndProcListener.WndProc(ref m);
         }
     }
 
@@ -237,6 +254,8 @@ public class Key2JoyManager : IKey2JoyManager
                 listeners.Add(listener);
             }
         }
+
+        wndProcListeners.Clear();
 
         foreach (var listener in listeners)
         {
