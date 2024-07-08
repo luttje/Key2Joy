@@ -23,6 +23,13 @@ public class MouseMoveTriggerListener : CoreTriggerListener, IOverrideDefaultBeh
         }
     }
 
+    /// <summary>
+    /// Force a new instance to be created, used to reset the listener when mappings
+    /// are re-armed.
+    /// </summary>
+    /// <returns></returns>
+    public static MouseMoveTriggerListener NewInstance() => instance = new MouseMoveTriggerListener();
+
     private static readonly TimeSpan IS_MOVING_TOLERANCE = TimeSpan.FromMilliseconds(10);
 
     private readonly Dictionary<int, List<AbstractMappedOption>> lookupAxis;

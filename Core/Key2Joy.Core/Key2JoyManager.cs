@@ -154,17 +154,17 @@ public class Key2JoyManager : IKey2JoyManager
 
         if (withExplicitTriggerListeners)
         {
-            allListeners.AddRange(new List<AbstractTriggerListener> {
+            allListeners.AddRange([
                 // Trigger listeners that should explicitly loaded. This ensures that they're available for scripts
                 // even if no mapping option is mapped to be triggered by it.
                 // Always add these listeners so scripts can ask them if stuff has happened.
-                KeyboardTriggerListener.Instance,
-                MouseButtonTriggerListener.Instance,
-                MouseMoveTriggerListener.Instance,
-                GamePadButtonTriggerListener.Instance,
-                GamePadStickTriggerListener.Instance,
-                GamePadTriggerTriggerListener.Instance,
-            });
+                KeyboardTriggerListener.NewInstance(),
+                MouseButtonTriggerListener.NewInstance(),
+                MouseMoveTriggerListener.NewInstance(),
+                GamePadButtonTriggerListener.NewInstance(),
+                GamePadStickTriggerListener.NewInstance(),
+                GamePadTriggerTriggerListener.NewInstance(),
+            ]);
         }
 
         var allActions = (IList<AbstractAction>)profile.MappedOptions.Select(m => m.Action).ToList();
